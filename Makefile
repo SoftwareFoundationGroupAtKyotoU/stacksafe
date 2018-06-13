@@ -5,8 +5,12 @@ LDFLAGS += -shared
 
 TARGET := LLVMHello.so
 SRCS := $(wildcard *.cpp)
+OBJS := $(SRCS:%.cpp=%.o)
 
 all: $(TARGET)
 
-$(TARGET): $(SRCS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o $@ $^
+$(TARGET): $(OBJS)
+	$(CXX) $(LDFLAGS) -o $@ $^
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $<
