@@ -5,13 +5,14 @@ CFLAGS :=
 CXXFLAGS := -Wall -Wextra -Wpedantic
 LDFLAGS :=
 OPTFLAGS := -time-passes
-ifdef VERSION
-suffix := -$(VERSION)
-endif
+VERSION := 4.0
 # default option
 RM ?= rm -f
 
 # llvm/clang tools
+ifdef VERSION
+suffix := -$(VERSION)
+endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
 cc := clang$(suffix)
