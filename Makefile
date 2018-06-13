@@ -1,7 +1,13 @@
-CXXFLAGS != llvm-config --cxxflags
-LDFLAGS != llvm-config --ldflags
+LLVM_CONFIG := llvm-config
+CXX := clang++
+CXXFLAGS ?= -Wall -Wextra -Wpedantic
+LDFLAGS ?= -shared
 
-LDFLAGS += -shared
+LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
+LLVM_LDFLAGS != $(LLVM_CONFIG) --ldflags
+
+CXXFLAGS += $(LLVM_CXXFLAGS)
+LDFLAGS += $(LLVM_LDFLAGS)
 
 TARGET := LLVMHello.so
 SRCS := $(wildcard *.cpp)
