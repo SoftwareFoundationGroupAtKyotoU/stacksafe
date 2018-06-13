@@ -50,31 +50,31 @@ TESTCASES := $(TESTSRCS:%.c=%)
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(LDFLAGS) $^
+	@$(CXX) $(LDFLAGS) $^
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) $<
+	@$(CXX) $(CXXFLAGS) $<
 
 %.ll: %.c
-	$(CC) $(CFLAGS) $<
+	@$(CC) $(CFLAGS) $<
 
 test: $(TESTCASES)
 
 $(TESTCASES): test/%: test/%.ll $(TARGET)
-	$(OPT) $(OPTFLAGS) $<
+	@$(OPT) $(OPTFLAGS) $<
 
 clean: clean/objs clean/tests
 
 distclean: clean clean/$(TARGET)
 
 clean/$(TARGET):
-	$(RM) $(TARGET)
+	@$(RM) $(TARGET)
 
 clean/objs:
-	$(RM) $(OBJS)
+	@$(RM) $(OBJS)
 
 clean/tests:
-	$(RM) $(wildcard test/*.ll)
+	@$(RM) $(wildcard test/*.ll)
 
 .PHONY: all test $(TESTCASES)
 .PHONY: clean clean/$(TARGET) clean/objs clean/tests
