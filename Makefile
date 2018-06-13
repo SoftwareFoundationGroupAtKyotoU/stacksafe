@@ -5,6 +5,8 @@ CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
 OUTPUT_OPTION ?= -o $@
 
+CXXFLAGS += -c
+
 ifdef VERSION
 LLVM_CONFIG := llvm-config-$(VERSION)
 CC := clang-$(VERSION)
@@ -39,7 +41,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(LDFLAGS) $(OUTPUT_OPTION) $^
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $(OUTPUT_OPTION) $<
+	$(CXX) $(CXXFLAGS) $(OUTPUT_OPTION) $<
 
 %.ll: %.c
 	$(CC) -c -S -emit-llvm $(OUTPUT_OPTION) $<
