@@ -40,6 +40,8 @@ OBJS := $(SRCS:%.cpp=%.o)
 GENERATED := $(TARGET) $(OBJS)
 TESTSRCS := $(wildcard test/*.c)
 TESTCASES := $(basename $(TESTSRCS))
+OPTFLAGS += -load $(CURDIR)/$(TARGET) -$(PASS)
+OPTFLAGS += -o test/$*.log
 
 all: $(TARGET)
 
@@ -53,7 +55,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $<
 
 $(TESTCASES): test/%: test/%.ll
-	$(OPT) $(OPTFLAGS) -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
+	$(OPT) $(OPTFLAGS) $<
 
 clean:
 	$(RM) $(GENERATED)
