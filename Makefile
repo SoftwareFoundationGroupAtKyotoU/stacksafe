@@ -1,6 +1,7 @@
 LLVM_CONFIG ?= llvm-config
-CC := clang
 CXX ?= clang++
+CC := clang
+
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
 OUTPUT_OPTION ?= -o $@
@@ -10,8 +11,8 @@ CXXFLAGS += -c
 
 ifdef VERSION
 LLVM_CONFIG := llvm-config-$(VERSION)
-CC := clang-$(VERSION)
 CXX := clang++-$(VERSION)
+CC := clang-$(VERSION)
 endif
 
 LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
