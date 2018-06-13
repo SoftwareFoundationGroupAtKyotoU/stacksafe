@@ -10,58 +10,62 @@ RM ?= rm -f
 OUTPUT_OPTION ?= -o $@
 
 # llvm/clang tools
-LLVM_CONFIG := llvm-config
-CXX := clang++
-CC := clang
-OPT := opt
+llvm_config := llvm-config
+cxx := clang++
+cc := clang
+opt := opt
 # version specification
 ifdef VERSION
 append-version = $(eval $(var) := $($(var))-$(VERSION))
-$(foreach var,LLVM_CONFIG CXX CC OPT,$(append-version))
+$(foreach var,llvm_config cxx cc opt,$(append-version))
 endif
 # llvm flags
-LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
-LLVM_LDFLAGS != $(LLVM_CONFIG) --ldflags
+llvm_cxxflags != $(llvm_config) --cxxflags
+llvm_ldflags != $(llvm_config) --ldflags
 # adapt options to arguments of clang
-LLVM_CXXFLAGS += -Wno-unused-command-line-argument
+llvm_cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
-LLVM_CXXFLAGS := $(subst $(from),$(to),$(LLVM_CXXFLAGS))
+llvm_cxxflags := $(subst $(from),$(to),$(llvm_cxxflags))
 
+cflags = $(CFLAGS)
+cxxflags = $(CXXFLAGS)
+ldflags = $(LDFLAGS)
+optflags = $(OPTFLAGS)
 # add llvm flags
-CXXFLAGS += $(LLVM_CXXFLAGS)
-LDFLAGS += $(LLVM_LDFLAGS)
+cxxflags += $(llvm_cxxflags)
+ldflags += $(llvm_ldflags)
 # add mandatory flags
-CFLAGS += -c -S -emit-llvm
-CXXFLAGS += -c
-LDFLAGS += -shared
-OPTFLAGS += -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
+cflags += -c -S -emit-llvm
+cxxflags += -c
+ldflags += -shared
+optflags += -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
 # ends with output option
-CFLAGS += $(OUTPUT_OPTION)
-CXXFLAGS += $(OUTPUT_OPTION)
-LDFLAGS += $(OUTPUT_OPTION)
+cflags += $(OUTPUT_OPTION)
+cxxflags += $(OUTPUT_OPTION)
+ldflags += $(OUTPUT_OPTION)
 
 # collect sub-targets
-SRCS := $(wildcard *.cpp)
-OBJS := $(SRCS:%.cpp=%.o)
-TESTSRCS := $(wildcard test/*.c)
-TESTCASES := $(TESTSRCS:%.c=%)
+srcs := $(wildcard *.cpp)
+objs := $(srcs:%.cpp=%.o)
+testsrcs := $(wildcard test/*.c)
+testcases := $(testsrcs:%.c=%)
 
 all: $(TARGET)
 
-$(TARGET): $(OBJS)
-	@$(CXX) $(LDFLAGS) $^
+$(TARGET): $(objs)
+	@$(cxx) $(ldflags) $^
 
 %.o: %.cpp
-	@$(CXX) $(CXXFLAGS) $<
+	@$(cxx) $(cxxflags) $<
 
 %.ll: %.c
-	@$(CC) $(CFLAGS) $<
+	@$(cc) $(cflags) $<
 
-test: $(TESTCASES)
+test: $(testcases)
 
-$(TESTCASES): test/%: test/%.ll $(TARGET)
-	@$(OPT) $(OPTFLAGS) $<
+$(testcases): test/%: test/%.ll $(TARGET)
+	@$(opt) $(optflags) $<
 
 distclean: clean clean/$(TARGET)
 
@@ -71,10 +75,10 @@ clean/$(TARGET):
 	@$(RM) $(TARGET)
 
 clean/objs:
-	@$(RM) $(OBJS)
+	@$(RM) $(objs)
 
 clean/tests:
 	@$(RM) $(wildcard test/*.ll)
 
-.PHONY: all test $(TESTCASES)
+.PHONY: all test $(testcases)
 .PHONY: distclean clean clean/$(TARGET) clean/objs clean/tests
