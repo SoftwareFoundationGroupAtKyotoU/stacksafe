@@ -6,6 +6,7 @@ LDFLAGS += -shared
 TARGET := LLVMHello.so
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
+GENERATED := $(TARGET) $(OBJS)
 
 all: $(TARGET)
 
@@ -14,3 +15,8 @@ $(TARGET): $(OBJS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $<
+
+clean:
+	$(RM) -f $(GENERATED)
+
+.PHONY: all clean
