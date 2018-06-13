@@ -1,80 +1,86 @@
-# user configuration
-TARGET ?= MyHello.so
-PASS ?= myhello
-CFLAGS ?=
-CXXFLAGS ?= -Wall -Wextra -Wpedantic
-LDFLAGS ?=
-OPTFLAGS ?= -time-passes
+# user configuration point
+TARGET := MyHello.so
+PASS := myhello
+CFLAGS :=
+CXXFLAGS := -Wall -Wextra -Wpedantic
+LDFLAGS :=
+OPTFLAGS := -time-passes
+VERSION := 4.0
 # default option
 RM ?= rm -f
-OUTPUT_OPTION ?= -o $@
 
 # llvm/clang tools
-LLVM_CONFIG := llvm-config
-CXX := clang++
-CC := clang
-OPT := opt
-# version specification
 ifdef VERSION
-append-version = $(eval $(var) := $($(var))-$(VERSION))
-$(foreach var,LLVM_CONFIG CXX CC OPT,$(append-version))
+suffix := -$(VERSION)
 endif
+config := llvm-config$(suffix)
+cxx := clang++$(suffix)
+cc := clang$(suffix)
+opt := opt$(suffix)
 # llvm flags
-LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
-LLVM_LDFLAGS != $(LLVM_CONFIG) --ldflags
-# adapt options to arguments of clang
-LLVM_CXXFLAGS += -Wno-unused-command-line-argument
+llvm-cxxflags != $(config) --cxxflags
+llvm-ldflags != $(config) --ldflags
+# adapt flags to clang options
+llvm-cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
-LLVM_CXXFLAGS := $(subst $(from),$(to),$(LLVM_CXXFLAGS))
+llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 
+# local options
+cflags := -c -S -emit-llvm
+cxxflags := -c
+ldflags := -shared
+optflags := -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
+# add user configuration
+cflags += $(CFLAGS)
+cxxflags += $(CXXFLAGS)
+ldflags += $(LDFLAGS)
+optflags += $(OPTFLAGS)
 # add llvm flags
-CXXFLAGS += $(LLVM_CXXFLAGS)
-LDFLAGS += $(LLVM_LDFLAGS)
-# add mandatory flags
-CFLAGS += -c -S -emit-llvm
-CXXFLAGS += -c
-LDFLAGS += -shared
-OPTFLAGS += -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
-# ends with output option
-CFLAGS += $(OUTPUT_OPTION)
-CXXFLAGS += $(OUTPUT_OPTION)
-LDFLAGS += $(OUTPUT_OPTION)
+cxxflags += $(llvm-cxxflags)
+ldflags += $(llvm-ldflags)
 
 # collect sub-targets
-SRCS := $(wildcard *.cpp)
-OBJS := $(SRCS:%.cpp=%.o)
-TESTSRCS := $(wildcard test/*.c)
-TESTCASES := $(TESTSRCS:%.c=%)
+srcs := $(wildcard *.cpp)
+objs := $(srcs:%.cpp=%.o)
+testsrcs := $(wildcard test/*.c)
+testcases := $(testsrcs:%.c=%)
 
-all: $(TARGET)
+all: debug
 
-$(TARGET): $(OBJS)
-	@$(CXX) $(LDFLAGS) $^
+debug: cxxflags := $(subst -DNDEBUG,-DDEBUG,$(cxxflags))
+debug: cxxflags := $(subst -g1,-g3,$(cxxflags))
+debug: cxxflags := $(subst -O2,-O0,$(cxxflags))
+debug: $(TARGET)
+
+release: $(TARGET)
+
+$(TARGET): $(objs)
+	$(cxx) $(ldflags) -o $@ $^
 
 %.o: %.cpp
-	@$(CXX) $(CXXFLAGS) $<
+	$(cxx) $(cxxflags) -o $@ $<
 
 %.ll: %.c
-	@$(CC) $(CFLAGS) $<
+	$(cc) $(cflags) -o $@ $<
 
-test: $(TESTCASES)
+test: all $(testcases)
 
-$(TESTCASES): test/%: test/%.ll $(TARGET)
-	@$(OPT) $(OPTFLAGS) $<
+$(testcases): test/%: test/%.ll $(TARGET)
+	$(opt) $(optflags) $<
 
 distclean: clean clean/$(TARGET)
 
 clean: clean/objs clean/tests
 
 clean/$(TARGET):
-	@$(RM) $(TARGET)
+	$(RM) $(TARGET)
 
 clean/objs:
-	@$(RM) $(OBJS)
+	$(RM) $(objs)
 
 clean/tests:
-	@$(RM) $(wildcard test/*.ll)
+	$(RM) $(wildcard test/*.ll)
 
-.PHONY: all test $(TESTCASES)
+.PHONY: all test $(testcases)
 .PHONY: distclean clean clean/$(TARGET) clean/objs clean/tests
