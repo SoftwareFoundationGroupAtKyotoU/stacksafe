@@ -63,9 +63,9 @@ test: $(TESTCASES)
 $(TESTCASES): test/%: test/%.ll $(TARGET)
 	@$(OPT) $(OPTFLAGS) $<
 
-clean: clean/objs clean/tests
-
 distclean: clean clean/$(TARGET)
+
+clean: clean/objs clean/tests
 
 clean/$(TARGET):
 	@$(RM) $(TARGET)
@@ -77,4 +77,4 @@ clean/tests:
 	@$(RM) $(wildcard test/*.ll)
 
 .PHONY: all test $(TESTCASES)
-.PHONY: clean clean/$(TARGET) clean/objs clean/tests
+.PHONY: distclean clean clean/$(TARGET) clean/objs clean/tests
