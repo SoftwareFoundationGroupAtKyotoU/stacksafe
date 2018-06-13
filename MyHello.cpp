@@ -1,4 +1,4 @@
-//===- Hello.cpp - Example code from "Writing an LLVM Pass" ---------------===//
+//===- MyHello.cpp - Example code from "Writing an LLVM Pass" ---------------===//
 //
 //                     The LLVM Compiler Infrastructure
 //
@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// This file implements two versions of the LLVM "Hello World" pass described
+// This file implements two versions of the LLVM "MyHello World" pass described
 // in docs/WritingAnLLVMPass.html
 //
 //===----------------------------------------------------------------------===//
@@ -18,37 +18,37 @@
 #include "llvm/Support/raw_ostream.h"
 using namespace llvm;
 
-#define DEBUG_TYPE "hello"
+#define DEBUG_TYPE "myhello"
 
-STATISTIC(HelloCounter, "Counts number of functions greeted");
+STATISTIC(MyHelloCounter, "Counts number of functions greeted");
 
 namespace {
-  // Hello - The first implementation, without getAnalysisUsage.
-  struct Hello : public FunctionPass {
+  // MyHello - The first implementation, without getAnalysisUsage.
+  struct MyHello : public FunctionPass {
     static char ID; // Pass identification, replacement for typeid
-    Hello() : FunctionPass(ID) {}
+    MyHello() : FunctionPass(ID) {}
 
     bool runOnFunction(Function &F) override {
-      ++HelloCounter;
-      errs() << "Hello: ";
+      ++MyHelloCounter;
+      errs() << "MyHello: ";
       errs().write_escaped(F.getName()) << '\n';
       return false;
     }
   };
 }
 
-char Hello::ID = 0;
-static RegisterPass<Hello> X("hello", "Hello World Pass");
+char MyHello::ID = 0;
+static RegisterPass<MyHello> X("myhello", "MyHello World Pass", false, true);
 
 namespace {
-  // Hello2 - The second implementation with getAnalysisUsage implemented.
-  struct Hello2 : public FunctionPass {
+  // MyHello2 - The second implementation with getAnalysisUsage implemented.
+  struct MyHello2 : public FunctionPass {
     static char ID; // Pass identification, replacement for typeid
-    Hello2() : FunctionPass(ID) {}
+    MyHello2() : FunctionPass(ID) {}
 
     bool runOnFunction(Function &F) override {
-      ++HelloCounter;
-      errs() << "Hello: ";
+      ++MyHelloCounter;
+      errs() << "MyHello: ";
       errs().write_escaped(F.getName()) << '\n';
       return false;
     }
@@ -60,6 +60,6 @@ namespace {
   };
 }
 
-char Hello2::ID = 0;
-static RegisterPass<Hello2>
-Y("hello2", "Hello World Pass (with getAnalysisUsage implemented)");
+char MyHello2::ID = 0;
+static RegisterPass<MyHello2>
+Y("myhello2", "MyHello World Pass (with getAnalysisUsage implemented)");
