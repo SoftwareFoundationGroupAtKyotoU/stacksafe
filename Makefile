@@ -1,11 +1,13 @@
 LLVM_CONFIG ?= llvm-config
 CXX ?= clang++
 CC := clang
+OPT := opt
 RM ?= rm -f
 OUTPUT_OPTION ?= -o $@
 
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
+OPTFLAGS ?= -analyze -time-passes
 
 CFLAGS += -c -S -emit-llvm $(OUTPUT_OPTION)
 CXXFLAGS += -c $(OUTPUT_OPTION)
@@ -14,6 +16,7 @@ ifdef VERSION
 LLVM_CONFIG := llvm-config-$(VERSION)
 CXX := clang++-$(VERSION)
 CC := clang-$(VERSION)
+OPT := opt-$(VERSION)
 endif
 
 LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
@@ -50,7 +53,7 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) $<
 
 $(TESTCASES): test/%: test/%.ll
-	opt -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
+	$(OPT) $(OPTFLAGS) -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
 
 clean:
 	$(RM) $(GENERATED)
