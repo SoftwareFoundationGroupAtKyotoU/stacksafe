@@ -17,13 +17,13 @@ cxx := clang++$(suffix)
 cc := clang$(suffix)
 opt := opt$(suffix)
 # llvm flags
-llvm_cxxflags != $(config) --cxxflags
-llvm_ldflags != $(config) --ldflags
+llvm-cxxflags != $(config) --cxxflags
+llvm-ldflags != $(config) --ldflags
 # adapt options to arguments of clang
-llvm_cxxflags += -Wno-unused-command-line-argument
+llvm-cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
-llvm_cxxflags := $(subst $(from),$(to),$(llvm_cxxflags))
+llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 
 # local options
 cflags := -c -S -emit-llvm
@@ -36,8 +36,8 @@ cxxflags += $(CXXFLAGS)
 ldflags += $(LDFLAGS)
 optflags += $(OPTFLAGS)
 # add llvm flags
-cxxflags += $(llvm_cxxflags)
-ldflags += $(llvm_ldflags)
+cxxflags += $(llvm-cxxflags)
+ldflags += $(llvm-ldflags)
 
 # collect sub-targets
 srcs := $(wildcard *.cpp)
