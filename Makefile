@@ -4,6 +4,8 @@ CC := clang
 OPT := opt
 RM ?= rm -f
 OUTPUT_OPTION ?= -o $@
+TARGET ?= MyHello.so
+PASS ?= myhello
 
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
@@ -33,8 +35,6 @@ endif
 CXXFLAGS += $(LLVM_CXXFLAGS)
 LDFLAGS += $(LLVM_LDFLAGS)
 
-TARGET := MyHello.so
-PASSNAME := myhello
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
 GENERATED := $(TARGET) $(OBJS)
