@@ -1,7 +1,12 @@
-LLVM_CONFIG := llvm-config
-CXX := clang++
+LLVM_CONFIG ?= llvm-config
+CXX ?= clang++
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
+
+ifdef VERSION
+LLVM_CONFIG := llvm-config-$(VERSION)
+CXX := clang++-$(VERSION)
+endif
 
 LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
 LLVM_LDFLAGS != $(LLVM_CONFIG) --ldflags
