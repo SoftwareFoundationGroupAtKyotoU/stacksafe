@@ -6,6 +6,14 @@ LDFLAGS ?= -shared
 LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
 LLVM_LDFLAGS != $(LLVM_CONFIG) --ldflags
 
+findclang := $(findstring clang,$(CXX))
+ifeq (clang,$(findclang))
+LLVM_CXXFLAGS += -Wno-unused-command-line-argument
+from := -Wno-maybe-uninitialized
+to := -Wno-sometimes-uninitialized
+LLVM_CXXFLAGS := $(subst $(from),$(to),$(LLVM_CXXFLAGS))
+endif
+
 CXXFLAGS += $(LLVM_CXXFLAGS)
 LDFLAGS += $(LLVM_LDFLAGS)
 
