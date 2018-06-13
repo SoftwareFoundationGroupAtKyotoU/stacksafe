@@ -54,31 +54,31 @@ testcases := $(testsrcs:%.c=%)
 all: $(TARGET)
 
 $(TARGET): $(objs)
-	@$(cxx) $(ldflags) $^
+	$(cxx) $(ldflags) $^
 
 %.o: %.cpp
-	@$(cxx) $(cxxflags) $<
+	$(cxx) $(cxxflags) $<
 
 %.ll: %.c
-	@$(cc) $(cflags) $<
+	$(cc) $(cflags) $<
 
 test: $(testcases)
 
 $(testcases): test/%: test/%.ll $(TARGET)
-	@$(opt) $(optflags) $<
+	$(opt) $(optflags) $<
 
 distclean: clean clean/$(TARGET)
 
 clean: clean/objs clean/tests
 
 clean/$(TARGET):
-	@$(RM) $(TARGET)
+	$(RM) $(TARGET)
 
 clean/objs:
-	@$(RM) $(objs)
+	$(RM) $(objs)
 
 clean/tests:
-	@$(RM) $(wildcard test/*.ll)
+	$(RM) $(wildcard test/*.ll)
 
 .PHONY: all test $(testcases)
 .PHONY: distclean clean clean/$(TARGET) clean/objs clean/tests
