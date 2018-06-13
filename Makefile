@@ -3,6 +3,7 @@ CC := clang
 CXX ?= clang++
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
+OUTPUT_OPTION ?= -o $@
 
 ifdef VERSION
 LLVM_CONFIG := llvm-config-$(VERSION)
@@ -35,13 +36,13 @@ TESTCASES := $(basename $(TESTSRCS))
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(LDFLAGS) -o $@ $^
+	$(CXX) $(LDFLAGS) $(OUTPUT_OPTION) $^
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c -o $@ $<
+	$(CXX) $(CXXFLAGS) -c $(OUTPUT_OPTION) $<
 
 %.ll: %.c
-	$(CC) -c -S -emit-llvm -o $@ $<
+	$(CC) -c -S -emit-llvm $(OUTPUT_OPTION) $<
 
 $(TESTCASES): test/%: test/%.ll
 	opt -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
