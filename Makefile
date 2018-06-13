@@ -25,18 +25,19 @@ from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
 llvm_cxxflags := $(subst $(from),$(to),$(llvm_cxxflags))
 
-cflags := $(CFLAGS)
-cxxflags := $(CXXFLAGS)
-ldflags := $(LDFLAGS)
-optflags := $(OPTFLAGS)
+# local options
+cflags := -c -S -emit-llvm
+cxxflags := -c
+ldflags := -shared
+optflags := -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
+# add user configuration
+cflags += $(CFLAGS)
+cxxflags += $(CXXFLAGS)
+ldflags += $(LDFLAGS)
+optflags += $(OPTFLAGS)
 # add llvm flags
 cxxflags += $(llvm_cxxflags)
 ldflags += $(llvm_ldflags)
-# add mandatory flags
-cflags += -c -S -emit-llvm
-cxxflags += -c
-ldflags += -shared
-optflags += -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
 
 # collect sub-targets
 srcs := $(wildcard *.cpp)
