@@ -1,10 +1,11 @@
 LLVM_CONFIG ?= llvm-config
 CXX ?= clang++
 CC := clang
+RM ?= rm -f
+OUTPUT_OPTION ?= -o $@
 
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
-OUTPUT_OPTION ?= -o $@
 
 CFLAGS += -c -S -emit-llvm
 CXXFLAGS += -c
@@ -52,6 +53,6 @@ $(TESTCASES): test/%: test/%.ll
 	opt -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
 
 clean:
-	$(RM) -f $(GENERATED)
+	$(RM) $(GENERATED)
 
 .PHONY: all clean $(TESTCASES)
