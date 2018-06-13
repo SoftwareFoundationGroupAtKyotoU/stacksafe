@@ -16,10 +16,8 @@ CC := clang
 OPT := opt
 # version specification
 ifdef VERSION
-LLVM_CONFIG := llvm-config-$(VERSION)
-CXX := clang++-$(VERSION)
-CC := clang-$(VERSION)
-OPT := opt-$(VERSION)
+append-version = $(eval $(var) := $($(var))-$(VERSION))
+$(foreach var,LLVM_CONFIG CXX CC OPT,$(append-version))
 endif
 # llvm flags
 LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
