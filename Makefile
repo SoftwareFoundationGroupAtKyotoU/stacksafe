@@ -35,7 +35,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $<
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 %.ll: %.c
 	$(CC) -c -S -emit-llvm -o $@ $<
