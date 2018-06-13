@@ -1,10 +1,10 @@
-# user configuration
-TARGET ?= MyHello.so
-PASS ?= myhello
-CFLAGS ?=
-CXXFLAGS ?= -Wall -Wextra -Wpedantic
-LDFLAGS ?=
-OPTFLAGS ?= -time-passes
+# user configuration point
+TARGET := MyHello.so
+PASS := myhello
+CFLAGS :=
+CXXFLAGS := -Wall -Wextra -Wpedantic
+LDFLAGS :=
+OPTFLAGS := -time-passes
 # default option
 RM ?= rm -f
 
