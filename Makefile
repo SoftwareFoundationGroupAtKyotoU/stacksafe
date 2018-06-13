@@ -7,7 +7,6 @@ LDFLAGS ?=
 OPTFLAGS ?= -time-passes
 # default option
 RM ?= rm -f
-OUTPUT_OPTION ?= -o $@
 
 # llvm/clang tools
 llvm_config := llvm-config
@@ -28,10 +27,10 @@ from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
 llvm_cxxflags := $(subst $(from),$(to),$(llvm_cxxflags))
 
-cflags = $(CFLAGS)
-cxxflags = $(CXXFLAGS)
-ldflags = $(LDFLAGS)
-optflags = $(OPTFLAGS)
+cflags := $(CFLAGS)
+cxxflags := $(CXXFLAGS)
+ldflags := $(LDFLAGS)
+optflags := $(OPTFLAGS)
 # add llvm flags
 cxxflags += $(llvm_cxxflags)
 ldflags += $(llvm_ldflags)
@@ -40,10 +39,6 @@ cflags += -c -S -emit-llvm
 cxxflags += -c
 ldflags += -shared
 optflags += -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
-# ends with output option
-cflags += $(OUTPUT_OPTION)
-cxxflags += $(OUTPUT_OPTION)
-ldflags += $(OUTPUT_OPTION)
 
 # collect sub-targets
 srcs := $(wildcard *.cpp)
@@ -54,13 +49,13 @@ testcases := $(testsrcs:%.c=%)
 all: $(TARGET)
 
 $(TARGET): $(objs)
-	$(cxx) $(ldflags) $^
+	$(cxx) $(ldflags) -o $@ $^
 
 %.o: %.cpp
-	$(cxx) $(cxxflags) $<
+	$(cxx) $(cxxflags) -o $@ $<
 
 %.ll: %.c
-	$(cc) $(cflags) $<
+	$(cc) $(cflags) -o $@ $<
 
 test: $(testcases)
 
