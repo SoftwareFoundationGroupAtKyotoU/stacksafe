@@ -46,7 +46,14 @@ objs := $(srcs:%.cpp=%.o)
 testsrcs := $(wildcard test/*.c)
 testcases := $(testsrcs:%.c=%)
 
-all: $(TARGET)
+all: debug
+
+debug: cxxflags := $(subst -DNDEBUG,-DDEBUG,$(cxxflags))
+debug: cxxflags := $(subst -g1,-g3,$(cxxflags))
+debug: cxxflags := $(subst -O2,-O0,$(cxxflags))
+debug: $(TARGET)
+
+release: $(TARGET)
 
 $(TARGET): $(objs)
 	$(cxx) $(ldflags) -o $@ $^
