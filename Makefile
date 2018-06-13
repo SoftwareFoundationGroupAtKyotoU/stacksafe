@@ -25,9 +25,12 @@ CXXFLAGS += $(LLVM_CXXFLAGS)
 LDFLAGS += $(LLVM_LDFLAGS)
 
 TARGET := LLVMHello.so
+PASSNAME := hello
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
 GENERATED := $(TARGET) $(OBJS)
+TESTSRCS := $(wildcard test/*.c)
+TESTCASES := $(basename $(TESTSRCS))
 
 all: $(TARGET)
 
@@ -40,7 +43,10 @@ $(TARGET): $(OBJS)
 %.ll: %.c
 	$(CC) -c -S -emit-llvm -o $@ $<
 
+$(TESTCASES): test/%: test/%.ll
+	opt -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
+
 clean:
 	$(RM) -f $(GENERATED)
 
-.PHONY: all clean
+.PHONY: all clean $(TESTCASES)
