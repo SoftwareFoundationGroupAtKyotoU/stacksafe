@@ -5,6 +5,7 @@ CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
 OUTPUT_OPTION ?= -o $@
 
+CFLAGS += -c -S -emit-llvm
 CXXFLAGS += -c
 
 ifdef VERSION
@@ -44,7 +45,7 @@ $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OUTPUT_OPTION) $<
 
 %.ll: %.c
-	$(CC) -c -S -emit-llvm $(OUTPUT_OPTION) $<
+	$(CC) $(CFLAGS) $(OUTPUT_OPTION) $<
 
 $(TESTCASES): test/%: test/%.ll
 	opt -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
