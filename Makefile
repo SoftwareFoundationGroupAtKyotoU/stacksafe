@@ -37,9 +37,8 @@ LDFLAGS += $(LLVM_LDFLAGS)
 
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
-GENERATED := $(TARGET) $(OBJS)
 TESTSRCS := $(wildcard test/*.c)
-TESTCASES := $(basename $(TESTSRCS))
+TESTCASES := $(TESTSRCS:%.c=%)
 OPTFLAGS += -load $(CURDIR)/$(TARGET) -$(PASS)
 OPTFLAGS += -o test/$*.log
 
@@ -57,7 +56,18 @@ $(TARGET): $(OBJS)
 $(TESTCASES): test/%: test/%.ll
 	$(OPT) $(OPTFLAGS) $<
 
-clean:
-	$(RM) $(GENERATED)
+clean: clean/objs clean/tests
 
-.PHONY: all clean $(TESTCASES)
+distclean: clean clean/$(TARGET)
+
+clean/$(TARGET):
+	$(RM) $(TARGET)
+
+clean/objs:
+	$(RM) $(OBJS)
+
+clean/tests:
+	$(RM) $(wildcard test/*.ll)
+
+.PHONY: all $(TESTCASES)
+.PHONY: clean clean/$(TARGET) clean/objs clean/tests
