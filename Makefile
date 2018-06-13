@@ -20,7 +20,7 @@ opt := opt$(suffix)
 # llvm flags
 llvm-cxxflags != $(config) --cxxflags
 llvm-ldflags != $(config) --ldflags
-# adapt options to arguments of clang
+# adapt flags to clang options
 llvm-cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
