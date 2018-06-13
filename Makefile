@@ -7,8 +7,8 @@ OUTPUT_OPTION ?= -o $@
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
 
-CFLAGS += -c -S -emit-llvm
-CXXFLAGS += -c
+CFLAGS += -c -S -emit-llvm $(OUTPUT_OPTION)
+CXXFLAGS += -c $(OUTPUT_OPTION)
 
 ifdef VERSION
 LLVM_CONFIG := llvm-config-$(VERSION)
@@ -41,13 +41,13 @@ TESTCASES := $(basename $(TESTSRCS))
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) $(LDFLAGS) $(OUTPUT_OPTION) $^
+	$(CXX) $(LDFLAGS) $^
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) $(OUTPUT_OPTION) $<
+	$(CXX) $(CXXFLAGS) $<
 
 %.ll: %.c
-	$(CC) $(CFLAGS) $(OUTPUT_OPTION) $<
+	$(CC) $(CFLAGS) $<
 
 $(TESTCASES): test/%: test/%.ll
 	opt -load $(TARGET) -$(PASSNAME) -f $< >/dev/null
