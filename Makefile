@@ -5,19 +5,17 @@ CFLAGS :=
 CXXFLAGS := -Wall -Wextra -Wpedantic
 LDFLAGS :=
 OPTFLAGS := -time-passes
+ifdef VERSION
+suffix := -$(VERSION)
+endif
 # default option
 RM ?= rm -f
 
 # llvm/clang tools
-config := llvm-config
-cxx := clang++
-cc := clang
-opt := opt
-# version specification
-ifdef VERSION
-append-version = $(eval $(var) := $($(var))-$(VERSION))
-$(foreach var,config cxx cc opt,$(append-version))
-endif
+config := llvm-config$(suffix)
+cxx := clang++$(suffix)
+cc := clang$(suffix)
+opt := opt$(suffix)
 # llvm flags
 llvm_cxxflags != $(config) --cxxflags
 llvm_ldflags != $(config) --ldflags
