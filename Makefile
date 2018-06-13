@@ -8,11 +8,8 @@ TARGET ?= MyHello.so
 PASS ?= myhello
 
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
-LDFLAGS ?= -shared
-OPTFLAGS ?= -analyze -time-passes
-
-CFLAGS += -c -S -emit-llvm $(OUTPUT_OPTION)
-CXXFLAGS += -c $(OUTPUT_OPTION)
+LDFLAGS ?=
+OPTFLAGS ?= -time-passes
 
 ifdef VERSION
 LLVM_CONFIG := llvm-config-$(VERSION)
@@ -35,12 +32,19 @@ endif
 CXXFLAGS += $(LLVM_CXXFLAGS)
 LDFLAGS += $(LLVM_LDFLAGS)
 
+CFLAGS += -c -S -emit-llvm
+CXXFLAGS += -c
+LDFLAGS += -shared
+OPTFLAGS += -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
+
+CFLAGS += $(OUTPUT_OPTION)
+CXXFLAGS += $(OUTPUT_OPTION)
+LDFLAGS += $(OUTPUT_OPTION)
+
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
 TESTSRCS := $(wildcard test/*.c)
 TESTCASES := $(TESTSRCS:%.c=%)
-OPTFLAGS += -load $(CURDIR)/$(TARGET) -$(PASS)
-OPTFLAGS += -o test/$*.log
 
 all: $(TARGET)
 
