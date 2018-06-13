@@ -9,18 +9,18 @@ OPTFLAGS := -time-passes
 RM ?= rm -f
 
 # llvm/clang tools
-llvm_config := llvm-config
+config := llvm-config
 cxx := clang++
 cc := clang
 opt := opt
 # version specification
 ifdef VERSION
 append-version = $(eval $(var) := $($(var))-$(VERSION))
-$(foreach var,llvm_config cxx cc opt,$(append-version))
+$(foreach var,config cxx cc opt,$(append-version))
 endif
 # llvm flags
-llvm_cxxflags != $(llvm_config) --cxxflags
-llvm_ldflags != $(llvm_config) --ldflags
+llvm_cxxflags != $(config) --cxxflags
+llvm_ldflags != $(config) --ldflags
 # adapt options to arguments of clang
 llvm_cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
