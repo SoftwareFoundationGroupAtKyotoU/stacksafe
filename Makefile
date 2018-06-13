@@ -64,7 +64,7 @@ $(TARGET): $(objs)
 %.ll: %.c
 	$(cc) $(cflags) -o $@ $<
 
-test: $(testcases)
+test: all $(testcases)
 
 $(testcases): test/%: test/%.ll $(TARGET)
 	$(opt) $(optflags) $<
