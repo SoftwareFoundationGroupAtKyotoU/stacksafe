@@ -1,10 +1,12 @@
 LLVM_CONFIG ?= llvm-config
+CC := clang
 CXX ?= clang++
 CXXFLAGS ?= -Wall -Wextra -Wpedantic
 LDFLAGS ?= -shared
 
 ifdef VERSION
 LLVM_CONFIG := llvm-config-$(VERSION)
+CC := clang-$(VERSION)
 CXX := clang++-$(VERSION)
 endif
 
@@ -34,6 +36,9 @@ $(TARGET): $(OBJS)
 
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $<
+
+%.ll: %.c
+	$(CC) -c -S -emit-llvm -o $@ $<
 
 clean:
 	$(RM) -f $(GENERATED)
