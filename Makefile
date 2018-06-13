@@ -24,8 +24,8 @@ endif
 CXXFLAGS += $(LLVM_CXXFLAGS)
 LDFLAGS += $(LLVM_LDFLAGS)
 
-TARGET := LLVMHello.so
-PASSNAME := hello
+TARGET := MyHello.so
+PASSNAME := myhello
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
 GENERATED := $(TARGET) $(OBJS)
