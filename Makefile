@@ -1,11 +1,10 @@
-# user configuration point
-TARGET := MyHello.so
-PASS := myhello
-CFLAGS :=
+# target info
+export TARGET := MyHello.so
+export PASS := myhello
+export VERSION := 4.0
+# user-specified flags
 CXXFLAGS := -Wall -Wextra -Wpedantic
 LDFLAGS :=
-OPTFLAGS := -time-passes
-VERSION := 4.0
 # default option
 RM ?= rm -f
 
@@ -15,44 +14,36 @@ suffix := -$(VERSION)
 endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
-cc := clang$(suffix)
-opt := opt$(suffix)
 # llvm flags
 llvm-cxxflags != $(config) --cxxflags
 llvm-ldflags != $(config) --ldflags
-# adapt flags to clang options
+# adapt flags of gcc to clang ones
 llvm-cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
 llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
-
-# local options
-cflags := -c -S -emit-llvm
-cxxflags := -c
-ldflags := -shared
-optflags := -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
-# add user configuration
-cflags += $(CFLAGS)
-cxxflags += $(CXXFLAGS)
-ldflags += $(LDFLAGS)
-optflags += $(OPTFLAGS)
-# add llvm flags
-cxxflags += $(llvm-cxxflags)
-ldflags += $(llvm-ldflags)
+# build options
+cxxflags := -c $(CXXFLAGS) $(llvm-cxxflags)
+ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
 # collect sub-targets
 srcs := $(wildcard *.cpp)
 objs := $(srcs:%.cpp=%.o)
-testsrcs := $(wildcard test/*.c)
-testcases := $(testsrcs:%.c=%)
+cleanobjs := $(addprefix clean/,$(objs))
 
-all: debug
+.PHONY: all
+all: test
 
+.PHONY: build
+build: debug
+
+.PHONY: debug
 debug: cxxflags := $(subst -DNDEBUG,-DDEBUG,$(cxxflags))
 debug: cxxflags := $(subst -g1,-g3,$(cxxflags))
 debug: cxxflags := $(subst -O2,-O0,$(cxxflags))
 debug: $(TARGET)
 
+.PHONY: release
 release: $(TARGET)
 
 $(TARGET): $(objs)
@@ -61,26 +52,20 @@ $(TARGET): $(objs)
 %.o: %.cpp
 	$(cxx) $(cxxflags) -o $@ $<
 
-%.ll: %.c
-	$(cc) $(cflags) -o $@ $<
+.PHONY: test
+test: build
+	$(MAKE) -C test test
 
-test: all $(testcases)
-
-$(testcases): test/%: test/%.ll $(TARGET)
-	$(opt) $(optflags) $<
-
+.PHONY: distclean
 distclean: clean clean/$(TARGET)
 
-clean: clean/objs clean/tests
+.PHONY: clean
+clean: $(cleanobjs) clean/test
 
-clean/$(TARGET):
-	$(RM) $(TARGET)
+.PHONY: clean/$(TARGET) $(cleanobjs)
+clean/$(TARGET) $(cleanobjs): clean/%:
+	@$(RM) $*
 
-clean/objs:
-	$(RM) $(objs)
-
-clean/tests:
-	$(RM) $(wildcard test/*.ll)
-
-.PHONY: all test $(testcases)
-.PHONY: distclean clean clean/$(TARGET) clean/objs clean/tests
+.PHONY: clean/test
+clean/test:
+	@$(MAKE) --no-print-directory -C test clean
