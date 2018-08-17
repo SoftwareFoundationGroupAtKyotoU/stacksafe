@@ -18,25 +18,38 @@ llvm-ldflags != $(config) --ldflags
 # build options
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
-.PHONY: all
-all: debug test
+# macro for check .debug
+define check-debug =
+$(shell if test -e .debug; then echo debug; else echo release; fi)
+endef
+# auxiliary commands
+noenter-make := $(MAKE) --no-print-directory
+common-part := test -e .debug; then $(noenter-make) clean/src
 
-.PHONY: build
-build:
-	$(cxx) $(ldflags) -o $(TARGET) $(wildcard src/*.o)
+.PHONY: all
+all: test
+
+$(TARGET): compile
+	$(cxx) $(ldflags) -o $@ $(wildcard src/*.o)
+
+.PHONY: compile
+compile:
+	@$(noenter-make) compile/$(call check-debug)
 
 .PHONY: compile/debug compile/release
 compile/debug compile/release: compile/%:
 	$(MAKE) -C src $*
 
-.PHONY: debug
-debug: compile/debug build
-
-.PHONY: release
-release: compile/release build
+.PHONY: debug release
+debug:
+	@if ! $(common-part); touch .debug; fi
+	@$(noenter-make) compile
+release:
+	@if $(common-part); fi
+	@$(noenter-make) compile
 
 .PHONY: test
-test:
+test: $(TARGET)
 	$(MAKE) -C test all
 
 .PHONY: distclean
@@ -45,10 +58,11 @@ distclean: clean clean/$(TARGET)
 .PHONY: clean
 clean: clean/src clean/test
 
-.PHONY: clean/$(TARGET)
-clean/$(TARGET):
-	@$(RM) $(TARGET)
+.PHONY: clean/$(TARGET) clean/.debug
+clean/$(TARGET) clean/.debug: clean/%:
+	@$(RM) $*
 
 .PHONY: clean/test clean/src
+clean/src: clean/.debug
 clean/test clean/src: clean/%:
-	@$(MAKE) --no-print-directory -C $* clean
+	@$(noenter-make) -C $* clean
