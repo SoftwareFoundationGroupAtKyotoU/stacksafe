@@ -1,86 +1,66 @@
-# user configuration point
-TARGET := MyHello.so
-PASS := myhello
-CFLAGS :=
-CXXFLAGS := -Wall -Wextra -Wpedantic
+# target info
+export TARGET := MyHello.so
+export PASS := myhello
+export CLANG_VERSION := 4.0
+# user-specified flags
 LDFLAGS :=
-OPTFLAGS := -time-passes
-VERSION := 4.0
-# default option
-RM ?= rm -f
 
 # llvm/clang tools
-ifdef VERSION
-suffix := -$(VERSION)
+ifdef CLANG_VERSION
+suffix := -$(CLANG_VERSION)
 endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
-cc := clang$(suffix)
-opt := opt$(suffix)
 # llvm flags
-llvm-cxxflags != $(config) --cxxflags
 llvm-ldflags != $(config) --ldflags
-# adapt flags to clang options
-llvm-cxxflags += -Wno-unused-command-line-argument
-from := -Wno-maybe-uninitialized
-to := -Wno-sometimes-uninitialized
-llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
+# build options
+ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
-# local options
-cflags := -c -S -emit-llvm
-cxxflags := -c
-ldflags := -shared
-optflags := -analyze -load $(CURDIR)/$(TARGET) -$(PASS)
-# add user configuration
-cflags += $(CFLAGS)
-cxxflags += $(CXXFLAGS)
-ldflags += $(LDFLAGS)
-optflags += $(OPTFLAGS)
-# add llvm flags
-cxxflags += $(llvm-cxxflags)
-ldflags += $(llvm-ldflags)
+# macro for check .debug
+define check-debug =
+$(shell if test -e .debug; then echo debug; else echo release; fi)
+endef
+# auxiliary commands
+noenter-make := $(MAKE) --no-print-directory
+common-part := test -e .debug; then $(noenter-make) clean/src
 
-# collect sub-targets
-srcs := $(wildcard *.cpp)
-objs := $(srcs:%.cpp=%.o)
-testsrcs := $(wildcard test/*.c)
-testcases := $(testsrcs:%.c=%)
+.PHONY: all
+all: test
 
-all: debug
+$(TARGET): compile
+	$(cxx) $(ldflags) -o $@ $(wildcard src/*.o)
 
-debug: cxxflags := $(subst -DNDEBUG,-DDEBUG,$(cxxflags))
-debug: cxxflags := $(subst -g1,-g3,$(cxxflags))
-debug: cxxflags := $(subst -O2,-O0,$(cxxflags))
-debug: $(TARGET)
+.PHONY: compile
+compile:
+	@$(noenter-make) compile/$(call check-debug)
 
-release: $(TARGET)
+.PHONY: compile/debug compile/release
+compile/debug compile/release: compile/%:
+	$(MAKE) -C src $*
 
-$(TARGET): $(objs)
-	$(cxx) $(ldflags) -o $@ $^
+.PHONY: debug release
+debug:
+	@if ! $(common-part); touch .debug; fi
+	@$(noenter-make) compile
+release:
+	@if $(common-part); fi
+	@$(noenter-make) compile
 
-%.o: %.cpp
-	$(cxx) $(cxxflags) -o $@ $<
+.PHONY: test
+test: $(TARGET)
+	$(MAKE) -C test all
 
-%.ll: %.c
-	$(cc) $(cflags) -o $@ $<
-
-test: all $(testcases)
-
-$(testcases): test/%: test/%.ll $(TARGET)
-	$(opt) $(optflags) $<
-
+.PHONY: distclean
 distclean: clean clean/$(TARGET)
 
-clean: clean/objs clean/tests
+.PHONY: clean
+clean: clean/src clean/test
 
-clean/$(TARGET):
-	$(RM) $(TARGET)
+.PHONY: clean/$(TARGET) clean/.debug
+clean/$(TARGET) clean/.debug: clean/%:
+	@$(RM) $*
 
-clean/objs:
-	$(RM) $(objs)
-
-clean/tests:
-	$(RM) $(wildcard test/*.ll)
-
-.PHONY: all test $(testcases)
-.PHONY: distclean clean clean/$(TARGET) clean/objs clean/tests
+.PHONY: clean/test clean/src
+clean/src: clean/.debug
+clean/test clean/src: clean/%:
+	@$(noenter-make) -C $* clean
