@@ -1,22 +1,22 @@
-# user configuration point
-TARGET := $(dir $(CURDIR))MyHello.so
-PASS := myhello
+# user-specified flags
 CFLAGS :=
-OPTFLAGS := # -time-passes
-VERSION := 4.0
+OPTFLAGS := -time-passes
 # default option
 RM ?= rm -f
 
 # llvm/clang tools
-ifdef VERSION
-suffix := -$(VERSION)
+ifdef CLANG_VERSION
+suffix := -$(CLANG_VERSION)
 endif
 config := llvm-config$(suffix)
 cc := clang$(suffix)
 opt := opt$(suffix)
+# auxiliary options
+load-option := -load $(dir $(CURDIR))$(TARGET)
+pass-option := -$(PASS)
 # build options
 cflags := -c -S -emit-llvm $(CFLAGS)
-optflags := -analyze -load $(TARGET) -$(PASS) $(OPTFLAGS)
+optflags := -analyze $(load-option) $(pass-option) $(OPTFLAGS)
 
 # collect sub-targets
 srcs := $(wildcard *.c)

@@ -1,7 +1,7 @@
 # target info
 export TARGET := MyHello.so
 export PASS := myhello
-export VERSION := 4.0
+export CLANG_VERSION := 4.0
 # user-specified flags
 CXXFLAGS := -Wall -Wextra -Wpedantic
 LDFLAGS :=
@@ -9,8 +9,8 @@ LDFLAGS :=
 RM ?= rm -f
 
 # llvm/clang tools
-ifdef VERSION
-suffix := -$(VERSION)
+ifdef CLANG_VERSION
+suffix := -$(CLANG_VERSION)
 endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
@@ -54,7 +54,7 @@ $(TARGET): $(objs)
 
 .PHONY: test
 test: build
-	$(MAKE) -C test test
+	$(MAKE) -C test all
 
 .PHONY: distclean
 distclean: clean clean/$(TARGET)
