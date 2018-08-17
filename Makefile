@@ -31,6 +31,11 @@ srcs := $(wildcard *.cpp)
 objs := $(srcs:%.cpp=%.o)
 cleanobjs := $(addprefix clean/,$(objs))
 
+# macro for debug flags
+define debug-flags =
+$(subst -O2,-O0,$(subst -g1,-g3,$(subst -DNDEBUG,-DDEBUG,$(1))))
+endef
+
 .PHONY: all
 all: test
 
@@ -38,9 +43,7 @@ all: test
 build: debug
 
 .PHONY: debug
-debug: cxxflags := $(subst -DNDEBUG,-DDEBUG,$(cxxflags))
-debug: cxxflags := $(subst -g1,-g3,$(cxxflags))
-debug: cxxflags := $(subst -O2,-O0,$(cxxflags))
+debug: cxxflags := $(call debug-flags,$(cxxflags))
 debug: $(TARGET)
 
 .PHONY: release
