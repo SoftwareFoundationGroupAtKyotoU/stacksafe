@@ -3,7 +3,6 @@ export TARGET := MyHello.so
 export PASS := myhello
 export CLANG_VERSION := 4.0
 # user-specified flags
-CXXFLAGS := -Wall -Wextra -Wpedantic
 LDFLAGS :=
 # default option
 RM ?= rm -f
@@ -15,60 +14,41 @@ endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
 # llvm flags
-llvm-cxxflags != $(config) --cxxflags
 llvm-ldflags != $(config) --ldflags
-# adapt flags of gcc to clang ones
-llvm-cxxflags += -Wno-unused-command-line-argument
-from := -Wno-maybe-uninitialized
-to := -Wno-sometimes-uninitialized
-llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 # build options
-cxxflags := -c $(CXXFLAGS) $(llvm-cxxflags)
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
-# collect sub-targets
-srcs := $(wildcard *.cpp)
-objs := $(srcs:%.cpp=%.o)
-cleanobjs := $(addprefix clean/,$(objs))
-
-# macro for debug flags
-define debug-flags =
-$(subst -O2,-O0,$(subst -g1,-g3,$(subst -DNDEBUG,-DDEBUG,$(1))))
-endef
-
 .PHONY: all
-all: test
+all: debug test
 
 .PHONY: build
-build: debug
+build:
+	$(cxx) $(ldflags) -o $(TARGET) $(wildcard src/*.o)
+
+.PHONY: compile/debug compile/release
+compile/debug compile/release: compile/%:
+	$(MAKE) -C src $*
 
 .PHONY: debug
-debug: cxxflags := $(call debug-flags,$(cxxflags))
-debug: $(TARGET)
+debug: compile/debug build
 
 .PHONY: release
-release: $(TARGET)
-
-$(TARGET): $(objs)
-	$(cxx) $(ldflags) -o $@ $^
-
-%.o: %.cpp
-	$(cxx) $(cxxflags) -o $@ $<
+release: compile/release build
 
 .PHONY: test
-test: build
+test:
 	$(MAKE) -C test all
 
 .PHONY: distclean
 distclean: clean clean/$(TARGET)
 
 .PHONY: clean
-clean: $(cleanobjs) clean/test
+clean: clean/src clean/test
 
-.PHONY: clean/$(TARGET) $(cleanobjs)
-clean/$(TARGET) $(cleanobjs): clean/%:
-	@$(RM) $*
+.PHONY: clean/$(TARGET)
+clean/$(TARGET):
+	@$(RM) $(TARGET)
 
-.PHONY: clean/test
-clean/test:
-	@$(MAKE) --no-print-directory -C test clean
+.PHONY: clean/test clean/src
+clean/test clean/src: clean/%:
+	@$(MAKE) --no-print-directory -C $* clean
