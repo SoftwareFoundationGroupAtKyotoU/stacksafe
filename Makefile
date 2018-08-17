@@ -4,8 +4,6 @@ export PASS := myhello
 export CLANG_VERSION := 4.0
 # user-specified flags
 LDFLAGS :=
-# default option
-RM ?= rm -f
 
 # llvm/clang tools
 ifdef CLANG_VERSION

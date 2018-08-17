@@ -1,7 +1,5 @@
 # user-specified flags
 CXXFLAGS := -Wall -Wextra -Wpedantic
-# default option
-RM ?= rm -f
 
 # llvm/clang tools
 ifdef CLANG_VERSION
