@@ -1,5 +1,5 @@
 # user-specified flags
-CXXFLAGS := -Wall -Wextra -Wpedantic
+CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 
 # llvm/clang tools
 ifdef CLANG_VERSION
