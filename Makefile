@@ -36,7 +36,7 @@ compile:
 
 .PHONY: compile/debug compile/release
 compile/debug compile/release: compile/%:
-	$(MAKE) -C src $*
+	@$(MAKE) -C src $*
 
 .PHONY: debug release
 debug:
@@ -48,7 +48,7 @@ release:
 
 .PHONY: test
 test: $(TARGET)
-	$(MAKE) -C test all
+	@$(MAKE) -C test all
 
 .PHONY: distclean
 distclean: clean clean/$(TARGET)
