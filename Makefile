@@ -29,7 +29,8 @@ all: test
 
 srcs := $(wildcard src/*.cpp)
 objs := $(srcs:%.cpp=%.o)
-$(TARGET): compile
+$(TARGET): $(srcs)
+	@$(noenter-make) compile
 	$(cxx) $(ldflags) -o $@ $(objs)
 
 .PHONY: compile
