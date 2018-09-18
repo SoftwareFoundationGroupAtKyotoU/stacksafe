@@ -1,6 +1,6 @@
 # target info
-export TARGET := MyHello.so
-export PASS := myhello
+export TARGET := StackSafe.so
+export PASS := stacksafe
 export CLANG_VERSION := 4.0
 # user-specified flags
 LDFLAGS :=

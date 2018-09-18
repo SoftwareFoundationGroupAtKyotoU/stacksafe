@@ -9,3 +9,6 @@ namespace stacksafe {
     return false;
   }
 }
+
+static llvm::RegisterPass<stacksafe::Analyzer> registerpass
+("stacksafe", "Analyzer Pass for Stack Temporal Memory Safety");
