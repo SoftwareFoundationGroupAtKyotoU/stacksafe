@@ -25,10 +25,16 @@ noenter-make := $(MAKE) --no-print-directory
 common-part := test -e .debug; then $(noenter-make) clean/src
 
 .PHONY: all
-all: test
+all: target test
 
-$(TARGET): compile
-	$(cxx) $(ldflags) -o $@ $(wildcard src/*.o)
+.PHONY: target
+target: $(TARGET)
+
+srcs := $(wildcard src/*.cpp)
+objs := $(srcs:%.cpp=%.o)
+$(TARGET): $(srcs)
+	@$(noenter-make) compile
+	$(cxx) $(ldflags) -o $@ $(objs)
 
 .PHONY: compile
 compile:
@@ -36,7 +42,7 @@ compile:
 
 .PHONY: compile/debug compile/release
 compile/debug compile/release: compile/%:
-	$(MAKE) -C src $*
+	@$(MAKE) -C src $*
 
 .PHONY: debug release
 debug:
@@ -48,7 +54,7 @@ release:
 
 .PHONY: test
 test: $(TARGET)
-	$(MAKE) -C test all
+	@$(MAKE) -C test all
 
 .PHONY: distclean
 distclean: clean clean/$(TARGET)
