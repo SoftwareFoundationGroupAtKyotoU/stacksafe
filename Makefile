@@ -27,8 +27,10 @@ common-part := test -e .debug; then $(noenter-make) clean/src
 .PHONY: all
 all: test
 
+srcs := $(wildcard src/*.cpp)
+objs := $(srcs:%.cpp=%.o)
 $(TARGET): compile
-	$(cxx) $(ldflags) -o $@ $(wildcard src/*.o)
+	$(cxx) $(ldflags) -o $@ $(objs)
 
 .PHONY: compile
 compile:
