@@ -1,6 +1,6 @@
 # user-specified flags
 CFLAGS :=
-OPTFLAGS := -time-passes
+OPTFLAGS := #-time-passes
 
 # llvm/clang tools
 ifdef CLANG_VERSION
