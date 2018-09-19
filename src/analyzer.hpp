@@ -3,6 +3,10 @@
 
 #include "llvm/Pass.h"
 
+namespace llvm {
+  class Function;
+}
+
 namespace stacksafe {
   class Analyzer : public llvm::FunctionPass {
   public:
