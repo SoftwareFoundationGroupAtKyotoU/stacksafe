@@ -1,4 +1,5 @@
 #include "analyzer.hpp"
+#include "visualize.hpp"
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
 
@@ -8,8 +9,12 @@ namespace stacksafe {
     : llvm::FunctionPass(ID)
   {}
   bool Analyzer::runOnFunction(llvm::Function &F) {
-    for (const auto &bb : F.getBasicBlockList()) {
-      llvm::errs() << bb << "\n";
+    ClassNameVisitor classname;
+    for (auto &bb : F.getBasicBlockList()) {
+      for (auto &I : bb.getInstList()) {
+        llvm::errs() << classname.visit(I) << "\n"
+                     << I << "\n";
+      }
     }
     return false;
   }
