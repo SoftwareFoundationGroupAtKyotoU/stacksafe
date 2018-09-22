@@ -18,6 +18,17 @@ namespace stacksafe {
     }
     return false;
   }
+  Successors getSuccessors(llvm::BasicBlock &B) {
+    Successors succ;
+    if (auto t = B.getTerminator()) {
+      const auto num = t->getNumSuccessors();
+      succ.reserve(num);
+      for (unsigned i = 0; i < num; ++i) {
+        succ.push_back(t->getSuccessor(i));
+      }
+    }
+    return succ;
+  }
 }
 
 static llvm::RegisterPass<stacksafe::Analyzer> registerpass
