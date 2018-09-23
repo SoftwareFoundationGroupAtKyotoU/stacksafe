@@ -1,4 +1,5 @@
 #include "environment.hpp"
+#include <llvm/IR/Value.h>
 
 namespace stacksafe {
   namespace {
