@@ -1,7 +1,7 @@
 # target info
 export TARGET := StackSafe.so
 export PASS := stacksafe
-export CLANG_VERSION := 4.0
+export CLANG_VERSION := 6.0
 # user-specified flags
 LDFLAGS :=
 
