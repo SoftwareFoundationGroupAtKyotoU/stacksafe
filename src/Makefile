@@ -8,7 +8,7 @@ endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
 # llvm flags
-llvm-cxxflags != $(config) --cxxflags
+llvm-cxxflags != $(config) --cxxflags | sed -e 's/-std=[^ ]*//g'
 # adapt flags of gcc to clang ones
 llvm-cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
