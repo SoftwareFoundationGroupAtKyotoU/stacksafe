@@ -37,7 +37,9 @@ namespace stacksafe {
     Location getGlobal();
     Location getUndefined();
   };
-  using AbstractType = std::unordered_set<Location>;
+  class AbstractType {
+    std::unordered_set<Location> set_;
+  };
   class HeapMap {
     std::unordered_map<Location, AbstractType> map_;
   };
