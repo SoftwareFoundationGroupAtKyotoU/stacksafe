@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -28,6 +29,7 @@ namespace stacksafe {
   public:
     size_t hash() const;
     bool operator<(const Location &rhs) const;
+    bool operator==(const Location &rhs) const;
   };
   class LocationFactory {
     std::vector<std::unique_ptr<char>> local_;
@@ -44,7 +46,12 @@ namespace stacksafe {
     bool subsetof(const AbstractType &rhs) const;
   };
   class HeapMap {
-    std::unordered_map<Location, AbstractType> map_;
+    using Key = Location;
+    using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
+    std::unordered_map<Key, AbstractType> map_;
+  public:
+    bool subsetof(const HeapMap &rhs) const;
+    Maybe get(Key key) const;
   };
   class EnvMap {
     std::unordered_map<llvm::Value *, AbstractType> map_;

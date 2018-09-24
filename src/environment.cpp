@@ -16,6 +16,9 @@ namespace stacksafe {
   bool Location::operator<(const Location &rhs) const {
     return loc_ < rhs.loc_;
   }
+  bool Location::operator==(const Location &rhs) const {
+    return loc_ == rhs.loc_;
+  }
 
   namespace {
     constexpr char nullch = '\0';
@@ -41,5 +44,27 @@ namespace stacksafe {
     auto &r = rhs.set_;
     auto &l = set_;
     return std::includes(begin(r), end(r), begin(l), end(l));
+  }
+
+  bool HeapMap::subsetof(const HeapMap &rhs) const {
+    for (auto &e : map_) {
+      auto k = std::get<0>(e);
+      auto &l = std::get<1>(e);
+      if (auto r = rhs.get(k)) {
+        if (l.subsetof(*r)) {
+          continue;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+  auto HeapMap::get(Key key) const -> Maybe {
+    auto it = map_.find(key);
+    if (it == end(map_)) {
+      return std::nullopt;
+    } else {
+      return std::cref(std::get<1>(*it));
+    }
   }
 }
