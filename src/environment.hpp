@@ -17,6 +17,7 @@ namespace std {
     size_t operator()(stacksafe::Location l) const;
   };
 }
+
 namespace llvm {
   class Value;
 }
@@ -31,6 +32,7 @@ namespace stacksafe {
     bool operator<(const Location &rhs) const;
     bool operator==(const Location &rhs) const;
   };
+
   class LocationFactory {
     std::vector<std::unique_ptr<char>> local_;
     static char outlive_, global_, undefined_;
@@ -40,11 +42,13 @@ namespace stacksafe {
     Location getGlobal();
     Location getUndefined();
   };
+
   class AbstractType {
     std::unordered_set<Location> set_;
   public:
     bool subsetof(const AbstractType &rhs) const;
   };
+
   class HeapMap {
     using Key = Location;
     using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
@@ -53,6 +57,7 @@ namespace stacksafe {
     bool subsetof(const HeapMap &rhs) const;
     Maybe get(Key key) const;
   };
+
   class EnvMap {
     using Key = llvm::Value *;
     using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
