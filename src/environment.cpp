@@ -67,4 +67,26 @@ namespace stacksafe {
       return std::cref(std::get<1>(*it));
     }
   }
+
+  bool EnvMap::subsetof(const EnvMap &rhs) const {
+    for (auto &e : map_) {
+      auto k = std::get<0>(e);
+      auto &l = std::get<1>(e);
+      if (auto r = rhs.get(k)) {
+        if (l.subsetof(*r)) {
+          continue;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+  auto EnvMap::get(Key key) const -> Maybe {
+    auto it = map_.find(key);
+    if (it == end(map_)) {
+      return std::nullopt;
+    } else {
+      return std::cref(std::get<1>(*it));
+    }
+  }
 }

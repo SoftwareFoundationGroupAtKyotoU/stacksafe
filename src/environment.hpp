@@ -54,7 +54,12 @@ namespace stacksafe {
     Maybe get(Key key) const;
   };
   class EnvMap {
-    std::unordered_map<llvm::Value *, AbstractType> map_;
+    using Key = llvm::Value *;
+    using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
+    std::unordered_map<Key, AbstractType> map_;
+  public:
+    bool subsetof(const EnvMap &rhs) const;
+    Maybe get(Key key) const;
   };
 }
 
