@@ -11,18 +11,17 @@ namespace stacksafe {
   char LocationFactory::outlive_ = nullch;
   char LocationFactory::global_ = nullch;
   char LocationFactory::undefined_ = nullch;
-  auto LocationFactory::getLocal() -> Location {
-    auto data = std::make_unique<char>(nullch);
-    local_.push_back(std::move(data));
-    return local_.back().get();
+  Location LocationFactory::getLocal() {
+    local_.push_back(std::make_unique<char>(nullch));
+    return static_cast<Location>(*local_.back());
   }
-  auto LocationFactory::getOutlive() -> Location {
-    return &outlive_;
+  Location LocationFactory::getOutlive() {
+    return static_cast<Location>(outlive_);
   }
-  auto LocationFactory::getGlobal() -> Location {
-    return &global_;
+  Location LocationFactory::getGlobal() {
+    return static_cast<Location>(global_);
   }
-  auto LocationFactory::getUndefined() -> Location {
-    return &undefined_;
+  Location LocationFactory::getUndefined() {
+    return static_cast<Location>(undefined_);
   }
 }

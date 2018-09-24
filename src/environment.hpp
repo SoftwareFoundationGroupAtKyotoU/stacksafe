@@ -11,6 +11,7 @@ namespace llvm {
 }
 namespace stacksafe {
   class Location {
+    friend class LocationFactory;
     const void *const loc_;
     explicit Location(const char &c);
   };
