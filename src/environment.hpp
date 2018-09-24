@@ -27,6 +27,7 @@ namespace stacksafe {
     explicit Location(const char &c);
   public:
     size_t hash() const;
+    bool operator<(const Location &rhs) const;
   };
   class LocationFactory {
     std::vector<std::unique_ptr<char>> local_;
@@ -39,6 +40,8 @@ namespace stacksafe {
   };
   class AbstractType {
     std::unordered_set<Location> set_;
+  public:
+    bool subsetof(const AbstractType &rhs) const;
   };
   class HeapMap {
     std::unordered_map<Location, AbstractType> map_;

@@ -13,6 +13,10 @@ namespace stacksafe {
   size_t Location::hash() const {
     return Base::operator()(loc_);
   }
+  bool Location::operator<(const Location &rhs) const {
+    return loc_ < rhs.loc_;
+  }
+
   namespace {
     constexpr char nullch = '\0';
   }
@@ -31,5 +35,11 @@ namespace stacksafe {
   }
   Location LocationFactory::getUndefined() {
     return static_cast<Location>(undefined_);
+  }
+
+  bool AbstractType::subsetof(const AbstractType &rhs) const {
+    auto &r = rhs.set_;
+    auto &l = set_;
+    return std::includes(begin(r), end(r), begin(l), end(l));
   }
 }
