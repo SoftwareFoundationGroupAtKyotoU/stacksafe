@@ -2,6 +2,9 @@
 #include <llvm/IR/Value.h>
 
 namespace stacksafe {
+  Location::Location(const char &c)
+    : loc_(&c)
+  {}
   namespace {
     constexpr char nullch = '\0';
   }

@@ -10,7 +10,10 @@ namespace llvm {
   class Value;
 }
 namespace stacksafe {
-  using Location = void *;
+  class Location {
+    const void *const loc_;
+    explicit Location(const char &c);
+  };
   class LocationFactory {
     std::vector<std::unique_ptr<char>> local_;
     static char outlive_, global_, undefined_;
