@@ -1,6 +1,11 @@
 #include "environment.hpp"
 #include <llvm/IR/Value.h>
 
+namespace std {
+  size_t hash<stacksafe::Location>::operator()(stacksafe::Location l) const {
+    return l.hash();
+  }
+}
 namespace stacksafe {
   Location::Location(const char &c)
     : loc_(&c)

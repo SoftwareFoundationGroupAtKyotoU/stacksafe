@@ -7,6 +7,15 @@
 #include <unordered_set>
 #include <vector>
 
+namespace stacksafe {
+  class Location;
+}
+namespace std {
+  template <>
+  struct hash<stacksafe::Location> {
+    size_t operator()(stacksafe::Location l) const;
+  };
+}
 namespace llvm {
   class Value;
 }
