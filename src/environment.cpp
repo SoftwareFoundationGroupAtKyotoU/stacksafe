@@ -5,6 +5,9 @@ namespace stacksafe {
   Location::Location(const char &c)
     : loc_(&c)
   {}
+  size_t Location::hash() const {
+    return Base::operator()(loc_);
+  }
   namespace {
     constexpr char nullch = '\0';
   }
