@@ -43,8 +43,7 @@ namespace stacksafe {
     Location getUndefined();
   };
 
-  class LocationSet {
-    std::unordered_set<Location> set_;
+  class LocationSet : public std::unordered_set<Location> {
   public:
     bool subsetof(const LocationSet &rhs) const;
   };
