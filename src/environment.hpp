@@ -83,6 +83,7 @@ namespace stacksafe {
     LocationMap<llvm::Value *> stack_;
   public:
     bool subsetof(const Environment &rhs) const;
+    void unify(const Environment &rhs);
   };
 }
 

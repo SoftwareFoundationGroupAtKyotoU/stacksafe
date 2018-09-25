@@ -49,4 +49,8 @@ namespace stacksafe {
   bool Environment::subsetof(const Environment &rhs) const {
     return heap_.subsetof(rhs.heap_) && stack_.subsetof(rhs.stack_);
   }
+  void Environment::unify(const Environment &rhs) {
+    heap_.unify(rhs.heap_);
+    stack_.unify(rhs.stack_);
+  }
 }
