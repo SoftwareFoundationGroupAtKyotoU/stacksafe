@@ -18,9 +18,6 @@ namespace std {
   };
 }
 
-namespace llvm {
-  class Value;
-}
 namespace stacksafe {
   class Location : private std::hash<const void *> {
     using Base = std::hash<const void *>;
@@ -76,24 +73,6 @@ namespace stacksafe {
         return std::cref(std::get<1>(*it));
       }
     }
-  };
-
-  class HeapMap {
-    using Key = Location;
-    using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
-    std::unordered_map<Key, AbstractType> map_;
-  public:
-    bool subsetof(const HeapMap &rhs) const;
-    Maybe get(Key key) const;
-  };
-
-  class EnvMap {
-    using Key = llvm::Value *;
-    using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
-    std::unordered_map<Key, AbstractType> map_;
-  public:
-    bool subsetof(const EnvMap &rhs) const;
-    Maybe get(Key key) const;
   };
 }
 
