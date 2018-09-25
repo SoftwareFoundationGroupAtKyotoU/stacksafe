@@ -37,6 +37,23 @@ namespace stacksafe {
       map_.emplace(&b, empty);
     }
   }
+  void State::traverse() {
+    while (!todo_.empty()) {
+      auto b = todo_.front();
+      todo_.pop();
+      if (auto t = b->getTerminator()) {
+        auto next = update(*b);
+        for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+          auto succ = t->getSuccessor(i);
+          auto &prev = map_.at(succ);
+          if (!next.subsetof(prev)) {
+            prev.unify(next);
+            todo_.push(succ);
+          }
+        }
+      }
+    }
+  }
 }
 
 static llvm::RegisterPass<stacksafe::Analyzer> registerpass

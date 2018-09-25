@@ -27,6 +27,7 @@ namespace stacksafe {
     std::queue<llvm::BasicBlock *> todo_;
   private:
     void init(llvm::Function &F);
+    void traverse();
   };
 }
 
