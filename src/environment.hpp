@@ -49,6 +49,35 @@ namespace stacksafe {
     bool subsetof(const AbstractType &rhs) const;
   };
 
+  template <class Key>
+  class LocationMap {
+    using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
+    std::unordered_map<Key, AbstractType> map_;
+  public:
+    bool subsetof(const LocationMap &rhs) const {
+      for (auto &e : map_) {
+        auto k = std::get<0>(e);
+        auto &l = std::get<1>(e);
+        if (auto r = rhs.get(k)) {
+          if (l.subsetof(*r)) {
+            continue;
+          }
+        }
+        return false;
+      }
+      return true;
+    }
+  private:
+    Maybe get(Key key) const {
+      auto it = map_.find(key);
+      if (it == end(map_)) {
+        return std::nullopt;
+      } else {
+        return std::cref(std::get<1>(*it));
+      }
+    }
+  };
+
   class HeapMap {
     using Key = Location;
     using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
