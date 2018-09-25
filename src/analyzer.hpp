@@ -25,6 +25,8 @@ namespace stacksafe {
   class State {
     std::unordered_map<llvm::BasicBlock *, Environment> map_;
     std::queue<llvm::BasicBlock *> todo_;
+  private:
+    void init(llvm::Function &F);
   };
 }
 

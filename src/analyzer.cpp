@@ -29,6 +29,14 @@ namespace stacksafe {
     }
     return succ;
   }
+
+  void State::init(llvm::Function &F) {
+    todo_.push(&F.getEntryBlock());
+    static const Environment empty;
+    for (auto &b : F.getBasicBlockList()) {
+      map_.emplace(&b, empty);
+    }
+  }
 }
 
 static llvm::RegisterPass<stacksafe::Analyzer> registerpass
