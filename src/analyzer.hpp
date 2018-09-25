@@ -28,6 +28,7 @@ namespace stacksafe {
   private:
     void init(llvm::Function &F);
     void traverse();
+    Environment update(llvm::BasicBlock &B);
   };
 }
 

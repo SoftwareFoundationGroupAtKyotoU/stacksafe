@@ -54,6 +54,9 @@ namespace stacksafe {
       }
     }
   }
+  Environment State::update(llvm::BasicBlock &B) {
+    return map_.at(&B);
+  }
 }
 
 static llvm::RegisterPass<stacksafe::Analyzer> registerpass
