@@ -67,6 +67,17 @@ namespace stacksafe {
       }
       return true;
     }
+    void unify(const LocationMap &rhs) {
+      for (auto &e : rhs.map_) {
+        auto k = std::get<0>(e);
+        auto &r = std::get<1>(e);
+        if (map_.count(k) == 0) {
+          map_.insert(e);
+        } else {
+          map_.at(k).insert(begin(r), end(r));
+        }
+      }
+    }
   private:
     Maybe get(Key key) const {
       auto it = map_.find(key);
