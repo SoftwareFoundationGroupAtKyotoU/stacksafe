@@ -19,8 +19,6 @@ namespace stacksafe {
     static char ID;
     bool runOnFunction(llvm::Function &F) override;
   };
-  using Successors = std::vector<llvm::BasicBlock *>;
-  Successors getSuccessors(llvm::BasicBlock &B);
 
   class State {
     std::unordered_map<llvm::BasicBlock *, Environment> map_;
