@@ -40,16 +40,16 @@ namespace stacksafe {
     Location getUndefined();
   };
 
-  class AbstractType {
+  class LocationSet {
     std::unordered_set<Location> set_;
   public:
-    bool subsetof(const AbstractType &rhs) const;
+    bool subsetof(const LocationSet &rhs) const;
   };
 
   template <class Key>
   class LocationMap {
-    using Maybe = std::optional<std::reference_wrapper<const AbstractType>>;
-    std::unordered_map<Key, AbstractType> map_;
+    using Maybe = std::optional<std::reference_wrapper<const LocationSet>>;
+    std::unordered_map<Key, LocationSet> map_;
   public:
     bool subsetof(const LocationMap &rhs) const {
       for (auto &e : map_) {
