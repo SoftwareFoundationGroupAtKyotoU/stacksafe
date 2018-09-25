@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_24D0B7C2_7662_4CA7_9DAE_CFC9EA3B0EA0
 
 #include "environment.hpp"
+#include <memory>
 #include <queue>
 #include <unordered_map>
 #include <vector>
@@ -13,13 +14,6 @@ namespace llvm {
 }
 
 namespace stacksafe {
-  class Analyzer : public llvm::FunctionPass {
-  public:
-    Analyzer();
-    static char ID;
-    bool runOnFunction(llvm::Function &F) override;
-  };
-
   class State {
     std::unordered_map<llvm::BasicBlock *, Environment> map_;
     std::queue<llvm::BasicBlock *> todo_;
@@ -28,6 +22,15 @@ namespace stacksafe {
     void traverse();
   private:
     Environment update(llvm::BasicBlock &B);
+  };
+
+  class Analyzer : public llvm::FunctionPass {
+    std::unique_ptr<State> state_;
+  public:
+    static char ID;
+  public:
+    Analyzer();
+    bool runOnFunction(llvm::Function &F) override;
   };
 }
 

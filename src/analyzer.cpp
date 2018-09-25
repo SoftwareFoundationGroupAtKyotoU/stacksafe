@@ -9,6 +9,8 @@ namespace stacksafe {
     : llvm::FunctionPass(ID)
   {}
   bool Analyzer::runOnFunction(llvm::Function &F) {
+    state_ = std::make_unique<State>(F);
+    state_->traverse();
     ClassNameVisitor classname;
     for (auto &bb : F.getBasicBlockList()) {
       for (auto &I : bb.getInstList()) {
