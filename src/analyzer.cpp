@@ -19,7 +19,7 @@ namespace stacksafe {
     return false;
   }
 
-  void State::init(llvm::Function &F) {
+  State::State(llvm::Function &F) {
     todo_.push(&F.getEntryBlock());
     static const Environment empty;
     for (auto &b : F.getBasicBlockList()) {
