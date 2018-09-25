@@ -18,6 +18,9 @@ namespace std {
   };
 }
 
+namespace llvm {
+  class Value;
+}
 namespace stacksafe {
   class Location : private std::hash<const void *> {
     using Base = std::hash<const void *>;
@@ -73,6 +76,11 @@ namespace stacksafe {
         return std::cref(std::get<1>(*it));
       }
     }
+  };
+
+  class Environment {
+    LocationMap<Location> heap_;
+    LocationMap<llvm::Value *> stack_;
   };
 }
 
