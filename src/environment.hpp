@@ -81,6 +81,8 @@ namespace stacksafe {
   class Environment {
     LocationMap<Location> heap_;
     LocationMap<llvm::Value *> stack_;
+  public:
+    bool subsetof(const Environment &rhs) const;
   };
 }
 

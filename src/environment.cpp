@@ -45,4 +45,8 @@ namespace stacksafe {
     auto &l = set_;
     return std::includes(begin(r), end(r), begin(l), end(l));
   }
+
+  bool Environment::subsetof(const Environment &rhs) const {
+    return heap_.subsetof(rhs.heap_) && stack_.subsetof(rhs.stack_);
+  }
 }
