@@ -11,13 +11,6 @@ namespace stacksafe {
   bool Analyzer::runOnFunction(llvm::Function &F) {
     state_ = std::make_unique<State>(F);
     state_->traverse();
-    ClassNameVisitor classname;
-    for (auto &bb : F.getBasicBlockList()) {
-      for (auto &I : bb.getInstList()) {
-        llvm::errs() << classname.visit(I) << "\n"
-                     << I << "\n";
-      }
-    }
     return false;
   }
 
@@ -49,6 +42,11 @@ namespace stacksafe {
     }
   }
   Environment State::update(llvm::BasicBlock &B) {
+    ClassNameVisitor classname;
+    for (auto &I : B.getInstList()) {
+      llvm::errs() << classname.visit(I) << endl
+                   << I << endl;
+    }
     return map_.at(&B);
   }
 }
