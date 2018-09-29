@@ -16,6 +16,7 @@ namespace llvm {
 
 namespace stacksafe {
   class State {
+    LocationFactory factory_;
     std::unordered_map<llvm::BasicBlock *, Environment> map_;
     std::queue<llvm::BasicBlock *> todo_;
   public:
