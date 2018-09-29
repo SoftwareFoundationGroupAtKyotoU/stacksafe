@@ -3,7 +3,6 @@
 
 #include <functional>
 #include <memory>
-#include <optional>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -50,15 +49,15 @@ namespace stacksafe {
 
   template <class Key>
   class LocationMap {
-    using Maybe = std::optional<std::reference_wrapper<const LocationSet>>;
     std::unordered_map<Key, LocationSet> map_;
   public:
     bool subsetof(const LocationMap &rhs) const {
       for (auto &e : map_) {
         auto k = std::get<0>(e);
         auto &l = std::get<1>(e);
-        if (auto r = rhs.get(k)) {
-          if (l.subsetof(*r)) {
+        auto it = map_.find(k);
+        if (it != end(map_)) {
+          if (l.subsetof(std::get<1>(*it))) {
             continue;
           }
         }
@@ -77,15 +76,6 @@ namespace stacksafe {
         } else {
           map_.at(k).insert(begin(r), end(r));
         }
-      }
-    }
-  private:
-    Maybe get(Key key) const {
-      auto it = map_.find(key);
-      if (it == end(map_)) {
-        return std::nullopt;
-      } else {
-        return std::cref(std::get<1>(*it));
       }
     }
   };
