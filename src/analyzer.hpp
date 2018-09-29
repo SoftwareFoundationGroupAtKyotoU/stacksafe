@@ -11,6 +11,7 @@
 namespace llvm {
   class BasicBlock;
   class Function;
+  class TerminatorInst;
 }
 
 namespace stacksafe {
@@ -21,6 +22,7 @@ namespace stacksafe {
     State(llvm::Function &F);
     void traverse();
   private:
+    void propagate(const Environment &prev, llvm::TerminatorInst &I);
     Environment update(llvm::BasicBlock &B);
   };
 

@@ -32,16 +32,19 @@ namespace stacksafe {
     while (!todo_.empty()) {
       auto b = todo_.front();
       todo_.pop();
+      auto prev = update(*b);
       if (auto t = b->getTerminator()) {
-        auto next = update(*b);
-        for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-          auto succ = t->getSuccessor(i);
-          auto &prev = map_.at(succ);
-          if (!next.subsetof(prev)) {
-            prev.unify(next);
-            todo_.push(succ);
-          }
-        }
+        propagate(prev, *t);
+      }
+    }
+  }
+  void State::propagate(const Environment &prev, llvm::TerminatorInst &I) {
+    for (unsigned i = 0; i < I.getNumSuccessors(); ++i) {
+      auto succ = I.getSuccessor(i);
+      auto &next = map_.at(succ);
+      if (!prev.subsetof(next)) {
+        next.unify(prev);
+        todo_.push(succ);
       }
     }
   }
