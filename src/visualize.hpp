@@ -9,6 +9,8 @@ namespace llvm {
 #undef HANDLE_INST
 }
 namespace stacksafe {
+  constexpr auto endl = "\n";
+
   class ClassNameVisitor :
     public llvm::InstVisitor<ClassNameVisitor, const char *> {
     using RetTy = const char *;
