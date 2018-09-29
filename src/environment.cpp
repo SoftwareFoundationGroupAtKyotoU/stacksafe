@@ -41,7 +41,9 @@ namespace stacksafe {
   }
 
   bool LocationSet::subsetof(const LocationSet &rhs) const {
-    return std::includes(rhs.begin(), rhs.end(), begin(), end());
+    using std::begin;
+    using std::end;
+    return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
   }
 
   bool Environment::subsetof(const Environment &rhs) const {

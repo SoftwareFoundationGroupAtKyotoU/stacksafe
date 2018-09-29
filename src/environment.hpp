@@ -67,6 +67,8 @@ namespace stacksafe {
       return true;
     }
     void unify(const LocationMap &rhs) {
+      using std::begin;
+      using std::end;
       for (auto &e : rhs.map_) {
         auto k = std::get<0>(e);
         auto &r = std::get<1>(e);
