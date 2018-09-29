@@ -7,11 +7,11 @@ namespace std {
   }
 }
 namespace stacksafe {
-  Location::Location(const char &c)
-    : loc_(&c)
+  Location::Location(std::size_t x)
+    : loc_(x)
   {}
   size_t Location::hash() const {
-    return Base::operator()(loc_);
+    return std::hash<std::size_t>{}(loc_);
   }
   bool Location::operator<(const Location &rhs) const {
     return loc_ < rhs.loc_;

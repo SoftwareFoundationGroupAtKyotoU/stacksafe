@@ -21,11 +21,10 @@ namespace llvm {
   class Value;
 }
 namespace stacksafe {
-  class Location : private std::hash<const void *> {
-    using Base = std::hash<const void *>;
+  class Location {
     friend class LocationFactory;
-    const void *const loc_;
-    explicit Location(const char &c);
+    std::size_t loc_;
+    explicit Location(std::size_t x);
   public:
     size_t hash() const;
     bool operator<(const Location &rhs) const;
