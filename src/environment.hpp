@@ -32,9 +32,13 @@ namespace stacksafe {
   };
 
   class LocationFactory {
-    std::vector<std::unique_ptr<char>> local_;
-    static char outlive_, global_, undefined_;
+    std::size_t current_;
+    static const std::size_t undefined_ = 0;
+    static const std::size_t global_ = 1;
+    static const std::size_t outlive_ = 2;
+    static const std::size_t local_ = 3;
   public:
+    LocationFactory();
     Location getLocal();
     Location getOutlive();
     Location getGlobal();
