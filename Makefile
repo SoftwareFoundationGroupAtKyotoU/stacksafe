@@ -32,9 +32,12 @@ ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 # collect sub-targets
 debugmarker := .debug
 srcprefix := src/
+cleanprefix := clean/
 srcs := $(wildcard $(srcprefix)*.cpp)
 objs := $(srcs:%.cpp=%.o)
-cleanobjs := $(addprefix clean/,$(debugmarker) $(objs))
+cleanobjs := $(addprefix $(cleanprefix),$(debugmarker) $(objs))
+cleantarget := $(cleanprefix)$(TARGET)
+cleantest := $(cleanprefix)test
 
 # script snippets
 quiet-make := $(MAKE) --no-print-directory
@@ -72,17 +75,17 @@ test: $(TARGET)
 	@$(MAKE) -C test all
 
 .PHONY: distclean
-distclean: clean clean/$(TARGET)
+distclean: clean $(cleantarget)
 
 .PHONY: clean
-clean: $(cleanobjs) clean/test
+clean: $(cleanobjs) $(cleantest)
 
-.PHONY: clean/$(TARGET) $(cleanobjs)
-clean/$(TARGET) $(cleanobjs): clean/%:
+.PHONY: $(cleantarget) $(cleanobjs)
+$(cleantarget) $(cleanobjs): $(cleanprefix)%:
 	@$(RM) $*
 
-.PHONY: clean/test
-clean/test: clean/%:
+.PHONY: $(cleantest)
+$(cleantest): $(cleanprefix)%:
 	@$(quiet-make) -C $* clean
 
 # dependency rules
