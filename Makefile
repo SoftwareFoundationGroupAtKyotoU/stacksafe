@@ -33,10 +33,10 @@ srcs := $(wildcard src/*.cpp)
 objs := $(srcs:%.cpp=%.o)
 cleanobjs := $(addprefix clean/,.debug $(objs))
 
-# macro for check .debug
-define check-debug =
-$(shell if test -e .debug; then echo debug; else echo release; fi)
-endef
+# script snippets
+check-debug := test -e .debug
+switch-script := if $(check-debug); then echo debug; else echo release; fi
+
 # auxiliary commands
 noenter-make := $(MAKE) --no-print-directory
 common-part := test -e .debug; then $(noenter-make) clean/src
@@ -53,7 +53,7 @@ $(TARGET): $(srcs)
 
 .PHONY: compile
 compile:
-	@$(noenter-make) compile/$(call check-debug)
+	@$(noenter-make) compile/$(shell $(switch-script))
 
 .PHONY: compile/debug compile/release
 compile/debug compile/release: compile/%:
