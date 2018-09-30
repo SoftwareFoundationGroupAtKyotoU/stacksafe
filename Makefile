@@ -44,7 +44,7 @@ cleantest := $(cleanprefix)test
 # script snippets
 quiet-make := $(MAKE) --no-print-directory
 check-debug := test -e $(debugmarker)
-common-part := test -e .debug; then $(quiet-make) clean
+common-part := $(check-debug); then $(quiet-make) clean
 debug-script := if ! $(common-part); touch $(debugmarker); fi
 release-script := if $(common-part); fi
 switch-script := if $(check-debug); then echo debug; else echo release; fi
