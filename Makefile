@@ -3,6 +3,7 @@ export TARGET := StackSafe.so
 export PASS := stacksafe
 export CLANG_VERSION := 6.0
 # user-specified flags
+CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 LDFLAGS :=
 
 # llvm/clang tools
@@ -12,8 +13,15 @@ endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
 # llvm flags
+llvm-cxxflags != $(config) --cxxflags | sed -e 's/-std=[^ ]*//g'
 llvm-ldflags != $(config) --ldflags
+# adapt flags of gcc to clang ones
+llvm-cxxflags += -Wno-unused-command-line-argument
+from := -Wno-maybe-uninitialized
+to := -Wno-sometimes-uninitialized
+llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 # build options
+cxxflags := -c $(CXXFLAGS) $(llvm-cxxflags)
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
 # macro for check .debug

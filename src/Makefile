@@ -1,21 +1,9 @@
-# user-specified flags
-CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
-
 # llvm/clang tools
 ifdef CLANG_VERSION
 suffix := -$(CLANG_VERSION)
 endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
-# llvm flags
-llvm-cxxflags != $(config) --cxxflags | sed -e 's/-std=[^ ]*//g'
-# adapt flags of gcc to clang ones
-llvm-cxxflags += -Wno-unused-command-line-argument
-from := -Wno-maybe-uninitialized
-to := -Wno-sometimes-uninitialized
-llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
-# build options
-cxxflags := -c $(CXXFLAGS) $(llvm-cxxflags)
 
 # collect sub-targets
 srcs := $(wildcard *.cpp)
