@@ -43,10 +43,10 @@ release-script := if $(common-part); fi
 switch-script := if $(check-debug); then echo debug; else echo release; fi
 
 .PHONY: all
-all: target test
+all: build test
 
-.PHONY: target
-target: $(TARGET)
+.PHONY: build
+build: $(TARGET)
 
 $(TARGET): $(srcs)
 	@$(quiet-make) compile
