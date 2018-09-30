@@ -5,9 +5,6 @@ endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
 
-# collect sub-targets
-cleanobjs := $(addprefix clean/,$(objs))
-
 # macro for debug flags
 define debug-flags =
 $(subst -O2,-O0,$(subst -g1,-g3,$(subst -DNDEBUG,-DDEBUG,$(1))))
@@ -22,10 +19,3 @@ debug: $(objs)
 
 .PHONY: release
 release: $(objs)
-
-.PHONY: clean
-clean: $(cleanobjs)
-
-.PHONY: $(cleanobjs)
-$(cleanobjs): clean/%:
-	@$(RM) $*

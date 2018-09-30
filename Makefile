@@ -27,6 +27,7 @@ ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 # collect sub-targets
 srcs := $(wildcard src/*.cpp)
 objs := $(srcs:%.cpp=%.o)
+cleanobjs := $(addprefix clean/,$(objs))
 
 # macro for check .debug
 define check-debug =
@@ -73,10 +74,10 @@ test: $(TARGET)
 distclean: clean clean/$(TARGET)
 
 .PHONY: clean
-clean: clean/src clean/test
+clean: $(cleanobjs) clean/test
 
-.PHONY: clean/$(TARGET) clean/.debug
-clean/$(TARGET) clean/.debug: clean/%:
+.PHONY: clean/$(TARGET) clean/.debug $(cleanobjs)
+clean/$(TARGET) clean/.debug $(cleanobjs): clean/%:
 	@$(RM) $*
 
 .PHONY: clean/test clean/src
