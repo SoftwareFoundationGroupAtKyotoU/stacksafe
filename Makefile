@@ -35,12 +35,12 @@ objs := $(srcs:%.cpp=%.o)
 cleanobjs := $(addprefix clean/,$(debugmarker) $(objs))
 
 # script snippets
+quiet-make := $(MAKE) --no-print-directory
 check-debug := test -e $(debugmarker)
 switch-script := if $(check-debug); then echo debug; else echo release; fi
 
 # auxiliary commands
-noenter-make := $(MAKE) --no-print-directory
-common-part := test -e .debug; then $(noenter-make) clean/src
+common-part := test -e .debug; then $(quiet-make) clean/src
 
 .PHONY: all
 all: target test
@@ -49,12 +49,12 @@ all: target test
 target: $(TARGET)
 
 $(TARGET): $(srcs)
-	@$(noenter-make) compile
+	@$(quiet-make) compile
 	$(cxx) $(ldflags) -o $@ $(objs)
 
 .PHONY: compile
 compile:
-	@$(noenter-make) compile/$(shell $(switch-script))
+	@$(quiet-make) compile/$(shell $(switch-script))
 
 .PHONY: compile/debug compile/release
 compile/debug compile/release: compile/%:
@@ -64,11 +64,11 @@ compile/debug compile/release: compile/%:
 debug: cxxflags := $(debugflags)
 debug:
 	@if ! $(common-part); touch .debug; fi
-	@$(noenter-make) compile
+	@$(quiet-make) compile
 release: cxxflags := $(releaseflags)
 release:
 	@if $(common-part); fi
-	@$(noenter-make) compile
+	@$(quiet-make) compile
 
 $(objs): %.o: %.cpp
 	$(cxx) $(cxxflags) -o $@ $<
@@ -89,4 +89,4 @@ clean/$(TARGET) $(cleanobjs): clean/%:
 
 .PHONY: clean/test
 clean/test: clean/%:
-	@$(noenter-make) -C $* clean
+	@$(quiet-make) -C $* clean
