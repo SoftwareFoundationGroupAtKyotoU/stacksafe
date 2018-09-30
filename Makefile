@@ -24,6 +24,10 @@ llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 cxxflags := -c $(CXXFLAGS) $(llvm-cxxflags)
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
+# collect sub-targets
+srcs := $(wildcard src/*.cpp)
+objs := $(srcs:%.cpp=%.o)
+
 # macro for check .debug
 define check-debug =
 $(shell if test -e .debug; then echo debug; else echo release; fi)
@@ -38,8 +42,6 @@ all: target test
 .PHONY: target
 target: $(TARGET)
 
-srcs := $(wildcard src/*.cpp)
-objs := $(srcs:%.cpp=%.o)
 $(TARGET): $(srcs)
 	@$(noenter-make) compile
 	$(cxx) $(ldflags) -o $@ $(objs)
@@ -59,6 +61,9 @@ debug:
 release:
 	@if $(common-part); fi
 	@$(noenter-make) compile
+
+$(objs): %.o: %.cpp
+	$(cxx) $(cxxflags) -o $@ $<
 
 .PHONY: test
 test: $(TARGET)

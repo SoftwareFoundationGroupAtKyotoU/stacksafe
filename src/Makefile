@@ -6,8 +6,6 @@ config := llvm-config$(suffix)
 cxx := clang++$(suffix)
 
 # collect sub-targets
-srcs := $(wildcard *.cpp)
-objs := $(srcs:%.cpp=%.o)
 cleanobjs := $(addprefix clean/,$(objs))
 
 # macro for debug flags
@@ -24,9 +22,6 @@ debug: $(objs)
 
 .PHONY: release
 release: $(objs)
-
-%.o: %.cpp
-	$(cxx) $(cxxflags) -o $@ $<
 
 .PHONY: clean
 clean: $(cleanobjs)
