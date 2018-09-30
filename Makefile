@@ -42,6 +42,10 @@ common-part := test -e .debug; then $(quiet-make) clean
 debug-script := if ! $(common-part); touch $(debugmarker); fi
 release-script := if $(common-part); fi
 switch-script := if $(check-debug); then echo debug; else echo release; fi
+sed-script := sed -e 's%/usr/lib/[^ ]*%%g'
+define dependency-script =
+$(shell echo src/$(shell $(cxx) $(cxxflags) -MM $(1) | $(sed-script)))
+endef
 
 .SUFFIXES:
 
@@ -79,3 +83,6 @@ clean/$(TARGET) $(cleanobjs): clean/%:
 .PHONY: clean/test
 clean/test: clean/%:
 	@$(quiet-make) -C $* clean
+
+# dependency rules
+$(foreach src,$(srcs),$(eval $(call dependency-script,$(src))))
