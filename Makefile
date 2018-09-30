@@ -30,6 +30,7 @@ cxxflags = $($(shell $(switch-script))flags)
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
 # constants
+target := $(TARGET)
 debugmarker := .debug
 srcprefix := src/
 cleanprefix := clean/
@@ -37,7 +38,7 @@ cleanprefix := clean/
 srcs := $(wildcard $(srcprefix)*.cpp)
 objs := $(srcs:%.cpp=%.o)
 cleanobjs := $(addprefix $(cleanprefix),$(debugmarker) $(objs))
-cleantarget := $(cleanprefix)$(TARGET)
+cleantarget := $(cleanprefix)$(target)
 cleantest := $(cleanprefix)test
 
 # script snippets
@@ -58,9 +59,9 @@ endef
 all: build test
 
 .PHONY: build
-build: $(TARGET)
+build: $(target)
 
-$(TARGET): $(objs)
+$(target): $(objs)
 	$(cxx) $(ldflags) -o $@ $^
 
 .PHONY: debug release
@@ -72,7 +73,7 @@ $(objs): %.o: %.cpp
 	$(cxx) $(cxxflags) -o $@ $<
 
 .PHONY: test
-test: $(TARGET)
+test: $(target)
 	@$(MAKE) -C test all
 
 .PHONY: distclean
