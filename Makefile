@@ -15,7 +15,7 @@ cxx := clang++$(suffix)
 # llvm flags
 llvm-cxxflags != $(config) --cxxflags | sed -e 's/-std=[^ ]*//g'
 llvm-ldflags != $(config) --ldflags
-# adapt flags of gcc to clang ones
+# adapt gcc options to clang ones
 llvm-cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
@@ -29,10 +29,11 @@ debugflags := $(subst -DNDEBUG,-DDEBUG,$(debugflags))
 cxxflags = $($(shell $(switch-script))flags)
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
-# collect sub-targets
+# constants
 debugmarker := .debug
 srcprefix := src/
 cleanprefix := clean/
+# sub-targets
 srcs := $(wildcard $(srcprefix)*.cpp)
 objs := $(srcs:%.cpp=%.o)
 cleanobjs := $(addprefix $(cleanprefix),$(debugmarker) $(objs))
