@@ -53,11 +53,8 @@ $(TARGET): $(objs)
 	$(cxx) $(ldflags) -o $@ $(objs)
 
 .PHONY: debug release
-debug:
-	@$(debug-script)
-	@$(quiet-make) build
-release:
-	@$(release-script)
+debug release: %:
+	@$($*-script)
 	@$(quiet-make) build
 
 $(objs): %.o: %.cpp
