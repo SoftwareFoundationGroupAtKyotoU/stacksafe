@@ -31,7 +31,8 @@ ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
 # collect sub-targets
 debugmarker := .debug
-srcs := $(wildcard src/*.cpp)
+srcprefix := src/
+srcs := $(wildcard $(srcprefix)*.cpp)
 objs := $(srcs:%.cpp=%.o)
 cleanobjs := $(addprefix clean/,$(debugmarker) $(objs))
 
@@ -44,7 +45,7 @@ release-script := if $(common-part); fi
 switch-script := if $(check-debug); then echo debug; else echo release; fi
 sed-script := sed -e 's%/usr/lib/[^ ]*%%g'
 define dependency-script =
-$(shell echo src/$(shell $(cxx) $(cxxflags) -MM $(1) | $(sed-script)))
+$(shell echo $(srcprefix)$(shell $(cxx) $(cxxflags) -MM $(1) | $(sed-script)))
 endef
 
 .SUFFIXES:
