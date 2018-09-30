@@ -26,8 +26,8 @@ debugflags := $(releaseflags)
 debugflags := $(subst -O2,-O0,$(debugflags))
 debugflags := $(subst -g1,-g3,$(debugflags))
 debugflags := $(subst -DNDEBUG,-DDEBUG,$(debugflags))
-ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 cxxflags = $($(shell $(switch-script))flags)
+ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
 # collect sub-targets
 debugmarker := .debug
@@ -56,7 +56,7 @@ all: build test
 build: $(TARGET)
 
 $(TARGET): $(objs)
-	$(cxx) $(ldflags) -o $@ $(objs)
+	$(cxx) $(ldflags) -o $@ $^
 
 .PHONY: debug release
 debug release: %:
