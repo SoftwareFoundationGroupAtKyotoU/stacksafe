@@ -21,12 +21,12 @@ from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
 llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 # build options
-cxxflags := -c $(CXXFLAGS) $(llvm-cxxflags)
-ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
-debugflags := $(cxxflags)
+releaseflags := -c $(CXXFLAGS) $(llvm-cxxflags)
+debugflags := $(releaseflags)
 debugflags := $(subst -O2,-O0,$(debugflags))
 debugflags := $(subst -g1,-g3,$(debugflags))
 debugflags := $(subst -DNDEBUG,-DDEBUG,$(debugflags))
+ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
 # collect sub-targets
 srcs := $(wildcard src/*.cpp)
@@ -60,10 +60,11 @@ compile/debug compile/release: compile/%:
 	@$(MAKE) -C src $*
 
 .PHONY: debug release
-debug: cxxflags := $(debug-flags)
+debug: cxxflags := $(debugflags)
 debug:
 	@if ! $(common-part); touch .debug; fi
 	@$(noenter-make) compile
+release: cxxflags := $(releaseflags)
 release:
 	@if $(common-part); fi
 	@$(noenter-make) compile
