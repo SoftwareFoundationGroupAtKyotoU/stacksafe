@@ -3,6 +3,7 @@ export TARGET := StackSafe.so
 export PASS := stacksafe
 export CLANG_VERSION := 6.0
 # user-specified flags
+CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 LDFLAGS :=
 
 # llvm/clang tools
@@ -12,61 +13,82 @@ endif
 config := llvm-config$(suffix)
 cxx := clang++$(suffix)
 # llvm flags
+llvm-cxxflags != $(config) --cxxflags | sed -e 's/-std=[^ ]*//g'
 llvm-ldflags != $(config) --ldflags
+# adapt gcc options to clang ones
+llvm-cxxflags += -Wno-unused-command-line-argument
+from := -Wno-maybe-uninitialized
+to := -Wno-sometimes-uninitialized
+llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 # build options
+releaseflags := -c $(CXXFLAGS) $(llvm-cxxflags)
+debugflags := $(releaseflags)
+debugflags := $(subst -O2,-O0,$(debugflags))
+debugflags := $(subst -g1,-g3,$(debugflags))
+debugflags := $(subst -DNDEBUG,-DDEBUG,$(debugflags))
+cxxflags = $($(shell $(switch-script))flags)
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
-# macro for check .debug
-define check-debug =
-$(shell if test -e .debug; then echo debug; else echo release; fi)
+# constants
+target := $(TARGET)
+debugmarker := .debug
+srcprefix := src/
+cleanprefix := clean/
+# sub-targets
+srcs := $(wildcard $(srcprefix)*.cpp)
+objs := $(srcs:%.cpp=%.o)
+cleanobjs := $(addprefix $(cleanprefix),$(debugmarker) $(objs))
+cleantarget := $(cleanprefix)$(target)
+cleantest := $(cleanprefix)test
+
+# script snippets
+quiet-make := $(MAKE) --no-print-directory
+check-debug := test -e $(debugmarker)
+common-part := $(check-debug); then $(quiet-make) clean
+debug-script := if ! $(common-part); touch $(debugmarker); fi
+release-script := if $(common-part); fi
+switch-script := if $(check-debug); then echo debug; else echo release; fi
+sed-script := sed -e 's%/usr/lib/[^ ]*%%g'
+define dependency-script =
+$(shell echo $(srcprefix)$(shell $(cxx) $(cxxflags) -MM $(1) | $(sed-script)))
 endef
-# auxiliary commands
-noenter-make := $(MAKE) --no-print-directory
-common-part := test -e .debug; then $(noenter-make) clean/src
+
+.SUFFIXES:
 
 .PHONY: all
-all: target test
+all: build test
 
-.PHONY: target
-target: $(TARGET)
+.PHONY: build
+build: $(target)
 
-srcs := $(wildcard src/*.cpp)
-objs := $(srcs:%.cpp=%.o)
-$(TARGET): $(srcs)
-	@$(noenter-make) compile
-	$(cxx) $(ldflags) -o $@ $(objs)
-
-.PHONY: compile
-compile:
-	@$(noenter-make) compile/$(call check-debug)
-
-.PHONY: compile/debug compile/release
-compile/debug compile/release: compile/%:
-	@$(MAKE) -C src $*
+$(target): $(objs)
+	$(cxx) $(ldflags) -o $@ $^
 
 .PHONY: debug release
-debug:
-	@if ! $(common-part); touch .debug; fi
-	@$(noenter-make) compile
-release:
-	@if $(common-part); fi
-	@$(noenter-make) compile
+debug release: %:
+	@$($*-script)
+	@$(quiet-make) build
+
+$(objs): %.o: %.cpp
+	$(cxx) $(cxxflags) -o $@ $<
 
 .PHONY: test
-test: $(TARGET)
+test: $(target)
 	@$(MAKE) -C test all
 
 .PHONY: distclean
-distclean: clean clean/$(TARGET)
+distclean: clean $(cleantarget)
 
 .PHONY: clean
-clean: clean/src clean/test
+clean: $(cleanobjs) $(cleantest)
 
-.PHONY: clean/$(TARGET) clean/.debug
-clean/$(TARGET) clean/.debug: clean/%:
+.PHONY: $(cleantarget) $(cleanobjs)
+$(cleantarget) $(cleanobjs): $(cleanprefix)%:
 	@$(RM) $*
 
-.PHONY: clean/test clean/src
-clean/src: clean/.debug
-clean/test clean/src: clean/%:
-	@$(noenter-make) -C $* clean
+.PHONY: $(cleantest)
+$(cleantest): $(cleanprefix)%:
+	@$(quiet-make) -C $* clean
+
+# dependency rules
+$(foreach src,$(srcs),$(eval $(call dependency-script,$(src))))
