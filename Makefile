@@ -27,6 +27,7 @@ debugflags := $(subst -O2,-O0,$(debugflags))
 debugflags := $(subst -g1,-g3,$(debugflags))
 debugflags := $(subst -DNDEBUG,-DDEBUG,$(debugflags))
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
+cxxflags = $($(shell $(switch-script))flags)
 
 # collect sub-targets
 debugmarker := .debug
@@ -61,11 +62,9 @@ compile/debug compile/release: compile/%:
 	@$(MAKE) -C src $*
 
 .PHONY: debug release
-debug: cxxflags := $(debugflags)
 debug:
 	@$(debug-script)
 	@$(quiet-make) compile
-release: cxxflags := $(releaseflags)
 release:
 	@$(release-script)
 	@$(quiet-make) compile
