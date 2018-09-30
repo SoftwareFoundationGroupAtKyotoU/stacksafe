@@ -23,6 +23,10 @@ llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
 # build options
 cxxflags := -c $(CXXFLAGS) $(llvm-cxxflags)
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
+debugflags := $(cxxflags)
+debugflags := $(subst -O2,-O0,$(debugflags))
+debugflags := $(subst -g1,-g3,$(debugflags))
+debugflags := $(subst -DNDEBUG,-DDEBUG,$(debugflags))
 
 # collect sub-targets
 srcs := $(wildcard src/*.cpp)
@@ -56,6 +60,7 @@ compile/debug compile/release: compile/%:
 	@$(MAKE) -C src $*
 
 .PHONY: debug release
+debug: cxxflags := $(debug-flags)
 debug:
 	@if ! $(common-part); touch .debug; fi
 	@$(noenter-make) compile
