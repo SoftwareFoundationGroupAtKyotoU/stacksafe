@@ -49,25 +49,16 @@ all: build test
 .PHONY: build
 build: $(TARGET)
 
-$(TARGET): $(srcs)
-	@$(quiet-make) compile
+$(TARGET): $(objs)
 	$(cxx) $(ldflags) -o $@ $(objs)
-
-.PHONY: compile
-compile:
-	@$(quiet-make) compile/$(shell $(switch-script))
-
-.PHONY: compile/debug compile/release
-compile/debug compile/release: compile/%:
-	@$(MAKE) -C src $*
 
 .PHONY: debug release
 debug:
 	@$(debug-script)
-	@$(quiet-make) compile
+	@$(quiet-make) build
 release:
 	@$(release-script)
-	@$(quiet-make) compile
+	@$(quiet-make) build
 
 $(objs): %.o: %.cpp
 	$(cxx) $(cxxflags) -o $@ $<
