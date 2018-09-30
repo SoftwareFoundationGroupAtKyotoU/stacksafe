@@ -29,12 +29,13 @@ debugflags := $(subst -DNDEBUG,-DDEBUG,$(debugflags))
 ldflags := -shared $(LDFLAGS) $(llvm-ldflags)
 
 # collect sub-targets
+debugmarker := .debug
 srcs := $(wildcard src/*.cpp)
 objs := $(srcs:%.cpp=%.o)
-cleanobjs := $(addprefix clean/,.debug $(objs))
+cleanobjs := $(addprefix clean/,$(debugmarker) $(objs))
 
 # script snippets
-check-debug := test -e .debug
+check-debug := test -e $(debugmarker)
 switch-script := if $(check-debug); then echo debug; else echo release; fi
 
 # auxiliary commands
