@@ -37,10 +37,9 @@ cleanobjs := $(addprefix clean/,$(debugmarker) $(objs))
 # script snippets
 quiet-make := $(MAKE) --no-print-directory
 check-debug := test -e $(debugmarker)
-switch-script := if $(check-debug); then echo debug; else echo release; fi
-
-# auxiliary commands
 common-part := test -e .debug; then $(quiet-make) clean/src
+debug-script := if ! $(common-part); touch $(debugmarker); fi
+switch-script := if $(check-debug); then echo debug; else echo release; fi
 
 .PHONY: all
 all: target test
@@ -63,7 +62,7 @@ compile/debug compile/release: compile/%:
 .PHONY: debug release
 debug: cxxflags := $(debugflags)
 debug:
-	@if ! $(common-part); touch .debug; fi
+	@$(debug-script)
 	@$(quiet-make) compile
 release: cxxflags := $(releaseflags)
 release:
