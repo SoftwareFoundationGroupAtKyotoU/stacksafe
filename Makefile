@@ -39,6 +39,7 @@ quiet-make := $(MAKE) --no-print-directory
 check-debug := test -e $(debugmarker)
 common-part := test -e .debug; then $(quiet-make) clean/src
 debug-script := if ! $(common-part); touch $(debugmarker); fi
+release-script := if $(common-part); fi
 switch-script := if $(check-debug); then echo debug; else echo release; fi
 
 .PHONY: all
@@ -66,7 +67,7 @@ debug:
 	@$(quiet-make) compile
 release: cxxflags := $(releaseflags)
 release:
-	@if $(common-part); fi
+	@$(release-script)
 	@$(quiet-make) compile
 
 $(objs): %.o: %.cpp
