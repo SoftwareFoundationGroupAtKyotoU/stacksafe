@@ -55,15 +55,14 @@ namespace stacksafe {
   };
 
   template <class Key>
-  class LocationMap {
-    std::unordered_map<Key, LocationSet> map_;
+  class LocationMap : public std::unordered_map<Key, LocationSet> {
   public:
     bool subsetof(const LocationMap &rhs) const {
-      for (auto &e : map_) {
+      for (auto &e : *this) {
         auto k = std::get<0>(e);
         auto &l = std::get<1>(e);
-        auto it = map_.find(k);
-        if (it != end(map_)) {
+        auto it = this->find(k);
+        if (it != end(*this)) {
           if (l.subsetof(std::get<1>(*it))) {
             continue;
           }
@@ -75,13 +74,13 @@ namespace stacksafe {
     void unify(const LocationMap &rhs) {
       using std::begin;
       using std::end;
-      for (auto &e : rhs.map_) {
+      for (auto &e : rhs) {
         auto k = std::get<0>(e);
         auto &r = std::get<1>(e);
-        if (map_.count(k) == 0) {
-          map_.insert(e);
+        if (this->count(k) == 0) {
+          this->insert(e);
         } else {
-          map_.at(k).insert(begin(r), end(r));
+          this->at(k).insert(begin(r), end(r));
         }
       }
     }
