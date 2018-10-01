@@ -51,6 +51,7 @@ namespace stacksafe {
   class LocationSet : public std::unordered_set<Location> {
   public:
     bool subsetof(const LocationSet &rhs) const;
+    void print(llvm::raw_ostream &O) const;
   };
 
   template <class Key>

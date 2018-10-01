@@ -53,6 +53,9 @@ namespace stacksafe {
     using std::end;
     return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
   }
+  void LocationSet::print(llvm::raw_ostream &O) const {
+    O << braces(join(wrap(", "), manip_multi(*this)));
+  }
 
   bool Environment::subsetof(const Environment &rhs) const {
     return heap_.subsetof(rhs.heap_) && stack_.subsetof(rhs.stack_);
