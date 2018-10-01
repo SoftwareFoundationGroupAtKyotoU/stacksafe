@@ -1,4 +1,5 @@
 #include "environment.hpp"
+#include "visualize.hpp"
 #include <llvm/IR/Value.h>
 
 namespace std {
@@ -27,6 +28,9 @@ namespace stacksafe {
   }
   bool Location::operator==(const Location &rhs) const {
     return loc_ == rhs.loc_;
+  }
+  void Location::print(llvm::raw_ostream &O) const {
+    O << angles(manip_single(loc_));
   }
 
   LocationFactory::LocationFactory()

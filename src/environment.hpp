@@ -18,6 +18,7 @@ namespace std {
 }
 
 namespace llvm {
+  class raw_ostream;
   class Value;
 }
 namespace stacksafe {
@@ -34,6 +35,7 @@ namespace stacksafe {
     size_t hash() const;
     bool operator<(const Location &rhs) const;
     bool operator==(const Location &rhs) const;
+    void print(llvm::raw_ostream &O) const;
   };
 
   class LocationFactory {
