@@ -7,8 +7,8 @@ namespace std {
   }
 }
 namespace stacksafe {
-  Location::Location(std::size_t x)
-    : loc_(x)
+  Location::Location(Kind k)
+    : loc_(static_cast<std::size_t>(k))
   {}
   size_t Location::hash() const {
     return std::hash<std::size_t>{}(loc_);

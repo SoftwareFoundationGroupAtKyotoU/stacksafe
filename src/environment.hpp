@@ -27,7 +27,7 @@ namespace stacksafe {
     };
     friend class LocationFactory;
     std::size_t loc_;
-    explicit Location(std::size_t x);
+    explicit Location(Kind k);
   public:
     size_t hash() const;
     bool operator<(const Location &rhs) const;
