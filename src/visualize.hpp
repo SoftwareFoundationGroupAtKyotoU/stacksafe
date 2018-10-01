@@ -13,8 +13,6 @@ namespace llvm {
 #undef HANDLE_INST
 }
 namespace stacksafe {
-  constexpr auto endl = "\n";
-
   class ClassNameVisitor :
     public llvm::InstVisitor<ClassNameVisitor, const char *> {
     using RetTy = const char *;
@@ -33,6 +31,7 @@ namespace stacksafe {
     Manip(std::initializer_list<ManipObj> l);
     void print(llvm::raw_ostream &O) const;
   };
+  const auto endl = Manip{wrap("\n")};
   template <class T>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
     x.print(O);
