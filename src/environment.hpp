@@ -28,6 +28,8 @@ namespace stacksafe {
     friend class LocationFactory;
     std::size_t loc_;
     explicit Location(Kind k);
+    Location &operator++();
+    Location operator++(int);
   public:
     size_t hash() const;
     bool operator<(const Location &rhs) const;

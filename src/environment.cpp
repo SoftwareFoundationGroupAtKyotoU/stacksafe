@@ -10,6 +10,15 @@ namespace stacksafe {
   Location::Location(Kind k)
     : loc_(static_cast<std::size_t>(k))
   {}
+  Location &Location::operator++() {
+    ++loc_;
+    return *this;
+  }
+  Location Location::operator++(int) {
+    auto ret = Location{*this};
+    this->operator++();
+    return ret;
+  }
   size_t Location::hash() const {
     return std::hash<std::size_t>{}(loc_);
   }
