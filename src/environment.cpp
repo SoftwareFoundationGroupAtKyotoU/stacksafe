@@ -63,4 +63,8 @@ namespace stacksafe {
     heap_.unify(rhs.heap_);
     stack_.unify(rhs.stack_);
   }
+  void Environment::print(llvm::raw_ostream &O) const {
+    O << "heap: " << heap_ << endl;
+    O << "stack: " << stack_ << endl;
+  }
 }

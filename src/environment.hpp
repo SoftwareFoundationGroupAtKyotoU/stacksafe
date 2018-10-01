@@ -102,6 +102,7 @@ namespace stacksafe {
   public:
     bool subsetof(const Environment &rhs) const;
     void unify(const Environment &rhs);
+    void print(llvm::raw_ostream &O) const;
   };
 }
 
