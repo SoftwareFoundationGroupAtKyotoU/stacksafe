@@ -22,17 +22,17 @@ namespace stacksafe {
 
   LocationFactory::LocationFactory()
     : current_(local_) {}
-  Location LocationFactory::getLocal() {
-    return Location(current_++);
-  }
-  Location LocationFactory::getOutlive() {
-    return Location(outlive_);
+  Location LocationFactory::getUndef() {
+    return Location(Location::Kind::Undef);
   }
   Location LocationFactory::getGlobal() {
-    return Location(global_);
+    return Location(Location::Kind::Global);
   }
-  Location LocationFactory::getUndefined() {
-    return Location(undefined_);
+  Location LocationFactory::getOutlive() {
+    return Location(Location::Kind::Outlive);
+  }
+  Location LocationFactory::getLocal() {
+    return Location(current_++);
   }
 
   bool LocationSet::subsetof(const LocationSet &rhs) const {

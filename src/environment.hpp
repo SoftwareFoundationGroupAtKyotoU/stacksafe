@@ -36,16 +36,13 @@ namespace stacksafe {
 
   class LocationFactory {
     std::size_t current_;
-    static const std::size_t undefined_ = 0;
-    static const std::size_t global_ = 1;
-    static const std::size_t outlive_ = 2;
     static const std::size_t local_ = 3;
   public:
     LocationFactory();
-    Location getLocal();
-    Location getOutlive();
+    Location getUndef();
     Location getGlobal();
-    Location getUndefined();
+    Location getOutlive();
+    Location getLocal();
   };
 
   class LocationSet : public std::unordered_set<Location> {
