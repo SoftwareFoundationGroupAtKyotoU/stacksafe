@@ -20,6 +20,12 @@ namespace stacksafe {
 #include <llvm/IR/Instruction.def>
 #undef HANDLE_INST
   };
+
+  template <class T>
+  llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
+    x.print(O);
+    return O;
+  }
 }
 
 #endif//INCLUDE_GUARD_30B970DD_A9A2_4C3C_B2A3_482271B1A2C5
