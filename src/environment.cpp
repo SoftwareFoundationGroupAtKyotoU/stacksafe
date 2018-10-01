@@ -21,7 +21,7 @@ namespace stacksafe {
   }
 
   LocationFactory::LocationFactory()
-    : current_(local_) {}
+    : current_(Location::Kind::Local) {}
   Location LocationFactory::getUndef() {
     return Location(Location::Kind::Undef);
   }
@@ -32,7 +32,7 @@ namespace stacksafe {
     return Location(Location::Kind::Outlive);
   }
   Location LocationFactory::getLocal() {
-    return Location(current_++);
+    return current_++;
   }
 
   bool LocationSet::subsetof(const LocationSet &rhs) const {

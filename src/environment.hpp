@@ -35,8 +35,7 @@ namespace stacksafe {
   };
 
   class LocationFactory {
-    std::size_t current_;
-    static const std::size_t local_ = 3;
+    Location current_;
   public:
     LocationFactory();
     Location getUndef();
