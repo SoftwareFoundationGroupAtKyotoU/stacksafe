@@ -4,8 +4,8 @@ namespace stacksafe {
   Manip::Manip(std::size_t s) {
     this->reserve(s);
   }
-  Manip::Manip(std::initializer_list<ManipObj> l) {
-    this->reserve(l.size());
+  Manip::Manip(std::initializer_list<ManipObj> l)
+    : Manip(l.size()) {
     for (const auto &e : l) {
       this->push_back(e);
     }
