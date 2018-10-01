@@ -2,6 +2,8 @@
 #define INCLUDE_GUARD_30B970DD_A9A2_4C3C_B2A3_482271B1A2C5
 
 #include <functional>
+#include <initializer_list>
+#include <vector>
 #include <llvm/IR/InstVisitor.h>
 #include <llvm/Support/raw_ostream.h>
 
@@ -26,6 +28,9 @@ namespace stacksafe {
   using ManipObj = std::function<void(llvm::raw_ostream &)>;
   const auto wrap = [](const auto &x) -> ManipObj {
     return [=](llvm::raw_ostream &O) { O << x; };
+  };
+  struct Manip : std::vector<ManipObj> {
+    Manip(std::initializer_list<ManipObj> l);
   };
   template <class T>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
