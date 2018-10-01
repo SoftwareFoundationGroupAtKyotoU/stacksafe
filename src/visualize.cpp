@@ -12,4 +12,17 @@ namespace stacksafe {
       e(O);
     }
   }
+
+  Manip parens(const Manip &m) {
+    return Manip{ wrap("("), wrap(m), wrap(")") };
+  }
+  Manip braces(const Manip &m) {
+    return Manip{ wrap("{"), wrap(m), wrap("}") };
+  }
+  Manip squares(const Manip &m) {
+    return Manip{ wrap("["), wrap(m), wrap("]") };
+  }
+  Manip angles(const Manip &m) {
+    return Manip{ wrap("<"), wrap(m), wrap(">") };
+  }
 }

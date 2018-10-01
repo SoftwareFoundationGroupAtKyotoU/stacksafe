@@ -33,6 +33,10 @@ namespace stacksafe {
     return [=](llvm::raw_ostream &O) { O << x; };
   };
   const auto endl = Manip{wrap("\n")};
+  Manip parens(const Manip &m);
+  Manip braces(const Manip &m);
+  Manip squares(const Manip &m);
+  Manip angles(const Manip &m);
 
   template <class T>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
