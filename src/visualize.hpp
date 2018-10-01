@@ -31,6 +31,7 @@ namespace stacksafe {
   };
   struct Manip : std::vector<ManipObj> {
     Manip(std::initializer_list<ManipObj> l);
+    void print(llvm::raw_ostream &O) const;
   };
   template <class T>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {

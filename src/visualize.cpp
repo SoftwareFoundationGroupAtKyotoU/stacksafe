@@ -7,4 +7,9 @@ namespace stacksafe {
       this->push_back(e);
     }
   }
+  void Manip::print(llvm::raw_ostream &O) const {
+    for (const auto &e : *this) {
+      e(O);
+    }
+  }
 }
