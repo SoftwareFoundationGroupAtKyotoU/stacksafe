@@ -22,6 +22,9 @@ namespace llvm {
 }
 namespace stacksafe {
   class Location {
+    enum class Kind : std::size_t {
+      Undef, Global, Outlive, Local,
+    };
     friend class LocationFactory;
     std::size_t loc_;
     explicit Location(std::size_t x);
