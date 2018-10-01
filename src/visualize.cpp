@@ -1,8 +1,9 @@
 #include "visualize.hpp"
 
 namespace stacksafe {
-  Manip::Manip()
-  {}
+  Manip::Manip(std::size_t s) {
+    this->reserve(s);
+  }
   Manip::Manip(std::initializer_list<ManipObj> l) {
     this->reserve(l.size());
     for (const auto &e : l) {

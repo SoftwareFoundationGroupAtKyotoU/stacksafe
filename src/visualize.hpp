@@ -25,7 +25,7 @@ namespace stacksafe {
 
   using ManipObj = std::function<void(llvm::raw_ostream &)>;
   struct Manip : std::vector<ManipObj> {
-    Manip();
+    explicit Manip(std::size_t s = 0);
     Manip(std::initializer_list<ManipObj> l);
     void print(llvm::raw_ostream &O) const;
   };
