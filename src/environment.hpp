@@ -22,9 +22,14 @@ namespace llvm {
 }
 namespace stacksafe {
   class Location {
+    enum class Kind : std::size_t {
+      Undef, Global, Outlive, Local,
+    };
     friend class LocationFactory;
     std::size_t loc_;
-    explicit Location(std::size_t x);
+    explicit Location(Kind k);
+    Location &operator++();
+    Location operator++(int);
   public:
     size_t hash() const;
     bool operator<(const Location &rhs) const;
@@ -32,17 +37,13 @@ namespace stacksafe {
   };
 
   class LocationFactory {
-    std::size_t current_;
-    static const std::size_t undefined_ = 0;
-    static const std::size_t global_ = 1;
-    static const std::size_t outlive_ = 2;
-    static const std::size_t local_ = 3;
+    Location current_;
   public:
     LocationFactory();
-    Location getLocal();
-    Location getOutlive();
+    Location getUndef();
     Location getGlobal();
-    Location getUndefined();
+    Location getOutlive();
+    Location getLocal();
   };
 
   class LocationSet : public std::unordered_set<Location> {

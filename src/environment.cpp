@@ -7,9 +7,18 @@ namespace std {
   }
 }
 namespace stacksafe {
-  Location::Location(std::size_t x)
-    : loc_(x)
+  Location::Location(Kind k)
+    : loc_(static_cast<std::size_t>(k))
   {}
+  Location &Location::operator++() {
+    ++loc_;
+    return *this;
+  }
+  Location Location::operator++(int) {
+    auto ret = Location{*this};
+    this->operator++();
+    return ret;
+  }
   size_t Location::hash() const {
     return std::hash<std::size_t>{}(loc_);
   }
@@ -21,18 +30,18 @@ namespace stacksafe {
   }
 
   LocationFactory::LocationFactory()
-    : current_(local_) {}
-  Location LocationFactory::getLocal() {
-    return Location(current_++);
-  }
-  Location LocationFactory::getOutlive() {
-    return Location(outlive_);
+    : current_(Location::Kind::Local) {}
+  Location LocationFactory::getUndef() {
+    return Location(Location::Kind::Undef);
   }
   Location LocationFactory::getGlobal() {
-    return Location(global_);
+    return Location(Location::Kind::Global);
   }
-  Location LocationFactory::getUndefined() {
-    return Location(undefined_);
+  Location LocationFactory::getOutlive() {
+    return Location(Location::Kind::Outlive);
+  }
+  Location LocationFactory::getLocal() {
+    return current_++;
   }
 
   bool LocationSet::subsetof(const LocationSet &rhs) const {
