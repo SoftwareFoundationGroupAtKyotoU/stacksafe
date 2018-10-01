@@ -1,5 +1,4 @@
 #include "environment.hpp"
-#include "visualize.hpp"
 #include <llvm/IR/Value.h>
 
 namespace std {

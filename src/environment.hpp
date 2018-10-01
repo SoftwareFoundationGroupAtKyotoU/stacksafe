@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
 #define INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
 
+#include "visualize.hpp"
 #include <functional>
 #include <memory>
 #include <unordered_map>
@@ -83,6 +84,15 @@ namespace stacksafe {
           this->at(k).insert(begin(r), end(r));
         }
       }
+    }
+    void print(llvm::raw_ostream &O) const {
+      const auto kv = [](const auto &x) -> ManipObj {
+        auto k = wrap(std::get<0>(x));
+        auto s = wrap(": ");
+        auto v = wrap(std::get<1>(x));
+        return wrap(Manip{k, s, v});
+      };
+      O << set_like(foreach(kv, *this));
     }
   };
 
