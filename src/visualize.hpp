@@ -52,6 +52,7 @@ namespace stacksafe {
   Manip squares(const Manip &m);
   Manip angles(const Manip &m);
   Manip join(const ManipObj &sep, const Manip &m);
+  Manip set_like(const Manip &m);
 
   template <class T>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {

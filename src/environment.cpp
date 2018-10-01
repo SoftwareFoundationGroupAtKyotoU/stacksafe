@@ -54,7 +54,7 @@ namespace stacksafe {
     return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
   }
   void LocationSet::print(llvm::raw_ostream &O) const {
-    O << braces(join(wrap(", "), manip_multi(*this)));
+    O << set_like(manip_multi(*this));
   }
 
   bool Environment::subsetof(const Environment &rhs) const {
