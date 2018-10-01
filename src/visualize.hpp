@@ -24,14 +24,16 @@ namespace stacksafe {
   };
 
   using ManipObj = std::function<void(llvm::raw_ostream &)>;
-  const auto wrap = [](const auto &x) -> ManipObj {
-    return [=](llvm::raw_ostream &O) { O << x; };
-  };
   struct Manip : std::vector<ManipObj> {
     Manip(std::initializer_list<ManipObj> l);
     void print(llvm::raw_ostream &O) const;
   };
+
+  const auto wrap = [](const auto &x) -> ManipObj {
+    return [=](llvm::raw_ostream &O) { O << x; };
+  };
   const auto endl = Manip{wrap("\n")};
+
   template <class T>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
     x.print(O);
