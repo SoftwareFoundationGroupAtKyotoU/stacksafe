@@ -44,11 +44,7 @@ namespace stacksafe {
     return Manip{wrap(x)};
   };
   const auto manip_multi = [](const auto &c) -> Manip {
-    Manip ret(c.size());
-    for (const auto &e : c) {
-      ret.push_back(wrap(e));
-    }
-    return ret;
+    return foreach(wrap, c);
   };
   const auto endl = Manip{wrap("\n")};
   Manip parens(const Manip &m);
