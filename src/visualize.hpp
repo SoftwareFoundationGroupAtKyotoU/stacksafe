@@ -33,6 +33,13 @@ namespace stacksafe {
   const auto wrap = [](const auto &x) -> ManipObj {
     return [=](llvm::raw_ostream &O) { O << x; };
   };
+  const auto foreach = [](const auto &f, const auto &c) -> Manip {
+    Manip ret(c.size());
+    for (const auto &e : c) {
+      ret.push_back(f(e));
+    }
+    return ret;
+  };
   const auto manip_single = [](const auto &x) -> Manip {
     return Manip{wrap(x)};
   };
