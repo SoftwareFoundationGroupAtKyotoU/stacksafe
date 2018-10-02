@@ -49,6 +49,10 @@ namespace stacksafe {
     }
     return map_.at(&B);
   }
+
+  auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
+    llvm::errs() << I << endl;
+  }
 }
 
 static llvm::RegisterPass<stacksafe::Analyzer> registerpass

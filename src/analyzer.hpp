@@ -35,6 +35,12 @@ namespace stacksafe {
     Analyzer();
     bool runOnFunction(llvm::Function &F) override;
   };
+
+  class ApplyVisitor : public llvm::InstVisitor<ApplyVisitor, void> {
+    using RetTy = void;
+  public:
+    RetTy visitInstruction(llvm::Instruction &I);
+  };
 }
 
 #endif//INCLUDE_GUARD_24D0B7C2_7662_4CA7_9DAE_CFC9EA3B0EA0
