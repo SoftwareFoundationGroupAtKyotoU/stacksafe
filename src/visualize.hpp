@@ -54,6 +54,15 @@ namespace stacksafe {
   Manip join(const ManipObj &sep, const Manip &m);
   Manip set_like(const Manip &m);
 
+  template <bool B>
+  using enabler = typename std::enable_if<B, std::nullptr_t>::type;
+  template <typename T, typename U = llvm::raw_ostream &>
+  using call_print = decltype(std::declval<T>().print(std::declval<U>()));
+  template <typename T, typename = void>
+  struct has_print : std::false_type {};
+  template <typename T>
+  struct has_print<T, std::void_t<call_print<T>>> : std::true_type {};
+
   template <class T>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
     x.print(O);
