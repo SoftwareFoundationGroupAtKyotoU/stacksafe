@@ -63,7 +63,7 @@ namespace stacksafe {
   template <typename T>
   struct has_print<T, std::void_t<call_print<T>>> : std::true_type {};
 
-  template <class T>
+  template <class T, enabler<has_print<T>::value> = nullptr>
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
     x.print(O);
     return O;
