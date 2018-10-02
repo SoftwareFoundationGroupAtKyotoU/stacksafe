@@ -43,9 +43,10 @@ namespace stacksafe {
   }
   Environment State::update(llvm::BasicBlock &B) {
     ClassNameVisitor classname;
+    ApplyVisitor apply;
     for (auto &I : B.getInstList()) {
-      llvm::errs() << classname.visit(I) << endl
-                   << I << endl;
+      llvm::errs() << classname.visit(I) << endl;
+      apply.visit(I);
     }
     return map_.at(&B);
   }
