@@ -58,12 +58,6 @@ namespace stacksafe {
     }
     return m;
   };
-  const auto manip_single = [](const auto &x) -> Manip {
-    return Manip{wrap(x)};
-  };
-  const auto manip_multi = [](const auto &c) -> Manip {
-    return foreach(wrap, c);
-  };
   const auto endl = Manip{wrap("\n")};
   Manip parens(const Manip &m);
   Manip braces(const Manip &m);

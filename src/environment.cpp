@@ -29,7 +29,7 @@ namespace stacksafe {
     return loc_ == rhs.loc_;
   }
   void Location::print(llvm::raw_ostream &O) const {
-    O << angles(manip_single(loc_));
+    O << angles(make_manip(loc_));
   }
 
   LocationFactory::LocationFactory()
@@ -53,7 +53,7 @@ namespace stacksafe {
     return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
   }
   void LocationSet::print(llvm::raw_ostream &O) const {
-    O << set_like(manip_multi(*this));
+    O << set_like(make_manip_seq(*this));
   }
 
   bool Environment::subsetof(const Environment &rhs) const {
