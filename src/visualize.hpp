@@ -40,6 +40,17 @@ namespace stacksafe {
     }
     return ret;
   };
+  void make_manip_aux(Manip &);
+  template <typename H, typename... T>
+  void make_manip_aux(Manip &m, const H &h, const T &...t) {
+    m.push_back(wrap(h));
+    make_manip_aux(m, t...);
+  }
+  const auto make_manip = [](const auto &... args) -> Manip {
+    Manip m(sizeof...(args));
+    make_manip_aux(m, args...);
+    return m;
+  };
   const auto manip_single = [](const auto &x) -> Manip {
     return Manip{wrap(x)};
   };

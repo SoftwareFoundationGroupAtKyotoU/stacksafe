@@ -16,6 +16,8 @@ namespace stacksafe {
     }
   }
 
+  void make_manip_aux(Manip &)
+  {}
   Manip parens(const Manip &m) {
     return Manip{ wrap("("), wrap(m), wrap(")") };
   }
