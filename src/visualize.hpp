@@ -58,7 +58,9 @@ namespace stacksafe {
     }
     return m;
   };
-  const auto endl = Manip{wrap("\n")};
+  const auto endl = make_manip("\n");
+  const auto colon = make_manip(": ");
+  const auto comma = make_manip(", ");
   Manip parens(const Manip &m);
   Manip braces(const Manip &m);
   Manip squares(const Manip &m);
