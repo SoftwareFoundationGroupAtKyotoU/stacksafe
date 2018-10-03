@@ -52,7 +52,8 @@ namespace stacksafe {
     return m;
   };
   const auto make_manip_seq = [](const auto &c) -> Manip {
-    return foreach(wrap, c);
+    const auto id = [](const auto &x) { return x; };
+    return foreach(id, c);
   };
   const auto endl = make_manip("\n");
   const auto colon = make_manip(": ");
