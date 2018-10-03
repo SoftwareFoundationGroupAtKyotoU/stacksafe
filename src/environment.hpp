@@ -86,13 +86,7 @@ namespace stacksafe {
       }
     }
     void print(llvm::raw_ostream &O) const {
-      const auto kv = [](const auto &x) -> ManipObj {
-        auto k = wrap(std::get<0>(x));
-        auto s = wrap(": ");
-        auto v = wrap(std::get<1>(x));
-        return wrap(Manip{k, s, v});
-      };
-      O << set_like(foreach(kv, *this));
+      O << set_like(foreach(key_value, *this));
     }
   };
 
