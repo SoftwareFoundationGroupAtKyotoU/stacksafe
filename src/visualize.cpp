@@ -4,11 +4,6 @@ namespace stacksafe {
   Manip::Manip(std::size_t s) {
     this->reserve(s);
   }
-  void Manip::print(llvm::raw_ostream &O) const {
-    for (const auto &e : *this) {
-      e(O);
-    }
-  }
 
   void make_manip_aux(Manip &)
   {}
@@ -26,5 +21,11 @@ namespace stacksafe {
       }
     }
     return ret;
+  }
+  llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const Manip &x) {
+    for (const auto &e : x) {
+      e(O);
+    }
+    return O;
   }
 }

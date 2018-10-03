@@ -26,7 +26,6 @@ namespace stacksafe {
   using ManipObj = std::function<void(llvm::raw_ostream &)>;
   struct Manip : std::vector<ManipObj> {
     explicit Manip(std::size_t s = 0);
-    void print(llvm::raw_ostream &O) const;
   };
 
   const auto wrap = [](const auto &x) -> ManipObj {
@@ -96,6 +95,7 @@ namespace stacksafe {
     x.print(O);
     return O;
   }
+  llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const Manip &x);
 }
 
 #endif//INCLUDE_GUARD_30B970DD_A9A2_4C3C_B2A3_482271B1A2C5
