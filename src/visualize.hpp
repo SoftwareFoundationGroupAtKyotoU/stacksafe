@@ -51,6 +51,13 @@ namespace stacksafe {
     make_manip_aux(m, args...);
     return m;
   };
+  const auto make_manip_seq = [](const auto &c) -> Manip {
+    Manip m(c.size());
+    for (const auto &e : c) {
+      m.push_back(wrap(e));
+    }
+    return m;
+  };
   const auto manip_single = [](const auto &x) -> Manip {
     return Manip{wrap(x)};
   };
