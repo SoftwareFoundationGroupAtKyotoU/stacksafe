@@ -61,10 +61,18 @@ namespace stacksafe {
   const auto endl = make_manip("\n");
   const auto colon = make_manip(": ");
   const auto comma = make_manip(", ");
-  Manip parens(const Manip &m);
-  Manip braces(const Manip &m);
-  Manip squares(const Manip &m);
-  Manip angles(const Manip &m);
+  const auto parens = [](const Manip &m) -> Manip {
+    return make_manip("(", m, ")");
+  };
+  const auto braces = [](const Manip &m) -> Manip {
+    return make_manip("{", m, "}");
+  };
+  const auto squares = [](const Manip &m) -> Manip {
+    return make_manip("[", m, "]");
+  };
+  const auto angles = [](const Manip &m) -> Manip {
+    return make_manip("<", m, ">");
+  };
   Manip join(const ManipObj &sep, const Manip &m);
   Manip set_like(const Manip &m);
 

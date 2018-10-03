@@ -18,18 +18,6 @@ namespace stacksafe {
 
   void make_manip_aux(Manip &)
   {}
-  Manip parens(const Manip &m) {
-    return Manip{ wrap("("), wrap(m), wrap(")") };
-  }
-  Manip braces(const Manip &m) {
-    return Manip{ wrap("{"), wrap(m), wrap("}") };
-  }
-  Manip squares(const Manip &m) {
-    return Manip{ wrap("["), wrap(m), wrap("]") };
-  }
-  Manip angles(const Manip &m) {
-    return Manip{ wrap("<"), wrap(m), wrap(">") };
-  }
   Manip join(const ManipObj &sep, const Manip &m) {
     using std::begin;
     using std::end;
