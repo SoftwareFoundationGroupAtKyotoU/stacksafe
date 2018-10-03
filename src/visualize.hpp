@@ -36,7 +36,7 @@ namespace stacksafe {
   const auto foreach = [](const auto &f, const auto &c) -> Manip {
     Manip ret(c.size());
     for (const auto &e : c) {
-      ret.push_back(f(e));
+      ret.push_back(wrap(f(e)));
     }
     return ret;
   };
@@ -72,6 +72,9 @@ namespace stacksafe {
   Manip join(const Manip &sep, const Manip &m);
   const auto set_like = [](const Manip &m) -> Manip {
     return braces(join(comma, m));
+  };
+  const auto key_value = [](const auto &x) -> Manip {
+    return make_manip(std::get<0>(x), colon, std::get<1>(x));
   };
 
   template <bool B>
