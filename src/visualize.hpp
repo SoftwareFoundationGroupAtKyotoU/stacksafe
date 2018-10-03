@@ -52,11 +52,7 @@ namespace stacksafe {
     return m;
   };
   const auto make_manip_seq = [](const auto &c) -> Manip {
-    Manip m(c.size());
-    for (const auto &e : c) {
-      m.push_back(wrap(e));
-    }
-    return m;
+    return foreach(wrap, c);
   };
   const auto endl = make_manip("\n");
   const auto colon = make_manip(": ");
@@ -74,7 +70,9 @@ namespace stacksafe {
     return make_manip("<", m, ">");
   };
   Manip join(const Manip &sep, const Manip &m);
-  Manip set_like(const Manip &m);
+  const auto set_like = [](const Manip &m) -> Manip {
+    return braces(join(comma, m));
+  };
 
   template <bool B>
   using enabler = typename std::enable_if<B, std::nullptr_t>::type;

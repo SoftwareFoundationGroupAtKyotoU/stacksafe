@@ -33,7 +33,4 @@ namespace stacksafe {
     }
     return ret;
   }
-  Manip set_like(const Manip &m) {
-    return braces(join(wrap(", "), m));
-  }
 }
