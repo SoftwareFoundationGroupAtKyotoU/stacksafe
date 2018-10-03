@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <initializer_list>
+#include <type_traits>
 #include <vector>
 #include <llvm/IR/InstVisitor.h>
 #include <llvm/Support/raw_ostream.h>
@@ -31,6 +32,11 @@ namespace stacksafe {
   };
 
   const auto wrap = [](const auto &x) -> ManipObj {
+    if constexpr (std::is_same_v<decltype(x), const Manip &>) {
+      if (x.size() == 1) {
+        return x.front();
+      }
+    }
     return [=](llvm::raw_ostream &O) { O << x; };
   };
   const auto foreach = [](const auto &f, const auto &c) -> Manip {
