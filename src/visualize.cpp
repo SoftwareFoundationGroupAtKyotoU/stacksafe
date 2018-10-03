@@ -18,7 +18,7 @@ namespace stacksafe {
 
   void make_manip_aux(Manip &)
   {}
-  Manip join(const ManipObj &sep, const Manip &m) {
+  Manip join(const Manip &sep, const Manip &m) {
     using std::begin;
     using std::end;
     Manip ret;
@@ -27,7 +27,7 @@ namespace stacksafe {
       auto it = begin(m);
       ret.push_back(*it);
       for (++it; it != end(m); ++it) {
-        ret.push_back(sep);
+        ret.push_back(wrap(sep));
         ret.push_back(*it);
       }
     }

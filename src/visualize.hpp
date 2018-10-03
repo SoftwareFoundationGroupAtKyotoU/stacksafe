@@ -73,7 +73,7 @@ namespace stacksafe {
   const auto angles = [](const Manip &m) -> Manip {
     return make_manip("<", m, ">");
   };
-  Manip join(const ManipObj &sep, const Manip &m);
+  Manip join(const Manip &sep, const Manip &m);
   Manip set_like(const Manip &m);
 
   template <bool B>
