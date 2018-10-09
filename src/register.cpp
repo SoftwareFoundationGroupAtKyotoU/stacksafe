@@ -1,4 +1,5 @@
 #include "register.hpp"
+#include "visualize.hpp"
 #include <string>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
@@ -9,6 +10,13 @@ namespace stacksafe {
   {}
   std::size_t Register::hash() const {
     return std::hash<void *>{}(reg_);
+  }
+  void Register::print(llvm::raw_ostream &O) const {
+    auto n = get_number(*reg_);
+    if (n < 0) {
+      llvm::errs() << "unknown register" << colon << *reg_ << endl;
+    }
+    O << angles(make_manip("%", n));
   }
   int get_number(llvm::Value &v) {
     if (auto A = llvm::dyn_cast<llvm::Argument>(&v)) {
