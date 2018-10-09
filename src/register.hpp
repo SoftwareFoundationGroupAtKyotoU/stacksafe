@@ -13,6 +13,7 @@ namespace stacksafe {
     Register(llvm::Value &value);
     std::size_t hash() const;
   };
+  int get_number(llvm::Value &v);
 }
 namespace std {
   template <>
