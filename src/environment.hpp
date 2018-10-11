@@ -21,7 +21,23 @@ namespace stacksafe {
 
   template <class Key>
   class LocationMap : public std::unordered_map<Key, LocationSet> {
+    template <typename T>
+    using OptRef = std::optional<std::reference_wrapper<T>>;
   public:
+    OptRef<const LocationSet> get(const Key &k) const {
+      auto it = this->find(k);
+      if (it != end(*this)) {
+        return std::get<1>(*it);
+      }
+      return std::nullopt;
+    }
+    OptRef<LocationSet> get(const Key &k) {
+      auto it = this->find(k);
+      if (it != end(*this)) {
+        return std::get<1>(*it);
+      }
+      return std::nullopt;
+    }
     bool subsetof(const LocationMap &rhs) const {
       for (auto &e : *this) {
         auto k = std::get<0>(e);
