@@ -25,7 +25,7 @@ namespace stacksafe {
     return loc_ == rhs.loc_;
   }
   void Location::print(llvm::raw_ostream &O) const {
-    O << angles(make_manip(loc_));
+    O << angles(make_manip("#", loc_));
   }
 
   LocationFactory::LocationFactory()
