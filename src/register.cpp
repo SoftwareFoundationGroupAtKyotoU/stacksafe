@@ -17,6 +17,17 @@ namespace stacksafe {
   void Register::print(llvm::raw_ostream &O) const {
     O << angles(make_manip("%", num_));
   }
+
+  std::optional<Register> make_register(llvm::Value &v) {
+    auto n = get_number(v);
+    if (n < 0) {
+      llvm::errs() << "unknown register" << colon << v << endl;
+      return std::nullopt;
+    } else {
+      return Register(v, n);
+    }
+  }
+
   int get_number(llvm::Value &v) {
     if (auto A = llvm::dyn_cast<llvm::Argument>(&v)) {
       return A->getArgNo();
