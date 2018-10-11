@@ -53,6 +53,13 @@ namespace stacksafe {
   ApplyVisitor::ApplyVisitor(Environment &env, LocationFactory &fac)
     : env_(env), fac_(fac)
   {}
+  auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
+    if (auto reg = make_register(I)) {
+      auto loc = fac_.getLocal();
+      env_.add(*reg, loc);
+    }
+    visitInstruction(I);
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     ClassNameVisitor classname;
     llvm::errs() << classname.visit(I) << endl;
