@@ -57,6 +57,7 @@ namespace stacksafe {
     if (auto reg = make_register(I)) {
       auto loc = fac_.getLocal();
       env_.init(*reg).insert(loc);
+      env_.init(loc);
     }
     visitInstruction(I);
   }
