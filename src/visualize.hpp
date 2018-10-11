@@ -61,6 +61,9 @@ namespace stacksafe {
   const auto endl = make_manip("\n");
   const auto colon = make_manip(": ");
   const auto comma = make_manip(", ");
+  const auto spaces = [](const Manip &m) -> Manip {
+    return make_manip(" ", m, " ");
+  };
   const auto parens = [](const Manip &m) -> Manip {
     return make_manip("(", m, ")");
   };
