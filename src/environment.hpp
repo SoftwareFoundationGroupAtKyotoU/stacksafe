@@ -2,16 +2,14 @@
 #define INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
 
 #include "location.hpp"
+#include "register.hpp"
 #include "visualize.hpp"
-#include <functional>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
-#include <vector>
 
 namespace llvm {
   class raw_ostream;
-  class Value;
 }
 namespace stacksafe {
   class LocationSet : public std::unordered_set<Location> {
@@ -57,7 +55,7 @@ namespace stacksafe {
 
   class Environment {
     LocationMap<Location> heap_;
-    LocationMap<llvm::Value *> stack_;
+    LocationMap<Register> stack_;
   public:
     bool subsetof(const Environment &rhs) const;
     void unify(const Environment &rhs);
