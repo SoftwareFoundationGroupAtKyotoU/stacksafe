@@ -30,9 +30,6 @@ namespace stacksafe {
 
   LocationFactory::LocationFactory()
     : current_(Location::Kind::Local) {}
-  Location LocationFactory::getUndef() {
-    return Location(Location::Kind::Undef);
-  }
   Location LocationFactory::getGlobal() {
     return Location(Location::Kind::Global);
   }
