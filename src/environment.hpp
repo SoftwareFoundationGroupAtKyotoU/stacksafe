@@ -39,6 +39,12 @@ namespace stacksafe {
       }
       return std::nullopt;
     }
+    LocationSet &init(const Key &key) {
+      if (this->count(key) == 0) {
+        this->emplace(key, LocationSet{});
+      }
+      return std::get<1>(*this->find(key));
+    }
     bool subsetof(const LocationMap &rhs) const {
       auto f = [&rhs](const auto &e) -> bool {
         auto k = std::get<0>(e);
