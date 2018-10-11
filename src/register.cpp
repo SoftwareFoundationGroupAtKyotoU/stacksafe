@@ -11,6 +11,9 @@ namespace stacksafe {
   std::size_t Register::hash() const {
     return std::hash<void *>{}(reg_);
   }
+  bool Register::operator==(const Register &rhs) const {
+    return reg_ == rhs.reg_;
+  }
   void Register::print(llvm::raw_ostream &O) const {
     auto n = get_number(*reg_);
     if (n < 0) {

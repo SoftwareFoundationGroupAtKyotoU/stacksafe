@@ -13,6 +13,7 @@ namespace stacksafe {
   public:
     Register(llvm::Value &value);
     std::size_t hash() const;
+    bool operator==(const Register &rhs) const;
     void print(llvm::raw_ostream &O) const;
   };
   int get_number(llvm::Value &v);
