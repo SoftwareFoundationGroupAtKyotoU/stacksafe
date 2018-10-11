@@ -49,6 +49,9 @@ namespace stacksafe {
     return map_.at(&B);
   }
 
+  ApplyVisitor::ApplyVisitor(Environment &env, LocationFactory &fac)
+    : env_(env), fac_(fac)
+  {}
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     ClassNameVisitor classname;
     llvm::errs() << classname.visit(I) << endl;
