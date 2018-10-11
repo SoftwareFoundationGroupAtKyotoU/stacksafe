@@ -33,4 +33,10 @@ namespace stacksafe {
   void Environment::add(const Location &key, const Location &val) {
     heap_.init(key).insert(val);
   }
+  LocationSet &Environment::init(const Location &key) {
+    return heap_.init(key);
+  }
+  LocationSet &Environment::init(const Register &key) {
+    return stack_.init(key);
+  }
 }
