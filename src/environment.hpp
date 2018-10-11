@@ -20,10 +20,10 @@ namespace stacksafe {
     void print(llvm::raw_ostream &O) const;
   };
 
+  template <typename T>
+  using OptRef = std::optional<std::reference_wrapper<T>>;
   template <class Key>
   class LocationMap : public std::unordered_map<Key, LocationSet> {
-    template <typename T>
-    using OptRef = std::optional<std::reference_wrapper<T>>;
   public:
     OptRef<const LocationSet> get(const Key &k) const {
       auto it = this->find(k);
@@ -83,6 +83,8 @@ namespace stacksafe {
     void print(llvm::raw_ostream &O) const;
     LocationSet &init(const Location &key);
     LocationSet &init(const Register &key);
+    OptRef<LocationSet> get(const Location &key);
+    OptRef<LocationSet> get(const Register &key);
   };
 }
 
