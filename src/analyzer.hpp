@@ -43,6 +43,7 @@ namespace stacksafe {
   public:
     ApplyVisitor(Environment &env, LocationFactory &fac);
     RetTy visitAllocaInst(llvm::AllocaInst &I);
+    RetTy visitLoadInst(llvm::LoadInst &I);
     RetTy visitInstruction(llvm::Instruction &I);
   };
 }

@@ -61,6 +61,27 @@ namespace stacksafe {
     }
     visitInstruction(I);
   }
+  auto ApplyVisitor::visitLoadInst(llvm::LoadInst &I) -> RetTy {
+    if (auto reg = make_register(I)) {
+      auto &target = env_.init(*reg);
+      if (auto ptr = I.getPointerOperand()) {
+        if (auto src = make_register(*ptr)) {
+          if (env_.exists(*src)) {
+            for (auto &loc : env_.get(*src)->get()) {
+              if (env_.exists(loc)) {
+                target.unify(env_.get(loc)->get());
+              } else {
+                llvm::errs() << spaces(make_manip(loc)) << "is not in heap" << endl;
+              }
+            }
+          } else {
+            llvm::errs() << spaces(make_manip(*src)) << "is not in stack" << endl;
+          }
+        }
+      }
+    }
+    visitInstruction(I);
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     ClassNameVisitor classname;
     llvm::errs() << classname.visit(I) << endl;
