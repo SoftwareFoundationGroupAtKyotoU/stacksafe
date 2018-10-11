@@ -4,6 +4,7 @@
 #include "location.hpp"
 #include "register.hpp"
 #include "visualize.hpp"
+#include <functional>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
@@ -39,18 +40,16 @@ namespace stacksafe {
       return std::nullopt;
     }
     bool subsetof(const LocationMap &rhs) const {
-      for (auto &e : *this) {
+      auto f = [&rhs](const auto &e) -> bool {
         auto k = std::get<0>(e);
         auto &l = std::get<1>(e);
-        auto it = this->find(k);
-        if (it != end(*this)) {
-          if (l.subsetof(std::get<1>(*it))) {
-            continue;
-          }
+        if (auto r = rhs.get(k)) {
+          return l.subsetof(r->get());
+        } else {
+          return false;
         }
-        return false;
-      }
-      return true;
+      };
+      return std::all_of(begin(*this), end(*this), f);
     }
     void unify(const LocationMap &rhs) {
       using std::begin;
