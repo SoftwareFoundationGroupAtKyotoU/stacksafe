@@ -10,8 +10,9 @@ namespace llvm {
 namespace stacksafe {
   class Register {
     llvm::Value *reg_;
+    int num_;
+    Register(llvm::Value &v, int n);
   public:
-    Register(llvm::Value &value);
     std::size_t hash() const;
     bool operator==(const Register &rhs) const;
     void print(llvm::raw_ostream &O) const;

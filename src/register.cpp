@@ -5,8 +5,8 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
-  Register::Register(llvm::Value &value)
-    : reg_(&value)
+  Register::Register(llvm::Value &v, int n)
+    : reg_(&v), num_(n)
   {}
   std::size_t Register::hash() const {
     return std::hash<void *>{}(reg_);
