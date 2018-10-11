@@ -8,6 +8,11 @@ namespace stacksafe {
     using std::end;
     return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
   }
+  void LocationSet::unify(const LocationSet &rhs) {
+    using std::begin;
+    using std::end;
+    insert(begin(rhs), end(rhs));
+  }
   void LocationSet::print(llvm::raw_ostream &O) const {
     O << set_like(make_manip_seq(*this));
   }
