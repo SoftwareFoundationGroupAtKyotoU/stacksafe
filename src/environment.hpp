@@ -52,17 +52,16 @@ namespace stacksafe {
       return std::all_of(begin(*this), end(*this), f);
     }
     void unify(const LocationMap &rhs) {
-      using std::begin;
-      using std::end;
-      for (auto &e : rhs) {
+      auto f = [&lhs = *this](const auto &e) {
         auto k = std::get<0>(e);
         auto &r = std::get<1>(e);
-        if (this->count(k) == 0) {
-          this->insert(e);
+        if (auto l = lhs.get(k)) {
+          l->get().unify(r);
         } else {
-          this->at(k).insert(begin(r), end(r));
+          lhs.insert(e);
         }
-      }
+      };
+      std::for_each(begin(rhs), end(rhs), f);
     }
     void print(llvm::raw_ostream &O) const {
       O << set_like(foreach(key_value, *this));
