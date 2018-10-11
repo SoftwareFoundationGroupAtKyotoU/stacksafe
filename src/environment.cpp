@@ -27,4 +27,10 @@ namespace stacksafe {
     O << "heap: " << heap_ << endl;
     O << "stack: " << stack_ << endl;
   }
+  void Environment::add(const Register &reg, const Location &loc) {
+    stack_.init(reg).insert(loc);
+  }
+  void Environment::add(const Location &key, const Location &val) {
+    heap_.init(key).insert(val);
+  }
 }
