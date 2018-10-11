@@ -42,11 +42,12 @@ namespace stacksafe {
     }
   }
   Environment State::update(llvm::BasicBlock &B) {
-    ApplyVisitor apply;
+    auto &env = map_.at(&B);
+    ApplyVisitor apply(env, factory_);
     for (auto &I : B.getInstList()) {
       apply.visit(I);
     }
-    return map_.at(&B);
+    return env;
   }
 
   ApplyVisitor::ApplyVisitor(Environment &env, LocationFactory &fac)
