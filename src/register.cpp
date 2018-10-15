@@ -8,6 +8,9 @@ namespace stacksafe {
   Register::Register(llvm::Value &v, int n)
     : reg_(&v), num_(n)
   {}
+  const llvm::Value &Register::get() const {
+    return *reg_;
+  }
   std::size_t Register::hash() const {
     return std::hash<void *>{}(reg_);
   }

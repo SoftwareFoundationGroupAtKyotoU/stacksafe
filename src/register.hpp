@@ -15,6 +15,7 @@ namespace stacksafe {
     Register(llvm::Value &v, int n);
     friend std::optional<Register> make_register(llvm::Value &);
   public:
+    const llvm::Value &get() const;
     std::size_t hash() const;
     bool operator==(const Register &rhs) const;
     void print(llvm::raw_ostream &O) const;
