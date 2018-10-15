@@ -33,6 +33,23 @@ namespace stacksafe {
   LocationSet &Environment::init(const Register &key) {
     return stack_.init(key);
   }
+  void Environment::init(LocationFactory &factory, const Register &key) {
+    auto &val = key.get();
+    auto type = val.getType();
+    if (auto ptr = llvm::dyn_cast<llvm::PointerType>(type)) {
+      type = ptr->getElementType();
+      if (llvm::isa<llvm::Argument>(val)) {
+        auto outlive = factory.getOutlive();
+        alloc(key, outlive);
+        if (type->isPointerTy()) {
+          heap_.init(outlive).insert(outlive);
+        }
+      } else {
+        auto local = factory.getLocal();
+        alloc(key, local);
+      }
+    }
+  }
   void Environment::alloc(const Register &key, const Location &loc) {
     stack_.init(key).insert(loc);
     heap_.init(loc);
