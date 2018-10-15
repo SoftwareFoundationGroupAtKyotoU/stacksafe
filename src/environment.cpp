@@ -33,6 +33,10 @@ namespace stacksafe {
   LocationSet &Environment::init(const Register &key) {
     return stack_.init(key);
   }
+  void Environment::alloc(const Register &key, const Location &loc) {
+    stack_.init(key).insert(loc);
+    heap_.init(loc);
+  }
   OptRef<LocationSet> Environment::get(const Location &key) {
     return heap_.get(key);
   }
