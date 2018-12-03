@@ -42,11 +42,13 @@ namespace stacksafe {
         return std::nullopt;
       }
     }
-    LocationSet &init(const Key &key) {
-      if (!exists(key)) {
-        this->emplace(key, LocationSet{});
+    OptRef<LocationSet> init(const Key &k) {
+      if (exists(k)) {
+        return std::nullopt;
+      } else {
+        auto [it, _] = this->emplace(k, LocationSet{});
+        return std::get<1>(*it);
       }
-      return std::get<1>(*this->find(key));
     }
     bool subsetof(const LocationMap &rhs) const {
       auto f = [&rhs](const auto &e) -> bool {

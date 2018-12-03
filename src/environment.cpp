@@ -31,10 +31,10 @@ namespace stacksafe {
     O << "stack: " << stack_ << endl;
   }
   LocationSet &Environment::init(const Location &key) {
-    return heap_.init(key);
+    return heap_.init(key)->get();
   }
   LocationSet &Environment::init(const Register &key) {
-    return stack_.init(key);
+    return stack_.init(key)->get();
   }
   void Environment::init(LocationFactory &factory, const Register &key) {
     auto &val = key.get();
@@ -45,7 +45,7 @@ namespace stacksafe {
         auto outlive = factory.getOutlive();
         alloc(key, outlive);
         if (type->isPointerTy()) {
-          heap_.init(outlive).insert(outlive);
+          heap_.init(outlive)->get().insert(outlive);
         }
       } else {
         auto local = factory.getLocal();
@@ -54,7 +54,7 @@ namespace stacksafe {
     }
   }
   void Environment::alloc(const Register &key, const Location &loc) {
-    stack_.init(key).insert(loc);
+    stack_.init(key)->get().insert(loc);
     heap_.init(loc);
   }
   OptRef<LocationSet> Environment::get(const Location &key) {
