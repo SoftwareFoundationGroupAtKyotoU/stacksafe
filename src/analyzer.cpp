@@ -16,7 +16,7 @@ namespace stacksafe {
 
   State::State(llvm::Function &F) {
     todo_.push(&F.getEntryBlock());
-    static const Environment empty;
+    static const Environment empty(factory_);
     for (auto &b : F.getBasicBlockList()) {
       map_.emplace(&b, empty);
     }

@@ -16,6 +16,9 @@ namespace stacksafe {
     O << set_like(make_manip_seq(*this));
   }
 
+  Environment::Environment(LocationFactory &factory)
+    : factory_(factory) {
+  }
   bool Environment::subsetof(const Environment &rhs) const {
     return heap_.subsetof(rhs.heap_) && stack_.subsetof(rhs.stack_);
   }
