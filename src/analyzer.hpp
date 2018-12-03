@@ -39,9 +39,8 @@ namespace stacksafe {
   class ApplyVisitor : public llvm::InstVisitor<ApplyVisitor, bool> {
     using RetTy = bool;
     Environment &env_;
-    LocationFactory &fac_;
   public:
-    ApplyVisitor(Environment &env, LocationFactory &fac);
+    explicit ApplyVisitor(Environment &env);
     RetTy visitAllocaInst(llvm::AllocaInst &I);
     RetTy visitLoadInst(llvm::LoadInst &I);
     RetTy visitInstruction(llvm::Instruction &I);

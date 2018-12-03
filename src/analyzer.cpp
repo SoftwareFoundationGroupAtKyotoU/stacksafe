@@ -43,7 +43,7 @@ namespace stacksafe {
   }
   Environment State::update(llvm::BasicBlock &B) {
     auto &env = map_.at(&B);
-    ApplyVisitor apply(env, factory_);
+    ApplyVisitor apply(env);
     for (auto &I : B.getInstList()) {
       if (!apply.visit(I)) {
         llvm::errs() << "Error: Something wrong happens" << endl;
@@ -52,8 +52,8 @@ namespace stacksafe {
     return env;
   }
 
-  ApplyVisitor::ApplyVisitor(Environment &env, LocationFactory &fac)
-    : env_(env), fac_(fac)
+  ApplyVisitor::ApplyVisitor(Environment &env)
+    : env_(env)
   {}
   auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
     visitInstruction(I);
