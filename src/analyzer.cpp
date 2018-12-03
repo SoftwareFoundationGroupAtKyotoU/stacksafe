@@ -55,9 +55,7 @@ namespace stacksafe {
   {}
   auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
     if (auto reg = make_register(I)) {
-      auto loc = fac_.getLocal();
-      env_.init(*reg).insert(loc);
-      env_.init(loc);
+      env_.alloc(*reg);
     }
     visitInstruction(I);
   }
