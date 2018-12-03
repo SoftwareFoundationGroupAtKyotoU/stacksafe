@@ -93,4 +93,13 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Environment::getelementptr(const Register &dst, const Register &src) {
+    if (auto target = stack_.init(dst)) {
+      if (auto locs = stack_.get(src)) {
+        target->get().unify(locs->get());
+        return true;
+      }
+    }
+    return false;
+  }
 }
