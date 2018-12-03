@@ -102,4 +102,10 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Environment::binary(const Register &dst) {
+    if (stack_.init(dst)) {
+      return true;
+    }
+    return false;
+  }
 }
