@@ -75,6 +75,20 @@ namespace stacksafe {
     llvm::errs() << "Error: Unknown error in visitLoadInst" << endl;
     return false;
   }
+  auto ApplyVisitor::visitStoreInst(llvm::StoreInst &I) -> RetTy {
+    visitInstruction(I);
+    if (auto val = I.getValueOperand()) {
+      if (auto src = make_register(*val)) {
+        if (auto ptr = I.getPointerOperand()) {
+          if (auto dst = make_register(*ptr)) {
+            return env_.store(*src, *dst);
+          }
+        }
+      }
+    }
+    llvm::errs() << "Error: Unknown error in visitStoreInst" << endl;
+    return false;
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     llvm::errs() << env_;
     ClassNameVisitor classname;
