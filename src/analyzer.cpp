@@ -16,9 +16,17 @@ namespace stacksafe {
 
   State::State(llvm::Function &F) {
     todo_.push(&F.getEntryBlock());
-    static const Environment empty;
+    static const Environment empty(factory_);
     for (auto &b : F.getBasicBlockList()) {
       map_.emplace(&b, empty);
+    }
+    auto &entry = map_.at(todo_.front());
+    for (auto &a: F.args()) {
+      if (auto reg = make_register(a)) {
+        if (!entry.initArg(*reg)) {
+          llvm::errs() << "Error: Something wrong happens" << endl;
+        }
+      }
     }
   }
   void State::traverse() {
@@ -42,12 +50,78 @@ namespace stacksafe {
     }
   }
   Environment State::update(llvm::BasicBlock &B) {
-    ClassNameVisitor classname;
+    auto &env = map_.at(&B);
+    ApplyVisitor apply(env);
     for (auto &I : B.getInstList()) {
-      llvm::errs() << classname.visit(I) << endl
-                   << I << endl;
+      if (!apply.visit(I)) {
+        llvm::errs() << "Error: Something wrong happens" << endl;
+      }
     }
-    return map_.at(&B);
+    return env;
+  }
+
+  ApplyVisitor::ApplyVisitor(Environment &env)
+    : env_(env)
+  {}
+  auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
+    visitInstruction(I);
+    if (auto reg = make_register(I)) {
+      return env_.alloca(*reg);
+    }
+    llvm::errs() << "Error: Unknown error in visitAllocaInst" << endl;
+    return false;
+  }
+  auto ApplyVisitor::visitLoadInst(llvm::LoadInst &I) -> RetTy {
+    visitInstruction(I);
+    if (auto ptr = I.getPointerOperand()) {
+      if (auto src = make_register(*ptr)) {
+        if (auto dst = make_register(I)) {
+          return env_.load(*dst, *src);
+        }
+      }
+    }
+    llvm::errs() << "Error: Unknown error in visitLoadInst" << endl;
+    return false;
+  }
+  auto ApplyVisitor::visitStoreInst(llvm::StoreInst &I) -> RetTy {
+    visitInstruction(I);
+    if (auto val = I.getValueOperand()) {
+      if (auto src = make_register(*val)) {
+        if (auto ptr = I.getPointerOperand()) {
+          if (auto dst = make_register(*ptr)) {
+            return env_.store(*src, *dst);
+          }
+        }
+      }
+    }
+    llvm::errs() << "Error: Unknown error in visitStoreInst" << endl;
+    return false;
+  }
+  auto ApplyVisitor::visitGetElementPtrInst(llvm::GetElementPtrInst &I)
+    -> RetTy {
+    visitInstruction(I);
+    if (auto dst = make_register(I)) {
+      if (auto ptr = I.getPointerOperand()) {
+        if (auto src = make_register(*ptr)) {
+          return env_.getelementptr(*dst, *src);
+        }
+      }
+    }
+    return false;
+  }
+  auto ApplyVisitor::visitBinaryOperator(llvm::BinaryOperator &I) -> RetTy {
+    visitInstruction(I);
+    if (auto dst = make_register(I)) {
+      return env_.binary(*dst);
+    }
+    return false;
+  }
+  auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
+    llvm::errs() << env_;
+    ClassNameVisitor classname;
+    llvm::errs() << classname.visit(I) << endl;
+    llvm::errs() << I << endl;
+    return true;
   }
 }
 

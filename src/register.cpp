@@ -8,6 +8,9 @@ namespace stacksafe {
   Register::Register(llvm::Value &v, int n)
     : reg_(&v), num_(n)
   {}
+  const llvm::Value &Register::get() const {
+    return *reg_;
+  }
   std::size_t Register::hash() const {
     return std::hash<void *>{}(reg_);
   }
@@ -32,9 +35,12 @@ namespace stacksafe {
     if (auto A = llvm::dyn_cast<llvm::Argument>(&v)) {
       return A->getArgNo();
     } else if (auto I = llvm::dyn_cast<llvm::Instruction>(&v)) {
-      std::string str;
-      llvm::raw_string_ostream ss(str);
-      ss << I;
+      auto str = [I]() -> std::string {
+        std::string str;
+        llvm::raw_string_ostream ss(str);
+        ss << *I;
+        return ss.str();
+      }();
       auto b = str.find_first_not_of(" ");
       if (b == std::string::npos || str.at(b) != '%') {
         return -1;
