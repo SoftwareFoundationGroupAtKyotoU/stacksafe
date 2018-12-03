@@ -90,8 +90,6 @@ namespace stacksafe {
     bool subsetof(const Environment &rhs) const;
     void unify(const Environment &rhs);
     void print(llvm::raw_ostream &O) const;
-    LocationSet &init(const Location &key);
-    LocationSet &init(const Register &key);
     bool initArg(const Register &key);
     bool alloc(const Register &key);
     bool load(const Register &dst, const Register &src);

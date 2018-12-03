@@ -39,12 +39,6 @@ namespace stacksafe {
     O << "heap: " << heap_ << endl;
     O << "stack: " << stack_ << endl;
   }
-  LocationSet &Environment::init(const Location &key) {
-    return heap_.init(key)->get();
-  }
-  LocationSet &Environment::init(const Register &key) {
-    return stack_.init(key)->get();
-  }
   bool Environment::initArg(const Register &key) {
     if (auto &val = key.get(); llvm::isa<llvm::Argument>(val)) {
       if (auto target = stack_.init(key)) {
