@@ -92,6 +92,7 @@ namespace stacksafe {
     LocationSet &init(const Register &key);
     bool initArg(const Register &key);
     bool alloc(const Register &key);
+    bool load(const Register &dst, const Register &src);
     OptRef<LocationSet> get(const Location &key);
     OptRef<LocationSet> get(const Register &key);
     bool exists(const Location &key);

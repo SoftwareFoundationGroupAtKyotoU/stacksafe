@@ -66,6 +66,21 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Environment::load(const Register &dst, const Register &src) {
+    if (auto target = stack_.init(dst)) {
+      if (auto locs = stack_.get(src)) {
+        for (auto &loc: locs->get()) {
+          if (auto src_loc = heap_.get(loc)) {
+            target->get().unify(*src_loc);
+          } else {
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+    return false;
+  }
   OptRef<LocationSet> Environment::get(const Location &key) {
     return heap_.get(key);
   }
