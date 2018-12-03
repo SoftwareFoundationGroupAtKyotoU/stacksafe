@@ -20,6 +20,14 @@ namespace stacksafe {
     for (auto &b : F.getBasicBlockList()) {
       map_.emplace(&b, empty);
     }
+    auto &entry = map_.at(todo_.front());
+    for (auto &a: F.args()) {
+      if (auto reg = make_register(a)) {
+        if (!entry.initArg(*reg)) {
+          llvm::errs() << "Error: Something wrong happens" << endl;
+        }
+      }
+    }
   }
   void State::traverse() {
     while (!todo_.empty()) {
