@@ -53,6 +53,9 @@ namespace stacksafe {
         }
         return true;
       }
+    } else {
+      llvm::errs() << "Error: " << spaces(make_manip(key))
+                   << "is not an argument" << endl;
     }
     return false;
   }

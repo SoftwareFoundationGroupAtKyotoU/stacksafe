@@ -39,11 +39,13 @@ namespace stacksafe {
       if (auto it = this->find(k); it != end(*this)) {
         return std::get<1>(*it);
       } else {
+        llvm::errs() << "Error: " << spaces(make_manip(k)) << "is not in a map" << endl;
         return std::nullopt;
       }
     }
     OptRef<LocationSet> init(const Key &k) {
       if (exists(k)) {
+        llvm::errs() << "Error: " << spaces(make_manip(k)) << "is in a map" << endl;
         return std::nullopt;
       } else {
         auto [it, _] = this->emplace(k, LocationSet{});
