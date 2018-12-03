@@ -24,20 +24,20 @@ namespace stacksafe {
   using OptRef = std::optional<std::reference_wrapper<T>>;
   template <class Key>
   class LocationMap : public std::unordered_map<Key, LocationSet> {
-  public:
     OptRef<const LocationSet> get(const Key &k) const {
-      auto it = this->find(k);
-      if (it != end(*this)) {
+      if (auto it = this->find(k); it != end(*this)) {
         return std::get<1>(*it);
+      } else {
+        return std::nullopt;
       }
-      return std::nullopt;
     }
+  public:
     OptRef<LocationSet> get(const Key &k) {
-      auto it = this->find(k);
-      if (it != end(*this)) {
+      if (auto it = this->find(k); it != end(*this)) {
         return std::get<1>(*it);
+      } else {
+        return std::nullopt;
       }
-      return std::nullopt;
     }
     LocationSet &init(const Key &key) {
       if (this->count(key) == 0) {
