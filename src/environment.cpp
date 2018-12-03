@@ -84,10 +84,4 @@ namespace stacksafe {
     }
     return false;
   }
-  OptRef<LocationSet> Environment::get(const Location &key) {
-    return heap_.get(key);
-  }
-  OptRef<LocationSet> Environment::get(const Register &key) {
-    return stack_.get(key);
-  }
 }
