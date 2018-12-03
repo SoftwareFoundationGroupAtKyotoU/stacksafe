@@ -91,7 +91,7 @@ namespace stacksafe {
     void unify(const Environment &rhs);
     void print(llvm::raw_ostream &O) const;
     bool initArg(const Register &key);
-    bool alloc(const Register &key);
+    bool alloca(const Register &key);
     bool load(const Register &dst, const Register &src);
   };
 }

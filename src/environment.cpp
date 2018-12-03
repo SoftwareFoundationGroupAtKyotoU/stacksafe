@@ -53,7 +53,7 @@ namespace stacksafe {
     }
     return false;
   }
-  bool Environment::alloc(const Register &key) {
+  bool Environment::alloca(const Register &key) {
     if (auto target = stack_.init(key)) {
       auto loc = factory_.getLocal();
       target->get().insert(loc);

@@ -58,7 +58,7 @@ namespace stacksafe {
   auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
     visitInstruction(I);
     if (auto reg = make_register(I)) {
-      return env_.alloc(*reg);
+      return env_.alloca(*reg);
     }
     llvm::errs() << "Error: Unknown error in visitAllocaInst" << endl;
     return false;
