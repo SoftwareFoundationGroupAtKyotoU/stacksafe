@@ -56,9 +56,15 @@ namespace stacksafe {
     }
     return false;
   }
-  void Environment::alloc(const Register &key, const Location &loc) {
-    stack_.init(key)->get().insert(loc);
-    heap_.init(loc);
+  bool Environment::alloc(const Register &key) {
+    if (auto target = stack_.init(key)) {
+      auto loc = factory_.getLocal();
+      target->get().insert(loc);
+      if (heap_.init(loc)) {
+        return true;
+      }
+    }
+    return false;
   }
   OptRef<LocationSet> Environment::get(const Location &key) {
     return heap_.get(key);
