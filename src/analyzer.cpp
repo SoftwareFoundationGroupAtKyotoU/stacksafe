@@ -109,6 +109,13 @@ namespace stacksafe {
     }
     return false;
   }
+  auto ApplyVisitor::visitBinaryOperator(llvm::BinaryOperator &I) -> RetTy {
+    visitInstruction(I);
+    if (auto dst = make_register(I)) {
+      return env_.binary(*dst);
+    }
+    return false;
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     llvm::errs() << env_;
     ClassNameVisitor classname;
