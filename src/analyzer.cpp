@@ -54,25 +54,28 @@ namespace stacksafe {
     : env_(env), fac_(fac)
   {}
   auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
-    if (auto reg = make_register(I)) {
-      env_.alloc(*reg);
-    }
     visitInstruction(I);
+    if (auto reg = make_register(I)) {
+      return env_.alloc(*reg);
+    }
+    return false;
   }
   auto ApplyVisitor::visitLoadInst(llvm::LoadInst &I) -> RetTy {
+    visitInstruction(I);
     if (auto ptr = I.getPointerOperand()) {
       if (auto src = make_register(*ptr)) {
         if (auto dst = make_register(I)) {
-          env_.load(*dst, *src);
+          return env_.load(*dst, *src);
         }
       }
     }
-    visitInstruction(I);
+    return false;
   }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     ClassNameVisitor classname;
     llvm::errs() << classname.visit(I) << endl;
     llvm::errs() << I << endl;
+    return true;
   }
 }
 

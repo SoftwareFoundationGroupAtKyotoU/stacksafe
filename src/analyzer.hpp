@@ -36,8 +36,8 @@ namespace stacksafe {
     bool runOnFunction(llvm::Function &F) override;
   };
 
-  class ApplyVisitor : public llvm::InstVisitor<ApplyVisitor, void> {
-    using RetTy = void;
+  class ApplyVisitor : public llvm::InstVisitor<ApplyVisitor, bool> {
+    using RetTy = bool;
     Environment &env_;
     LocationFactory &fac_;
   public:
