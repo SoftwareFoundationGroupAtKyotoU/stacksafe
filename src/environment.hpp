@@ -32,6 +32,9 @@ namespace stacksafe {
       }
     }
   public:
+    bool exists(const Key &k) const {
+      return this->count(k) != 0;
+    }
     OptRef<LocationSet> get(const Key &k) {
       if (auto it = this->find(k); it != end(*this)) {
         return std::get<1>(*it);
@@ -40,7 +43,7 @@ namespace stacksafe {
       }
     }
     LocationSet &init(const Key &key) {
-      if (this->count(key) == 0) {
+      if (!exists(key)) {
         this->emplace(key, LocationSet{});
       }
       return std::get<1>(*this->find(key));
