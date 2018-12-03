@@ -45,22 +45,16 @@ namespace stacksafe {
   LocationSet &Environment::init(const Register &key) {
     return stack_.init(key)->get();
   }
-  void Environment::init(LocationFactory &factory, const Register &key) {
-    auto &val = key.get();
-    auto type = val.getType();
-    if (auto ptr = llvm::dyn_cast<llvm::PointerType>(type)) {
-      type = ptr->getElementType();
-      if (llvm::isa<llvm::Argument>(val)) {
-        auto outlive = factory.getOutlive();
-        alloc(key, outlive);
-        if (type->isPointerTy()) {
-          heap_.init(outlive)->get().insert(outlive);
+  bool Environment::initArg(const Register &key) {
+    if (auto &val = key.get(); llvm::isa<llvm::Argument>(val)) {
+      if (auto target = stack_.init(key)) {
+        if (llvm::isa<llvm::PointerType>(val.getType())) {
+          target->get().insert(factory_.getOutlive());
         }
-      } else {
-        auto local = factory.getLocal();
-        alloc(key, local);
+        return true;
       }
     }
+    return false;
   }
   void Environment::alloc(const Register &key, const Location &loc) {
     stack_.init(key)->get().insert(loc);

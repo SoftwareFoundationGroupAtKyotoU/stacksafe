@@ -90,7 +90,7 @@ namespace stacksafe {
     void print(llvm::raw_ostream &O) const;
     LocationSet &init(const Location &key);
     LocationSet &init(const Register &key);
-    void init(LocationFactory &factory, const Register &key);
+    bool initArg(const Register &key);
     void alloc(const Register &key, const Location &loc);
     OptRef<LocationSet> get(const Location &key);
     OptRef<LocationSet> get(const Register &key);
