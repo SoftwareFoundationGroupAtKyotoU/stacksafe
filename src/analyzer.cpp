@@ -45,7 +45,9 @@ namespace stacksafe {
     auto &env = map_.at(&B);
     ApplyVisitor apply(env, factory_);
     for (auto &I : B.getInstList()) {
-      apply.visit(I);
+      if (!apply.visit(I)) {
+        llvm::errs() << "Error: Something wrong happens" << endl;
+      }
     }
     return env;
   }
@@ -58,6 +60,7 @@ namespace stacksafe {
     if (auto reg = make_register(I)) {
       return env_.alloc(*reg);
     }
+    llvm::errs() << "Error: Unknown error in visitAllocaInst" << endl;
     return false;
   }
   auto ApplyVisitor::visitLoadInst(llvm::LoadInst &I) -> RetTy {
@@ -69,9 +72,11 @@ namespace stacksafe {
         }
       }
     }
+    llvm::errs() << "Error: Unknown error in visitLoadInst" << endl;
     return false;
   }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
+    llvm::errs() << env_;
     ClassNameVisitor classname;
     llvm::errs() << classname.visit(I) << endl;
     llvm::errs() << I << endl;
