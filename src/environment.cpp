@@ -18,6 +18,15 @@ namespace stacksafe {
 
   Environment::Environment(LocationFactory &factory)
     : factory_(factory) {
+    auto g = factory.getGlobal();
+    auto o = factory.getOutlive();
+    if (auto locs = heap_.init(g)) {
+      locs->get().insert(g);
+    }
+    if (auto locs = heap_.init(o)) {
+      locs->get().insert(g);
+      locs->get().insert(o);
+    }
   }
   bool Environment::subsetof(const Environment &rhs) const {
     return heap_.subsetof(rhs.heap_) && stack_.subsetof(rhs.stack_);
