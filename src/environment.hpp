@@ -24,26 +24,33 @@ namespace stacksafe {
   using OptRef = std::optional<std::reference_wrapper<T>>;
   template <class Key>
   class LocationMap : public std::unordered_map<Key, LocationSet> {
-  public:
     OptRef<const LocationSet> get(const Key &k) const {
-      auto it = this->find(k);
-      if (it != end(*this)) {
+      if (auto it = this->find(k); it != end(*this)) {
         return std::get<1>(*it);
+      } else {
+        return std::nullopt;
       }
-      return std::nullopt;
+    }
+  public:
+    bool exists(const Key &k) const {
+      return this->count(k) != 0;
     }
     OptRef<LocationSet> get(const Key &k) {
-      auto it = this->find(k);
-      if (it != end(*this)) {
+      if (auto it = this->find(k); it != end(*this)) {
+        return std::get<1>(*it);
+      } else {
+        llvm::errs() << "Error: " << spaces(make_manip(k)) << "is not in a map" << endl;
+        return std::nullopt;
+      }
+    }
+    OptRef<LocationSet> init(const Key &k) {
+      if (exists(k)) {
+        llvm::errs() << "Error: " << spaces(make_manip(k)) << "is in a map" << endl;
+        return std::nullopt;
+      } else {
+        auto [it, _] = this->emplace(k, LocationSet{});
         return std::get<1>(*it);
       }
-      return std::nullopt;
-    }
-    LocationSet &init(const Key &key) {
-      if (this->count(key) == 0) {
-        this->emplace(key, LocationSet{});
-      }
-      return std::get<1>(*this->find(key));
     }
     bool subsetof(const LocationMap &rhs) const {
       auto f = [&rhs](const auto &e) -> bool {
@@ -77,18 +84,15 @@ namespace stacksafe {
   class Environment {
     LocationMap<Location> heap_;
     LocationMap<Register> stack_;
+    LocationFactory &factory_;
   public:
+    explicit Environment(LocationFactory &factory);
     bool subsetof(const Environment &rhs) const;
     void unify(const Environment &rhs);
     void print(llvm::raw_ostream &O) const;
-    LocationSet &init(const Location &key);
-    LocationSet &init(const Register &key);
-    void init(LocationFactory &factory, const Register &key);
-    void alloc(const Register &key, const Location &loc);
-    OptRef<LocationSet> get(const Location &key);
-    OptRef<LocationSet> get(const Register &key);
-    bool exists(const Location &key);
-    bool exists(const Register &key);
+    bool initArg(const Register &key);
+    bool alloc(const Register &key);
+    bool load(const Register &dst, const Register &src);
   };
 }
 
