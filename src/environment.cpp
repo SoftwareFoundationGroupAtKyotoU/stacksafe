@@ -78,4 +78,19 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Environment::store(const Register &src, const Register &dst) {
+    if (auto val = stack_.get(src)) {
+      if (auto ptr = stack_.get(dst)) {
+        for (auto &each: ptr->get()) {
+          if (auto target = heap_.get(each)) {
+            target->get().unify(val->get());
+          } else {
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+    return false;
+  }
 }

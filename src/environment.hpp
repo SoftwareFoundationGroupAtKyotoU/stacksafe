@@ -93,6 +93,7 @@ namespace stacksafe {
     bool initArg(const Register &key);
     bool alloca(const Register &key);
     bool load(const Register &dst, const Register &src);
+    bool store(const Register &src, const Register &dst);
   };
 }
 
