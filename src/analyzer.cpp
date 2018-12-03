@@ -97,6 +97,18 @@ namespace stacksafe {
     llvm::errs() << "Error: Unknown error in visitStoreInst" << endl;
     return false;
   }
+  auto ApplyVisitor::visitGetElementPtrInst(llvm::GetElementPtrInst &I)
+    -> RetTy {
+    visitInstruction(I);
+    if (auto dst = make_register(I)) {
+      if (auto ptr = I.getPointerOperand()) {
+        if (auto src = make_register(*ptr)) {
+          return env_.getelementptr(*dst, *src);
+        }
+      }
+    }
+    return false;
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     llvm::errs() << env_;
     ClassNameVisitor classname;
