@@ -97,8 +97,6 @@ namespace stacksafe {
     bool load(const Register &dst, const Register &src);
     OptRef<LocationSet> get(const Location &key);
     OptRef<LocationSet> get(const Register &key);
-    bool exists(const Location &key);
-    bool exists(const Register &key);
   };
 }
 

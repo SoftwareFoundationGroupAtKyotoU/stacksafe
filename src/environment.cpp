@@ -90,10 +90,4 @@ namespace stacksafe {
   OptRef<LocationSet> Environment::get(const Register &key) {
     return stack_.get(key);
   }
-  bool Environment::exists(const Location &key) {
-    return heap_.count(key) != 0;
-  }
-  bool Environment::exists(const Register &key) {
-    return stack_.count(key) != 0;
-  }
 }
