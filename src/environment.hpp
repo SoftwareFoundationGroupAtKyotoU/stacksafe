@@ -31,6 +31,13 @@ namespace stacksafe {
         return std::nullopt;
       }
     }
+    OptRef<LocationSet> get(const Key &k) {
+      if (auto it = this->find(k); it != end(*this)) {
+        return std::get<1>(*it);
+      } else {
+        return std::nullopt;
+      }
+    }
   public:
     bool exists(const Key &k) const {
       return this->count(k) != 0;
