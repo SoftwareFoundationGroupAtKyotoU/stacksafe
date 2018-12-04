@@ -65,9 +65,9 @@ namespace stacksafe {
   }
   bool Environment::load(const Register &dst, const Register &src) {
     if (auto target = stack_.init(dst)) {
-      if (auto locs = stack_.get(src)) {
+      if (auto locs = stack_.at(src)) {
         for (auto &loc: locs->get()) {
-          if (auto src_loc = heap_.get(loc)) {
+          if (auto src_loc = heap_.at(loc)) {
             target->get().unify(*src_loc);
           } else {
             return false;
@@ -79,10 +79,10 @@ namespace stacksafe {
     return false;
   }
   bool Environment::store(const Register &src, const Register &dst) {
-    if (auto val = stack_.get(src)) {
-      if (auto ptr = stack_.get(dst)) {
+    if (auto val = stack_.at(src)) {
+      if (auto ptr = stack_.at(dst)) {
         for (auto &each: ptr->get()) {
-          if (auto target = heap_.get(each)) {
+          if (auto target = heap_.at(each)) {
             target->get().unify(val->get());
           } else {
             return false;
@@ -95,7 +95,7 @@ namespace stacksafe {
   }
   bool Environment::getelementptr(const Register &dst, const Register &src) {
     if (auto target = stack_.init(dst)) {
-      if (auto locs = stack_.get(src)) {
+      if (auto locs = stack_.at(src)) {
         target->get().unify(locs->get());
         return true;
       }
