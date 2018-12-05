@@ -38,14 +38,19 @@ namespace stacksafe {
 
   class ApplyVisitor : public llvm::InstVisitor<ApplyVisitor, bool> {
     using RetTy = bool;
+    using Base = llvm::InstVisitor<ApplyVisitor, RetTy>;
     Environment &env_;
   public:
     explicit ApplyVisitor(Environment &env);
+    RetTy visit(llvm::Instruction &I);
     RetTy visitAllocaInst(llvm::AllocaInst &I);
     RetTy visitLoadInst(llvm::LoadInst &I);
     RetTy visitStoreInst(llvm::StoreInst &I);
     RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &I);
     RetTy visitBinaryOperator(llvm::BinaryOperator &I);
+    RetTy visitCastInst(llvm::CastInst &I);
+    RetTy visitPHINode(llvm::PHINode &I);
+    RetTy visitCmpInst(llvm::CmpInst &I);
     RetTy visitInstruction(llvm::Instruction &I);
   };
 }

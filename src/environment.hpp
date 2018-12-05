@@ -31,11 +31,18 @@ namespace stacksafe {
         return std::nullopt;
       }
     }
+    OptRef<LocationSet> get(const Key &k) {
+      if (auto it = this->find(k); it != end(*this)) {
+        return std::get<1>(*it);
+      } else {
+        return std::nullopt;
+      }
+    }
   public:
     bool exists(const Key &k) const {
       return this->count(k) != 0;
     }
-    OptRef<LocationSet> get(const Key &k) {
+    OptRef<LocationSet> at(const Key &k) {
       if (auto it = this->find(k); it != end(*this)) {
         return std::get<1>(*it);
       } else {
@@ -44,9 +51,8 @@ namespace stacksafe {
       }
     }
     OptRef<LocationSet> init(const Key &k) {
-      if (exists(k)) {
-        llvm::errs() << "Error: " << spaces(make_manip(k)) << "is in a map" << endl;
-        return std::nullopt;
+      if (auto e = get(k)) {
+        return e;
       } else {
         auto [it, _] = this->emplace(k, LocationSet{});
         return std::get<1>(*it);
@@ -96,6 +102,8 @@ namespace stacksafe {
     bool store(const Register &src, const Register &dst);
     bool getelementptr(const Register &dst, const Register &src);
     bool binary(const Register &dst);
+    bool cast(const Register &dst, const Register &src);
+    bool phi(const Register &dst, const Register &src);
   };
 }
 

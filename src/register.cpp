@@ -32,25 +32,14 @@ namespace stacksafe {
   }
 
   int get_number(llvm::Value &v) {
-    if (auto A = llvm::dyn_cast<llvm::Argument>(&v)) {
-      return A->getArgNo();
-    } else if (auto I = llvm::dyn_cast<llvm::Instruction>(&v)) {
-      auto str = [I]() -> std::string {
-        std::string str;
-        llvm::raw_string_ostream ss(str);
-        ss << *I;
-        return ss.str();
-      }();
-      auto b = str.find_first_not_of(" ");
-      if (b == std::string::npos || str.at(b) != '%') {
-        return -1;
-      }
-      ++b;
-      auto e = str.find_first_not_of("0123456789", b);
-      if (e == std::string::npos || str.at(e) != ' ' || b == e) {
-        return -1;
-      }
-      return std::stoi(str.substr(b, e - b));
+    auto digits = "0123456789";
+    std::string str;
+    llvm::raw_string_ostream ss{str};
+    v.printAsOperand(ss, false);
+    const auto &s = ss.str();
+    if (!s.empty() && s.front() == '%' &&
+        s.find_first_not_of(digits, 1) == std::string::npos) {
+      return std::stoi(s.substr(1));
     } else {
       return -1;
     }
