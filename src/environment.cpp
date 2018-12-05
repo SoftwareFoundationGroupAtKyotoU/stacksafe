@@ -39,6 +39,16 @@ namespace stacksafe {
     O << "heap: " << heap_ << endl;
     O << "stack: " << stack_ << endl;
   }
+  bool Environment::argument(const Register &dst) {
+    if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
+      auto target = stack_.ensure(dst);
+      if (llvm::isa<llvm::PointerType>(val.getType())) {
+        target.insert(factory_.getOutlive());
+      }
+      return true;
+    }
+    return false;
+  }
   bool Environment::initArg(const Register &key) {
     if (auto &val = key.get(); llvm::isa<llvm::Argument>(val)) {
       if (auto target = stack_.init(key)) {

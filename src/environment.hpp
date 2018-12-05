@@ -104,6 +104,7 @@ namespace stacksafe {
     bool subsetof(const Environment &rhs) const;
     void unify(const Environment &rhs);
     void print(llvm::raw_ostream &O) const;
+    bool argument(const Register &dst);
     bool initArg(const Register &key);
     bool alloca(const Register &key);
     bool load(const Register &dst, const Register &src);
