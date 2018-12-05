@@ -118,6 +118,19 @@ namespace stacksafe {
     }
     return false;
   }
+  auto ApplyVisitor::visitCastInst(llvm::CastInst &I) -> RetTy {
+    visitInstruction(I);
+    if (auto dst = make_register(I)) {
+      if (auto val = I.getOperand(0)) {
+        if (llvm::isa<llvm::Constant>(val)) {
+          return env_.binary(*dst);
+        } else if (auto src = make_register(*val)) {
+          return env_.cast(*dst, *src);
+        }
+      }
+    }
+    return false;
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     llvm::errs() << env_;
     ClassNameVisitor classname;
