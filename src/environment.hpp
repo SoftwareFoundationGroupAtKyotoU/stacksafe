@@ -50,6 +50,14 @@ namespace stacksafe {
         return std::nullopt;
       }
     }
+    LocationSet &ensure(const Key &k) {
+      if (auto e = get(k)) {
+        return e->get();
+      } else {
+        auto [it, _] = this->emplace(k, LocationSet{});
+        return std::get<1>(*it);
+      }
+    }
     OptRef<LocationSet> init(const Key &k) {
       if (auto e = get(k)) {
         return e;
