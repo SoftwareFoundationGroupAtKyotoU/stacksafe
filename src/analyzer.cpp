@@ -64,10 +64,11 @@ namespace stacksafe {
     : env_(env)
   {}
   auto ApplyVisitor::visit(llvm::Instruction &I) -> RetTy {
-    return Base::visit(I);
+    auto ret = Base::visit(I);
+    llvm::errs() << I << endl;
+    return ret;
   }
   auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
-    visitInstruction(I);
     if (auto reg = make_register(I)) {
       return env_.alloca(*reg);
     }
@@ -75,7 +76,6 @@ namespace stacksafe {
     return false;
   }
   auto ApplyVisitor::visitLoadInst(llvm::LoadInst &I) -> RetTy {
-    visitInstruction(I);
     if (auto ptr = I.getPointerOperand()) {
       if (auto src = make_register(*ptr)) {
         if (auto dst = make_register(I)) {
@@ -87,7 +87,6 @@ namespace stacksafe {
     return false;
   }
   auto ApplyVisitor::visitStoreInst(llvm::StoreInst &I) -> RetTy {
-    visitInstruction(I);
     if (auto ptr = I.getPointerOperand()) {
       if (auto dst = make_register(*ptr)) {
         if (auto val = I.getValueOperand()) {
@@ -104,7 +103,6 @@ namespace stacksafe {
   }
   auto ApplyVisitor::visitGetElementPtrInst(llvm::GetElementPtrInst &I)
     -> RetTy {
-    visitInstruction(I);
     if (auto dst = make_register(I)) {
       if (auto ptr = I.getPointerOperand()) {
         if (auto src = make_register(*ptr)) {
@@ -115,14 +113,12 @@ namespace stacksafe {
     return false;
   }
   auto ApplyVisitor::visitBinaryOperator(llvm::BinaryOperator &I) -> RetTy {
-    visitInstruction(I);
     if (auto dst = make_register(I)) {
       return env_.binary(*dst);
     }
     return false;
   }
   auto ApplyVisitor::visitCastInst(llvm::CastInst &I) -> RetTy {
-    visitInstruction(I);
     if (auto dst = make_register(I)) {
       if (auto val = I.getOperand(0)) {
         if (llvm::isa<llvm::Constant>(val)) {
@@ -135,7 +131,6 @@ namespace stacksafe {
     return false;
   }
   auto ApplyVisitor::visitPHINode(llvm::PHINode &I) -> RetTy {
-    visitInstruction(I);
     if (auto dst = make_register(I)) {
       for (auto &use: I.incoming_values()) {
         auto val = use.get();
@@ -153,10 +148,8 @@ namespace stacksafe {
     return false;
   }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
-    llvm::errs() << env_;
     ClassNameVisitor classname;
     llvm::errs() << classname.visit(I) << endl;
-    llvm::errs() << I << endl;
     return true;
   }
 }
