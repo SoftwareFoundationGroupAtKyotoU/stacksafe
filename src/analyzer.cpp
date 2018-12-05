@@ -63,6 +63,9 @@ namespace stacksafe {
   ApplyVisitor::ApplyVisitor(Environment &env)
     : env_(env)
   {}
+  auto ApplyVisitor::visit(llvm::Instruction &I) -> RetTy {
+    return Base::visit(I);
+  }
   auto ApplyVisitor::visitAllocaInst(llvm::AllocaInst &I) -> RetTy {
     visitInstruction(I);
     if (auto reg = make_register(I)) {
