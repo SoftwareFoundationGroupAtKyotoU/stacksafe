@@ -103,6 +103,7 @@ namespace stacksafe {
     bool getelementptr(const Register &dst, const Register &src);
     bool binary(const Register &dst);
     bool cast(const Register &dst, const Register &src);
+    bool phi(const Register &dst, const Register &src);
   };
 }
 

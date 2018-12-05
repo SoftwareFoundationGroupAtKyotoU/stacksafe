@@ -117,4 +117,13 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Environment::phi(const Register &dst, const Register &src) {
+    if (auto target = stack_.init(dst)) {
+      if (auto source = stack_.at(src)) {
+        target->get().unify(source->get());
+        return true;
+      }
+    }
+    return false;
+  }
 }

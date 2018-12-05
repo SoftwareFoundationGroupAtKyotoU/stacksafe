@@ -131,6 +131,24 @@ namespace stacksafe {
     }
     return false;
   }
+  auto ApplyVisitor::visitPHINode(llvm::PHINode &I) -> RetTy {
+    visitInstruction(I);
+    if (auto dst = make_register(I)) {
+      for (auto &use: I.incoming_values()) {
+        auto val = use.get();
+        if (llvm::isa<llvm::Constant>(val)) {
+          if (!env_.binary(*dst)) {
+            return false;
+          }
+        } else if (auto src = make_register(*val)) {
+          if (!env_.phi(*dst, *src)) {
+            return false;
+          }
+        }
+      }
+    }
+    return false;
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     llvm::errs() << env_;
     ClassNameVisitor classname;

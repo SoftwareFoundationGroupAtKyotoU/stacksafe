@@ -47,6 +47,7 @@ namespace stacksafe {
     RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &I);
     RetTy visitBinaryOperator(llvm::BinaryOperator &I);
     RetTy visitCastInst(llvm::CastInst &I);
+    RetTy visitPHINode(llvm::PHINode &I);
     RetTy visitInstruction(llvm::Instruction &I);
   };
 }
