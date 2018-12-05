@@ -147,6 +147,12 @@ namespace stacksafe {
     }
     return false;
   }
+  auto ApplyVisitor::visitCmpInst(llvm::CmpInst &I) -> RetTy {
+    if (auto dst = make_register(I)) {
+      return env_.binary(*dst);
+    }
+    return false;
+  }
   auto ApplyVisitor::visitInstruction(llvm::Instruction &I) -> RetTy {
     ClassNameVisitor classname;
     llvm::errs() << classname.visit(I) << endl;

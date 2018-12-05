@@ -50,6 +50,7 @@ namespace stacksafe {
     RetTy visitBinaryOperator(llvm::BinaryOperator &I);
     RetTy visitCastInst(llvm::CastInst &I);
     RetTy visitPHINode(llvm::PHINode &I);
+    RetTy visitCmpInst(llvm::CmpInst &I);
     RetTy visitInstruction(llvm::Instruction &I);
   };
 }
