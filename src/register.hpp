@@ -15,6 +15,7 @@ namespace stacksafe {
   public:
     explicit Value(llvm::Value &v);
     const llvm::Value &get() const;
+    bool is_register() const;
     void print(llvm::raw_ostream &O) const;
   };
 

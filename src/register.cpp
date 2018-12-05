@@ -11,11 +11,14 @@ namespace stacksafe {
   const llvm::Value &Value::get() const {
     return *val_;
   }
+  bool Value::is_register() const {
+    return 0 <= num_;
+  }
   void Value::print(llvm::raw_ostream &O) const {
-    if (num_ < 0) {
-      O << *val_;
-    } else {
+    if (is_register()) {
       O << angles(make_manip("%", num_));
+    } else {
+      O << *val_;
     }
   }
 
