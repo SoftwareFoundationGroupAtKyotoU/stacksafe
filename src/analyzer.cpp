@@ -23,8 +23,9 @@ namespace stacksafe {
     auto &entry = map_.at(todo_.front());
     for (auto &a: F.args()) {
       if (auto reg = make_register(a)) {
-        if (!entry.initArg(*reg)) {
-          llvm::errs() << "Error: Something wrong happens" << endl;
+        if (!entry.argument(*reg)) {
+          llvm::errs() << "Error:" << spaces(make_manip(*reg))
+                       << "is not an argument" << endl;
         }
       }
     }

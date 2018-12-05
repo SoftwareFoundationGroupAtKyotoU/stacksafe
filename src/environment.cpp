@@ -49,20 +49,6 @@ namespace stacksafe {
     }
     return false;
   }
-  bool Environment::initArg(const Register &key) {
-    if (auto &val = key.get(); llvm::isa<llvm::Argument>(val)) {
-      if (auto target = stack_.init(key)) {
-        if (llvm::isa<llvm::PointerType>(val.getType())) {
-          target->get().insert(factory_.getOutlive());
-        }
-        return true;
-      }
-    } else {
-      llvm::errs() << "Error: " << spaces(make_manip(key))
-                   << "is not an argument" << endl;
-    }
-    return false;
-  }
   bool Environment::alloca(const Register &key) {
     if (auto target = stack_.init(key)) {
       auto loc = factory_.getLocal();
