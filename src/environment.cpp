@@ -49,15 +49,12 @@ namespace stacksafe {
     }
     return false;
   }
-  bool Environment::alloca(const Register &key) {
-    if (auto target = stack_.init(key)) {
-      auto loc = factory_.getLocal();
-      target->get().insert(loc);
-      if (heap_.init(loc)) {
-        return true;
-      }
-    }
-    return false;
+  bool Environment::alloca(const Register &dst) {
+    auto target = stack_.ensure(dst);
+    auto loc = factory_.getLocal();
+    target.insert(loc);
+    heap_.ensure(loc);
+    return true;
   }
   bool Environment::load(const Register &dst, const Register &src) {
     if (auto target = stack_.init(dst)) {
