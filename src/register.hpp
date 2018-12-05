@@ -20,6 +20,14 @@ namespace stacksafe {
     bool operator==(const Register &rhs) const;
     void print(llvm::raw_ostream &O) const;
   };
+
+  class Value {
+    llvm::Value *val_;
+    int num_;
+  public:
+    explicit Value(llvm::Value &v);
+  };
+
   std::optional<Register> make_register(llvm::Value &v);
   int get_number(llvm::Value &v);
 }
