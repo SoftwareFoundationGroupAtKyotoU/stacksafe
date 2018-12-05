@@ -26,6 +26,7 @@ namespace stacksafe {
     int num_;
   public:
     explicit Value(llvm::Value &v);
+    const llvm::Value &get() const;
     void print(llvm::raw_ostream &O) const;
   };
 

@@ -24,6 +24,9 @@ namespace stacksafe {
   Value::Value(llvm::Value &v)
     : val_(&v), num_(get_number(v)) {
   }
+  const llvm::Value &Value::get() const {
+    return *val_;
+  }
   void Value::print(llvm::raw_ostream &O) const {
     if (num_ < 0) {
       O << *val_;
