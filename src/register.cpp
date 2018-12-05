@@ -24,6 +24,13 @@ namespace stacksafe {
   Value::Value(llvm::Value &v)
     : val_(&v), num_(get_number(v)) {
   }
+  void Value::print(llvm::raw_ostream &O) const {
+    if (num_ < 0) {
+      O << *val_;
+    } else {
+      O << angles(make_manip("%", num_));
+    }
+  }
 
   std::optional<Register> make_register(llvm::Value &v) {
     auto n = get_number(v);
