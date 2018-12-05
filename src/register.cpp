@@ -5,6 +5,20 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
+  Value::Value(llvm::Value &v)
+    : val_(&v), num_(get_number(v)) {
+  }
+  const llvm::Value &Value::get() const {
+    return *val_;
+  }
+  void Value::print(llvm::raw_ostream &O) const {
+    if (num_ < 0) {
+      O << *val_;
+    } else {
+      O << angles(make_manip("%", num_));
+    }
+  }
+
   Register::Register(llvm::Value &v, int n)
     : reg_(&v), num_(n)
   {}
@@ -20,21 +34,6 @@ namespace stacksafe {
   void Register::print(llvm::raw_ostream &O) const {
     O << angles(make_manip("%", num_));
   }
-
-  Value::Value(llvm::Value &v)
-    : val_(&v), num_(get_number(v)) {
-  }
-  const llvm::Value &Value::get() const {
-    return *val_;
-  }
-  void Value::print(llvm::raw_ostream &O) const {
-    if (num_ < 0) {
-      O << *val_;
-    } else {
-      O << angles(make_manip("%", num_));
-    }
-  }
-
   std::optional<Register> make_register(llvm::Value &v) {
     auto n = get_number(v);
     if (n < 0) {
