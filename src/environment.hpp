@@ -51,9 +51,8 @@ namespace stacksafe {
       }
     }
     OptRef<LocationSet> init(const Key &k) {
-      if (exists(k)) {
-        llvm::errs() << "Error: " << spaces(make_manip(k)) << "is in a map" << endl;
-        return std::nullopt;
+      if (auto e = get(k)) {
+        return e;
       } else {
         auto [it, _] = this->emplace(k, LocationSet{});
         return std::get<1>(*it);
