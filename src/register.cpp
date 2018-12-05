@@ -22,28 +22,21 @@ namespace stacksafe {
     }
   }
 
-  Register::Register(llvm::Value &v, int n)
-    : reg_(&v), num_(n)
-  {}
-  const llvm::Value &Register::get() const {
-    return *reg_;
+  Register::Register(llvm::Value &v)
+    : Value(v) {
   }
   std::size_t Register::hash() const {
-    return std::hash<void *>{}(reg_);
+    return std::hash<void *>{}(val_);
   }
   bool Register::operator==(const Register &rhs) const {
-    return reg_ == rhs.reg_;
-  }
-  void Register::print(llvm::raw_ostream &O) const {
-    O << angles(make_manip("%", num_));
+    return val_ == rhs.val_;
   }
   std::optional<Register> make_register(llvm::Value &v) {
-    auto n = get_number(v);
-    if (n < 0) {
-      llvm::errs() << "unknown register" << colon << v << endl;
-      return std::nullopt;
+    auto reg = Register{v};
+    if (reg.is_register()) {
+      return reg;
     } else {
-      return Register(v, n);
+      return std::nullopt;
     }
   }
 

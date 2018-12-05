@@ -10,6 +10,7 @@ namespace llvm {
 }
 namespace stacksafe {
   class Value {
+  protected:
     llvm::Value *val_;
     int num_;
   public:
@@ -19,13 +20,9 @@ namespace stacksafe {
     void print(llvm::raw_ostream &O) const;
   };
 
-  class Register {
-    llvm::Value *reg_;
-    int num_;
-    Register(llvm::Value &v, int n);
-    friend std::optional<Register> make_register(llvm::Value &);
+  class Register : public Value {
   public:
-    const llvm::Value &get() const;
+    explicit Register(llvm::Value &v);
     std::size_t hash() const;
     bool operator==(const Register &rhs) const;
     void print(llvm::raw_ostream &O) const;
