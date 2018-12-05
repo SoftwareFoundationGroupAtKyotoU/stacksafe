@@ -85,10 +85,12 @@ namespace stacksafe {
   }
   auto ApplyVisitor::visitStoreInst(llvm::StoreInst &I) -> RetTy {
     visitInstruction(I);
-    if (auto val = I.getValueOperand()) {
-      if (auto src = make_register(*val)) {
-        if (auto ptr = I.getPointerOperand()) {
-          if (auto dst = make_register(*ptr)) {
+    if (auto ptr = I.getPointerOperand()) {
+      if (auto dst = make_register(*ptr)) {
+        if (auto val = I.getValueOperand()) {
+          if (llvm::isa<llvm::Constant>(val)) {
+            return true;
+          } else if (auto src = make_register(*val)) {
             return env_.store(*src, *dst);
           }
         }
