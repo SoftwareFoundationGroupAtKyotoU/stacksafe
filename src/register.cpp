@@ -5,7 +5,7 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
-  Value::Value(llvm::Value &v)
+  Value::Value(const llvm::Value &v)
     : val_(&v), num_(get_number(v)) {
   }
   const llvm::Value &Value::get() const {
@@ -22,16 +22,16 @@ namespace stacksafe {
     }
   }
 
-  Register::Register(llvm::Value &v)
+  Register::Register(const llvm::Value &v)
     : Value(v) {
   }
   std::size_t Register::hash() const {
-    return std::hash<void *>{}(val_);
+    return std::hash<const void *>{}(val_);
   }
   bool Register::operator==(const Register &rhs) const {
     return val_ == rhs.val_;
   }
-  std::optional<Register> make_register(llvm::Value &v) {
+  std::optional<Register> make_register(const llvm::Value &v) {
     auto reg = Register{v};
     if (reg.is_register()) {
       return reg;
@@ -40,7 +40,7 @@ namespace stacksafe {
     }
   }
 
-  int get_number(llvm::Value &v) {
+  int get_number(const llvm::Value &v) {
     auto digits = "0123456789";
     std::string str;
     llvm::raw_string_ostream ss{str};

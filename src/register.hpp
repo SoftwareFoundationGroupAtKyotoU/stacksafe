@@ -11,10 +11,10 @@ namespace llvm {
 namespace stacksafe {
   class Value {
   protected:
-    llvm::Value *val_;
+    const llvm::Value *val_;
     int num_;
   public:
-    explicit Value(llvm::Value &v);
+    explicit Value(const llvm::Value &v);
     const llvm::Value &get() const;
     bool is_register() const;
     void print(llvm::raw_ostream &O) const;
@@ -22,14 +22,14 @@ namespace stacksafe {
 
   class Register : public Value {
   public:
-    explicit Register(llvm::Value &v);
+    explicit Register(const llvm::Value &v);
     std::size_t hash() const;
     bool operator==(const Register &rhs) const;
     void print(llvm::raw_ostream &O) const;
   };
-  std::optional<Register> make_register(llvm::Value &v);
+  std::optional<Register> make_register(const llvm::Value &v);
 
-  int get_number(llvm::Value &v);
+  int get_number(const llvm::Value &v);
 }
 namespace std {
   template <>
