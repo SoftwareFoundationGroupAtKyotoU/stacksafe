@@ -39,6 +39,24 @@ namespace stacksafe {
     O << "heap: " << heap_ << endl;
     O << "stack: " << stack_ << endl;
   }
+  std::optional<LocationSet> Environment::at(const Value &val) {
+    auto ptr = &val.get();
+    if (auto reg = make_register(*ptr)) {
+      if (stack_.exists(*reg)) {
+        return stack_.at(*reg)->get();
+      } else {
+        return std::nullopt;
+      }
+    } else if (llvm::isa<llvm::ConstantPointerNull>(ptr)) {
+      LocationSet locs;
+      locs.insert(factory_.getGlobal());
+      return locs;
+    } else if (llvm::isa<llvm::Constant>(ptr)) {
+      return LocationSet{};
+    } else {
+      return std::nullopt;
+    }
+  }
   bool Environment::argument(const Register &dst) {
     if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
       auto target = stack_.ensure(dst);
