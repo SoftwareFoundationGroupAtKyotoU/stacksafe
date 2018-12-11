@@ -9,19 +9,27 @@ namespace llvm {
   class raw_ostream;
 }
 namespace stacksafe {
-  class Register {
-    llvm::Value *reg_;
+  class Value {
+  protected:
+    const llvm::Value *val_;
     int num_;
-    Register(llvm::Value &v, int n);
-    friend std::optional<Register> make_register(llvm::Value &);
   public:
+    explicit Value(const llvm::Value &v);
     const llvm::Value &get() const;
+    bool is_register() const;
+    void print(llvm::raw_ostream &O) const;
+  };
+
+  class Register : public Value {
+  public:
+    explicit Register(const llvm::Value &v);
     std::size_t hash() const;
     bool operator==(const Register &rhs) const;
     void print(llvm::raw_ostream &O) const;
   };
-  std::optional<Register> make_register(llvm::Value &v);
-  int get_number(llvm::Value &v);
+  std::optional<Register> make_register(const llvm::Value &v);
+
+  int get_number(const llvm::Value &v);
 }
 namespace std {
   template <>

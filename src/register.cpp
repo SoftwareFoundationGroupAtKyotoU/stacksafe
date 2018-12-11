@@ -5,33 +5,42 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
-  Register::Register(llvm::Value &v, int n)
-    : reg_(&v), num_(n)
-  {}
-  const llvm::Value &Register::get() const {
-    return *reg_;
+  Value::Value(const llvm::Value &v)
+    : val_(&v), num_(get_number(v)) {
   }
-  std::size_t Register::hash() const {
-    return std::hash<void *>{}(reg_);
+  const llvm::Value &Value::get() const {
+    return *val_;
   }
-  bool Register::operator==(const Register &rhs) const {
-    return reg_ == rhs.reg_;
+  bool Value::is_register() const {
+    return 0 <= num_;
   }
-  void Register::print(llvm::raw_ostream &O) const {
-    O << angles(make_manip("%", num_));
-  }
-
-  std::optional<Register> make_register(llvm::Value &v) {
-    auto n = get_number(v);
-    if (n < 0) {
-      llvm::errs() << "unknown register" << colon << v << endl;
-      return std::nullopt;
+  void Value::print(llvm::raw_ostream &O) const {
+    if (is_register()) {
+      O << angles(make_manip("%", num_));
     } else {
-      return Register(v, n);
+      O << *val_;
     }
   }
 
-  int get_number(llvm::Value &v) {
+  Register::Register(const llvm::Value &v)
+    : Value(v) {
+  }
+  std::size_t Register::hash() const {
+    return std::hash<const void *>{}(val_);
+  }
+  bool Register::operator==(const Register &rhs) const {
+    return val_ == rhs.val_;
+  }
+  std::optional<Register> make_register(const llvm::Value &v) {
+    auto reg = Register{v};
+    if (reg.is_register()) {
+      return reg;
+    } else {
+      return std::nullopt;
+    }
+  }
+
+  int get_number(const llvm::Value &v) {
     auto digits = "0123456789";
     std::string str;
     llvm::raw_string_ostream ss{str};

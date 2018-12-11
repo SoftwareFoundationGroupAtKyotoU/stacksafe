@@ -39,29 +39,40 @@ namespace stacksafe {
     O << "heap: " << heap_ << endl;
     O << "stack: " << stack_ << endl;
   }
-  bool Environment::initArg(const Register &key) {
-    if (auto &val = key.get(); llvm::isa<llvm::Argument>(val)) {
-      if (auto target = stack_.init(key)) {
-        if (llvm::isa<llvm::PointerType>(val.getType())) {
-          target->get().insert(factory_.getOutlive());
-        }
-        return true;
+  std::optional<LocationSet> Environment::at(const Value &val) {
+    auto ptr = &val.get();
+    if (auto reg = make_register(*ptr)) {
+      if (stack_.exists(*reg)) {
+        return stack_.at(*reg)->get();
+      } else {
+        return std::nullopt;
       }
+    } else if (llvm::isa<llvm::ConstantPointerNull>(ptr)) {
+      LocationSet locs;
+      locs.insert(factory_.getGlobal());
+      return locs;
+    } else if (llvm::isa<llvm::Constant>(ptr)) {
+      return LocationSet{};
     } else {
-      llvm::errs() << "Error: " << spaces(make_manip(key))
-                   << "is not an argument" << endl;
+      return std::nullopt;
+    }
+  }
+  bool Environment::argument(const Register &dst) {
+    if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
+      auto target = stack_.ensure(dst);
+      if (llvm::isa<llvm::PointerType>(val.getType())) {
+        target.insert(factory_.getOutlive());
+      }
+      return true;
     }
     return false;
   }
-  bool Environment::alloca(const Register &key) {
-    if (auto target = stack_.init(key)) {
-      auto loc = factory_.getLocal();
-      target->get().insert(loc);
-      if (heap_.init(loc)) {
-        return true;
-      }
-    }
-    return false;
+  bool Environment::alloca(const Register &dst) {
+    auto target = stack_.ensure(dst);
+    auto loc = factory_.getLocal();
+    target.insert(loc);
+    heap_.ensure(loc);
+    return true;
   }
   bool Environment::load(const Register &dst, const Register &src) {
     if (auto target = stack_.init(dst)) {
@@ -78,12 +89,12 @@ namespace stacksafe {
     }
     return false;
   }
-  bool Environment::store(const Register &src, const Register &dst) {
-    if (auto val = stack_.at(src)) {
+  bool Environment::store(const Value &src, const Register &dst) {
+    if (auto val = at(src)) {
       if (auto ptr = stack_.at(dst)) {
         for (auto &each: ptr->get()) {
           if (auto target = heap_.at(each)) {
-            target->get().unify(val->get());
+            target->get().unify(*val);
           } else {
             return false;
           }

@@ -50,6 +50,14 @@ namespace stacksafe {
         return std::nullopt;
       }
     }
+    LocationSet &ensure(const Key &k) {
+      if (auto e = get(k)) {
+        return e->get();
+      } else {
+        auto [it, _] = this->emplace(k, LocationSet{});
+        return std::get<1>(*it);
+      }
+    }
     OptRef<LocationSet> init(const Key &k) {
       if (auto e = get(k)) {
         return e;
@@ -96,10 +104,11 @@ namespace stacksafe {
     bool subsetof(const Environment &rhs) const;
     void unify(const Environment &rhs);
     void print(llvm::raw_ostream &O) const;
-    bool initArg(const Register &key);
-    bool alloca(const Register &key);
+    std::optional<LocationSet> at(const Value &val);
+    bool argument(const Register &dst);
+    bool alloca(const Register &dst);
     bool load(const Register &dst, const Register &src);
-    bool store(const Register &src, const Register &dst);
+    bool store(const Value &src, const Register &dst);
     bool getelementptr(const Register &dst, const Register &src);
     bool binary(const Register &dst);
     bool cast(const Register &dst, const Register &src);
