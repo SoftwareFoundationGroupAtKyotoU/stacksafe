@@ -89,12 +89,12 @@ namespace stacksafe {
     }
     return false;
   }
-  bool Environment::store(const Register &src, const Register &dst) {
-    if (auto val = stack_.at(src)) {
+  bool Environment::store(const Value &src, const Register &dst) {
+    if (auto val = at(src)) {
       if (auto ptr = stack_.at(dst)) {
         for (auto &each: ptr->get()) {
           if (auto target = heap_.at(each)) {
-            target->get().unify(val->get());
+            target->get().unify(*val);
           } else {
             return false;
           }

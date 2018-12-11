@@ -108,7 +108,7 @@ namespace stacksafe {
     bool argument(const Register &dst);
     bool alloca(const Register &dst);
     bool load(const Register &dst, const Register &src);
-    bool store(const Register &src, const Register &dst);
+    bool store(const Value &src, const Register &dst);
     bool getelementptr(const Register &dst, const Register &src);
     bool binary(const Register &dst);
     bool cast(const Register &dst, const Register &src);
