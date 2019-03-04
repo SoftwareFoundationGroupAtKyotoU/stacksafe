@@ -31,6 +31,9 @@ namespace stacksafe {
   bool Register::operator==(const Register &rhs) const {
     return val_ == rhs.val_;
   }
+  void Register::print(llvm::raw_ostream &O) const {
+    Value::print(O);
+  }
   std::optional<Register> make_register(const llvm::Value &v) {
     auto reg = Register{v};
     if (reg.is_register()) {
