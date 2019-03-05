@@ -1,4 +1,5 @@
 #include "interpretation.hpp"
+#include "method.hpp"
 #include "visualize.hpp"
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
@@ -31,12 +32,12 @@ namespace stacksafe {
   }
   void Interpretation::update(BB b) {
     auto &env = map_.at(b);
-    // ApplyVisitor apply(env);
-    // for (auto &i : b->getInstList()) {
-    //   if (!apply.visit(i)) {
-    //     llvm::errs() << "Error: something wrong happens" << endl;
-    //   }
-    // }
+    Method method(env);
+    for (auto &i : b->getInstList()) {
+      if (!method.visit(i)) {
+        llvm::errs() << "Error: something wrong happens" << endl;
+      }
+    }
     if (auto t = b->getTerminator()) {
       for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
         auto succ = t->getSuccessor(i);
