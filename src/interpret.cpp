@@ -1,10 +1,10 @@
-#include "method.hpp"
+#include "interpret.hpp"
 
 namespace stacksafe {
-  Method::Method(Env &env)
+  Interpret::Interpret(Env &env)
     : env_(env) {
   }
-  bool Method::visit(llvm::Instruction &I) {
+  bool Interpret::visit(llvm::Instruction &I) {
     // auto ret = Base::visit(I);
     llvm::outs() << I << endl;
     llvm::outs() << env_;

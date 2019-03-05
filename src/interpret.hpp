@@ -5,11 +5,11 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
-  class Method : public llvm::InstVisitor<Method, bool> {
-    using Base = llvm::InstVisitor<Method, bool>;
+  class Interpret : public llvm::InstVisitor<Interpret, bool> {
+    using Base = llvm::InstVisitor<Interpret, bool>;
     Env &env_;
   public:
-    explicit Method(Env &env);
+    explicit Interpret(Env &env);
     bool visit(llvm::Instruction &I);
   };
 }
