@@ -25,6 +25,7 @@ namespace stacksafe {
     void print(llvm::raw_ostream &O) const;
   public:
     bool init_argument(const Register &dst);
+    bool alloca(const Register &dst);
   };
 
   template <typename T>

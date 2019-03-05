@@ -33,6 +33,12 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Env::alloca(const Register &dst) {
+    auto l = factory_.getLocal();
+    heap_.add(l);
+    stack_.add(dst, l);
+    return true;
+  }
 
   Environment::Environment(LocationFactory &factory)
     : factory_(factory) {
