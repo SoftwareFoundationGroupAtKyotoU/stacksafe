@@ -39,6 +39,13 @@ namespace stacksafe {
       const auto &c = *this;
       return const_cast<V *>(c.get(k));
     }
+    void add(const K &k, const V &v) {
+      if (auto e = get(k)) {
+        e->unify(v);
+      } else {
+        this->emplace(k, v);
+      }
+    }
     bool exists(const K &k) const {
       return this->count(k) != 0;
     }
