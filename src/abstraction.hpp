@@ -1,52 +1,26 @@
-#include "abstraction.hpp"
-#include "method.hpp"
-#include "visualize.hpp"
-#include <llvm/IR/Function.h>
-#include <llvm/Support/raw_ostream.h>
+#ifndef INCLUDE_GUARD_FBC5E6D0_9143_4FDB_9ED6_5F3DE4E64961
+#define INCLUDE_GUARD_FBC5E6D0_9143_4FDB_9ED6_5F3DE4E64961
 
-namespace stacksafe {
-  Abstraction::Abstraction(llvm::Function &F) {
-    Env empty(factory_);
-    for (auto &b : F.getBasicBlockList()) {
-      map_.emplace(&b, empty);
-    }
-    auto entry = &F.getEntryBlock();
-    todo_.push(entry);
-    for (auto &a: F.args()) {
-      if (auto reg = make_register(a)) {
-        if (!map_.at(entry).init_argument(*reg)) {
-          llvm::errs() << "Error: " << spaces(make_manip(*reg))
-                       << "is not an argument" << endl;
-        }
-      } else {
-        llvm::errs() << "Error: unreachable" << endl;
-      }
-    }
-  }
-  void Abstraction::proceed() {
-    while (!todo_.empty()) {
-      auto b = todo_.front();
-      todo_.pop();
-      update(b);
-    }
-  }
-  void Abstraction::update(BB b) {
-    auto &env = map_.at(b);
-    Method method(env);
-    for (auto &i : b->getInstList()) {
-      if (!method.visit(i)) {
-        llvm::errs() << "Error: something wrong happens" << endl;
-      }
-    }
-    if (auto t = b->getTerminator()) {
-      for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-        auto succ = t->getSuccessor(i);
-        auto &next = map_.at(succ);
-        if (!env.subsetof(next)) {
-          next.unify(env);
-          todo_.push(succ);
-        }
-      }
-    }
-  }
+#include "environment.hpp"
+#include "location.hpp"
+#include <queue>
+#include <unordered_map>
+
+namespace llvm {
+  class BasicBlock;
+  class Function;
 }
+namespace stacksafe {
+  class Abstraction {
+    using BB = llvm::BasicBlock *;
+    LocationFactory factory_;
+    std::unordered_map<BB, Env> map_;
+    std::queue<BB> todo_;
+  public:
+    Abstraction(llvm::Function &F);
+    void proceed();
+    void update(BB b);
+  };
+}
+
+#endif//INCLUDE_GUARD_FBC5E6D0_9143_4FDB_9ED6_5F3DE4E64961
