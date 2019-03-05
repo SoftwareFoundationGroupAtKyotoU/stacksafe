@@ -2,6 +2,29 @@
 #include <llvm/IR/Value.h>
 
 namespace stacksafe {
+  Env::Env(LocationFactory &factory)
+    : factory_(factory) {
+    auto g = factory_.getGlobal();
+    auto o = factory_.getOutlive();
+    LocationSet set;
+    set.insert(g);
+    heap_.add(g, set);
+    set.insert(o);
+    heap_.add(o, set);
+  }
+  bool Env::subsetof(const Env &rhs) const {
+    return (heap_.subsetof(rhs.heap_) &&
+            stack_.subsetof(rhs.stack_));
+  }
+  void Env::unify(const Env &rhs) {
+    heap_.unify(rhs.heap_);
+    stack_.unify(rhs.stack_);
+  }
+  void Env::print(llvm::raw_ostream &O) const {
+    O << "heap: " << heap_ << endl;
+    O << "stack: " << stack_ << endl;
+  }
+
   Environment::Environment(LocationFactory &factory)
     : factory_(factory) {
     auto g = factory.getGlobal();

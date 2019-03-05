@@ -14,6 +14,17 @@ namespace llvm {
 namespace stacksafe {
   using LocationSet = Set<Location>;
 
+  class Env {
+    Map<Location, Location> heap_;
+    Map<Register, Location> stack_;
+    LocationFactory &factory_;
+  public:
+    explicit Env(LocationFactory &factory);
+    bool subsetof(const Env &rhs) const;
+    void unify(const Env &rhs);
+    void print(llvm::raw_ostream &O) const;
+  };
+
   template <typename T>
   using OptRef = std::optional<std::reference_wrapper<T>>;
   template <class Key>
