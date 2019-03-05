@@ -11,6 +11,7 @@ namespace stacksafe {
   public:
     explicit Interpret(Env &env);
     bool visit(llvm::Instruction &I);
+    bool visitInstruction(llvm::Instruction &I);
   };
 }
 

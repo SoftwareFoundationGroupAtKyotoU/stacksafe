@@ -5,9 +5,14 @@ namespace stacksafe {
     : env_(env) {
   }
   bool Interpret::visit(llvm::Instruction &I) {
-    // auto ret = Base::visit(I);
+    auto ret = Base::visit(I);
     llvm::outs() << I << endl;
     llvm::outs() << env_;
-    return false;
+    return ret;
+  }
+  bool Interpret::visitInstruction(llvm::Instruction &I) {
+    ClassNameVisitor name;
+    llvm::outs() << name.visit(I) << endl;
+    return true;
   }
 }
