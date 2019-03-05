@@ -1,31 +1,18 @@
 #ifndef INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
 #define INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
 
+#include "collection.hpp"
 #include "location.hpp"
 #include "register.hpp"
 #include "visualize.hpp"
 #include <functional>
 #include <memory>
 #include <unordered_map>
-#include <unordered_set>
 
 namespace llvm {
   class raw_ostream;
 }
 namespace stacksafe {
-  template <typename T>
-  class Set : public std::unordered_set<T> {
-  public:
-    bool subsetof(const Set &rhs) const {
-      return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
-    }
-    void unify(const Set &rhs) {
-      this->insert(begin(rhs), end(rhs));
-    }
-    void print(llvm::raw_ostream &O) const {
-      O << set_like(make_manip_seq(*this));
-    }
-  };
   using LocationSet = Set<Location>;
 
   template <typename K, typename T>
