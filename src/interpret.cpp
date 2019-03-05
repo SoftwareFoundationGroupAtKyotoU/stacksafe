@@ -21,10 +21,10 @@ namespace stacksafe {
     if (auto reg = make_register(I)) {
       return env_.alloca(*reg);
     }
-    error(__func__);
-    return false;
+    return error(__func__);
   }
-  void Interpret::error(const char *name) {
+  bool Interpret::error(const char *name) {
     llvm::errs() << "Error: unknown error in " << name << endl;
+    return false;
   }
 }

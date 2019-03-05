@@ -14,7 +14,7 @@ namespace stacksafe {
     bool visitInstruction(llvm::Instruction &I);
     bool visitAllocaInst(llvm::AllocaInst &I);
   private:
-    static void error(const char *name);
+    static bool error(const char *name);
   };
 }
 
