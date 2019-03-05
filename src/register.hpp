@@ -16,6 +16,8 @@ namespace stacksafe {
   public:
     explicit Value(const llvm::Value &v);
     const llvm::Value &get() const;
+    std::size_t hash() const;
+    bool operator==(const Value &rhs) const;
     bool is_register() const;
     void print(llvm::raw_ostream &O) const;
   };
@@ -23,9 +25,6 @@ namespace stacksafe {
   class Register : public Value {
   public:
     explicit Register(const llvm::Value &v);
-    std::size_t hash() const;
-    bool operator==(const Register &rhs) const;
-    void print(llvm::raw_ostream &O) const;
   };
   std::optional<Register> make_register(const llvm::Value &v);
 
@@ -33,8 +32,12 @@ namespace stacksafe {
 }
 namespace std {
   template <>
+  struct hash<stacksafe::Value> {
+    size_t operator()(const stacksafe::Value &v) const;
+  };
+  template <>
   struct hash<stacksafe::Register> {
-    size_t operator()(stacksafe::Register r) const;
+    size_t operator()(const stacksafe::Register &r) const;
   };
 }
 

@@ -11,6 +11,12 @@ namespace stacksafe {
   const llvm::Value &Value::get() const {
     return *val_;
   }
+  std::size_t Value::hash() const {
+    return std::hash<const void *>{}(val_);
+  }
+  bool Value::operator==(const Value &rhs) const {
+    return val_ == rhs.val_;
+  }
   bool Value::is_register() const {
     return 0 <= num_;
   }
@@ -24,15 +30,6 @@ namespace stacksafe {
 
   Register::Register(const llvm::Value &v)
     : Value(v) {
-  }
-  std::size_t Register::hash() const {
-    return std::hash<const void *>{}(val_);
-  }
-  bool Register::operator==(const Register &rhs) const {
-    return val_ == rhs.val_;
-  }
-  void Register::print(llvm::raw_ostream &O) const {
-    Value::print(O);
   }
   std::optional<Register> make_register(const llvm::Value &v) {
     auto reg = Register{v};
@@ -58,7 +55,10 @@ namespace stacksafe {
   }
 }
 namespace std {
-  size_t hash<stacksafe::Register>::operator()(stacksafe::Register r) const {
+  size_t hash<stacksafe::Value>::operator()(const stacksafe::Value &v) const {
+    return v.hash();
+  }
+  size_t hash<stacksafe::Register>::operator()(const stacksafe::Register &r) const {
     return r.hash();
   }
 }
