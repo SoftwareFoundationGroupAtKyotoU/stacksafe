@@ -22,6 +22,18 @@ namespace stacksafe {
     O << "stack: " << stack_ << endl;
   }
 
+  bool Env::argument(const Register &dst) {
+    if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
+      if (llvm::isa<llvm::PointerType>(val.getType())) {
+        auto o = factory_.getOutlive();
+        auto g = factory_.getGlobal();
+        stack_.add(dst, LocationSet{{g, o}});
+      }
+      return true;
+    }
+    return false;
+  }
+
   Environment::Environment(LocationFactory &factory)
     : factory_(factory) {
     auto g = factory.getGlobal();

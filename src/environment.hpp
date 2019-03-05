@@ -23,6 +23,8 @@ namespace stacksafe {
     bool subsetof(const Env &rhs) const;
     void unify(const Env &rhs);
     void print(llvm::raw_ostream &O) const;
+  public:
+    bool argument(const Register &dst);
   };
 
   template <typename T>
