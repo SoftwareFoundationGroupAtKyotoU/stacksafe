@@ -18,6 +18,8 @@ namespace stacksafe {
     std::queue<BB> todo_;
   public:
     Interpretation(llvm::Function &F);
+    void proceed();
+    void update(BB b);
   };
 }
 

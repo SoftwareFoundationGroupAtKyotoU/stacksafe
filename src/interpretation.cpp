@@ -22,4 +22,30 @@ namespace stacksafe {
       }
     }
   }
+  void Interpretation::proceed() {
+    while (!todo_.empty()) {
+      auto b = todo_.front();
+      todo_.pop();
+      update(b);
+    }
+  }
+  void Interpretation::update(BB b) {
+    auto &env = map_.at(b);
+    // ApplyVisitor apply(env);
+    // for (auto &i : b->getInstList()) {
+    //   if (!apply.visit(i)) {
+    //     llvm::errs() << "Error: something wrong happens" << endl;
+    //   }
+    // }
+    if (auto t = b->getTerminator()) {
+      for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+        auto succ = t->getSuccessor(i);
+        auto &next = map_.at(succ);
+        if (!env.subsetof(next)) {
+          next.unify(env);
+          todo_.push(succ);
+        }
+      }
+    }
+  }
 }
