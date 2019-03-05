@@ -4,6 +4,7 @@
 #include "visualize.hpp"
 #include <algorithm>
 #include <unordered_set>
+#include <unordered_map>
 
 namespace llvm {
   class raw_ostream;
@@ -20,6 +21,51 @@ namespace stacksafe {
     }
     void print(llvm::raw_ostream &O) const {
       O << set_like(make_manip_seq(*this));
+    }
+  };
+
+  template <typename K, typename T>
+  class Map : public std::unordered_map<K, Set<T>> {
+  public:
+    using V = Set<T>;
+    const V *get(const K &k) const {
+      if (auto it = this->find(k); it != end(*this)) {
+        return &std::get<1>(*it);
+      } else {
+        return nullptr;
+      }
+    }
+    V *get(const K &k) {
+      const auto &c = *this;
+      return const_cast<V *>(c.get(k));
+    }
+    bool exists(const K &k) const {
+      return this->count(k) != 0;
+    }
+    bool subsetof(const Map &rhs) const {
+      auto f = [&rhs](const auto &e) {
+                 auto &[k, l] = e;
+                 if (auto r = rhs.get(k)) {
+                   return l.subsetof(*r);
+                 } else {
+                   return false;
+                 }
+               };
+      return std::all_of(begin(*this), end(*this), std::move(f));
+    }
+    void unify(const Map &rhs) {
+      auto f = [&lhs = *this](const auto &e) {
+                 auto &[k, r] = e;
+                 if (auto l = lhs.get(k)) {
+                   l->unify(r);
+                 } else {
+                   lhs.insert(e);
+                 }
+               };
+      std::for_each(begin(rhs), end(rhs), std::move(f));
+    }
+    void print(llvm::raw_ostream &O) const {
+      O << set_like(foreach(key_value, *this));
     }
   };
 }
