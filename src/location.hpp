@@ -11,19 +11,19 @@ namespace stacksafe {
     enum class Kind : std::size_t
       { Global, Outlive, Local };
     friend class LocationFactory;
-    std::size_t loc_;
-    explicit Location(Kind k);
-    Location &operator++();
-    Location operator++(int);
+    const Kind kind_;
+    const std::size_t loc_;
+    explicit Location(Kind k, std::size_t n);
   public:
     size_t hash() const;
     bool operator<(const Location &rhs) const;
     bool operator==(const Location &rhs) const;
     void print(llvm::raw_ostream &O) const;
   };
+  std::string to_ascii(std::size_t n);
 
   class LocationFactory {
-    Location current_;
+    std::size_t current_;
   public:
     LocationFactory();
     Location getGlobal();
