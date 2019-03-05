@@ -13,12 +13,20 @@ namespace llvm {
   class raw_ostream;
 }
 namespace stacksafe {
-  class LocationSet : public std::unordered_set<Location> {
+  template <typename T>
+  class Set : public std::unordered_set<T> {
   public:
-    bool subsetof(const LocationSet &rhs) const;
-    void unify(const LocationSet &rhs);
-    void print(llvm::raw_ostream &O) const;
+    bool subsetof(const Set &rhs) const {
+      return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
+    }
+    void unify(const Set &rhs) {
+      this->insert(begin(rhs), end(rhs));
+    }
+    void print(llvm::raw_ostream &O) const {
+      O << set_like(make_manip_seq(*this));
+    }
   };
+  using LocationSet = Set<Location>;
 
   template <typename T>
   using OptRef = std::optional<std::reference_wrapper<T>>;
