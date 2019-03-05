@@ -87,6 +87,15 @@ namespace stacksafe {
       O << set_like(foreach(key_value, *this));
     }
   };
+
+  template <typename T>
+  std::optional<T> to_optional(const T *t) {
+    if (t) {
+      return *t;
+    } else {
+      return std::nullopt;
+    }
+  }
 }
 
 #endif//INCLUDE_GUARD_6495011D_0D6C_4DD2_8111_D661A86391FD
