@@ -16,18 +16,19 @@ namespace stacksafe {
     return loc_ == rhs.loc_;
   }
   void Location::print(llvm::raw_ostream &O) const {
-    const auto prefix =
-      [](Kind k) {
-        switch (k) {
-        case Kind::Global:
-          return "#g";
-        case Kind::Outlive:
-          return "#o";
-        case Kind::Local:
-          return "#l";
-        }
-      }(kind_);
-    O << angles(make_manip(prefix, to_ascii(loc_)));
+    std::string id;
+    switch (kind_) {
+    case Kind::Global:
+      id = "#_g";
+      break;
+    case Kind::Outlive:
+      id = "#_o";
+      break;
+    case Kind::Local:
+      id = to_ascii(loc_);
+      break;
+    }
+    O << angles(make_manip(id));
   }
   std::string to_ascii(std::size_t n) {
     const std::size_t base = 26;
