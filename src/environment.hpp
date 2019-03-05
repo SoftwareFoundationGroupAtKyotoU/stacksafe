@@ -26,6 +26,7 @@ namespace stacksafe {
   public:
     bool init_argument(const Register &dst);
     bool alloca(const Register &dst);
+    bool store(const Value &src, const Register &dst);
   private:
     std::optional<LocationSet> to_symbols(const Value &v) const;
   };

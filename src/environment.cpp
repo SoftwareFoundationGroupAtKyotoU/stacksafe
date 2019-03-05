@@ -39,6 +39,24 @@ namespace stacksafe {
     stack_.add(dst, l);
     return true;
   }
+  bool Env::store(const Value &src, const Register &dst) {
+    using std::begin;
+    using std::end;
+    if (auto val = to_symbols(src)) {
+      if (auto ptr = stack_.get(dst)) {
+        auto pred = [&heap = heap_](Location loc) {
+                      return heap.exists(loc);
+                    };
+        if (std::all_of(begin(*ptr), end(*ptr), std::move(pred))) {
+          for (auto &each: *ptr) {
+            heap_.get(each)->unify(*val);
+          }
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 
   std::optional<LocationSet> Env::to_symbols(const Value &v) const {
     const auto ptr = &v.get();
