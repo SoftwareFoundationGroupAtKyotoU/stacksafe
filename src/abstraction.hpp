@@ -1,11 +1,11 @@
-#include "interpretation.hpp"
+#include "abstraction.hpp"
 #include "method.hpp"
 #include "visualize.hpp"
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
-  Interpretation::Interpretation(llvm::Function &F) {
+  Abstraction::Abstraction(llvm::Function &F) {
     Env empty(factory_);
     for (auto &b : F.getBasicBlockList()) {
       map_.emplace(&b, empty);
@@ -23,14 +23,14 @@ namespace stacksafe {
       }
     }
   }
-  void Interpretation::proceed() {
+  void Abstraction::proceed() {
     while (!todo_.empty()) {
       auto b = todo_.front();
       todo_.pop();
       update(b);
     }
   }
-  void Interpretation::update(BB b) {
+  void Abstraction::update(BB b) {
     auto &env = map_.at(b);
     Method method(env);
     for (auto &i : b->getInstList()) {

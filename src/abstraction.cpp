@@ -11,13 +11,13 @@ namespace llvm {
   class Function;
 }
 namespace stacksafe {
-  class Interpretation {
+  class Abstraction {
     using BB = llvm::BasicBlock *;
     LocationFactory factory_;
     std::unordered_map<BB, Env> map_;
     std::queue<BB> todo_;
   public:
-    Interpretation(llvm::Function &F);
+    Abstraction(llvm::Function &F);
     void proceed();
     void update(BB b);
   };
