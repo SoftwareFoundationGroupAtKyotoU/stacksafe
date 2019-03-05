@@ -6,11 +6,8 @@ namespace stacksafe {
     : factory_(factory) {
     auto g = factory_.getGlobal();
     auto o = factory_.getOutlive();
-    LocationSet set;
-    set.insert(g);
-    heap_.add(g, set);
-    set.insert(o);
-    heap_.add(o, set);
+    heap_.add(g, g);
+    heap_.add(o, LocationSet{{g, o}});
   }
   bool Env::subsetof(const Env &rhs) const {
     return (heap_.subsetof(rhs.heap_) &&
