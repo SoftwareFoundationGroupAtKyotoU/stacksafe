@@ -14,7 +14,7 @@ namespace stacksafe {
     todo_.push(entry);
     for (auto &a: F.args()) {
       if (auto reg = make_register(a)) {
-        if (!map_.at(entry).argument(*reg)) {
+        if (!map_.at(entry).init_argument(*reg)) {
           llvm::errs() << "Error: " << spaces(make_manip(*reg))
                        << "is not an argument" << endl;
         }

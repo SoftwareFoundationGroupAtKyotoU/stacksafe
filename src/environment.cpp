@@ -22,7 +22,7 @@ namespace stacksafe {
     O << "stack: " << stack_ << endl;
   }
 
-  bool Env::argument(const Register &dst) {
+  bool Env::init_argument(const Register &dst) {
     if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
       if (llvm::isa<llvm::PointerType>(val.getType())) {
         auto o = factory_.getOutlive();

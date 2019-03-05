@@ -24,7 +24,7 @@ namespace stacksafe {
     void unify(const Env &rhs);
     void print(llvm::raw_ostream &O) const;
   public:
-    bool argument(const Register &dst);
+    bool init_argument(const Register &dst);
   };
 
   template <typename T>
