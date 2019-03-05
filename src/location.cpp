@@ -19,16 +19,16 @@ namespace stacksafe {
     std::string id;
     switch (kind_) {
     case Kind::Global:
-      id = "#_g";
+      id = "_g";
       break;
     case Kind::Outlive:
-      id = "#_o";
+      id = "_o";
       break;
     case Kind::Local:
       id = to_ascii(loc_);
       break;
     }
-    O << angles(make_manip(id));
+    O << angles(make_manip("#", id));
   }
   std::string to_ascii(std::size_t n) {
     const std::size_t base = 26;
