@@ -13,6 +13,7 @@ namespace stacksafe {
     bool visit(llvm::Instruction &I);
     bool visitInstruction(llvm::Instruction &I);
     bool visitAllocaInst(llvm::AllocaInst &I);
+    bool visitStoreInst(llvm::StoreInst &I);
   private:
     static bool error(const char *name);
   };
