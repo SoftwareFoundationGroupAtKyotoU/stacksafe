@@ -1,11 +1,9 @@
 #ifndef INCLUDE_GUARD_24D0B7C2_7662_4CA7_9DAE_CFC9EA3B0EA0
 #define INCLUDE_GUARD_24D0B7C2_7662_4CA7_9DAE_CFC9EA3B0EA0
 
+#include "abstraction.hpp"
 #include "environment.hpp"
 #include <memory>
-#include <queue>
-#include <unordered_map>
-#include <vector>
 #include <llvm/Pass.h>
 
 namespace llvm {
@@ -15,20 +13,8 @@ namespace llvm {
 }
 
 namespace stacksafe {
-  class State {
-    LocationFactory factory_;
-    std::unordered_map<llvm::BasicBlock *, Environment> map_;
-    std::queue<llvm::BasicBlock *> todo_;
-  public:
-    State(llvm::Function &F);
-    void traverse();
-  private:
-    void propagate(const Environment &prev, llvm::TerminatorInst &I);
-    Environment update(llvm::BasicBlock &B);
-  };
-
   class Analyzer : public llvm::FunctionPass {
-    std::unique_ptr<State> state_;
+    std::unique_ptr<Abstraction> abst_;
   public:
     static char ID;
   public:
