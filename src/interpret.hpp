@@ -12,6 +12,9 @@ namespace stacksafe {
     explicit Interpret(Env &env);
     bool visit(llvm::Instruction &I);
     bool visitInstruction(llvm::Instruction &I);
+    bool visitAllocaInst(llvm::AllocaInst &I);
+  private:
+    static void error(const char *name);
   };
 }
 

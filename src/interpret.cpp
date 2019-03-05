@@ -15,4 +15,14 @@ namespace stacksafe {
     llvm::outs() << name.visit(I) << endl;
     return true;
   }
+  bool Interpret::visitAllocaInst(llvm::AllocaInst &I) {
+    if (auto reg = make_register(I)) {
+      return env_.alloca(*reg);
+    }
+    error(__func__);
+    return false;
+  }
+  void Interpret::error(const char *name) {
+    llvm::errs() << "Error: unknown error in " << name << endl;
+  }
 }
