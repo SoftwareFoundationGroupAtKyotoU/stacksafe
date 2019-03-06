@@ -28,6 +28,8 @@ namespace stacksafe {
         auto o = factory_.getOutlive();
         auto g = factory_.getGlobal();
         just_added(stack_.add(dst, LocationSet{{g, o}}));
+      } else {
+        just_added(stack_.add(dst));
       }
       return true;
     }
@@ -95,7 +97,7 @@ namespace stacksafe {
     return false;
   }
   bool Env::cmp(const Register &dst) {
-    return just_added(stack_.add(dst));
+    return !just_added(stack_.add(dst));
   }
 
   std::optional<LocationSet> Env::to_symbols(const Value &v) const {
