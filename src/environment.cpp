@@ -44,12 +44,9 @@ namespace stacksafe {
     using std::end;
     if (auto val = to_symbols(src)) {
       if (auto ptr = stack_.get(dst)) {
-        auto pred = [&heap = heap_](Location loc) {
-                      return heap.exists(loc);
-                    };
-        if (std::all_of(begin(*ptr), end(*ptr), std::move(pred))) {
+        if (heap_.exists(*ptr)) {
           for (auto &each: *ptr) {
-            heap_.get(each)->unify(*val);
+            heap_.add(each, *val);
           }
           return true;
         }
