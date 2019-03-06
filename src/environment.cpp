@@ -94,6 +94,9 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Env::cmp(const Register &dst) {
+    return just_added(stack_.add(dst));
+  }
 
   std::optional<LocationSet> Env::to_symbols(const Value &v) const {
     const auto ptr = &v.get();

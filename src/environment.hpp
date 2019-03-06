@@ -32,6 +32,7 @@ namespace stacksafe {
     bool binary(const Register &dst);
     bool cast(const Register &dst, const Value &src);
     bool phi(const Register &dst, const Value &src);
+    bool cmp(const Register &dst);
   private:
     std::optional<LocationSet> to_symbols(const Value &v) const;
     static bool just_added(bool cond);
