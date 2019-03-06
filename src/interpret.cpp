@@ -32,8 +32,7 @@ namespace stacksafe {
     if (auto ptr = I.getPointerOperand()) {
       if (auto dst = make_register(*ptr)) {
         if (auto val = I.getValueOperand()) {
-          Value src{*val};
-          return env_.store(src, *dst);
+          return env_.store(Value{*val}, *dst);
         }
       }
     }
@@ -76,8 +75,7 @@ namespace stacksafe {
   bool Interpret::visitPHINode(llvm::PHINode &I) {
     if (auto dst = make_register(I)) {
       for (auto &use: I.incoming_values()) {
-        Value val{*use.get()};
-        return env_.phi(*dst, val);
+        return env_.phi(*dst, Value{*use.get()});
       }
     }
     return error(__func__);
@@ -94,8 +92,7 @@ namespace stacksafe {
   }
 
   Env interpret(llvm::BasicBlock &b, Env env) {
-    Interpret p{env};
-    p.visit(b);
+    Interpret{env}.visit(b);
     return env;
   }
 }
