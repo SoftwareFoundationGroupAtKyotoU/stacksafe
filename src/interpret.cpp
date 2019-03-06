@@ -12,7 +12,7 @@ namespace stacksafe {
     if (I.isTerminator()) {
       llvm::outs() << env_;
     } else if (!Base::visit(I)) {
-      llvm::errs() << "Error: something wrong happens" << endl;
+      llvm::errs() << endl << "Error: something wrong happens" << endl;
       return false;
     }
     return true;
