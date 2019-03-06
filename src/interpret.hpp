@@ -20,6 +20,7 @@ namespace stacksafe {
     bool visitBinaryOperator(llvm::BinaryOperator &I);
     bool visitCastInst(llvm::CastInst &I);
     bool visitPHINode(llvm::PHINode &I);
+    bool visitCmpInst(llvm::CmpInst &I);
   private:
     static bool error(const char *name);
   };

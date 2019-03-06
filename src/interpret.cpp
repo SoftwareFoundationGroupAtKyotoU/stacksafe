@@ -82,6 +82,12 @@ namespace stacksafe {
     }
     return error(__func__);
   }
+  bool Interpret::visitCmpInst(llvm::CmpInst &I) {
+    if (auto dst = make_register(I)) {
+      return env_.cmp(*dst);
+    }
+    return error(__func__);
+  }
   bool Interpret::error(const char *name) {
     llvm::errs() << "Error: unknown error in " << name << endl;
     return false;
