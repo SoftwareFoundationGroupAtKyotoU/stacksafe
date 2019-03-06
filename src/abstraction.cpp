@@ -6,6 +6,7 @@
 
 namespace stacksafe {
   Abstraction::Abstraction(llvm::Function &F) {
+    llvm::outs() << "name: " << F.getName() << endl;
     Env empty{factory_};
     for (auto &b: F.getBasicBlockList()) {
       map_.emplace(&b, empty);
@@ -32,10 +33,9 @@ namespace stacksafe {
     }
   }
   void Abstraction::update(BB b) {
-    auto label = make_manip("label %", get_number(*b), endl);
-    llvm::outs() << label;
+    llvm::outs() << "label: %" << get_number(*b) << endl;
     const auto prev = interpret(*b, map_.at(b));
-    llvm::outs() << label << endl;
+    llvm::outs() << endl;
     if (auto t = b->getTerminator()) {
       for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
         auto succ = t->getSuccessor(i);

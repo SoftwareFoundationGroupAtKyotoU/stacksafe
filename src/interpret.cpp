@@ -12,7 +12,7 @@ namespace stacksafe {
     if (I.isTerminator()) {
       llvm::outs() << env_;
     } else if (!Base::visit(I)) {
-      llvm::errs() << endl << "Error: something wrong happens" << endl;
+      llvm::errs() << "Error: something wrong happens" << endl;
       return false;
     }
     return true;
@@ -89,7 +89,7 @@ namespace stacksafe {
     return error(__func__);
   }
   bool Interpret::error(const char *name) {
-    llvm::errs() << "Error: unknown error in " << name << endl;
+    llvm::errs() << endl << "Error: unknown error in " << name << endl;
     return false;
   }
 
