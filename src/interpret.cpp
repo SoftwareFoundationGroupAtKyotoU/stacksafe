@@ -4,6 +4,9 @@ namespace stacksafe {
   Interpret::Interpret(Env &env)
     : env_(env) {
   }
+  void Interpret::visit(llvm::BasicBlock &B) {
+    Base::visit(B);
+  }
   bool Interpret::visit(llvm::Instruction &I) {
     llvm::outs() << I << endl;
     if (!Base::visit(I)) {
@@ -47,5 +50,11 @@ namespace stacksafe {
   bool Interpret::error(const char *name) {
     llvm::errs() << "Error: unknown error in " << name << endl;
     return false;
+  }
+
+  Env interpret(llvm::BasicBlock &b, Env env) {
+    Interpret p{env};
+    p.visit(b);
+    return env;
   }
 }

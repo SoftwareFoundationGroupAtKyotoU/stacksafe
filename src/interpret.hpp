@@ -10,6 +10,7 @@ namespace stacksafe {
     Env &env_;
   public:
     explicit Interpret(Env &env);
+    void visit(llvm::BasicBlock &B);
     bool visit(llvm::Instruction &I);
     bool visitInstruction(llvm::Instruction &I);
     bool visitAllocaInst(llvm::AllocaInst &I);
@@ -18,6 +19,8 @@ namespace stacksafe {
   private:
     static bool error(const char *name);
   };
+
+  Env interpret(llvm::BasicBlock &b, Env env);
 }
 
 #endif//INCLUDE_GUARD_6D412E24_64BA_4C27_BEA5_DB1CAFCC48BD
