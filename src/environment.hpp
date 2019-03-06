@@ -31,7 +31,7 @@ namespace stacksafe {
     bool getelementptr(const Register &dst, const Register &src);
   private:
     std::optional<LocationSet> to_symbols(const Value &v) const;
-    static void just_added(bool cond);
+    static bool just_added(bool cond);
   };
 
   template <typename T>

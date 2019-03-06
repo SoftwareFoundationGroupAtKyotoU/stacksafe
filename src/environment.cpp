@@ -71,8 +71,7 @@ namespace stacksafe {
   }
   bool Env::getelementptr(const Register &dst, const Register &src) {
     if (auto val = stack_.get(src)) {
-      just_added(stack_.add(dst, *val));
-      return true;
+      return just_added(stack_.add(dst, *val));
     }
     return false;
   }
@@ -89,10 +88,11 @@ namespace stacksafe {
       return std::nullopt;
     }
   }
-  void Env::just_added(bool cond) {
+  bool Env::just_added(bool cond) {
     if (cond) {
       llvm::errs() << "unexpected" << endl;
     }
+    return cond;
   }
 
   Environment::Environment(LocationFactory &factory)
