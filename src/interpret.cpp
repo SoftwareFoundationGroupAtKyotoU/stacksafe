@@ -49,6 +49,16 @@ namespace stacksafe {
     }
     return error(__func__);
   }
+  bool Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &I) {
+    if (auto dst = make_register(I)) {
+      if (auto ptr = I.getPointerOperand()) {
+        if (auto src = make_register(*ptr)) {
+          return env_.getelementptr(*dst, *src);
+        }
+      }
+    }
+    return error(__func__);
+  }
   bool Interpret::error(const char *name) {
     llvm::errs() << "Error: unknown error in " << name << endl;
     return false;
