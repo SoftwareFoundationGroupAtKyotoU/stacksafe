@@ -11,6 +11,7 @@ namespace stacksafe {
     llvm::outs() << I << endl;
     if (!Base::visit(I)) {
       llvm::outs() << env_;
+      llvm::errs() << "Error: something wrong happens" << endl;
       return false;
     }
     return true;

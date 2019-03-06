@@ -32,22 +32,21 @@ namespace stacksafe {
     }
   }
   void Abstraction::update(BB b) {
-    auto &env = map_.at(b);
-    Interpret interpret(env);
-    for (auto &i : b->getInstList()) {
-      if (!interpret.visit(i)) {
-        llvm::errs() << "Error: something wrong happens" << endl;
-      }
-    }
+    auto label = make_manip("label %", get_number(*b), endl);
+    llvm::outs() << label;
+    const auto prev = interpret(*b, map_.at(b));
+    llvm::outs() << label << endl;
     if (auto t = b->getTerminator()) {
       for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
         auto succ = t->getSuccessor(i);
         auto &next = map_.at(succ);
-        if (!env.subsetof(next)) {
-          next.unify(env);
+        if (!prev.subsetof(next)) {
+          next.unify(prev);
           todo_.push(succ);
         }
       }
+    } else {
+      llvm::errs() << "No terminator" << endl;
     }
   }
 }
