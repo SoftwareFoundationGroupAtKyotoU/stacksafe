@@ -65,6 +65,14 @@ namespace stacksafe {
     }
     return error(__func__);
   }
+  bool Interpret::visitCastInst(llvm::CastInst &I) {
+    if (auto dst = make_register(I)) {
+      if (auto val = I.getOperand(0)) {
+        return env_.cast(*dst, Value{*val});
+      }
+    }
+    return error(__func__);
+  }
   bool Interpret::error(const char *name) {
     llvm::errs() << "Error: unknown error in " << name << endl;
     return false;

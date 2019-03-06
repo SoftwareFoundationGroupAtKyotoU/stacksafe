@@ -18,6 +18,7 @@ namespace stacksafe {
     bool visitLoadInst(llvm::LoadInst &I);
     bool visitGetElementPtrInst(llvm::GetElementPtrInst &I);
     bool visitBinaryOperator(llvm::BinaryOperator &I);
+    bool visitCastInst(llvm::CastInst &I);
   private:
     static bool error(const char *name);
   };
