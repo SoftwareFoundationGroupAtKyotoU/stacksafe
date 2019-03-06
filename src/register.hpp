@@ -23,7 +23,7 @@ namespace stacksafe {
   };
 
   class Register : public Value {
-  public:
+    friend std::optional<Register> make_register(const llvm::Value &);
     explicit Register(const llvm::Value &v);
   };
   std::optional<Register> make_register(const llvm::Value &v);
