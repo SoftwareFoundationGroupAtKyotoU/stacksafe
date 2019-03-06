@@ -39,23 +39,30 @@ namespace stacksafe {
       const auto &c = *this;
       return const_cast<V *>(c.get(k));
     }
-    void add(const K &k) {
-      if (!exists(k)) {
+    bool add(const K &k) {
+      if (exists(k)) {
+        return true;
+      } else {
         this->emplace(k, V{});
+        return false;
       }
     }
-    void add(const K &k, const T &t) {
+    bool add(const K &k, const T &t) {
       if (auto e = get(k)) {
         e->insert(t);
+        return true;
       } else {
         this->emplace(k, V{{t}});
+        return false;
       }
     }
-    void add(const K &k, const V &v) {
+    bool add(const K &k, const V &v) {
       if (auto e = get(k)) {
         e->unify(v);
+        return true;
       } else {
         this->emplace(k, v);
+        return false;
       }
     }
     bool exists(const K &k) const {
