@@ -27,6 +27,7 @@ namespace stacksafe {
     explicit Register(const llvm::Value &v);
   };
   std::optional<Register> make_register(const llvm::Value &v);
+  std::optional<Register> make_register(const Value &v);
 
   int get_number(const llvm::Value &v);
 }

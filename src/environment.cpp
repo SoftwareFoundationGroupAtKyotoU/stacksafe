@@ -81,7 +81,7 @@ namespace stacksafe {
 
   std::optional<LocationSet> Env::to_symbols(const Value &v) const {
     const auto ptr = &v.get();
-    if (auto reg = make_register(*ptr)) {
+    if (auto reg = make_register(v)) {
       return to_optional(stack_.get(*reg));
     } else if (llvm::isa<llvm::ConstantPointerNull>(ptr)) {
       return to_optional(heap_.get(factory_.getGlobal()));

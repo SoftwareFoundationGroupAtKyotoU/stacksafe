@@ -39,6 +39,9 @@ namespace stacksafe {
       return std::nullopt;
     }
   }
+  std::optional<Register> make_register(const Value &v) {
+    return make_register(v.get());
+  }
 
   int get_number(const llvm::Value &v) {
     auto digits = "0123456789";
