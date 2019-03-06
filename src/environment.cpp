@@ -40,8 +40,6 @@ namespace stacksafe {
     return true;
   }
   bool Env::store(const Value &src, const Register &dst) {
-    using std::begin;
-    using std::end;
     if (auto val = to_symbols(src)) {
       if (auto ptr = stack_.get(dst)) {
         if (heap_.exists(*ptr)) {
@@ -55,8 +53,6 @@ namespace stacksafe {
     return false;
   }
   bool Env::load(const Register &dst, const Register &src) {
-    using std::begin;
-    using std::end;
     if (auto ptr = stack_.get(src)) {
       if (heap_.exists(*ptr)) {
         for (auto &each: *ptr) {
