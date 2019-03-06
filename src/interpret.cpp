@@ -73,6 +73,15 @@ namespace stacksafe {
     }
     return error(__func__);
   }
+  bool Interpret::visitPHINode(llvm::PHINode &I) {
+    if (auto dst = make_register(I)) {
+      for (auto &use: I.incoming_values()) {
+        Value val{*use.get()};
+        return env_.phi(*dst, val);
+      }
+    }
+    return error(__func__);
+  }
   bool Interpret::error(const char *name) {
     llvm::errs() << "Error: unknown error in " << name << endl;
     return false;
