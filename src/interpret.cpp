@@ -9,8 +9,9 @@ namespace stacksafe {
   }
   bool Interpret::visit(llvm::Instruction &I) {
     llvm::outs() << I << endl;
-    if (!Base::visit(I)) {
+    if (I.isTerminator()) {
       llvm::outs() << env_;
+    } else if (!Base::visit(I)) {
       llvm::errs() << "Error: something wrong happens" << endl;
       return false;
     }
