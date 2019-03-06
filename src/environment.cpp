@@ -89,6 +89,11 @@ namespace stacksafe {
       return std::nullopt;
     }
   }
+  void Env::just_added(bool cond) {
+    if (cond) {
+      llvm::errs() << "unexpected" << endl;
+    }
+  }
 
   Environment::Environment(LocationFactory &factory)
     : factory_(factory) {
