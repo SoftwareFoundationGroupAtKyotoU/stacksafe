@@ -112,26 +112,6 @@ namespace stacksafe {
       O << set_like(foreach(key_value, *this));
     }
   };
-
-  class Environment {
-    LocationMap<Location> heap_;
-    LocationMap<Register> stack_;
-    LocationFactory &factory_;
-  public:
-    explicit Environment(LocationFactory &factory);
-    bool subsetof(const Environment &rhs) const;
-    void unify(const Environment &rhs);
-    void print(llvm::raw_ostream &O) const;
-    std::optional<LocationSet> at(const Value &val);
-    bool argument(const Register &dst);
-    bool alloca(const Register &dst);
-    bool load(const Register &dst, const Register &src);
-    bool store(const Value &src, const Register &dst);
-    bool getelementptr(const Register &dst, const Register &src);
-    bool binary(const Register &dst);
-    bool cast(const Register &dst, const Register &src);
-    bool phi(const Register &dst, const Register &src);
-  };
 }
 
 #endif//INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
