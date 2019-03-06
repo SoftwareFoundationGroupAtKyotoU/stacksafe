@@ -6,8 +6,8 @@ namespace stacksafe {
     : factory_(factory) {
     auto g = factory_.getGlobal();
     auto o = factory_.getOutlive();
-    heap_.add(g, g);
-    heap_.add(o, LocationSet{{g, o}});
+    just_added(heap_.add(g, g));
+    just_added(heap_.add(o, LocationSet{{g, o}}));
   }
   bool Env::subsetof(const Env &rhs) const {
     return (heap_.subsetof(rhs.heap_) &&
@@ -27,7 +27,7 @@ namespace stacksafe {
       if (llvm::isa<llvm::PointerType>(val.getType())) {
         auto o = factory_.getOutlive();
         auto g = factory_.getGlobal();
-        stack_.add(dst, LocationSet{{g, o}});
+        just_added(stack_.add(dst, LocationSet{{g, o}}));
       }
       return true;
     }
@@ -35,8 +35,8 @@ namespace stacksafe {
   }
   bool Env::alloca(const Register &dst) {
     auto l = factory_.getLocal();
-    heap_.add(l);
-    stack_.add(dst, l);
+    just_added(heap_.add(l));
+    just_added(stack_.add(dst, l));
     return true;
   }
   bool Env::store(const Value &src, const Register &dst) {
@@ -46,7 +46,7 @@ namespace stacksafe {
       if (auto ptr = stack_.get(dst)) {
         if (heap_.exists(*ptr)) {
           for (auto &each: *ptr) {
-            heap_.add(each, *val);
+            just_added(!heap_.add(each, *val));
           }
           return true;
         }
@@ -61,7 +61,7 @@ namespace stacksafe {
       if (heap_.exists(*ptr)) {
         for (auto &each: *ptr) {
           if (auto val = heap_.get(each)) {
-            stack_.add(dst, *val);
+            just_added(stack_.add(dst, *val));
           }
         }
         return true;
@@ -71,7 +71,7 @@ namespace stacksafe {
   }
   bool Env::getelementptr(const Register &dst, const Register &src) {
     if (auto val = stack_.get(src)) {
-      stack_.add(dst, *val);
+      just_added(stack_.add(dst, *val));
       return true;
     }
     return false;
