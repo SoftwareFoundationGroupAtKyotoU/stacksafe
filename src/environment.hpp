@@ -29,6 +29,7 @@ namespace stacksafe {
     bool store(const Value &src, const Register &dst);
     bool load(const Register &dst, const Register &src);
     bool getelementptr(const Register &dst, const Register &src);
+    bool binary(const Register &dst);
   private:
     std::optional<LocationSet> to_symbols(const Value &v) const;
     static bool just_added(bool cond);
