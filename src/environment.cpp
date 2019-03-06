@@ -84,6 +84,16 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Env::phi(const Register &dst, const Value &src) {
+    if (llvm::isa<llvm::Constant>(src.get())) {
+      return just_added(stack_.add(dst));
+    } else if (auto reg = make_register(src)) {
+      if (auto val = stack_.get(*reg)) {
+        return just_added(stack_.add(dst, *val));
+      }
+    }
+    return false;
+  }
 
   std::optional<LocationSet> Env::to_symbols(const Value &v) const {
     const auto ptr = &v.get();
