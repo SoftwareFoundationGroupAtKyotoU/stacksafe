@@ -57,7 +57,7 @@ namespace stacksafe {
       if (heap_.exists(*ptr)) {
         for (auto &each: *ptr) {
           if (auto val = heap_.get(each)) {
-            just_added(stack_.add(dst, *val));
+            stack_.add(dst, *val);
           }
         }
         return true;
