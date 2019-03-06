@@ -61,6 +61,13 @@ namespace stacksafe {
     bool exists(const K &k) const {
       return this->count(k) != 0;
     }
+    bool exists(const Set<K> &ks) const {
+      using std::begin, std::end;
+      auto pred = [&self = *this](const K &k) {
+                    return self.exists(k);
+                  };
+      return std::all_of(begin(ks), end(ks), std::move(pred));
+    }
     bool subsetof(const Map &rhs) const {
       auto f = [&rhs](const auto &e) {
                  auto &[k, l] = e;
