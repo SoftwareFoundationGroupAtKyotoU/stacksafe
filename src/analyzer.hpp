@@ -19,6 +19,7 @@ namespace stacksafe {
     static char ID;
   public:
     Analyzer();
+    void print(llvm::raw_ostream &O, const llvm::Module *M) const override;
     bool runOnFunction(llvm::Function &F) override;
   };
 }

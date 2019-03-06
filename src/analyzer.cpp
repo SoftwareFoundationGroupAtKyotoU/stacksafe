@@ -8,6 +8,11 @@ namespace stacksafe {
   Analyzer::Analyzer()
     : llvm::FunctionPass(ID)
   {}
+  void Analyzer::print(llvm::raw_ostream &O, const llvm::Module *M) const {
+    llvm::outs()
+      // << "Analyzer Pass for Stack Temporal Memory Safety"
+      << endl;
+  }
   bool Analyzer::runOnFunction(llvm::Function &F) {
     abst_ = std::make_unique<Abstraction>(F);
     abst_->proceed();
@@ -16,4 +21,4 @@ namespace stacksafe {
 }
 
 static llvm::RegisterPass<stacksafe::Analyzer> registerpass
-("stacksafe", "Analyzer Pass for Stack Temporal Memory Safety");
+("stacksafe", "StackSafe");
