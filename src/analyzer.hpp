@@ -21,24 +21,6 @@ namespace stacksafe {
     Analyzer();
     bool runOnFunction(llvm::Function &F) override;
   };
-
-  class ApplyVisitor : public llvm::InstVisitor<ApplyVisitor, bool> {
-    using RetTy = bool;
-    using Base = llvm::InstVisitor<ApplyVisitor, RetTy>;
-    Environment &env_;
-  public:
-    explicit ApplyVisitor(Environment &env);
-    RetTy visit(llvm::Instruction &I);
-    RetTy visitAllocaInst(llvm::AllocaInst &I);
-    RetTy visitLoadInst(llvm::LoadInst &I);
-    RetTy visitStoreInst(llvm::StoreInst &I);
-    RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &I);
-    RetTy visitBinaryOperator(llvm::BinaryOperator &I);
-    RetTy visitCastInst(llvm::CastInst &I);
-    RetTy visitPHINode(llvm::PHINode &I);
-    RetTy visitCmpInst(llvm::CmpInst &I);
-    RetTy visitInstruction(llvm::Instruction &I);
-  };
 }
 
 #endif//INCLUDE_GUARD_24D0B7C2_7662_4CA7_9DAE_CFC9EA3B0EA0
