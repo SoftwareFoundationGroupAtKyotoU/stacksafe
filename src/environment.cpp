@@ -69,6 +69,13 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Env::getelementptr(const Register &dst, const Register &src) {
+    if (auto val = stack_.get(src)) {
+      stack_.add(dst, *val);
+      return true;
+    }
+    return false;
+  }
 
   std::optional<LocationSet> Env::to_symbols(const Value &v) const {
     const auto ptr = &v.get();
