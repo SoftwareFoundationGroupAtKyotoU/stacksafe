@@ -14,7 +14,10 @@ namespace stacksafe {
   class Set : public std::unordered_set<T> {
   public:
     bool subsetof(const Set &rhs) const {
-      return std::includes(begin(rhs), end(rhs), begin(*this), end(*this));
+      auto pred = [&rhs](const T &t) {
+                    return rhs.exists(t);
+                  };
+      return std::all_of(begin(*this), end(*this), std::move(pred));
     }
     void unify(const Set &rhs) {
       this->insert(begin(rhs), end(rhs));
