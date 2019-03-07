@@ -21,6 +21,7 @@ namespace stacksafe {
     bool visitCastInst(llvm::CastInst &I);
     bool visitPHINode(llvm::PHINode &I);
     bool visitCmpInst(llvm::CmpInst &I);
+    bool visitCallInst(llvm::CallInst &I);
   private:
     static bool error(const char *name);
   };
