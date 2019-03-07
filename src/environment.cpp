@@ -123,4 +123,23 @@ namespace stacksafe {
     : heap_{env.heap_}, stack_{env.stack_} {
       reachable_.insert(LocationFactory::getGlobal());
     }
+  bool Reachable::add(const Register &reg) {
+    args_.insert(reg);
+    if (auto next = stack_.get(reg)) {
+      return add(*next);
+    }
+    return false;
+  }
+  bool Reachable::add(const LocationSet &locs) {
+    reachable_.unify(locs);
+    for (auto &loc: locs) {
+      if (auto next = heap_.get(loc)) {
+        if (!next->subsetof(reachable_) && add(*next)) {
+          continue;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
 }
