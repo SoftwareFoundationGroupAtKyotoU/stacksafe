@@ -112,6 +112,18 @@ namespace stacksafe {
       return std::nullopt;
     }
   }
+  bool Env::reach(const LocationSet &locs, LocationSet &reachs) const {
+    reachs.unify(locs);
+    for (auto &loc: locs) {
+      if (auto next = heap_.get(loc)) {
+        if (next->subsetof(reachs) || reach(*next, reachs)) {
+          continue;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
   bool Env::just_added(bool cond) {
     if (cond) {
       llvm::errs() << "unexpected" << endl;
