@@ -44,26 +44,27 @@ namespace stacksafe {
   bool Env::store(const Value &src, const Register &dst) {
     if (auto val = to_symbols(src)) {
       if (auto ptr = stack_.get(dst)) {
-        if (heap_.exists(*ptr)) {
-          for (auto &each: *ptr) {
-            just_added(!heap_.add(each, *val));
+        for (auto &each: *ptr) {
+          if (heap_.add(each, *val)) {
+            continue;
           }
-          return true;
+          return false;
         }
+        return true;
       }
     }
     return false;
   }
   bool Env::load(const Register &dst, const Register &src) {
     if (auto ptr = stack_.get(src)) {
-      if (heap_.exists(*ptr)) {
-        for (auto &each: *ptr) {
-          if (auto val = heap_.get(each)) {
-            stack_.add(dst, *val);
-          }
+      for (auto &each: *ptr) {
+        if (auto val = heap_.get(each)) {
+          stack_.add(dst, *val);
+          continue;
         }
-        return true;
+        return false;
       }
+      return true;
     }
     return false;
   }
