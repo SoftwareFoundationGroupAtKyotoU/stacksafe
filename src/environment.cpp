@@ -142,7 +142,7 @@ namespace stacksafe {
     reachable_.unify(locs);
     for (auto &loc: locs) {
       if (auto next = heap_.get(loc)) {
-        if (!next->subsetof(reachable_) && add(*next)) {
+        if (next->subsetof(reachable_) || add(*next)) {
           continue;
         }
       }
