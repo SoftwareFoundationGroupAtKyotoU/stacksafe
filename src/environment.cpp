@@ -99,6 +99,29 @@ namespace stacksafe {
   bool Env::cmp(const Register &dst) {
     return !just_added(stack_.add(dst));
   }
+  bool Env::call(const UserRange &args, std::optional<Register> dst) {
+    LocationSet reachs{{LocationFactory::getGlobal()}};
+    for (auto &arg: args) {
+      if (auto reg = make_register(*arg.get())) {
+        if (auto next = stack_.get(*reg)) {
+          if (reach(*next, reachs)) {
+            continue;
+          }
+        }
+        return false;
+      }
+    }
+    for (auto &r: reachs) {
+      if (heap_.add(r, reachs)) {
+        continue;
+      }
+      return false;
+    }
+    if (dst) {
+      return stack_.add(*dst, reachs);
+    }
+    return true;
+  }
 
   std::optional<LocationSet> Env::to_symbols(const Value &v) const {
     const auto ptr = &v.get();

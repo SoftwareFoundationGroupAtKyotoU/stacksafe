@@ -17,6 +17,7 @@ namespace stacksafe {
   using Stack = Map<Register, Location>;
 
   class Env {
+    using UserRange = llvm::User::const_op_range;
     Heap heap_;
     Stack stack_;
     LocationFactory &factory_;
@@ -35,6 +36,7 @@ namespace stacksafe {
     bool cast(const Register &dst, const Value &src);
     bool phi(const Register &dst, const Value &src);
     bool cmp(const Register &dst);
+    bool call(const UserRange &args, std::optional<Register> dst);
   private:
     std::optional<LocationSet> to_symbols(const Value &v) const;
     bool reach(const LocationSet &locs, LocationSet &reachs) const;
