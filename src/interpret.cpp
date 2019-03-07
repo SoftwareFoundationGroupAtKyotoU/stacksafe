@@ -24,7 +24,9 @@ namespace stacksafe {
   }
   bool Interpret::visitAllocaInst(llvm::AllocaInst &I) {
     if (auto reg = make_register(I)) {
-      return env_.alloca(*reg);
+      if (env_.alloca(*reg)) {
+        return true;
+      }
     }
     return error(__func__);
   }
@@ -32,7 +34,9 @@ namespace stacksafe {
     if (auto ptr = I.getPointerOperand()) {
       if (auto dst = make_register(*ptr)) {
         if (auto val = I.getValueOperand()) {
-          return env_.store(Value{*val}, *dst);
+          if (env_.store(Value{*val}, *dst)) {
+            return true;
+          }
         }
       }
     }
@@ -42,7 +46,9 @@ namespace stacksafe {
     if (auto ptr = I.getPointerOperand()) {
       if (auto src = make_register(*ptr)) {
         if (auto dst = make_register(I)) {
-          return env_.load(*dst, *src);
+          if (env_.load(*dst, *src)) {
+            return true;
+          }
         }
       }
     }
@@ -52,7 +58,9 @@ namespace stacksafe {
     if (auto dst = make_register(I)) {
       if (auto ptr = I.getPointerOperand()) {
         if (auto src = make_register(*ptr)) {
-          return env_.getelementptr(*dst, *src);
+          if (env_.getelementptr(*dst, *src)) {
+            return true;
+          }
         }
       }
     }
@@ -60,14 +68,18 @@ namespace stacksafe {
   }
   bool Interpret::visitBinaryOperator(llvm::BinaryOperator &I) {
     if (auto dst = make_register(I)) {
-      return env_.binary(*dst);
+      if (env_.binary(*dst)) {
+        return true;
+      }
     }
     return error(__func__);
   }
   bool Interpret::visitCastInst(llvm::CastInst &I) {
     if (auto dst = make_register(I)) {
       if (auto val = I.getOperand(0)) {
-        return env_.cast(*dst, Value{*val});
+        if (env_.cast(*dst, Value{*val})) {
+          return true;
+        }
       }
     }
     return error(__func__);
@@ -75,14 +87,18 @@ namespace stacksafe {
   bool Interpret::visitPHINode(llvm::PHINode &I) {
     if (auto dst = make_register(I)) {
       for (auto &use: I.incoming_values()) {
-        return env_.phi(*dst, Value{*use.get()});
+        if (env_.phi(*dst, Value{*use.get()})) {
+          return true;
+        }
       }
     }
     return error(__func__);
   }
   bool Interpret::visitCmpInst(llvm::CmpInst &I) {
     if (auto dst = make_register(I)) {
-      return env_.cmp(*dst);
+      if (env_.cmp(*dst)) {
+        return true;
+      }
     }
     return error(__func__);
   }
