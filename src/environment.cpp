@@ -69,19 +69,23 @@ namespace stacksafe {
   }
   bool Env::getelementptr(const Register &dst, const Register &src) {
     if (auto val = stack_.get(src)) {
-      return just_added(stack_.add(dst, *val));
+      stack_.add(dst, *val);
+      return true;
     }
     return false;
   }
   bool Env::binary(const Register &dst) {
-    return just_added(stack_.add(dst));
+    stack_.add(dst);
+    return true;
   }
   bool Env::cast(const Register &dst, const Value &src) {
     if (llvm::isa<llvm::Constant>(src.get())) {
-      return just_added(stack_.add(dst));
+      stack_.add(dst);
+      return true;
     } else if (auto reg = make_register(src)) {
       if (auto val = stack_.get(*reg)) {
-        return just_added(stack_.add(dst, *val));
+        stack_.add(dst, *val);
+        return true;
       }
     }
     return false;
@@ -97,7 +101,8 @@ namespace stacksafe {
     return false;
   }
   bool Env::cmp(const Register &dst) {
-    return !just_added(stack_.add(dst));
+    stack_.add(dst);
+    return true;
   }
   bool Env::call(const UserRange &args, std::optional<Register> dst) {
     LocationSet reachs{{LocationFactory::getGlobal()}};
@@ -118,7 +123,7 @@ namespace stacksafe {
       return false;
     }
     if (dst) {
-      return stack_.add(*dst, reachs);
+      return !stack_.add(*dst, reachs);
     }
     return true;
   }
