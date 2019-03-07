@@ -130,11 +130,36 @@ namespace stacksafe {
     }
     return false;
   }
+  bool Reachable::update(const Register &dst) {
+    LocationSet done{{LocationFactory::getGlobal()}};
+    for (auto &arg: args_) {
+      if (auto next = stack_.get(arg); next && update(*next, done)) {
+        continue;
+      }
+      return false;
+    }
+    return stack_.add(dst, reachable_);
+  }
   bool Reachable::add(const LocationSet &locs) {
     reachable_.unify(locs);
     for (auto &loc: locs) {
       if (auto next = heap_.get(loc)) {
         if (!next->subsetof(reachable_) && add(*next)) {
+          continue;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+  bool Reachable::update(const LocationSet &locs, LocationSet &done) {
+    for (auto &loc: locs) {
+      if (done.exists(loc)) {
+        continue;
+      }
+      if (auto next = heap_.get(loc)) {
+        if (update(*next, done) && heap_.add(loc, reachable_)) {
+          done.insert(loc);
           continue;
         }
       }
