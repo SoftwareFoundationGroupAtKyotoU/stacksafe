@@ -13,10 +13,12 @@ namespace llvm {
 }
 namespace stacksafe {
   using LocationSet = Set<Location>;
+  using Heap = Map<Location, Location>;
+  using Stack = Map<Register, Location>;
 
   class Env {
-    Map<Location, Location> heap_;
-    Map<Register, Location> stack_;
+    Heap heap_;
+    Stack stack_;
     LocationFactory &factory_;
   public:
     explicit Env(LocationFactory &factory);
