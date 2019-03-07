@@ -38,6 +38,16 @@ namespace stacksafe {
   private:
     std::optional<LocationSet> to_symbols(const Value &v) const;
     static bool just_added(bool cond);
+    friend class Reachable;
+  };
+
+  class Reachable {
+    Set<Register> args_;
+    LocationSet reachable_;
+    Heap &heap_;
+    Stack &stack_;
+  public:
+    explicit Reachable(Env &env);
   };
 }
 

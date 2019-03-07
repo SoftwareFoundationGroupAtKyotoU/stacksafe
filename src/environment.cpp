@@ -118,4 +118,9 @@ namespace stacksafe {
     }
     return cond;
   }
+
+  Reachable::Reachable(Env &env)
+    : heap_{env.heap_}, stack_{env.stack_} {
+      reachable_.insert(LocationFactory::getGlobal());
+    }
 }
