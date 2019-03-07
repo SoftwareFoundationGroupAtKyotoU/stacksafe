@@ -19,6 +19,9 @@ namespace stacksafe {
     void unify(const Set &rhs) {
       this->insert(begin(rhs), end(rhs));
     }
+    bool exists(const T &t) const {
+      return this->count(t) != 0;
+    }
     void print(llvm::raw_ostream &O) const {
       O << set_like(make_manip_seq(*this));
     }
