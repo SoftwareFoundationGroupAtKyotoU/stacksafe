@@ -43,19 +43,6 @@ namespace stacksafe {
     static bool just_added(bool cond);
     friend class Reachable;
   };
-
-  class Reachable {
-    LocationSet reachable_;
-    Heap &heap_;
-    Stack &stack_;
-  public:
-    explicit Reachable(Env &env);
-    bool add(const Register &reg);
-    bool update();
-    bool update(const Register &dst);
-  private:
-    bool add(const LocationSet &locs);
-  };
 }
 
 #endif//INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4

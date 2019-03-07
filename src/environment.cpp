@@ -153,39 +153,4 @@ namespace stacksafe {
     }
     return cond;
   }
-
-  Reachable::Reachable(Env &env)
-    : heap_{env.heap_}, stack_{env.stack_} {
-      reachable_.insert(LocationFactory::getGlobal());
-    }
-  bool Reachable::add(const Register &reg) {
-    if (auto next = stack_.get(reg)) {
-      return add(*next);
-    }
-    return false;
-  }
-  bool Reachable::update() {
-    for (auto &val: reachable_) {
-      if (heap_.add(val, reachable_)) {
-        continue;
-      }
-      return false;
-    }
-    return true;
-  }
-  bool Reachable::update(const Register &dst) {
-    return stack_.add(dst, reachable_);
-  }
-  bool Reachable::add(const LocationSet &locs) {
-    reachable_.unify(locs);
-    for (auto &loc: locs) {
-      if (auto next = heap_.get(loc)) {
-        if (next->subsetof(reachable_) || add(*next)) {
-          continue;
-        }
-      }
-      return false;
-    }
-    return true;
-  }
 }
