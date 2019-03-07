@@ -129,13 +129,16 @@ namespace stacksafe {
     }
     return false;
   }
-  bool Reachable::update(const Register &dst) {
+  bool Reachable::update() {
     for (auto &val: reachable_) {
       if (heap_.add(val, reachable_)) {
         continue;
       }
       return false;
     }
+    return true;
+  }
+  bool Reachable::update(const Register &dst) {
     return stack_.add(dst, reachable_);
   }
   bool Reachable::add(const LocationSet &locs) {

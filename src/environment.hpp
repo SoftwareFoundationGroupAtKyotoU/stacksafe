@@ -48,6 +48,7 @@ namespace stacksafe {
   public:
     explicit Reachable(Env &env);
     bool add(const Register &reg);
+    bool update();
     bool update(const Register &dst);
   private:
     bool add(const LocationSet &locs);
