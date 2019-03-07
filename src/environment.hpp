@@ -42,7 +42,6 @@ namespace stacksafe {
   };
 
   class Reachable {
-    Set<Register> args_;
     LocationSet reachable_;
     Heap &heap_;
     Stack &stack_;
@@ -52,7 +51,6 @@ namespace stacksafe {
     bool update(const Register &dst);
   private:
     bool add(const LocationSet &locs);
-    bool update(const LocationSet &locs, LocationSet &done);
   };
 }
 
