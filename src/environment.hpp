@@ -41,7 +41,6 @@ namespace stacksafe {
     std::optional<LocationSet> to_symbols(const Value &v) const;
     bool reach(const LocationSet &locs, LocationSet &reachs) const;
     static bool just_added(bool cond);
-    friend class Reachable;
   };
 }
 
