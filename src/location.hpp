@@ -26,8 +26,8 @@ namespace stacksafe {
     std::size_t current_;
   public:
     LocationFactory();
-    Location getGlobal();
-    Location getOutlive();
+    static Location getGlobal();
+    static Location getOutlive();
     Location getLocal();
   };
 }

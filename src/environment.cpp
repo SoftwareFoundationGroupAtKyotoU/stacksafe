@@ -4,8 +4,8 @@
 namespace stacksafe {
   Env::Env(LocationFactory &factory)
     : factory_(factory) {
-    auto g = factory_.getGlobal();
-    auto o = factory_.getOutlive();
+    auto g = LocationFactory::getGlobal();
+    auto o = LocationFactory::getOutlive();
     just_added(heap_.add(g, g));
     just_added(heap_.add(o, LocationSet{{g, o}}));
   }
@@ -25,8 +25,8 @@ namespace stacksafe {
   bool Env::init_argument(const Register &dst) {
     if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
       if (llvm::isa<llvm::PointerType>(val.getType())) {
-        auto o = factory_.getOutlive();
-        auto g = factory_.getGlobal();
+        auto o = LocationFactory::getOutlive();
+        auto g = LocationFactory::getGlobal();
         just_added(stack_.add(dst, LocationSet{{g, o}}));
       } else {
         just_added(stack_.add(dst));
@@ -105,7 +105,7 @@ namespace stacksafe {
     if (auto reg = make_register(v)) {
       return to_optional(stack_.get(*reg));
     } else if (llvm::isa<llvm::ConstantPointerNull>(ptr)) {
-      return to_optional(heap_.get(factory_.getGlobal()));
+      return to_optional(heap_.get(LocationFactory::getGlobal()));
     } else if (llvm::isa<llvm::Constant>(ptr)) {
       return LocationSet{};
     } else {
