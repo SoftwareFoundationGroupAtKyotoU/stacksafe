@@ -6,8 +6,9 @@ namespace stacksafe {
     : factory_(factory) {
     auto g = LocationFactory::getGlobal();
     auto o = LocationFactory::getOutlive();
-    just_added(heap_.add(g, g));
-    just_added(heap_.add(o, LocationSet{{g, o}}));
+    if (heap_.add(g, g) || heap_.add(o, LocationSet{{g, o}})) {
+      llvm::errs() << "Error: unreachable" << endl;
+    }
   }
   bool Env::subsetof(const Env &rhs) const {
     return (heap_.subsetof(rhs.heap_) &&
@@ -27,19 +28,16 @@ namespace stacksafe {
       if (llvm::isa<llvm::PointerType>(val.getType())) {
         auto o = LocationFactory::getOutlive();
         auto g = LocationFactory::getGlobal();
-        just_added(stack_.add(dst, LocationSet{{g, o}}));
+        return !stack_.add(dst, LocationSet{{g, o}});
       } else {
-        just_added(stack_.add(dst));
+        return !stack_.add(dst);
       }
-      return true;
     }
     return false;
   }
   bool Env::alloca(const Register &dst) {
     auto l = factory_.getLocal();
-    just_added(heap_.add(l));
-    just_added(stack_.add(dst, l));
-    return true;
+    return !(heap_.add(l) || stack_.add(dst, l));
   }
   bool Env::store(const Value &src, const Register &dst) {
     if (auto val = to_symbols(src)) {
@@ -93,10 +91,12 @@ namespace stacksafe {
   }
   bool Env::phi(const Register &dst, const Value &src) {
     if (llvm::isa<llvm::Constant>(src.get())) {
-      return just_added(stack_.add(dst));
+      stack_.add(dst);
+      return true;
     } else if (auto reg = make_register(src)) {
       if (auto val = stack_.get(*reg)) {
-        return just_added(stack_.add(dst, *val));
+        stack_.add(dst, *val);
+        return true;
       }
     }
     return false;
@@ -152,11 +152,5 @@ namespace stacksafe {
       return false;
     }
     return true;
-  }
-  bool Env::just_added(bool cond) {
-    if (cond) {
-      llvm::errs() << "unexpected" << endl;
-    }
-    return cond;
   }
 }
