@@ -12,7 +12,7 @@ namespace stacksafe {
       map_.emplace(&b, empty);
     }
     auto entry = &F.getEntryBlock();
-    todo_.push(entry);
+    todo_.insert(entry);
     auto &env = map_.at(entry);
     for (auto &a: F.args()) {
       if (auto reg = make_register(a)) {
@@ -27,8 +27,9 @@ namespace stacksafe {
   }
   void Abstraction::proceed() {
     while (!todo_.empty()) {
-      auto b = todo_.front();
-      todo_.pop();
+      auto front = todo_.begin();
+      auto b = *front;
+      todo_.erase(front);
       update(b);
     }
   }
@@ -42,7 +43,7 @@ namespace stacksafe {
         auto &next = map_.at(succ);
         if (!prev.subsetof(next)) {
           next.unify(prev);
-          todo_.push(succ);
+          todo_.insert(succ);
         }
       }
     } else {

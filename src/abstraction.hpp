@@ -3,8 +3,8 @@
 
 #include "environment.hpp"
 #include "location.hpp"
-#include <queue>
 #include <unordered_map>
+#include <unordered_set>
 
 namespace llvm {
   class BasicBlock;
@@ -15,7 +15,7 @@ namespace stacksafe {
     using BB = llvm::BasicBlock *;
     LocationFactory factory_;
     std::unordered_map<BB, Env> map_;
-    std::queue<BB> todo_;
+    std::unordered_set<BB> todo_;
   public:
     Abstraction(llvm::Function &F);
     void proceed();
