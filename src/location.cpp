@@ -3,22 +3,22 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
-  Location::Location(Kind k, std::size_t n)
-    : kind_(k), loc_(n)
+  Location::Location(std::size_t loc)
+    : loc_(loc)
   {}
   size_t Location::hash() const {
-    return std::hash<std::size_t>{}(static_cast<std::size_t>(kind_) + loc_);
+    return std::hash<std::size_t>{}(loc_);
   }
   void Location::print(llvm::raw_ostream &O) const {
     std::string id;
-    switch (kind_) {
-    case Kind::Global:
+    switch (loc_) {
+    case static_cast<std::size_t>(-1):
       id = "_g";
       break;
-    case Kind::Outlive:
+    case 0:
       id = "_o";
       break;
-    case Kind::Local:
+    default:
       id = to_ascii(loc_);
       break;
     }
@@ -41,13 +41,13 @@ namespace stacksafe {
   LocationFactory::LocationFactory()
     : current_(1) {}
   Location LocationFactory::getGlobal() {
-    return Location(Location::Kind::Global, 0);
+    return Location(-1);
   }
   Location LocationFactory::getOutlive() {
-    return Location(Location::Kind::Outlive, 0);
+    return Location(0);
   }
   Location LocationFactory::getLocal() {
-    return Location(Location::Kind::Local, current_++);
+    return Location(current_++);
   }
 }
 namespace std {

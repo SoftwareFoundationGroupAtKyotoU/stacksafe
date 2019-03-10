@@ -11,9 +11,8 @@ namespace stacksafe {
     enum class Kind : std::size_t
       { Global, Outlive, Local };
     friend class LocationFactory;
-    const Kind kind_;
     const std::size_t loc_;
-    explicit Location(Kind k, std::size_t n);
+    explicit Location(std::size_t loc);
   public:
     size_t hash() const;
     void print(llvm::raw_ostream &O) const;
