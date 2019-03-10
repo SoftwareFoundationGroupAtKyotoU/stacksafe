@@ -9,12 +9,6 @@ namespace stacksafe {
   size_t Location::hash() const {
     return std::hash<std::size_t>{}(static_cast<std::size_t>(kind_) + loc_);
   }
-  bool Location::operator<(const Location &rhs) const {
-    return loc_ < rhs.loc_;
-  }
-  bool Location::operator==(const Location &rhs) const {
-    return loc_ == rhs.loc_;
-  }
   void Location::print(llvm::raw_ostream &O) const {
     std::string id;
     switch (kind_) {
@@ -39,6 +33,9 @@ namespace stacksafe {
       n = (n - digit - 1) / base;
     }
     return s;
+  }
+  bool operator==(const Location &lhs, const Location &rhs) {
+    return lhs.hash() == rhs.hash();
   }
 
   LocationFactory::LocationFactory()

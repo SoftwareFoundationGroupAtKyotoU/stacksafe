@@ -16,11 +16,10 @@ namespace stacksafe {
     explicit Location(Kind k, std::size_t n);
   public:
     size_t hash() const;
-    bool operator<(const Location &rhs) const;
-    bool operator==(const Location &rhs) const;
     void print(llvm::raw_ostream &O) const;
   };
   std::string to_ascii(std::size_t n);
+  bool operator==(const Location &lhs, const Location &rhs);
 
   class LocationFactory {
     std::size_t current_;
