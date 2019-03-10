@@ -13,29 +13,26 @@ namespace stacksafe {
     return std::hash<std::size_t>{}(loc_);
   }
   void Location::print(llvm::raw_ostream &O) const {
-    std::string id;
-    switch (loc_) {
-    case Global:
-      id = "_g";
-      break;
-    case Outlive:
-      id = "_o";
-      break;
-    default:
-      id = to_ascii(loc_);
-      break;
-    }
-    O << angles(make_manip("#", id));
-  }
-  std::string to_ascii(std::size_t n) {
-    const std::size_t base = 26;
-    std::string s;
-    while (0 < n) {
-      const auto digit = (n - 1) % base;
-      s.insert(0, 1, 'a' + digit);
-      n = (n - digit - 1) / base;
-    }
-    return s;
+    auto ascii =
+      [](std::size_t n) -> std::string {
+        switch (n) {
+        case Location::Global:
+          return "#_g";
+        case Location::Outlive:
+          return "#_o";
+        }
+        const std::size_t base = 26;
+        std::string s;
+        while (0 < n) {
+          const auto digit = (n - 1) % base;
+          s.append(1, 'a' + digit);
+          n = (n - digit - 1) / base;
+        }
+        s.append("#");
+        std::reverse(begin(s), end(s));
+        return s;
+      };
+    O << angles(make_manip(ascii(loc_)));
   }
   bool operator==(const Location &lhs, const Location &rhs) {
     return lhs.hash() == rhs.hash();

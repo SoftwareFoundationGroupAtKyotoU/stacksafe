@@ -16,7 +16,6 @@ namespace stacksafe {
     size_t hash() const;
     void print(llvm::raw_ostream &O) const;
   };
-  std::string to_ascii(std::size_t n);
   bool operator==(const Location &lhs, const Location &rhs);
 
   class LocationFactory {
