@@ -1,4 +1,5 @@
 #include "interpret.hpp"
+#include "environment.hpp"
 
 namespace stacksafe {
   Interpret::Interpret(Env &env)
