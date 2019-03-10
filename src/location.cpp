@@ -3,6 +3,9 @@
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
+  const std::size_t Location::Global = static_cast<std::size_t>(-1);
+  const std::size_t Location::Outlive = 0;
+  const std::size_t Location::Local = 1;
   Location::Location(std::size_t loc)
     : loc_(loc)
   {}
@@ -12,10 +15,10 @@ namespace stacksafe {
   void Location::print(llvm::raw_ostream &O) const {
     std::string id;
     switch (loc_) {
-    case static_cast<std::size_t>(-1):
+    case Global:
       id = "_g";
       break;
-    case 0:
+    case Outlive:
       id = "_o";
       break;
     default:
@@ -39,12 +42,12 @@ namespace stacksafe {
   }
 
   LocationFactory::LocationFactory()
-    : current_(1) {}
+    : current_(Location::Local) {}
   Location LocationFactory::getGlobal() {
-    return Location(-1);
+    return Location(Location::Global);
   }
   Location LocationFactory::getOutlive() {
-    return Location(0);
+    return Location(Location::Outlive);
   }
   Location LocationFactory::getLocal() {
     return Location(current_++);
