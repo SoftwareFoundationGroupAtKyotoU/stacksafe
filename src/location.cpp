@@ -1,27 +1,28 @@
 #include "location.hpp"
 #include "visualize.hpp"
 #include <llvm/Support/raw_ostream.h>
+#include <string>
 
 namespace stacksafe {
-  const std::size_t Location::Global = static_cast<std::size_t>(-1);
-  const std::size_t Location::Outlive = 0;
-  const std::size_t Location::Local = 1;
-  Location::Location(std::size_t loc)
+  const int Location::Global = -1;
+  const int Location::Outlive = 0;
+  const int Location::Local = 1;
+  Location::Location(int loc)
     : loc_(loc)
   {}
-  size_t Location::hash() const {
-    return std::hash<std::size_t>{}(loc_);
+  std::size_t Location::hash() const {
+    return std::hash<int>{}(loc_);
   }
   void Location::print(llvm::raw_ostream &O) const {
     auto ascii =
-      [](std::size_t n) -> std::string {
+      [](int n) -> std::string {
         switch (n) {
         case Location::Global:
           return "#_g";
         case Location::Outlive:
           return "#_o";
         }
-        const std::size_t base = 26;
+        const int base = 26;
         std::string s;
         while (0 < n) {
           const auto digit = (n - 1) % base;

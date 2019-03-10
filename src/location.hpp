@@ -8,18 +8,18 @@ namespace llvm {
 }
 namespace stacksafe {
   class Location {
-    static const std::size_t Global, Outlive, Local;
+    static const int Global, Outlive, Local;
     friend class LocationFactory;
-    const std::size_t loc_;
-    explicit Location(std::size_t loc);
+    const int loc_;
+    explicit Location(int loc);
   public:
-    size_t hash() const;
+    std::size_t hash() const;
     void print(llvm::raw_ostream &O) const;
   };
   bool operator==(const Location &lhs, const Location &rhs);
 
   class LocationFactory {
-    std::size_t current_;
+    int current_;
   public:
     LocationFactory();
     static Location getGlobal();
