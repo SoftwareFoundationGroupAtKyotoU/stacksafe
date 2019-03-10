@@ -18,8 +18,9 @@ optflags := -analyze $(load-option) $(pass-option) $(OPTFLAGS)
 
 # collect sub-targets
 srcs := $(wildcard *.c)
-tests := $(srcs:%.c=%)
-cleans := $(addprefix clean/,$(tests))
+irs := $(wildcard *.ll)
+tests := $(addprefix test/,$(irs))
+cleans := $(addprefix clean/,$(irs))
 
 .PHONY: all
 all: $(tests)
@@ -28,7 +29,7 @@ all: $(tests)
 	$(cc) $(cflags) -o $@ $<
 
 .PHONY: $(tests)
-$(tests): %: %.ll
+$(tests): test/%.ll: %.ll
 	@echo ---- $< begins ----
 	$(opt) $(optflags) $<
 	@echo ---- $< ends ----
