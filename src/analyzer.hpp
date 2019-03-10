@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_24D0B7C2_7662_4CA7_9DAE_CFC9EA3B0EA0
 
 #include "abstraction.hpp"
-#include "environment.hpp"
 #include <memory>
 #include <llvm/Pass.h>
 
