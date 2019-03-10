@@ -33,17 +33,16 @@ namespace stacksafe {
   std::string to_ascii(std::size_t n) {
     const std::size_t base = 26;
     std::string s;
-    ++n;
     while (0 < n) {
-      const auto digit = n % base;
-      s.insert(0, 1, 'a' + digit - 1);
-      n = (n - digit) / base;
+      const auto digit = (n - 1) % base;
+      s.insert(0, 1, 'a' + digit);
+      n = (n - digit - 1) / base;
     }
     return s;
   }
 
   LocationFactory::LocationFactory()
-    : current_(0) {}
+    : current_(1) {}
   Location LocationFactory::getGlobal() {
     return Location(Location::Kind::Global, 0);
   }
