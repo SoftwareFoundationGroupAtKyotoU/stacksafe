@@ -1,7 +1,7 @@
 # target info
 export TARGET := StackSafe.so
 export PASS := stacksafe
-export CLANG_VERSION := 6.0
+export CLANG_VERSION := 7
 # user-specified flags
 CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic
 LDFLAGS :=
@@ -20,6 +20,7 @@ llvm-cxxflags += -Wno-unused-command-line-argument
 from := -Wno-maybe-uninitialized
 to := -Wno-sometimes-uninitialized
 llvm-cxxflags := $(subst $(from),$(to),$(llvm-cxxflags))
+llvm-cxxflags := $(subst -Wno-class-memaccess,,$(llvm-cxxflags))
 # build options
 releaseflags := -c $(CXXFLAGS) $(llvm-cxxflags)
 debugflags := $(releaseflags)
