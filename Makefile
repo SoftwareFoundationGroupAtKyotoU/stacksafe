@@ -55,6 +55,31 @@ $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	@mkdir -p $(objdir)
 	@$(cxx) $(dependflags) $< | $(dependscript) > $@
 
+-include $(deps)
+
+# test
+cc := clang$(LLVM_SUFFIX)
+opt := opt$(LLVM_SUFFIX)
+cflags := -c -S -emit-llvm $(CFLAGS)
+path := $(CURDIR)/$(TARGET)
+pass := $(patsubst %.so,%,$(TARGET))
+optflags := -analyze -load $(path) -$(pass)
+
+testdir := test
+irsrcs := $(wildcard $(testdir)/*.c)
+irobjs := $(wildcard $(testdir)/*.ll)
+tests := $(irobjs:%.ll=%)
+
+$(irsrcs:%.ll=%.c): %.ll: %.c
+	$(cc) $(cflags) $(OUTPUT_OPTION) $<
+
+.PHONY: $(tests)
+$(tests): $(testdir)/%: $(testdir)/%.ll
+	@echo ---- $* begins ----
+	$(opt) $(optflags) $<
+	@echo ---- $* ends ----
+	@echo
+
 .PHONY: clean
 clean:
 	@$(RM) $(objs) $(deps)
@@ -62,5 +87,3 @@ clean:
 .PHONY: distclean
 distclean:
 	@$(RM) $(wildcard $(objdir)/*) $(TARGET)
-
--include $(deps)
