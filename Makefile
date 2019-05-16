@@ -36,12 +36,10 @@ $(TARGET): $(objs)
 .PHONY: release
 release: cxxflags += $(release-flags)
 release: $(TARGET)
-	$(info RELEASE:)
 
 .PHONY: debug
 debug: cxxflags += $(debug-flags)
 debug: $(TARGET)
-	$(info DEBUG:)
 
 .SECONDEXPANSION:
 $(objs) $(deps): | $$(@D)
