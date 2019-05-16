@@ -17,8 +17,6 @@ llvm-includedir != $(config) --includedir
 cxxflags-out := -std=% -fuse-ld=% -O% -g% -DNDEBUG -Wl,%
 cxxflags := $(CXXFLAGS) $(filter-out $(cxxflags-out),$(llvm-cxxflags))
 ldflags := $(LDFLAGS) $(llvm-ldflags)
-dependflags := -I$(llvm-includedir) -MM
-dependscript = sed -e 's,$(notdir $*).o,$*.o $*.d,g'
 
 srcdir := src
 objdir := obj
@@ -50,10 +48,15 @@ $(objs): $(objdir)/%.o: $(srcdir)/%.cpp
 	@mkdir -p $(objdir)
 	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) $<
 
+depend-output = $(cxx) -I$(llvm-includedir) -MM $<
+depend-output += | sed -e 's,$*\.o,$(@D)/$*.o $@,g'
+depend-output += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
+depend-output += | sed -e 's,\\$$,,g' | tr -d '\n'
+depend-output += | tee $@ >/dev/null
 $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	$(info DEPS: $@)
 	@mkdir -p $(objdir)
-	@$(cxx) $(dependflags) $< | $(dependscript) > $@
+	@$(depend-output)
 
 -include $(deps)
 
