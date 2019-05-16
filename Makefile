@@ -43,9 +43,13 @@ debug: cxxflags += $(debug-flags)
 debug: $(TARGET)
 	$(info DEBUG:)
 
+.SECONDEXPANSION:
+$(objs) $(deps): | $$(@D)
+$(objdir):
+	@mkdir $@
+
 $(objs): $(objdir)/%.o: $(srcdir)/%.cpp
 	$(info OBJS: $@)
-	@mkdir -p $(objdir)
 	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) $<
 
 depend-output = $(cxx) -I$(llvm-includedir) -MM $<
@@ -55,7 +59,6 @@ depend-output += | sed -e 's,\\$$,,g' | tr -d '\n'
 depend-output += | tee $@ >/dev/null
 $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	$(info DEPS: $@)
-	@mkdir -p $(objdir)
 	@$(depend-output)
 
 -include $(deps)
@@ -89,4 +92,4 @@ clean:
 
 .PHONY: distclean
 distclean:
-	@$(RM) $(wildcard $(objdir)/*) $(TARGET)
+	@$(RM) -r $(objdir) $(TARGET)
