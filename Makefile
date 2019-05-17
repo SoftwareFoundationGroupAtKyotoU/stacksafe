@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
-TARGET := stacksafe.so
+PASS := stacksafe
+TARGET := $(PASS).so
 LLVM_SUFFIX ?= -7
 config := llvm-config$(LLVM_SUFFIX)
 cxx := clang++$(LLVM_SUFFIX)
@@ -66,8 +67,8 @@ cc := clang$(LLVM_SUFFIX)
 opt := opt$(LLVM_SUFFIX)
 cflags := -c -S -emit-llvm $(CFLAGS)
 path := $(CURDIR)/$(TARGET)
-pass := $(patsubst %.so,%,$(TARGET))
-optflags := -analyze -load $(path) -$(pass)
+optflags := -analyze -load=$(path) -$(PASS)
+#optflags += -time-passes
 
 testdir := test
 irsrcs := $(wildcard $(testdir)/*.c)
