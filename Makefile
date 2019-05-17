@@ -2,9 +2,9 @@
 
 PASS := stacksafe
 TARGET := $(PASS).so
-LLVM_SUFFIX ?= -7
+LLVM_SUFFIX ?=
 LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
-cxx := clang++$(LLVM_SUFFIX)
+cxx := clang++
 # options
 CXXFLAGS ?= -c -std=c++17 -Wno-unknown-warning-option
 LDFLAGS ?= -shared -fuse-ld=lld
@@ -63,7 +63,7 @@ $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 -include $(deps)
 
 # test
-cc := clang$(LLVM_SUFFIX)
+cc := clang
 opt := opt$(LLVM_SUFFIX)
 cflags := -c -S -emit-llvm $(CFLAGS)
 path := $(CURDIR)/$(TARGET)
