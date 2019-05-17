@@ -68,23 +68,30 @@ cc := clang
 opt := opt$(LLVM_SUFFIX)
 cflags := -c -S -emit-llvm $(CFLAGS)
 path := $(CURDIR)/$(TARGET)
-optflags := -debug -analyze -load=$(path) -$(PASS)
+optflags := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
 
 testdir := test
 irsrcs := $(wildcard $(testdir)/*.c)
 irobjs := $(wildcard $(testdir)/*.ll)
 tests := $(irobjs:%.ll=%)
+runs := $(tests:$(testdir)/%=run/%)
 
 $(irsrcs:%.c=%.ll): %.ll: %.c
 	$(cc) $(cflags) $(OUTPUT_OPTION) $<
 
 .PHONY: $(tests)
+$(tests): optflags += -debug
 $(tests): $(testdir)/%: $(testdir)/%.ll
 	@echo ---- $* begins ----
 	$(opt) $(optflags) $<
 	@echo ---- $* ends ----
-	@echo
+
+.PHONY: $(runs)
+$(runs): run/%: $(testdir)/%.ll
+	@echo ---- $* begins ----
+	$(opt) $(optflags) $<
+	@echo ---- $* ends ----
 
 .PHONY: clean
 clean:
