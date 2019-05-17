@@ -11,9 +11,9 @@ namespace stacksafe {
   bool Interpret::visit(llvm::Instruction &I) {
     llvm::outs() << I << endl;
     if (I.isTerminator()) {
-      llvm::outs() << env_;
+      debugs() << env_;
     } else if (!Base::visit(I)) {
-      llvm::errs() << "Error: something wrong happens" << endl;
+      debugs() << "Error: something wrong happens" << endl;
       return false;
     }
     return true;
@@ -110,7 +110,7 @@ namespace stacksafe {
     return error(__func__);
   }
   bool Interpret::error(const char *name) {
-    llvm::errs() << endl << "Error: unknown error in " << name << endl;
+    debugs() << endl << "Error: unknown error in " << name << endl;
     return false;
   }
 
