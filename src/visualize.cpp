@@ -1,4 +1,5 @@
 #include "visualize.hpp"
+#include <llvm/Support/Debug.h>
 
 namespace stacksafe {
   Manip::Manip(std::size_t s) {
@@ -27,5 +28,13 @@ namespace stacksafe {
       e(O);
     }
     return O;
+  }
+
+  llvm::raw_ostream &debugs() {
+    if (::llvm::DebugFlag && ::llvm::isCurrentDebugType("")) {
+      return llvm::dbgs();
+    } else {
+      return llvm::nulls();
+    }
   }
 }
