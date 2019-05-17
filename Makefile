@@ -68,7 +68,7 @@ cc := clang
 opt := opt$(LLVM_SUFFIX)
 cflags := -c -S -emit-llvm $(CFLAGS)
 path := $(CURDIR)/$(TARGET)
-optflags := -analyze -load=$(path) -$(PASS)
+optflags := -debug -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
 
 testdir := test
@@ -76,7 +76,7 @@ irsrcs := $(wildcard $(testdir)/*.c)
 irobjs := $(wildcard $(testdir)/*.ll)
 tests := $(irobjs:%.ll=%)
 
-$(irsrcs:%.ll=%.c): %.ll: %.c
+$(irsrcs:%.c=%.ll): %.ll: %.c
 	$(cc) $(cflags) $(OUTPUT_OPTION) $<
 
 .PHONY: $(tests)
