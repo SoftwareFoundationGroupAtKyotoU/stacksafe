@@ -3,7 +3,7 @@
 PASS := stacksafe
 TARGET := $(PASS).so
 LLVM_SUFFIX ?= -7
-config := llvm-config$(LLVM_SUFFIX)
+LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 cxx := clang++$(LLVM_SUFFIX)
 # options
 CXXFLAGS ?= -c -std=c++17 -Wno-unknown-warning-option
@@ -12,9 +12,9 @@ release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
 
 # flags
-llvm-cxxflags != $(config) --cxxflags
-llvm-ldflags != $(config) --ldflags
-llvm-includedir != $(config) --includedir
+llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
+llvm-ldflags != $(LLVM_CONFIG) --ldflags
+llvm-includedir != $(LLVM_CONFIG) --includedir
 cxxflags-out := -std=% -fuse-ld=% -O% -g% -DNDEBUG -Wl,%
 cxxflags := $(CXXFLAGS) $(filter-out $(cxxflags-out),$(llvm-cxxflags))
 ldflags := $(LDFLAGS) $(llvm-ldflags)
