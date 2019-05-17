@@ -5,9 +5,10 @@ TARGET := $(PASS).so
 LLVM_SUFFIX ?=
 LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 cxx := clang++
+ld := ld.lld
 # options
-CXXFLAGS ?= -c -std=c++17 -Wno-unknown-warning-option
-LDFLAGS ?= -shared -fuse-ld=lld
+CXXFLAGS ?= -c -std=c++17 -fPIC
+LDFLAGS ?= -shared
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
 
@@ -32,7 +33,7 @@ all: release
 
 $(TARGET): $(objs)
 	$(info TARGET: $@)
-	@$(cxx) $(ldflags) $(OUTPUT_OPTION) $^
+	@$(ld) $(ldflags) $(OUTPUT_OPTION) $^
 
 .PHONY: release
 release: cxxflags += $(release-flags)
