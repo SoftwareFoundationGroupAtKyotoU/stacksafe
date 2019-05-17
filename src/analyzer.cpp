@@ -10,7 +10,7 @@ namespace stacksafe {
   {}
   void Analyzer::print(llvm::raw_ostream &O, const llvm::Module *M) const {
     llvm::outs()
-      // << "Analyzer Pass for Stack Temporal Memory Safety"
+      << "StackSafe"
       << endl;
   }
   bool Analyzer::runOnFunction(llvm::Function &F) {
@@ -21,4 +21,4 @@ namespace stacksafe {
 }
 
 static llvm::RegisterPass<stacksafe::Analyzer> registerpass
-("stacksafe", "StackSafe");
+("stacksafe", "Analyzer pass for temporal memory safety of the stack");
