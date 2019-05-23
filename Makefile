@@ -1,24 +1,24 @@
 #!/usr/bin/make -f
 
-TARGET := stacksafe.so
-LLVM_SUFFIX ?= -7
-config := llvm-config$(LLVM_SUFFIX)
-cxx := clang++$(LLVM_SUFFIX)
+PASS := stacksafe
+TARGET := $(PASS).so
+LLVM_SUFFIX ?=
+LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
+cxx := clang++
+ld := ld.lld
 # options
-CXXFLAGS ?= -c -std=c++17 -Wno-unknown-warning-option
-LDFLAGS ?= -shared -fuse-ld=lld
+CXXFLAGS ?= -c -std=c++17 -fPIC
+LDFLAGS ?= -shared
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
 
 # flags
-llvm-cxxflags != $(config) --cxxflags
-llvm-ldflags != $(config) --ldflags
-llvm-includedir != $(config) --includedir
+llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
+llvm-ldflags != $(LLVM_CONFIG) --ldflags
+llvm-includedir != $(LLVM_CONFIG) --includedir
 cxxflags-out := -std=% -fuse-ld=% -O% -g% -DNDEBUG -Wl,%
 cxxflags := $(CXXFLAGS) $(filter-out $(cxxflags-out),$(llvm-cxxflags))
 ldflags := $(LDFLAGS) $(llvm-ldflags)
-dependflags := -I$(llvm-includedir) -MM
-dependscript = sed -e 's,$(notdir $*).o,$*.o $*.d,g'
 
 srcdir := src
 objdir := obj
@@ -33,52 +33,65 @@ all: release
 
 $(TARGET): $(objs)
 	$(info TARGET: $@)
-	@$(cxx) $(ldflags) $(OUTPUT_OPTION) $^
+	@$(ld) $(ldflags) $(OUTPUT_OPTION) $^
 
 .PHONY: release
 release: cxxflags += $(release-flags)
 release: $(TARGET)
-	$(info RELEASE:)
 
 .PHONY: debug
 debug: cxxflags += $(debug-flags)
 debug: $(TARGET)
-	$(info DEBUG:)
+
+.SECONDEXPANSION:
+$(objs) $(deps): | $$(@D)
+$(objdir):
+	@mkdir $@
 
 $(objs): $(objdir)/%.o: $(srcdir)/%.cpp
 	$(info OBJS: $@)
-	@mkdir -p $(objdir)
 	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) $<
 
+depend-output = $(cxx) -I$(llvm-includedir) -MM $<
+depend-output += | sed -e 's,$*\.o,$(@D)/$*.o $@,g'
+depend-output += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
+depend-output += | sed -e 's,\\$$,,g' | tr -d '\n'
+depend-output += | tee $@ >/dev/null
 $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	$(info DEPS: $@)
-	@mkdir -p $(objdir)
-	@$(cxx) $(dependflags) $< | $(dependscript) > $@
+	@$(depend-output)
 
 -include $(deps)
 
 # test
-cc := clang$(LLVM_SUFFIX)
+cc := clang
 opt := opt$(LLVM_SUFFIX)
 cflags := -c -S -emit-llvm $(CFLAGS)
 path := $(CURDIR)/$(TARGET)
-pass := $(patsubst %.so,%,$(TARGET))
-optflags := -analyze -load $(path) -$(pass)
+optflags := -analyze -load=$(path) -$(PASS)
+#optflags += -time-passes
 
 testdir := test
 irsrcs := $(wildcard $(testdir)/*.c)
 irobjs := $(wildcard $(testdir)/*.ll)
 tests := $(irobjs:%.ll=%)
+runs := $(tests:$(testdir)/%=run/%)
 
-$(irsrcs:%.ll=%.c): %.ll: %.c
+$(irsrcs:%.c=%.ll): %.ll: %.c
 	$(cc) $(cflags) $(OUTPUT_OPTION) $<
 
 .PHONY: $(tests)
+$(tests): optflags += -debug
 $(tests): $(testdir)/%: $(testdir)/%.ll
 	@echo ---- $* begins ----
 	$(opt) $(optflags) $<
 	@echo ---- $* ends ----
-	@echo
+
+.PHONY: $(runs)
+$(runs): run/%: $(testdir)/%.ll
+	@echo ---- $* begins ----
+	$(opt) $(optflags) $<
+	@echo ---- $* ends ----
 
 .PHONY: clean
 clean:
@@ -86,4 +99,4 @@ clean:
 
 .PHONY: distclean
 distclean:
-	@$(RM) $(wildcard $(objdir)/*) $(TARGET)
+	@$(RM) -r $(objdir) $(TARGET)

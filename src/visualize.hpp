@@ -99,6 +99,8 @@ namespace stacksafe {
     return O;
   }
   llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const Manip &x);
+
+  llvm::raw_ostream &debugs(const char *type = "");
 }
 
 #endif//INCLUDE_GUARD_30B970DD_A9A2_4C3C_B2A3_482271B1A2C5
