@@ -30,11 +30,8 @@ namespace stacksafe {
     return O;
   }
 
-  llvm::raw_ostream &debugs() {
-    if (::llvm::DebugFlag && ::llvm::isCurrentDebugType("")) {
-      return llvm::dbgs();
-    } else {
-      return llvm::nulls();
-    }
+  llvm::raw_ostream &debugs(const char *type) {
+    DEBUG_WITH_TYPE(type, return llvm::dbgs());
+    return llvm::nulls();
   }
 }
