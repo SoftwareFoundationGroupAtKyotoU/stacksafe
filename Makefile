@@ -100,8 +100,8 @@ $(runs): run/%: $(testdir)/%.ll
 
 .PHONY: clean
 clean:
-	@$(RM) $(objs) $(deps)
+	@$(RM) $(objs) $(deps) $(lsps)
 
 .PHONY: distclean
 distclean:
-	@$(RM) -r $(objdir) $(TARGET)
+	@$(RM) -r $(objdir) $(compile-commands) $(TARGET)
