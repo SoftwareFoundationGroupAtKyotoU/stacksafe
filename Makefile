@@ -11,6 +11,7 @@ CXXFLAGS += -std=c++17 -fPIC
 LDFLAGS += -shared
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
+compile-commands := compile_commands.json
 
 # flags
 llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
@@ -25,6 +26,7 @@ objdir := obj
 srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:$(srcdir)/%.cpp=$(objdir)/%.o)
 deps := $(objs:%.o=%.d)
+lsps := $(objs:%.o=%.json)
 
 .SUFFIXES:
 
@@ -58,6 +60,11 @@ depend-filter += | sed -e 's,\\$$,,g' | tr -d '\n'
 $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	$(info DEPS: $@)
 	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
+
+$(lsps): $(objdir)/%.json: $(srcdir)/%.cpp
+	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
+$(compile-commands): $(lsps)
+	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 -include $(deps)
 
