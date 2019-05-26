@@ -7,7 +7,7 @@ LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 cxx := clang++
 ld := ld.lld
 # options
-CXXFLAGS ?= -c -std=c++17 -fPIC
+CXXFLAGS ?= -std=c++17 -fPIC
 LDFLAGS ?= -shared
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
@@ -50,7 +50,7 @@ $(objdir):
 
 $(objs): $(objdir)/%.o: $(srcdir)/%.cpp
 	$(info OBJS: $@)
-	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) $<
+	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) -c $<
 
 depend-output = $(cxx) -I$(llvm-includedir) -MM $<
 depend-output += | sed -e 's,$*\.o,$(@D)/$*.o $@,g'
@@ -66,7 +66,7 @@ $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 # test
 cc := clang
 opt := opt$(LLVM_SUFFIX)
-cflags := -c -S -emit-llvm $(CFLAGS)
+cflags := -S -emit-llvm $(CFLAGS)
 path := $(CURDIR)/$(TARGET)
 optflags := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
@@ -78,7 +78,7 @@ tests := $(irobjs:%.ll=%)
 runs := $(tests:$(testdir)/%=run/%)
 
 $(irsrcs:%.c=%.ll): %.ll: %.c
-	$(cc) $(cflags) $(OUTPUT_OPTION) $<
+	$(cc) $(cflags) $(OUTPUT_OPTION) -c $<
 
 .PHONY: $(tests)
 $(tests): optflags += -debug
