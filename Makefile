@@ -61,6 +61,7 @@ $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	$(info DEPS: $@)
 	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
 
+.INTERMEDIATE: $(lsps)
 $(lsps): $(objdir)/%.json: $(srcdir)/%.cpp
 	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
 $(compile-commands): $(lsps)
