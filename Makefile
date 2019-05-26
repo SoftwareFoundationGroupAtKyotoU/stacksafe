@@ -7,8 +7,8 @@ LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 cxx := clang++
 ld := ld.lld
 # options
-CXXFLAGS ?= -std=c++17 -fPIC
-LDFLAGS ?= -shared
+CXXFLAGS += -std=c++17 -fPIC
+LDFLAGS += -shared
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
 
