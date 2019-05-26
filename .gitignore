@@ -1,4 +1,5 @@
-.debug
+compile_commands.json
+obj/
 test/
 
 # Prerequisites

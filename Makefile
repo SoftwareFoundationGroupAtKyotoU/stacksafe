@@ -7,10 +7,11 @@ LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 cxx := clang++
 ld := ld.lld
 # options
-CXXFLAGS ?= -c -std=c++17 -fPIC
-LDFLAGS ?= -shared
+CXXFLAGS += -std=c++17 -fPIC
+LDFLAGS += -shared
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
+compile-commands := compile_commands.json
 
 # flags
 llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
@@ -25,6 +26,7 @@ objdir := obj
 srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:$(srcdir)/%.cpp=$(objdir)/%.o)
 deps := $(objs:%.o=%.d)
+lsps := $(objs:%.o=%.json)
 
 .SUFFIXES:
 
@@ -50,23 +52,27 @@ $(objdir):
 
 $(objs): $(objdir)/%.o: $(srcdir)/%.cpp
 	$(info OBJS: $@)
-	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) $<
+	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) -c $<
 
-depend-output = $(cxx) -I$(llvm-includedir) -MM $<
-depend-output += | sed -e 's,$*\.o,$(@D)/$*.o $@,g'
-depend-output += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
-depend-output += | sed -e 's,\\$$,,g' | tr -d '\n'
-depend-output += | tee $@ >/dev/null
+depend-filter  =   sed -e 's,$*\.o,$(@D)/$*.o $@,g'
+depend-filter += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
+depend-filter += | sed -e 's,\\$$,,g' | tr -d '\n'
 $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	$(info DEPS: $@)
-	@$(depend-output)
+	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
+
+.INTERMEDIATE: $(lsps)
+$(lsps): $(objdir)/%.json: $(srcdir)/%.cpp
+	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
+$(compile-commands): $(lsps)
+	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 -include $(deps)
 
 # test
 cc := clang
 opt := opt$(LLVM_SUFFIX)
-cflags := -c -S -emit-llvm $(CFLAGS)
+cflags := -S -emit-llvm $(CFLAGS)
 path := $(CURDIR)/$(TARGET)
 optflags := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
@@ -78,7 +84,7 @@ tests := $(irobjs:%.ll=%)
 runs := $(tests:$(testdir)/%=run/%)
 
 $(irsrcs:%.c=%.ll): %.ll: %.c
-	$(cc) $(cflags) $(OUTPUT_OPTION) $<
+	$(cc) $(cflags) $(OUTPUT_OPTION) -c $<
 
 .PHONY: $(tests)
 $(tests): optflags += -debug
@@ -95,8 +101,8 @@ $(runs): run/%: $(testdir)/%.ll
 
 .PHONY: clean
 clean:
-	@$(RM) $(objs) $(deps)
+	@$(RM) $(objs) $(deps) $(lsps)
 
 .PHONY: distclean
 distclean:
-	@$(RM) -r $(objdir) $(TARGET)
+	@$(RM) -r $(objdir) $(compile-commands) $(TARGET)
