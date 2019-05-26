@@ -52,14 +52,12 @@ $(objs): $(objdir)/%.o: $(srcdir)/%.cpp
 	$(info OBJS: $@)
 	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) -c $<
 
-depend-output = $(cxx) -I$(llvm-includedir) -MM $<
-depend-output += | sed -e 's,$*\.o,$(@D)/$*.o $@,g'
-depend-output += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
-depend-output += | sed -e 's,\\$$,,g' | tr -d '\n'
-depend-output += | tee $@ >/dev/null
+depend-filter  =   sed -e 's,$*\.o,$(@D)/$*.o $@,g'
+depend-filter += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
+depend-filter += | sed -e 's,\\$$,,g' | tr -d '\n'
 $(deps): $(objdir)/%.d: $(srcdir)/%.cpp
 	$(info DEPS: $@)
-	@$(depend-output)
+	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
 
 -include $(deps)
 
