@@ -51,16 +51,19 @@ template <typename K, typename T>
 class Map : public std::unordered_map<K, Set<T>> {
 public:
   using V = Set<T>;
-  const V *get(const K &k) const {
+  OptRef<const V> get(const K &k) const {
     if (auto it = this->find(k); it != end(*this)) {
-      return &std::get<1>(*it);
+      return std::get<1>(*it);
     } else {
-      return nullptr;
+      return std::nullopt;
     }
   }
-  V *get(const K &k) {
-    const auto &c = *this;
-    return const_cast<V *>(c.get(k));
+  OptRef<V> get(const K &k) {
+    if (auto it = this->find(k); it != end(*this)) {
+      return std::get<1>(*it);
+    } else {
+      return std::nullopt;
+    }
   }
   bool add(const K &k) {
     if (exists(k)) {
