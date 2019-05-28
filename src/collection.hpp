@@ -51,18 +51,21 @@ public:
 };
 
 template <typename K, typename T>
-class Map : public std::unordered_map<K, Set<T>> {
-public:
+class Map : private std::unordered_map<K, Set<T>> {
+  using Base = std::unordered_map<K, Set<T>>;
   using V = Set<T>;
+
+public:
+  using Base::Base, Base::begin, Base::end, Base::size;
   OptRef<const V> get(const K &k) const {
-    if (auto it = this->find(k); it != end(*this)) {
+    if (auto it = Base::find(k); it != end()) {
       return std::get<1>(*it);
     } else {
       return std::nullopt;
     }
   }
   OptRef<V> get(const K &k) {
-    if (auto it = this->find(k); it != end(*this)) {
+    if (auto it = Base::find(k); it != end()) {
       return std::get<1>(*it);
     } else {
       return std::nullopt;
@@ -72,7 +75,7 @@ public:
     if (exists(k)) {
       return true;
     } else {
-      this->emplace(k, V{});
+      Base::emplace(k, V{});
       return false;
     }
   }
@@ -81,7 +84,7 @@ public:
       e->insert(t);
       return true;
     } else {
-      this->emplace(k, V{{t}});
+      Base::emplace(k, V{{t}});
       return false;
     }
   }
@@ -90,15 +93,14 @@ public:
       e->unify(v);
       return true;
     } else {
-      this->emplace(k, v);
+      Base::emplace(k, v);
       return false;
     }
   }
-  bool exists(const K &k) const { return this->count(k) != 0; }
+  bool exists(const K &k) const { return Base::count(k) != 0; }
   bool exists(const Set<K> &ks) const {
-    using std::begin, std::end;
     auto pred = [&self = *this](const K &k) { return self.exists(k); };
-    return std::all_of(begin(ks), end(ks), std::move(pred));
+    return std::all_of(ks.begin(), ks.end(), std::move(pred));
   }
   bool subsetof(const Map &rhs) const {
     auto f = [&rhs](const auto &e) {
@@ -109,7 +111,7 @@ public:
         return false;
       }
     };
-    return std::all_of(begin(*this), end(*this), std::move(f));
+    return std::all_of(begin(), end(), std::move(f));
   }
   void unify(const Map &rhs) {
     auto f = [&lhs = *this](const auto &e) {
@@ -120,7 +122,7 @@ public:
         lhs.insert(e);
       }
     };
-    std::for_each(begin(rhs), end(rhs), std::move(f));
+    std::for_each(rhs.begin(), rhs.end(), std::move(f));
   }
   void print(llvm::raw_ostream &O) const {
     O << set_like(foreach (key_value, *this));
