@@ -34,14 +34,17 @@ public:
   T &&value() && { return Base::value().get(); }
 };
 
-template <typename T> class Set : public std::unordered_set<T> {
+template <typename T> class Set : private std::unordered_set<T> {
+  using Base = std::unordered_set<T>;
+
 public:
+  using Base::Base, Base::begin, Base::end, Base::size, Base::insert;
   bool subsetof(const Set &rhs) const {
     auto pred = [&rhs](const T &t) { return rhs.exists(t); };
-    return std::all_of(begin(*this), end(*this), std::move(pred));
+    return std::all_of(begin(), end(), std::move(pred));
   }
-  void unify(const Set &rhs) { this->insert(begin(rhs), end(rhs)); }
-  bool exists(const T &t) const { return this->count(t) != 0; }
+  void unify(const Set &rhs) { insert(rhs.begin(), rhs.end()); }
+  bool exists(const T &t) const { return Base::count(t) != 0; }
   void print(llvm::raw_ostream &O) const {
     O << set_like(make_manip_seq(*this));
   }
