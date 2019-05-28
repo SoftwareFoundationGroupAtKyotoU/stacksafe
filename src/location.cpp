@@ -8,6 +8,7 @@ const int Location::Global = -1;
 const int Location::Outlive = 0;
 const int Location::Local = 1;
 Location::Location(int loc) : loc_(loc) {}
+bool Location::compare(const Location &that) const { return loc_ < that.loc_; }
 std::size_t Location::hash() const { return std::hash<int>{}(loc_); }
 void Location::print(llvm::raw_ostream &O) const {
   auto ascii = [](int n) -> std::string {
@@ -32,6 +33,9 @@ void Location::print(llvm::raw_ostream &O) const {
 }
 bool operator==(const Location &lhs, const Location &rhs) {
   return lhs.hash() == rhs.hash();
+}
+bool operator<(const Location &lhs, const Location &rhs) {
+  return lhs.compare(rhs);
 }
 
 LocationFactory::LocationFactory() : current_(Location::Local) {}

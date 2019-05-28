@@ -15,10 +15,12 @@ class Location {
   explicit Location(int loc);
 
 public:
+  bool compare(const Location &that) const;
   std::size_t hash() const;
   void print(llvm::raw_ostream &O) const;
 };
 bool operator==(const Location &lhs, const Location &rhs);
+bool operator<(const Location &lhs, const Location &rhs);
 
 class LocationFactory {
   int current_;
