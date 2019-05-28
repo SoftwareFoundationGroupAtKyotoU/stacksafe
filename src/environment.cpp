@@ -130,14 +130,17 @@ bool Env::call(const UserRange &args, std::optional<Register> dst) {
 std::optional<LocationSet> Env::to_symbols(const Value &v) const {
   const auto ptr = &v.get();
   if (auto reg = make_register(v)) {
-    return to_optional(stack_.get(*reg));
+    if (auto val = stack_.get(*reg)) {
+      return *val;
+    }
   } else if (llvm::isa<llvm::ConstantPointerNull>(ptr)) {
-    return to_optional(heap_.get(LocationFactory::getGlobal()));
+    if (auto val = heap_.get(LocationFactory::getGlobal())) {
+      return *val;
+    }
   } else if (llvm::isa<llvm::Constant>(ptr)) {
     return LocationSet{};
-  } else {
-    return std::nullopt;
   }
+  return std::nullopt;
 }
 bool Env::reach(const LocationSet &locs, LocationSet &reachs) const {
   reachs.unify(locs);
