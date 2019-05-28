@@ -18,7 +18,7 @@ class OptRef : private std::optional<std::reference_wrapper<T>> {
   using Base = std::optional<std::reference_wrapper<T>>;
 
 public:
-  using Base::operator->, Base::operator*, Base::operator bool;
+  using Base::operator bool;
   OptRef();
   OptRef(std::nullopt_t v) : Base{v} {}
   OptRef(T &v) : Base{v} {}
