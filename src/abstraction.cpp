@@ -17,8 +17,8 @@ Abstraction::Abstraction(llvm::Function &F) {
   for (auto &a : F.args()) {
     if (auto reg = make_register(a)) {
       if (!env.init_argument(*reg)) {
-        llvm::errs() << "Error: " << spaces(make_manip(*reg))
-                     << "is not an argument" << endl;
+        llvm::errs() << "Error: " << spaces(*reg) << "is not an argument"
+                     << endl;
       }
     } else {
       llvm::errs() << "Error: unreachable" << endl;

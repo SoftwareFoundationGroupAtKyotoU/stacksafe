@@ -12,7 +12,7 @@ bool Value::operator==(const Value &rhs) const { return val_ == rhs.val_; }
 bool Value::is_register() const { return 0 <= num_; }
 void Value::print(llvm::raw_ostream &O) const {
   if (is_register()) {
-    O << angles(make_manip("%", num_));
+    O << angles(manip("%", num_));
   } else {
     O << *val_;
   }

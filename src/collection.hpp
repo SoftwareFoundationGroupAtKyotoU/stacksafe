@@ -45,9 +45,7 @@ public:
   }
   void unify(const Set &rhs) { insert(rhs.begin(), rhs.end()); }
   bool exists(const T &t) const { return Base::count(t) != 0; }
-  void print(llvm::raw_ostream &O) const {
-    O << set_like(make_manip_seq(*this));
-  }
+  void print(llvm::raw_ostream &O) const { O << set_like(*this); }
 };
 
 template <typename K, typename T>
@@ -125,7 +123,7 @@ public:
     std::for_each(rhs.begin(), rhs.end(), std::move(f));
   }
   void print(llvm::raw_ostream &O) const {
-    O << set_like(foreach (key_value, *this));
+    O << set_like(for_each(key_value, *this));
   }
 };
 } // namespace stacksafe

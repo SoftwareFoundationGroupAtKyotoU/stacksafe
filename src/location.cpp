@@ -29,7 +29,7 @@ void Location::print(llvm::raw_ostream &O) const {
     std::reverse(begin(s), end(s));
     return s;
   };
-  O << angles(make_manip(ascii(loc_)));
+  O << angles(ascii(loc_));
 }
 bool operator==(const Location &lhs, const Location &rhs) {
   return lhs.hash() == rhs.hash();
