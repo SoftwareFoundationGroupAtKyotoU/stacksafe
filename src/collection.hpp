@@ -4,6 +4,7 @@
 #include "visualize.hpp"
 #include <algorithm>
 #include <functional>
+#include <initializer_list>
 #include <optional>
 #include <unordered_map>
 #include <unordered_set>
@@ -34,17 +35,37 @@ public:
   T &&value() && { return Base::value().get(); }
 };
 
-template <typename T> class Set : private std::unordered_set<T> {
-  using Base = std::unordered_set<T>;
+template <typename T, typename Cmp = std::less<T>>
+class Set : private std::vector<T> {
+  using Base = std::vector<T>;
+  using iterator = typename Base::iterator;
+  iterator insert(iterator begin, const T &v) {
+    auto [lb, ub] = std::equal_range(begin, end(), v, Cmp{});
+    if (lb == ub) {
+      return Base::insert(lb, v);
+    }
+    return lb;
+  }
 
 public:
-  using Base::Base, Base::begin, Base::end, Base::size, Base::insert;
-  bool subsetof(const Set &rhs) const {
-    auto pred = [&rhs](const T &t) { return rhs.exists(t); };
-    return std::all_of(begin(), end(), std::move(pred));
+  using Base::begin, Base::end;
+  Set(std::initializer_list<T> init) : Base{init} {
+    std::sort(begin(), end(), Cmp{});
   }
-  void unify(const Set &rhs) { insert(rhs.begin(), rhs.end()); }
-  bool exists(const T &t) const { return Base::count(t) != 0; }
+  void insert(const T &v) { insert(begin(), v); }
+  void insert(const Set &that) {
+    auto it = begin();
+    for (auto &v : that) {
+      it = std::next(insert(it, v));
+    }
+  }
+  void unify(const Set &that) { insert(that); }
+  bool exists(const T &v) const {
+    return std::binary_search(begin(), end(), v, Cmp{});
+  }
+  bool subsetof(const Set &that) const {
+    return std::includes(that.begin(), that.end(), begin(), end(), Cmp{});
+  }
   void print(llvm::raw_ostream &O) const { O << set_like(*this); }
 };
 
