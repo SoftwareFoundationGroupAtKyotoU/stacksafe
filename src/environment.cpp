@@ -143,7 +143,7 @@ std::optional<LocationSet> Env::to_symbols(const Value &v) const {
   return std::nullopt;
 }
 bool Env::reach(const LocationSet &locs, LocationSet &reachs) const {
-  reachs.unify(locs);
+  reachs.insert(locs);
   for (auto &loc : locs) {
     if (auto next = heap_.get(loc)) {
       if (next->subsetof(reachs) || reach(*next, reachs)) {

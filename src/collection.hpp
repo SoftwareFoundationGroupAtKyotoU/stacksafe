@@ -59,7 +59,6 @@ public:
       it = std::next(insert(it, v));
     }
   }
-  void unify(const Set &that) { insert(that); }
   bool exists(const T &v) const {
     return std::binary_search(begin(), end(), v, Cmp{});
   }
@@ -109,7 +108,7 @@ public:
   }
   bool add(const K &k, const V &v) {
     if (auto e = get(k)) {
-      e->unify(v);
+      e->insert(v);
       return true;
     } else {
       Base::emplace(k, v);
@@ -136,7 +135,7 @@ public:
     auto f = [&lhs = *this](const auto &e) {
       auto &[k, r] = e;
       if (auto l = lhs.get(k)) {
-        l->unify(r);
+        l->insert(r);
       } else {
         lhs.insert(e);
       }
