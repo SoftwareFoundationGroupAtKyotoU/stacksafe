@@ -26,64 +26,69 @@ public:
 };
 
 using ManipObj = std::function<void(llvm::raw_ostream &)>;
-struct Manip : std::vector<ManipObj> {
-  explicit Manip(std::size_t s = 0);
-};
+class Manipulator : std::vector<ManipObj> {
+  using Base = std::vector<ManipObj>;
+  template <typename T> static ManipObj wrap(const T &t) {
+    return [&t](llvm::raw_ostream &O) { O << t; };
+  }
+  static ManipObj wrap(const ManipObj &m) { return m; }
 
-const auto wrap = [](const auto &x) -> ManipObj {
-  if constexpr (std::is_same_v<decltype(x), const Manip &>) {
-    if (x.size() == 1) {
-      return x.front();
+public:
+  using Base::begin, Base::end;
+  Manipulator();
+  void print(llvm::raw_ostream &O) const;
+  void manip_impl();
+  template <typename H, typename... T>
+  void manip_impl(const H &h, const T &... t) {
+    add(h);
+    manip_impl(t...);
+  }
+  template <typename T> void add(const T &t) { Base::push_back(wrap(t)); }
+  template <typename T> Manipulator join(const T &t) const {
+    Manipulator m;
+    bool first = false;
+    for (auto &e : *this) {
+      if (std::exchange(first, true)) {
+        m.add(t);
+      }
+      m.Base::push_back(e);
     }
+    return m;
   }
-  return [=](llvm::raw_ostream &O) { O << x; };
 };
-const auto foreach = [](const auto &f, const auto &c) -> Manip {
-  Manip ret(c.size());
-  for (const auto &e : c) {
-    ret.push_back(wrap(f(e)));
-  }
-  return ret;
-};
-void make_manip_aux(Manip &);
-template <typename H, typename... T>
-void make_manip_aux(Manip &m, const H &h, const T &... t) {
-  m.push_back(wrap(h));
-  make_manip_aux(m, t...);
-}
-const auto make_manip = [](const auto &... args) -> Manip {
-  Manip m(sizeof...(args));
-  make_manip_aux(m, args...);
+template <typename... T> Manipulator manip(const T &... t) {
+  Manipulator m;
+  m.manip_impl(t...);
   return m;
+}
+template <typename F, typename C> Manipulator for_each(const F &f, const C &c) {
+  Manipulator m;
+  for (auto &e : c) {
+    m.add(f(e));
+  }
+  return m;
+}
+template <typename C> Manipulator split(const C &c) {
+  Manipulator m;
+  for (auto &e : c) {
+    m.add(e);
+  }
+  return m;
+}
+
+inline const auto endl = manip("\n");
+inline const auto colon = manip(": ");
+inline const auto comma = manip(", ");
+inline const auto spaces = [](const auto &m) { return manip(" ", m, " "); };
+inline const auto parens = [](const auto &m) { return manip("(", m, ")"); };
+inline const auto braces = [](const auto &m) { return manip("{", m, "}"); };
+inline const auto squares = [](const auto &m) { return manip("[", m, "]"); };
+inline const auto angles = [](const auto &m) { return manip("<", m, ">"); };
+inline const auto key_value = [](const auto &p) {
+  return manip(std::get<0>(p), colon, std::get<1>(p));
 };
-const auto make_manip_seq = [](const auto &c) -> Manip {
-  const auto id = [](const auto &x) { return x; };
-  return foreach (id, c);
-};
-const auto endl = make_manip("\n");
-const auto colon = make_manip(": ");
-const auto comma = make_manip(", ");
-const auto spaces = [](const Manip &m) -> Manip {
-  return make_manip(" ", m, " ");
-};
-const auto parens = [](const Manip &m) -> Manip {
-  return make_manip("(", m, ")");
-};
-const auto braces = [](const Manip &m) -> Manip {
-  return make_manip("{", m, "}");
-};
-const auto squares = [](const Manip &m) -> Manip {
-  return make_manip("[", m, "]");
-};
-const auto angles = [](const Manip &m) -> Manip {
-  return make_manip("<", m, ">");
-};
-Manip join(const Manip &sep, const Manip &m);
-const auto set_like = [](const Manip &m) -> Manip {
-  return braces(join(comma, m));
-};
-const auto key_value = [](const auto &x) -> Manip {
-  return make_manip(std::get<0>(x), colon, std::get<1>(x));
+inline const auto set_like = [](const auto &c) {
+  return braces(split(c).join(comma));
 };
 
 template <bool B>
@@ -99,7 +104,6 @@ llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const T &x) {
   x.print(O);
   return O;
 }
-llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const Manip &x);
 
 llvm::raw_ostream &debugs(const char *type = "");
 } // namespace stacksafe
