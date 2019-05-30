@@ -11,7 +11,7 @@ namespace stacksafe {
 class Location {
   static const int Global, Outlive, Local;
   friend class LocationFactory;
-  const int loc_;
+  int loc_;
   explicit Location(int loc);
 
 public:
