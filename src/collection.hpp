@@ -39,24 +39,17 @@ template <typename T, typename Cmp = std::less<T>>
 class Set : private std::vector<T> {
   using Base = std::vector<T>;
   using iterator = typename Base::iterator;
-  iterator insert(iterator begin, const T &v) {
-    auto [lb, ub] = std::equal_range(begin, end(), v, Cmp{});
-    if (lb == ub) {
-      return Base::insert(lb, v);
-    }
-    return lb;
-  }
 
 public:
   using Base::begin, Base::end;
   Set(std::initializer_list<T> init) : Base{init} {
     std::sort(begin(), end(), Cmp{});
   }
-  void insert(const T &v) { insert(begin(), v); }
+  void insert(const T &v) { iterative_insert(begin(), v); }
   void insert(const Set &that) {
     auto it = begin();
     for (auto &v : that) {
-      it = std::next(insert(it, v));
+      it = std::next(iterative_insert(it, v));
     }
   }
   bool exists(const T &v) const {
@@ -66,10 +59,110 @@ public:
     return std::includes(that.begin(), that.end(), begin(), end(), Cmp{});
   }
   void print(llvm::raw_ostream &O) const { O << set_like(*this); }
+
+private:
+  iterator iterative_insert(iterator begin, const T &v) {
+    auto [lb, ub] = std::equal_range(begin, end(), v, Cmp{});
+    if (lb == ub) {
+      return Base::insert(lb, v);
+    }
+    return lb;
+  }
+};
+
+template <typename K, typename V, typename Cmp> class MapCmp {
+  using T = std::tuple<K, V>;
+
+public:
+  bool operator()(const T &l, const T &r) const {
+    return Cmp{}(std::get<0>(l), std::get<0>(r));
+  }
+};
+template <typename K, typename T, typename KeyCmp = std::less<K>>
+class Map : private Set<std::tuple<K, T>, MapCmp<K, T, KeyCmp>> {
+  using V = std::tuple<K, T>;
+  using Cmp = MapCmp<K, T, KeyCmp>;
+  using Base = Set<V, Cmp>;
+
+public:
+  using Base::begin, Base::end;
+  Map() : Base{} {}
+  OptRef<const T> get(const K &k) const {
+    auto [lb, ub] = std::equal_range(begin(), end(), V{k, T{}}, Cmp{});
+    if (lb == ub) {
+      return std::nullopt;
+    } else {
+      return std::get<1>(*lb);
+    }
+  }
+  OptRef<T> get(const K &k) {
+    if (auto ref = static_cast<const Map &>(*this).get(k)) {
+      return const_cast<T &>(*ref);
+    } else {
+      return std::nullopt;
+    }
+  }
+  bool exists(const K &k) const { return Base::exists(V{k, T{}}); }
+  void print(llvm::raw_ostream &O) const {
+    O << set_like(for_each(key_value, *this));
+  }
+
+protected:
+  using value_type = V;
+  using Base::insert;
+};
+
+template <typename K, typename T, typename KeyCmp = std::less<K>,
+          typename ValCmp = std::less<T>>
+class MapSet : private Map<K, Set<T, ValCmp>, KeyCmp> {
+  using V = Set<T, ValCmp>;
+  using Base = Map<K, V, KeyCmp>;
+  using value_type = typename Base::value_type;
+
+public:
+  using Base::begin, Base::end;
+  using Base::get, Base::exists, Base::print;
+  bool insert(const K &k) {
+    if (exists(k)) {
+      return true;
+    } else {
+      Base::insert(value_type{k, V{}});
+      return false;
+    }
+  }
+  bool insert(const K &k, const T &t) { return insert(k, V{t}); };
+  bool insert(const K &k, const V &v) {
+    if (auto ref = get(k)) {
+      ref->insert(v);
+      return true;
+    } else {
+      Base::insert(value_type{k, v});
+      return false;
+    }
+  }
+  void insert(const MapSet &that) {
+    for (auto &v : that) {
+      insert(std::get<0>(v), std::get<1>(v));
+    }
+  }
+  bool subsetof(const MapSet &that) const {
+    for (auto &v : *this) {
+      const auto &[key, value] = v;
+      if (auto ref = that.get(key)) {
+        if (value.subsetof(*ref)) {
+          continue;
+        }
+      }
+      return false;
+    }
+    return true;
+  }
+
+private:
 };
 
 template <typename K, typename T>
-class Map : private std::unordered_map<K, Set<T>> {
+class Map_ : private std::unordered_map<K, Set<T>> {
   using Base = std::unordered_map<K, Set<T>>;
   using V = Set<T>;
 
@@ -120,7 +213,7 @@ public:
     auto pred = [&self = *this](const K &k) { return self.exists(k); };
     return std::all_of(ks.begin(), ks.end(), std::move(pred));
   }
-  bool subsetof(const Map &rhs) const {
+  bool subsetof(const Map_ &rhs) const {
     auto f = [&rhs](const auto &e) {
       auto &[k, l] = e;
       if (auto r = rhs.get(k)) {
@@ -131,7 +224,7 @@ public:
     };
     return std::all_of(begin(), end(), std::move(f));
   }
-  void unify(const Map &rhs) {
+  void unify(const Map_ &rhs) {
     auto f = [&lhs = *this](const auto &e) {
       auto &[k, r] = e;
       if (auto l = lhs.get(k)) {

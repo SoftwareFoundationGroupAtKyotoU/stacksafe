@@ -5,7 +5,7 @@ namespace stacksafe {
 Env::Env(LocationFactory &factory) : factory_(factory) {
   auto g = LocationFactory::getGlobal();
   auto o = LocationFactory::getOutlive();
-  if (heap_.add(g, g) || heap_.add(o, LocationSet{{g, o}})) {
+  if (heap_.insert(g, g) || heap_.insert(o, LocationSet{{g, o}})) {
     llvm::errs() << "Error: unreachable" << endl;
   }
 }
@@ -13,8 +13,8 @@ bool Env::subsetof(const Env &rhs) const {
   return (heap_.subsetof(rhs.heap_) && stack_.subsetof(rhs.stack_));
 }
 void Env::unify(const Env &rhs) {
-  heap_.unify(rhs.heap_);
-  stack_.unify(rhs.stack_);
+  heap_.insert(rhs.heap_);
+  stack_.insert(rhs.stack_);
 }
 void Env::print(llvm::raw_ostream &O) const {
   O << "heap: " << heap_ << endl;
@@ -26,22 +26,22 @@ bool Env::init_argument(const Register &dst) {
     if (llvm::isa<llvm::PointerType>(val.getType())) {
       auto o = LocationFactory::getOutlive();
       auto g = LocationFactory::getGlobal();
-      return !stack_.add(dst, LocationSet{{g, o}});
+      return !stack_.insert(dst, LocationSet{{g, o}});
     } else {
-      return !stack_.add(dst);
+      return !stack_.insert(dst);
     }
   }
   return false;
 }
 bool Env::alloca(const Register &dst) {
   auto l = factory_.getLocal();
-  return !(heap_.add(l) || stack_.add(dst, l));
+  return !(heap_.insert(l) || stack_.insert(dst, l));
 }
 bool Env::store(const Value &src, const Register &dst) {
   if (auto val = to_symbols(src)) {
     if (auto ptr = stack_.get(dst)) {
       for (auto &each : *ptr) {
-        if (heap_.add(each, *val)) {
+        if (heap_.insert(each, *val)) {
           continue;
         }
         return false;
@@ -55,7 +55,7 @@ bool Env::load(const Register &dst, const Register &src) {
   if (auto ptr = stack_.get(src)) {
     for (auto &each : *ptr) {
       if (auto val = heap_.get(each)) {
-        stack_.add(dst, *val);
+        stack_.insert(dst, *val);
         continue;
       }
       return false;
@@ -66,22 +66,22 @@ bool Env::load(const Register &dst, const Register &src) {
 }
 bool Env::getelementptr(const Register &dst, const Register &src) {
   if (auto val = stack_.get(src)) {
-    stack_.add(dst, *val);
+    stack_.insert(dst, *val);
     return true;
   }
   return false;
 }
 bool Env::binary(const Register &dst) {
-  stack_.add(dst);
+  stack_.insert(dst);
   return true;
 }
 bool Env::cast(const Register &dst, const Value &src) {
   if (llvm::isa<llvm::Constant>(src.get())) {
-    stack_.add(dst);
+    stack_.insert(dst);
     return true;
   } else if (auto reg = make_register(src)) {
     if (auto val = stack_.get(*reg)) {
-      stack_.add(dst, *val);
+      stack_.insert(dst, *val);
       return true;
     }
   }
@@ -89,18 +89,18 @@ bool Env::cast(const Register &dst, const Value &src) {
 }
 bool Env::phi(const Register &dst, const Value &src) {
   if (llvm::isa<llvm::Constant>(src.get())) {
-    stack_.add(dst);
+    stack_.insert(dst);
     return true;
   } else if (auto reg = make_register(src)) {
     if (auto val = stack_.get(*reg)) {
-      stack_.add(dst, *val);
+      stack_.insert(dst, *val);
       return true;
     }
   }
   return false;
 }
 bool Env::cmp(const Register &dst) {
-  stack_.add(dst);
+  stack_.insert(dst);
   return true;
 }
 bool Env::call(const UserRange &args, std::optional<Register> dst) {
@@ -116,13 +116,13 @@ bool Env::call(const UserRange &args, std::optional<Register> dst) {
     }
   }
   for (auto &r : reachs) {
-    if (heap_.add(r, reachs)) {
+    if (heap_.insert(r, reachs)) {
       continue;
     }
     return false;
   }
   if (dst) {
-    return !stack_.add(*dst, reachs);
+    return !stack_.insert(*dst, reachs);
   }
   return true;
 }
