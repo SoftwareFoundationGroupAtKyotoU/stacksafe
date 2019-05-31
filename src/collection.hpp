@@ -35,16 +35,13 @@ public:
   T &&value() && { return Base::value().get(); }
 };
 
-template <typename T, typename Cmp = std::less<T>>
-class Set : private std::vector<T> {
+template <typename T> class Set : private std::vector<T> {
   using Base = std::vector<T>;
   using iterator = typename Base::iterator;
 
 public:
   using Base::begin, Base::end;
-  Set(std::initializer_list<T> init) : Base{init} {
-    std::sort(begin(), end(), Cmp{});
-  }
+  Set(std::initializer_list<T> init) : Base{init} { std::sort(begin(), end()); }
   void insert(const T &v) { iterative_insert(begin(), v); }
   void insert(const Set &that) {
     auto it = begin();
@@ -53,16 +50,16 @@ public:
     }
   }
   bool exists(const T &v) const {
-    return std::binary_search(begin(), end(), v, Cmp{});
+    return std::binary_search(begin(), end(), v);
   }
   bool subsetof(const Set &that) const {
-    return std::includes(that.begin(), that.end(), begin(), end(), Cmp{});
+    return std::includes(that.begin(), that.end(), begin(), end());
   }
   void print(llvm::raw_ostream &O) const { O << set_like(*this); }
 
 private:
   iterator iterative_insert(iterator begin, const T &v) {
-    auto [lb, ub] = std::equal_range(begin, end(), v, Cmp{});
+    auto [lb, ub] = std::equal_range(begin, end(), v);
     if (lb == ub) {
       return Base::insert(lb, v);
     }
@@ -70,29 +67,29 @@ private:
   }
 };
 
-template <typename K, typename V, typename Cmp> class MapCmp {
-  using T = std::tuple<K, V>;
+template <typename K, typename T> class MapValue : private std::tuple<K, T> {
+  using Base = std::tuple<K, T>;
 
 public:
-  bool operator()(const T &l, const T &r) const {
-    return Cmp{}(std::get<0>(l), std::get<0>(r));
-  }
+  MapValue(const K &k, const T &t) : Base{k, t} {}
+  const K &key() const { return std::get<0>(*this); }
+  const T &value() const { return std::get<1>(*this); }
+  T &value() { return std::get<1>(*this); }
+  bool operator<(const MapValue &that) const { return key() < that.key(); }
 };
-template <typename K, typename T, typename KeyCmp = std::less<K>>
-class Map : private Set<std::tuple<K, T>, MapCmp<K, T, KeyCmp>> {
-  using V = std::tuple<K, T>;
-  using Cmp = MapCmp<K, T, KeyCmp>;
-  using Base = Set<V, Cmp>;
+template <typename K, typename T> class Map : private Set<MapValue<K, T>> {
+  using V = MapValue<K, T>;
+  using Base = Set<V>;
 
 public:
   using Base::begin, Base::end;
   Map() : Base{} {}
   OptRef<const T> get(const K &k) const {
-    auto [lb, ub] = std::equal_range(begin(), end(), V{k, T{}}, Cmp{});
+    auto [lb, ub] = std::equal_range(begin(), end(), V{k, T{}});
     if (lb == ub) {
       return std::nullopt;
     } else {
-      return std::get<1>(*lb);
+      return lb->value();
     }
   }
   OptRef<T> get(const K &k) {
@@ -104,6 +101,7 @@ public:
   }
   bool exists(const K &k) const { return Base::exists(V{k, T{}}); }
   void print(llvm::raw_ostream &O) const {
+    auto key_value = [](const V &v) { return manip(v.key(), v.value()); };
     O << set_like(for_each(key_value, *this));
   }
 
@@ -112,11 +110,9 @@ protected:
   using Base::insert;
 };
 
-template <typename K, typename T, typename KeyCmp = std::less<K>,
-          typename ValCmp = std::less<T>>
-class MapSet : private Map<K, Set<T, ValCmp>, KeyCmp> {
-  using V = Set<T, ValCmp>;
-  using Base = Map<K, V, KeyCmp>;
+template <typename K, typename T> class MapSet : private Map<K, Set<T>> {
+  using V = Set<T>;
+  using Base = Map<K, V>;
   using value_type = typename Base::value_type;
 
 public:
@@ -142,14 +138,13 @@ public:
   }
   void insert(const MapSet &that) {
     for (auto &v : that) {
-      insert(std::get<0>(v), std::get<1>(v));
+      insert(v.key(), v.value());
     }
   }
   bool subsetof(const MapSet &that) const {
     for (auto &v : *this) {
-      const auto &[key, value] = v;
-      if (auto ref = that.get(key)) {
-        if (value.subsetof(*ref)) {
+      if (auto ref = that.get(v.key())) {
+        if (v.value().subsetof(*ref)) {
           continue;
         }
       }
@@ -236,7 +231,7 @@ public:
     std::for_each(rhs.begin(), rhs.end(), std::move(f));
   }
   void print(llvm::raw_ostream &O) const {
-    O << set_like(for_each(key_value, *this));
+    // O << set_like(for_each(key_value, *this));
   }
 };
 } // namespace stacksafe

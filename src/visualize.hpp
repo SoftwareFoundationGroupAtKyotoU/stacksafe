@@ -84,9 +84,6 @@ inline const auto parens = [](const auto &m) { return manip("(", m, ")"); };
 inline const auto braces = [](const auto &m) { return manip("{", m, "}"); };
 inline const auto squares = [](const auto &m) { return manip("[", m, "]"); };
 inline const auto angles = [](const auto &m) { return manip("<", m, ">"); };
-inline const auto key_value = [](const auto &p) {
-  return manip(std::get<0>(p), colon, std::get<1>(p));
-};
 inline const auto set_like = [](const auto &c) {
   return braces(split(c).join(comma));
 };
