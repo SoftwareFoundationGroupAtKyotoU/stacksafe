@@ -42,11 +42,11 @@ template <typename T> class Set : private std::vector<T> {
 public:
   using Base::begin, Base::end;
   Set(std::initializer_list<T> init) : Base{init} { std::sort(begin(), end()); }
-  void insert(const T &v) { iterative_insert(begin(), v); }
+  void insert(const T &v) { insert(begin(), v); }
   void insert(const Set &that) {
     auto it = begin();
     for (auto &v : that) {
-      it = std::next(iterative_insert(it, v));
+      it = std::next(insert(it, v));
     }
   }
   bool exists(const T &v) const {
@@ -57,8 +57,8 @@ public:
   }
   void print(llvm::raw_ostream &O) const { O << set_like(*this); }
 
-private:
-  iterator iterative_insert(iterator begin, const T &v) {
+protected:
+  iterator insert(iterator begin, const T &v) {
     auto [lb, ub] = std::equal_range(begin, end(), v);
     if (lb == ub) {
       return Base::insert(lb, v);
@@ -151,87 +151,6 @@ public:
       return false;
     }
     return true;
-  }
-
-private:
-};
-
-template <typename K, typename T>
-class Map_ : private std::unordered_map<K, Set<T>> {
-  using Base = std::unordered_map<K, Set<T>>;
-  using V = Set<T>;
-
-public:
-  using Base::Base, Base::begin, Base::end, Base::size;
-  OptRef<const V> get(const K &k) const {
-    if (auto it = Base::find(k); it != end()) {
-      return std::get<1>(*it);
-    } else {
-      return std::nullopt;
-    }
-  }
-  OptRef<V> get(const K &k) {
-    if (auto it = Base::find(k); it != end()) {
-      return std::get<1>(*it);
-    } else {
-      return std::nullopt;
-    }
-  }
-  bool add(const K &k) {
-    if (exists(k)) {
-      return true;
-    } else {
-      Base::emplace(k, V{});
-      return false;
-    }
-  }
-  bool add(const K &k, const T &t) {
-    if (auto e = get(k)) {
-      e->insert(t);
-      return true;
-    } else {
-      Base::emplace(k, V{{t}});
-      return false;
-    }
-  }
-  bool add(const K &k, const V &v) {
-    if (auto e = get(k)) {
-      e->insert(v);
-      return true;
-    } else {
-      Base::emplace(k, v);
-      return false;
-    }
-  }
-  bool exists(const K &k) const { return Base::count(k) != 0; }
-  bool exists(const Set<K> &ks) const {
-    auto pred = [&self = *this](const K &k) { return self.exists(k); };
-    return std::all_of(ks.begin(), ks.end(), std::move(pred));
-  }
-  bool subsetof(const Map_ &rhs) const {
-    auto f = [&rhs](const auto &e) {
-      auto &[k, l] = e;
-      if (auto r = rhs.get(k)) {
-        return l.subsetof(*r);
-      } else {
-        return false;
-      }
-    };
-    return std::all_of(begin(), end(), std::move(f));
-  }
-  void unify(const Map_ &rhs) {
-    auto f = [&lhs = *this](const auto &e) {
-      auto &[k, r] = e;
-      if (auto l = lhs.get(k)) {
-        l->insert(r);
-      } else {
-        lhs.insert(e);
-      }
-    };
-    std::for_each(rhs.begin(), rhs.end(), std::move(f));
-  }
-  void print(llvm::raw_ostream &O) const {
-    // O << set_like(for_each(key_value, *this));
   }
 };
 } // namespace stacksafe
