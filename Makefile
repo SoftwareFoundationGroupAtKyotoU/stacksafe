@@ -59,7 +59,7 @@ $(compile-commands): $(lsps)
 
 -include $(deps)
 
-# test
+# analysis
 cc := clang
 opt := opt$(LLVM_SUFFIX)
 cflags := -S -emit-llvm $(CFLAGS)
@@ -67,11 +67,13 @@ path := $(CURDIR)/$(TARGET)
 optflags := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
 
+irdir := ir
+run-prefix := run
 testdir := test
-irsrcs := $(wildcard $(testdir)/*.c)
-irobjs := $(wildcard $(testdir)/*.ll)
+irsrcs := $(wildcard $(irdir)/*.c)
+irobjs := $(wildcard $(irdir)/*.ll)
 tests := $(irobjs:%.ll=%)
-runs := $(tests:$(testdir)/%=run/%)
+runs := $(irobjs:$(irdir)/%.ll=$(run-prefix)/%)
 
 $(irsrcs:%.c=%.ll): %.ll: %.c
 	$(cc) $(cflags) $(OUTPUT_OPTION) -c $<
@@ -84,7 +86,7 @@ $(tests): $(testdir)/%: $(testdir)/%.ll
 	@echo ---- $* ends ----
 
 .PHONY: $(runs)
-$(runs): run/%: $(testdir)/%.ll
+$(runs): $(run-prefix)/%: $(irdir)/%.ll
 	@echo ---- $* begins ----
 	$(opt) $(optflags) $<
 	@echo ---- $* ends ----
