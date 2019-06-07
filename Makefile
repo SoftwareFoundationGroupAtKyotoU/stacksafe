@@ -59,6 +59,20 @@ $(compile-commands): $(lsps)
 
 -include $(deps)
 
+# googletest
+libgtest := libgtest.a
+gtestdir := googletest/googletest
+gtestflags := -std=c++11 -Wall -Wextra -pedantic -O0 -g3 -pthread
+gtestflags += -isystem $(gtestdir)/include -I$(gtestdir)
+gtestsrc := $(gtestdir)/src/gtest-all.cc
+gtestobj := $(gtestsrc:%.cc=%.o)
+
+.INTERMEDIATE: $(gtestobj)
+$(gtestobj): $(gtestsrc)
+	$(cxx) $(gtestflags) -o $@ -c $<
+$(libgtest): $(gtestobj)
+	$(AR) -r $@ $^
+
 # analysis
 cc := clang
 opt := opt$(LLVM_SUFFIX)
