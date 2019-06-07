@@ -20,6 +20,10 @@ class Memory {
   using Stack = Env<Register, Location>;
   Heap heap_;
   Stack stack_;
+  LocationFactory &factory_;
+
+public:
+  Memory(LocationFactory &factory);
 };
 
 class Env_ {

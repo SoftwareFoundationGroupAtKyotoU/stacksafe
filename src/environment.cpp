@@ -2,6 +2,11 @@
 #include <llvm/IR/Value.h>
 
 namespace stacksafe {
+Memory::Memory(LocationFactory &factory) : factory_(factory) {
+  auto g = factory.getGlobal();
+  heap_.insert(g, g);
+}
+
 Env_::Env_(LocationFactory &factory) : factory_(factory) {
   auto g = LocationFactory::getGlobal();
   auto o = LocationFactory::getOutlive();
