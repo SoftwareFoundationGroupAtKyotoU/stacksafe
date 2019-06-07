@@ -16,17 +16,15 @@ compile-commands := compile_commands.json
 # flags
 llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
 llvm-ldflags != $(LLVM_CONFIG) --ldflags
-llvm-includedir != $(LLVM_CONFIG) --includedir
 cxxflags-out := -std=% -fuse-ld=% -O% -g% -DNDEBUG -Wl,%
 cxxflags := $(CXXFLAGS) $(filter-out $(cxxflags-out),$(llvm-cxxflags))
 ldflags := $(LDFLAGS) $(llvm-ldflags)
 
 srcdir := src
-objdir := obj
 srcs := $(wildcard $(srcdir)/*.cpp)
-objs := $(srcs:$(srcdir)/%.cpp=$(objdir)/%.o)
-deps := $(objs:%.o=%.d)
-lsps := $(objs:%.o=%.json)
+objs := $(srcs:%.cpp=%.o)
+deps := $(srcs:%.cpp=%.d)
+lsps := $(srcs:%.cpp=%.json)
 
 .SUFFIXES:
 
@@ -35,34 +33,26 @@ all: release
 
 $(TARGET): $(objs)
 	$(info TARGET: $@)
-	@$(ld) $(ldflags) $(OUTPUT_OPTION) $^
+	@$(ld) $(ldflags) -o $@ $^
 
-.PHONY: release
+.PHONY: release debug
+release debug: $(TARGET)
 release: cxxflags += $(release-flags)
-release: $(TARGET)
-
-.PHONY: debug
 debug: cxxflags += $(debug-flags)
-debug: $(TARGET)
 
-.SECONDEXPANSION:
-$(objs) $(deps): | $$(@D)
-$(objdir):
-	@mkdir $@
-
-$(objs): $(objdir)/%.o: $(srcdir)/%.cpp
+$(objs): %.o: %.cpp
 	$(info OBJS: $@)
-	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) -c $<
+	@$(cxx) $(cxxflags) -o $@ -c $<
 
-depend-filter  =   sed -e 's,$*\.o,$(@D)/$*.o $@,g'
-depend-filter += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
-depend-filter += | sed -e 's,\\$$,,g' | tr -d '\n'
-$(deps): $(objdir)/%.d: $(srcdir)/%.cpp
+depend-filter  =   sed -e 's,^$(notdir $*)\.o:,$*.o $@:,'
+depend-filter += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,'
+depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
+$(deps): %.d: %.cpp
 	$(info DEPS: $@)
 	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
 
 .INTERMEDIATE: $(lsps)
-$(lsps): $(objdir)/%.json: $(srcdir)/%.cpp
+$(lsps): %.json: %.cpp
 	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
 $(compile-commands): $(lsps)
 	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
