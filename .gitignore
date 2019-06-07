@@ -1,5 +1,6 @@
 compile_commands.json
-obj/
+googletest/
+ir/
 test/
 
 # Prerequisites
