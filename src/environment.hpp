@@ -14,8 +14,8 @@ class raw_ostream;
 
 namespace stacksafe {
 using LocationSet = Set<Location>;
-using Heap = MapSet<Location, Location>;
-using Stack = MapSet<Register, Location>;
+using Heap = Env<Location, Location>;
+using Stack = Env<Register, Location>;
 
 class Env_ {
   using UserRange = llvm::User::const_op_range;
