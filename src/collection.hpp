@@ -3,6 +3,9 @@
 
 #include "visualize.hpp"
 #include <algorithm>
+#include <functional>
+#include <initializer_list>
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -11,100 +14,145 @@ class raw_ostream;
 } // namespace llvm
 
 namespace stacksafe {
-template <typename T> class Set : public std::unordered_set<T> {
+template <typename T>
+class OptRef : private std::optional<std::reference_wrapper<T>> {
+  using Base = std::optional<std::reference_wrapper<T>>;
+
 public:
-  bool subsetof(const Set &rhs) const {
-    auto pred = [&rhs](const T &t) { return rhs.exists(t); };
-    return std::all_of(begin(*this), end(*this), std::move(pred));
+  using Base::operator bool;
+  OptRef();
+  OptRef(std::nullopt_t v) : Base{v} {}
+  OptRef(T &v) : Base{v} {}
+  const T *operator->() const { return &value(); }
+  const T &operator*() const & { return value(); }
+  const T &&operator*() const && { return value(); }
+  const T &value() const & { return Base::value().get(); }
+  const T &&value() const && { return Base::value().get(); }
+  T *operator->() { return &value(); }
+  T &operator*() & { return value(); }
+  T &&operator*() && { return value(); }
+  T &value() & { return Base::value().get(); }
+  T &&value() && { return Base::value().get(); }
+};
+
+template <typename T> class Set : private std::vector<T> {
+  using Base = std::vector<T>;
+  using iterator = typename Base::iterator;
+
+public:
+  using Base::begin, Base::end;
+  Set(std::initializer_list<T> init) : Base{init} { std::sort(begin(), end()); }
+  void insert(const T &v) { insert(begin(), v); }
+  void insert(const Set &that) {
+    auto it = begin();
+    for (auto &v : that) {
+      it = std::next(insert(it, v));
+    }
   }
-  void unify(const Set &rhs) { this->insert(begin(rhs), end(rhs)); }
-  bool exists(const T &t) const { return this->count(t) != 0; }
-  void print(llvm::raw_ostream &O) const {
-    O << set_like(make_manip_seq(*this));
+  bool exists(const T &v) const {
+    return std::binary_search(begin(), end(), v);
+  }
+  bool subsetof(const Set &that) const {
+    return std::includes(that.begin(), that.end(), begin(), end());
+  }
+  void print(llvm::raw_ostream &O) const { O << set_like(*this); }
+
+protected:
+  iterator insert(iterator begin, const T &v) {
+    auto [lb, ub] = std::equal_range(begin, end(), v);
+    if (lb == ub) {
+      return Base::insert(lb, v);
+    }
+    return lb;
   }
 };
 
-template <typename K, typename T>
-class Map : public std::unordered_map<K, Set<T>> {
+template <typename K, typename T> class MapValue : private std::tuple<K, T> {
+  using Base = std::tuple<K, T>;
+
 public:
-  using V = Set<T>;
-  const V *get(const K &k) const {
-    if (auto it = this->find(k); it != end(*this)) {
-      return &std::get<1>(*it);
+  MapValue(const K &k, const T &t) : Base{k, t} {}
+  const K &key() const { return std::get<0>(*this); }
+  const T &value() const { return std::get<1>(*this); }
+  T &value() { return std::get<1>(*this); }
+  bool operator<(const MapValue &that) const { return key() < that.key(); }
+};
+template <typename K, typename T> class Map : private Set<MapValue<K, T>> {
+  using V = MapValue<K, T>;
+  using Base = Set<V>;
+
+public:
+  using Base::begin, Base::end;
+  Map() : Base{} {}
+  OptRef<const T> get(const K &k) const {
+    auto [lb, ub] = std::equal_range(begin(), end(), V{k, T{}});
+    if (lb == ub) {
+      return std::nullopt;
     } else {
-      return nullptr;
+      return lb->value();
     }
   }
-  V *get(const K &k) {
-    const auto &c = *this;
-    return const_cast<V *>(c.get(k));
+  OptRef<T> get(const K &k) {
+    if (auto ref = static_cast<const Map &>(*this).get(k)) {
+      return const_cast<T &>(*ref);
+    } else {
+      return std::nullopt;
+    }
   }
-  bool add(const K &k) {
+  bool exists(const K &k) const { return Base::exists(V{k, T{}}); }
+  void print(llvm::raw_ostream &O) const {
+    auto key_value = [](const V &v) { return manip(v.key(), v.value()); };
+    O << set_like(for_each(key_value, *this));
+  }
+
+protected:
+  using value_type = V;
+  using Base::insert;
+};
+
+template <typename K, typename T> class MapSet : private Map<K, Set<T>> {
+  using V = Set<T>;
+  using Base = Map<K, V>;
+  using value_type = typename Base::value_type;
+
+public:
+  using Base::begin, Base::end;
+  using Base::get, Base::exists, Base::print;
+  bool insert(const K &k) {
     if (exists(k)) {
       return true;
     } else {
-      this->emplace(k, V{});
+      Base::insert(value_type{k, V{}});
       return false;
     }
   }
-  bool add(const K &k, const T &t) {
-    if (auto e = get(k)) {
-      e->insert(t);
+  bool insert(const K &k, const T &t) { return insert(k, V{t}); };
+  bool insert(const K &k, const V &v) {
+    if (auto ref = get(k)) {
+      ref->insert(v);
       return true;
     } else {
-      this->emplace(k, V{{t}});
+      Base::insert(value_type{k, v});
       return false;
     }
   }
-  bool add(const K &k, const V &v) {
-    if (auto e = get(k)) {
-      e->unify(v);
-      return true;
-    } else {
-      this->emplace(k, v);
-      return false;
+  void insert(const MapSet &that) {
+    for (auto &v : that) {
+      insert(v.key(), v.value());
     }
   }
-  bool exists(const K &k) const { return this->count(k) != 0; }
-  bool exists(const Set<K> &ks) const {
-    using std::begin, std::end;
-    auto pred = [&self = *this](const K &k) { return self.exists(k); };
-    return std::all_of(begin(ks), end(ks), std::move(pred));
-  }
-  bool subsetof(const Map &rhs) const {
-    auto f = [&rhs](const auto &e) {
-      auto &[k, l] = e;
-      if (auto r = rhs.get(k)) {
-        return l.subsetof(*r);
-      } else {
-        return false;
+  bool subsetof(const MapSet &that) const {
+    for (auto &v : *this) {
+      if (auto ref = that.get(v.key())) {
+        if (v.value().subsetof(*ref)) {
+          continue;
+        }
       }
-    };
-    return std::all_of(begin(*this), end(*this), std::move(f));
-  }
-  void unify(const Map &rhs) {
-    auto f = [&lhs = *this](const auto &e) {
-      auto &[k, r] = e;
-      if (auto l = lhs.get(k)) {
-        l->unify(r);
-      } else {
-        lhs.insert(e);
-      }
-    };
-    std::for_each(begin(rhs), end(rhs), std::move(f));
-  }
-  void print(llvm::raw_ostream &O) const {
-    O << set_like(foreach (key_value, *this));
+      return false;
+    }
+    return true;
   }
 };
-
-template <typename T> std::optional<T> to_optional(const T *t) {
-  if (t) {
-    return *t;
-  } else {
-    return std::nullopt;
-  }
-}
 } // namespace stacksafe
 
 #endif // INCLUDE_GUARD_6495011D_0D6C_4DD2_8111_D661A86391FD

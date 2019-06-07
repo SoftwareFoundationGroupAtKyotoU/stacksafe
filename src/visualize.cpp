@@ -2,30 +2,13 @@
 #include <llvm/Support/Debug.h>
 
 namespace stacksafe {
-Manip::Manip(std::size_t s) { this->reserve(s); }
-
-void make_manip_aux(Manip &) {}
-Manip join(const Manip &sep, const Manip &m) {
-  using std::begin;
-  using std::end;
-  Manip ret;
-  if (!m.empty()) {
-    ret.reserve(m.size() * 2 - 1);
-    auto it = begin(m);
-    ret.push_back(*it);
-    for (++it; it != end(m); ++it) {
-      ret.push_back(wrap(sep));
-      ret.push_back(*it);
-    }
-  }
-  return ret;
-}
-llvm::raw_ostream &operator<<(llvm::raw_ostream &O, const Manip &x) {
-  for (const auto &e : x) {
+Manipulator::Manipulator() {}
+void Manipulator::print(llvm::raw_ostream &O) const {
+  for (auto &e : *this) {
     e(O);
   }
-  return O;
 }
+void Manipulator::manip_impl() {}
 
 llvm::raw_ostream &debugs(const char *type) {
   DEBUG_WITH_TYPE(type, return llvm::dbgs());

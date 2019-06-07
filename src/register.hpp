@@ -20,6 +20,7 @@ public:
   const llvm::Value &get() const;
   std::size_t hash() const;
   bool operator==(const Value &rhs) const;
+  bool operator<(const Value &rhs) const;
   bool is_register() const;
   void print(llvm::raw_ostream &O) const;
 };
