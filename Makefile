@@ -68,11 +68,12 @@ optflags := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
 
 irdir := ir
+test-prefix := test
 run-prefix := run
 testdir := test
 irsrcs := $(wildcard $(irdir)/*.c)
 irobjs := $(wildcard $(irdir)/*.ll)
-tests := $(irobjs:%.ll=%)
+tests := $(irobjs:$(irdir)/%.ll=$(test-prefix)/%)
 runs := $(irobjs:$(irdir)/%.ll=$(run-prefix)/%)
 
 $(irsrcs:%.c=%.ll): %.ll: %.c
@@ -80,10 +81,7 @@ $(irsrcs:%.c=%.ll): %.ll: %.c
 
 .PHONY: $(tests)
 $(tests): optflags += -debug
-$(tests): $(testdir)/%: $(testdir)/%.ll
-	@echo ---- $* begins ----
-	$(opt) $(optflags) $<
-	@echo ---- $* ends ----
+$(tests): $(test-prefix)/%: $(run-prefix)/%
 
 .PHONY: $(runs)
 $(runs): $(run-prefix)/%: $(irdir)/%.ll
