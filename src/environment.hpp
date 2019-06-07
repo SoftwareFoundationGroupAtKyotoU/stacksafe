@@ -14,13 +14,18 @@ class raw_ostream;
 
 namespace stacksafe {
 using LocationSet = Set<Location>;
-using Heap = Env<Location, Location>;
-using Stack = Env<Register, Location>;
+
+class Memory {
+  using Heap = Env<Location, Location>;
+  using Stack = Env<Register, Location>;
+  Heap heap_;
+  Stack stack_;
+};
 
 class Env_ {
   using UserRange = llvm::User::const_op_range;
-  Heap heap_;
-  Stack stack_;
+  Env<Location, Location> heap_;
+  Env<Register, Location> stack_;
   LocationFactory &factory_;
 
 public:
