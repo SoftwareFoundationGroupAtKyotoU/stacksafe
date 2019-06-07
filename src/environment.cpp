@@ -2,27 +2,32 @@
 #include <llvm/IR/Value.h>
 
 namespace stacksafe {
-Env::Env(LocationFactory &factory) : factory_(factory) {
+Memory::Memory(LocationFactory &factory) : factory_(factory) {
+  auto g = factory.getGlobal();
+  heap_.insert(g, g);
+}
+
+Env_::Env_(LocationFactory &factory) : factory_(factory) {
   auto g = LocationFactory::getGlobal();
   auto o = LocationFactory::getOutlive();
   if (heap_.insert(g, g) || heap_.insert(o, LocationSet{{g, o}})) {
     llvm::errs() << "Error: unreachable" << endl;
   }
 }
-bool Env::subsetof(const Env &rhs) const {
+bool Env_::subsetof(const Env_ &rhs) const {
   return (heap_.subsetof(rhs.heap_) && stack_.subsetof(rhs.stack_));
 }
-void Env::unify(const Env &rhs) {
+void Env_::unify(const Env_ &rhs) {
   heap_.insert(rhs.heap_);
   stack_.insert(rhs.stack_);
 }
-void Env::print(llvm::raw_ostream &O) const {
+void Env_::print(llvm::raw_ostream &O) const {
   O << "heap: " << heap_ << endl;
   O << "stack: " << stack_ << endl;
 }
 
-bool Env::init_argument(const Register &dst) {
-  if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
+bool Env_::init_argument(const Register &dst) {
+  if (auto &val = dst.value(); llvm::isa<llvm::Argument>(val)) {
     if (llvm::isa<llvm::PointerType>(val.getType())) {
       auto o = LocationFactory::getOutlive();
       auto g = LocationFactory::getGlobal();
@@ -33,11 +38,11 @@ bool Env::init_argument(const Register &dst) {
   }
   return false;
 }
-bool Env::alloca(const Register &dst) {
+bool Env_::alloca(const Register &dst) {
   auto l = factory_.getLocal();
   return !(heap_.insert(l) || stack_.insert(dst, l));
 }
-bool Env::store(const Value &src, const Register &dst) {
+bool Env_::store(const Value &src, const Register &dst) {
   if (auto val = to_symbols(src)) {
     if (auto ptr = stack_.get(dst)) {
       for (auto &each : *ptr) {
@@ -51,7 +56,7 @@ bool Env::store(const Value &src, const Register &dst) {
   }
   return false;
 }
-bool Env::load(const Register &dst, const Register &src) {
+bool Env_::load(const Register &dst, const Register &src) {
   if (auto ptr = stack_.get(src)) {
     for (auto &each : *ptr) {
       if (auto val = heap_.get(each)) {
@@ -64,19 +69,19 @@ bool Env::load(const Register &dst, const Register &src) {
   }
   return false;
 }
-bool Env::getelementptr(const Register &dst, const Register &src) {
+bool Env_::getelementptr(const Register &dst, const Register &src) {
   if (auto val = stack_.get(src)) {
     stack_.insert(dst, *val);
     return true;
   }
   return false;
 }
-bool Env::binary(const Register &dst) {
+bool Env_::binary(const Register &dst) {
   stack_.insert(dst);
   return true;
 }
-bool Env::cast(const Register &dst, const Value &src) {
-  if (llvm::isa<llvm::Constant>(src.get())) {
+bool Env_::cast(const Register &dst, const Value &src) {
+  if (llvm::isa<llvm::Constant>(src.value())) {
     stack_.insert(dst);
     return true;
   } else if (auto reg = make_register(src)) {
@@ -87,8 +92,8 @@ bool Env::cast(const Register &dst, const Value &src) {
   }
   return false;
 }
-bool Env::phi(const Register &dst, const Value &src) {
-  if (llvm::isa<llvm::Constant>(src.get())) {
+bool Env_::phi(const Register &dst, const Value &src) {
+  if (llvm::isa<llvm::Constant>(src.value())) {
     stack_.insert(dst);
     return true;
   } else if (auto reg = make_register(src)) {
@@ -99,11 +104,11 @@ bool Env::phi(const Register &dst, const Value &src) {
   }
   return false;
 }
-bool Env::cmp(const Register &dst) {
+bool Env_::cmp(const Register &dst) {
   stack_.insert(dst);
   return true;
 }
-bool Env::call(const UserRange &args, std::optional<Register> dst) {
+bool Env_::call(const UserRange &args, std::optional<Register> dst) {
   LocationSet reachs{{LocationFactory::getGlobal()}};
   for (auto &arg : args) {
     if (auto reg = make_register(*arg.get())) {
@@ -127,8 +132,8 @@ bool Env::call(const UserRange &args, std::optional<Register> dst) {
   return true;
 }
 
-std::optional<LocationSet> Env::to_symbols(const Value &v) const {
-  const auto ptr = &v.get();
+std::optional<LocationSet> Env_::to_symbols(const Value &v) const {
+  const auto ptr = &v.value();
   if (auto reg = make_register(v)) {
     if (auto val = stack_.get(*reg)) {
       return *val;
@@ -142,7 +147,7 @@ std::optional<LocationSet> Env::to_symbols(const Value &v) const {
   }
   return std::nullopt;
 }
-bool Env::reach(const LocationSet &locs, LocationSet &reachs) const {
+bool Env_::reach(const LocationSet &locs, LocationSet &reachs) const {
   reachs.insert(locs);
   for (auto &loc : locs) {
     if (auto next = heap_.get(loc)) {

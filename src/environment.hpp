@@ -14,19 +14,28 @@ class raw_ostream;
 
 namespace stacksafe {
 using LocationSet = Set<Location>;
-using Heap = MapSet<Location, Location>;
-using Stack = MapSet<Register, Location>;
 
-class Env {
-  using UserRange = llvm::User::const_op_range;
+class Memory {
+  using Heap = Env<Location, Location>;
+  using Stack = Env<Register, Location>;
   Heap heap_;
   Stack stack_;
   LocationFactory &factory_;
 
 public:
-  explicit Env(LocationFactory &factory);
-  bool subsetof(const Env &rhs) const;
-  void unify(const Env &rhs);
+  Memory(LocationFactory &factory);
+};
+
+class Env_ {
+  using UserRange = llvm::User::const_op_range;
+  Env<Location, Location> heap_;
+  Env<Register, Location> stack_;
+  LocationFactory &factory_;
+
+public:
+  explicit Env_(LocationFactory &factory);
+  bool subsetof(const Env_ &rhs) const;
+  void unify(const Env_ &rhs);
   void print(llvm::raw_ostream &O) const;
 
 public:

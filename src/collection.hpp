@@ -110,7 +110,7 @@ protected:
   using Base::insert;
 };
 
-template <typename K, typename T> class MapSet : private Map<K, Set<T>> {
+template <typename K, typename T> class Env : private Map<K, Set<T>> {
   using V = Set<T>;
   using Base = Map<K, V>;
   using value_type = typename Base::value_type;
@@ -136,12 +136,12 @@ public:
       return false;
     }
   }
-  void insert(const MapSet &that) {
+  void insert(const Env &that) {
     for (auto &v : that) {
       insert(v.key(), v.value());
     }
   }
-  bool subsetof(const MapSet &that) const {
+  bool subsetof(const Env &that) const {
     for (auto &v : *this) {
       if (auto ref = that.get(v.key())) {
         if (v.value().subsetof(*ref)) {

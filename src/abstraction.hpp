@@ -15,7 +15,7 @@ namespace stacksafe {
 class Abstraction {
   using BB = llvm::BasicBlock *;
   LocationFactory factory_;
-  std::unordered_map<BB, Env> map_;
+  std::unordered_map<BB, Env_> map_;
   std::unordered_set<BB> todo_;
 
 public:

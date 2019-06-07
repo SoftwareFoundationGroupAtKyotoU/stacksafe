@@ -17,7 +17,7 @@ protected:
 
 public:
   explicit Value(const llvm::Value &v);
-  const llvm::Value &get() const;
+  const llvm::Value &value() const;
   std::size_t hash() const;
   bool operator==(const Value &rhs) const;
   bool operator<(const Value &rhs) const;

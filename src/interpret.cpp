@@ -2,7 +2,7 @@
 #include "environment.hpp"
 
 namespace stacksafe {
-Interpret::Interpret(Env &env) : env_(env) {}
+Interpret::Interpret(Env_ &env) : env_(env) {}
 void Interpret::visit(llvm::BasicBlock &B) { Base::visit(B); }
 bool Interpret::visit(llvm::Instruction &I) {
   llvm::outs() << I << endl;
@@ -110,7 +110,7 @@ bool Interpret::error(const char *name) {
   return false;
 }
 
-Env interpret(llvm::BasicBlock &b, Env env) {
+Env_ interpret(llvm::BasicBlock &b, Env_ env) {
   Interpret{env}.visit(b);
   return env;
 }
