@@ -4,13 +4,13 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
-class Env;
+class Env_;
 class Interpret : public llvm::InstVisitor<Interpret, bool> {
   using Base = llvm::InstVisitor<Interpret, bool>;
-  Env &env_;
+  Env_ &env_;
 
 public:
-  explicit Interpret(Env &env);
+  explicit Interpret(Env_ &env);
   void visit(llvm::BasicBlock &B);
   bool visit(llvm::Instruction &I);
   bool visitInstruction(llvm::Instruction &I);
@@ -28,7 +28,7 @@ private:
   static bool error(const char *name);
 };
 
-Env interpret(llvm::BasicBlock &b, Env env);
+Env_ interpret(llvm::BasicBlock &b, Env_ env);
 } // namespace stacksafe
 
 #endif // INCLUDE_GUARD_6D412E24_64BA_4C27_BEA5_DB1CAFCC48BD

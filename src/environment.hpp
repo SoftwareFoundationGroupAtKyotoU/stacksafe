@@ -17,16 +17,16 @@ using LocationSet = Set<Location>;
 using Heap = MapSet<Location, Location>;
 using Stack = MapSet<Register, Location>;
 
-class Env {
+class Env_ {
   using UserRange = llvm::User::const_op_range;
   Heap heap_;
   Stack stack_;
   LocationFactory &factory_;
 
 public:
-  explicit Env(LocationFactory &factory);
-  bool subsetof(const Env &rhs) const;
-  void unify(const Env &rhs);
+  explicit Env_(LocationFactory &factory);
+  bool subsetof(const Env_ &rhs) const;
+  void unify(const Env_ &rhs);
   void print(llvm::raw_ostream &O) const;
 
 public:

@@ -7,7 +7,7 @@
 namespace stacksafe {
 Abstraction::Abstraction(llvm::Function &F) {
   llvm::outs() << "name: " << F.getName() << endl;
-  Env empty{factory_};
+  Env_ empty{factory_};
   for (auto &b : F.getBasicBlockList()) {
     map_.emplace(&b, empty);
   }
