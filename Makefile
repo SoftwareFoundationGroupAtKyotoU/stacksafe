@@ -62,22 +62,24 @@ $(compile-commands): $(lsps)
 # analysis
 cc := clang
 opt := opt$(LLVM_SUFFIX)
-cflags := -S -emit-llvm $(CFLAGS)
+CFLAGS += -S -emit-llvm
 path := $(CURDIR)/$(TARGET)
 optflags := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
 
 irdir := ir
+emit-prefix := emit
 test-prefix := test
 run-prefix := run
-testdir := test
-irsrcs := $(wildcard $(irdir)/*.c)
+irsrcs != find $(CURDIR) -type f -name '*.c'
 irobjs := $(wildcard $(irdir)/*.ll)
+emits := $(irsrcs:$(CURDIR)/%.c=$(emit-prefix)/%)
 tests := $(irobjs:$(irdir)/%.ll=$(test-prefix)/%)
 runs := $(irobjs:$(irdir)/%.ll=$(run-prefix)/%)
 
-$(irsrcs:%.c=%.ll): %.ll: %.c
-	$(cc) $(cflags) $(OUTPUT_OPTION) -c $<
+.PHONY: $(emits)
+$(emits): $(emit-prefix)/%: %.c
+	@$(cc) $(CFLAGS) -o $(irdir)/$(notdir $*).ll -c $<
 
 .PHONY: $(tests)
 $(tests): optflags += -debug
