@@ -27,7 +27,7 @@ void Env_::print(llvm::raw_ostream &O) const {
 }
 
 bool Env_::init_argument(const Register &dst) {
-  if (auto &val = dst.get(); llvm::isa<llvm::Argument>(val)) {
+  if (auto &val = dst.value(); llvm::isa<llvm::Argument>(val)) {
     if (llvm::isa<llvm::PointerType>(val.getType())) {
       auto o = LocationFactory::getOutlive();
       auto g = LocationFactory::getGlobal();
@@ -81,7 +81,7 @@ bool Env_::binary(const Register &dst) {
   return true;
 }
 bool Env_::cast(const Register &dst, const Value &src) {
-  if (llvm::isa<llvm::Constant>(src.get())) {
+  if (llvm::isa<llvm::Constant>(src.value())) {
     stack_.insert(dst);
     return true;
   } else if (auto reg = make_register(src)) {
@@ -93,7 +93,7 @@ bool Env_::cast(const Register &dst, const Value &src) {
   return false;
 }
 bool Env_::phi(const Register &dst, const Value &src) {
-  if (llvm::isa<llvm::Constant>(src.get())) {
+  if (llvm::isa<llvm::Constant>(src.value())) {
     stack_.insert(dst);
     return true;
   } else if (auto reg = make_register(src)) {
@@ -133,7 +133,7 @@ bool Env_::call(const UserRange &args, std::optional<Register> dst) {
 }
 
 std::optional<LocationSet> Env_::to_symbols(const Value &v) const {
-  const auto ptr = &v.get();
+  const auto ptr = &v.value();
   if (auto reg = make_register(v)) {
     if (auto val = stack_.get(*reg)) {
       return *val;

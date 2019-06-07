@@ -6,7 +6,7 @@
 
 namespace stacksafe {
 Value::Value(const llvm::Value &v) : val_(&v), num_(get_number(v)) {}
-const llvm::Value &Value::get() const { return *val_; }
+const llvm::Value &Value::value() const { return *val_; }
 std::size_t Value::hash() const { return std::hash<const void *>{}(val_); }
 bool Value::operator==(const Value &rhs) const { return val_ == rhs.val_; }
 bool Value::operator<(const Value &rhs) const { return num_ < rhs.num_; }
@@ -29,7 +29,7 @@ std::optional<Register> make_register(const llvm::Value &v) {
   }
 }
 std::optional<Register> make_register(const Value &v) {
-  return make_register(v.get());
+  return make_register(v.value());
 }
 
 int get_number(const llvm::Value &v) {
