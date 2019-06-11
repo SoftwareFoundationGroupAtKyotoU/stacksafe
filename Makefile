@@ -14,6 +14,8 @@ llvm-filter := -std=% -fuse-ld=% -Wl,% -O% -g% -DNDEBUG
 llvm-cxxflags := $(filter-out $(llvm-filter),$(llvm-cxxflags))
 CXX := clang++
 LD := ld.lld
+cxx := clang++
+ld := ld.lld
 
 # flags
 CXXFLAGS += -std=c++17 -fPIC -pedantic -Wall -Wextra
@@ -26,7 +28,7 @@ debug-flags := -O0 -g3
 srcdir := src
 srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:%.cpp=%.o)
-lsps := $(srcs:%.cpp=%.json)
+jsons := $(srcs:%.cpp=%.json)
 
 export CXX CXXFLAGS
 
@@ -38,7 +40,8 @@ all: release
 $(TARGET): $(objs)
 	$(LD) $(LDFLAGS) $^ -o $@
 
-$(objs):
+.INTERMEDIATE: $(jsons)
+$(objs) $(jsons):
 	make -C $(@D) $(@F)
 
 .PHONY: release debug
@@ -78,8 +81,8 @@ $(unitlsps): %.json: %.cpp
 	@$(cxx) $(unitflags) -MJ $@ -fsyntax-only $<
 
 # compile commands
-$(compile-commands): $(lsps) $(unitlsps)
-	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
+$(compile-commands): $(jsons)
+	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 # analysis
 cc := clang

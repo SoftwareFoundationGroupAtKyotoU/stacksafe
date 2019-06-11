@@ -19,7 +19,6 @@ depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
 $(deps): %.d: %.cpp
 	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
 
-.INTERMEDIATE: $(jsons)
 $(jsons): %.json:
 	$(CXX) $(CXXFLAGS) -fsyntax-only $*.cpp -MJ $@
 
