@@ -104,12 +104,14 @@ $(runs): $(run-prefix)/%: $(irdir)/%.ll
 	@echo ---- $* ends   ----
 
 # clean
-cleans := $(addprefix clean/,units)
+clean-prefix := clean
+cleanfiles := $(addprefix $(clean-prefix)/,$(compile-commands) $(TARGET))
+cleandirs := $(addprefix $(clean-prefix)/,$(srcdir) $(unitdir))
 
-.PHONY: clean $(cleans) distclean
-clean: $(cleans)
-	make -C src clean
-$(cleans): clean/%:
-	$(RM) $($*)
-distclean: clean
-	@$(RM) $(compile-commands) $(TARGET)
+.PHONY: $(cleanfiles) $(cleandirs) clean distclean
+$(cleandirs):
+	make -C $(@F) $(@D)
+$(cleanfiles):
+	$(RM) $(@F)
+clean: $(cleandirs)
+distclean: clean $(cleanfiles)

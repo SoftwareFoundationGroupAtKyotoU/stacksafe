@@ -9,3 +9,7 @@ $(tests): %: %.cpp
 
 $(jsons): %.json:
 	$(CXX) $(CXXFLAGS) -MJ $@ -fsyntax-only $*.cpp
+
+.PHONY: clean
+clean:
+	$(RM) $(tests)
