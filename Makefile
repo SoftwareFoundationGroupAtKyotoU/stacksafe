@@ -9,6 +9,9 @@ ld := ld.lld
 # options
 CXXFLAGS += -std=c++17 -fPIC
 LDFLAGS += -shared
+LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
+LLVM_LDFLAGS  != $(LLVM_CONFIG) --ldflags
+
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
 compile-commands := compile_commands.json
@@ -25,6 +28,8 @@ srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:%.cpp=%.o)
 deps := $(srcs:%.cpp=%.d)
 lsps := $(srcs:%.cpp=%.json)
+
+export LLVM_CXXFLAGS LLVM_LDFLAGS
 
 .SUFFIXES:
 
