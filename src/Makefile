@@ -8,10 +8,19 @@ CXXFLAGS += $(filter-out $(cxxflags-filter),$(LLVM_CXXFLAGS))
 
 srcs := $(wildcard *.cpp)
 objs := $(srcs:%.cpp=%.o)
+deps := $(srcs:%.cpp=%.d)
 
 $(objs): %.o: %.cpp
 	$(info OBJS: $@)
-	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+depend-filter  =   sed -e 's,^$*.o:,$*.o $@:,'
+depend-filter += | sed -e 's,^ \+,,'
+depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
+$(deps): %.d: %.cpp
+	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
 
 clean:
-	$(RM) $(objs)
+	$(RM) $(objs) $(deps)
+
+-include $(deps)
