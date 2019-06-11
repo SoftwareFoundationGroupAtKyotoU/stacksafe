@@ -34,8 +34,8 @@ export CXX CXXFLAGS
 
 .SUFFIXES:
 
-.PHONY: all
-all: release
+.PHONY: default
+default:
 
 $(TARGET): $(objs)
 	$(LD) $(LDFLAGS) $^ -o $@
