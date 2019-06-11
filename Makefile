@@ -86,25 +86,25 @@ $(compile-commands): $(jsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 # analysis
-LLVM_OPT := opt$(LLVM_SUFFIX)
-LLVM_OPTFLAGS := -analyze -load=$(path) -$(PASS)
+opt := opt$(LLVM_SUFFIX)
+optflags := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
 
 irdir := ir
 test-prefix := test
 run-prefix := run
-irobjs := $(wildcard $(irdir)/*.ll)
-tests := $(irobjs:$(irdir)/%.ll=$(test-prefix)/%)
-runs := $(irobjs:$(irdir)/%.ll=$(run-prefix)/%)
+irs := $(wildcard $(irdir)/*.ll)
+tests := $(irs:$(irdir)/%.ll=$(test-prefix)/%)
+runs := $(irs:$(irdir)/%.ll=$(run-prefix)/%)
 
 .PHONY: $(tests)
-$(tests): LLVM_OPTFLAGS += -debug
+$(tests): optflags += -debug
 $(tests): $(test-prefix)/%: $(run-prefix)/%
 
 .PHONY: $(runs)
 $(runs): $(run-prefix)/%: $(irdir)/%.ll
 	@echo ---- $* begins ----
-	$(LLVM_OPT) $(LLVM_OPTFLAGS) $<
+	$(opt) $(optflags) $<
 	@echo ---- $* ends   ----
 
 # clean
