@@ -44,18 +44,16 @@ $(objs): %.o: %.cpp
 	$(info OBJS: $@)
 	@$(cxx) $(cxxflags) -o $@ -c $<
 
+.INTERMEDIATE: $(lsps)
+$(lsps): %.json: %.cpp
+	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
+
 depend-filter  =   sed -e 's,^$(notdir $*)\.o:,$*.o $@:,'
 depend-filter += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,'
 depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
 $(deps): %.d: %.cpp
 	$(info DEPS: $@)
 	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
-
-.INTERMEDIATE: $(lsps)
-$(lsps): %.json: %.cpp
-	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
-$(compile-commands): $(lsps)
-	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 -include $(deps)
 
@@ -72,6 +70,10 @@ $(gtestobj): $(gtestsrc)
 	$(cxx) $(gtestflags) -o $@ -c $<
 $(libgtest): $(gtestobj)
 	$(AR) -r $@ $^
+
+# compile commands
+$(compile-commands): $(lsps)
+	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 # analysis
 cc := clang
