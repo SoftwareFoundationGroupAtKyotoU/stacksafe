@@ -1,35 +1,34 @@
 #!/usr/bin/make -f
 
+# target
 PASS := stacksafe
 TARGET := $(PASS).so
-LLVM_SUFFIX ?=
-LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
-cxx := clang++
-ld := ld.lld
-# options
-CXXFLAGS += -std=c++17 -fPIC
-LDFLAGS += -shared
-LLVM_CXXFLAGS != $(LLVM_CONFIG) --cxxflags
-LLVM_LDFLAGS  != $(LLVM_CONFIG) --ldflags
-
-release-flags := -O2 -DNDEBUG
-debug-flags := -O0 -g3
 compile-commands := compile_commands.json
 
-# flags
+# llvm
+LLVM_SUFFIX ?=
+LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
 llvm-ldflags != $(LLVM_CONFIG) --ldflags
-cxxflags-out := -std=% -fuse-ld=% -O% -g% -DNDEBUG -Wl,%
-cxxflags := $(CXXFLAGS) $(filter-out $(cxxflags-out),$(llvm-cxxflags))
-ldflags := $(LDFLAGS) $(llvm-ldflags)
+llvm-filter := -std=% -fuse-ld=% -Wl,% -O% -g% -DNDEBUG
+llvm-cxxflags := $(filter-out $(llvm-filter),$(llvm-cxxflags))
+CXX := clang++
+LD := ld.lld
+
+# flags
+CXXFLAGS += -std=c++17 -fPIC -pedantic -Wall -Wextra
+LDFLAGS += -shared
+CXXFLAGS += $(llvm-cxxflags)
+LDFLAGS += $(llvm-ldflags)
+release-flags := -O2 -DNDEBUG
+debug-flags := -O0 -g3
 
 srcdir := src
 srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:%.cpp=%.o)
-deps := $(srcs:%.cpp=%.d)
 lsps := $(srcs:%.cpp=%.json)
 
-export LLVM_CXXFLAGS LLVM_LDFLAGS
+export CXX CXXFLAGS
 
 .SUFFIXES:
 
@@ -37,30 +36,15 @@ export LLVM_CXXFLAGS LLVM_LDFLAGS
 all: release
 
 $(TARGET): $(objs)
-	$(info TARGET: $@)
-	@$(ld) $(ldflags) -o $@ $^
+	$(LD) $(LDFLAGS) $^ -o $@
+
+$(objs):
+	make -C $(@D) $(@F)
 
 .PHONY: release debug
 release debug: $(TARGET)
-release: cxxflags += $(release-flags)
-debug: cxxflags += $(debug-flags)
-
-$(objs): %.o: %.cpp
-	$(info OBJS: $@)
-	@$(cxx) $(cxxflags) -o $@ -c $<
-
-.INTERMEDIATE: $(lsps)
-$(lsps): %.json: %.cpp
-	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
-
-depend-filter  =   sed -e 's,^$(notdir $*)\.o:,$*.o $@:,'
-depend-filter += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,'
-depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
-$(deps): %.d: %.cpp
-	$(info DEPS: $@)
-	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
-
--include $(deps)
+release: CXXFLAGS += $(release-flags)
+debug: CXXFLAGS += $(debug-flags)
 
 # googletest
 libgtest := libgtest.a
@@ -130,10 +114,11 @@ $(runs): $(run-prefix)/%: $(irdir)/%.ll
 	@echo ---- $* ends ----
 
 # clean
-cleans := $(addprefix clean/,objs deps units)
+cleans := $(addprefix clean/,units)
 
 .PHONY: clean $(cleans) distclean
 clean: $(cleans)
+	make -C src clean
 $(cleans): clean/%:
 	$(RM) $($*)
 distclean: clean

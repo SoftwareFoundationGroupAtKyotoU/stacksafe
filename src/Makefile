@@ -1,19 +1,17 @@
 #!/usr/bin/make -f
 
-CXX := clang++
-CXXFLAGS := -std=c++17 -fPIC
-
-cxxflags-filter := -std=%
-CXXFLAGS += $(filter-out $(cxxflags-filter),$(LLVM_CXXFLAGS))
-
 srcs := $(wildcard *.cpp)
 objs := $(srcs:%.cpp=%.o)
 deps := $(srcs:%.cpp=%.d)
 jsons := $(srcs:%.cpp=%.json)
 
-$(objs): %.o: %.cpp
-	$(info OBJS: $@)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+.SUFFIXES:
+
+.PHONY: default
+default:
+
+$(objs): %.o:
+	$(CXX) $(CXXFLAGS) -c $*.cpp -o $@
 
 depend-filter  =   sed -e 's,^$*.o:,$*.o $@:,'
 depend-filter += | sed -e 's,^ \+,,'
@@ -25,6 +23,7 @@ $(deps): %.d: %.cpp
 $(jsons): %.json:
 	$(CXX) $(CXXFLAGS) -fsyntax-only $*.cpp -MJ $@
 
+.PHONY: clean
 clean:
 	$(RM) $(objs) $(deps)
 
