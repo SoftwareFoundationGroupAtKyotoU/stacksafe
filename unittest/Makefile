@@ -1,34 +1,32 @@
 #!/usr/bin/make -f
 
-libgtest := libgtest.a
-gtestdir := googletest/googletest
-gtestincludes := -isystem $(gtestdir)/include -I$(gtestdir)
-gtestflags := -std=c++11 -Wall -Wextra -pedantic -O0 -g3 -pthread
-gtestflags += $(gtestincludes)
+libg := libgtest.a
+gdir := googletest/googletest
+gsrc := $(gdir)/src/gtest-all.cc
+gobj := $(gsrc:%.cc=%.o)
 
-unitcxxflags := $(gtestincludes) -I../src -pthread
-unitldflags := -lLLVM
-
-gtestsrc := $(gtestdir)/src/gtest-all.cc
-gtestobj := $(gtestsrc:%.cc=%.o)
 srcs := $(wildcard *.cpp)
 tests := $(srcs:%.cpp=%)
 jsons := $(srcs:%.cpp=%.json)
 
-.INTERMEDIATE: $(gtestobj)
-$(gtestobj): $(gtestsrc)
-	$(CXX) $(gtestflags) -o $@ -c $<
-$(libgtest): $(gtestobj)
+incs := -isystem $(gdir)/include -I$(gdir)
+CXXFLAGS += $(incs) -pthread -O0 -g3
+
+$(gobj): CXXFLAGS += -std=c++11
+$(tests) $(jsons): CXXFLAGS += -std=c++17 -I../src
+$(tests): LDFLAGS += -lLLVM
+
+.INTERMEDIATE: $(gobj)
+$(gobj): $(gsrc)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+$(libg): $(gobj)
 	$(AR) -r $@ $^
 
-$(tests) $(jsons): CXXFLAGS += $(unitcxxflags)
-$(tests): LDFLAGS += $(unitldflags)
-
-$(tests): %: %.cpp $(libgtest)
+$(tests): %: %.cpp $(libg)
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 $(jsons): %.json:
-	$(CXX) $(CXXFLAGS) -MJ $@ -fsyntax-only $*.cpp
+	$(CXX) $(CXXFLAGS) -fsyntax-only $*.cpp -MJ $@
 
 .PHONY: clean
 clean:

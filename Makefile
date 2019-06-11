@@ -3,6 +3,7 @@
 # target
 PASS := stacksafe
 TARGET := $(PASS).so
+TARGET_PATH := $(CURDIR)/$(TARGET)
 compile-commands := compile_commands.json
 
 # llvm
@@ -14,11 +15,9 @@ llvm-filter := -std=% -fuse-ld=% -Wl,% -O% -g% -DNDEBUG
 llvm-cxxflags := $(filter-out $(llvm-filter),$(llvm-cxxflags))
 CXX := clang++
 LD := ld.lld
-cxx := clang++
-ld := ld.lld
 
 # flags
-CXXFLAGS += -std=c++17 -fPIC -pedantic -Wall -Wextra
+CXXFLAGS += -pedantic -Wall -Wextra
 CXXFLAGS += $(llvm-cxxflags)
 LDFLAGS += $(llvm-ldflags)
 release-flags := -O2 -DNDEBUG
@@ -29,7 +28,7 @@ srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:%.cpp=%.o)
 jsons := $(srcs:%.cpp=%.json)
 
-export CXX CXXFLAGS LDFLAGS
+export PASS TARGET_PATH LLVM_SUFFIX CXX CXXFLAGS LDFLAGS
 
 .SUFFIXES:
 
@@ -64,26 +63,9 @@ $(compile-commands): $(jsons) $(unitjsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 # analysis
-opt := opt$(LLVM_SUFFIX)
-optflags := -analyze -load=$(CURDIR)/$(TARGET) -$(PASS)
-#optflags += -time-passes
-
-irdir := ir
-test-prefix := test
-run-prefix := run
-irs := $(wildcard $(irdir)/*.ll)
-tests := $(irs:$(irdir)/%.ll=$(test-prefix)/%)
-runs := $(irs:$(irdir)/%.ll=$(run-prefix)/%)
-
-.PHONY: $(tests)
-$(tests): optflags += -debug
-$(tests): $(test-prefix)/%: $(run-prefix)/%
-
-.PHONY: $(runs)
-$(runs): $(run-prefix)/%: $(irdir)/%.ll
-	@echo ---- $* begins ----
-	$(opt) $(optflags) $<
-	@echo ---- $* ends   ----
+.PHONY: test run
+test run:
+	make -C ir $@
 
 # clean
 clean-prefix := clean

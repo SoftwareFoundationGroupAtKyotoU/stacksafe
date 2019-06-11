@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+CXXFLAGS += -std=c++17 -fPIC
+
 srcs := $(wildcard *.cpp)
 objs := $(srcs:%.cpp=%.o)
 deps := $(srcs:%.cpp=%.d)
