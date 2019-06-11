@@ -12,3 +12,6 @@ objs := $(srcs:%.cpp=%.o)
 $(objs): %.o: %.cpp
 	$(info OBJS: $@)
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+clean:
+	$(RM) $(objs)
