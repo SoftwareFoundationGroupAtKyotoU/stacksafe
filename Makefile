@@ -86,25 +86,16 @@ $(compile-commands): $(jsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 # analysis
-CC := clang
-CFLAGS := -S -emit-llvm
 LLVM_OPT := opt$(LLVM_SUFFIX)
 LLVM_OPTFLAGS := -analyze -load=$(path) -$(PASS)
 #optflags += -time-passes
 
 irdir := ir
-emit-prefix := emit
 test-prefix := test
 run-prefix := run
-irsrcs != find $(CURDIR) -type f -name '*.c'
 irobjs := $(wildcard $(irdir)/*.ll)
-emits := $(irsrcs:$(CURDIR)/%.c=$(emit-prefix)/%)
 tests := $(irobjs:$(irdir)/%.ll=$(test-prefix)/%)
 runs := $(irobjs:$(irdir)/%.ll=$(run-prefix)/%)
-
-.PHONY: $(emits)
-$(emits): $(emit-prefix)/%:
-	@$(CC) $(CFLAGS) -c $*.c -o $(irdir)/$(notdir $*.ll)
 
 .PHONY: $(tests)
 $(tests): LLVM_OPTFLAGS += -debug
