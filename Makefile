@@ -1,22 +1,23 @@
 #!/usr/bin/make -f
 
 # target
-PASS := stacksafe
-TARGET := $(PASS).so
-TARGET_PATH := $(CURDIR)/$(TARGET)
+export PASS := stacksafe
+export TARGET := $(PASS).so
+export TARGET_PATH := $(CURDIR)/$(TARGET)
 compile-commands := compile_commands.json
 
 # llvm
-LLVM_SUFFIX ?=
-LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
+export LLVM_SUFFIX ?=
+export LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
 llvm-ldflags != $(LLVM_CONFIG) --ldflags
 llvm-filter := -std=% -fuse-ld=% -Wl,% -O% -g% -DNDEBUG
 llvm-cxxflags := $(filter-out $(llvm-filter),$(llvm-cxxflags))
-CXX := clang++
-LD := ld.lld
+export CXX := clang++
+export LD := ld.lld
 
 # flags
+export CXXFLAGS LDFLAGS
 CXXFLAGS += -pedantic -Wall -Wextra
 CXXFLAGS += $(llvm-cxxflags)
 LDFLAGS += $(llvm-ldflags)
@@ -24,43 +25,42 @@ release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
 
 srcdir := src
+testdir := gtest
 srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:%.cpp=%.o)
-jsons := $(srcs:%.cpp=%.json)
-
-export PASS TARGET_PATH LLVM_SUFFIX CXX CXXFLAGS LDFLAGS
+deps := $(srcs:%.cpp=%.d)
+testsrcs := $(wildcard $(testdir)/*.cpp)
+testobjs := $(testsrcs:%.cpp=%)
+jsonsrcs := $(srcs) $(testsrcs)
+jsons := $(jsonsrcs:%.cpp=%.json)
 
 .SUFFIXES:
-
 .PHONY: default
 default:
 
+.PHONY: release debug
+release: CXXFLAGS += $(release-flags)
+debug: CXXFLAGS += $(debug-flags)
 $(TARGET): LDFLAGS += -shared
+
+release debug: $(TARGET)
 $(TARGET): $(objs)
 	$(LD) $(LDFLAGS) $^ -o $@
 
 .INTERMEDIATE: $(jsons)
-$(objs) $(jsons):
-	make -C $(@D) $(@F)
-
-.PHONY: release debug
-release debug: $(TARGET)
-release: CXXFLAGS += $(release-flags)
-debug: CXXFLAGS += $(debug-flags)
-
-# unittest
-unitdir := unittest
-unitsrcs := $(wildcard $(unitdir)/*.cpp)
-unitjsons := $(unitsrcs:%.cpp=%.json)
-units := $(unitsrcs:%.cpp=%)
-
-.INTERMEDIATE: $(unitjsons)
-$(units) $(unitjsons):
-	make -C $(@D) $(@F)
-
-# compile commands
-$(compile-commands): $(jsons) $(unitjsons)
+$(compile-commands): $(jsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
+
+$(objs) $(testobjs) $(jsons):
+	make -C $(@D) $(@F)
+
+depend-filter  =   sed -e 's,^$(notdir $*.o):,$*.o $@:,'
+depend-filter += | sed -e 's,^ \+,,'
+depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
+$(deps): %.d: %.cpp
+	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
+
+-include $(deps)
 
 # analysis
 .PHONY: test run
@@ -70,7 +70,7 @@ test run:
 # clean
 clean-prefix := clean
 cleanfiles := $(addprefix $(clean-prefix)/,$(compile-commands) $(TARGET))
-cleandirs := $(addprefix $(clean-prefix)/,$(srcdir) $(unitdir))
+cleandirs := $(addprefix $(clean-prefix)/,$(srcdir) $(testdir))
 
 .PHONY: $(cleanfiles) $(cleandirs) clean distclean
 $(cleandirs):
