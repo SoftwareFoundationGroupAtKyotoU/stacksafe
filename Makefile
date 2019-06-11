@@ -60,19 +60,36 @@ $(deps): %.d: %.cpp
 # googletest
 libgtest := libgtest.a
 gtestdir := googletest/googletest
+gtestincludes := -isystem $(gtestdir)/include -I$(gtestdir)
 gtestflags := -std=c++11 -Wall -Wextra -pedantic -O0 -g3 -pthread
-gtestflags += -isystem $(gtestdir)/include -I$(gtestdir)
 gtestsrc := $(gtestdir)/src/gtest-all.cc
 gtestobj := $(gtestsrc:%.cc=%.o)
 
 .INTERMEDIATE: $(gtestobj)
 $(gtestobj): $(gtestsrc)
-	$(cxx) $(gtestflags) -o $@ -c $<
+	$(cxx) $(gtestflags) $(gtestincludes) -o $@ -c $<
 $(libgtest): $(gtestobj)
 	$(AR) -r $@ $^
 
+# unittest
+unitdir := unittest
+unitincludes := $(gtestincludes) -I$(srcdir)
+unitcxxflags := $(unitincludes) $(cxxflags)
+unitldflags := $(llvm-ldflags) $(libgtest) -lLLVM
+unitsrcs := $(wildcard $(unitdir)/*.cpp)
+unitlsps := $(unitsrcs:%.cpp=%.json)
+units := $(unitsrcs:%.cpp=%)
+
+$(units): %: %.cpp
+	$(cxx) $(unitcxxflags) -o $@ $< $(unitldflags)
+unittest: $(units)
+
+.INTERMEDIATE: $(unitlsps)
+$(unitlsps): %.json: %.cpp
+	@$(cxx) $(unitflags) -MJ $@ -fsyntax-only $<
+
 # compile commands
-$(compile-commands): $(lsps)
+$(compile-commands): $(lsps) $(unitlsps)
 	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 # analysis
