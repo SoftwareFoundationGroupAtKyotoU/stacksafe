@@ -62,11 +62,6 @@ $(deps): %.d: %.cpp
 
 -include $(deps)
 
-# analysis
-.PHONY: test run
-test run:
-	make -C ir $@
-
 # clean
 clean-prefix := clean
 cleanfiles := $(addprefix $(clean-prefix)/,$(compile-commands) $(TARGET))

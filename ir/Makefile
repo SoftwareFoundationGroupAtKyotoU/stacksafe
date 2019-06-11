@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+PASS ?= stacksafe
+TARGET_PATH ?= $(CURDIR)/../stacksafe.so
 CC := clang
 CFLAGS := -S -emit-llvm
 
