@@ -3,7 +3,6 @@
 # target
 PASS := stacksafe
 TARGET := $(PASS).so
-path := $(CURDIR)/$(TARGET)
 compile-commands := compile_commands.json
 
 # llvm
@@ -20,7 +19,6 @@ ld := ld.lld
 
 # flags
 CXXFLAGS += -std=c++17 -fPIC -pedantic -Wall -Wextra
-LDFLAGS += -shared
 CXXFLAGS += $(llvm-cxxflags)
 LDFLAGS += $(llvm-ldflags)
 release-flags := -O2 -DNDEBUG
@@ -31,13 +29,14 @@ srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(srcs:%.cpp=%.o)
 jsons := $(srcs:%.cpp=%.json)
 
-export CXX CXXFLAGS
+export CXX CXXFLAGS LDFLAGS
 
 .SUFFIXES:
 
 .PHONY: default
 default:
 
+$(TARGET): LDFLAGS += -shared
 $(TARGET): $(objs)
 	$(LD) $(LDFLAGS) $^ -o $@
 
@@ -52,7 +51,7 @@ debug: CXXFLAGS += $(debug-flags)
 
 # googletest
 libgtest := libgtest.a
-gtestdir := googletest/googletest
+gtestdir := $(CURDIR)/googletest/googletest
 gtestincludes := -isystem $(gtestdir)/include -I$(gtestdir)
 gtestflags := -std=c++11 -Wall -Wextra -pedantic -O0 -g3 -pthread
 gtestsrc := $(gtestdir)/src/gtest-all.cc
@@ -66,28 +65,25 @@ $(libgtest): $(gtestobj)
 
 # unittest
 unitdir := unittest
-unitincludes := $(gtestincludes) -I$(srcdir)
-unitcxxflags := $(unitincludes) $(cxxflags)
-unitldflags := $(llvm-ldflags) $(libgtest) -lLLVM
+unitcxxflags := $(gtestincludes) -I$(CURDIR)/$(srcdir) -pthread
+unitldflags := $(CURDIR)/$(libgtest) -lLLVM
 unitsrcs := $(wildcard $(unitdir)/*.cpp)
-unitlsps := $(unitsrcs:%.cpp=%.json)
+unitjsons := $(unitsrcs:%.cpp=%.json)
 units := $(unitsrcs:%.cpp=%)
 
-$(units): %: %.cpp
-	$(cxx) $(unitcxxflags) -o $@ $< $(unitldflags)
-unittest: $(units)
-
-.INTERMEDIATE: $(unitlsps)
-$(unitlsps): %.json: %.cpp
-	@$(cxx) $(unitflags) -MJ $@ -fsyntax-only $<
+$(units) $(unitjsons): CXXFLAGS += $(unitcxxflags)
+$(units): LDFLAGS += $(unitldflags)
+.INTERMEDIATE: $(unitjsons)
+$(units) $(unitjsons):
+	make -C $(@D) $(@F)
 
 # compile commands
-$(compile-commands): $(jsons)
+$(compile-commands): $(jsons) $(unitjsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 # analysis
 opt := opt$(LLVM_SUFFIX)
-optflags := -analyze -load=$(path) -$(PASS)
+optflags := -analyze -load=$(CURDIR)/$(TARGET) -$(PASS)
 #optflags += -time-passes
 
 irdir := ir
