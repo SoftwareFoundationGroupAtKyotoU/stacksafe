@@ -49,30 +49,12 @@ release debug: $(TARGET)
 release: CXXFLAGS += $(release-flags)
 debug: CXXFLAGS += $(debug-flags)
 
-# googletest
-libgtest := libgtest.a
-gtestdir := $(CURDIR)/googletest/googletest
-gtestincludes := -isystem $(gtestdir)/include -I$(gtestdir)
-gtestflags := -std=c++11 -Wall -Wextra -pedantic -O0 -g3 -pthread
-gtestsrc := $(gtestdir)/src/gtest-all.cc
-gtestobj := $(gtestsrc:%.cc=%.o)
-
-.INTERMEDIATE: $(gtestobj)
-$(gtestobj): $(gtestsrc)
-	$(cxx) $(gtestflags) $(gtestincludes) -o $@ -c $<
-$(libgtest): $(gtestobj)
-	$(AR) -r $@ $^
-
 # unittest
 unitdir := unittest
-unitcxxflags := $(gtestincludes) -I$(CURDIR)/$(srcdir) -pthread
-unitldflags := $(CURDIR)/$(libgtest) -lLLVM
 unitsrcs := $(wildcard $(unitdir)/*.cpp)
 unitjsons := $(unitsrcs:%.cpp=%.json)
 units := $(unitsrcs:%.cpp=%)
 
-$(units) $(unitjsons): CXXFLAGS += $(unitcxxflags)
-$(units): LDFLAGS += $(unitldflags)
 .INTERMEDIATE: $(unitjsons)
 $(units) $(unitjsons):
 	make -C $(@D) $(@F)
