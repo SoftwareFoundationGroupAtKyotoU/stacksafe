@@ -124,10 +124,12 @@ $(runs): $(run-prefix)/%: $(irdir)/%.ll
 	$(opt) $(optflags) $<
 	@echo ---- $* ends ----
 
-.PHONY: clean
-clean:
-	@$(RM) $(objs) $(deps)
+# clean
+cleans := $(addprefix clean/,objs deps units)
 
-.PHONY: distclean
-distclean:
+.PHONY: clean $(cleans) distclean
+clean: $(cleans)
+$(cleans): clean/%:
+	$(RM) $($*)
+distclean: clean
 	@$(RM) $(compile-commands) $(TARGET)
