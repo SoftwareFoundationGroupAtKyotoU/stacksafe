@@ -59,6 +59,7 @@ depend-filter += | sed -e 's,^ \+,,'
 depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
 $(deps): %.d: %.cpp
 	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
+$(testobjs): %: %.cpp
 
 -include $(deps)
 
