@@ -2,12 +2,13 @@
 
 LLVM_SUFFIX ?=
 PASS ?= stacksafe
-TARGET_PATH ?= $(CURDIR)/../stacksafe.so
+TARGET ?= $(PASS).so
+TOPDIR ?= $(CURDIR)/..
 CC := clang
 CFLAGS := -S -emit-llvm
 
 opt := opt$(LLVM_SUFFIX)
-optflags := -analyze -load=$(TARGET_PATH) -$(PASS)
+optflags := -analyze -load=$(TOPDIR)/$(TARGET) -$(PASS)
 # optflags += -time-passes
 
 emit-prefix := emit

@@ -13,7 +13,7 @@ incs := -isystem $(gdir)/include -I$(gdir)
 CXXFLAGS += $(incs) -pthread -O0 -g3
 
 $(gobj): CXXFLAGS += -std=c++11
-$(objs) $(jsons): CXXFLAGS += -std=c++17 -I../src
+$(objs) $(jsons): CXXFLAGS += -std=c++17 -I$(TOPDIR)/src
 $(objs): LDFLAGS += -lLLVM
 
 .INTERMEDIATE: $(gobj)

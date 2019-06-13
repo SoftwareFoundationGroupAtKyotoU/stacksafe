@@ -5,7 +5,7 @@ LD := ld.lld
 
 PASS := stacksafe
 TARGET := $(PASS).so
-TARGET_PATH := $(CURDIR)/$(TARGET)
+TOPDIR := $(CURDIR)
 compile-commands := compile_commands.json
 
 LLVM_SUFFIX ?=
@@ -23,7 +23,7 @@ debug-flags := -O0 -g3
 
 export CXX CXXFLAGS LD LDFLAGS
 export LLVM_SUFFIX LLVM_CONFIG
-export PASS TARGET TARGET_PATH
+export PASS TARGET TOPDIR
 
 srcdir := src
 testdir := gtest
