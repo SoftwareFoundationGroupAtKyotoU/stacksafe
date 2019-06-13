@@ -1,13 +1,18 @@
-#include "gtest/gtest.h"
 #include "collection.hpp"
+#include <gtest/gtest.h>
 
 namespace {
-  TEST(OptRefTest, IntOptRef) {
-    int x = 42;
-    stacksafe::OptRef<int> ref{x};
-    EXPECT_EQ(static_cast<bool>(ref), true);
-  }
+struct OptRefTest : ::testing::Test {
+  int x;
+  stacksafe::OptRef<int> empty, null, value;
+  OptRefTest() : x{42}, empty{}, null{std::nullopt}, value{x} {}
+};
+TEST_F(OptRefTest, OperatorBool) {
+  EXPECT_EQ(static_cast<bool>(empty), false);
+  EXPECT_EQ(static_cast<bool>(null), false);
+  EXPECT_EQ(static_cast<bool>(value), true);
 }
+} // namespace
 
-#include "visualize.cpp"
 #include "src/gtest_main.cc"
+#include "visualize.cpp"
