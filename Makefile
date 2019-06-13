@@ -49,6 +49,7 @@ $(TARGET): $(objs)
 	$(LD) $(LDFLAGS) $^ -o $@
 
 .INTERMEDIATE: $(jsons)
+.PHONY: $(compile-commands)
 $(compile-commands): $(jsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
