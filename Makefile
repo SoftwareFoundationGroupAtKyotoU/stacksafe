@@ -56,7 +56,7 @@ $(objs) $(testobjs) $(jsons):
 	make -C $(@D) $(@F)
 
 depend-filter  =   sed -e 's,^$(notdir $*.o):,$*.o $@:,'
-depend-filter += | sed -e 's,^ \+,,'
+depend-filter += | sed -e 's, /usr/[^ ]*,,g' -e 's,^ \+,,'
 depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
 $(deps): %.d: %.cpp
 	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@

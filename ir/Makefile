@@ -23,13 +23,11 @@ runs := $(objs:%.ll=$(run-prefix)/%)
 $(emits): $(emit-prefix)/%:
 	$(CC) $(CFLAGS) -c $*.c -o $(notdir $*.ll)
 
-.PHONY: test $(tests)
-test: $(tests)
+.PHONY: $(tests)
 $(tests): optflags += -debug
 $(tests): $(test-prefix)/%: $(run-prefix)/%
 
-.PHONY: run $(runs)
-run: $(runs)
+.PHONY: $(runs)
 $(runs): $(run-prefix)/%: %.ll
 	@echo ---- $* begins ----
 	$(opt) $(optflags) $<
