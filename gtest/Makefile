@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 libg := libgtest.a
-gdir := googletest/googletest
+gdir := $(CURDIR)/googletest/googletest
 gsrc := $(gdir)/src/gtest-all.cc
 gobj := $(gsrc:%.cc=%.o)
 
