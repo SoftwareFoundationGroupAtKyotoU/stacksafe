@@ -1,5 +1,6 @@
 #!/usr/bin/make -f
 
+LLVM_SUFFIX ?=
 PASS ?= stacksafe
 TARGET_PATH ?= $(CURDIR)/../stacksafe.so
 CC := clang

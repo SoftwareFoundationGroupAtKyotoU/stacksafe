@@ -1,28 +1,29 @@
 #!/usr/bin/make -f
 
-# target
-export PASS := stacksafe
-export TARGET := $(PASS).so
-export TARGET_PATH := $(CURDIR)/$(TARGET)
+CXX := clang++
+LD := ld.lld
+
+PASS := stacksafe
+TARGET := $(PASS).so
+TARGET_PATH := $(CURDIR)/$(TARGET)
 compile-commands := compile_commands.json
 
-# llvm
-export LLVM_SUFFIX ?=
-export LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
+LLVM_SUFFIX ?=
+LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
 llvm-ldflags != $(LLVM_CONFIG) --ldflags
 llvm-filter := -std=% -fuse-ld=% -Wl,% -O% -g% -DNDEBUG
 llvm-cxxflags := $(filter-out $(llvm-filter),$(llvm-cxxflags))
-export CXX := clang++
-export LD := ld.lld
 
-# flags
-export CXXFLAGS LDFLAGS
 CXXFLAGS += -pedantic -Wall -Wextra
-CXXFLAGS += $(llvm-cxxflags)
+CXXFLAGS += $(llvm-cxxflags) -Wno-unknown-warning-option
 LDFLAGS += $(llvm-ldflags)
 release-flags := -O2 -DNDEBUG
 debug-flags := -O0 -g3
+
+export CXX CXXFLAGS LD LDFLAGS
+export LLVM_SUFFIX LLVM_CONFIG
+export PASS TARGET TARGET_PATH
 
 srcdir := src
 testdir := gtest
