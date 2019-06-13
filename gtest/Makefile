@@ -6,15 +6,15 @@ gsrc := $(gdir)/src/gtest-all.cc
 gobj := $(gsrc:%.cc=%.o)
 
 srcs := $(wildcard *.cpp)
-tests := $(srcs:%.cpp=%)
+objs := $(srcs:%.cpp=%)
 jsons := $(srcs:%.cpp=%.json)
 
 incs := -isystem $(gdir)/include -I$(gdir)
 CXXFLAGS += $(incs) -pthread -O0 -g3
 
 $(gobj): CXXFLAGS += -std=c++11
-$(tests) $(jsons): CXXFLAGS += -std=c++17 -I../src
-$(tests): LDFLAGS += -lLLVM
+$(objs) $(jsons): CXXFLAGS += -std=c++17 -I../src
+$(objs): LDFLAGS += -lLLVM
 
 .INTERMEDIATE: $(gobj)
 $(gobj): $(gsrc)
@@ -22,7 +22,7 @@ $(gobj): $(gsrc)
 $(libg): $(gobj)
 	$(AR) -r $@ $^
 
-$(tests): %: %.cpp $(libg)
+$(objs): %: %.cpp $(libg)
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 $(jsons): %.json:
@@ -30,4 +30,4 @@ $(jsons): %.json:
 
 .PHONY: clean
 clean:
-	$(RM) $(tests)
+	$(RM) $(objs)
