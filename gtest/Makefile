@@ -24,6 +24,7 @@ $(libg): $(gobj)
 
 $(objs): %: %.cpp $(libg)
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
+	./$(objs)
 
 $(jsons): %.json:
 	$(CXX) $(CXXFLAGS) -fsyntax-only $*.cpp -MJ $@

@@ -20,7 +20,7 @@ class OptRef : private std::optional<std::reference_wrapper<T>> {
 
 public:
   using Base::operator bool;
-  OptRef();
+  OptRef() {}
   OptRef(std::nullopt_t v) : Base{v} {}
   OptRef(T &v) : Base{v} {}
   const T *operator->() const { return &value(); }
