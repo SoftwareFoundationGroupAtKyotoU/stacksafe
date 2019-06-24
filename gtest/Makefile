@@ -5,8 +5,9 @@ gdir := $(CURDIR)/googletest/googletest
 gsrc := $(gdir)/src/gtest-all.cc
 gobj := $(gsrc:%.cc=%.o)
 
-srcs := $(wildcard *.cpp)
-objs := $(srcs:%.cpp=%)
+srcdir := src
+srcs := $(wildcard $(srcdir)/*.cpp)
+objs := $(srcs:$(srcdir)/%.cpp=%)
 jsons := $(srcs:%.cpp=%.json)
 
 incs := -isystem $(gdir)/include -I$(gdir)
@@ -22,7 +23,7 @@ $(gobj): $(gsrc)
 $(libg): $(gobj)
 	$(AR) -r $@ $^
 
-$(objs): %: %.cpp $(libg)
+$(objs): %: $(srcdir)/%.cpp $(libg)
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 	./$(objs)
 
