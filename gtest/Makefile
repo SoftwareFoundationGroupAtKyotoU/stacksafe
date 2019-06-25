@@ -5,10 +5,9 @@ gdir := $(CURDIR)/googletest/googletest
 gsrc := $(gdir)/src/gtest-all.cc
 gobj := $(gsrc:%.cc=%.o)
 
-srcdir := src
-srcs := $(wildcard $(srcdir)/*.cpp)
-targets := $(srcs:$(srcdir)/%.cpp=%)
-jsons := $(srcs:%.cpp=%.json)
+srcs := $(wildcard src/*.cpp)
+targets := $(srcs:src/%.cpp=%)
+jsons := $(srcs:src/%.cpp=%.json)
 
 incs := -isystem $(gdir)/include -I$(gdir)
 CXXFLAGS += $(incs) -pthread -O0 -g3
@@ -23,11 +22,11 @@ $(gobj): $(gsrc)
 $(libg): $(gobj)
 	$(AR) -r $@ $^
 
-$(targets): %: $(srcdir)/%.cpp $(libg)
+$(targets): %: src/%.cpp $(libg)
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 $(jsons): %.json:
-	$(CXX) $(CXXFLAGS) -fsyntax-only $*.cpp -MJ $@
+	$(CXX) $(CXXFLAGS) -fsyntax-only src/$*.cpp -MJ $@
 
 .PHONY: clean
 clean:
