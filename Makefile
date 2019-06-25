@@ -51,7 +51,7 @@ $(compile-commands): $(jsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
 $(objs) $(testtargets) $(jsons):
-	make -C $(@D) $(@F)
+	$(MAKE) -C $(@D) $(@F)
 
 depend-filter  =   sed -e 's,^$(notdir $*.o):,$*.o $@:,'
 depend-filter += | sed -e 's, /usr/[^ ]*,,g' -e 's,^ \+,,'
@@ -68,7 +68,7 @@ distcleanfiles := $(addprefix distclean/,$(compile-commands) $(TARGET))
 
 .PHONY: $(cleandirs) $(distcleandirs) $(distcleanfiles) clean distclean
 $(cleandirs) $(distcleandirs):
-	make -C $(@F) $(@D)
+	$(MAKE) -C $(@F) $(@D)
 $(distcleanfiles):
 	$(RM) $(@F)
 clean: $(cleandirs)
