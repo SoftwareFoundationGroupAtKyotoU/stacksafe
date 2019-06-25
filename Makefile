@@ -25,15 +25,12 @@ export CXX CXXFLAGS LD LDFLAGS
 export LLVM_SUFFIX LLVM_CONFIG
 export PASS TARGET TOPDIR
 
-srcdir := src
-testdir := gtest
-srcs := $(wildcard $(srcdir)/*.cpp)
+srcs := $(wildcard src/*.cpp)
 objs := $(srcs:%.cpp=%.o)
 deps := $(srcs:%.cpp=%.d)
-testsrcs := $(wildcard $(testdir)/*.cpp)
-testobjs := $(testsrcs:%.cpp=%)
-jsonsrcs := $(srcs) $(testsrcs)
-jsons := $(jsonsrcs:%.cpp=%.json)
+testsrcs := $(wildcard gtest/src/*.cpp)
+testtargets := $(testsrcs:gtest/src/%.cpp=gtest/%)
+jsons := $(srcs:%.cpp=%.json) $(testtargets:%=%.json)
 
 .SUFFIXES:
 .PHONY: default
@@ -53,7 +50,7 @@ $(TARGET): $(objs)
 $(compile-commands): $(jsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
-$(objs) $(testobjs) $(jsons):
+$(objs) $(testtargets) $(jsons):
 	make -C $(@D) $(@F)
 
 depend-filter  =   sed -e 's,^$(notdir $*.o):,$*.o $@:,'
@@ -61,14 +58,13 @@ depend-filter += | sed -e 's, /usr/[^ ]*,,g' -e 's,^ \+,,'
 depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
 $(deps): %.d: %.cpp
 	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
-$(testobjs): %: %.cpp
 
 -include $(deps)
 
 # clean
 clean-prefix := clean
 cleanfiles := $(addprefix $(clean-prefix)/,$(compile-commands) $(TARGET))
-cleandirs := $(addprefix $(clean-prefix)/,$(srcdir) $(testdir))
+cleandirs := $(addprefix $(clean-prefix)/,src gtest)
 
 .PHONY: $(cleanfiles) $(cleandirs) clean distclean
 $(cleandirs):
