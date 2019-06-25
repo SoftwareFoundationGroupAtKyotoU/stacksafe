@@ -36,5 +36,5 @@ $(tests): %: %.out
 .PHONY: clean distclean
 clean:
 	$(RM) $(targets) $(jsons)
-distclean:
+distclean: clean
 	$(RM) $(libg)

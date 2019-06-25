@@ -62,14 +62,14 @@ $(deps): %.d: %.cpp
 -include $(deps)
 
 # clean
-clean-prefix := clean
-cleanfiles := $(addprefix $(clean-prefix)/,$(compile-commands) $(TARGET))
-cleandirs := $(addprefix $(clean-prefix)/,src gtest)
+cleandirs := clean/src clean/gtest
+distcleandirs := distclean/src distclean/gtest
+distcleanfiles := $(addprefix distclean/,$(compile-commands) $(TARGET))
 
-.PHONY: $(cleanfiles) $(cleandirs) clean distclean
-$(cleandirs):
+.PHONY: $(cleandirs) $(distcleandirs) $(distcleanfiles) clean distclean
+$(cleandirs) $(distcleandirs):
 	make -C $(@F) $(@D)
-$(cleanfiles):
+$(distcleanfiles):
 	$(RM) $(@F)
 clean: $(cleandirs)
-distclean: clean $(cleanfiles)
+distclean: clean $(distcleanfiles) $(distcleanfiles)
