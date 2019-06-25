@@ -6,8 +6,9 @@ gsrc := $(gdir)/src/gtest-all.cc
 gobj := $(gsrc:%.cc=%.o)
 
 srcs := $(wildcard src/*.cpp)
-targets := $(srcs:src/%.cpp=%)
-jsons := $(srcs:src/%.cpp=%.json)
+tests := $(srcs:src/%.cpp=%)
+targets := $(tests:%=%.out)
+jsons := $(tests:%=%.json)
 
 incs := -isystem $(gdir)/include -I$(gdir)
 CXXFLAGS += $(incs) -pthread -O0 -g3
@@ -22,12 +23,18 @@ $(gobj): $(gsrc)
 $(libg): $(gobj)
 	$(AR) -r $@ $^
 
-$(targets): %: src/%.cpp $(libg)
+$(targets): %.out: src/%.cpp $(libg)
 	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
-$(jsons): %.json:
-	$(CXX) $(CXXFLAGS) -fsyntax-only src/$*.cpp -MJ $@
+$(jsons): %.json: src/%.cpp
+	$(CXX) $(CXXFLAGS) -fsyntax-only $< -MJ $@
 
-.PHONY: clean
+.PHONY: $(tests)
+$(tests): %: %.out
+	./$<
+
+.PHONY: clean distclean
 clean:
-	$(RM) $(targets)
+	$(RM) $(targets) $(jsons)
+distclean:
+	$(RM) $(libg)
