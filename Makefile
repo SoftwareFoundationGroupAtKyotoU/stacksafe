@@ -29,8 +29,8 @@ srcs := $(wildcard src/*.cpp)
 objs := $(srcs:%.cpp=%.o)
 deps := $(srcs:%.cpp=%.d)
 testsrcs := $(wildcard gtest/src/*.cpp)
-testtargets := $(testsrcs:gtest/src/%.cpp=gtest/%)
-jsons := $(srcs:%.cpp=%.json) $(testtargets:%=%.json)
+tests := $(testsrcs:gtest/src/%.cpp=gtest/%)
+jsons := $(srcs:%.cpp=%.json) $(tests:%=%.json)
 
 .SUFFIXES:
 .PHONY: default
@@ -50,7 +50,7 @@ $(TARGET): $(objs)
 $(compile-commands): $(jsons)
 	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
 
-$(objs) $(testtargets) $(jsons):
+$(objs) $(tests) $(jsons):
 	$(MAKE) -C $(@D) $(@F)
 
 depend-filter  =   sed -e 's,^$(notdir $*.o):,$*.o $@:,'
