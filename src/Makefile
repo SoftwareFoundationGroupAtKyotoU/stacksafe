@@ -14,8 +14,8 @@ default:
 $(objs): %.o:
 	$(CXX) $(CXXFLAGS) -c $*.cpp -o $@
 
-$(jsons): %.json:
-	$(CXX) $(CXXFLAGS) -fsyntax-only $*.cpp -MJ $@
+$(jsons): %.json: %.cpp
+	$(CXX) $(CXXFLAGS) -fsyntax-only $< -MJ $@
 
 .PHONY: clean distclean
 clean:

@@ -48,7 +48,7 @@ $(TARGET): $(objs)
 .INTERMEDIATE: $(jsons)
 .PHONY: $(compile-commands)
 $(compile-commands): $(jsons)
-	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
+	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ | jq . >$@
 
 $(objs) $(tests) $(jsons):
 	$(MAKE) -C $(@D) $(@F)
