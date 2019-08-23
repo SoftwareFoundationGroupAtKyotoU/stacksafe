@@ -11,7 +11,6 @@ void Analyzer::print(llvm::raw_ostream &O, const llvm::Module *M) const {
 }
 bool Analyzer::runOnFunction(llvm::Function &F) {
   abst_ = std::make_unique<Abstraction>(F);
-  abst_->proceed();
   return false;
 }
 }  // namespace stacksafe

@@ -5,16 +5,18 @@
 #include "visualize.hpp"
 
 namespace stacksafe {
-Abstraction::Abstraction(llvm::Function &F) {
-  llvm::outs() << "name: " << F.getName() << endl;
-  Env_ empty{factory_};
-  for (auto &b : F.getBasicBlockList()) {
+void Abstraction::initialize() {
+  auto empty = Env_{factory_};
+  for (auto &b : func_.getBasicBlockList()) {
     map_.emplace(&b, empty);
   }
-  auto entry = &F.getEntryBlock();
+  init_args();
+}
+void Abstraction::init_args() {
+  auto entry = &func_.getEntryBlock();
   todo_.insert(entry);
   auto &env = map_.at(entry);
-  for (auto &a : F.args()) {
+  for (auto &a : func_.args()) {
     if (auto reg = make_register(a)) {
       if (!env.init_argument(*reg)) {
         llvm::errs() << "Error: " << spaces(*reg) << "is not an argument"
@@ -23,14 +25,6 @@ Abstraction::Abstraction(llvm::Function &F) {
     } else {
       llvm::errs() << "Error: unreachable" << endl;
     }
-  }
-}
-void Abstraction::proceed() {
-  while (!todo_.empty()) {
-    auto front = todo_.begin();
-    auto b = *front;
-    todo_.erase(front);
-    update(b);
   }
 }
 void Abstraction::update(BB b) {
@@ -48,6 +42,16 @@ void Abstraction::update(BB b) {
     }
   } else {
     llvm::errs() << "No terminator" << endl;
+  }
+}
+Abstraction::Abstraction(llvm::Function &F) : func_{F} {
+  llvm::outs() << "name: " << F.getName() << endl;
+  initialize();
+  while (!todo_.empty()) {
+    auto front = todo_.begin();
+    auto b = *front;
+    todo_.erase(front);
+    update(b);
   }
 }
 }  // namespace stacksafe

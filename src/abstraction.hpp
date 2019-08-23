@@ -17,11 +17,13 @@ class Abstraction {
   LocationFactory factory_;
   std::unordered_map<BB, Env_> map_;
   std::unordered_set<BB> todo_;
+  llvm::Function &func_;
+  void initialize();
+  void init_args();
+  void update(BB b);
 
  public:
   Abstraction(llvm::Function &F);
-  void proceed();
-  void update(BB b);
 };
 }  // namespace stacksafe
 
