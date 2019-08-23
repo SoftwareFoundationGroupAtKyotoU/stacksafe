@@ -30,6 +30,7 @@ int Value::compare(const Value& that) const {
     return 0;
   }
 }
+bool Value::is_register() const { return 0 <= num_; }
 bool operator<(const Value& lhs, const Value& rhs) {
   return lhs.compare(rhs) < 0;
 }

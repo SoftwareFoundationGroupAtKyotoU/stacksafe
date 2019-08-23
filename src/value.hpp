@@ -14,6 +14,7 @@ class Value {
  public:
   explicit Value(const llvm::Value& v);
   int compare(const Value& that) const;
+  bool is_register() const;
 };
 bool operator<(const Value& lhs, const Value& rhs);
 
