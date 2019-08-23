@@ -87,20 +87,16 @@ class Map : private Set<MapValue<K, T>> {
  public:
   using Base::begin, Base::end;
   Map() : Base{} {}
-  OptRef<const T> get(const K &k) const {
+  const T *get(const K &k) const {
     auto [lb, ub] = std::equal_range(begin(), end(), V{k, T{}});
     if (lb == ub) {
-      return std::nullopt;
+      return nullptr;
     } else {
-      return lb->value();
+      return &lb->value();
     }
   }
-  OptRef<T> get(const K &k) {
-    if (auto ref = static_cast<const Map &>(*this).get(k)) {
-      return const_cast<T &>(*ref);
-    } else {
-      return std::nullopt;
-    }
+  T *get(const K &k) {
+    return const_cast<T *>(static_cast<const Map &>(*this).get(k));
   }
   bool exists(const K &k) const { return Base::exists(V{k, T{}}); }
   void print(llvm::raw_ostream &O) const {
