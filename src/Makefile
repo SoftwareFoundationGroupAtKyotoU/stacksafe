@@ -28,4 +28,4 @@ $(jsons): %.json: %.cpp
 
 .PHONY: clean
 clean:
-	$(RM) $(wildcard *.o) $(wildcard *.d)
+	$(RM) $(wildcard *.o) $(wildcard deps/*.d)
