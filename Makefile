@@ -2,6 +2,7 @@
 
 CXX := clang++
 LD := ld.lld
+MAKE = @make --no-print-directory
 
 PASS := stacksafe
 TARGET := $(PASS).so
@@ -57,7 +58,7 @@ depend-filter  =   sed -e 's,^$(notdir $*.o):,$*.o $@:,'
 depend-filter += | sed -e 's, /usr/[^ ]*,,g' -e 's,^ \+,,'
 depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
 $(deps): %.d: %.cpp
-	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
+	@$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
 
 -include $(deps)
 
