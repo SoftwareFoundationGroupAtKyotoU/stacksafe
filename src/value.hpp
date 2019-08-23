@@ -9,10 +9,13 @@ namespace value {
 
 class Value {
   const llvm::Value* const val_;
+  int num_;
 
  public:
   explicit Value(const llvm::Value& v);
+  int compare(const Value& that) const;
 };
+bool operator<(const Value& lhs, const Value& rhs);
 
 }  // namespace value
 }  // namespace stacksafe
