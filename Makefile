@@ -1,108 +1,75 @@
 #!/usr/bin/make -f
 
+CXX := clang++
+LD := ld.lld
+
 PASS := stacksafe
 TARGET := $(PASS).so
-LLVM_SUFFIX ?=
-LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
-cxx := clang++
-ld := ld.lld
-# options
-CXXFLAGS += -std=c++17 -fPIC
-LDFLAGS += -shared
-release-flags := -O2 -DNDEBUG
-debug-flags := -O0 -g3
+TOPDIR := $(CURDIR)
 compile-commands := compile_commands.json
 
-# flags
+LLVM_SUFFIX ?=
+LLVM_CONFIG ?= llvm-config$(LLVM_SUFFIX)
 llvm-cxxflags != $(LLVM_CONFIG) --cxxflags
 llvm-ldflags != $(LLVM_CONFIG) --ldflags
-llvm-includedir != $(LLVM_CONFIG) --includedir
-cxxflags-out := -std=% -fuse-ld=% -O% -g% -DNDEBUG -Wl,%
-cxxflags := $(CXXFLAGS) $(filter-out $(cxxflags-out),$(llvm-cxxflags))
-ldflags := $(LDFLAGS) $(llvm-ldflags)
+llvm-filter := -std=% -fuse-ld=% -Wl,% -O% -g% -DNDEBUG
+llvm-cxxflags := $(filter-out $(llvm-filter),$(llvm-cxxflags))
 
-srcdir := src
-objdir := obj
-srcs := $(wildcard $(srcdir)/*.cpp)
-objs := $(srcs:$(srcdir)/%.cpp=$(objdir)/%.o)
-deps := $(objs:%.o=%.d)
-lsps := $(objs:%.o=%.json)
+CXXFLAGS += -pedantic -Wall -Wextra
+CXXFLAGS += $(llvm-cxxflags) -Wno-unknown-warning-option
+LDFLAGS += $(llvm-ldflags)
+release-flags := -O2 -DNDEBUG
+debug-flags := -O0 -g3
+
+export CXX CXXFLAGS LD LDFLAGS
+export LLVM_SUFFIX LLVM_CONFIG
+export PASS TARGET TOPDIR
+
+srcs := $(wildcard src/*.cpp)
+objs := $(srcs:%.cpp=%.o)
+deps := $(srcs:%.cpp=%.d)
+testsrcs := $(wildcard gtest/src/*.cpp)
+tests := $(testsrcs:gtest/src/%.cpp=gtest/%)
+jsons := $(srcs:%.cpp=%.json) $(tests:%=%.json)
 
 .SUFFIXES:
+.PHONY: default
+default:
 
-.PHONY: all
-all: release
+.PHONY: release debug
+release: CXXFLAGS += $(release-flags)
+debug: CXXFLAGS += $(debug-flags)
+$(TARGET): LDFLAGS += -shared
 
+release debug: $(TARGET)
 $(TARGET): $(objs)
-	$(info TARGET: $@)
-	@$(ld) $(ldflags) $(OUTPUT_OPTION) $^
+	$(LD) $(LDFLAGS) $^ -o $@
 
-.PHONY: release
-release: cxxflags += $(release-flags)
-release: $(TARGET)
+.INTERMEDIATE: $(jsons)
+.PHONY: $(compile-commands)
+$(compile-commands): $(jsons)
+	sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ | jq . >$@
 
-.PHONY: debug
-debug: cxxflags += $(debug-flags)
-debug: $(TARGET)
+$(objs) $(tests) $(jsons):
+	$(MAKE) -C $(@D) $(@F)
 
-.SECONDEXPANSION:
-$(objs) $(deps): | $$(@D)
-$(objdir):
-	@mkdir $@
-
-$(objs): $(objdir)/%.o: $(srcdir)/%.cpp
-	$(info OBJS: $@)
-	@$(cxx) $(cxxflags) $(OUTPUT_OPTION) -c $<
-
-depend-filter  =   sed -e 's,$*\.o,$(@D)/$*.o $@,g'
-depend-filter += | sed -e 's, /usr/[^ ]*, ,g' -e 's,^ \+,,g'
-depend-filter += | sed -e 's,\\$$,,g' | tr -d '\n'
-$(deps): $(objdir)/%.d: $(srcdir)/%.cpp
-	$(info DEPS: $@)
-	@$(cxx) $(cxxflags) -MM $< | $(depend-filter) >$@
-
-.INTERMEDIATE: $(lsps)
-$(lsps): $(objdir)/%.json: $(srcdir)/%.cpp
-	@$(cxx) $(cxxflags) -MJ $@ -fsyntax-only $<
-$(compile-commands): $(lsps)
-	@sed -e '1s/^/[\n/' -e '$$s/,$$/\n]/' $^ >$@
+depend-filter  =   sed -e 's,^$(notdir $*.o):,$*.o $@:,'
+depend-filter += | sed -e 's, /usr/[^ ]*,,g' -e 's,^ \+,,'
+depend-filter += | sed -e 's,\\$$,,' | tr -d '\n'
+$(deps): %.d: %.cpp
+	$(CXX) $(CXXFLAGS) -MM $< | $(depend-filter) >$@
 
 -include $(deps)
 
-# test
-cc := clang
-opt := opt$(LLVM_SUFFIX)
-cflags := -S -emit-llvm $(CFLAGS)
-path := $(CURDIR)/$(TARGET)
-optflags := -analyze -load=$(path) -$(PASS)
-#optflags += -time-passes
+# clean
+cleandirs := clean/src clean/gtest
+distcleandirs := distclean/src distclean/gtest
+distcleanfiles := $(addprefix distclean/,$(compile-commands) $(TARGET))
 
-testdir := test
-irsrcs := $(wildcard $(testdir)/*.c)
-irobjs := $(wildcard $(testdir)/*.ll)
-tests := $(irobjs:%.ll=%)
-runs := $(tests:$(testdir)/%=run/%)
-
-$(irsrcs:%.c=%.ll): %.ll: %.c
-	$(cc) $(cflags) $(OUTPUT_OPTION) -c $<
-
-.PHONY: $(tests)
-$(tests): optflags += -debug
-$(tests): $(testdir)/%: $(testdir)/%.ll
-	@echo ---- $* begins ----
-	$(opt) $(optflags) $<
-	@echo ---- $* ends ----
-
-.PHONY: $(runs)
-$(runs): run/%: $(testdir)/%.ll
-	@echo ---- $* begins ----
-	$(opt) $(optflags) $<
-	@echo ---- $* ends ----
-
-.PHONY: clean
-clean:
-	@$(RM) $(objs) $(deps) $(lsps)
-
-.PHONY: distclean
-distclean:
-	@$(RM) -r $(objdir) $(compile-commands) $(TARGET)
+.PHONY: $(cleandirs) $(distcleandirs) $(distcleanfiles) clean distclean
+$(cleandirs) $(distcleandirs):
+	$(MAKE) -C $(@F) $(@D)
+$(distcleanfiles):
+	$(RM) $(@F)
+clean: $(cleandirs)
+distclean: clean $(distcleanfiles) $(distcleanfiles)

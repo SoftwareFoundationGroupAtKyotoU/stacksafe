@@ -1,7 +1,6 @@
 compile_commands.json
-googletest/
+gtest/
 ir/
-test/
 
 # Prerequisites
 *.d
