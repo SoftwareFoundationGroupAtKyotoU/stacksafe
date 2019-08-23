@@ -1,8 +1,8 @@
 #include "register.hpp"
-#include "visualize.hpp"
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
 #include <string>
+#include "visualize.hpp"
 
 namespace stacksafe {
 Value::Value(const llvm::Value &v) : val_(&v), num_(get_number(v)) {}
@@ -45,14 +45,14 @@ int get_number(const llvm::Value &v) {
     return -1;
   }
 }
-} // namespace stacksafe
+}  // namespace stacksafe
 
 namespace std {
 size_t hash<stacksafe::Value>::operator()(const stacksafe::Value &v) const {
   return v.hash();
 }
-size_t hash<stacksafe::Register>::
-operator()(const stacksafe::Register &r) const {
+size_t hash<stacksafe::Register>::operator()(
+    const stacksafe::Register &r) const {
   return r.hash();
 }
-} // namespace std
+}  // namespace std

@@ -5,7 +5,7 @@
 
 namespace llvm {
 class raw_ostream;
-} // namespace llvm
+}  // namespace llvm
 
 namespace stacksafe {
 class Location {
@@ -14,7 +14,7 @@ class Location {
   int loc_;
   explicit Location(int loc);
 
-public:
+ public:
   bool compare(const Location &that) const;
   std::size_t hash() const;
   void print(llvm::raw_ostream &O) const;
@@ -25,18 +25,19 @@ bool operator<(const Location &lhs, const Location &rhs);
 class LocationFactory {
   int current_;
 
-public:
+ public:
   LocationFactory();
   static Location getGlobal();
   static Location getOutlive();
   Location getLocal();
 };
-} // namespace stacksafe
+}  // namespace stacksafe
 
 namespace std {
-template <> struct hash<stacksafe::Location> {
+template <>
+struct hash<stacksafe::Location> {
   size_t operator()(stacksafe::Location l) const;
 };
-} // namespace std
+}  // namespace std
 
-#endif // INCLUDE_GUARD_6450F75E_2095_455A_B046_B7F5B19051DF
+#endif  // INCLUDE_GUARD_6450F75E_2095_455A_B046_B7F5B19051DF

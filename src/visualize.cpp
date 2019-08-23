@@ -14,4 +14,4 @@ llvm::raw_ostream &debugs(const char *type) {
   DEBUG_WITH_TYPE(type, return llvm::dbgs());
   return llvm::nulls();
 }
-} // namespace stacksafe
+}  // namespace stacksafe

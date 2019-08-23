@@ -1,16 +1,16 @@
 #ifndef INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
 #define INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
 
+#include <functional>
+#include <memory>
 #include "collection.hpp"
 #include "location.hpp"
 #include "register.hpp"
 #include "visualize.hpp"
-#include <functional>
-#include <memory>
 
 namespace llvm {
 class raw_ostream;
-} // namespace llvm
+}  // namespace llvm
 
 namespace stacksafe {
 using LocationSet = Set<Location>;
@@ -22,7 +22,7 @@ class Memory {
   Stack stack_;
   LocationFactory &factory_;
 
-public:
+ public:
   Memory(LocationFactory &factory);
 };
 
@@ -32,13 +32,13 @@ class Env_ {
   Env<Register, Location> stack_;
   LocationFactory &factory_;
 
-public:
+ public:
   explicit Env_(LocationFactory &factory);
   bool subsetof(const Env_ &rhs) const;
   void unify(const Env_ &rhs);
   void print(llvm::raw_ostream &O) const;
 
-public:
+ public:
   bool init_argument(const Register &dst);
   bool alloca(const Register &dst);
   bool store(const Value &src, const Register &dst);
@@ -50,10 +50,10 @@ public:
   bool cmp(const Register &dst);
   bool call(const UserRange &args, std::optional<Register> dst);
 
-private:
+ private:
   std::optional<LocationSet> to_symbols(const Value &v) const;
   bool reach(const LocationSet &locs, LocationSet &reachs) const;
 };
-} // namespace stacksafe
+}  // namespace stacksafe
 
-#endif // INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4
+#endif  // INCLUDE_GUARD_52F60E3D_17C8_4A02_BEB6_64AF9019A2B4

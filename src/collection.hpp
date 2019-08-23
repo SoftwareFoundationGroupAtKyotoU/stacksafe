@@ -1,24 +1,24 @@
 #ifndef INCLUDE_GUARD_6495011D_0D6C_4DD2_8111_D661A86391FD
 #define INCLUDE_GUARD_6495011D_0D6C_4DD2_8111_D661A86391FD
 
-#include "visualize.hpp"
 #include <algorithm>
 #include <functional>
 #include <initializer_list>
 #include <optional>
 #include <unordered_map>
 #include <unordered_set>
+#include "visualize.hpp"
 
 namespace llvm {
 class raw_ostream;
-} // namespace llvm
+}  // namespace llvm
 
 namespace stacksafe {
 template <typename T>
 class OptRef : private std::optional<std::reference_wrapper<T>> {
   using Base = std::optional<std::reference_wrapper<T>>;
 
-public:
+ public:
   using Base::operator bool;
   OptRef() {}
   OptRef(std::nullopt_t v) : Base{v} {}
@@ -35,11 +35,12 @@ public:
   const T &&value() const && { return Base::value().get(); }
 };
 
-template <typename T> class Set : private std::vector<T> {
+template <typename T>
+class Set : private std::vector<T> {
   using Base = std::vector<T>;
   using iterator = typename Base::iterator;
 
-public:
+ public:
   using Base::begin, Base::end;
   Set(std::initializer_list<T> init) : Base{init} { std::sort(begin(), end()); }
   void insert(const T &v) { insert(begin(), v); }
@@ -57,7 +58,7 @@ public:
   }
   void print(llvm::raw_ostream &O) const { O << set_like(*this); }
 
-protected:
+ protected:
   iterator insert(iterator begin, const T &v) {
     auto [lb, ub] = std::equal_range(begin, end(), v);
     if (lb == ub) {
@@ -67,21 +68,23 @@ protected:
   }
 };
 
-template <typename K, typename T> class MapValue : private std::tuple<K, T> {
+template <typename K, typename T>
+class MapValue : private std::tuple<K, T> {
   using Base = std::tuple<K, T>;
 
-public:
+ public:
   MapValue(const K &k, const T &t) : Base{k, t} {}
   const K &key() const { return std::get<0>(*this); }
   const T &value() const { return std::get<1>(*this); }
   T &value() { return std::get<1>(*this); }
   bool operator<(const MapValue &that) const { return key() < that.key(); }
 };
-template <typename K, typename T> class Map : private Set<MapValue<K, T>> {
+template <typename K, typename T>
+class Map : private Set<MapValue<K, T>> {
   using V = MapValue<K, T>;
   using Base = Set<V>;
 
-public:
+ public:
   using Base::begin, Base::end;
   Map() : Base{} {}
   OptRef<const T> get(const K &k) const {
@@ -105,17 +108,18 @@ public:
     O << set_like(for_each(key_value, *this));
   }
 
-protected:
+ protected:
   using value_type = V;
   using Base::insert;
 };
 
-template <typename K, typename T> class Env : private Map<K, Set<T>> {
+template <typename K, typename T>
+class Env : private Map<K, Set<T>> {
   using V = Set<T>;
   using Base = Map<K, V>;
   using value_type = typename Base::value_type;
 
-public:
+ public:
   using Base::begin, Base::end;
   using Base::get, Base::exists, Base::print;
   bool insert(const K &k) {
@@ -153,6 +157,6 @@ public:
     return true;
   }
 };
-} // namespace stacksafe
+}  // namespace stacksafe
 
-#endif // INCLUDE_GUARD_6495011D_0D6C_4DD2_8111_D661A86391FD
+#endif  // INCLUDE_GUARD_6495011D_0D6C_4DD2_8111_D661A86391FD

@@ -1,8 +1,8 @@
 #include "abstraction.hpp"
-#include "interpret.hpp"
-#include "visualize.hpp"
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
+#include "interpret.hpp"
+#include "visualize.hpp"
 
 namespace stacksafe {
 Abstraction::Abstraction(llvm::Function &F) {
@@ -50,4 +50,4 @@ void Abstraction::update(BB b) {
     llvm::errs() << "No terminator" << endl;
   }
 }
-} // namespace stacksafe
+}  // namespace stacksafe

@@ -9,7 +9,7 @@ class Interpret : public llvm::InstVisitor<Interpret, bool> {
   using Base = llvm::InstVisitor<Interpret, bool>;
   Env_ &env_;
 
-public:
+ public:
   explicit Interpret(Env_ &env);
   void visit(llvm::BasicBlock &B);
   bool visit(llvm::Instruction &I);
@@ -24,11 +24,11 @@ public:
   bool visitCmpInst(llvm::CmpInst &I);
   bool visitCallInst(llvm::CallInst &I);
 
-private:
+ private:
   static bool error(const char *name);
 };
 
 Env_ interpret(llvm::BasicBlock &b, Env_ env);
-} // namespace stacksafe
+}  // namespace stacksafe
 
-#endif // INCLUDE_GUARD_6D412E24_64BA_4C27_BEA5_DB1CAFCC48BD
+#endif  // INCLUDE_GUARD_6D412E24_64BA_4C27_BEA5_DB1CAFCC48BD

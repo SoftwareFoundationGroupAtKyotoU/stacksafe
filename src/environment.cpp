@@ -159,4 +159,4 @@ bool Env_::reach(const LocationSet &locs, LocationSet &reachs) const {
   }
   return true;
 }
-} // namespace stacksafe
+}  // namespace stacksafe

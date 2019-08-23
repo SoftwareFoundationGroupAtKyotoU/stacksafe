@@ -1,7 +1,7 @@
 #include "analyzer.hpp"
-#include "visualize.hpp"
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
+#include "visualize.hpp"
 
 namespace stacksafe {
 char Analyzer::ID = 0;
@@ -14,8 +14,7 @@ bool Analyzer::runOnFunction(llvm::Function &F) {
   abst_->proceed();
   return false;
 }
-} // namespace stacksafe
+}  // namespace stacksafe
 
-static llvm::RegisterPass<stacksafe::Analyzer>
-    registerpass("stacksafe",
-                 "Analyzer pass for temporal memory safety of the stack");
+static llvm::RegisterPass<stacksafe::Analyzer> registerpass(
+    "stacksafe", "Analyzer pass for temporal memory safety of the stack");

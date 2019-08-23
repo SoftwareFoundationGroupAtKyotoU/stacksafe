@@ -1,7 +1,7 @@
 #include "location.hpp"
-#include "visualize.hpp"
 #include <llvm/Support/raw_ostream.h>
 #include <string>
+#include "visualize.hpp"
 
 namespace stacksafe {
 const int Location::Global = -1;
@@ -42,9 +42,9 @@ LocationFactory::LocationFactory() : current_(Location::Local) {}
 Location LocationFactory::getGlobal() { return Location(Location::Global); }
 Location LocationFactory::getOutlive() { return Location(Location::Outlive); }
 Location LocationFactory::getLocal() { return Location(current_++); }
-} // namespace stacksafe
+}  // namespace stacksafe
 namespace std {
 size_t hash<stacksafe::Location>::operator()(stacksafe::Location l) const {
   return l.hash();
 }
-} // namespace std
+}  // namespace std

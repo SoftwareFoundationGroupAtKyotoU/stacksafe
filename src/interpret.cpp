@@ -114,4 +114,4 @@ Env_ interpret(llvm::BasicBlock &b, Env_ env) {
   Interpret{env}.visit(b);
   return env;
 }
-} // namespace stacksafe
+}  // namespace stacksafe

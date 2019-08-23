@@ -82,7 +82,7 @@ TEST_F(OptCrefTest, Value) {
   ::testing::StaticAssertTypeEq<const Vec &&, decltype(crvalue().value())>();
   EXPECT_EQ(r.value(), v);
 }
-} // namespace
+}  // namespace
 
 #include "src/gtest_main.cc"
 #include "visualize.cpp"
