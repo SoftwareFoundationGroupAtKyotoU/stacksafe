@@ -63,7 +63,7 @@ $(deps): %.d: %.cpp
 
 # clean
 cleandirs := clean/src clean/gtest
-distcleandirs := distclean/src distclean/gtest
+distcleandirs := distclean/gtest
 distcleanfiles := $(addprefix distclean/,$(compile-commands) $(TARGET))
 
 .PHONY: $(cleandirs) $(distcleandirs) $(distcleanfiles) clean distclean

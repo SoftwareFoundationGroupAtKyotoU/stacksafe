@@ -17,8 +17,6 @@ $(objs): %.o:
 $(jsons): %.json: %.cpp
 	$(CXX) $(CXXFLAGS) -fsyntax-only $< -MJ $@
 
-.PHONY: clean distclean
+.PHONY: clean
 clean:
-	$(RM) $(wildcard *.o)
-distclean: clean
-	$(RM) $(wildcard *.d)
+	$(RM) $(wildcard *.o) $(wildcard *.d)
