@@ -1,0 +1,10 @@
+#ifndef INCLUDE_GUARD_B61DAD49_37E6_42F9_AC3F_347A4E9FD8D0
+#define INCLUDE_GUARD_B61DAD49_37E6_42F9_AC3F_347A4E9FD8D0
+
+#include "json/json_fwd.hpp"
+
+namespace stacksafe {
+using Json = nlohmann::json;
+}
+
+#endif  // INCLUDE_GUARD_B61DAD49_37E6_42F9_AC3F_347A4E9FD8D0
