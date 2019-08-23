@@ -15,27 +15,6 @@ class raw_ostream;
 
 namespace stacksafe {
 template <typename T>
-class OptRef : private std::optional<std::reference_wrapper<T>> {
-  using Base = std::optional<std::reference_wrapper<T>>;
-
- public:
-  using Base::operator bool;
-  OptRef() {}
-  OptRef(std::nullopt_t v) : Base{v} {}
-  OptRef(T &v) : Base{v} {}
-  T *operator->() { return &value(); }
-  T &operator*() & { return value(); }
-  T &&operator*() && { return value(); }
-  T &value() & { return Base::value().get(); }
-  T &&value() && { return Base::value().get(); }
-  const T *operator->() const { return &value(); }
-  const T &operator*() const & { return value(); }
-  const T &&operator*() const && { return value(); }
-  const T &value() const & { return Base::value().get(); }
-  const T &&value() const && { return Base::value().get(); }
-};
-
-template <typename T>
 class Set : private std::vector<T> {
   using Base = std::vector<T>;
   using iterator = typename Base::iterator;
