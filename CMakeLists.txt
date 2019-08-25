@@ -5,5 +5,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(BuildType)
 set_build_type()
 
+enable_testing()
+
 add_subdirectory(src)
 add_subdirectory(test)
