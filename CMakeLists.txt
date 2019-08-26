@@ -7,6 +7,7 @@ set_build_type()
 
 include(DownloadGoogleTest)
 download_googletest()
+enable_testing()
 
 add_subdirectory(src)
 add_subdirectory(test)
