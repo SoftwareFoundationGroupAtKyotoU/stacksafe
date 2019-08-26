@@ -9,6 +9,7 @@ ExternalProject_Add(googletest
   PREFIX            ${PROJECT_NAME}
   SOURCE_DIR        @SOURCE_DIR@
   BINARY_DIR        @BINARY_DIR@
+  UPDATE_COMMAND    true
   CONFIGURE_COMMAND true
   BUILD_COMMAND     true
   INSTALL_COMMAND   true
