@@ -30,5 +30,5 @@ function(set_build_type)
   set(CMAKE_BUILD_TYPE "${build_type_default}"
     CACHE STRING "${build_type_doc}" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE
-    PROPERTY STRINGS "${build_type_list}")
+    PROPERTY STRINGS "${CMAKE_CONFIGURATION_TYPES}")
 endfunction()
