@@ -15,5 +15,10 @@ update_submodule()
 
 add_subdirectory(src)
 add_subdirectory(test)
+
+include(OverrideCache)
+option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 add_subdirectory(googletest)
+override_cache(INSTALL_GTEST OFF)
+
 include_directories(json/include)
