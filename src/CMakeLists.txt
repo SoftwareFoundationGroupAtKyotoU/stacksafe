@@ -2,6 +2,7 @@ add_library(${PROJECT_NAME} MODULE
   abstract.cpp
   analyzer.cpp
   interpret.cpp
+  set.cpp
   symbol.cpp
   )
 
