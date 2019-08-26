@@ -9,5 +9,8 @@ include(DownloadGoogleTest)
 download_googletest()
 enable_testing()
 
+include(CompileCommands)
+export_compile_commands()
+
 add_subdirectory(src)
 add_subdirectory(test)
