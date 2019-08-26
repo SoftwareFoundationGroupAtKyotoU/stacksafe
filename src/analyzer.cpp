@@ -1,7 +1,8 @@
-#include "llvm/IR/Function.h"
-#include "llvm/Pass.h"
-#include "llvm/PassSupport.h"
-#include "llvm/Support/raw_ostream.h"
+#include <llvm/IR/Function.h>
+#include <llvm/Pass.h>
+#include <llvm/PassSupport.h>
+#include <llvm/Support/raw_ostream.h>
+#include "interpret.hpp"
 
 struct Analyzer : public llvm::FunctionPass {
   static char ID;
@@ -9,6 +10,8 @@ struct Analyzer : public llvm::FunctionPass {
   virtual bool runOnFunction(llvm::Function &f) override {
     llvm::errs() << "Analyzer: ";
     llvm::errs().write_escaped(f.getName()) << "\n";
+    Interpret interpreter;
+    interpreter.visit(f);
     return false;
   }
 };
