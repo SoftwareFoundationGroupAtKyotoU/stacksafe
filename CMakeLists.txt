@@ -10,5 +10,8 @@ enable_testing()
 include(CompileCommands)
 export_compile_commands()
 
+include(GitSubmodule)
+update_submodule()
+
 add_subdirectory(src)
 add_subdirectory(test)
