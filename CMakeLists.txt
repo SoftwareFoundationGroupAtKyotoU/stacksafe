@@ -5,8 +5,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(BuildType)
 set_build_type()
 
-include(DownloadGoogleTest)
-download_googletest()
 enable_testing()
 
 include(CompileCommands)
