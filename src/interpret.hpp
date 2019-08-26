@@ -3,10 +3,14 @@
 
 #include <llvm/IR/InstVisitor.h>
 
+class Abstraction;
+
 class Interpret : public llvm::InstVisitor<Interpret> {
   using Base = llvm::InstVisitor<Interpret>;
+  Abstraction &abst_;
 
  public:
+  explicit Interpret(Abstraction &a);
   void visit(llvm::Function &f);
   void visit(llvm::BasicBlock &b);
   void visit(llvm::Instruction &i);
