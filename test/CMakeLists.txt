@@ -1,6 +1,3 @@
-include(DownloadGoogleTest)
-download_googletest()
-
 include(GoogleTest)
 
 add_executable(example example.cpp)
