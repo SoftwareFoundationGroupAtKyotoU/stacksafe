@@ -1,6 +1,7 @@
 add_library(${PROJECT_NAME} MODULE
   analyzer.cpp
   interpret.cpp
+  symbol.cpp
   )
 
 find_package(LLVM REQUIRED CONFIG)
