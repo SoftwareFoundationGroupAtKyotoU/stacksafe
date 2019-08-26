@@ -2,7 +2,6 @@
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
 #include <optional>
-#include <string>
 #include <string_view>
 
 namespace {
@@ -40,3 +39,12 @@ std::optional<int> to_number(const llvm::Value& v) {
   return std::nullopt;
 }
 }  // namespace
+
+Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"} {
+  if (auto n = to_number(v)) {
+    num_ = *n;
+    repr_ += std::to_string(num_);
+  } else {
+    repr_ = to_string(v);
+  }
+}
