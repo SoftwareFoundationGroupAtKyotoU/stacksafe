@@ -1,13 +1,16 @@
 #!/bin/bash
 
-if [[ "$1" == -i ]]; then
-  cmd=ccmake
-else
-  cmd=cmake
-fi
-
 mkdir -p build
-cd build
-eval "$cmd" .. -GNinja || exit $?
+pushd build
+if [[ "$1" == -i ]]; then
+    ccmake .. -GNinja
+    exit
+fi
+cmake .. -GNinja || exit $?
 ninja || exit $?
-GTEST_COLOR=1 ctest -V
+if [[ -z "$1" ]]; then
+    GTEST_COLOR=1 ctest -V
+    exit
+fi
+popd
+opt -analyze -load=build/stacksafe.so -stacksafe "$1"
