@@ -5,7 +5,7 @@
 namespace stacksafe {
 
 void Abstraction::interpret(llvm::Function& f) {
-  Interpret interpreter(*this);
+  Interpret interpreter;
   interpreter.visit(f);
 }
 void Abstraction::alloc(const Register& dst) {
