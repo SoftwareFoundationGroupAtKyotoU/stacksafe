@@ -20,12 +20,6 @@ std::string to_string(const T& v) {
   auto f = [&v](llvm::raw_ostream& os) { os << v; };
   return string_from_stream(std::move(f));
 }
-std::string get_operand(const llvm::Value& v, bool with_type = false) {
-  auto f = [&v, with_type](llvm::raw_ostream& os) {
-    v.printAsOperand(os, with_type);
-  };
-  return string_from_stream(std::move(f));
-}
 }  // namespace
 
 Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {

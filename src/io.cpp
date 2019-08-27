@@ -1,4 +1,5 @@
 #include "io.hpp"
+#include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
@@ -11,6 +12,13 @@ std::string string_from_stream(F f) {
   return stream.str();
 }
 }  // namespace
+
+std::string get_operand(const llvm::Value& v, bool with_type) {
+  auto f = [&v, with_type](llvm::raw_ostream& os) {
+    v.printAsOperand(os, with_type);
+  };
+  return string_from_stream(std::move(f));
+}
 
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {
