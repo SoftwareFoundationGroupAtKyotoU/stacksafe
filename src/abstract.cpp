@@ -4,10 +4,6 @@
 
 namespace stacksafe {
 
-void Abstraction::interpret(llvm::Function& f) {
-  Interpret interpreter;
-  interpreter.visit(f);
-}
 void Abstraction::alloc(const Register& dst) {
   stack_.insert(dst, Symbol::create());
 }

@@ -15,7 +15,6 @@ class Abstraction {
   Heap heap_;
 
  public:
-  void interpret(llvm::Function& f);
   void alloc(const Register& dst);
   void store(const Register& src, const Register& dst);
   void load(const Register& dst, const Register& src);
