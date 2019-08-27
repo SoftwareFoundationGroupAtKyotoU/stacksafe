@@ -60,5 +60,6 @@ std::string Register::to_str() const { return repr_; }
 bool operator<(const Register& lhs, const Register& rhs) {
   return lhs.compare(rhs);
 }
+void to_json(Json& j, const Register& x) { j = x.to_str(); }
 
 }  // namespace stacksafe

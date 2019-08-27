@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_BA783AFD_E463_407E_B980_287A32202B17
 
 #include <string>
+#include "json.hpp"
 
 namespace llvm {
 class Value;
@@ -19,6 +20,7 @@ class Register {
   std::string to_str() const;
 };
 bool operator<(const Register& lhs, const Register& rhs);
+void to_json(Json& j, const Register& x);
 
 }  // namespace stacksafe
 
