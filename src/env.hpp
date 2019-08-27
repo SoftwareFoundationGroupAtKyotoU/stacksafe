@@ -2,14 +2,13 @@
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
 #include <map>
-#include <set>
-#include "symbol.hpp"
+#include "set.hpp"
 
 namespace stacksafe {
 
 template <typename Key>
-class Env : private std::map<Key, std::set<Symbol>> {
-  using Val = std::set<Symbol>;
+class Env : private std::map<Key, Domain> {
+  using Val = Domain;
   using Base = std::map<Key, Val>;
 
  public:
@@ -27,7 +26,7 @@ class Env : private std::map<Key, std::set<Symbol>> {
   void insert(const Key& key, const Symbol& sym) { insert(key, Val{sym}); }
   void insert(const Key& key, const Val& val) {
     if (auto p = get(key)) {
-      p->insert(val.begin(), val.end());
+      p->insert(val);
     } else {
       Base::try_emplace(key, val);
     }
