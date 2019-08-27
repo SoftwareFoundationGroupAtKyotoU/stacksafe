@@ -12,7 +12,7 @@ std::string Symbol::to_str() const {
   return "#"s + std::to_string(num_);
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.compare(rhs);
+  return lhs.get_num() < rhs.get_num();
 }
 void to_json(Json &j, const Symbol &x) { j = x.to_str(); }
 
