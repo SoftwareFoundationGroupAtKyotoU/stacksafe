@@ -2,6 +2,7 @@ set(source_files
   abstract.cpp
   analyzer.cpp
   interpret.cpp
+  json.cpp
   register.cpp
   set.cpp
   symbol.cpp
