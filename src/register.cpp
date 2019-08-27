@@ -49,7 +49,11 @@ Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"} {
   }
 }
 bool Register::compare(const Register& that) const {
-  return repr_ < that.repr_;
+  if (num_ == that.num_) {
+    return repr_ < that.repr_;
+  } else {
+    return num_ < that.num_;
+  }
 }
 std::string Register::to_str() const { return repr_; }
 bool operator<(const Register& lhs, const Register& rhs) {
