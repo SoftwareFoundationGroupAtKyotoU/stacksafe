@@ -9,6 +9,7 @@
 namespace stacksafe {
 
 class Stack : private std::map<Register, std::set<Symbol>> {};
+class Heap : private std::map<Symbol, std::set<Symbol>> {};
 
 }  // namespace stacksafe
 
