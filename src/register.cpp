@@ -4,6 +4,7 @@
 #include <optional>
 #include <string_view>
 
+namespace stacksafe {
 namespace {
 std::string get_operand(const llvm::Value& v, bool with_type = false) {
   std::string str;
@@ -59,3 +60,5 @@ std::string Register::to_str() const { return repr_; }
 bool operator<(const Register& lhs, const Register& rhs) {
   return lhs.compare(rhs);
 }
+
+}  // namespace stacksafe

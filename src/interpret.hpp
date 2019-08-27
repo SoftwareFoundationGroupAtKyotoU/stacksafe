@@ -3,6 +3,7 @@
 
 #include <llvm/IR/InstVisitor.h>
 
+namespace stacksafe {
 class Abstraction;
 
 class Interpret : public llvm::InstVisitor<Interpret> {
@@ -17,5 +18,7 @@ class Interpret : public llvm::InstVisitor<Interpret> {
   void visitAllocaInst(llvm::AllocaInst &i);
   void visitStoreInst(llvm::StoreInst &i);
 };
+
+}  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177

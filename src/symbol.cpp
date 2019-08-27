@@ -1,5 +1,7 @@
 #include "symbol.hpp"
 
+namespace stacksafe {
+
 int Symbol::current_ = 0;
 Symbol::Symbol(int n) : num_{n} {}
 Symbol Symbol::create() { return Symbol{current_++}; }
@@ -11,3 +13,5 @@ std::string Symbol::to_str() const {
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.compare(rhs);
 }
+
+}  // namespace stacksafe

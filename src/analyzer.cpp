@@ -4,6 +4,8 @@
 #include <llvm/Support/raw_ostream.h>
 #include "abstract.hpp"
 
+namespace stacksafe {
+
 struct Analyzer : public llvm::FunctionPass {
   static char ID;
   Analyzer() : llvm::FunctionPass{ID} {}
@@ -20,3 +22,4 @@ char Analyzer::ID = 0;
 static llvm::RegisterPass<Analyzer> registerpass("stacksafe",
                                                  "stacksafe analysis pass",
                                                  false, true);
+}  // namespace stacksafe

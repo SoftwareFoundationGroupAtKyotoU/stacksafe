@@ -2,6 +2,7 @@
 #include "interpret.hpp"
 #include "nlohmann/json.hpp"
 
+namespace stacksafe {
 namespace {
 nlohmann::json to_json(const std::map<Register, Symbol>& stack) {
   nlohmann::json j;
@@ -43,3 +44,5 @@ void Abstraction::show() const {
   j["heap"] = to_json(heap_);
   llvm::errs() << j.dump(2) << "\n";
 }
+
+}  // namespace stacksafe

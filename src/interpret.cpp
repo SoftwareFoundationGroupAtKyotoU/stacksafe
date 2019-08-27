@@ -2,6 +2,8 @@
 #include "abstract.hpp"
 #include "register.hpp"
 
+namespace stacksafe {
+
 Interpret::Interpret(Abstraction &a) : abst_{a} {}
 void Interpret::visit(llvm::Function &f) {
   for (auto &a : f.args()) {
@@ -26,3 +28,5 @@ void Interpret::visitStoreInst(llvm::StoreInst &i) {
     abst_.store(Register{*src}, Register{*dst});
   }
 }
+
+}  // namespace stacksafe

@@ -7,6 +7,8 @@ namespace llvm {
 class Value;
 }
 
+namespace stacksafe {
+
 class Register {
   int num_;
   std::string repr_;
@@ -17,5 +19,7 @@ class Register {
   std::string to_str() const;
 };
 bool operator<(const Register& lhs, const Register& rhs);
+
+}  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_BA783AFD_E463_407E_B980_287A32202B17

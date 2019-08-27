@@ -3,6 +3,8 @@
 
 #include <string>
 
+namespace stacksafe {
+
 class Symbol {
   static int current_;
   int num_;
@@ -14,5 +16,7 @@ class Symbol {
   std::string to_str() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
+
+}  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
