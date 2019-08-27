@@ -27,11 +27,14 @@ void to_json(Json& j, const Stack& x) {
   j = tmp;
 }
 
-void Heap::insert(const Key& key, const Symbol& val) {
+void Heap::insert(const Key& key, const Symbol& sym) {
+  insert(key, Value{sym});
+}
+void Heap::insert(const Key& key, const Value& val) {
   if (auto it = Base::find(key); it != end()) {
-    it->second.insert(val);
+    it->second.insert(val.begin(), val.end());
   } else {
-    Base::try_emplace(key, std::set{val});
+    Base::try_emplace(key, val);
   }
 }
 void to_json(Json& j, const Heap& x) {
