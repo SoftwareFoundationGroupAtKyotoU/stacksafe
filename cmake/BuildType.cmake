@@ -27,6 +27,7 @@ function(set_build_type)
   # set global options
   set(CMAKE_CONFIGURATION_TYPES "${build_type_list}"
     CACHE STRING "${config_doc}")
+  mark_as_advanced(FORCE CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "${build_type_default}"
     CACHE STRING "${build_type_doc}" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE

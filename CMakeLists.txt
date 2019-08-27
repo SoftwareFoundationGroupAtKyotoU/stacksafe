@@ -18,6 +18,7 @@ include(OverrideCache)
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 add_subdirectory(googletest)
 override_cache(INSTALL_GTEST OFF)
+mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 
 include_directories(json/include)
 
