@@ -3,6 +3,7 @@ set(source_files
   analyzer.cpp
   interpret.cpp
   json.cpp
+  memory.cpp
   register.cpp
   set.cpp
   symbol.cpp
