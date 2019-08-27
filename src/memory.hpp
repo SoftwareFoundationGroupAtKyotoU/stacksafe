@@ -26,6 +26,7 @@ class Heap : private std::map<Symbol, std::set<Symbol>> {
 
  public:
   using Base::begin, Base::end;
+  void insert(const Key& key, const Symbol& val);
 };
 void to_json(Json& j, const Heap& x);
 
