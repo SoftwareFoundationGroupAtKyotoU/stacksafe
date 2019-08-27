@@ -16,3 +16,10 @@ void Interpret::visitAllocaInst(llvm::AllocaInst &i) {
   Register r{i};
   abst_.alloc(r);
 }
+void Interpret::visitStoreInst(llvm::StoreInst &i) {
+  auto src = i.getValueOperand();
+  auto dst = i.getPointerOperand();
+  if (dst && src) {
+    abst_.store(Register{*src}, Register{*dst});
+  }
+}

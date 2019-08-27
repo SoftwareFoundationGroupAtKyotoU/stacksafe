@@ -15,6 +15,7 @@ class Interpret : public llvm::InstVisitor<Interpret> {
   void visit(llvm::BasicBlock &b);
   void visit(llvm::Instruction &i);
   void visitAllocaInst(llvm::AllocaInst &i);
+  void visitStoreInst(llvm::StoreInst &i);
 };
 
 #endif  // INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177
