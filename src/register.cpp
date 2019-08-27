@@ -62,6 +62,7 @@ Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {
   }
 }
 int Register::get_num() const { return num_; }
+const llvm::Value& Register::get_val() const { return val_; }
 bool Register::compare(const Register& that) const {
   if (num_ == that.num_) {
     return repr_ < that.repr_;
