@@ -27,10 +27,8 @@ void Abstraction::alloc(const Register& r) {
   stack_.try_emplace(r, Symbol::create());
 }
 void Abstraction::show() const {
-  using json = nlohmann::json;
-  json j;
-  for (auto& [k, v] : env_) {
-    j[k.to_str()] = v.to_str();
-  }
+  nlohmann::json j;
+  j["stack"] = to_json(stack_);
+  j["heap"] = to_json(heap_);
   llvm::errs() << j.dump(2) << "\n";
 }
