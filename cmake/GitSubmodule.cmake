@@ -1,7 +1,6 @@
 function(update_submodule)
   set(option_list submodule update --init --recursive)
-  string(REPLACE ";" " "
-    options "${option_list}")
+  list(JOIN option_list " " options)
 
   find_package(Git REQUIRED)
   execute_process(COMMAND "${GIT_EXECUTABLE}" ${option_list}

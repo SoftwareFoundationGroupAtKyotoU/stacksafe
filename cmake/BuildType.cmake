@@ -2,9 +2,8 @@ function(set_build_type)
   # setup constants
   set(build_type_default Release)
   set(build_type_list Release Debug)
+  list(JOIN build_type_list " " build_type_options)
   get_property(docstring CACHE CMAKE_BUILD_TYPE PROPERTY HELPSTRING)
-  string(REPLACE ";" " "
-    build_type_options "${build_type_list}")
   string(REGEX REPLACE ":.*$" ": ${build_type_options}"
     build_type_doc "${docstring}")
   set(config_doc "possible options for CMAKE_BUILD_TYPE")
