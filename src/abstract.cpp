@@ -5,7 +5,9 @@
 namespace stacksafe {
 
 void Abstraction::alloc(const Register& dst) {
-  stack_.insert(dst, Symbol::create());
+  auto sym = Symbol::create();
+  heap_.insert(sym, Domain{});
+  stack_.insert(dst, sym);
 }
 void Abstraction::store(const Register& src, const Register& dst) {
   auto source = stack_.get(src);
