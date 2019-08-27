@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_B43C0EC1_4338_47A3_AD6C_40B0DEF734B0
 
 #include <set>
+#include "json.hpp"
 #include "symbol.hpp"
 
 namespace stacksafe {
@@ -17,6 +18,7 @@ class Domain : private std::set<Symbol> {
  public:
   using Base::Base, Base::begin, Base::end;
 };
+void to_json(Json& j, const Domain& x);
 
 }  // namespace stacksafe
 
