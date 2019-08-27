@@ -24,6 +24,14 @@ class Env : private std::map<Key, std::set<Symbol>> {
     }
     return nullptr;
   }
+  void insert(const Key& key, const Symbol& sym) { insert(key, Val{sym}); }
+  void insert(const Key& key, const Val& val) {
+    if (auto p = get(key)) {
+      p->insert(val.begin(), val.end());
+    } else {
+      Base::try_emplace(key, val);
+    }
+  }
 };
 
 }  // namespace stacksafe
