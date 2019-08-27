@@ -8,11 +8,8 @@ void Abstraction::interpret(llvm::Function& f) {
   Interpret interpreter(*this);
   interpreter.visit(f);
 }
-void Abstraction::argument(const Register& arg) {
-  stack_.insert(arg, Symbol::create());
-}
-void Abstraction::alloc(const Register& r) {
-  stack_.insert(r, Symbol::create());
+void Abstraction::alloc(const Register& dst) {
+  stack_.insert(dst, Symbol::create());
 }
 void Abstraction::store(const Register& src, const Register& dst) {
   auto source = stack_.get(src);

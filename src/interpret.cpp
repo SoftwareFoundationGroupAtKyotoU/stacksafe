@@ -7,7 +7,7 @@ namespace stacksafe {
 Interpret::Interpret(Abstraction &a) : abst_{a} {}
 void Interpret::visit(llvm::Function &f) {
   for (auto &a : f.args()) {
-    abst_.argument(Register{a});
+    abst_.alloc(Register{a});
   }
   llvm::errs() << f;
   Base::visit(f);
