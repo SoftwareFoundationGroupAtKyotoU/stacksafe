@@ -8,7 +8,7 @@
 
 namespace stacksafe {
 
-Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {
+Register::Register(const llvm::Value& v) : num_{-1}, val_{v} {
   const auto digits = "0123456789";
   std::string_view s{get_operand(v)};
   if (!s.empty() && s.front() == '%' &&
