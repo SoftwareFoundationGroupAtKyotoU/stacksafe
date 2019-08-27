@@ -26,6 +26,14 @@ void Abstraction::interpret(llvm::Function& f) {
 void Abstraction::alloc(const Register& r) {
   stack_.try_emplace(r, Symbol::create());
 }
+void Abstraction::store(const Register& src, const Register& dst) {
+  auto source = stack_.find(src);
+  auto target = stack_.find(dst);
+  auto end = stack_.end();
+  if (source != end && target != end) {
+    heap_.try_emplace(target->second, source->second);
+  }
+}
 void Abstraction::show() const {
   nlohmann::json j;
   j["stack"] = to_json(stack_);

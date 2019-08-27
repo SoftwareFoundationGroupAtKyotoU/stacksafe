@@ -18,6 +18,7 @@ class Abstraction {
  public:
   void interpret(llvm::Function& f);
   void alloc(const Register& r);
+  void store(const Register& src, const Register& dst);
   void show() const;
 };
 
