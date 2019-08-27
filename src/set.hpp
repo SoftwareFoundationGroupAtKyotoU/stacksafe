@@ -17,6 +17,8 @@ class Domain : private std::set<Symbol> {
 
  public:
   using Base::Base, Base::begin, Base::end;
+  void insert(const Symbol& sym);
+  void insert(const Domain& dom);
 };
 void to_json(Json& j, const Domain& x);
 
