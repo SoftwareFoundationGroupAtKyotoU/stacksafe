@@ -13,6 +13,7 @@ namespace stacksafe {
 class Register {
   int num_;
   std::string repr_;
+  const llvm::Value& val_;
 
  public:
   explicit Register(const llvm::Value& v);

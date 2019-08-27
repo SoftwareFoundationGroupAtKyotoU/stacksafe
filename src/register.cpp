@@ -48,7 +48,7 @@ std::optional<int> to_number(const llvm::Value& v) {
 }
 }  // namespace
 
-Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"} {
+Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {
   if (auto n = to_number(v)) {
     num_ = *n;
     repr_ += std::to_string(num_);
