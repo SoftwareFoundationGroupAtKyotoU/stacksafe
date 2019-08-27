@@ -10,6 +10,7 @@ class Symbol {
 
  public:
   static Symbol create();
+  bool compare(const Symbol &that) const;
   std::string to_str() const;
 };
 
