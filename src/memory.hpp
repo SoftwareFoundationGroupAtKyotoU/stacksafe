@@ -9,7 +9,15 @@
 
 namespace stacksafe {
 
-class Stack : private std::map<Register, std::set<Symbol>> {};
+class Stack : private std::map<Register, std::set<Symbol>> {
+  using Key = Register;
+  using Value = std::set<Symbol>;
+  using Base = std::map<Key, Value>;
+
+ public:
+  using Base::begin, Base::end;
+};
+void to_json(Json& j, const Stack& x);
 
 class Heap : private std::map<Symbol, std::set<Symbol>> {
   using Key = Symbol;
