@@ -5,6 +5,8 @@
 #include "domain.hpp"
 
 namespace stacksafe {
+class Register;
+class Symbol;
 
 template <typename Key>
 class Env : private std::map<Key, Domain> {
@@ -36,6 +38,9 @@ class Env : private std::map<Key, Domain> {
     }
   }
 };
+
+extern template class Env<Register>;
+extern template class Env<Symbol>;
 
 }  // namespace stacksafe
 
