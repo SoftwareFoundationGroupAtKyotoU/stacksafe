@@ -23,6 +23,9 @@ void Abstraction::interpret(llvm::Function& f) {
   Interpret interpreter(*this);
   interpreter.visit(f);
 }
+void Abstraction::argument(const Register& arg) {
+  stack_.try_emplace(arg, Symbol::create());
+}
 void Abstraction::alloc(const Register& r) {
   stack_.try_emplace(r, Symbol::create());
 }
