@@ -4,6 +4,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <optional>
 #include <string_view>
+#include "io.hpp"
 
 namespace stacksafe {
 namespace {
@@ -24,17 +25,6 @@ std::string get_operand(const llvm::Value& v, bool with_type = false) {
     v.printAsOperand(os, with_type);
   };
   return string_from_stream(std::move(f));
-}
-std::optional<int> to_int(std::string_view view) {
-  if (!view.empty()) {
-    std::string str{view};
-    std::size_t pos = std::string_view::npos;
-    auto val = std::stoi(str, &pos, 10);
-    if (pos == view.size()) {
-      return val;
-    }
-  }
-  return std::nullopt;
 }
 }  // namespace
 
