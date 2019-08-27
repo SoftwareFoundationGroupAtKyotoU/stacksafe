@@ -16,6 +16,7 @@ class Register {
 
  public:
   explicit Register(const llvm::Value& v);
+  int get_num() const;
   bool compare(const Register& that) const;
   std::string to_str() const;
 };

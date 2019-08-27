@@ -61,6 +61,7 @@ Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"} {
     repr_ = to_string(v);
   }
 }
+int Register::get_num() const { return num_; }
 bool Register::compare(const Register& that) const {
   if (num_ == that.num_) {
     return repr_ < that.repr_;
@@ -70,7 +71,7 @@ bool Register::compare(const Register& that) const {
 }
 std::string Register::to_str() const { return repr_; }
 bool operator<(const Register& lhs, const Register& rhs) {
-  return lhs.compare(rhs);
+  return lhs.get_num() < rhs.get_num();
 }
 void to_json(Json& j, const Register& x) { j = x.to_str(); }
 
