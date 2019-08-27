@@ -12,6 +12,11 @@ std::string string_from_stream(F f) {
   f(stream);
   return stream.str();
 }
+template <typename T>
+std::string do_to_string(const T& t) {
+  auto f = [&t](llvm::raw_ostream& os) { os << t; };
+  return string_from_stream(std::move(f));
+}
 }  // namespace
 
 std::string get_operand(const llvm::Value& v, bool with_type) {
@@ -20,14 +25,8 @@ std::string get_operand(const llvm::Value& v, bool with_type) {
   };
   return string_from_stream(std::move(f));
 }
-std::string to_string(const llvm::Value& v) {
-  auto f = [&v](llvm::raw_ostream& os) { os << v; };
-  return string_from_stream(std::move(f));
-}
-std::string to_string(const llvm::Type& t) {
-  auto f = [&t](llvm::raw_ostream& os) { os << t; };
-  return string_from_stream(std::move(f));
-}
+std::string to_string(const llvm::Value& v) { return do_to_string(v); }
+std::string to_string(const llvm::Type& t) { return do_to_string(t); }
 
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {
