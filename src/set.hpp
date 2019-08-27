@@ -16,7 +16,8 @@ class Domain : private std::set<Symbol> {
   using Base = std::set<Symbol>;
 
  public:
-  using Base::Base, Base::begin, Base::end;
+  using Base::begin, Base::end;
+  Domain() = default;
   void insert(const Symbol& sym);
   void insert(const Domain& dom);
 };

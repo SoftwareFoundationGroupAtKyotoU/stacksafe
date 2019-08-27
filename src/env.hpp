@@ -23,7 +23,11 @@ class Env : private std::map<Key, Domain> {
     }
     return nullptr;
   }
-  void insert(const Key& key, const Symbol& sym) { insert(key, Val{sym}); }
+  void insert(const Key& key, const Symbol& sym) {
+    Val val;
+    val.insert(sym);
+    insert(key, val);
+  }
   void insert(const Key& key, const Val& val) {
     if (auto p = get(key)) {
       p->insert(val);
