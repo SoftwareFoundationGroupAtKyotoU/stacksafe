@@ -1,4 +1,5 @@
 #include "abstract.hpp"
+#include <llvm/Support/raw_ostream.h>
 #include "interpret.hpp"
 #include "json.hpp"
 
