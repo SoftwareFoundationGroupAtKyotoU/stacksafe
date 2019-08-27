@@ -1,4 +1,4 @@
-add_library(${PROJECT_NAME} MODULE
+set(source_files
   abstract.cpp
   analyzer.cpp
   interpret.cpp
@@ -6,6 +6,10 @@ add_library(${PROJECT_NAME} MODULE
   set.cpp
   symbol.cpp
   )
+add_library(${PROJECT_NAME} MODULE ${source_files})
+
+include(EnsureSources)
+ensure_sources(${source_files})
 
 find_package(LLVM REQUIRED CONFIG)
 target_compile_definitions(${PROJECT_NAME} PRIVATE
