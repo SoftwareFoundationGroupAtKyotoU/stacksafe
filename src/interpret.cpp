@@ -27,5 +27,10 @@ void Interpret::visitStoreInst(llvm::StoreInst &i) {
     abst_.store(Register{*src}, Register{*dst});
   }
 }
+void Interpret::visitLoadInst(llvm::LoadInst &i) {
+  if (auto src = i.getPointerOperand()) {
+    abst_.load(Register{i}, Register{*src});
+  }
+}
 
 }  // namespace stacksafe
