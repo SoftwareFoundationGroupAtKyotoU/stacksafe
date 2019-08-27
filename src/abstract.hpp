@@ -12,7 +12,8 @@ class Function;
 class Register;
 
 class Abstraction {
-  std::map<Register, Symbol> env_;
+  std::map<Register, Symbol> stack_;
+  std::map<Symbol, Symbol> heap_;
 
  public:
   void interpret(llvm::Function& f);

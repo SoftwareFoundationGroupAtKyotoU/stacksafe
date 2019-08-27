@@ -7,7 +7,7 @@ void Abstraction::interpret(llvm::Function& f) {
   interpreter.visit(f);
 }
 void Abstraction::alloc(const Register& r) {
-  env_.try_emplace(r, Symbol::create());
+  stack_.try_emplace(r, Symbol::create());
 }
 void Abstraction::show() const {
   using json = nlohmann::json;
