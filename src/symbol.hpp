@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
 
 #include <string>
+#include "json.hpp"
 
 namespace stacksafe {
 
@@ -16,6 +17,7 @@ class Symbol {
   std::string to_str() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
+void to_json(Json &j, const Symbol &x);
 
 }  // namespace stacksafe
 

@@ -13,5 +13,6 @@ std::string Symbol::to_str() const {
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.compare(rhs);
 }
+void to_json(Json &j, const Symbol &x) { j = x.to_str(); }
 
 }  // namespace stacksafe
