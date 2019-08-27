@@ -20,6 +20,15 @@ void Abstraction::store(const Register& src, const Register& dst) {
     }
   }
 }
+void Abstraction::load(const Register& dst, const Register& src) {
+  if (auto ptr = stack_.get(src)) {
+    for (auto& sym : *ptr) {
+      if (auto source = heap_.get(sym)) {
+        stack_.insert(dst, *source);
+      }
+    }
+  }
+}
 void Abstraction::show() const {
   Json j;
   j["stack"] = stack_;
