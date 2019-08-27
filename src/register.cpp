@@ -7,20 +7,6 @@
 #include "io.hpp"
 
 namespace stacksafe {
-namespace {
-template <typename F>
-std::string string_from_stream(F f) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  f(stream);
-  return stream.str();
-}
-template <typename T>
-std::string to_string(const T& v) {
-  auto f = [&v](llvm::raw_ostream& os) { os << v; };
-  return string_from_stream(std::move(f));
-}
-}  // namespace
 
 Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {
   const auto digits = "0123456789";
