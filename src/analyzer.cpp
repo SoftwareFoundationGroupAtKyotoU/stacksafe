@@ -2,7 +2,7 @@
 #include <llvm/Pass.h>
 #include <llvm/PassSupport.h>
 #include <llvm/Support/raw_ostream.h>
-#include "abstract.hpp"
+#include "interpret.hpp"
 
 namespace stacksafe {
 
@@ -12,8 +12,7 @@ struct Analyzer : public llvm::FunctionPass {
   virtual bool runOnFunction(llvm::Function &f) override {
     llvm::errs() << "Analyzer: ";
     llvm::errs().write_escaped(f.getName()) << "\n";
-    Abstraction abstract;
-    abstract.interpret(f);
+    Interpret{}.visit(f);
     return false;
   }
 };
