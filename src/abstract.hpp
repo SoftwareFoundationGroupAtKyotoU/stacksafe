@@ -4,10 +4,6 @@
 #include <map>
 #include "memory.hpp"
 
-namespace llvm {
-class Function;
-}
-
 namespace stacksafe {
 
 class Abstraction {
