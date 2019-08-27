@@ -34,7 +34,7 @@ void to_json(Json& j, const Register& x) {
   if (x.is_register()) {
     std::string str{"%"};
     str += std::to_string(x.get_num());
-    str += type_tag(x.get_val());
+    str += type_tag(x.get_val().getType());
     j = str;
   } else {
     j = to_string(x.get_val());
