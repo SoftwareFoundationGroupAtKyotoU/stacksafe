@@ -6,11 +6,18 @@
 
 namespace stacksafe {
 namespace {
+template <typename F>
+std::string string_from_stream(F f) {
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  f(stream);
+  return stream.str();
+}
 std::string get_operand(const llvm::Value& v, bool with_type = false) {
-  std::string str;
-  llvm::raw_string_ostream ss{str};
-  v.printAsOperand(ss, with_type);
-  return ss.str();
+  auto f = [&v, with_type](llvm::raw_ostream& os) {
+    v.printAsOperand(os, with_type);
+  };
+  return string_from_stream(std::move(f));
 }
 std::string to_string(const llvm::Value& v) {
   std::string str;
