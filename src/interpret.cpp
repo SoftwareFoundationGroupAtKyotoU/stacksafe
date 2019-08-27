@@ -18,8 +18,7 @@ void Interpret::visit(llvm::BasicBlock &b) {
 }
 void Interpret::visit(llvm::Instruction &i) { Base::visit(i); }
 void Interpret::visitAllocaInst(llvm::AllocaInst &i) {
-  Register r{i};
-  abst_.alloc(r);
+  abst_.alloc(Register{i});
 }
 void Interpret::visitStoreInst(llvm::StoreInst &i) {
   auto src = i.getValueOperand();
