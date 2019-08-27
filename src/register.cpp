@@ -36,16 +36,6 @@ std::optional<int> to_int(std::string_view view) {
   }
   return std::nullopt;
 }
-std::optional<int> to_number(const llvm::Value& v) {
-  const auto digits = "0123456789";
-  auto operand = get_operand(v);
-  std::string_view s{operand};
-  if (!s.empty() && s.front() == '%' &&
-      s.find_first_not_of(digits, 1) == std::string_view::npos) {
-    return to_int(s.substr(1));
-  }
-  return std::nullopt;
-}
 }  // namespace
 
 Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {
