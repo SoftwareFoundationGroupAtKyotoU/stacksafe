@@ -14,6 +14,16 @@ class Env : private std::map<Key, std::set<Symbol>> {
 
  public:
   using Base::begin, Base::end;
+  Val* get(const Key& key) {
+    const auto& self = *this;
+    return const_cast<Val*>(self.get(key));
+  }
+  const Val* get(const Key& key) const {
+    if (auto it = Base::find(key); it != end()) {
+      return &it->second;
+    }
+    return nullptr;
+  }
 };
 
 }  // namespace stacksafe
