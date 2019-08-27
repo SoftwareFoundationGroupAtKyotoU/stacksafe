@@ -9,7 +9,6 @@ class Function;
 }
 
 namespace stacksafe {
-class Register;
 
 class Abstraction {
   Stack stack_;
