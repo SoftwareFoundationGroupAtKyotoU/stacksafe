@@ -20,8 +20,6 @@ class Register {
   int get_num() const;
   const llvm::Value& get_val() const;
   bool is_register() const;
-  bool compare(const Register& that) const;
-  std::string to_str() const;
 };
 bool operator<(const Register& lhs, const Register& rhs);
 void to_json(Json& j, const Register& x);

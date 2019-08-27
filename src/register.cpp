@@ -64,14 +64,6 @@ Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {
 int Register::get_num() const { return num_; }
 const llvm::Value& Register::get_val() const { return val_; }
 bool Register::is_register() const { return 0 <= num_; }
-bool Register::compare(const Register& that) const {
-  if (num_ == that.num_) {
-    return repr_ < that.repr_;
-  } else {
-    return num_ < that.num_;
-  }
-}
-std::string Register::to_str() const { return repr_; }
 bool operator<(const Register& lhs, const Register& rhs) {
   auto l = lhs.get_num();
   auto r = rhs.get_num();
