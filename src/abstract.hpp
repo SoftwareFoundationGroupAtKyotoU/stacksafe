@@ -3,8 +3,6 @@
 
 #include <map>
 #include "memory.hpp"
-#include "register.hpp"
-#include "symbol.hpp"
 
 namespace llvm {
 class Function;
@@ -14,7 +12,7 @@ namespace stacksafe {
 class Register;
 
 class Abstraction {
-  std::map<Register, Symbol> stack_;
+  Stack stack_;
   Heap heap_;
 
  public:

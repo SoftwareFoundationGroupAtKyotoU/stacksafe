@@ -9,17 +9,17 @@ void Abstraction::interpret(llvm::Function& f) {
   interpreter.visit(f);
 }
 void Abstraction::argument(const Register& arg) {
-  stack_.try_emplace(arg, Symbol::create());
+  stack_.insert(arg, Symbol::create());
 }
 void Abstraction::alloc(const Register& r) {
-  stack_.try_emplace(r, Symbol::create());
+  stack_.insert(r, Symbol::create());
 }
 void Abstraction::store(const Register& src, const Register& dst) {
-  auto source = stack_.find(src);
-  auto target = stack_.find(dst);
-  auto end = stack_.end();
-  if (source != end && target != end) {
-    heap_.insert(target->second, source->second);
+  auto source = stack_.get(src);
+  auto target = stack_.get(dst);
+  if (source && target) {
+    auto front = [](const auto& x) { return *x.begin(); };
+    heap_.insert(front(*target), front(*source));
   }
 }
 void Abstraction::show() const {
