@@ -13,17 +13,16 @@ std::string string_from_stream(F f) {
   f(stream);
   return stream.str();
 }
+template <typename T>
+std::string to_string(const T& v) {
+  auto f = [&v](llvm::raw_ostream& os) { os << v; };
+  return string_from_stream(std::move(f));
+}
 std::string get_operand(const llvm::Value& v, bool with_type = false) {
   auto f = [&v, with_type](llvm::raw_ostream& os) {
     v.printAsOperand(os, with_type);
   };
   return string_from_stream(std::move(f));
-}
-std::string to_string(const llvm::Value& v) {
-  std::string str;
-  llvm::raw_string_ostream ss{str};
-  v.print(ss);
-  return ss.str();
 }
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {
