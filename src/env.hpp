@@ -15,28 +15,10 @@ class Env : private std::map<Key, Domain> {
 
  public:
   using Base::begin, Base::end;
-  Val* get(const Key& key) {
-    const auto& self = *this;
-    return const_cast<Val*>(self.get(key));
-  }
-  const Val* get(const Key& key) const {
-    if (auto it = Base::find(key); it != end()) {
-      return &it->second;
-    }
-    return nullptr;
-  }
-  void insert(const Key& key, const Symbol& sym) {
-    Val val;
-    val.insert(sym);
-    insert(key, val);
-  }
-  void insert(const Key& key, const Val& val) {
-    if (auto p = get(key)) {
-      p->insert(val);
-    } else {
-      Base::try_emplace(key, val);
-    }
-  }
+  Val* get(const Key& key);
+  const Val* get(const Key& key) const;
+  void insert(const Key& key, const Symbol& sym);
+  void insert(const Key& key, const Val& val);
 };
 
 extern template class Env<Register>;
