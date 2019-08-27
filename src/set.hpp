@@ -7,11 +7,6 @@
 
 namespace stacksafe {
 
-template <typename T>
-class Set : private std::set<T> {
-  using Base = std::set<T>;
-};
-
 class Domain : private std::set<Symbol> {
   using Base = std::set<Symbol>;
 
