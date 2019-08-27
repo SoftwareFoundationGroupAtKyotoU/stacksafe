@@ -19,6 +19,10 @@ std::string get_operand(const llvm::Value& v, bool with_type) {
   };
   return string_from_stream(std::move(f));
 }
+std::string to_string(const llvm::Value& v) {
+  auto f = [&v](llvm::raw_ostream& os) { os << v; };
+  return string_from_stream(std::move(f));
+}
 
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {

@@ -12,6 +12,7 @@ class Value;
 namespace stacksafe {
 
 std::string get_operand(const llvm::Value& v, bool with_type = false);
+std::string to_string(const llvm::Value& v);
 
 std::optional<int> to_int(std::string_view view);
 
