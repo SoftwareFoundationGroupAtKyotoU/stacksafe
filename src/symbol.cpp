@@ -3,8 +3,8 @@
 namespace stacksafe {
 
 int Symbol::current_ = 0;
-Symbol::Symbol(int n) : num_{n} {}
-Symbol Symbol::create() { return Symbol{current_++}; }
+Symbol::Symbol(int n, const llvm::Type *t) : num_{n}, type_{t} {}
+Symbol Symbol::create(const llvm::Type *t) { return Symbol{current_++, t}; }
 bool Symbol::compare(const Symbol &that) const { return num_ < that.num_; }
 std::string Symbol::to_str() const {
   using namespace std::string_literals;
