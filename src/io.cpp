@@ -1,4 +1,5 @@
 #include "io.hpp"
+#include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
 
@@ -21,6 +22,10 @@ std::string get_operand(const llvm::Value& v, bool with_type) {
 }
 std::string to_string(const llvm::Value& v) {
   auto f = [&v](llvm::raw_ostream& os) { os << v; };
+  return string_from_stream(std::move(f));
+}
+std::string to_string(const llvm::Type& t) {
+  auto f = [&t](llvm::raw_ostream& os) { os << t; };
   return string_from_stream(std::move(f));
 }
 
