@@ -14,6 +14,7 @@ class Register {
  public:
   explicit Register(const llvm::Value& v);
   bool compare(const Register& that) const;
+  std::string to_str() const;
 };
 bool operator<(const Register& lhs, const Register& rhs);
 
