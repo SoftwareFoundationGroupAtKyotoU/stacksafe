@@ -20,8 +20,6 @@ class Symbol {
   static Symbol create(const llvm::Type *t = nullptr);
   int get_num() const;
   const llvm::Type *get_type() const;
-  bool compare(const Symbol &that) const;
-  std::string to_str() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);
