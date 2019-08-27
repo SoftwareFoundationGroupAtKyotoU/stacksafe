@@ -18,8 +18,9 @@ void Abstraction::store(const Register& src, const Register& dst) {
   auto source = stack_.get(src);
   auto target = stack_.get(dst);
   if (source && target) {
-    auto front = [](const auto& x) { return *x.begin(); };
-    heap_.insert(front(*target), front(*source));
+    for (auto& t : *target) {
+      heap_.insert(t, *source);
+    }
   }
 }
 void Abstraction::show() const {
