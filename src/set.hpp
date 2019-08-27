@@ -11,7 +11,12 @@ class Set : private std::set<T> {
   using Base = std::set<T>;
 };
 
-class Domain : private std::set<Symbol> {};
+class Domain : private std::set<Symbol> {
+  using Base = std::set<Symbol>;
+
+ public:
+  using Base::Base, Base::begin, Base::end;
+};
 
 }  // namespace stacksafe
 
