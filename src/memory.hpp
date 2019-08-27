@@ -16,6 +16,8 @@ class Stack : private std::map<Register, std::set<Symbol>> {
 
  public:
   using Base::begin, Base::end;
+  Value* get(const Key& key);
+  const Value* get(const Key& key) const;
 };
 void to_json(Json& j, const Stack& x);
 

@@ -2,6 +2,16 @@
 
 namespace stacksafe {
 
+auto Stack::get(const Key& key) -> Value* {
+  const auto& self = *this;
+  return const_cast<Value*>(self.get(key));
+}
+auto Stack::get(const Key& key) const -> const Value* {
+  if (auto it = Base::find(key); it != end()) {
+    return &it->second;
+  }
+  return nullptr;
+}
 void to_json(Json& j, const Stack& x) {
   Json tmp;
   for (auto& [k, v] : x) {
