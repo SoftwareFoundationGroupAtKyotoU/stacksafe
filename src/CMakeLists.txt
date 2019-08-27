@@ -1,12 +1,12 @@
 set(source_files
   abstract.cpp
   analyzer.cpp
+  domain.cpp
   env.cpp
   interpret.cpp
   json.cpp
   memory.cpp
   register.cpp
-  set.cpp
   symbol.cpp
   )
 add_library(${PROJECT_NAME} MODULE ${source_files})
