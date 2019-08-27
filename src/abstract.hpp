@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
 #include <map>
+#include "memory.hpp"
 #include "register.hpp"
 #include "symbol.hpp"
 
@@ -14,7 +15,7 @@ class Register;
 
 class Abstraction {
   std::map<Register, Symbol> stack_;
-  std::map<Symbol, Symbol> heap_;
+  Heap heap_;
 
  public:
   void interpret(llvm::Function& f);

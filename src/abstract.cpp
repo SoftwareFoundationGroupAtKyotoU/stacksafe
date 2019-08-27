@@ -19,7 +19,7 @@ void Abstraction::store(const Register& src, const Register& dst) {
   auto target = stack_.find(dst);
   auto end = stack_.end();
   if (source != end && target != end) {
-    heap_.try_emplace(target->second, source->second);
+    heap_.insert(target->second, source->second);
   }
 }
 void Abstraction::show() const {
