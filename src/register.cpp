@@ -49,16 +49,13 @@ std::optional<int> to_number(const llvm::Value& v) {
 }  // namespace
 
 Register::Register(const llvm::Value& v) : num_{-1}, repr_{"%"}, val_{v} {
-  if (auto n = to_number(v)) {
-    num_ = *n;
-    repr_ += std::to_string(num_);
-    if (auto t = v.getType()) {
-      repr_ += "<";
-      repr_ += to_string(*t);
-      repr_ += ">";
+  const auto digits = "0123456789";
+  std::string_view s{get_operand(v)};
+  if (!s.empty() && s.front() == '%' &&
+      s.find_first_not_of(digits, 1) == std::string_view::npos) {
+    if (auto n = to_int(s.substr(1))) {
+      num_ = *n;
     }
-  } else {
-    repr_ = to_string(v);
   }
 }
 int Register::get_num() const { return num_; }
