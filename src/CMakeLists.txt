@@ -1,6 +1,7 @@
 set(source_files
   abstract.cpp
   analyzer.cpp
+  env.cpp
   interpret.cpp
   json.cpp
   memory.cpp
