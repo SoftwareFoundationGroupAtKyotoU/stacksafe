@@ -8,3 +8,6 @@ std::string Symbol::to_str() const {
   using namespace std::string_literals;
   return "#"s + std::to_string(num_);
 }
+bool operator<(const Symbol &lhs, const Symbol &rhs) {
+  return lhs.compare(rhs);
+}

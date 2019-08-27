@@ -13,5 +13,6 @@ class Symbol {
   bool compare(const Symbol &that) const;
   std::string to_str() const;
 };
+bool operator<(const Symbol &lhs, const Symbol &rhs);
 
 #endif  // INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
