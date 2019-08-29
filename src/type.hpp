@@ -15,6 +15,7 @@ class Type {
 
  public:
   explicit Type(const llvm::Type* t);
+  const llvm::Type* get() const;
   std::string repr() const;
 };
 void to_json(Json& j, const Type& x);

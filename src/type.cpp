@@ -14,6 +14,7 @@ std::string to_str(const llvm::Type& type) {
 }  // namespace
 
 Type::Type(const llvm::Type* t) : type_{t} {}
+const llvm::Type* Type::get() const { return type_; }
 std::string Type::repr() const {
   if (type_) {
     return "<" + to_str(*type_) + ">";
