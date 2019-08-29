@@ -27,15 +27,6 @@ std::string get_operand(const llvm::Value& v, bool with_type) {
 }
 std::string to_string(const llvm::Value& v) { return do_to_string(v); }
 std::string to_string(const llvm::Type& t) { return do_to_string(t); }
-std::string type_tag(const llvm::Type* t) {
-  std::string buf;
-  if (t) {
-    buf += "<";
-    buf += to_string(*t);
-    buf += ">";
-  }
-  return buf;
-}
 
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {
