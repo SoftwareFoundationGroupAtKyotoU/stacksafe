@@ -6,7 +6,7 @@
 
 namespace stacksafe {
 
-class Abstraction {
+class Env {
   Stack stack_;
   Heap heap_;
 

@@ -5,12 +5,12 @@
 
 namespace stacksafe {
 
-void Abstraction::alloc(const Register& dst) {
+void Env::alloc(const Register& dst) {
   auto sym = Symbol::create(dst.get_val().getType());
   heap_.insert(sym, Domain{});
   stack_.insert(dst, sym);
 }
-void Abstraction::store(const Register& src, const Register& dst) {
+void Env::store(const Register& src, const Register& dst) {
   auto source = stack_.get(src);
   auto target = stack_.get(dst);
   if (source && target) {
@@ -19,7 +19,7 @@ void Abstraction::store(const Register& src, const Register& dst) {
     }
   }
 }
-void Abstraction::load(const Register& dst, const Register& src) {
+void Env::load(const Register& dst, const Register& src) {
   if (auto ptr = stack_.get(src)) {
     for (auto& sym : *ptr) {
       if (auto source = heap_.get(sym)) {
@@ -28,7 +28,7 @@ void Abstraction::load(const Register& dst, const Register& src) {
     }
   }
 }
-void Abstraction::show() const {
+void Env::show() const {
   Json j;
   j["stack"] = stack_;
   j["heap"] = heap_;
