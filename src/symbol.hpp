@@ -14,8 +14,7 @@ namespace stacksafe {
 class Symbol {
   static int current_;
   int num_;
-  const llvm::Type *type_;
-  Type t_;
+  Type type_;
   Symbol(int n, const llvm::Type *t);
 
  public:
