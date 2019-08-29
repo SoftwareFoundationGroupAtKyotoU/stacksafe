@@ -30,6 +30,12 @@ void Map<Key>::insert(const Key& key, const Val& val) {
   }
 }
 template <typename Key>
+void Map<Key>::insert(const Key& key) {
+  if (Base::count(key) == 0) {
+    Base::try_emplace(key, Domain{});
+  }
+}
+template <typename Key>
 void to_json(Json& j, const Map<Key>& x) {
   Json obj;
   for (auto& [key, val] : x) {
