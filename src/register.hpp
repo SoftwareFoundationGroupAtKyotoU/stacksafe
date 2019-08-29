@@ -14,14 +14,12 @@ namespace stacksafe {
 
 class Register {
   std::optional<int> num_;
-  const llvm::Value& val_;
   Type type_;
   std::string repr_;
 
  public:
   explicit Register(const llvm::Value& v);
   int get_num() const;
-  const llvm::Value& get_val() const;
   const Type& get_type() const;
   std::string repr() const;
   bool is_register() const;

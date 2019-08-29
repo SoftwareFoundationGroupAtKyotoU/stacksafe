@@ -33,7 +33,7 @@ std::string get_operand(const llvm::Value& value) {
 }
 }  // namespace
 
-Register::Register(const llvm::Value& v) : val_{v}, type_{v.getType()} {
+Register::Register(const llvm::Value& v) : type_{v.getType()} {
   auto prefix = "%";
   auto operand = get_operand(v);
   std::string_view view{operand};
@@ -52,7 +52,6 @@ int Register::get_num() const {
   }
   return -1;
 }
-const llvm::Value& Register::get_val() const { return val_; }
 const Type& Register::get_type() const { return type_; }
 std::string Register::repr() const { return repr_; }
 bool Register::is_register() const { return num_.has_value(); }
