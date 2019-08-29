@@ -6,9 +6,9 @@ set(source_files
   io.cpp
   json.cpp
   map.cpp
-  register.cpp
   symbol.cpp
   type.cpp
+  value.cpp
   )
 add_library(${PROJECT_NAME} MODULE ${source_files})
 

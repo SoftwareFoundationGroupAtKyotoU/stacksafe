@@ -2,7 +2,7 @@
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
 #include "json.hpp"
-#include "register.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 
