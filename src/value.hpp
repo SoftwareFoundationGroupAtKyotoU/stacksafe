@@ -13,6 +13,7 @@ class Value;
 namespace stacksafe {
 
 class Value {
+  const llvm::Value* value_;
   std::optional<int> num_;
   Type type_;
   std::string repr_;

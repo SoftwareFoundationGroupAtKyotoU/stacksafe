@@ -31,7 +31,7 @@ std::string get_operand(const llvm::Value& value) {
 }
 }  // namespace
 
-Value::Value(const llvm::Value& v) : type_{v.getType()} {
+Value::Value(const llvm::Value& v) : value_{&v}, type_{v.getType()} {
   auto prefix = "%";
   auto operand = get_operand(v);
   std::string_view view{operand};
