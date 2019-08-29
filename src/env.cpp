@@ -34,10 +34,6 @@ void Env::binop(const Value& dst) {
   heap_.insert(sym, Domain{});
   stack_.insert(dst, sym);
 }
-void Env::show() const {
-  Json j = *this;
-  llvm::errs() << j.dump(2) << "\n";
-}
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack_;
   j["heap"] = x.heap_;

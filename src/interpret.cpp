@@ -1,5 +1,6 @@
 #include "interpret.hpp"
 #include <llvm/Support/raw_ostream.h>
+#include "json.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
@@ -13,7 +14,8 @@ void Interpret::visit(llvm::Function &f) {
 }
 void Interpret::visit(llvm::BasicBlock &b) {
   Base::visit(b);
-  abst_.show();
+  Json j = abst_;
+  llvm::errs() << j.dump(2) << "\n";
 }
 void Interpret::visit(llvm::Instruction &i) { Base::visit(i); }
 void Interpret::visitAllocaInst(llvm::AllocaInst &i) { abst_.alloc(Value{i}); }
