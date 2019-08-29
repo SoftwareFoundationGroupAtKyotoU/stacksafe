@@ -33,19 +33,18 @@ std::string get_operand(const llvm::Value& value) {
 }
 }  // namespace
 
-Register::Register(const llvm::Value& v)
-    : num_{}, val_{v}, type_{v.getType()}, repr_{"%"} {
-  const auto digits = "0123456789";
-  std::string_view s{get_operand(v)};
-  if (!s.empty() && s.front() == '%' &&
-      s.find_first_not_of(digits, 1) == std::string_view::npos) {
-    if (auto n = to_int(s.substr(1))) {
-      num_ = *n;
-      repr_ += std::to_string(*n) + type_.repr();
-      return;
-    }
+Register::Register(const llvm::Value& v) : val_{v}, type_{v.getType()} {
+  auto prefix = "%";
+  auto operand = get_operand(v);
+  std::string_view view{operand};
+  if (!view.empty() && view.substr(0, 1) == prefix) {
+    num_ = to_int(view.substr(1));
   }
-  repr_ = to_str(v);
+  if (num_.has_value()) {
+    repr_ = prefix + std::to_string(*num_) + type_.repr();
+  } else {
+    repr_ = to_str(v);
+  }
 }
 int Register::get_num() const {
   if (num_) {
