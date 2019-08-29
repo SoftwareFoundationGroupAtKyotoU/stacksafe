@@ -3,6 +3,7 @@
 #include <llvm/PassSupport.h>
 #include <llvm/Support/raw_ostream.h>
 #include "interpret.hpp"
+#include "register.hpp"
 
 namespace stacksafe {
 

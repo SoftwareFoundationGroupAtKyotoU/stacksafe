@@ -6,7 +6,6 @@ set(source_files
   io.cpp
   json.cpp
   map.cpp
-  memory.cpp
   register.cpp
   symbol.cpp
   )

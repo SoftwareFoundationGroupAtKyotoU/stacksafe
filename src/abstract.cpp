@@ -1,7 +1,8 @@
 #include "abstract.hpp"
+#include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
-#include "interpret.hpp"
 #include "json.hpp"
+#include "register.hpp"
 
 namespace stacksafe {
 
