@@ -18,6 +18,7 @@ class Type {
   const llvm::Type* get() const;
   std::string repr() const;
   bool is_pointer() const;
+  Type pointee_type() const;
 };
 void to_json(Json& j, const Type& x);
 
