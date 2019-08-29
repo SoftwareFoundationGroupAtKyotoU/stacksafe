@@ -21,7 +21,7 @@ class Symbol {
  public:
   static Symbol create(const llvm::Type *t = nullptr);
   int get_num() const;
-  const llvm::Type *get_type() const;
+  const Type &get_type() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);
