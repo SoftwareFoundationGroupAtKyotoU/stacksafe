@@ -38,11 +38,6 @@ Value::Value(const llvm::Value& v) : value_{&v}, type_{v.getType()} {
   if (!view.empty() && view.substr(0, 1) == prefix) {
     num_ = to_int(view.substr(1));
   }
-  if (is_register()) {
-    repr_ = prefix + std::to_string(*num_) + type_.repr();
-  } else {
-    repr_ = to_str(v);
-  }
 }
 const llvm::Value& Value::get() const { return *value_; }
 std::optional<int> Value::number() const { return num_; }
