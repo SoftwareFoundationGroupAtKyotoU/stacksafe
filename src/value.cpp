@@ -31,11 +31,11 @@ std::string get_operand(const llvm::Value& value) {
 }
 }  // namespace
 
+const char* const Value::prefix_ = "%";
 Value::Value(const llvm::Value& v) : value_{&v}, type_{v.getType()} {
-  auto prefix = "%";
   auto operand = get_operand(v);
   std::string_view view{operand};
-  if (!view.empty() && view.substr(0, 1) == prefix) {
+  if (!view.empty() && view.substr(0, 1) == prefix_) {
     num_ = to_int(view.substr(1));
   }
 }
@@ -44,7 +44,7 @@ std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
 std::string Value::repr() const {
   if (is_register()) {
-    return "%" + std::to_string(*num_) + type_.repr();
+    return prefix_ + std::to_string(*num_) + type_.repr();
   } else {
     return to_str(*value_);
   }
