@@ -1,13 +1,22 @@
 #include "type.hpp"
-#include "io.hpp"
+#include <llvm/IR/Type.h>
+#include <llvm/Support/raw_ostream.h>
 #include "json.hpp"
 
 namespace stacksafe {
+namespace {
+std::string to_str(const llvm::Type& type) {
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  stream << type;
+  return stream.str();
+}
+}  // namespace
 
 Type::Type(const llvm::Type* t) {
   if (t) {
     repr_ += "<";
-    repr_ += to_string(*t);
+    repr_ += to_str(*t);
     repr_ += ">";
   }
 }
