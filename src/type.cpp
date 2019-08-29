@@ -4,7 +4,7 @@
 
 namespace stacksafe {
 
-Type::Type(llvm::Type* t) {
+Type::Type(const llvm::Type* t) {
   if (t) {
     repr_ += "<";
     repr_ += to_string(*t);
