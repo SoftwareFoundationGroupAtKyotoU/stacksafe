@@ -4,16 +4,16 @@
 #include "map.hpp"
 
 namespace stacksafe {
-class Register;
+class Value;
 
 class Env {
   Stack stack_;
   Heap heap_;
 
  public:
-  void alloc(const Register& dst);
-  void store(const Register& src, const Register& dst);
-  void load(const Register& dst, const Register& src);
+  void alloc(const Value& dst);
+  void store(const Value& src, const Value& dst);
+  void load(const Value& dst, const Value& src);
   void show() const;
 };
 

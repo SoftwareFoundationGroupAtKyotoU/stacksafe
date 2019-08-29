@@ -44,10 +44,10 @@ void to_json(Json& j, const Map<Key>& x) {
   j = obj;
 }
 
-template class Map<Register>;
+template class Map<Value>;
 template class Map<Symbol>;
 
-template void to_json<Register>(Json&, const Stack&);
+template void to_json<Value>(Json&, const Stack&);
 template void to_json<Symbol>(Json&, const Heap&);
 
 }  // namespace stacksafe

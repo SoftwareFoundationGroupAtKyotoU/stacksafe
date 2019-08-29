@@ -12,20 +12,20 @@ class Value;
 
 namespace stacksafe {
 
-class Register {
+class Value {
   std::optional<int> num_;
   Type type_;
   std::string repr_;
 
  public:
-  explicit Register(const llvm::Value& v);
+  explicit Value(const llvm::Value& v);
   std::optional<int> number() const;
   const Type& type() const;
   std::string repr() const;
   bool is_register() const;
 };
-bool operator<(const Register& lhs, const Register& rhs);
-void to_json(Json& j, const Register& x);
+bool operator<(const Value& lhs, const Value& rhs);
+void to_json(Json& j, const Value& x);
 
 }  // namespace stacksafe
 

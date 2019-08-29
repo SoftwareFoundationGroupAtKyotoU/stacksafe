@@ -6,12 +6,12 @@
 
 namespace stacksafe {
 
-void Env::alloc(const Register& dst) {
+void Env::alloc(const Value& dst) {
   auto sym = Symbol::create(dst.type());
   heap_.insert(sym, Domain{});
   stack_.insert(dst, sym);
 }
-void Env::store(const Register& src, const Register& dst) {
+void Env::store(const Value& src, const Value& dst) {
   auto source = stack_.get(src);
   auto target = stack_.get(dst);
   if (source && target) {
@@ -20,7 +20,7 @@ void Env::store(const Register& src, const Register& dst) {
     }
   }
 }
-void Env::load(const Register& dst, const Register& src) {
+void Env::load(const Value& dst, const Value& src) {
   if (auto ptr = stack_.get(src)) {
     for (auto& sym : *ptr) {
       if (auto source = heap_.get(sym)) {

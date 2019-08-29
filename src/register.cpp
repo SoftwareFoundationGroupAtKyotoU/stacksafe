@@ -31,7 +31,7 @@ std::string get_operand(const llvm::Value& value) {
 }
 }  // namespace
 
-Register::Register(const llvm::Value& v) : type_{v.getType()} {
+Value::Value(const llvm::Value& v) : type_{v.getType()} {
   auto prefix = "%";
   auto operand = get_operand(v);
   std::string_view view{operand};
@@ -44,11 +44,11 @@ Register::Register(const llvm::Value& v) : type_{v.getType()} {
     repr_ = to_str(v);
   }
 }
-std::optional<int> Register::number() const { return num_; }
-const Type& Register::type() const { return type_; }
-std::string Register::repr() const { return repr_; }
-bool Register::is_register() const { return num_.has_value(); }
-bool operator<(const Register& lhs, const Register& rhs) {
+std::optional<int> Value::number() const { return num_; }
+const Type& Value::type() const { return type_; }
+std::string Value::repr() const { return repr_; }
+bool Value::is_register() const { return num_.has_value(); }
+bool operator<(const Value& lhs, const Value& rhs) {
   auto l = lhs.number().value_or(-1);
   auto r = rhs.number().value_or(-1);
   if (l == r) {
@@ -57,6 +57,6 @@ bool operator<(const Register& lhs, const Register& rhs) {
     return l < r;
   }
 }
-void to_json(Json& j, const Register& x) { j = x.repr(); }
+void to_json(Json& j, const Value& x) { j = x.repr(); }
 
 }  // namespace stacksafe

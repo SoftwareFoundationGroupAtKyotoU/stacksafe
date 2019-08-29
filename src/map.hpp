@@ -6,7 +6,7 @@
 #include "json_fwd.hpp"
 
 namespace stacksafe {
-class Register;
+class Value;
 class Symbol;
 
 template <typename Key>
@@ -24,13 +24,13 @@ class Map : private std::map<Key, Domain> {
 template <typename Key>
 void to_json(Json& j, const Map<Key>& x);
 
-using Stack = Map<Register>;
+using Stack = Map<Value>;
 using Heap = Map<Symbol>;
 
-extern template class Map<Register>;
+extern template class Map<Value>;
 extern template class Map<Symbol>;
 
-extern template void to_json<Register>(Json&, const Stack&);
+extern template void to_json<Value>(Json&, const Stack&);
 extern template void to_json<Symbol>(Json&, const Heap&);
 
 }  // namespace stacksafe
