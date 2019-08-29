@@ -10,16 +10,16 @@
 
 namespace stacksafe {
 
-class Stack : private Env<Register> {
-  using Base = Env<Register>;
+class Stack : private Map<Register> {
+  using Base = Map<Register>;
 
  public:
   using Base::begin, Base::end, Base::get, Base::insert;
 };
 void to_json(Json& j, const Stack& x);
 
-class Heap : private Env<Symbol> {
-  using Base = Env<Symbol>;
+class Heap : private Map<Symbol> {
+  using Base = Map<Symbol>;
 
  public:
   using Base::begin, Base::end, Base::get, Base::insert;

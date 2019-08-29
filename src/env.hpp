@@ -9,7 +9,7 @@ class Register;
 class Symbol;
 
 template <typename Key>
-class Env : private std::map<Key, Domain> {
+class Map : private std::map<Key, Domain> {
   using Val = Domain;
   using Base = std::map<Key, Val>;
 
@@ -21,8 +21,8 @@ class Env : private std::map<Key, Domain> {
   void insert(const Key& key, const Val& val);
 };
 
-extern template class Env<Register>;
-extern template class Env<Symbol>;
+extern template class Map<Register>;
+extern template class Map<Symbol>;
 
 }  // namespace stacksafe
 
