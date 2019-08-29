@@ -1,13 +1,8 @@
 #ifndef INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
 #define INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
 
-#include <string>
 #include "json_fwd.hpp"
 #include "type.hpp"
-
-namespace llvm {
-class Type;
-}
 
 namespace stacksafe {
 
