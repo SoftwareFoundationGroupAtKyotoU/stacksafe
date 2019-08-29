@@ -22,6 +22,7 @@ class Register {
   int get_num() const;
   const llvm::Value& get_val() const;
   const Type& get_type() const;
+  std::string repr() const;
   bool is_register() const;
 };
 bool operator<(const Register& lhs, const Register& rhs);

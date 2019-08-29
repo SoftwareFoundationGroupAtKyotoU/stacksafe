@@ -26,6 +26,7 @@ Register::Register(const llvm::Value& v)
 int Register::get_num() const { return num_; }
 const llvm::Value& Register::get_val() const { return val_; }
 const Type& Register::get_type() const { return type_; }
+std::string Register::repr() const { return repr_; }
 bool Register::is_register() const { return 0 <= num_; }
 bool operator<(const Register& lhs, const Register& rhs) {
   auto l = lhs.get_num();
