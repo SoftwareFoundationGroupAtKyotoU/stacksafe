@@ -8,6 +8,14 @@
 #include "json.hpp"
 
 namespace stacksafe {
+namespace {
+std::string to_str(const llvm::Value& value) {
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  stream << value;
+  return stream.str();
+}
+}  // namespace
 
 Register::Register(const llvm::Value& v)
     : num_{-1}, val_{v}, type_{v.getType()}, repr_{"%"} {
@@ -21,7 +29,7 @@ Register::Register(const llvm::Value& v)
       return;
     }
   }
-  repr_ = to_string(v);
+  repr_ = to_str(v);
 }
 int Register::get_num() const { return num_; }
 const llvm::Value& Register::get_val() const { return val_; }

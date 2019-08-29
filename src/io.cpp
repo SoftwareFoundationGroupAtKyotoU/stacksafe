@@ -25,7 +25,6 @@ std::string get_operand(const llvm::Value& v, bool with_type) {
   };
   return string_from_stream(std::move(f));
 }
-std::string to_string(const llvm::Value& v) { return do_to_string(v); }
 
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {
