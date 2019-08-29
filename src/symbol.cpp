@@ -1,5 +1,6 @@
 #include "symbol.hpp"
 #include "io.hpp"
+#include "json.hpp"
 
 namespace stacksafe {
 

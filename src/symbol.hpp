@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
 
 #include <string>
-#include "json.hpp"
+#include "json_fwd.hpp"
 
 namespace llvm {
 class Type;

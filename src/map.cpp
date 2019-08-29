@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include "json.hpp"
 #include "register.hpp"
 #include "symbol.hpp"
 

@@ -3,6 +3,7 @@
 
 #include <map>
 #include "domain.hpp"
+#include "json_fwd.hpp"
 
 namespace stacksafe {
 class Register;

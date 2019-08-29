@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_BA783AFD_E463_407E_B980_287A32202B17
 
 #include <string>
-#include "json.hpp"
+#include "json_fwd.hpp"
 
 namespace llvm {
 class Value;

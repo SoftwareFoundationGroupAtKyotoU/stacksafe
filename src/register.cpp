@@ -5,6 +5,7 @@
 #include <optional>
 #include <string_view>
 #include "io.hpp"
+#include "json.hpp"
 
 namespace stacksafe {
 

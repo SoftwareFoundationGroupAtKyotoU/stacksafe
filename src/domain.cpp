@@ -1,4 +1,5 @@
 #include "domain.hpp"
+#include "json.hpp"
 
 namespace stacksafe {
 

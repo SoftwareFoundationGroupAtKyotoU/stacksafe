@@ -3,7 +3,7 @@
 
 #include <llvm/IR/Type.h>
 #include <string>
-#include "json.hpp"
+#include "json_fwd.hpp"
 
 namespace llvm {
 class Type;
