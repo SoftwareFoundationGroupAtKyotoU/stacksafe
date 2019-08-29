@@ -13,6 +13,7 @@ template <typename Key>
 class Map : private std::map<Key, Domain> {
   using Val = Domain;
   using Base = std::map<Key, Val>;
+  bool exists(const Key& key) const;
 
  public:
   using Base::begin, Base::end;

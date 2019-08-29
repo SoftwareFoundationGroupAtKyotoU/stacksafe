@@ -4,6 +4,10 @@
 namespace stacksafe {
 
 template <typename Key>
+bool Map<Key>::exists(const Key& key) const {
+  return 0 < Base::count(key);
+}
+template <typename Key>
 auto Map<Key>::get(const Key& key) -> Val* {
   const auto& self = *this;
   return const_cast<Val*>(self.get(key));
@@ -31,7 +35,7 @@ void Map<Key>::insert(const Key& key, const Val& val) {
 }
 template <typename Key>
 void Map<Key>::insert(const Key& key) {
-  if (Base::count(key) == 0) {
+  if (!exists(key)) {
     Base::try_emplace(key, Domain{});
   }
 }
