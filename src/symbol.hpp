@@ -15,11 +15,9 @@ class Symbol {
   static int current_;
   int num_;
   Type type_;
-  Symbol(int n, const llvm::Type *t);
   Symbol(int n, const Type &t);
 
  public:
-  static Symbol create(const llvm::Type *t = nullptr);
   static Symbol create(const Type &t);
   int get_num() const;
   const Type &get_type() const;
