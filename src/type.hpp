@@ -3,6 +3,7 @@
 
 #include <llvm/IR/Type.h>
 #include <string>
+#include "json.hpp"
 
 namespace llvm {
 class Type;
@@ -17,6 +18,7 @@ class Type {
   explicit Type(llvm::Type* t);
   std::string repr() const;
 };
+void to_json(Json& j, const Type& x);
 
 }  // namespace stacksafe
 

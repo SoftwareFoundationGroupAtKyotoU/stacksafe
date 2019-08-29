@@ -11,5 +11,6 @@ Type::Type(llvm::Type* t) {
   }
 }
 std::string Type::repr() const { return repr_; }
+void to_json(Json& j, const Type& x) { j = x.repr(); }
 
 }  // namespace stacksafe
