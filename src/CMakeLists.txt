@@ -3,7 +3,6 @@ set(source_files
   domain.cpp
   env.cpp
   interpret.cpp
-  io.cpp
   json.cpp
   map.cpp
   symbol.cpp
