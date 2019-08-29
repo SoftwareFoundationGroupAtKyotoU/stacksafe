@@ -20,6 +20,7 @@ class Symbol {
 
  public:
   static Symbol create(const llvm::Type *t = nullptr);
+  static Symbol create(const Type &t);
   int get_num() const;
   const Type &get_type() const;
 };
