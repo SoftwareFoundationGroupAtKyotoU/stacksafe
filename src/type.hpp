@@ -1,9 +1,21 @@
 #ifndef INCLUDE_GUARD_DDB53FB4_0D81_45F7_AB62_9AD997BC6CFA
 #define INCLUDE_GUARD_DDB53FB4_0D81_45F7_AB62_9AD997BC6CFA
 
+#include <llvm/IR/Type.h>
+#include <string>
+
+namespace llvm {
+class Type;
+}
+
 namespace stacksafe {
 
-class Type {};
+class Type {
+  std::string repr_;
+
+ public:
+  explicit Type(llvm::Type* t);
+};
 
 }  // namespace stacksafe
 
