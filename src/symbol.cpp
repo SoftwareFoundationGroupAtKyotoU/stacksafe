@@ -7,15 +7,15 @@ namespace stacksafe {
 int Symbol::current_ = 0;
 Symbol::Symbol(int n, const Type &t) : num_{n}, type_{t} {}
 Symbol Symbol::create(const Type &t) { return Symbol{current_++, t}; }
-int Symbol::get_num() const { return num_; }
-const Type &Symbol::get_type() const { return type_; }
+int Symbol::number() const { return num_; }
+const Type &Symbol::type() const { return type_; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.get_num() < rhs.get_num();
+  return lhs.number() < rhs.number();
 }
 void to_json(Json &j, const Symbol &x) {
   std::string str{"#"};
-  str += std::to_string(x.get_num());
-  str += x.get_type().repr();
+  str += std::to_string(x.number());
+  str += x.type().repr();
   j = str;
 }
 

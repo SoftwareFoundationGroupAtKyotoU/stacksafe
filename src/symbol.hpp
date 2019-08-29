@@ -14,8 +14,8 @@ class Symbol {
 
  public:
   static Symbol create(const Type &t);
-  int get_num() const;
-  const Type &get_type() const;
+  int number() const;
+  const Type &type() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);
