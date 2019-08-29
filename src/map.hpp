@@ -21,23 +21,16 @@ class Map : private std::map<Key, Domain> {
   void insert(const Key& key, const Val& val);
 };
 template <typename Key>
-void to_json(Json& j, const Map<Key>& x) {
-  Json obj;
-  for (auto& [key, val] : x) {
-    Json tmp = key;
-    if (tmp.is_string()) {
-      auto k = tmp.get<std::string>();
-      obj[k] = val;
-    }
-  }
-  j = obj;
-}
+void to_json(Json& j, const Map<Key>& x);
 
 using Stack = Map<Register>;
 using Heap = Map<Symbol>;
 
 extern template class Map<Register>;
 extern template class Map<Symbol>;
+
+extern template void to_json<Register>(Json&, const Stack&);
+extern template void to_json<Symbol>(Json&, const Heap&);
 
 }  // namespace stacksafe
 

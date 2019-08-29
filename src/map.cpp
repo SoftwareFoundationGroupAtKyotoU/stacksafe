@@ -30,8 +30,23 @@ void Map<Key>::insert(const Key& key, const Val& val) {
     Base::try_emplace(key, val);
   }
 }
+template <typename Key>
+void to_json(Json& j, const Map<Key>& x) {
+  Json obj;
+  for (auto& [key, val] : x) {
+    Json tmp = key;
+    if (tmp.is_string()) {
+      auto k = tmp.get<std::string>();
+      obj[k] = val;
+    }
+  }
+  j = obj;
+}
 
 template class Map<Register>;
 template class Map<Symbol>;
+
+template void to_json<Register>(Json&, const Stack&);
+template void to_json<Symbol>(Json&, const Heap&);
 
 }  // namespace stacksafe
