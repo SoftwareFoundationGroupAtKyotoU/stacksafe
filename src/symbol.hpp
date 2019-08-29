@@ -3,6 +3,7 @@
 
 #include <string>
 #include "json_fwd.hpp"
+#include "type.hpp"
 
 namespace llvm {
 class Type;
@@ -14,6 +15,7 @@ class Symbol {
   static int current_;
   int num_;
   const llvm::Type *type_;
+  Type t_;
   Symbol(int n, const llvm::Type *t);
 
  public:
