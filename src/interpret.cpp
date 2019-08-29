@@ -29,5 +29,8 @@ void Interpret::visitLoadInst(llvm::LoadInst &i) {
     abst_.load(Value{i}, Value{*src});
   }
 }
+void Interpret::visitBinaryOperator(llvm::BinaryOperator &i) {
+  abst_.binop(Value{i});
+}
 
 }  // namespace stacksafe
