@@ -21,6 +21,12 @@ std::string Type::repr() const {
   }
   return {};
 }
+bool Type::is_pointer() const {
+  if (type_) {
+    return type_->isPointerTy();
+  }
+  return false;
+}
 void to_json(Json& j, const Type& x) { j = x.repr(); }
 
 }  // namespace stacksafe
