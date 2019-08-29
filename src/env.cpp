@@ -7,7 +7,7 @@
 namespace stacksafe {
 
 void Env::alloc(const Register& dst) {
-  auto sym = Symbol::create(dst.get_type());
+  auto sym = Symbol::create(dst.type());
   heap_.insert(sym, Domain{});
   stack_.insert(dst, sym);
 }
