@@ -9,10 +9,6 @@ namespace llvm {
 class Value;
 }  // namespace llvm
 
-namespace stacksafe {
-
-std::string get_operand(const llvm::Value& v, bool with_type = false);
-
-}  // namespace stacksafe
+namespace stacksafe {}  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_AAFE405E_E57A_4417_B712_250BD5954A09

@@ -19,11 +19,4 @@ std::string do_to_string(const T& t) {
 }
 }  // namespace
 
-std::string get_operand(const llvm::Value& v, bool with_type) {
-  auto f = [&v, with_type](llvm::raw_ostream& os) {
-    v.printAsOperand(os, with_type);
-  };
-  return string_from_stream(std::move(f));
-}
-
 }  // namespace stacksafe

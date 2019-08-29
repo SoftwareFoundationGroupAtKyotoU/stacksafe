@@ -26,6 +26,12 @@ std::string to_str(const llvm::Value& value) {
   stream << value;
   return stream.str();
 }
+std::string get_operand(const llvm::Value& value) {
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  value.printAsOperand(stream, false);
+  return stream.str();
+}
 }  // namespace
 
 Register::Register(const llvm::Value& v)
