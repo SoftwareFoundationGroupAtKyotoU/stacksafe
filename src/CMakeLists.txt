@@ -8,6 +8,7 @@ set(source_files
   map.cpp
   register.cpp
   symbol.cpp
+  type.cpp
   )
 add_library(${PROJECT_NAME} MODULE ${source_files})
 
