@@ -20,6 +20,7 @@ class Value {
 
  public:
   explicit Value(const llvm::Value& v);
+  const llvm::Value& get() const;
   std::optional<int> number() const;
   const Type& type() const;
   std::string repr() const;
