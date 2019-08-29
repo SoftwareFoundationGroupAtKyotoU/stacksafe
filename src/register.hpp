@@ -3,6 +3,7 @@
 
 #include <string>
 #include "json_fwd.hpp"
+#include "type.hpp"
 
 namespace llvm {
 class Value;
@@ -13,6 +14,7 @@ namespace stacksafe {
 class Register {
   int num_;
   const llvm::Value& val_;
+  Type type_;
 
  public:
   explicit Register(const llvm::Value& v);
