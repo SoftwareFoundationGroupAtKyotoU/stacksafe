@@ -29,10 +29,7 @@ void Env::load(const Value& dst, const Value& src) {
     }
   }
 }
-void Env::binop(const Value& dst) {
-  auto sym = Symbol::create(dst.type());
-  stack_.insert(dst);
-}
+void Env::binop(const Value& dst) { stack_.insert(dst); }
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack_;
   j["heap"] = x.heap_;
