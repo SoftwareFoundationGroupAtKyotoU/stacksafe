@@ -1,6 +1,5 @@
 #include "interpret.hpp"
 #include <llvm/Support/raw_ostream.h>
-#include "abstract.hpp"
 #include "register.hpp"
 
 namespace stacksafe {
