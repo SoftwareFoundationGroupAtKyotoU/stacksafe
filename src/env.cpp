@@ -30,10 +30,12 @@ void Env::load(const Value& dst, const Value& src) {
   }
 }
 void Env::show() const {
-  Json j;
-  j["stack"] = stack_;
-  j["heap"] = heap_;
+  Json j = *this;
   llvm::errs() << j.dump(2) << "\n";
+}
+void to_json(Json& j, const Env& x) {
+  j["stack"] = x.stack_;
+  j["heap"] = x.heap_;
 }
 
 }  // namespace stacksafe
