@@ -60,7 +60,7 @@ bool operator<(const Register& lhs, const Register& rhs) {
   auto l = lhs.get_num();
   auto r = rhs.get_num();
   if (l == r) {
-    return &lhs.get_val() < &rhs.get_val();
+    return lhs.repr() < rhs.repr();
   } else {
     return l < r;
   }
