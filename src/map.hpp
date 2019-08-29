@@ -33,6 +33,9 @@ void to_json(Json& j, const Map<Key>& x) {
   j = obj;
 }
 
+using Stack = Map<Register>;
+using Heap = Map<Symbol>;
+
 extern template class Map<Register>;
 extern template class Map<Symbol>;
 
