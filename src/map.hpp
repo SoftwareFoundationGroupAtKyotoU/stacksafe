@@ -20,6 +20,18 @@ class Map : private std::map<Key, Domain> {
   void insert(const Key& key, const Symbol& sym);
   void insert(const Key& key, const Val& val);
 };
+template <typename Key>
+void to_json(Json& j, const Map<Key>& x) {
+  Json obj;
+  for (auto& [key, val] : x) {
+    Json tmp = key;
+    if (tmp.is_string()) {
+      auto k = tmp.get<std::string>();
+      obj[k] = val;
+    }
+  }
+  j = obj;
+}
 
 extern template class Map<Register>;
 extern template class Map<Symbol>;
