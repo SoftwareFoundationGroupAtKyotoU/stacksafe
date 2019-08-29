@@ -1,9 +1,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Pass.h>
-#include <llvm/PassSupport.h>
 #include <llvm/Support/raw_ostream.h>
 #include "interpret.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 

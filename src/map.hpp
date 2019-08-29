@@ -4,10 +4,10 @@
 #include <map>
 #include "domain.hpp"
 #include "json_fwd.hpp"
+#include "symbol.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
-class Value;
-class Symbol;
 
 template <typename Key>
 class Map : private std::map<Key, Domain> {

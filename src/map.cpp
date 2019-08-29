@@ -1,7 +1,5 @@
 #include "map.hpp"
 #include "json.hpp"
-#include "symbol.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 
