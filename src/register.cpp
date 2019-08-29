@@ -2,7 +2,6 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
-#include <optional>
 #include <string_view>
 #include "io.hpp"
 #include "json.hpp"
@@ -35,20 +34,25 @@ std::string get_operand(const llvm::Value& value) {
 }  // namespace
 
 Register::Register(const llvm::Value& v)
-    : num_{-1}, val_{v}, type_{v.getType()}, repr_{"%"} {
+    : num_{}, val_{v}, type_{v.getType()}, repr_{"%"} {
   const auto digits = "0123456789";
   std::string_view s{get_operand(v)};
   if (!s.empty() && s.front() == '%' &&
       s.find_first_not_of(digits, 1) == std::string_view::npos) {
     if (auto n = to_int(s.substr(1))) {
       num_ = *n;
-      repr_ += std::to_string(num_) + type_.repr();
+      repr_ += std::to_string(*n) + type_.repr();
       return;
     }
   }
   repr_ = to_str(v);
 }
-int Register::get_num() const { return num_; }
+int Register::get_num() const {
+  if (num_) {
+    return *num_;
+  }
+  return -1;
+}
 const llvm::Value& Register::get_val() const { return val_; }
 const Type& Register::get_type() const { return type_; }
 std::string Register::repr() const { return repr_; }
