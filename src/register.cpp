@@ -10,15 +10,18 @@
 namespace stacksafe {
 
 Register::Register(const llvm::Value& v)
-    : num_{-1}, val_{v}, type_{v.getType()} {
+    : num_{-1}, val_{v}, type_{v.getType()}, repr_{"%"} {
   const auto digits = "0123456789";
   std::string_view s{get_operand(v)};
   if (!s.empty() && s.front() == '%' &&
       s.find_first_not_of(digits, 1) == std::string_view::npos) {
     if (auto n = to_int(s.substr(1))) {
       num_ = *n;
+      repr_ += std::to_string(num_) + type_.repr();
+      return;
     }
   }
+  repr_ = to_string(v);
 }
 int Register::get_num() const { return num_; }
 const llvm::Value& Register::get_val() const { return val_; }

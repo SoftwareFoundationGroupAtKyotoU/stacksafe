@@ -15,6 +15,7 @@ class Register {
   int num_;
   const llvm::Value& val_;
   Type type_;
+  std::string repr_;
 
  public:
   explicit Register(const llvm::Value& v);
