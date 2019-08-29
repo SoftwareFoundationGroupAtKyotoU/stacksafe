@@ -16,6 +16,7 @@ class Symbol {
   int num_;
   Type type_;
   Symbol(int n, const llvm::Type *t);
+  Symbol(int n, const Type &t);
 
  public:
   static Symbol create(const llvm::Type *t = nullptr);

@@ -6,6 +6,7 @@ namespace stacksafe {
 
 int Symbol::current_ = 0;
 Symbol::Symbol(int n, const llvm::Type *t) : num_{n}, type_{t} {}
+Symbol::Symbol(int n, const Type &t) : num_{n}, type_{t} {}
 Symbol Symbol::create(const llvm::Type *t) { return Symbol{current_++, t}; }
 int Symbol::get_num() const { return num_; }
 const Type &Symbol::get_type() const { return type_; }
