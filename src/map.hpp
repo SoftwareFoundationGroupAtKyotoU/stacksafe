@@ -9,22 +9,21 @@
 
 namespace stacksafe {
 
-template <typename Key>
-class Map : private std::map<Key, Domain> {
-  using Val = Domain;
-  using Base = std::map<Key, Val>;
-  bool exists(const Key& key) const;
+template <typename K>
+class Map : private std::map<K, Domain> {
+  using Base = std::map<K, Domain>;
+  bool exists(const K& key) const;
 
  public:
   using Base::begin, Base::end;
-  Val* get(const Key& key);
-  const Val* get(const Key& key) const;
-  void insert(const Key& key, const Symbol& sym);
-  void insert(const Key& key, const Val& val);
-  void insert(const Key& key);
+  Domain* get(const K& key);
+  const Domain* get(const K& key) const;
+  void insert(const K& key, const Symbol& sym);
+  void insert(const K& key, const Domain& val);
+  void insert(const K& key);
 };
-template <typename Key>
-void to_json(Json& j, const Map<Key>& x);
+template <typename K>
+void to_json(Json& j, const Map<K>& x);
 
 using Stack = Map<Value>;
 using Heap = Map<Symbol>;

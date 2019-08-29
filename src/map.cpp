@@ -3,44 +3,44 @@
 
 namespace stacksafe {
 
-template <typename Key>
-bool Map<Key>::exists(const Key& key) const {
+template <typename K>
+bool Map<K>::exists(const K& key) const {
   return 0 < Base::count(key);
 }
-template <typename Key>
-auto Map<Key>::get(const Key& key) -> Val* {
+template <typename K>
+auto Map<K>::get(const K& key) -> Domain* {
   const auto& self = *this;
-  return const_cast<Val*>(self.get(key));
+  return const_cast<Domain*>(self.get(key));
 }
-template <typename Key>
-auto Map<Key>::get(const Key& key) const -> const Val* {
+template <typename K>
+auto Map<K>::get(const K& key) const -> const Domain* {
   if (auto it = Base::find(key); it != end()) {
     return &it->second;
   }
   return nullptr;
 }
-template <typename Key>
-void Map<Key>::insert(const Key& key, const Symbol& sym) {
-  Val val;
+template <typename K>
+void Map<K>::insert(const K& key, const Symbol& sym) {
+  Domain val;
   val.insert(sym);
   insert(key, val);
 }
-template <typename Key>
-void Map<Key>::insert(const Key& key, const Val& val) {
+template <typename K>
+void Map<K>::insert(const K& key, const Domain& val) {
   if (auto p = get(key)) {
     p->insert(val);
   } else {
     Base::try_emplace(key, val);
   }
 }
-template <typename Key>
-void Map<Key>::insert(const Key& key) {
+template <typename K>
+void Map<K>::insert(const K& key) {
   if (!exists(key)) {
     Base::try_emplace(key, Domain{});
   }
 }
-template <typename Key>
-void to_json(Json& j, const Map<Key>& x) {
+template <typename K>
+void to_json(Json& j, const Map<K>& x) {
   Json obj;
   for (auto& [key, val] : x) {
     Json tmp = key;
