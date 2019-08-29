@@ -13,7 +13,7 @@ std::string to_str(const llvm::Type& type) {
 }
 }  // namespace
 
-Type::Type(const llvm::Type* t) {
+Type::Type(const llvm::Type* t) : type_{t} {
   if (t) {
     repr_ += "<";
     repr_ += to_str(*t);
