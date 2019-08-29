@@ -46,18 +46,13 @@ Register::Register(const llvm::Value& v) : type_{v.getType()} {
     repr_ = to_str(v);
   }
 }
-int Register::number() const {
-  if (num_) {
-    return *num_;
-  }
-  return -1;
-}
+std::optional<int> Register::number() const { return num_; }
 const Type& Register::type() const { return type_; }
 std::string Register::repr() const { return repr_; }
 bool Register::is_register() const { return num_.has_value(); }
 bool operator<(const Register& lhs, const Register& rhs) {
-  auto l = lhs.number();
-  auto r = rhs.number();
+  auto l = lhs.number().value_or(-1);
+  auto r = rhs.number().value_or(-1);
   if (l == r) {
     return lhs.repr() < rhs.repr();
   } else {
