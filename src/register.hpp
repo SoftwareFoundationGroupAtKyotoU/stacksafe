@@ -20,6 +20,7 @@ class Register {
   explicit Register(const llvm::Value& v);
   int get_num() const;
   const llvm::Value& get_val() const;
+  const Type& get_type() const;
   bool is_register() const;
 };
 bool operator<(const Register& lhs, const Register& rhs);
