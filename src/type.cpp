@@ -10,5 +10,6 @@ Type::Type(llvm::Type* t) {
     repr_ += ">";
   }
 }
+std::string Type::repr() const { return repr_; }
 
 }  // namespace stacksafe

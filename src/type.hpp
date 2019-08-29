@@ -15,6 +15,7 @@ class Type {
 
  public:
   explicit Type(llvm::Type* t);
+  std::string repr() const;
 };
 
 }  // namespace stacksafe
