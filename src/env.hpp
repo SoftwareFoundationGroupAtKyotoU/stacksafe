@@ -16,6 +16,7 @@ class Env {
   void alloc(const Value& dst);
   void store(const Value& src, const Value& dst);
   void load(const Value& dst, const Value& src);
+  void binop(const Value& dst);
   void show() const;
 };
 void to_json(Json& j, const Env& x);
