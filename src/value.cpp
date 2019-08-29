@@ -47,7 +47,13 @@ Value::Value(const llvm::Value& v) : value_{&v}, type_{v.getType()} {
 const llvm::Value& Value::get() const { return *value_; }
 std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
-std::string Value::repr() const { return repr_; }
+std::string Value::repr() const {
+  if (is_register()) {
+    return "%" + std::to_string(*num_) + type_.repr();
+  } else {
+    return to_str(*value_);
+  }
+}
 bool Value::is_register() const { return num_.has_value(); }
 bool operator<(const Value& lhs, const Value& rhs) {
   auto l = lhs.number().value_or(-1);
