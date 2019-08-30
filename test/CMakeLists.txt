@@ -10,6 +10,10 @@ target_sources("${PROJECT_NAME}" PRIVATE
 include(EnsureSources)
 ensure_sources()
 
+target_include_directories("${PROJECT_NAME}" PRIVATE
+  "${TOP_SOURCE_DIR}/src"
+  "${TOP_SOURCE_DIR}/json/include")
+
 target_link_libraries("${PROJECT_NAME}" PRIVATE
   gtest_main)
 gtest_add_tests(TARGET "${PROJECT_NAME}")
