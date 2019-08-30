@@ -14,9 +14,9 @@ namespace stacksafe {
 
 class Value {
   static const char* const prefix_;
-  const llvm::Value* value_;
-  std::optional<int> num_;
-  Type type_;
+  const llvm::Value* const value_;
+  const std::optional<int> num_;
+  const Type type_;
 
  public:
   explicit Value(const llvm::Value& v);
