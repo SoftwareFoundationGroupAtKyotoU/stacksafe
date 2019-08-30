@@ -41,13 +41,8 @@ std::optional<int> extract_num(const llvm::Value& value,
 }  // namespace
 
 const char* const Value::prefix_ = "%";
-Value::Value(const llvm::Value& v) : value_{&v}, type_{v.getType()} {
-  auto operand = get_operand(v);
-  std::string_view view{operand};
-  if (!view.empty() && view.substr(0, 1) == prefix_) {
-    num_ = to_int(view.substr(1));
-  }
-}
+Value::Value(const llvm::Value& v)
+    : value_{&v}, num_{extract_num(v, prefix_)}, type_{v.getType()} {}
 Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
 std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
