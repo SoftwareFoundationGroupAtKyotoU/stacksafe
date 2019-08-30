@@ -11,7 +11,7 @@ class Type;
 namespace stacksafe {
 
 class Type {
-  const llvm::Type* type_;
+  const llvm::Type* const type_;
 
  public:
   explicit Type(const llvm::Type* t);
