@@ -53,7 +53,7 @@ bool Value::is_register() const { return num_.has_value(); }
 bool operator<(const Value& lhs, const Value& rhs) {
   auto l = lhs.number().value_or(-1);
   auto r = rhs.number().value_or(-1);
-  if (l == r) {
+  if (l == -1 && r == -1) {
     return lhs.repr() < rhs.repr();
   } else {
     return l < r;
