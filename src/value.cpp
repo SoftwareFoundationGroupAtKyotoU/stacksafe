@@ -39,6 +39,7 @@ Value::Value(const llvm::Value& v) : value_{&v}, type_{v.getType()} {
     num_ = to_int(view.substr(1));
   }
 }
+Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
 const llvm::Value& Value::get() const { return *value_; }
 std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
