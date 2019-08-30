@@ -40,7 +40,6 @@ Value::Value(const llvm::Value& v) : value_{&v}, type_{v.getType()} {
   }
 }
 Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
-const llvm::Value& Value::get() const { return *value_; }
 std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
 std::string Value::repr() const {
