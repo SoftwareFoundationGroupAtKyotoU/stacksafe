@@ -3,8 +3,6 @@ project(top CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-enable_testing()
-
 include(BuildType)
 set_build_type()
 
@@ -23,3 +21,5 @@ mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 
 add_subdirectory(src)
 add_subdirectory(test)
+
+enable_testing()
