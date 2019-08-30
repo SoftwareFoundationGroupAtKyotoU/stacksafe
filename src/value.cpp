@@ -29,6 +29,15 @@ std::string get_operand(const llvm::Value& value) {
   value.printAsOperand(stream, false);
   return stream.str();
 }
+std::optional<int> extract_num(const llvm::Value& value,
+                               std::string_view prefix) {
+  auto operand = get_operand(value);
+  std::string_view view{operand};
+  if (!view.empty() && view.substr(0, 1) == prefix) {
+    return to_int(view.substr(1));
+  }
+  return std::nullopt;
+}
 }  // namespace
 
 const char* const Value::prefix_ = "%";
