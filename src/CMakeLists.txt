@@ -11,7 +11,8 @@ set(source_files
   type.cpp
   value.cpp
   )
-add_library("${PROJECT_NAME}" MODULE "${source_files}")
+add_library("${PROJECT_NAME}" MODULE)
+target_sources("${PROJECT_NAME}" PRIVATE "${source_files}")
 
 include(EnsureSources)
 ensure_sources("${source_files}")
