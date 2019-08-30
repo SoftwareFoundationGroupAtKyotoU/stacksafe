@@ -21,7 +21,5 @@ add_subdirectory(googletest)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 
-include_directories(json/include)
-
 add_subdirectory(src)
 add_subdirectory(test)
