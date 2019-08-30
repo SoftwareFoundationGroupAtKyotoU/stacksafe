@@ -6,6 +6,7 @@ function(set_config_type)
 endfunction()
 
 function(set_build_type)
+  include(TopDir)
   # set CMAKE_CONFIGURATION_TYPES
   set_config_type(Release Debug)
 

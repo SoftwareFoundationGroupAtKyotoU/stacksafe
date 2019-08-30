@@ -1,4 +1,5 @@
 function(export_compile_commands)
+  include(TopDir)
   set(json_file "compile_commands.json")
   set(source_file "${CMAKE_BINARY_DIR}/${json_file}")
   set(target_file "${TOP_SOURCE_DIR}/${json_file}")

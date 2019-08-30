@@ -1,4 +1,5 @@
 function(update_submodule)
+  include(TopDir)
   set(option_list submodule update --init --recursive)
   list(JOIN option_list " " options)
 
