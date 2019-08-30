@@ -7,9 +7,14 @@
 namespace stacksafe {
 
 void Env::alloc(const Value& dst) {
-  auto sym = Symbol::create(dst.type());
-  heap_.insert(sym);
-  stack_.insert(dst, sym);
+  auto type = dst.type();
+  if (type.is_pointer()) {
+    auto sym = Symbol::create(type.pointee_type());
+    heap_.insert(sym);
+    stack_.insert(dst, sym);
+  } else {
+    stack_.insert(dst);
+  }
 }
 void Env::store(const Value& src, const Value& dst) {
   auto source = stack_.get(src);
