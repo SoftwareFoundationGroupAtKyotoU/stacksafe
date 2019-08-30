@@ -4,7 +4,6 @@ project(top CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(TopDir)
-set_top_dir()
 
 include(BuildType)
 set_build_type()
