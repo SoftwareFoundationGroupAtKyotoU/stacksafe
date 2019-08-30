@@ -1,4 +1,14 @@
+function(set_config_type)
+  set(config_doc "possible options for CMAKE_BUILD_TYPE")
+  set(CMAKE_CONFIGURATION_TYPES "${ARGV}"
+    CACHE STRING "${config_doc}")
+  mark_as_advanced(FORCE CMAKE_CONFIGURATION_TYPES)
+endfunction()
+
 function(set_build_type)
+  # set CMAKE_CONFIGURATION_TYPES
+  set_config_type(Release Debug)
+
   # setup constants
   set(build_type_default Release)
   set(build_type_list Release Debug)
@@ -24,9 +34,6 @@ function(set_build_type)
   endif()
 
   # set global options
-  set(CMAKE_CONFIGURATION_TYPES "${build_type_list}"
-    CACHE STRING "${config_doc}")
-  mark_as_advanced(FORCE CMAKE_CONFIGURATION_TYPES)
   set(CMAKE_BUILD_TYPE "${build_type_default}"
     CACHE STRING "${build_type_doc}" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE
