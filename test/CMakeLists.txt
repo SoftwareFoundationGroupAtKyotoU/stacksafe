@@ -16,4 +16,8 @@ target_include_directories("${PROJECT_NAME}" PRIVATE
 
 target_link_libraries("${PROJECT_NAME}" PRIVATE
   gtest_main)
+
+target_compile_features("${PROJECT_NAME}" PRIVATE
+  cxx_std_17)
+
 gtest_add_tests(TARGET "${PROJECT_NAME}")
