@@ -10,5 +10,6 @@ target_sources("${PROJECT_NAME}" PRIVATE
 include(EnsureSources)
 ensure_sources()
 
-target_link_libraries("${PROJECT_NAME}" gtest_main)
+target_link_libraries("${PROJECT_NAME}" PRIVATE
+  gtest_main)
 gtest_add_tests(TARGET "${PROJECT_NAME}")
