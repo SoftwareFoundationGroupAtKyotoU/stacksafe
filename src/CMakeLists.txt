@@ -1,6 +1,7 @@
 project("${CMAKE_PROJECT_NAME}" CXX)
 
-set(source_files
+add_library("${PROJECT_NAME}" MODULE)
+target_sources("${PROJECT_NAME}" PRIVATE
   analyzer.cpp
   domain.cpp
   env.cpp
@@ -11,8 +12,6 @@ set(source_files
   type.cpp
   value.cpp
   )
-add_library("${PROJECT_NAME}" MODULE)
-target_sources("${PROJECT_NAME}" PRIVATE "${source_files}")
 
 include(EnsureSources)
 ensure_sources()
