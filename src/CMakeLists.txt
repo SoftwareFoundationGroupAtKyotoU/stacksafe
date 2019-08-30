@@ -1,3 +1,5 @@
+project("${CMAKE_PROJECT_NAME}" CXX)
+
 set(source_files
   analyzer.cpp
   domain.cpp

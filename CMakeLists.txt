@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.12.1)
 project(stacksafe CXX)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 enable_testing()

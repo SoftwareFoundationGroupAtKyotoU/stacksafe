@@ -1,3 +1,5 @@
+project(test CXX)
+
 include(GoogleTest)
 
 add_executable(example example.cpp)
