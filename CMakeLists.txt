@@ -22,6 +22,6 @@ override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 
 add_subdirectory(src)
-add_subdirectory(test)
 
 enable_testing()
+add_subdirectory(test)
