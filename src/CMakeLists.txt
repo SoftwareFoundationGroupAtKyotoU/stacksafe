@@ -1,4 +1,4 @@
-project("${CMAKE_PROJECT_NAME}" CXX)
+project(stacksafe CXX)
 
 add_library("${PROJECT_NAME}" MODULE)
 target_sources("${PROJECT_NAME}" PRIVATE

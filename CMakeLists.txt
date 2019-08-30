@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12.1)
-project(stacksafe CXX)
+project(top CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
