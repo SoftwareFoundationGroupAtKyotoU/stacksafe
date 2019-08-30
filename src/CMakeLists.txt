@@ -15,7 +15,7 @@ add_library("${PROJECT_NAME}" MODULE)
 target_sources("${PROJECT_NAME}" PRIVATE "${source_files}")
 
 include(EnsureSources)
-ensure_sources("${source_files}")
+ensure_sources()
 
 find_package(LLVM REQUIRED CONFIG)
 target_compile_definitions("${PROJECT_NAME}" PRIVATE
