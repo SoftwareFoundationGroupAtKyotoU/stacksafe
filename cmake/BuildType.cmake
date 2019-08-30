@@ -10,30 +10,30 @@ function(set_build_type)
   set_config_type(Release Debug)
 
   # setup constants
-  set(build_type_default Release)
-  set(build_type_list Release Debug)
-  list(JOIN build_type_list " " build_type_options)
+  list(JOIN CMAKE_CONFIGURATION_TYPES " " build_type_options)
   get_property(docstring CACHE CMAKE_BUILD_TYPE PROPERTY HELPSTRING)
-  string(REGEX REPLACE ":.*$" ": ${build_type_options}"
+  string(REGEX REPLACE ":.*$" ": ${CMAKE_CONFIGURATION_TYPES}"
     build_type_doc "${docstring}")
-  set(config_doc "possible options for CMAKE_BUILD_TYPE")
   set(debug_flag_file "${CMAKE_SOURCE_DIR}/.debug")
 
-  # determine default option
-  if(EXISTS "${debug_flag_file}")
-    set(build_type_default Debug)
-  endif()
-  if ("${CMAKE_BUILD_TYPE}" IN_LIST build_type_list)
+  # determine default build type
+  if ("${CMAKE_BUILD_TYPE}" IN_LIST CMAKE_CONFIGURATION_TYPES)
     set(build_type_default "${CMAKE_BUILD_TYPE}")
-  elseif(CMAKE_BUILD_TYPE)
-    message(WARNING
-      "  CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}\n"
-      "  expected options: ${build_type_options}\n"
-      "  fallback value  : ${build_type_default}\n"
-      )
+  else()
+    if(EXISTS "${debug_flag_file}")
+      set(build_type_default Debug)
+    else()
+      set(build_type_default Release)
+    endif()
+    if(CMAKE_BUILD_TYPE)
+      message(WARNING
+        "  CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}\n"
+        "  expected options: ${build_type_options}\n"
+        "  fallback value  : ${build_type_default}\n")
+    endif()
   endif()
 
-  # set global options
+  # set CMAKE_BUILD_TYPE
   set(CMAKE_BUILD_TYPE "${build_type_default}"
     CACHE STRING "${build_type_doc}" FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE
