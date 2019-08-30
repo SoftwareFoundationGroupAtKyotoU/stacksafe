@@ -24,7 +24,8 @@ target_include_directories("${PROJECT_NAME}" PRIVATE
 target_compile_options("${PROJECT_NAME}" PRIVATE
   -fno-rtti)
 
-include_directories("${CMAKE_SOURCE_DIR}/json/include")
+target_include_directories("${PROJECT_NAME}" PRIVATE
+  "${CMAKE_SOURCE_DIR}/json/include")
 
 set(CMAKE_SHARED_MODULE_PREFIX "")
 set_target_properties("${PROJECT_NAME}" PROPERTIES
