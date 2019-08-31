@@ -21,7 +21,7 @@ add_subdirectory(googletest)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 
-set(JSON_INCLUDE_DIR "${TOP_SOURCE_DIR}/json/include")
+set(JSON_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/json/include")
 
 add_subdirectory(src)
 
