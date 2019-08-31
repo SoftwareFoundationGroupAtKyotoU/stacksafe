@@ -13,6 +13,8 @@ add_library("${objects}" OBJECT
   type.cpp
   value.cpp
   )
+include(EnsureSources)
+ensure_sources("${objects}")
 ## option
 target_compile_features("${objects}" PRIVATE
   cxx_std_17)
