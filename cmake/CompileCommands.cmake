@@ -1,8 +1,7 @@
 function(export_compile_commands)
-  include(TopDir)
   set(json_file "compile_commands.json")
   set(source_file "${CMAKE_BINARY_DIR}/${json_file}")
-  set(target_file "${TOP_SOURCE_DIR}/${json_file}")
+  set(target_file "${CMAKE_CURRENT_LIST_DIR}/${json_file}")
 
   if("${CMAKE_BUILD_TYPE}" STREQUAL Debug)
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON PARENT_SCOPE)

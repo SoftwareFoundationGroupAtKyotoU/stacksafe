@@ -6,7 +6,6 @@ function(set_config_type)
 endfunction()
 
 function(set_build_type)
-  include(TopDir)
   # set CMAKE_CONFIGURATION_TYPES
   set_config_type(Release Debug)
 
@@ -15,7 +14,7 @@ function(set_build_type)
   get_property(docstring CACHE CMAKE_BUILD_TYPE PROPERTY HELPSTRING)
   string(REGEX REPLACE ":.*$" ": ${CMAKE_CONFIGURATION_TYPES}"
     build_type_doc "${docstring}")
-  set(debug_flag_file "${TOP_SOURCE_DIR}/.debug")
+  set(debug_flag_file "${CMAKE_CURRENT_LIST_DIR}/.debug")
 
   # determine default build type
   if ("${CMAKE_BUILD_TYPE}" IN_LIST CMAKE_CONFIGURATION_TYPES)
