@@ -1,6 +1,6 @@
 project(stacksafe CXX)
 
-# objects
+# object lib
 set(objects "${PROJECT_NAME}-objects")
 add_library("${objects}" OBJECT
   analyzer.cpp
@@ -13,20 +13,17 @@ add_library("${objects}" OBJECT
   type.cpp
   value.cpp
   )
-
-# option
+## option
 target_compile_features("${objects}" PRIVATE
   cxx_std_17)
 target_compile_options("${objects}" PRIVATE
   -Wall -Wextra -pedantic)
 set_target_properties("${objects}" PROPERTIES
   POSITION_INDEPENDENT_CODE ON)
-
-# json
+## json
 target_include_directories("${objects}" PRIVATE
   "${JSON_INCLUDE_DIR}")
-
-# llvm
+## llvm
 find_package(LLVM REQUIRED CONFIG)
 target_compile_definitions("${objects}" PRIVATE
   "${LLVM_DEFINITIONS}")
