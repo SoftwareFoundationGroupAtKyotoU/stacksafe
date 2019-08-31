@@ -12,4 +12,8 @@ TEST(AllocaTest, Single) {
   using namespace stacksafe;
   Env env;
   EXPECT_EQ(to_str(env), R"({"heap":null,"stack":null})");
+  env.alloc(Value{0});
+  EXPECT_EQ(to_str(env), R"({"heap":null,"stack":{"%0":null}})");
+  env.alloc(Value{1});
+  EXPECT_EQ(to_str(env), R"({"heap":null,"stack":{"%0":null,"%1":null}})");
 }
