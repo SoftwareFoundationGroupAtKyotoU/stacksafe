@@ -12,7 +12,7 @@ find_package(LLVM REQUIRED CONFIG)
 llvm_map_components_to_libnames(llvm_libs core)
 target_link_libraries("${target}"
   gtest_main
-  archive
+  src
   "${llvm_libs}")
 
 include(GoogleTest)

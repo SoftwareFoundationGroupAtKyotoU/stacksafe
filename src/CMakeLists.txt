@@ -1,4 +1,4 @@
-project(archive CXX)
+project(src CXX)
 
 set(target "${PROJECT_NAME}")
 add_library("${target}" STATIC)
