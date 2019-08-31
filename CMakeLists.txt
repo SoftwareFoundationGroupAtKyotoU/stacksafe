@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.12.1)
 project(stacksafe CXX)
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-enable_testing()
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(BuildType)
 set_build_type()
@@ -20,7 +19,11 @@ add_subdirectory(googletest)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 
-include_directories(json/include)
+set(JSON_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/json/include")
 
 add_subdirectory(src)
-add_subdirectory(test)
+
+add_subdirectory(pass)
+
+enable_testing()
+add_subdirectory(unittest)
