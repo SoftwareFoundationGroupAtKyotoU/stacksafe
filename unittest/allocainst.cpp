@@ -11,9 +11,18 @@ std::string to_str(const T& t) {
 TEST(AllocaTest, Single) {
   using namespace stacksafe;
   Env env;
-  EXPECT_EQ(to_str(env), R"({"heap":null,"stack":null})");
+  Json expect;
+  auto alloc = [&expect](const std::string& sym, const std::string& reg) {
+    expect["heap"][sym] = nullptr;
+    expect["stack"][reg].push_back(sym);
+  };
+  expect["heap"] = nullptr;
+  expect["stack"] = nullptr;
+  EXPECT_EQ(expect.dump(), to_str(env));
   env.alloc(Value{0});
-  EXPECT_EQ(to_str(env), R"({"heap":null,"stack":{"%0":null}})");
+  alloc("#0", "%0");
+  EXPECT_EQ(expect.dump(), to_str(env));
   env.alloc(Value{1});
-  EXPECT_EQ(to_str(env), R"({"heap":null,"stack":{"%0":null,"%1":null}})");
+  alloc("#1", "%1");
+  EXPECT_EQ(expect.dump(), to_str(env));
 }
