@@ -41,3 +41,10 @@ add_library("${module}" MODULE "$<TARGET_OBJECTS:${objects}>")
 set(CMAKE_SHARED_MODULE_PREFIX "")
 set_target_properties("${module}" PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+
+# archive lib
+set(archive "${PROJECT_NAME}-archive")
+add_library("${archive}" STATIC $<TARGET_OBJECTS:${objects}>)
+## llvm
+llvm_map_components_to_libnames(llvm_libs core)
+target_link_libraries("${archive}" "${llvm_libs}")
