@@ -42,14 +42,6 @@ set_target_properties("${objects}" PROPERTIES
   POSITION_INDEPENDENT_CODE ON)
 target_link_libraries("${objects}" "${interface}")
 
-# module lib
-set(module "${PROJECT_NAME}")
-add_library("${module}" MODULE "$<TARGET_OBJECTS:${objects}>")
-## target
-set(CMAKE_SHARED_MODULE_PREFIX "")
-set_target_properties("${module}" PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-
 # archive lib
 set(archive "${PROJECT_NAME}-archive")
 add_library("${archive}" STATIC $<TARGET_OBJECTS:${objects}>)
