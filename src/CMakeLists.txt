@@ -35,24 +35,9 @@ add_library("${objects}" OBJECT
   )
 include(EnsureSources)
 ensure_sources("${objects}")
-## option
-target_compile_features("${objects}" PRIVATE
-  cxx_std_17)
-target_compile_options("${objects}" PRIVATE
-  -Wall -Wextra -pedantic)
 set_target_properties("${objects}" PROPERTIES
   POSITION_INDEPENDENT_CODE ON)
-## json
-target_include_directories("${objects}" PRIVATE
-  "${JSON_INCLUDE_DIR}")
-## llvm
-find_package(LLVM REQUIRED CONFIG)
-target_compile_definitions("${objects}" PRIVATE
-  "${LLVM_DEFINITIONS}")
-target_include_directories("${objects}" PRIVATE
-  "${LLVM_INCLUDE_DIRS}")
-target_compile_options("${objects}" PRIVATE
-  -fno-rtti)
+target_link_libraries("${objects}" "${interface}")
 
 # module lib
 set(module "${PROJECT_NAME}")
