@@ -6,6 +6,7 @@
 
 namespace stacksafe {
 
+void Env::argument(const Value& arg) { alloc(arg); }
 void Env::alloc(const Value& dst) {
   auto type = dst.type();
   auto sym = Symbol::create(type.pointee_type());

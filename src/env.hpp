@@ -13,6 +13,7 @@ class Env {
   friend void to_json(Json& j, const Env& x);
 
  public:
+  void argument(const Value& arg);
   void alloc(const Value& dst);
   void store(const Value& src, const Value& dst);
   void load(const Value& dst, const Value& src);
