@@ -10,6 +10,7 @@ target_compile_options("${interface}" INTERFACE
   -Wall -Wextra -pedantic)
 ## json
 target_include_directories("${interface}" INTERFACE
+  "${CMAKE_CURRENT_SOURCE_DIR}"
   "${JSON_INCLUDE_DIR}")
 ## llvm
 find_package(LLVM REQUIRED CONFIG)
@@ -26,7 +27,6 @@ target_link_libraries("${interface}" INTERFACE
 # object lib
 set(objects "${PROJECT_NAME}-objects")
 add_library("${objects}" OBJECT
-  analyzer.cpp
   domain.cpp
   env.cpp
   interpret.cpp
