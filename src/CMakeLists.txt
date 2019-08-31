@@ -8,9 +8,11 @@ target_compile_features("${interface}" INTERFACE
   cxx_std_17)
 target_compile_options("${interface}" INTERFACE
   -Wall -Wextra -pedantic)
+## include
+target_include_directories("${interface}" INTERFACE
+  "${CMAKE_CURRENT_SOURCE_DIR}")
 ## json
 target_include_directories("${interface}" INTERFACE
-  "${CMAKE_CURRENT_SOURCE_DIR}"
   "${JSON_INCLUDE_DIR}")
 ## llvm
 find_package(LLVM REQUIRED CONFIG)
@@ -18,8 +20,6 @@ target_compile_definitions("${interface}" INTERFACE
   "${LLVM_DEFINITIONS}")
 target_include_directories("${interface}" INTERFACE
   "${LLVM_INCLUDE_DIRS}")
-target_compile_options("${interface}" INTERFACE
-  -fno-rtti)
 llvm_map_components_to_libnames(llvm_libs core)
 target_link_libraries("${interface}" INTERFACE
   "${llvm_libs}")
