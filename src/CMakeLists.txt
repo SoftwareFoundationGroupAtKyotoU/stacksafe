@@ -32,6 +32,5 @@ target_compile_definitions("${PROJECT_NAME}" PUBLIC
   "${LLVM_DEFINITIONS}")
 target_include_directories("${PROJECT_NAME}" PUBLIC
   "${LLVM_INCLUDE_DIRS}")
-llvm_map_components_to_libnames(llvm_libs core)
-target_link_libraries("${PROJECT_NAME}" INTERFACE
-  "${llvm_libs}")
+target_compile_options("${PROJECT_NAME}" PUBLIC
+  -fno-rtti)
