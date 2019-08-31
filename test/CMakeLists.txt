@@ -10,6 +10,6 @@ target_sources("${PROJECT_NAME}" PRIVATE
 include(EnsureSources)
 ensure_sources("${PROJECT_NAME}")
 target_link_libraries("${PROJECT_NAME}" PRIVATE
-  gtest_main stacksafe-archive)
+  gtest_main archive)
 
 gtest_add_tests(TARGET "${PROJECT_NAME}")
