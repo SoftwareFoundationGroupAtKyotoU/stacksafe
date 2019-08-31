@@ -24,9 +24,10 @@ llvm_map_components_to_libnames(llvm_libs core)
 target_link_libraries("${interface}" INTERFACE
   "${llvm_libs}")
 
-# object lib
-set(objects "${PROJECT_NAME}-objects")
-add_library("${objects}" OBJECT
+# archive lib
+set(archive "${PROJECT_NAME}-archive")
+add_library("${archive}" STATIC)
+target_sources("${archive}" PRIVATE
   domain.cpp
   env.cpp
   interpret.cpp
@@ -37,12 +38,7 @@ add_library("${objects}" OBJECT
   value.cpp
   )
 include(EnsureSources)
-ensure_sources("${objects}")
-set_target_properties("${objects}" PROPERTIES
+ensure_sources("${archive}")
+set_target_properties("${archive}" PROPERTIES
   POSITION_INDEPENDENT_CODE ON)
-target_link_libraries("${objects}" "${interface}")
-
-# archive lib
-set(archive "${PROJECT_NAME}-archive")
-add_library("${archive}" STATIC $<TARGET_OBJECTS:${objects}>)
-target_link_libraries("${archive}" INTERFACE "${interface}")
+target_link_libraries("${archive}" "${interface}")
