@@ -7,7 +7,7 @@ namespace stacksafe {
 
 void Interpret::visit(llvm::Function &f) {
   for (auto &a : f.args()) {
-    abst_.alloc(Value{a});
+    abst_.argument(Value{a});
   }
   llvm::errs() << f;
   Base::visit(f);
