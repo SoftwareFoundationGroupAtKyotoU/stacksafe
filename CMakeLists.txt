@@ -25,5 +25,7 @@ set(JSON_INCLUDE_DIR "${TOP_SOURCE_DIR}/json/include")
 
 add_subdirectory(src)
 
+add_subdirectory(stacksafe)
+
 enable_testing()
 add_subdirectory(test)

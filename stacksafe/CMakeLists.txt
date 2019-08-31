@@ -1,0 +1,1 @@
+project(stacksafe CXX)
