@@ -34,9 +34,10 @@ target_include_directories("${objects}" PRIVATE
 target_compile_options("${objects}" PRIVATE
   -fno-rtti)
 
-# module
+# module lib
 set(module "${PROJECT_NAME}")
 add_library("${module}" MODULE "$<TARGET_OBJECTS:${objects}>")
+## target
 set(CMAKE_SHARED_MODULE_PREFIX "")
 set_target_properties("${module}" PROPERTIES
-  LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
+  LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
