@@ -28,4 +28,4 @@ add_subdirectory(src)
 add_subdirectory(stacksafe)
 
 enable_testing()
-add_subdirectory(test)
+add_subdirectory(unittest)
