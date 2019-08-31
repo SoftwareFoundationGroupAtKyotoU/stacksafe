@@ -8,9 +8,8 @@ if [[ "$1" == -i ]]; then
 fi
 cmake .. -GNinja || exit $?
 ninja || exit $?
-if [[ -z "$1" ]]; then
-    GTEST_COLOR=1 ctest -V
-    exit
-fi
+GTEST_COLOR=1 ctest -V
 popd
-opt -analyze -load=build/stacksafe.so -stacksafe "$1"
+if [[ -n "$1" ]]; then
+    opt -analyze -load=build/stacksafe.so -stacksafe "$1"
+fi
