@@ -3,8 +3,6 @@ project(stacksafe CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-include(TopDir)
-
 include(BuildType)
 set_build_type()
 
