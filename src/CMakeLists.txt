@@ -24,7 +24,7 @@ set_target_properties("${objects}" PROPERTIES
 
 # json
 target_include_directories("${objects}" PRIVATE
-  "${TOP_SOURCE_DIR}/json/include")
+  "${JSON_INCLUDE_DIR}")
 
 # llvm
 find_package(LLVM REQUIRED CONFIG)
