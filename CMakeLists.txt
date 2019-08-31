@@ -25,7 +25,7 @@ set(JSON_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/json/include")
 
 add_subdirectory(src)
 
-add_subdirectory(stacksafe)
+add_subdirectory(pass)
 
 enable_testing()
 add_subdirectory(unittest)
