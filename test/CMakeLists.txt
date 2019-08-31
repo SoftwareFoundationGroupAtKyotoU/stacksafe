@@ -1,4 +1,4 @@
-project(stacksafe-test CXX)
+project(tests CXX)
 
 include(GoogleTest)
 
