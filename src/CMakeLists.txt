@@ -1,5 +1,25 @@
 project(stacksafe CXX)
 
+# interface lib
+set(interface "${PROJECT_NAME}-interface")
+add_library("${interface}" INTERFACE)
+## option
+target_compile_features("${interface}" INTERFACE
+  cxx_std_17)
+target_compile_options("${interface}" INTERFACE
+  -Wall -Wextra -pedantic)
+## json
+target_include_directories("${interface}" INTERFACE
+  "${JSON_INCLUDE_DIR}")
+## llvm
+find_package(LLVM REQUIRED CONFIG)
+target_compile_definitions("${interface}" INTERFACE
+  "${LLVM_DEFINITIONS}")
+target_include_directories("${interface}" INTERFACE
+  "${LLVM_INCLUDE_DIRS}")
+target_compile_options("${interface}" INTERFACE
+  -fno-rtti)
+
 # object lib
 set(objects "${PROJECT_NAME}-objects")
 add_library("${objects}" OBJECT
