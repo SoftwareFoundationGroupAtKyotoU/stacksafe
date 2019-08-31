@@ -19,6 +19,9 @@ target_include_directories("${interface}" INTERFACE
   "${LLVM_INCLUDE_DIRS}")
 target_compile_options("${interface}" INTERFACE
   -fno-rtti)
+llvm_map_components_to_libnames(llvm_libs core)
+target_link_libraries("${interface}" INTERFACE
+  "${llvm_libs}")
 
 # object lib
 set(objects "${PROJECT_NAME}-objects")
@@ -50,6 +53,4 @@ set_target_properties("${module}" PROPERTIES
 # archive lib
 set(archive "${PROJECT_NAME}-archive")
 add_library("${archive}" STATIC $<TARGET_OBJECTS:${objects}>)
-## llvm
-llvm_map_components_to_libnames(llvm_libs core)
-target_link_libraries("${archive}" "${llvm_libs}")
+target_link_libraries("${archive}" INTERFACE "${interface}")
