@@ -12,12 +12,16 @@ export_compile_commands()
 include(GitSubmodule)
 update_submodule()
 
-include(OverrideCache)
-
+# googletest
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 add_subdirectory(googletest)
+include(OverrideCache)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
+set(target googletest)
+add_library(${target} INTERFACE IMPORTED)
+target_link_libraries(${target} INTERFACE
+  gtest_main)
 
 # json
 set(target nlohmann-json)
