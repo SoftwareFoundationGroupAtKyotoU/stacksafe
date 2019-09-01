@@ -24,9 +24,6 @@ target_sources(${target} PRIVATE
 include(EnsureSources)
 ensure_sources(${target})
 target_link_libraries(${target}
-  PUBLIC
   options
   nlohmann-json
-  PRIVATE
-  llvm
-  )
+  llvm)
