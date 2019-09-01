@@ -1,25 +1,23 @@
 cmake_minimum_required(VERSION 3.12.1)
 project(stacksafe CXX)
 
+# modules
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-
-include(DevelopFlag)
-
 include(BuildType)
+include(CompileCommands)
+include(DevelopFlag)
+include(GitSubmodule)
+include(OverrideCache)
+
 if(DEVELOP_FLAG)
   set_build_type(Debug Release)
 else()
   set_build_type(Release Debug)
 endif()
 
-include(CompileCommands)
-
-include(GitSubmodule)
-
 # googletest
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 add_subdirectory(googletest)
-include(OverrideCache)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 set(target googletest)
