@@ -1,30 +1,21 @@
-function(set_config_type)
+function(set_build_type)
+  # set CMAKE_CONFIGURATION_TYPES
   set(config_doc "possible options for CMAKE_BUILD_TYPE")
   set(CMAKE_CONFIGURATION_TYPES "${ARGV}"
     CACHE STRING "${config_doc}")
   mark_as_advanced(FORCE CMAKE_CONFIGURATION_TYPES)
-endfunction()
-
-function(set_build_type)
-  # set CMAKE_CONFIGURATION_TYPES
-  set_config_type(Release Debug)
 
   # setup constants
   list(JOIN CMAKE_CONFIGURATION_TYPES " " build_type_options)
   get_property(docstring CACHE CMAKE_BUILD_TYPE PROPERTY HELPSTRING)
   string(REGEX REPLACE ":.*$" ": ${CMAKE_CONFIGURATION_TYPES}"
     build_type_doc "${docstring}")
-  set(debug_flag_file "${CMAKE_CURRENT_LIST_DIR}/.debug")
 
   # determine default build type
   if ("${CMAKE_BUILD_TYPE}" IN_LIST CMAKE_CONFIGURATION_TYPES)
     set(build_type_default "${CMAKE_BUILD_TYPE}")
   else()
-    if(EXISTS "${debug_flag_file}")
-      set(build_type_default Debug)
-    else()
-      set(build_type_default Release)
-    endif()
+    list(GET CMAKE_CONFIGURATION_TYPES 0 build_type_default)
     if(CMAKE_BUILD_TYPE)
       message(WARNING
         "  CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE}\n"

@@ -4,7 +4,7 @@ project(stacksafe CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(BuildType)
-set_build_type()
+set_build_type(Debug Release)
 
 include(CompileCommands)
 
