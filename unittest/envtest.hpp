@@ -6,6 +6,7 @@
 #include "json.hpp"
 
 struct EnvTest : ::testing::Test {
+  virtual void SetUp() override;
   stacksafe::Env env;
   stacksafe::Json expect;
 };
