@@ -26,3 +26,24 @@ TEST(AllocaTest, Single) {
   alloc("#1", "%1");
   EXPECT_EQ(expect.dump(), to_str(env));
 }
+
+TEST(StoreTest, AllocStore) {
+  using namespace stacksafe;
+  Env env;
+  Json expect;
+  Value v0{0}, v1{1};
+  expect["heap"] = nullptr;
+  expect["stack"] = nullptr;
+  EXPECT_EQ(expect.dump(), to_str(env));
+  env.alloc(v0);
+  expect["heap"]["#0"] = nullptr;
+  expect["stack"]["%0"].push_back("#0");
+  EXPECT_EQ(expect.dump(), to_str(env));
+  env.alloc(v1);
+  expect["heap"]["#1"] = nullptr;
+  expect["stack"]["%1"].push_back("#1");
+  EXPECT_EQ(expect.dump(), to_str(env));
+  env.store(v0, v1);
+  expect["heap"]["#1"].push_back("#0");
+  EXPECT_EQ(expect.dump(), to_str(env));
+}
