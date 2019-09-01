@@ -10,8 +10,8 @@ include(EnsureSources)
 ensure_sources(${target})
 target_link_libraries(${target}
   gtest_main
-  src
-  llvm-libs)
+  llvm-libs
+  src)
 
 include(GoogleTest)
 gtest_add_tests(TARGET ${target})
