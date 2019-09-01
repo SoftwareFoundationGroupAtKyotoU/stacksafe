@@ -27,10 +27,6 @@ option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 option(INSTALL_GTEST "Enable installation of googletest." OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 add_subdirectory(googletest EXCLUDE_FROM_ALL)
-set(target googletest)
-add_library(${target} INTERFACE IMPORTED)
-target_link_libraries(${target} INTERFACE
-  gtest_main)
 ## json
 set(target nlohmann-json)
 add_library(${target} INTERFACE)

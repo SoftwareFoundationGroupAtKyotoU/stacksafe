@@ -9,7 +9,7 @@ target_sources(${target} PRIVATE
 include(EnsureSources)
 ensure_sources(${target})
 target_link_libraries(${target}
-  googletest
+  gtest_main
   src
   llvm-libs)
 
