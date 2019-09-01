@@ -1,5 +1,14 @@
 project(src CXX)
 
+set(target options)
+add_library(${target} INTERFACE)
+target_include_directories(${target} INTERFACE
+  "${CMAKE_CURRENT_SOURCE_DIR}")
+target_compile_features(${target} INTERFACE
+  cxx_std_17)
+target_compile_options(${target} INTERFACE
+  -Wall -Wextra -pedantic)
+
 set(target "${PROJECT_NAME}")
 add_library("${target}" STATIC)
 # source
@@ -15,15 +24,8 @@ target_sources("${target}" PRIVATE
   )
 include(EnsureSources)
 ensure_sources("${target}")
-target_include_directories("${target}" PUBLIC
-  "${CMAKE_CURRENT_SOURCE_DIR}")
-# option
-target_compile_features("${target}" PUBLIC
-  cxx_std_17)
-target_compile_options("${target}" PUBLIC
-  -Wall -Wextra -pedantic)
-# link
 target_link_libraries("${target}"
+  options
   nlohmann-json
   llvm
   )
