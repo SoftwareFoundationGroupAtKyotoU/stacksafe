@@ -9,10 +9,9 @@ target_compile_features(${target} INTERFACE
 target_compile_options(${target} INTERFACE
   -Wall -Wextra -pedantic)
 
-set(target "${PROJECT_NAME}")
-add_library("${target}" STATIC)
-# source
-target_sources("${target}" PRIVATE
+set(target ${PROJECT_NAME})
+add_library(${target} STATIC)
+target_sources(${target} PRIVATE
   domain.cpp
   env.cpp
   interpret.cpp
@@ -23,9 +22,11 @@ target_sources("${target}" PRIVATE
   value.cpp
   )
 include(EnsureSources)
-ensure_sources("${target}")
-target_link_libraries("${target}"
+ensure_sources(${target})
+target_link_libraries(${target}
+  PUBLIC
   options
   nlohmann-json
+  PRIVATE
   llvm
   )
