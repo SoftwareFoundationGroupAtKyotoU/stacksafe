@@ -24,9 +24,6 @@ target_compile_options("${target}" PUBLIC
   -Wall -Wextra -pedantic)
 set_target_properties("${target}" PROPERTIES
   POSITION_INDEPENDENT_CODE ON)
-# json
-target_include_directories("${target}" PUBLIC
-  "${JSON_INCLUDE_DIR}")
 # llvm
 find_package(LLVM REQUIRED CONFIG)
 target_compile_definitions("${target}" PUBLIC
@@ -35,3 +32,7 @@ target_include_directories("${target}" PUBLIC
   "${LLVM_INCLUDE_DIRS}")
 target_compile_options("${target}" PUBLIC
   -fno-rtti)
+# link
+target_link_libraries("${target}"
+  nlohmann-json
+  )

@@ -19,7 +19,11 @@ add_subdirectory(googletest)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 
-set(JSON_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/json/include")
+# json
+set(target nlohmann-json)
+add_library(${target} INTERFACE)
+target_include_directories(${target} INTERFACE
+  "${CMAKE_CURRENT_SOURCE_DIR}/json/include")
 
 add_subdirectory(src)
 
