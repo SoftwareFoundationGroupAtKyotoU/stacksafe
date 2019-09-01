@@ -9,7 +9,6 @@ set_build_type()
 include(CompileCommands)
 
 include(GitSubmodule)
-update_submodule()
 
 # googletest
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
