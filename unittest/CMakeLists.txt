@@ -5,6 +5,7 @@ add_executable(${target})
 target_sources(${target} PRIVATE
   example.cpp
   allocainst.cpp
+  envtest.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
