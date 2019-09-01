@@ -1,5 +1,5 @@
 function(ensure_sources target)
-  get_target_property(source_files "${target}" SOURCES)
+  get_target_property(source_files ${target} SOURCES)
   file(GLOB glob_files *.cpp)
   list(TRANSFORM glob_files REPLACE "^.*/" "")
   foreach(file IN LISTS glob_files)
