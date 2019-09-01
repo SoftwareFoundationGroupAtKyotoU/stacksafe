@@ -22,17 +22,8 @@ target_compile_features("${target}" PUBLIC
   cxx_std_17)
 target_compile_options("${target}" PUBLIC
   -Wall -Wextra -pedantic)
-set_target_properties("${target}" PROPERTIES
-  POSITION_INDEPENDENT_CODE ON)
-# llvm
-find_package(LLVM REQUIRED CONFIG)
-target_compile_definitions("${target}" PUBLIC
-  "${LLVM_DEFINITIONS}")
-target_include_directories("${target}" PUBLIC
-  "${LLVM_INCLUDE_DIRS}")
-target_compile_options("${target}" PUBLIC
-  -fno-rtti)
 # link
 target_link_libraries("${target}"
   nlohmann-json
+  llvm
   )
