@@ -25,8 +25,8 @@ add_library(${target} INTERFACE)
 target_include_directories(${target} INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}/json/include")
 
-# llvm
 find_package(LLVM REQUIRED CONFIG)
+# llvm
 set(target llvm)
 add_library(${target} INTERFACE)
 target_compile_definitions(${target} INTERFACE
@@ -35,6 +35,12 @@ target_include_directories(${target} INTERFACE
   ${LLVM_INCLUDE_DIRS})
 target_compile_options(${target} INTERFACE
   -fno-rtti -fPIC)
+# llvm libs
+set(target llvm-libs)
+add_library(${target} INTERFACE IMPORTED)
+llvm_map_components_to_libnames(llvm_libs core)
+target_link_libraries(${target} INTERFACE
+  ${llvm_libs})
 
 add_subdirectory(src)
 
