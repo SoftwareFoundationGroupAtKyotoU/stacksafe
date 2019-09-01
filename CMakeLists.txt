@@ -11,6 +11,7 @@ include(OverrideCache)
 
 # develop mode
 add_custom_target(develop)
+develop_flag_option(".develop")
 if(DEVELOP_FLAG)
   set_build_type(Debug Release)
   enable_testing()
