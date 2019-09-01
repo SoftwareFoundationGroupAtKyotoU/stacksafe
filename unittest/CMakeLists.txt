@@ -3,7 +3,6 @@ project(unittest CXX)
 set(target ${PROJECT_NAME})
 add_executable(${target})
 target_sources(${target} PRIVATE
-  example.cpp
   envtest.cpp
   testinst.cpp
   )
