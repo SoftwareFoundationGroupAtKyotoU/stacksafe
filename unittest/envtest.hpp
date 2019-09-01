@@ -12,6 +12,7 @@ struct EnvTest : ::testing::Test {
   void init_stack(int key);
   void push_heap(int key, int val);
   void push_stack(int key, int val);
+  void equal() const;
   static std::string sym(int n);
   static std::string reg(int n);
   stacksafe::Env env;
