@@ -9,8 +9,12 @@ include(DevelopFlag)
 include(GitSubmodule)
 include(OverrideCache)
 
+# develop mode
+add_custom_target(develop)
+add_dependencies(develop export-compile-commands)
 if(DEVELOP_FLAG)
   set_build_type(Debug Release)
+  enable_testing()
 else()
   set_build_type(Release Debug)
 endif()
@@ -48,9 +52,10 @@ llvm_map_components_to_libnames(llvm_libs core)
 target_link_libraries(${target} INTERFACE
   ${llvm_libs})
 
+# pass
 add_subdirectory(src)
-
 add_subdirectory(pass)
 
-enable_testing()
+# test
 add_subdirectory(unittest)
+add_dependencies(develop unittest)
