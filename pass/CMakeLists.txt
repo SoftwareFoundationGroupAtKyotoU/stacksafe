@@ -8,4 +8,5 @@ target_sources(${target} PRIVATE
 set(CMAKE_SHARED_MODULE_PREFIX "")
 set_target_properties(${target} PROPERTIES
   LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
-target_link_libraries(${target} src)
+target_link_libraries(${target}
+  src)
