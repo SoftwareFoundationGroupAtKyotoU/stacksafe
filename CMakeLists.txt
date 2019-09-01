@@ -27,7 +27,7 @@ update_submodule()
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
-add_subdirectory(googletest)
+add_subdirectory(googletest EXCLUDE_FROM_ALL)
 set(target googletest)
 add_library(${target} INTERFACE IMPORTED)
 target_link_libraries(${target} INTERFACE
@@ -60,5 +60,5 @@ add_subdirectory(src)
 add_subdirectory(pass)
 
 # test
-add_subdirectory(unittest)
+add_subdirectory(unittest EXCLUDE_FROM_ALL)
 add_dependencies(develop unittest)
