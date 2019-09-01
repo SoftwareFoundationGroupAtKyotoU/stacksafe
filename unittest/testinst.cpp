@@ -47,3 +47,11 @@ TEST_F(EnvTest, Load) {
   push_stack(2, 0);
   equal();
 }
+
+TEST_F(EnvTest, BinOp) {
+  V v0{0};
+  equal();
+  env.binop(v0);
+  init_stack(0);
+  equal();
+}
