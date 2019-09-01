@@ -7,7 +7,6 @@ include(BuildType)
 set_build_type()
 
 include(CompileCommands)
-export_compile_commands()
 
 include(GitSubmodule)
 update_submodule()
