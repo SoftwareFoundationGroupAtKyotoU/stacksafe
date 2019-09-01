@@ -10,9 +10,12 @@ cmake .. -GNinja || exit $?
 if [[ "$1" == develop ]]; then
     ninja develop
     exit
-elif [[ -z "$1" ]]; then
+elif [[ "$1" == -v ]]; then
     ninja develop || exit $?
     GTEST_COLOR=1 ctest -V
+elif [[ -z "$1" ]]; then
+    ninja develop || exit $?
+    ctest
 else
     ninja || exit $?
     popd
