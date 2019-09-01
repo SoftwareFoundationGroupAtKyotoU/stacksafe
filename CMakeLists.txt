@@ -11,10 +11,11 @@ include(OverrideCache)
 
 # develop mode
 add_custom_target(develop)
-add_dependencies(develop export-compile-commands)
 if(DEVELOP_FLAG)
   set_build_type(Debug Release)
   enable_testing()
+  export_compile_commands()
+  add_dependencies(develop export-compile-commands)
 else()
   set_build_type(Release Debug)
 endif()
