@@ -3,8 +3,14 @@ project(stacksafe CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+include(DevelopFlag)
+
 include(BuildType)
-set_build_type(Debug Release)
+if(DEVELOP_FLAG)
+  set_build_type(Debug Release)
+else()
+  set_build_type(Release Debug)
+endif()
 
 include(CompileCommands)
 
