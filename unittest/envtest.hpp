@@ -10,6 +10,8 @@ struct EnvTest : ::testing::Test {
   virtual void SetUp() override;
   void init_heap(int key);
   void init_stack(int key);
+  void push_heap(int key, int val);
+  void push_stack(int key, int val);
   static std::string sym(int n);
   static std::string reg(int n);
   stacksafe::Env env;
