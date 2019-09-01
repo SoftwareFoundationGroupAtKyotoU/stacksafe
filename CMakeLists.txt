@@ -21,17 +21,18 @@ else()
   set_build_type(Release Debug)
 endif()
 
-# googletest
+# submodules
+update_submodule()
+## googletest
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
-add_subdirectory(googletest)
 override_cache(INSTALL_GTEST OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
+add_subdirectory(googletest)
 set(target googletest)
 add_library(${target} INTERFACE IMPORTED)
 target_link_libraries(${target} INTERFACE
   gtest_main)
-
-# json
+## json
 set(target nlohmann-json)
 add_library(${target} INTERFACE)
 target_include_directories(${target} INTERFACE
