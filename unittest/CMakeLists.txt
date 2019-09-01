@@ -4,8 +4,8 @@ set(target ${PROJECT_NAME})
 add_executable(${target})
 target_sources(${target} PRIVATE
   example.cpp
-  allocainst.cpp
   envtest.cpp
+  testinst.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
