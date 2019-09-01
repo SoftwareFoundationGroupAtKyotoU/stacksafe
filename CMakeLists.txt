@@ -7,7 +7,6 @@ include(BuildType)
 include(CompileCommands)
 include(DevelopFlag)
 include(GitSubmodule)
-include(OverrideCache)
 
 # develop mode
 add_custom_target(develop)
@@ -25,7 +24,7 @@ endif()
 update_submodule()
 ## googletest
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
-override_cache(INSTALL_GTEST OFF)
+option(INSTALL_GTEST "Enable installation of googletest." OFF)
 mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
 add_subdirectory(googletest EXCLUDE_FROM_ALL)
 set(target googletest)
