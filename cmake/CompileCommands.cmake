@@ -1,12 +1,11 @@
 function(export_compile_commands)
-  set(json_file "compile_commands.json")
-  set(source_file "${CMAKE_BINARY_DIR}/${json_file}")
-  set(target_file "${CMAKE_CURRENT_LIST_DIR}/${json_file}")
-
-  if("${CMAKE_BUILD_TYPE}" STREQUAL Debug)
-    set(CMAKE_EXPORT_COMPILE_COMMANDS ON PARENT_SCOPE)
-  endif()
-  if(EXISTS "${source_file}")
-    configure_file("${source_file}" "${target_file}" COPYONLY)
-  endif()
+  set(CMAKE_EXPORT_COMPILE_COMMANDS ON PARENT_SCOPE)
+  set(file "compile_commands.json")
+  set(source "${CMAKE_BINARY_DIR}/${file}")
+  add_custom_target(export-compile-commands
+    COMMAND cp "${source}" "${file}"
+    DEPENDS "${source}"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    COMMENT "export ${file}"
+    )
 endfunction()

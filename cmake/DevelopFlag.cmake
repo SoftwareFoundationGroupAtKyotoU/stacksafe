@@ -1,0 +1,8 @@
+function(develop_flag_option flag)
+  if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${flag}")
+    option(DEVELOP_FLAG "Development mode" ON)
+  else()
+    option(DEVELOP_FLAG "Development mode" OFF)
+  endif()
+  mark_as_advanced(FORCE DEVELOP_FLAG)
+endfunction()

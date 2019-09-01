@@ -4,7 +4,7 @@ function(update_submodule)
 
   find_package(Git REQUIRED)
   execute_process(COMMAND "${GIT_EXECUTABLE}" ${option_list}
-    WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}"
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     RESULT_VARIABLE result)
   if(result)
     message(FATAL_ERROR "'git ${options}' failed with error code: ${result}")
