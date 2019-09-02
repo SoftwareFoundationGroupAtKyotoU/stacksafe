@@ -1,4 +1,5 @@
 #include "env.hpp"
+#include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
 #include "json.hpp"
@@ -6,6 +7,11 @@
 
 namespace stacksafe {
 
+Env::Env(llvm::Function& f) {
+  for (auto& a : f.args()) {
+    argument(Value{a});
+  }
+}
 bool Env::merge(const Env& that) {
   bool ret = false;
   if (!heap_.includes(that.heap_)) {

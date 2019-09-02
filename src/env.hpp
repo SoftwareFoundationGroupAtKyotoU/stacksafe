@@ -4,6 +4,10 @@
 #include "json_fwd.hpp"
 #include "map.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 class Value;
 
@@ -13,6 +17,8 @@ class Env {
   friend void to_json(Json& j, const Env& x);
 
  public:
+  Env() = default;
+  explicit Env(llvm::Function& f);
   bool merge(const Env& that);
   void argument(const Value& arg);
   void alloc(const Value& dst);
