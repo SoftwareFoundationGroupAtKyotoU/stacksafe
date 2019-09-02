@@ -47,12 +47,16 @@ Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
 std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
 std::string Value::repr(std::size_t width) const {
+  std::string ret;
   if (is_register()) {
-    auto zeros = length() < width ? std::string{"0", width - length()} : "";
-    return prefix_ + zeros + std::to_string(*num_) + type_.repr();
+    ret.insert(0, length() < width ? width - length() : 0, '0');
+    ret.append(std::to_string(*num_));
+    ret.append(type_.repr());
   } else {
-    return to_str(*value_);
+    ret = to_str(*value_);
   }
+  ret.insert(0, prefix_);
+  return ret;
 }
 bool Value::is_register() const { return num_.has_value(); }
 std::size_t Value::length() const {
