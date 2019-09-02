@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
 #define INCLUDE_GUARD_5A26F608_5BA4_4080_8212_72E9DC406772
 
+#include <string>
 #include "json_fwd.hpp"
 #include "type.hpp"
 
@@ -16,6 +17,7 @@ class Symbol {
   static Symbol create(const Type &t);
   int number() const;
   const Type &type() const;
+  std::string repr() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);
