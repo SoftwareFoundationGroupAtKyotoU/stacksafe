@@ -16,6 +16,7 @@ class Abstract {
 
  public:
   explicit Abstract(llvm::Function& f);
+  void interpret(llvm::Function& f);
 
  private:
   void interpret(llvm::BasicBlock* b, const Env& e);

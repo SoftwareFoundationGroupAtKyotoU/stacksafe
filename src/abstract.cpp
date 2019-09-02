@@ -11,6 +11,10 @@ Abstract::Abstract(llvm::Function& f) {
   i.visit(f);
   interpret(&f.getEntryBlock(), i.get());
 }
+void Abstract::interpret(llvm::Function& f) {
+  auto b = &f.getEntryBlock();
+  interpret(b, Env{f});
+}
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   Interpret i{e};
   i.visit(*b);
