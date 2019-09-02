@@ -2,6 +2,7 @@
 #include <llvm/Pass.h>
 #include <llvm/Support/raw_ostream.h>
 #include "abstract.hpp"
+#include "json.hpp"
 
 namespace stacksafe {
 
@@ -14,6 +15,8 @@ struct Analyzer : public llvm::FunctionPass {
     llvm::errs() << f;
     Abstract abstract;
     abstract.interpret(f);
+    Json j = abstract;
+    llvm::errs() << j.dump(2) << "\n";
     return false;
   }
 };

@@ -1,17 +1,11 @@
 #include "interpret.hpp"
-#include <llvm/Support/raw_ostream.h>
-#include "json.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
 
 Interpret::Interpret(const Env &e) : env_{e} {}
 const Env &Interpret::get() const { return env_; }
-void Interpret::visit(llvm::BasicBlock &b) {
-  Base::visit(b);
-  Json j = env_;
-  llvm::errs() << j.dump(2) << "\n";
-}
+void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 void Interpret::visit(llvm::Instruction &i) { Base::visit(i); }
 void Interpret::visitAllocaInst(llvm::AllocaInst &i) { env_.alloc(Value{i}); }
 void Interpret::visitStoreInst(llvm::StoreInst &i) {
