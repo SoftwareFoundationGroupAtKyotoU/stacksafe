@@ -1,8 +1,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Pass.h>
 #include <llvm/Support/raw_ostream.h>
-#include "env.hpp"
-#include "interpret.hpp"
+#include "abstract.hpp"
 
 namespace stacksafe {
 
@@ -12,7 +11,8 @@ struct Analyzer : public llvm::FunctionPass {
   virtual bool runOnFunction(llvm::Function &f) override {
     llvm::errs() << "Analyzer: ";
     llvm::errs().write_escaped(f.getName()) << "\n";
-    Interpret{Env{}}.visit(f);
+    Abstract abstract;
+    abstract.interpret(f);
     return false;
   }
 };
