@@ -6,19 +6,21 @@
 
 namespace stacksafe {
 
-class Interpret : public llvm::InstVisitor<Interpret> {
-  using Base = llvm::InstVisitor<Interpret>;
+class Interpret : public llvm::InstVisitor<Interpret, void> {
+  using RetTy = void;
+  using Base = llvm::InstVisitor<Interpret, RetTy>;
   Env env_;
 
  public:
   explicit Interpret(const Env &e);
   const Env &get() const;
   void visit(llvm::BasicBlock &b);
-  void visit(llvm::Instruction &i);
-  void visitAllocaInst(llvm::AllocaInst &i);
-  void visitStoreInst(llvm::StoreInst &i);
-  void visitLoadInst(llvm::LoadInst &i);
-  void visitBinaryOperator(llvm::BinaryOperator &i);
+  RetTy visit(llvm::Instruction &i);
+  RetTy visitInstruction(llvm::Instruction &i);
+  RetTy visitAllocaInst(llvm::AllocaInst &i);
+  RetTy visitStoreInst(llvm::StoreInst &i);
+  RetTy visitLoadInst(llvm::LoadInst &i);
+  RetTy visitBinaryOperator(llvm::BinaryOperator &i);
 };
 
 }  // namespace stacksafe
