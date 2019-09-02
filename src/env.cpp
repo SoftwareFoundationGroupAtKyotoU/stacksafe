@@ -6,6 +6,18 @@
 
 namespace stacksafe {
 
+bool Env::merge(const Env& that) {
+  bool ret = false;
+  if (!heap_.includes(that.heap_)) {
+    heap_.insert(that.heap_);
+    ret = true;
+  }
+  if (!stack_.includes(that.stack_)) {
+    stack_.insert(that.stack_);
+    ret = true;
+  }
+  return ret;
+}
 void Env::argument(const Value& arg) { alloc(arg); }
 void Env::alloc(const Value& dst) {
   auto type = dst.type();

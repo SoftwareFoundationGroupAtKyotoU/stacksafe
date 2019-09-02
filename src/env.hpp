@@ -8,11 +8,12 @@ namespace stacksafe {
 class Value;
 
 class Env {
-  Stack stack_;
   Heap heap_;
+  Stack stack_;
   friend void to_json(Json& j, const Env& x);
 
  public:
+  bool merge(const Env& that);
   void argument(const Value& arg);
   void alloc(const Value& dst);
   void store(const Value& src, const Value& dst);
