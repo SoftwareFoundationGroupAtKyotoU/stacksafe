@@ -5,6 +5,7 @@
 
 namespace stacksafe {
 
+Interpret::Interpret(const Env &e) : abst_{e} {}
 void Interpret::visit(llvm::Function &f) {
   for (auto &a : f.args()) {
     abst_.argument(Value{a});

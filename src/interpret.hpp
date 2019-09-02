@@ -11,7 +11,7 @@ class Interpret : public llvm::InstVisitor<Interpret> {
   Env abst_;
 
  public:
-  Interpret() = default;
+  explicit Interpret(const Env &e);
   void visit(llvm::Function &f);
   void visit(llvm::BasicBlock &b);
   void visit(llvm::Instruction &i);
