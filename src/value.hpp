@@ -23,7 +23,7 @@ class Value {
   explicit Value(int n);
   std::optional<int> number() const;
   const Type& type() const;
-  std::string repr() const;
+  std::string repr(std::size_t width = 0) const;
   bool is_register() const;
 };
 bool operator<(const Value& lhs, const Value& rhs);
