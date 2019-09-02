@@ -9,9 +9,13 @@ Symbol::Symbol(int n, const Type &t) : num_{n}, type_{t} {}
 Symbol Symbol::create(const Type &t) { return Symbol{current_++, t}; }
 int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
-std::string Symbol::repr() const {
+std::string Symbol::repr(std::size_t width) const {
   using namespace std::string_literals;
-  return "#"s + std::to_string(num_) + type_.repr();
+  auto n = std::to_string(num_);
+  if (n.size() < width) {
+    n.insert(0, "0", width - n.size());
+  }
+  return "#"s + n + type_.repr();
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();

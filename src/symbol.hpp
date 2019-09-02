@@ -17,7 +17,7 @@ class Symbol {
   static Symbol create(const Type &t);
   int number() const;
   const Type &type() const;
-  std::string repr() const;
+  std::string repr(std::size_t width = 0) const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);
