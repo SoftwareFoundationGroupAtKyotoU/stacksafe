@@ -11,12 +11,10 @@ int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
 std::string Symbol::repr(std::size_t width) const {
   using namespace std::string_literals;
-  auto n = std::to_string(num_);
-  if (n.size() < width) {
-    n.insert(0, "0", width - n.size());
-  }
-  return "#"s + n + type_.repr();
+  auto zeros = length() < width ? std::string{"0", width - length()} : "";
+  return "#"s + zeros + std::to_string(num_) + type_.repr();
 }
+std::size_t Symbol::length() const { return std::to_string(num_).size(); }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
