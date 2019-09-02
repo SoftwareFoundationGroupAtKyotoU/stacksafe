@@ -6,11 +6,6 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(llvm::Function& f) {
-  Interpret i{Env{}};
-  i.visit(f);
-  interpret(&f.getEntryBlock(), i.get());
-}
 void Abstract::interpret(llvm::Function& f) {
   auto b = &f.getEntryBlock();
   interpret(b, Env{f});

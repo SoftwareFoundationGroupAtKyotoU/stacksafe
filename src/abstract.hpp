@@ -15,7 +15,6 @@ class Abstract {
   std::map<llvm::BasicBlock*, Env> blocks_;
 
  public:
-  explicit Abstract(llvm::Function& f);
   void interpret(llvm::Function& f);
 
  private:
