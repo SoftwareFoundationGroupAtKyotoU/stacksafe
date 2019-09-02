@@ -40,6 +40,16 @@ void Map<K>::insert(const K& key) {
   }
 }
 template <typename K>
+bool Map<K>::includes(const Map& that) const {
+  for (auto& [key, thisv] : *this) {
+    if (auto thatv = that.get(key); thatv && thisv.includes(*thatv)) {
+      continue;
+    }
+    return false;
+  }
+  return true;
+}
+template <typename K>
 void to_json(Json& j, const Map<K>& x) {
   Json obj;
   for (auto& [key, val] : x) {
