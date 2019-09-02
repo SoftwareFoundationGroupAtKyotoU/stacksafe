@@ -58,8 +58,12 @@ bool Map<K>::includes(const Map& that) const {
 template <typename K>
 void to_json(Json& j, const Map<K>& x) {
   Json obj;
+  std::size_t m = 0;
   for (auto& [key, val] : x) {
-    obj[key.repr()] = val;
+    m = m < key.length() ? key.length() : m;
+  }
+  for (auto& [key, val] : x) {
+    obj[key.repr(m)] = val;
   }
   j = obj;
 }
