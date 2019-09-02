@@ -11,6 +11,7 @@ struct Analyzer : public llvm::FunctionPass {
   virtual bool runOnFunction(llvm::Function &f) override {
     llvm::errs() << "Analyzer: ";
     llvm::errs().write_escaped(f.getName()) << "\n";
+    llvm::errs() << f;
     Abstract abstract;
     abstract.interpret(f);
     return false;

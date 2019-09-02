@@ -7,12 +7,6 @@ namespace stacksafe {
 
 Interpret::Interpret(const Env &e) : env_{e} {}
 const Env &Interpret::get() const { return env_; }
-void Interpret::visit(llvm::Function &f) {
-  for (auto &a : f.args()) {
-    env_.argument(Value{a});
-  }
-  llvm::errs() << f;
-}
 void Interpret::visit(llvm::BasicBlock &b) {
   Base::visit(b);
   Json j = env_;
