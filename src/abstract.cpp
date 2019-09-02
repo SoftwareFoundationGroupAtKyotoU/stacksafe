@@ -9,7 +9,9 @@ namespace stacksafe {
 
 void Abstract::interpret(llvm::Function& f) {
   auto b = &f.getEntryBlock();
-  interpret(b, Env{f});
+  Env e{f};
+  update(nullptr, e);
+  interpret(b, e);
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   Interpret i{e};
@@ -34,8 +36,7 @@ bool Abstract::update(llvm::BasicBlock* b, const Env& e) {
 }
 void to_json(Json& j, const Abstract& x) {
   for (auto& [k, v] : x.blocks_) {
-    Value b{*k};
-    j[b.repr()] = v;
+    j[k ? Value{*k}.repr() : ""] = v;
   }
 }
 
