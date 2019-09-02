@@ -8,6 +8,7 @@
 namespace stacksafe {
 
 class Symbol {
+  static const char *const prefix_;
   static int current_;
   int num_;
   Type type_;

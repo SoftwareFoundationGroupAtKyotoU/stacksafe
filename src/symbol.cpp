@@ -4,6 +4,7 @@
 
 namespace stacksafe {
 
+const char *const Symbol::prefix_ = "#";
 int Symbol::current_ = 0;
 Symbol::Symbol(int n, const Type &t) : num_{n}, type_{t} {}
 Symbol Symbol::create(const Type &t) { return Symbol{current_++, t}; }
