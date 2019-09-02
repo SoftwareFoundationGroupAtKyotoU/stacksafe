@@ -12,6 +12,7 @@ namespace stacksafe {
 
 class Abstract {
   std::map<llvm::BasicBlock*, Env> blocks_;
+  bool update(llvm::BasicBlock* b, const Env& e);
 };
 
 }  // namespace stacksafe
