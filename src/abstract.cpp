@@ -3,6 +3,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
 #include "interpret.hpp"
+#include "json.hpp"
 
 namespace stacksafe {
 
@@ -29,6 +30,12 @@ bool Abstract::update(llvm::BasicBlock* b, const Env& e) {
   } else {
     blocks_.try_emplace(b, e);
     return true;
+  }
+}
+void to_json(Json& j, const Abstract& x) {
+  for (auto& [k, v] : x.blocks_) {
+    Value b{*k};
+    j[b.repr()] = v;
   }
 }
 

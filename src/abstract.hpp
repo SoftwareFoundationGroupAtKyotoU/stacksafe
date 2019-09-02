@@ -3,6 +3,7 @@
 
 #include <map>
 #include "env.hpp"
+#include "json_fwd.hpp"
 
 namespace llvm {
 class BasicBlock;
@@ -13,6 +14,7 @@ namespace stacksafe {
 
 class Abstract {
   std::map<llvm::BasicBlock*, Env> blocks_;
+  friend void to_json(Json& j, const Abstract& x);
 
  public:
   void interpret(llvm::Function& f);
@@ -21,6 +23,7 @@ class Abstract {
   void interpret(llvm::BasicBlock* b, const Env& e);
   bool update(llvm::BasicBlock* b, const Env& e);
 };
+void to_json(Json& j, const Abstract& x);
 
 }  // namespace stacksafe
 
