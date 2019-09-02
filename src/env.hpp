@@ -17,6 +17,7 @@ class Env {
   friend void to_json(Json& j, const Env& x);
 
  public:
+  Env() = default;
   explicit Env(llvm::Function& f);
   bool merge(const Env& that);
   void argument(const Value& arg);
