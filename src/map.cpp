@@ -40,6 +40,12 @@ void Map<K>::insert(const K& key) {
   }
 }
 template <typename K>
+void Map<K>::insert(const Map& that) {
+  for (auto& [k, v] : that) {
+    insert(k, v);
+  }
+}
+template <typename K>
 bool Map<K>::includes(const Map& that) const {
   for (auto& [key, thisv] : *this) {
     if (auto thatv = that.get(key); thatv && thisv.includes(*thatv)) {
