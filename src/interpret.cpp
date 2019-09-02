@@ -1,9 +1,10 @@
 #include "interpret.hpp"
+#include "abstract.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
 
-Interpret::Interpret(const Env &e) : env_{e} {}
+Interpret::Interpret(const Env &e, Todo &todo) : env_{e}, todo_{todo} {}
 const Env &Interpret::get() const { return env_; }
 void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }

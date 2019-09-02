@@ -5,14 +5,16 @@
 #include "env.hpp"
 
 namespace stacksafe {
+struct Todo;
 
 class Interpret : public llvm::InstVisitor<Interpret, void> {
   using RetTy = void;
   using Base = llvm::InstVisitor<Interpret, RetTy>;
   Env env_;
+  Todo &todo_;
 
  public:
-  explicit Interpret(const Env &e);
+  explicit Interpret(const Env &e, Todo &todo);
   const Env &get() const;
   void visit(llvm::BasicBlock &b);
   RetTy visit(llvm::Instruction &i);
