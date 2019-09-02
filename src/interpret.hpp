@@ -8,7 +8,7 @@ namespace stacksafe {
 
 class Interpret : public llvm::InstVisitor<Interpret> {
   using Base = llvm::InstVisitor<Interpret>;
-  Env abst_;
+  Env env_;
 
  public:
   explicit Interpret(const Env &e);
