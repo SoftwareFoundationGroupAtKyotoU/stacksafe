@@ -49,7 +49,7 @@ void Env::load(const Value& dst, const Value& src) {
     }
   }
 }
-void Env::binop(const Value& dst) { stack_.insert(dst); }
+void Env::constant(const Value& dst) { stack_.insert(dst); }
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack_;
   j["heap"] = x.heap_;

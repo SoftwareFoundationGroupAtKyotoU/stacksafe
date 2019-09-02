@@ -29,10 +29,10 @@ auto Interpret::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   }
 }
 auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
-  env_.binop(Value{i});
+  env_.constant(Value{i});
 }
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
-  env_.binop(Value{i});
+  env_.constant(Value{i});
 }
 
 }  // namespace stacksafe
