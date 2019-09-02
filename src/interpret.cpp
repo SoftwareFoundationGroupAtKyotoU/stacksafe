@@ -12,7 +12,6 @@ void Interpret::visit(llvm::Function &f) {
     env_.argument(Value{a});
   }
   llvm::errs() << f;
-  visit(f.getEntryBlock());
 }
 void Interpret::visit(llvm::BasicBlock &b) {
   Base::visit(b);

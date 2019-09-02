@@ -1,10 +1,16 @@
 #include "abstract.hpp"
 #include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
 #include "interpret.hpp"
 
 namespace stacksafe {
 
+Abstract::Abstract(llvm::Function& f) {
+  Interpret i{Env{}};
+  i.visit(f);
+  interpret(&f.getEntryBlock(), i.get());
+}
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   Interpret i{e};
   i.visit(*b);
