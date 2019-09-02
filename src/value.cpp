@@ -48,16 +48,16 @@ std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
 std::string Value::repr(std::size_t width) const {
   if (is_register()) {
-    auto n = std::to_string(*num_);
-    if (n.size() < width) {
-      n.insert(0, "0", width - n.size());
-    }
-    return prefix_ + n + type_.repr();
+    auto zeros = length() < width ? std::string{"0", width - length()} : "";
+    return prefix_ + zeros + std::to_string(*num_) + type_.repr();
   } else {
     return to_str(*value_);
   }
 }
 bool Value::is_register() const { return num_.has_value(); }
+std::size_t Value::length() const {
+  return num_ ? std::to_string(*num_).size() : 0;
+}
 bool operator<(const Value& lhs, const Value& rhs) {
   auto l = lhs.number().value_or(-1);
   auto r = rhs.number().value_or(-1);

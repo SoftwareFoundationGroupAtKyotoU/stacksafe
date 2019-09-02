@@ -25,6 +25,7 @@ class Value {
   const Type& type() const;
   std::string repr(std::size_t width = 0) const;
   bool is_register() const;
+  std::size_t length() const;
 };
 bool operator<(const Value& lhs, const Value& rhs);
 void to_json(Json& j, const Value& x);
