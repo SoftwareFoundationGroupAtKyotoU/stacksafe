@@ -8,7 +8,11 @@ Interpret::Interpret(const Env &e, Todo &todo) : env_{e}, todo_{todo} {}
 const Env &Interpret::get() const { return env_; }
 void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
-auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {}
+auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
+  if (!i.isTerminator()) {
+    todo_.insert(&i);
+  }
+}
 auto Interpret::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   env_.alloc(Value{i});
 }
