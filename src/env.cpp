@@ -61,6 +61,22 @@ void Env::collect(const Symbol& symbol, Domain& done) const {
     }
   }
 }
+Domain Env::collect(const Value& value) const {
+  Domain ret;
+  if (auto d = stack_.get(value)) {
+    for (auto& sym : *d) {
+      collect(sym, ret);
+    }
+  }
+  return ret;
+}
+Domain Env::collect(const Params& params) const {
+  Domain ret;
+  for (auto& v : params) {
+    ret.insert(collect(v));
+  }
+  return ret;
+}
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack_;
   j["heap"] = x.heap_;
