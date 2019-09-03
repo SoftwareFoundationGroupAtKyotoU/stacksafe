@@ -48,7 +48,7 @@ TEST_F(EnvTest, Load) {
   equal();
 }
 
-TEST_F(EnvTest, BinOp) {
+TEST_F(EnvTest, Constant) {
   V v0{0};
   equal();
   env.constant(v0);
