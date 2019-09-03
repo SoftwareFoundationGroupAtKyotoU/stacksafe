@@ -16,6 +16,7 @@ class Symbol {
 
  public:
   static Symbol create(const Type &t);
+  static void reset();
   int number() const;
   const Type &type() const;
   std::string repr(std::size_t width = 0) const;

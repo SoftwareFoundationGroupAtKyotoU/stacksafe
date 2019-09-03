@@ -4,6 +4,7 @@
 #include <llvm/IR/Instruction.h>
 #include "interpret.hpp"
 #include "json.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 
@@ -20,6 +21,7 @@ bool Todo::print() const {
 }
 
 void Abstract::interpret(llvm::Function& f) {
+  Symbol::reset();
   auto b = &f.getEntryBlock();
   Env e{f};
   update(nullptr, e);
