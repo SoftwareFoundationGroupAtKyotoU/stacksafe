@@ -50,6 +50,7 @@ void Env::load(const Value& dst, const Value& src) {
   }
 }
 void Env::constant(const Value& dst) { stack_.insert(dst); }
+void Env::call(const Value& dst, const std::vector<llvm::Use*>& params) {}
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack_;
   j["heap"] = x.heap_;
