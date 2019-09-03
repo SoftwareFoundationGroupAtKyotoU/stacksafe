@@ -19,5 +19,11 @@ elif [[ -z "$1" ]]; then
 else
     ninja || exit $?
     popd
-    opt -analyze -load=build/stacksafe.so -stacksafe "$1"
+    if [[ "$1" =~ .*\.ll ]]; then
+        target="$1"
+    else
+        target="${1%.c}".ll
+        clang -S -emit-llvm -c "$1" -o "$target"
+    fi
+    opt -analyze -load=build/stacksafe.so -stacksafe "$target"
 fi
