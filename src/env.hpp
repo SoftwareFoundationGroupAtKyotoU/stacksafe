@@ -10,6 +10,8 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
+class Domain;
+class Symbol;
 class Value;
 using Params = std::vector<Value>;
 
@@ -28,6 +30,9 @@ class Env {
   void load(const Value& dst, const Value& src);
   void constant(const Value& dst);
   void call(const Value& dst, const Params& params);
+
+ private:
+  void collect(const Symbol& symbol, Domain& done) const;
 };
 void to_json(Json& j, const Env& x);
 
