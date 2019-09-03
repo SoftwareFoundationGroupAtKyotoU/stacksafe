@@ -32,12 +32,11 @@ void Abstract::interpret(llvm::Function& f) {
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   log_.push_back(b);
-  Interpret i{e, todo_};
-  i.visit(*b);
+  auto next = e;
+  Interpret{next, todo_}.visit(*b);
   if (todo_.print()) {
     return;
   }
-  auto& next = i.get();
   if (update(b, next)) {
     if (auto t = b->getTerminator()) {
       for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
