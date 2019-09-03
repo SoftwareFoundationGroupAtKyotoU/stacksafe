@@ -7,11 +7,11 @@
 
 namespace llvm {
 class Function;
-class Use;
 }  // namespace llvm
 
 namespace stacksafe {
 class Value;
+using Params = std::vector<Value>;
 
 class Env {
   Heap heap_;
@@ -27,7 +27,7 @@ class Env {
   void store(const Value& src, const Value& dst);
   void load(const Value& dst, const Value& src);
   void constant(const Value& dst);
-  void call(const Value& dst, const std::vector<llvm::Use*>& params);
+  void call(const Value& dst, const Params& params);
 };
 void to_json(Json& j, const Env& x);
 

@@ -1,11 +1,7 @@
 #include "interpret.hpp"
-#include <vector>
 #include "abstract.hpp"
+#include "env.hpp"
 #include "value.hpp"
-
-namespace llvm {
-class Use;
-}
 
 namespace stacksafe {
 
@@ -40,11 +36,11 @@ auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   env_.constant(Value{i});
 }
 auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
-  std::vector<llvm::Use *> uses;
+  Params params;
   for (auto &a : i.args()) {
-    uses.push_back(&a);
+    params.emplace_back(*a.get());
   }
-  env_.call(Value{i}, uses);
+  env_.call(Value{i}, params);
 }
 
 }  // namespace stacksafe
