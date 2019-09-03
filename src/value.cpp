@@ -52,10 +52,10 @@ std::string Value::repr(std::size_t width) const {
     ret.insert(0, length() < width ? width - length() : 0, '0');
     ret.append(std::to_string(*num_));
     ret.append(type_.repr());
+    ret.insert(0, prefix_);
   } else {
     ret = to_str(*value_);
   }
-  ret.insert(0, prefix_);
   return ret;
 }
 bool Value::is_register() const { return num_.has_value(); }
