@@ -15,6 +15,7 @@ class Domain : private std::set<Symbol> {
   Domain() = default;
   void insert(const Symbol& sym);
   void insert(const Domain& dom);
+  bool includes(const Symbol& sym) const;
   bool includes(const Domain& that) const;
 };
 void to_json(Json& j, const Domain& x);
