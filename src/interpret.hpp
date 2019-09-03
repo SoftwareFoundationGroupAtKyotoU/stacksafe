@@ -15,7 +15,6 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
 
  public:
   explicit Interpret(Env &e, Todo &todo);
-  const Env &get() const;
   void visit(llvm::BasicBlock &b);
   RetTy visit(llvm::Instruction &i);
   RetTy visitInstruction(llvm::Instruction &i);
