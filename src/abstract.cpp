@@ -24,8 +24,12 @@ void Abstract::interpret(llvm::Function& f) {
   Env e{f};
   update(nullptr, e);
   interpret(b, e);
+  for (auto b : log_) {
+    llvm::errs() << Value{*b}.repr() << "\n";
+  }
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
+  log_.push_back(b);
   Interpret i{e, todo_};
   i.visit(*b);
   if (todo_.print()) {

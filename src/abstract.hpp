@@ -3,6 +3,7 @@
 
 #include <map>
 #include <set>
+#include <vector>
 #include "env.hpp"
 #include "json_fwd.hpp"
 
@@ -23,6 +24,7 @@ struct Todo : private std::set<llvm::Instruction*> {
 class Abstract {
   std::map<llvm::BasicBlock*, Env> blocks_;
   Todo todo_;
+  std::vector<llvm::BasicBlock*> log_;
   friend void to_json(Json& j, const Abstract& x);
 
  public:
