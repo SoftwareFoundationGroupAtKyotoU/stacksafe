@@ -24,16 +24,13 @@ void Abstract::interpret(llvm::Function& f) {
   Env e{f};
   update(nullptr, e);
   interpret(b, e);
-  if (!todo_.empty()) {
-    llvm::errs() << "Following instructions are not supported yet:\n";
-    for (auto& i : todo_) {
-      llvm::errs() << *i << "\n";
-    }
-  }
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   Interpret i{e, todo_};
   i.visit(*b);
+  if (todo_.print()) {
+    return;
+  }
   auto& next = i.get();
   if (update(b, next)) {
     if (auto t = b->getTerminator()) {

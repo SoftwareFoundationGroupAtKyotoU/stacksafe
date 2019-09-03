@@ -16,7 +16,7 @@ namespace stacksafe {
 
 struct Todo : private std::set<llvm::Instruction*> {
   using Base = std::set<llvm::Instruction*>;
-  using Base::begin, Base::end, Base::empty, Base::insert;
+  using Base::insert;
   bool print() const;
 };
 
