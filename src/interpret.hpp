@@ -24,6 +24,7 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
   RetTy visitLoadInst(llvm::LoadInst &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitCmpInst(llvm::CmpInst &i);
+  RetTy visitCallInst(llvm::CallInst &i);
 };
 
 }  // namespace stacksafe

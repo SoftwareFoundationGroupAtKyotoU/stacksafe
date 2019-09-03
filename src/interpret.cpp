@@ -1,6 +1,11 @@
 #include "interpret.hpp"
+#include <vector>
 #include "abstract.hpp"
 #include "value.hpp"
+
+namespace llvm {
+class Use;
+}
 
 namespace stacksafe {
 
@@ -33,6 +38,13 @@ auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
 }
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   env_.constant(Value{i});
+}
+auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
+  std::vector<llvm::Use *> uses;
+  for (auto &a : i.args()) {
+    uses.push_back(&a);
+  }
+  env_.call(Value{i}, uses);
 }
 
 }  // namespace stacksafe
