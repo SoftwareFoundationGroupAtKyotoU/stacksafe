@@ -46,5 +46,10 @@ auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
     env_.cast(Value{i}, Value{*v});
   }
 }
+auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
+  if (auto v = i.getPointerOperand()) {
+    env_.cast(Value{i}, Value{*v});
+  }
+}
 
 }  // namespace stacksafe
