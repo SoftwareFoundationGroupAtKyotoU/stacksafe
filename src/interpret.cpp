@@ -41,5 +41,10 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
   }
   env_.call(Value{i}, params);
 }
+auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
+  if (auto v = i.getOperand(0)) {
+    env_.cast(Value{i}, Value{*v});
+  }
+}
 
 }  // namespace stacksafe
