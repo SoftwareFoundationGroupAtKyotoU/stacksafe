@@ -33,7 +33,6 @@ class Env {
 
  private:
   void collect(const Symbol& symbol, Domain& done) const;
-  Domain collect(const Value& value) const;
   Domain collect(const Params& value) const;
 };
 void to_json(Json& j, const Env& x);
