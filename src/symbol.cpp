@@ -14,8 +14,12 @@ int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
 std::string Symbol::repr(std::size_t width) const {
   std::string ret;
-  ret.insert(0, length() < width ? width - length() : 0, '0');
-  ret.append(std::to_string(num_));
+  if (is_global()) {
+    ret.append("g");
+  } else {
+    ret.insert(0, length() < width ? width - length() : 0, '0');
+    ret.append(std::to_string(num_));
+  }
   ret.append(type_.repr());
   ret.insert(0, prefix_);
   return ret;
