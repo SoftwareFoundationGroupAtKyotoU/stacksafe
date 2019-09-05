@@ -22,6 +22,7 @@ class Symbol {
   const Type &type() const;
   std::string repr(std::size_t width = 0) const;
   std::size_t length() const;
+  bool is_global() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);

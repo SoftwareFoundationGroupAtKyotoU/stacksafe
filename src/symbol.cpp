@@ -21,6 +21,7 @@ std::string Symbol::repr(std::size_t width) const {
   return ret;
 }
 std::size_t Symbol::length() const { return std::to_string(num_).size(); }
+bool Symbol::is_global() const { return num_ < 0; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
