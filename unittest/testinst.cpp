@@ -88,3 +88,15 @@ TEST_F(EnvTest, Call) {
   }
   equal();
 }
+
+TEST_F(EnvTest, Cast) {
+  V v0{0}, v1{1};
+  equal();
+  env.alloc(v0);
+  init_heap(0);
+  push_stack(0, 0);
+  equal();
+  env.cast(v1, v0);
+  push_stack(1, 0);
+  equal();
+}
