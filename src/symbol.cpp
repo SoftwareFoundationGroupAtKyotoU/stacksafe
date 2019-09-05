@@ -13,16 +13,11 @@ void Symbol::reset() { current_ = 0; }
 int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
 std::string Symbol::repr(std::size_t width) const {
-  std::string ret;
   if (is_global()) {
-    ret.append("g");
+    return prefix_ + "g" + type_.repr();
   } else {
-    ret.insert(0, length() < width ? width - length() : 0, '0');
-    ret.append(std::to_string(num_));
+    return prefix_ + type_.repr_with_num(num_, width);
   }
-  ret.append(type_.repr());
-  ret.insert(0, prefix_);
-  return ret;
 }
 std::size_t Symbol::length() const { return std::to_string(num_).size(); }
 bool Symbol::is_global() const { return num_ < 0; }
