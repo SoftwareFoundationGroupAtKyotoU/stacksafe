@@ -8,6 +8,7 @@
 
 struct EnvTest : ::testing::Test {
   using V = stacksafe::Value;
+  using Params = stacksafe::Params;
   virtual void SetUp() override;
   void init_heap(int key);
   void init_stack(int key);
