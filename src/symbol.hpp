@@ -15,6 +15,7 @@ class Symbol {
   Symbol(int n, const Type &t);
 
  public:
+  static Symbol global(const Type &t);
   static Symbol create(const Type &t);
   static void reset();
   int number() const;

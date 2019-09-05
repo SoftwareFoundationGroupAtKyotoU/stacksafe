@@ -7,6 +7,7 @@ namespace stacksafe {
 const char *const Symbol::prefix_ = "#";
 int Symbol::current_ = 0;
 Symbol::Symbol(int n, const Type &t) : num_{n}, type_{t} {}
+Symbol Symbol::global(const Type &t) { return Symbol{-1, t}; }
 Symbol Symbol::create(const Type &t) { return Symbol{current_++, t}; }
 void Symbol::reset() { current_ = 0; }
 int Symbol::number() const { return num_; }
