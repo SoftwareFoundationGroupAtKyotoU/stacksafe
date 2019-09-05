@@ -24,10 +24,13 @@ bool Env::merge(const Env& that) {
   }
   return ret;
 }
-void Env::argument(const Value& arg) { alloc(arg); }
+void Env::argument(const Value& arg) {
+  auto sym = Symbol::global(arg.type().pointee_type());
+  heap_.insert(sym);
+  stack_.insert(arg, sym);
+}
 void Env::alloc(const Value& dst) {
-  auto type = dst.type();
-  auto sym = Symbol::create(type.pointee_type());
+  auto sym = Symbol::create(dst.type().pointee_type());
   heap_.insert(sym);
   stack_.insert(dst, sym);
 }
