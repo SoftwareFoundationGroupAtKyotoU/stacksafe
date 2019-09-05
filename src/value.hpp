@@ -13,7 +13,7 @@ class Value;
 namespace stacksafe {
 
 class Value {
-  static const char* const prefix_;
+  static const std::string prefix_;
   const llvm::Value* const value_;
   const std::optional<int> num_;
   const Type type_;

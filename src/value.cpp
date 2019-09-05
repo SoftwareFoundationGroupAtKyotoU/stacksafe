@@ -40,7 +40,7 @@ std::optional<int> extract_num(const llvm::Value& value,
 }
 }  // namespace
 
-const char* const Value::prefix_ = "%";
+const std::string Value::prefix_{"%"};
 Value::Value(const llvm::Value& v)
     : value_{&v}, num_{extract_num(v, prefix_)}, type_{v.getType()} {}
 Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
