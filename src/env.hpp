@@ -30,6 +30,7 @@ class Env {
   void load(const Value& dst, const Value& src);
   void constant(const Value& dst);
   void call(const Value& dst, const Params& params);
+  void cast(const Value& dst, const Value& src);
 
  private:
   void collect(const Symbol& symbol, Domain& done) const;

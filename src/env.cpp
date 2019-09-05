@@ -59,6 +59,11 @@ void Env::call(const Value& dst, const Params& params) {
     stack_.insert(dst, domain);
   }
 }
+void Env::cast(const Value& dst, const Value& src) {
+  if (auto d = stack_.get(src)) {
+    stack_.insert(dst, *d);
+  }
+}
 void Env::collect(const Symbol& symbol, Domain& done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
