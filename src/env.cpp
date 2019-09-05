@@ -50,7 +50,15 @@ void Env::load(const Value& dst, const Value& src) {
   }
 }
 void Env::constant(const Value& dst) { stack_.insert(dst); }
-void Env::call(const Value& dst, const Params& params) {}
+void Env::call(const Value& dst, const Params& params) {
+  auto domain = collect(params);
+  for (auto& sym : domain) {
+    heap_.insert(sym, domain);
+  }
+  if (dst.is_register()) {
+    stack_.insert(dst, domain);
+  }
+}
 void Env::collect(const Symbol& symbol, Domain& done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
