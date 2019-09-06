@@ -4,6 +4,8 @@
 
 namespace stacksafe {
 
-void unknown_instruction(llvm::Instruction& i) { llvm::errs() << i; }
+void unknown_instruction(llvm::Instruction& i) {
+  llvm::errs() << "unknown: " << i << "\n";
+}
 
 }  // namespace stacksafe
