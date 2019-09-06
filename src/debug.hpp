@@ -20,6 +20,9 @@ struct LogBlock {
 
 struct Log {
   std::vector<LogBlock> blocks;
+
+ public:
+  void add(const Env& prev, const llvm::BasicBlock* block, const Env& next);
 };
 
 void unknown_instruction(llvm::Instruction& i);
