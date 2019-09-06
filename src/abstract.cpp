@@ -10,10 +10,8 @@ namespace stacksafe {
 
 void Abstract::interpret(llvm::Function& f) {
   Symbol::reset();
-  auto b = &f.getEntryBlock();
   Env e{f};
-  update(nullptr, e);
-  interpret(b, e);
+  interpret(&f.getEntryBlock(), e);
   log_.print();
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
