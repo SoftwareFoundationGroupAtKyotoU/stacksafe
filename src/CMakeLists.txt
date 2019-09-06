@@ -13,6 +13,7 @@ set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
+  debug.cpp
   domain.cpp
   env.cpp
   interpret.cpp
