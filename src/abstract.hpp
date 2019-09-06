@@ -3,7 +3,6 @@
 
 #include <map>
 #include <vector>
-#include "debug.hpp"
 #include "env.hpp"
 #include "json_fwd.hpp"
 
@@ -13,13 +12,15 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
+class Log;
 
 class Abstract {
   std::map<llvm::BasicBlock*, Env> blocks_;
-  Log log_;
+  Log& log_;
   friend void to_json(Json& j, const Abstract& x);
 
  public:
+  explicit Abstract(Log& log);
   void interpret(llvm::Function& f);
 
  private:

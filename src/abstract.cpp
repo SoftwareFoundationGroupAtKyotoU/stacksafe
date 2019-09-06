@@ -2,17 +2,18 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
+#include "debug.hpp"
 #include "interpret.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
 
 namespace stacksafe {
 
+Abstract::Abstract(Log& log) : log_{log} {}
 void Abstract::interpret(llvm::Function& f) {
   Symbol::reset();
   Env e{f};
   interpret(&f.getEntryBlock(), e);
-  log_.print();
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   auto next = e;
