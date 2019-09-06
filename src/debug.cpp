@@ -21,6 +21,11 @@ void LogBlock::print() const {
 void Log::add(const Env& prev, const llvm::BasicBlock* block, const Env& next) {
   blocks.emplace_back(prev, block, next);
 }
+void Log::print() const {
+  for (auto& log : blocks) {
+    log.print();
+  }
+}
 
 void unknown_instruction(llvm::Instruction& i) {
   llvm::errs() << "unknown: " << i << "\n";

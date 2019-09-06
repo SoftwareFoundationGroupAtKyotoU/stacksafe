@@ -24,6 +24,7 @@ struct Log {
 
  public:
   void add(const Env& prev, const llvm::BasicBlock* block, const Env& next);
+  void print() const;
 };
 
 void unknown_instruction(llvm::Instruction& i);

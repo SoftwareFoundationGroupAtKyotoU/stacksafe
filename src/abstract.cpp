@@ -14,6 +14,7 @@ void Abstract::interpret(llvm::Function& f) {
   Env e{f};
   update(nullptr, e);
   interpret(b, e);
+  log_.print();
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   auto next = e;
