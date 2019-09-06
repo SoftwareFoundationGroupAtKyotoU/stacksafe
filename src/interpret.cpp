@@ -1,5 +1,6 @@
 #include "interpret.hpp"
 #include "abstract.hpp"
+#include "debug.hpp"
 #include "env.hpp"
 #include "value.hpp"
 
@@ -11,6 +12,7 @@ auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
 auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
     todo_.insert(&i);
+    unknown_instruction(i);
   }
 }
 auto Interpret::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {

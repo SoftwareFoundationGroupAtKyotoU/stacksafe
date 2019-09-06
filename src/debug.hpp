@@ -5,7 +5,8 @@
 
 namespace llvm {
 class BasicBlock;
-}
+class Instruction;
+}  // namespace llvm
 
 namespace stacksafe {
 
@@ -17,6 +18,8 @@ struct LogBlock {
 struct Log {
   std::vector<LogBlock> blocks;
 };
+
+void unknown_instruction(llvm::Instruction& i);
 
 }  // namespace stacksafe
 
