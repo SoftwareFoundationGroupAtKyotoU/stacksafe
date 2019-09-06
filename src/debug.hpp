@@ -14,6 +14,10 @@ struct LogBlock {
   llvm::BasicBlock* block;
 };
 
+struct Log {
+  std::vector<LogBlock> blocks;
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A
