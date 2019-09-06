@@ -14,7 +14,7 @@ struct Analyzer : public llvm::FunctionPass {
     llvm::outs() << "Analyzer: ";
     llvm::outs().write_escaped(f.getName()) << "\n";
     llvm::outs() << f;
-    Log log;
+    Log log{f};
     Abstract abstract{log};
     abstract.interpret(f);
     Json j = abstract;

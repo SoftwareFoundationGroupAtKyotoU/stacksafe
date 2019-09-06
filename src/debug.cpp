@@ -18,6 +18,7 @@ void LogBlock::print() const {
   llvm::errs() << hr << endl;
 }
 
+Log::Log(const llvm::Function& func) : function{&func} {}
 void Log::add(const Env& prev, const llvm::BasicBlock* block, const Env& next) {
   blocks.emplace_back(prev, block, next);
 }

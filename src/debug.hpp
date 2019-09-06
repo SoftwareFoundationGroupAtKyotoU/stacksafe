@@ -5,6 +5,7 @@
 
 namespace llvm {
 class BasicBlock;
+class Function;
 class Instruction;
 }  // namespace llvm
 
@@ -20,9 +21,11 @@ struct LogBlock {
 };
 
 struct Log {
+  const llvm::Function* const function;
   std::vector<LogBlock> blocks;
 
  public:
+  explicit Log(const llvm::Function& func);
   void add(const Env& prev, const llvm::BasicBlock* block, const Env& next);
   void print() const;
 };
