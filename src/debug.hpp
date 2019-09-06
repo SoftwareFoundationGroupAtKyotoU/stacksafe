@@ -16,6 +16,7 @@ struct LogBlock {
 
  public:
   LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n);
+  void print() const;
 };
 
 struct Log {
