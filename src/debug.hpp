@@ -11,8 +11,11 @@ class Instruction;
 namespace stacksafe {
 
 struct LogBlock {
-  const Env before, after;
-  llvm::BasicBlock* block;
+  const Env prev, next;
+  const llvm::BasicBlock* const block;
+
+ public:
+  LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n);
 };
 
 struct Log {
