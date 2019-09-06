@@ -11,20 +11,12 @@
 namespace llvm {
 class BasicBlock;
 class Function;
-class Instruction;
 }  // namespace llvm
 
 namespace stacksafe {
 
-struct Todo : private std::set<llvm::Instruction*> {
-  using Base = std::set<llvm::Instruction*>;
-  using Base::insert;
-  bool print() const;
-};
-
 class Abstract {
   std::map<llvm::BasicBlock*, Env> blocks_;
-  Todo todo_;
   Log log_;
   friend void to_json(Json& j, const Abstract& x);
 

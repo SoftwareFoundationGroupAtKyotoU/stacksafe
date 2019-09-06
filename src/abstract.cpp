@@ -8,18 +8,6 @@
 
 namespace stacksafe {
 
-bool Todo::print() const {
-  if (Base::empty()) {
-    return false;
-  } else {
-    llvm::errs() << "Following instructions are not supported yet:\n";
-    for (auto& i : *this) {
-      llvm::errs() << *i << "\n";
-    }
-    return true;
-  }
-}
-
 void Abstract::interpret(llvm::Function& f) {
   Symbol::reset();
   auto b = &f.getEntryBlock();
