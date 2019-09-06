@@ -11,15 +11,12 @@ struct Analyzer : public llvm::FunctionPass {
   static char ID;
   Analyzer() : llvm::FunctionPass{ID} {}
   virtual bool runOnFunction(llvm::Function &f) override {
-    llvm::outs() << "Analyzer: ";
-    llvm::outs().write_escaped(f.getName()) << "\n";
-    llvm::outs() << f;
     Log log{f};
     Abstract abstract{log};
     abstract.interpret(f);
+    log.print();
     Json j = abstract;
     llvm::outs() << j.dump(2) << "\n";
-    log.print();
     return false;
   }
 };

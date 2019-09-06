@@ -1,5 +1,6 @@
 #include "debug.hpp"
 #include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
 #include <llvm/Support/raw_ostream.h>
 #include "json.hpp"
@@ -23,6 +24,7 @@ void Log::add(const Env& prev, const llvm::BasicBlock* block, const Env& next) {
   blocks.emplace_back(prev, block, next);
 }
 void Log::print() const {
+  llvm::errs() << *function;
   for (auto& log : blocks) {
     log.print();
   }
