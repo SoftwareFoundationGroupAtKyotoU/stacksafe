@@ -3,6 +3,15 @@
 #include "json.hpp"
 
 namespace stacksafe {
+namespace {
+std::string to_ascii(int num) {
+  std::string ret;
+  for (; 0 < num; num /= 26) {
+    ret.insert(0, 1, 'a' + --num % 26);
+  }
+  return ret;
+}
+}  // namespace
 
 const std::string Symbol::prefix_{"#"};
 int Symbol::current_ = 0;
@@ -14,9 +23,9 @@ int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
 std::string Symbol::repr(std::size_t width) const {
   if (is_global()) {
-    return prefix_ + "g" + type_.repr();
+    return prefix_ + "@";
   } else {
-    return prefix_ + type_.repr_with_num(num_, width);
+    return prefix_ + to_ascii(num_);
   }
 }
 std::size_t Symbol::length() const { return std::to_string(num_).size(); }
