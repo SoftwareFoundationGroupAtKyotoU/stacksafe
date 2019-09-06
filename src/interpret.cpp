@@ -6,12 +6,11 @@
 
 namespace stacksafe {
 
-Interpret::Interpret(Env &e, Todo &todo) : env_{e}, todo_{todo} {}
+Interpret::Interpret(Env &e) : env_{e} {}
 void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
 auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
-    todo_.insert(&i);
     unknown_instruction(i);
   }
 }

@@ -29,10 +29,7 @@ void Abstract::interpret(llvm::Function& f) {
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   auto next = e;
-  Interpret{next, todo_}.visit(*b);
-  if (todo_.print()) {
-    return;
-  }
+  Interpret{next}.visit(*b);
   if (update(b, next)) {
     if (auto t = b->getTerminator()) {
       for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
