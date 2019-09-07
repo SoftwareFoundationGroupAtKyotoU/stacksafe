@@ -27,7 +27,8 @@ void LogBlock::print(llvm::raw_ostream& os) const {
   os << *block << "\n" << env;
 }
 
-Log::Log(const llvm::Function& func) : function{&func} {}
+Log::Log(const llvm::Function& func)
+    : function{&func}, filename{"log/" + func.getName().str()} {}
 void Log::add(const Env& prev, const llvm::BasicBlock* block, const Env& next) {
   blocks.emplace_back(prev, block, next);
 }

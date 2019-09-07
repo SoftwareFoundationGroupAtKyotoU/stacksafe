@@ -23,6 +23,7 @@ struct LogBlock {
 
 struct Log {
   const llvm::Function* const function;
+  std::string filename;
   std::vector<LogBlock> blocks;
 
  public:
