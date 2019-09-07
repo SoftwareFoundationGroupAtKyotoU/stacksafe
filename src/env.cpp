@@ -9,8 +9,10 @@
 namespace stacksafe {
 
 Env::Env(llvm::Function& f) {
+  auto g = Symbol::global();
+  heap_.insert(g, g);
   for (auto& a : f.args()) {
-    argument(Value::create(a));
+    stack_.insert(Value::create(a), g);
   }
 }
 const Heap& Env::heap() const { return heap_; }
