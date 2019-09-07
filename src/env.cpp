@@ -13,6 +13,8 @@ Env::Env(llvm::Function& f) {
     argument(Value::create(a));
   }
 }
+const Heap& Env::heap() const { return heap_; }
+const Stack& Env::stack() const { return stack_; }
 bool Env::merge(const Env& that) {
   bool ret = false;
   if (!heap_.includes(that.heap_)) {

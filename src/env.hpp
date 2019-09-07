@@ -25,6 +25,8 @@ class Env {
  public:
   Env() = default;
   explicit Env(llvm::Function& f);
+  const Heap& heap() const;
+  const Stack& stack() const;
   bool merge(const Env& that);
   void argument(const Value& arg);
   void alloc(const Value& dst);
