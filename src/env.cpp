@@ -94,14 +94,12 @@ void to_json(Json& j, const Env& x) {
   j["heap"] = x.heap_;
 }
 Fabric dump(const Env& env) {
-  Fabric ret, tmp;
-  tmp.append("heap").quote().append(": ");
-  tmp.append(dump(env.heap_)).append(",").next();
-  tmp.append("stack").quote().append(": ");
-  tmp.append(dump(env.stack_)).next();
-  ret.append("{").next();
-  ret.append(tmp.indent(2)).next();
-  return ret.append("}");
+  Fabric ret;
+  ret.append("heap").quote().append(": ");
+  ret.append(dump(env.heap_)).append(",").next();
+  ret.append("stack").quote().append(": ");
+  ret.append(dump(env.stack_));
+  return ret;
 }
 
 }  // namespace stacksafe
