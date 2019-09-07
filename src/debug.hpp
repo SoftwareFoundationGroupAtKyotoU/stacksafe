@@ -7,6 +7,7 @@ namespace llvm {
 class BasicBlock;
 class Function;
 class Instruction;
+class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -17,7 +18,7 @@ struct LogBlock {
 
  public:
   LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n);
-  void print() const;
+  void print(llvm::raw_ostream& os) const;
 };
 
 struct Log {

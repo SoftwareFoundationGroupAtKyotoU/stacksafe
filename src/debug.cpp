@@ -10,7 +10,7 @@ namespace stacksafe {
 
 LogBlock::LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n)
     : prev{p}, next{n}, block{b} {}
-void LogBlock::print() const {
+void LogBlock::print(llvm::raw_ostream& os) const {
   Fabric env;
   {
     Fabric left, right;
@@ -24,8 +24,7 @@ void LogBlock::print() const {
     right.append("stack: [next]").next().append(dump(next.stack()));
     env.append(left.patch(right.indent(2))).next();
   }
-  llvm::errs() << *block;
-  llvm::errs() << env;
+  os << *block << "\n" << env;
 }
 
 Log::Log(const llvm::Function& func) : function{&func} {}
@@ -36,7 +35,7 @@ void Log::print() const {
   const auto hr = "--------------------------------";
   llvm::errs() << *function;
   for (auto& log : blocks) {
-    log.print();
+    log.print(llvm::errs());
     llvm::errs() << "\n" << hr << "\n";
   }
 }
