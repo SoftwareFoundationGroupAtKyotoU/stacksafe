@@ -11,6 +11,7 @@ class Function;
 
 namespace stacksafe {
 class Domain;
+class Fabric;
 class Symbol;
 class Value;
 using Params = std::vector<Value>;
@@ -19,6 +20,7 @@ class Env {
   Heap heap_;
   Stack stack_;
   friend void to_json(Json& j, const Env& x);
+  friend Fabric dump(const Env& env);
 
  public:
   Env() = default;
@@ -37,6 +39,7 @@ class Env {
   Domain collect(const Params& value) const;
 };
 void to_json(Json& j, const Env& x);
+Fabric dump(const Env& env);
 
 }  // namespace stacksafe
 

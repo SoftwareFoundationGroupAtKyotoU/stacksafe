@@ -1,4 +1,6 @@
 #include "domain.hpp"
+#include <utility>
+#include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
@@ -15,6 +17,17 @@ void to_json(Json& j, const Domain& x) {
     tmp.push_back(e);
   }
   j = tmp;
+}
+Fabric dump(const Domain& domain) {
+  Fabric ret;
+  bool first = true;
+  for (auto& symbol : domain) {
+    if (!std::exchange(first, false)) {
+      ret.append(", ");
+    }
+    ret.append(dump(symbol));
+  }
+  return ret.quote("[", "]");
 }
 
 }  // namespace stacksafe

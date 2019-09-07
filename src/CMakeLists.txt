@@ -16,6 +16,7 @@ target_sources(${target} PRIVATE
   debug.cpp
   domain.cpp
   env.cpp
+  fabric.cpp
   interpret.cpp
   json.cpp
   map.cpp

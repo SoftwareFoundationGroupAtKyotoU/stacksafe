@@ -3,6 +3,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <optional>
 #include <string_view>
+#include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
@@ -60,6 +61,10 @@ bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
 void to_json(Json &j, const Symbol &x) { j = x.repr(); }
+Fabric dump(const Symbol &symbol) {
+  Fabric ret;
+  return ret.append(symbol.repr()).append(symbol.type().repr()).quote();
+}
 
 const std::string Value::prefix_{"%"};
 Value::Value(int n, llvm::Type *t, const llvm::Value *v)
@@ -92,5 +97,9 @@ bool operator<(const Value &lhs, const Value &rhs) {
   }
 }
 void to_json(Json &j, const Value &x) { j = x.repr(); }
+Fabric dump(const Value &value) {
+  Fabric ret;
+  return ret.append(value.repr()).append(value.type().repr()).quote();
+}
 
 }  // namespace stacksafe

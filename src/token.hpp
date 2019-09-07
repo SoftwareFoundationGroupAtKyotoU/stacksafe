@@ -10,6 +10,7 @@ class Value;
 }
 
 namespace stacksafe {
+class Fabric;
 
 class Token {
   int num_;
@@ -37,6 +38,7 @@ class Symbol : private Token {
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);
+Fabric dump(const Symbol &symbol);
 
 class Value : private Token {
   static const std::string prefix_;
@@ -52,6 +54,7 @@ class Value : private Token {
 };
 bool operator<(const Value &lhs, const Value &rhs);
 void to_json(Json &j, const Value &x);
+Fabric dump(const Value &value);
 
 }  // namespace stacksafe
 
