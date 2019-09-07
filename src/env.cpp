@@ -95,10 +95,12 @@ void to_json(Json& j, const Env& x) {
 }
 Fabric dump(const Env& env) {
   Fabric ret;
+  ret.append("{").next();
   ret.append("heap").quote().append(": ");
   ret.append(dump(env.heap_)).append(",").next();
   ret.append("stack").quote().append(": ");
-  ret.append(dump(env.stack_)).append(",").next();
+  ret.append(dump(env.stack_)).next();
+  ret.append("}");
   return ret;
 }
 
