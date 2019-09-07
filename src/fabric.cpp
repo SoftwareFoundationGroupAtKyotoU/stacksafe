@@ -39,5 +39,9 @@ Fabric& Fabric::prepend(const Fabric& fab) {
 Fabric& Fabric::quote(const std::string& open, const std::string& close) {
   return prepend(open).append(close);
 }
+Fabric& Fabric::quote() {
+  const auto q = R"(")";
+  return quote(q, q);
+}
 
 }  // namespace stacksafe

@@ -19,6 +19,7 @@ class Fabric {
   Fabric& prepend(const std::string& str);
   Fabric& prepend(const Fabric& fab);
   Fabric& quote(const std::string& open, const std::string& close);
+  Fabric& quote();
 };
 
 }  // namespace stacksafe
