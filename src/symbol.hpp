@@ -20,7 +20,7 @@ class Symbol {
   static void reset();
   int number() const;
   const Type &type() const;
-  std::string repr(std::size_t width = 0) const;
+  std::string repr() const;
   std::size_t length() const;
   bool is_global() const;
 };

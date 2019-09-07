@@ -21,9 +21,9 @@ Symbol Symbol::create(const Type &t) { return Symbol{current_++, t}; }
 void Symbol::reset() { current_ = 0; }
 int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
-std::string Symbol::repr(std::size_t width) const {
+std::string Symbol::repr() const {
   if (is_global()) {
-    return prefix_ + "@";
+    return prefix_ + "*";
   } else {
     return prefix_ + to_ascii(num_);
   }
