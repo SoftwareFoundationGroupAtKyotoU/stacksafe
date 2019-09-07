@@ -1,8 +1,8 @@
 #include "envtest.hpp"
 
 void EnvTest::SetUp() {
-  expect["heap"] = nullptr;
-  expect["stack"] = nullptr;
+  expect["heap"] = Json::object_t{};
+  expect["stack"] = Json::object_t{};
 }
 void EnvTest::init_heap(int key) { expect["heap"][sym(key)] = nullptr; }
 void EnvTest::init_stack(int key) { expect["stack"][reg(key)] = nullptr; }
