@@ -12,6 +12,7 @@ class Fabric {
 
  public:
   Fabric();
+  std::string& current();
 };
 
 }  // namespace stacksafe
