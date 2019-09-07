@@ -17,8 +17,8 @@ constexpr int current_init = 0;
 const std::string Symbol::prefix_{"#"};
 int Symbol::current_ = current_init;
 Symbol::Symbol(int n, const Type &t) : num_{n}, type_{t} {}
-Symbol Symbol::global(const Type &t) { return Symbol{-1, t}; }
-Symbol Symbol::create(const Type &t) { return Symbol{current_++, t}; }
+Symbol Symbol::global(const Type &t) { return Symbol{current_init, t}; }
+Symbol Symbol::create(const Type &t) { return Symbol{++current_, t}; }
 void Symbol::reset() { current_ = current_init; }
 int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
@@ -30,7 +30,7 @@ std::string Symbol::repr() const {
   }
 }
 std::size_t Symbol::length() const { return std::to_string(num_).size(); }
-bool Symbol::is_global() const { return num_ < current_init; }
+bool Symbol::is_global() const { return num_ <= current_init; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
