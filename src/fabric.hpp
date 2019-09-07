@@ -12,7 +12,9 @@ class Fabric {
 
  public:
   Fabric();
+  void next();
   std::string& current();
+  Fabric& append(const std::string& str);
 };
 
 }  // namespace stacksafe
