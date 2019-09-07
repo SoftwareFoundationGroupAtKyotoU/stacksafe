@@ -7,12 +7,10 @@
 
 namespace stacksafe {
 
-class Symbol {
+class Symbol : private Token {
   static const std::string prefix_;
   static int current_;
-  int num_;
-  Type type_;
-  Symbol(int n, const Type &t);
+  using Token::Token, Token::number, Token::type;
 
  public:
   static Symbol global(const Type &t);
