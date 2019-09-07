@@ -59,6 +59,28 @@ Fabric& Fabric::indent(std::size_t width) {
   }
   return *this;
 }
+Fabric& Fabric::patch(const Fabric& fab) {
+  const auto space = ' ';
+  auto& left = fabric_;
+  auto& right = fab.fabric_;
+  std::size_t width = 0;
+  for (auto& line : left) {
+    width = width < line.size() ? line.size() : width;
+  }
+  auto i = left.size();
+  for (; i < right.size(); ++i) {
+    left.emplace_back("");
+  }
+  i = 0;
+  for (auto& line : left) {
+    if (i < right.size()) {
+      line.append(width - line.size(), space);
+      line.append(right.at(i));
+    }
+    ++i;
+  }
+  return *this;
+}
 void Fabric::print(llvm::raw_ostream& os) const {
   bool first = true;
   for (auto& line : fabric_) {

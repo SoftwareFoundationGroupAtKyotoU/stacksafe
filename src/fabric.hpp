@@ -25,6 +25,7 @@ class Fabric {
   Fabric& quote(const std::string& open, const std::string& close);
   Fabric& quote();
   Fabric& indent(std::size_t width);
+  Fabric& patch(const Fabric& fab);
   void print(llvm::raw_ostream& os) const;
 };
 llvm::raw_ostream& operator<<(llvm::raw_ostream& os, const Fabric& fab);
