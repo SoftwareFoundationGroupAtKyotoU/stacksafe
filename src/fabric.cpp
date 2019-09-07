@@ -19,8 +19,7 @@ Fabric& Fabric::append(const std::string& str) {
 Fabric& Fabric::append(const Fabric& fab) {
   auto prev = pos_;
   for (auto& line : fab.fabric_) {
-    current().append(line);
-    next();
+    append(line).next();
   }
   pos_ = prev;
   return *this;
@@ -30,9 +29,7 @@ Fabric& Fabric::prepend(const std::string& str) {
   return *this;
 }
 Fabric& Fabric::quote(const std::string& open, const std::string& close) {
-  current().insert(0, open);
-  current().append(close);
-  return *this;
+  return prepend(open).append(close);
 }
 
 }  // namespace stacksafe
