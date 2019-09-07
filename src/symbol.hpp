@@ -10,14 +10,13 @@ namespace stacksafe {
 class Symbol : private Token {
   static const std::string prefix_;
   static int current_;
-  using Token::Token, Token::number, Token::type;
+  using Token::Token;
 
  public:
+  using Token::number, Token::type;
   static Symbol global(const Type &t);
   static Symbol create(const Type &t);
   static void reset();
-  int number() const;
-  const Type &type() const;
   std::string repr() const;
   bool is_global() const;
 };

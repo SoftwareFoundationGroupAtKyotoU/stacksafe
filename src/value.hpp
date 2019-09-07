@@ -15,9 +15,9 @@ namespace stacksafe {
 class Value : private Token {
   static const std::string prefix_;
   const llvm::Value* const value_;
-  using Token::number, Token::type;
 
  public:
+  using Token::number, Token::type;
   explicit Value(const llvm::Value& v);
   explicit Value(int n);
   std::string repr() const;
