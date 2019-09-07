@@ -28,6 +28,14 @@ Fabric& Fabric::prepend(const std::string& str) {
   current().insert(0, str);
   return *this;
 }
+Fabric& Fabric::prepend(const Fabric& fab) {
+  auto prev = pos_;
+  for (auto& line : fab.fabric_) {
+    prepend(line).next();
+  }
+  pos_ = prev;
+  return *this;
+}
 Fabric& Fabric::quote(const std::string& open, const std::string& close) {
   return prepend(open).append(close);
 }

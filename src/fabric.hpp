@@ -17,6 +17,7 @@ class Fabric {
   Fabric& append(const std::string& str);
   Fabric& append(const Fabric& fab);
   Fabric& prepend(const std::string& str);
+  Fabric& prepend(const Fabric& fab);
   Fabric& quote(const std::string& open, const std::string& close);
 };
 
