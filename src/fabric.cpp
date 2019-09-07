@@ -25,5 +25,10 @@ Fabric& Fabric::append(const Fabric& fab) {
   pos_ = prev;
   return *this;
 }
+Fabric& Fabric::quote(const std::string& open, const std::string& close) {
+  current().insert(0, open);
+  current().append(close);
+  return *this;
+}
 
 }  // namespace stacksafe

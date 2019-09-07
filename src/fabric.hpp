@@ -16,6 +16,7 @@ class Fabric {
   std::string& current();
   Fabric& append(const std::string& str);
   Fabric& append(const Fabric& fab);
+  Fabric& quote(const std::string& open, const std::string& close);
 };
 
 }  // namespace stacksafe
