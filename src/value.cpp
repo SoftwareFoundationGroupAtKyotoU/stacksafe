@@ -42,10 +42,9 @@ std::optional<int> extract_num(const llvm::Value& value,
 
 const std::string Value::prefix_{"%"};
 Value::Value(const llvm::Value& v)
-    : value_{&v}, num_{extract_num(v, prefix_)}, type_{v.getType()} {}
-Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
-int Value::number() const { return num_.value_or(-1); }
-const Type& Value::type() const { return type_; }
+    : Token{extract_num(v, prefix_).value_or(-1), Type{v.getType()}},
+      value_{&v} {}
+Value::Value(int n) : Token{n, Type{nullptr}}, value_{nullptr} {}
 std::string Value::repr() const {
   if (is_register()) {
     return prefix_ + std::to_string(number());

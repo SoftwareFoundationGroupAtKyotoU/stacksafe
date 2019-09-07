@@ -12,17 +12,14 @@ class Value;
 
 namespace stacksafe {
 
-class Value {
+class Value : private Token {
   static const std::string prefix_;
   const llvm::Value* const value_;
-  const std::optional<int> num_;
-  const Type type_;
+  using Token::number, Token::type;
 
  public:
   explicit Value(const llvm::Value& v);
   explicit Value(int n);
-  int number() const;
-  const Type& type() const;
   std::string repr() const;
   bool is_register() const;
 };
