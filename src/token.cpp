@@ -14,8 +14,6 @@ std::string to_ascii(int num) {
   }
   return ret;
 }
-constexpr int current_init = 0;
-
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {
     std::string str{view};
@@ -54,7 +52,7 @@ int Token::number() const { return num_; }
 const Type &Token::type() const { return type_; }
 
 const std::string Symbol::prefix_{"#"};
-int Symbol::current_ = current_init;
+int Symbol::current_ = Symbol::current_init;
 Symbol Symbol::global(const Type &t) { return Symbol{current_init, t}; }
 Symbol Symbol::create(const Type &t) { return Symbol{++current_, t}; }
 void Symbol::reset() { current_ = current_init; }

@@ -23,6 +23,7 @@ class Token {
 
 class Symbol : private Token {
   static const std::string prefix_;
+  static constexpr int current_init = 0;
   static int current_;
   using Token::Token;
 
