@@ -12,10 +12,12 @@ LogBlock::LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n)
     : prev{p}, next{n}, block{b} {}
 void LogBlock::print() const {
   const auto hr = "----------------", endl = "\n";
+  Fabric left, right;
+  left.append("[prev]").next().append(dump(prev));
+  right.append("[next]").next().append(dump(next));
   llvm::errs() << hr << endl;
-  llvm::errs() << dump(prev) << endl;
-  llvm::errs() << *block;
-  llvm::errs() << dump(next) << endl;
+  llvm::errs() << *block << endl;
+  llvm::errs() << left.patch(right.indent(2)) << endl;
   llvm::errs() << hr << endl;
 }
 
