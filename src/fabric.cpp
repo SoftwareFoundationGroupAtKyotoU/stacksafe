@@ -49,5 +49,9 @@ void Fabric::print(llvm::raw_ostream& os) const {
     os << line << "\n";
   }
 }
+llvm::raw_ostream& operator<<(llvm::raw_ostream& os, const Fabric& fab) {
+  fab.print(os);
+  return os;
+}
 
 }  // namespace stacksafe

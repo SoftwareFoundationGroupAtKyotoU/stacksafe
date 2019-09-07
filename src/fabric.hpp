@@ -26,6 +26,7 @@ class Fabric {
   Fabric& quote();
   void print(llvm::raw_ostream& os) const;
 };
+llvm::raw_ostream& operator<<(llvm::raw_ostream& os, const Fabric& fab);
 
 }  // namespace stacksafe
 
