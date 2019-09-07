@@ -21,12 +21,6 @@ std::string Type::repr() const {
   }
   return {};
 }
-std::string Type::repr_with_num(int num, std::size_t width) const {
-  auto strnum = std::to_string(num);
-  auto length = strnum.size();
-  strnum.insert(0, length < width ? width - length : 0, '0');
-  return strnum + repr();
-}
 bool Type::is_pointer() const {
   if (type_) {
     return type_->isPointerTy();
