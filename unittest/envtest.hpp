@@ -13,7 +13,6 @@ struct EnvTest : ::testing::Test {
   using String = std::string;
   virtual void SetUp() override;
   void init_heap(String key);
-  void init_heap(int key);
   void init_stack(int key);
   void push_heap(String key, String val);
   void push_heap(int key, int val);

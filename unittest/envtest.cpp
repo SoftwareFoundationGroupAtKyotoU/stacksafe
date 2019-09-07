@@ -7,7 +7,6 @@ void EnvTest::SetUp() {
 void EnvTest::init_heap(String key) {
   expect["heap"][sym(key)] = Json::array_t{};
 }
-void EnvTest::init_heap(int key) { expect["heap"][sym(key)] = Json::array_t{}; }
 void EnvTest::init_stack(int key) {
   expect["stack"][reg(key)] = Json::array_t{};
 }
