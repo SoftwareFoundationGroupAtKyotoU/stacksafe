@@ -1,4 +1,5 @@
 #include "fabric.hpp"
+#include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
 
@@ -42,6 +43,11 @@ Fabric& Fabric::quote(const std::string& open, const std::string& close) {
 Fabric& Fabric::quote() {
   const auto q = R"(")";
   return quote(q, q);
+}
+void Fabric::print(llvm::raw_ostream& os) const {
+  for (auto& line : fabric_) {
+    os << line << "\n";
+  }
 }
 
 }  // namespace stacksafe

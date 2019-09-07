@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+namespace llvm {
+class raw_ostream;
+}
+
 namespace stacksafe {
 
 class Fabric {
@@ -20,6 +24,7 @@ class Fabric {
   Fabric& prepend(const Fabric& fab);
   Fabric& quote(const std::string& open, const std::string& close);
   Fabric& quote();
+  void print(llvm::raw_ostream& os) const;
 };
 
 }  // namespace stacksafe
