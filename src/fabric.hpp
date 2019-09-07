@@ -9,6 +9,9 @@ namespace stacksafe {
 class Fabric {
   std::vector<std::string> fabric_;
   std::size_t pos_;
+
+ public:
+  Fabric();
 };
 
 }  // namespace stacksafe
