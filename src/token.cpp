@@ -72,6 +72,17 @@ void to_json(Json &j, const Symbol &x) { j = x.repr(); }
 const std::string Value::prefix_{"%"};
 Value::Value(const llvm::Value &v, int n, llvm::Type *t)
     : Token{n, Type{t}}, value_{&v} {}
+Value Value::create(const llvm::Value &v) {
+  int num = -1;
+  auto operand = get_operand(v);
+  std::string_view view{operand};
+  if (!view.empty() && view.substr(0, 1) == prefix_) {
+    if (auto i = to_int(view.substr(1))) {
+      num = *i;
+    }
+  }
+  return Value{v, num, v.getType()};
+}
 Value::Value(const llvm::Value &v)
     : Token{extract_num(v, prefix_), Type{v.getType()}}, value_{&v} {}
 Value::Value(int n) : Token{n, Type{nullptr}}, value_{nullptr} {}

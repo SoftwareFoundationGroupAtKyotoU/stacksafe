@@ -45,6 +45,7 @@ class Value : private Token {
 
  public:
   using Token::number, Token::type;
+  static Value create(const llvm::Value &v);
   explicit Value(const llvm::Value &v);
   explicit Value(int n);
   std::string repr() const;
