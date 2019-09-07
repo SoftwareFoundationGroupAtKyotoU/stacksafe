@@ -98,5 +98,9 @@ bool operator<(const Value &lhs, const Value &rhs) {
   }
 }
 void to_json(Json &j, const Value &x) { j = x.repr(); }
+Fabric dump(const Value &value) {
+  Fabric ret;
+  return ret.append(value.repr()).append(value.type().repr()).quote(q, q);
+}
 
 }  // namespace stacksafe

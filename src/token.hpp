@@ -54,6 +54,7 @@ class Value : private Token {
 };
 bool operator<(const Value &lhs, const Value &rhs);
 void to_json(Json &j, const Value &x);
+Fabric dump(const Value &value);
 
 }  // namespace stacksafe
 
