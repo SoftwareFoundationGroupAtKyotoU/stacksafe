@@ -3,6 +3,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
 #include <llvm/Support/raw_ostream.h>
+#include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
@@ -11,11 +12,10 @@ LogBlock::LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n)
     : prev{p}, next{n}, block{b} {}
 void LogBlock::print() const {
   const auto hr = "----------------", endl = "\n";
-  Json p = prev, n = next;
   llvm::errs() << hr << endl;
-  llvm::errs() << p.dump(0) << endl;
+  llvm::errs() << dump(prev) << endl;
   llvm::errs() << *block;
-  llvm::errs() << n.dump(0) << endl;
+  llvm::errs() << dump(next) << endl;
   llvm::errs() << hr << endl;
 }
 
