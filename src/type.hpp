@@ -22,6 +22,14 @@ class Type {
 };
 void to_json(Json& j, const Type& x);
 
+class Token {
+  int num_;
+  Type type_;
+
+ protected:
+  Token(int n, const Type& t);
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_DDB53FB4_0D81_45F7_AB62_9AD997BC6CFA
