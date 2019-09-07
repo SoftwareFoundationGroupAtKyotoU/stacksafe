@@ -70,6 +70,8 @@ bool operator<(const Symbol &lhs, const Symbol &rhs) {
 void to_json(Json &j, const Symbol &x) { j = x.repr(); }
 
 const std::string Value::prefix_{"%"};
+Value::Value(const llvm::Value &v, int n, llvm::Type *t)
+    : Token{n, Type{t}}, value_{&v} {}
 Value::Value(const llvm::Value &v)
     : Token{extract_num(v, prefix_), Type{v.getType()}}, value_{&v} {}
 Value::Value(int n) : Token{n, Type{nullptr}}, value_{nullptr} {}

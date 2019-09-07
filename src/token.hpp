@@ -41,6 +41,7 @@ void to_json(Json &j, const Symbol &x);
 class Value : private Token {
   static const std::string prefix_;
   const llvm::Value *const value_;
+  Value(const llvm::Value &v, int n, llvm::Type *t);
 
  public:
   using Token::number, Token::type;
