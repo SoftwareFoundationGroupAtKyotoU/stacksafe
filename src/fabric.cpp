@@ -5,7 +5,6 @@
 namespace stacksafe {
 
 Fabric::Fabric() : pos_{0} {}
-void Fabric::next() { ++pos_; }
 std::string& Fabric::current() {
   if (pos_ < fabric_.size()) {
     return fabric_.at(pos_);
@@ -13,6 +12,10 @@ std::string& Fabric::current() {
     fabric_.emplace_back("");
     return current();
   }
+}
+Fabric& Fabric::next() {
+  ++pos_;
+  return *this;
 }
 Fabric& Fabric::append(const std::string& str) {
   current().append(str);

@@ -16,8 +16,8 @@ class Fabric {
 
  public:
   Fabric();
-  void next();
   std::string& current();
+  Fabric& next();
   Fabric& append(const std::string& str);
   Fabric& append(const Fabric& fab);
   Fabric& prepend(const std::string& str);
