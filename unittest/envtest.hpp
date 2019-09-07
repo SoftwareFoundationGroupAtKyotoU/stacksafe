@@ -8,17 +8,19 @@
 
 struct EnvTest : ::testing::Test {
   using V = stacksafe::Value;
+  using Json = stacksafe::Json;
   using Params = stacksafe::Params;
+  using String = std::string;
   virtual void SetUp() override;
-  void init_heap(int key);
+  void init_heap(String key);
   void init_stack(int key);
-  void push_heap(int key, int val);
-  void push_stack(int key, int val);
+  void push_heap(String key, String val);
+  void push_stack(int key, String val);
   void equal() const;
-  static std::string sym(int n);
+  static String sym(String a);
   static std::string reg(int n);
   stacksafe::Env env;
-  stacksafe::Json expect;
+  Json expect;
 };
 
 #endif  // INCLUDE_GUARD_C7E72859_0086_4AA2_8E53_FAAE8ED32D45
