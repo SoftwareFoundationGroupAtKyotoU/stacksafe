@@ -21,6 +21,7 @@ target_sources(${target} PRIVATE
   map.cpp
   symbol.cpp
   type.cpp
+  token.cpp
   value.cpp
   )
 include(EnsureSources)
