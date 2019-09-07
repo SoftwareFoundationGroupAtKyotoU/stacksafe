@@ -3,7 +3,7 @@
 
 #include <set>
 #include "json_fwd.hpp"
-#include "symbol.hpp"
+#include "token.hpp"
 
 namespace stacksafe {
 
