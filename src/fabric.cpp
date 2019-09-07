@@ -25,6 +25,10 @@ Fabric& Fabric::append(const Fabric& fab) {
   pos_ = prev;
   return *this;
 }
+Fabric& Fabric::prepend(const std::string& str) {
+  current().insert(0, str);
+  return *this;
+}
 Fabric& Fabric::quote(const std::string& open, const std::string& close) {
   current().insert(0, open);
   current().append(close);
