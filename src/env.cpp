@@ -3,7 +3,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
 #include "json.hpp"
-#include "value.hpp"
+#include "token.hpp"
 
 namespace stacksafe {
 
