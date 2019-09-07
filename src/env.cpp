@@ -9,7 +9,7 @@ namespace stacksafe {
 
 Env::Env(llvm::Function& f) {
   for (auto& a : f.args()) {
-    argument(Value{a});
+    argument(Value::create(a));
   }
 }
 bool Env::merge(const Env& that) {

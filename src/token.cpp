@@ -83,8 +83,6 @@ Value Value::create(const llvm::Value &v) {
   }
   return Value{num, v.getType(), &v};
 }
-Value::Value(const llvm::Value &v)
-    : Token{extract_num(v, prefix_), Type{v.getType()}}, value_{&v} {}
 Value::Value(int n) : Value{n, nullptr, nullptr} {}
 std::string Value::repr() const {
   if (is_register()) {

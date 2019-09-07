@@ -38,7 +38,7 @@ bool Abstract::update(llvm::BasicBlock* b, const Env& e) {
 }
 void to_json(Json& j, const Abstract& x) {
   for (auto& [k, v] : x.blocks_) {
-    j[k ? Value{*k}.repr() : ""] = v;
+    j[k ? Value::create(*k).repr() : ""] = v;
   }
 }
 
