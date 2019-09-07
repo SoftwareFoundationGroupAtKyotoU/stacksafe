@@ -21,7 +21,7 @@ class Value {
  public:
   explicit Value(const llvm::Value& v);
   explicit Value(int n);
-  std::optional<int> number() const;
+  int number() const;
   const Type& type() const;
   std::string repr() const;
   bool is_register() const;

@@ -44,19 +44,19 @@ const std::string Value::prefix_{"%"};
 Value::Value(const llvm::Value& v)
     : value_{&v}, num_{extract_num(v, prefix_)}, type_{v.getType()} {}
 Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
-std::optional<int> Value::number() const { return num_; }
+int Value::number() const { return num_.value_or(-1); }
 const Type& Value::type() const { return type_; }
 std::string Value::repr() const {
   if (is_register()) {
-    return prefix_ + std::to_string(*num_);
+    return prefix_ + std::to_string(number());
   } else {
     return to_str(*value_);
   }
 }
-bool Value::is_register() const { return num_.has_value(); }
+bool Value::is_register() const { return 0 <= number(); }
 bool operator<(const Value& lhs, const Value& rhs) {
-  auto l = lhs.number().value_or(-1);
-  auto r = rhs.number().value_or(-1);
+  auto l = lhs.number();
+  auto r = rhs.number();
   if (l == -1 && r == -1) {
     return lhs.repr() < rhs.repr();
   } else {
