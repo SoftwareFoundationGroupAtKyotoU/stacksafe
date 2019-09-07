@@ -1,6 +1,7 @@
 #include "value.hpp"
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
+#include <optional>
 #include <string_view>
 #include "json.hpp"
 
@@ -29,21 +30,19 @@ std::string get_operand(const llvm::Value& value) {
   value.printAsOperand(stream, false);
   return stream.str();
 }
-std::optional<int> extract_num(const llvm::Value& value,
-                               std::string_view prefix) {
+int extract_num(const llvm::Value& value, std::string_view prefix) {
   auto operand = get_operand(value);
   std::string_view view{operand};
   if (!view.empty() && view.substr(0, 1) == prefix) {
-    return to_int(view.substr(1));
+    return to_int(view.substr(1)).value_or(-1);
   }
-  return std::nullopt;
+  return -1;
 }
 }  // namespace
 
 const std::string Value::prefix_{"%"};
 Value::Value(const llvm::Value& v)
-    : Token{extract_num(v, prefix_).value_or(-1), Type{v.getType()}},
-      value_{&v} {}
+    : Token{extract_num(v, prefix_), Type{v.getType()}}, value_{&v} {}
 Value::Value(int n) : Token{n, Type{nullptr}}, value_{nullptr} {}
 std::string Value::repr() const {
   if (is_register()) {
