@@ -49,6 +49,13 @@ Fabric& Fabric::quote() {
   const auto q = R"(")";
   return quote(q, q);
 }
+Fabric& Fabric::indent(std::size_t width) {
+  const auto space = ' ';
+  for (auto& line : fabric_) {
+    line.insert(0, width, space);
+  }
+  return *this;
+}
 void Fabric::print(llvm::raw_ostream& os) const {
   bool first = true;
   for (auto& line : fabric_) {
