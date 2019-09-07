@@ -19,8 +19,6 @@ using Params = std::vector<Value>;
 class Env {
   Heap heap_;
   Stack stack_;
-  friend void to_json(Json& j, const Env& x);
-  friend Fabric dump(const Env& env);
 
  public:
   Env() = default;

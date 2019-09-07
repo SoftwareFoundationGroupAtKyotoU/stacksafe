@@ -92,15 +92,15 @@ Domain Env::collect(const Params& params) const {
   return ret;
 }
 void to_json(Json& j, const Env& x) {
-  j["stack"] = x.stack_;
-  j["heap"] = x.heap_;
+  j["stack"] = x.stack();
+  j["heap"] = x.heap();
 }
 Fabric dump(const Env& env) {
   Fabric ret;
   ret.append("heap").quote().append(": ");
-  ret.append(dump(env.heap_)).append(",").next();
+  ret.append(dump(env.heap())).append(",").next();
   ret.append("stack").quote().append(": ");
-  ret.append(dump(env.stack_));
+  ret.append(dump(env.stack()));
   return ret;
 }
 
