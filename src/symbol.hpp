@@ -21,7 +21,6 @@ class Symbol {
   int number() const;
   const Type &type() const;
   std::string repr() const;
-  std::size_t length() const;
   bool is_global() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);

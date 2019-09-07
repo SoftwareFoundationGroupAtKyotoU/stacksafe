@@ -29,7 +29,6 @@ std::string Symbol::repr() const {
     return prefix_ + to_ascii(num_);
   }
 }
-std::size_t Symbol::length() const { return std::to_string(num_).size(); }
 bool Symbol::is_global() const { return num_ <= current_init; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
