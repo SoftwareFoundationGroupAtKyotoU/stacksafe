@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include <utility>
 #include "fabric.hpp"
 #include "json.hpp"
 
@@ -67,13 +68,17 @@ void to_json(Json& j, const Map<K>& x) {
 template <typename K>
 Fabric dump(const Map<K>& map) {
   Fabric ret;
+  bool first = true;
   ret.append("{").next();
   for (auto& [key, value] : map) {
+    if (!std::exchange(first, false)) {
+      ret.append(",").next();
+    }
     ret.append(dump(key)).append(":").next();
-    ret.append("  ").append(dump(value)).append(",").next();
+    ret.append("  ").append(dump(value));
   }
-  ret.append("}");
-  return ret;
+  ret.next();
+  return ret.append("}");
 }
 
 template class Map<Value>;
