@@ -11,6 +11,7 @@ class Function;
 
 namespace stacksafe {
 class Domain;
+class Fabric;
 class Symbol;
 class Value;
 using Params = std::vector<Value>;
@@ -18,11 +19,12 @@ using Params = std::vector<Value>;
 class Env {
   Heap heap_;
   Stack stack_;
-  friend void to_json(Json& j, const Env& x);
 
  public:
   Env() = default;
   explicit Env(llvm::Function& f);
+  const Heap& heap() const;
+  const Stack& stack() const;
   bool merge(const Env& that);
   void argument(const Value& arg);
   void alloc(const Value& dst);
@@ -37,6 +39,7 @@ class Env {
   Domain collect(const Params& value) const;
 };
 void to_json(Json& j, const Env& x);
+Fabric dump(const Env& env);
 
 }  // namespace stacksafe
 

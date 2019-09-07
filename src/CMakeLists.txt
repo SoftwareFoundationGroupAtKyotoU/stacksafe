@@ -13,14 +13,15 @@ set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
+  debug.cpp
   domain.cpp
   env.cpp
+  fabric.cpp
   interpret.cpp
   json.cpp
   map.cpp
-  symbol.cpp
   type.cpp
-  value.cpp
+  token.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})

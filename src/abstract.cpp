@@ -2,41 +2,23 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
+#include "debug.hpp"
 #include "interpret.hpp"
 #include "json.hpp"
-#include "symbol.hpp"
+#include "token.hpp"
 
 namespace stacksafe {
 
-bool Todo::print() const {
-  if (Base::empty()) {
-    return false;
-  } else {
-    llvm::errs() << "Following instructions are not supported yet:\n";
-    for (auto& i : *this) {
-      llvm::errs() << *i << "\n";
-    }
-    return true;
-  }
-}
-
+Abstract::Abstract(Log& log) : log_{log} {}
 void Abstract::interpret(llvm::Function& f) {
   Symbol::reset();
-  auto b = &f.getEntryBlock();
   Env e{f};
-  update(nullptr, e);
-  interpret(b, e);
-  for (auto b : log_) {
-    llvm::outs() << Value{*b}.repr() << "\n";
-  }
+  interpret(&f.getEntryBlock(), e);
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
-  log_.push_back(b);
   auto next = e;
-  Interpret{next, todo_}.visit(*b);
-  if (todo_.print()) {
-    return;
-  }
+  Interpret{next}.visit(*b);
+  log_.add(e, b, next);
   if (update(b, next)) {
     if (auto t = b->getTerminator()) {
       for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
@@ -55,9 +37,11 @@ bool Abstract::update(llvm::BasicBlock* b, const Env& e) {
   }
 }
 void to_json(Json& j, const Abstract& x) {
+  Json::object_t obj;
   for (auto& [k, v] : x.blocks_) {
-    j[k ? Value{*k}.repr() : ""] = v;
+    obj[k ? Value::create(*k).repr() : ""] = v;
   }
+  j = obj;
 }
 
 }  // namespace stacksafe

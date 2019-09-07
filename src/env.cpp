@@ -2,16 +2,19 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
+#include "fabric.hpp"
 #include "json.hpp"
-#include "value.hpp"
+#include "token.hpp"
 
 namespace stacksafe {
 
 Env::Env(llvm::Function& f) {
   for (auto& a : f.args()) {
-    argument(Value{a});
+    argument(Value::create(a));
   }
 }
+const Heap& Env::heap() const { return heap_; }
+const Stack& Env::stack() const { return stack_; }
 bool Env::merge(const Env& that) {
   bool ret = false;
   if (!heap_.includes(that.heap_)) {
@@ -89,8 +92,18 @@ Domain Env::collect(const Params& params) const {
   return ret;
 }
 void to_json(Json& j, const Env& x) {
-  j["stack"] = x.stack_;
-  j["heap"] = x.heap_;
+  j["stack"] = x.stack();
+  j["heap"] = x.heap();
+}
+Fabric dump(const Env& env) {
+  Fabric ret, tmp;
+  tmp.append("heap").quote().append(": ");
+  tmp.append(dump(env.heap())).append(",").next();
+  tmp.append("stack").quote().append(": ");
+  tmp.append(dump(env.stack()));
+  ret.append("{").next();
+  ret.append(tmp.indent(2)).next();
+  return ret.append("}");
 }
 
 }  // namespace stacksafe

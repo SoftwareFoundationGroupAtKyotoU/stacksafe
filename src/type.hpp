@@ -9,6 +9,7 @@ class Type;
 }
 
 namespace stacksafe {
+class Fabric;
 
 class Type {
   const llvm::Type* const type_;
@@ -17,11 +18,11 @@ class Type {
   explicit Type(const llvm::Type* t);
   const llvm::Type* get() const;
   std::string repr() const;
-  std::string repr_with_num(int num, std::size_t width) const;
   bool is_pointer() const;
   Type pointee_type() const;
 };
 void to_json(Json& j, const Type& x);
+Fabric dump(const Type& type);
 
 }  // namespace stacksafe
 

@@ -4,10 +4,10 @@
 #include <map>
 #include "domain.hpp"
 #include "json_fwd.hpp"
-#include "symbol.hpp"
-#include "value.hpp"
+#include "token.hpp"
 
 namespace stacksafe {
+class Fabric;
 
 template <typename K>
 class Map : private std::map<K, Domain> {
@@ -26,6 +26,8 @@ class Map : private std::map<K, Domain> {
 };
 template <typename K>
 void to_json(Json& j, const Map<K>& x);
+template <typename K>
+Fabric dump(const Map<K>& map);
 
 using Stack = Map<Value>;
 using Heap = Map<Symbol>;
@@ -35,6 +37,9 @@ extern template class Map<Symbol>;
 
 extern template void to_json<Value>(Json&, const Stack&);
 extern template void to_json<Symbol>(Json&, const Heap&);
+
+extern template Fabric dump<Value>(const Stack&);
+extern template Fabric dump<Symbol>(const Heap&);
 
 }  // namespace stacksafe
 

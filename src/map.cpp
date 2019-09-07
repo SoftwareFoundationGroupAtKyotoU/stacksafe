@@ -1,4 +1,6 @@
 #include "map.hpp"
+#include <utility>
+#include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
@@ -57,15 +59,26 @@ bool Map<K>::includes(const Map& that) const {
 }
 template <typename K>
 void to_json(Json& j, const Map<K>& x) {
-  Json obj;
-  std::size_t m = 0;
+  Json::object_t obj;
   for (auto& [key, val] : x) {
-    m = m < key.length() ? key.length() : m;
-  }
-  for (auto& [key, val] : x) {
-    obj[key.repr(m)] = val;
+    obj[key.repr()] = val;
   }
   j = obj;
+}
+template <typename K>
+Fabric dump(const Map<K>& map) {
+  Fabric ret, tmp;
+  bool first = true;
+  for (auto& [key, value] : map) {
+    if (!std::exchange(first, false)) {
+      tmp.append(",").next();
+    }
+    tmp.append(dump(key)).append(":").next();
+    tmp.append(dump(value).indent(2));
+  }
+  ret.append("{").next();
+  ret.append(tmp.indent(2)).next();
+  return ret.append("}");
 }
 
 template class Map<Value>;
@@ -73,5 +86,8 @@ template class Map<Symbol>;
 
 template void to_json<Value>(Json&, const Stack&);
 template void to_json<Symbol>(Json&, const Heap&);
+
+template Fabric dump<Value>(const Stack&);
+template Fabric dump<Symbol>(const Heap&);
 
 }  // namespace stacksafe
