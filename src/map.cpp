@@ -67,17 +67,17 @@ void to_json(Json& j, const Map<K>& x) {
 }
 template <typename K>
 Fabric dump(const Map<K>& map) {
-  Fabric ret;
+  Fabric ret, tmp;
   bool first = true;
-  ret.append("{").next();
   for (auto& [key, value] : map) {
     if (!std::exchange(first, false)) {
-      ret.append(",").next();
+      tmp.append(",").next();
     }
-    ret.append(dump(key)).append(":").next();
-    ret.append("  ").append(dump(value));
+    tmp.append(dump(key)).append(":").next();
+    tmp.append(dump(value).indent(2));
   }
-  ret.next();
+  ret.append("{").next();
+  ret.append(tmp.indent(2)).next();
   return ret.append("}");
 }
 
