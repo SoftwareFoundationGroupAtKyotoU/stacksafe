@@ -53,12 +53,10 @@ std::string Value::repr() const {
 }
 bool Value::is_register() const { return 0 <= number(); }
 bool operator<(const Value& lhs, const Value& rhs) {
-  auto l = lhs.number();
-  auto r = rhs.number();
-  if (l == -1 && r == -1) {
-    return lhs.repr() < rhs.repr();
+  if (lhs.is_register() || rhs.is_register()) {
+    return lhs.number() < rhs.number();
   } else {
-    return l < r;
+    return lhs.repr() < rhs.repr();
   }
 }
 void to_json(Json& j, const Value& x) { j = x.repr(); }
