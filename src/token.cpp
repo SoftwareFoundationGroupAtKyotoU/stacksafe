@@ -7,13 +7,6 @@
 
 namespace stacksafe {
 namespace {
-std::string to_ascii(int num) {
-  std::string ret;
-  for (; 0 < num; num /= 26) {
-    ret.insert(0, 1, 'a' + --num % 26);
-  }
-  return ret;
-}
 std::optional<int> to_int(std::string_view view) {
   if (!view.empty()) {
     std::string str{view};
@@ -24,6 +17,13 @@ std::optional<int> to_int(std::string_view view) {
     }
   }
   return std::nullopt;
+}
+std::string to_alphabet(int num) {
+  std::string ret;
+  for (; 0 < num; num /= 26) {
+    ret.insert(0, 1, 'a' + --num % 26);
+  }
+  return ret;
 }
 std::string to_str(const llvm::Value &value) {
   std::string buf;
@@ -60,7 +60,7 @@ std::string Symbol::repr() const {
   if (is_global()) {
     return prefix_ + "*";
   } else {
-    return prefix_ + to_ascii(number());
+    return prefix_ + to_alphabet(number());
   }
 }
 bool Symbol::is_global() const { return number() <= current_init; }
