@@ -21,10 +21,6 @@ void EnvTest::equal() const {
   EXPECT_EQ(expect.dump(), tmp.dump());
 }
 auto EnvTest::sym(String a) -> String { return "#" + a; }
-std::string EnvTest::sym(int n) {
-  using namespace std::string_literals;
-  return "#"s + std::to_string(n);
-}
 std::string EnvTest::reg(int n) {
   using namespace std::string_literals;
   return "%"s + std::to_string(n);

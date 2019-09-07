@@ -18,7 +18,6 @@ struct EnvTest : ::testing::Test {
   void push_stack(int key, String val);
   void equal() const;
   static String sym(String a);
-  static std::string sym(int n);
   static std::string reg(int n);
   stacksafe::Env env;
   Json expect;
