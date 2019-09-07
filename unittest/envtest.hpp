@@ -12,6 +12,7 @@ struct EnvTest : ::testing::Test {
   using Params = stacksafe::Params;
   using String = std::string;
   virtual void SetUp() override;
+  void init_heap(String key);
   void init_heap(int key);
   void init_stack(int key);
   void push_heap(int key, int val);
