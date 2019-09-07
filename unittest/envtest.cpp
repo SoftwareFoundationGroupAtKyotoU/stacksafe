@@ -4,8 +4,10 @@ void EnvTest::SetUp() {
   expect["heap"] = Json::object_t{};
   expect["stack"] = Json::object_t{};
 }
-void EnvTest::init_heap(int key) { expect["heap"][sym(key)] = nullptr; }
-void EnvTest::init_stack(int key) { expect["stack"][reg(key)] = nullptr; }
+void EnvTest::init_heap(int key) { expect["heap"][sym(key)] = Json::array_t{}; }
+void EnvTest::init_stack(int key) {
+  expect["stack"][reg(key)] = Json::array_t{};
+}
 void EnvTest::push_heap(int key, int val) {
   expect["heap"][sym(key)].push_back(sym(val));
 }
