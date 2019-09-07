@@ -26,7 +26,6 @@ class Env {
   const Heap& heap() const;
   const Stack& stack() const;
   bool merge(const Env& that);
-  void argument(const Value& arg);
   void alloc(const Value& dst);
   void store(const Value& src, const Value& dst);
   void load(const Value& dst, const Value& src);
