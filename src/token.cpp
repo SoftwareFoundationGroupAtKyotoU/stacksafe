@@ -38,7 +38,6 @@ std::string get_operand(const llvm::Value &value) {
   value.printAsOperand(stream, false);
   return stream.str();
 }
-constexpr auto q = R"(")";
 }  // namespace
 
 Token::Token(int n, const Type &t) : num_{n}, type_{t} {}
@@ -64,7 +63,7 @@ bool operator<(const Symbol &lhs, const Symbol &rhs) {
 void to_json(Json &j, const Symbol &x) { j = x.repr(); }
 Fabric dump(const Symbol &symbol) {
   Fabric ret;
-  return ret.append(symbol.repr()).append(symbol.type().repr()).quote(q, q);
+  return ret.append(symbol.repr()).append(symbol.type().repr()).quote();
 }
 
 const std::string Value::prefix_{"%"};
@@ -100,7 +99,7 @@ bool operator<(const Value &lhs, const Value &rhs) {
 void to_json(Json &j, const Value &x) { j = x.repr(); }
 Fabric dump(const Value &value) {
   Fabric ret;
-  return ret.append(value.repr()).append(value.type().repr()).quote(q, q);
+  return ret.append(value.repr()).append(value.type().repr()).quote();
 }
 
 }  // namespace stacksafe
