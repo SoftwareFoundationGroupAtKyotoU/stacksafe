@@ -4,7 +4,7 @@
 #include <optional>
 #include <string>
 #include "json_fwd.hpp"
-#include "type.hpp"
+#include "token.hpp"
 
 namespace llvm {
 class Value;
