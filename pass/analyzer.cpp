@@ -12,7 +12,7 @@ struct Analyzer : public llvm::FunctionPass {
   static char ID;
   std::unique_ptr<Log> log;
   Analyzer() : llvm::FunctionPass{ID} {}
-  virtual bool runOnFunction(llvm::Function &f) override {
+  bool runOnFunction(llvm::Function &f) override {
     log = std::make_unique<Log>(f);
     if (log) {
       Abstract abstract{*log};
