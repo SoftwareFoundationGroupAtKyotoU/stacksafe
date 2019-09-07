@@ -9,7 +9,7 @@ namespace {
 std::string to_str(const llvm::Type& type) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};
-  stream << type;
+  type.print(stream, false, true);
   return stream.str();
 }
 }  // namespace
