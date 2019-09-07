@@ -28,6 +28,7 @@ class Token {
 
  protected:
   Token(int n, const Type& t);
+  int number() const;
   const Type& type() const;
 };
 
