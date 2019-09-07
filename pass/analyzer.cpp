@@ -17,9 +17,24 @@ struct Analyzer : public llvm::FunctionPass {
     if (log) {
       Abstract abstract{*log};
       abstract.interpret(f);
-      log->print(llvm::errs());
     }
     return false;
+  }
+  void print(llvm::raw_ostream &os, const llvm::Module *) const override {
+    if (log) {
+      std::error_code error;
+      auto name = log->get_filename();
+      llvm::raw_fd_ostream file{name, error};
+      llvm::errs() << "print to: " << name << "\n";
+      if (error) {
+        llvm::errs() << "Error: " << error.message() << "\n";
+        log->print(llvm::outs());
+      } else {
+        log->print(file);
+      }
+    } else {
+      os << "Unknown error\n";
+    }
   }
 };
 
