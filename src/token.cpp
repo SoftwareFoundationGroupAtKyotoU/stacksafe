@@ -37,14 +37,6 @@ std::string get_operand(const llvm::Value &value) {
   value.printAsOperand(stream, false);
   return stream.str();
 }
-int extract_num(const llvm::Value &value, std::string_view prefix) {
-  auto operand = get_operand(value);
-  std::string_view view{operand};
-  if (!view.empty() && view.substr(0, 1) == prefix) {
-    return to_int(view.substr(1)).value_or(-1);
-  }
-  return -1;
-}
 }  // namespace
 
 Token::Token(int n, const Type &t) : num_{n}, type_{t} {}
