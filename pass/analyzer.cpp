@@ -15,8 +15,6 @@ struct Analyzer : public llvm::FunctionPass {
     Abstract abstract{log};
     abstract.interpret(f);
     log.print();
-    Json j = abstract;
-    llvm::outs() << j.dump(2) << "\n";
     return false;
   }
 };
