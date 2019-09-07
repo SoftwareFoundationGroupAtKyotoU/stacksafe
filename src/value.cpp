@@ -46,9 +46,9 @@ Value::Value(const llvm::Value& v)
 Value::Value(int n) : value_{nullptr}, num_{n}, type_{nullptr} {}
 std::optional<int> Value::number() const { return num_; }
 const Type& Value::type() const { return type_; }
-std::string Value::repr(std::size_t width) const {
+std::string Value::repr() const {
   if (is_register()) {
-    return prefix_ + type_.repr_with_num(*num_, width);
+    return prefix_ + std::to_string(*num_);
   } else {
     return to_str(*value_);
   }

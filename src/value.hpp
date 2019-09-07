@@ -23,7 +23,7 @@ class Value {
   explicit Value(int n);
   std::optional<int> number() const;
   const Type& type() const;
-  std::string repr(std::size_t width = 0) const;
+  std::string repr() const;
   bool is_register() const;
   std::size_t length() const;
 };
