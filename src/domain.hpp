@@ -6,6 +6,7 @@
 #include "token.hpp"
 
 namespace stacksafe {
+class Fabric;
 
 class Domain : private std::set<Symbol> {
   using Base = std::set<Symbol>;
@@ -19,6 +20,7 @@ class Domain : private std::set<Symbol> {
   bool includes(const Domain& that) const;
 };
 void to_json(Json& j, const Domain& x);
+Fabric dump(const Domain& domain);
 
 }  // namespace stacksafe
 
