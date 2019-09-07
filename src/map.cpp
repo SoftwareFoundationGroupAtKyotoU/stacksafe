@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
@@ -63,11 +64,25 @@ void to_json(Json& j, const Map<K>& x) {
   }
   j = obj;
 }
+template <typename K>
+Fabric dump(const Map<K>& map) {
+  Fabric ret;
+  ret.append("{").next();
+  for (auto& [key, value] : map) {
+    ret.append(dump(key)).append(":").next();
+    ret.append("  ").append(dump(value)).append(",").next();
+  }
+  ret.append("}");
+  return ret;
+}
 
 template class Map<Value>;
 template class Map<Symbol>;
 
 template void to_json<Value>(Json&, const Stack&);
 template void to_json<Symbol>(Json&, const Heap&);
+
+template Fabric dump<Value>(const Stack&);
+template Fabric dump<Symbol>(const Heap&);
 
 }  // namespace stacksafe
