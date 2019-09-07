@@ -63,7 +63,7 @@ bool operator<(const Symbol &lhs, const Symbol &rhs) {
 void to_json(Json &j, const Symbol &x) { j = x.repr(); }
 Fabric dump(const Symbol &symbol) {
   Fabric ret;
-  return ret.append(symbol.repr()).append(symbol.type().repr()).quote();
+  return ret.append(symbol.repr()).append(dump(symbol.type())).quote();
 }
 
 const std::string Value::prefix_{"%"};
@@ -99,7 +99,7 @@ bool operator<(const Value &lhs, const Value &rhs) {
 void to_json(Json &j, const Value &x) { j = x.repr(); }
 Fabric dump(const Value &value) {
   Fabric ret;
-  return ret.append(value.repr()).append(value.type().repr()).quote();
+  return ret.append(value.repr()).append(dump(value.type())).quote();
 }
 
 }  // namespace stacksafe
