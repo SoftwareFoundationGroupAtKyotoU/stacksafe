@@ -50,8 +50,12 @@ Fabric& Fabric::quote() {
   return quote(q, q);
 }
 void Fabric::print(llvm::raw_ostream& os) const {
+  bool first = true;
   for (auto& line : fabric_) {
-    os << line << "\n";
+    if (!std::exchange(first, false)) {
+      os << "\n";
+    }
+    os << line;
   }
 }
 llvm::raw_ostream& operator<<(llvm::raw_ostream& os, const Fabric& fab) {
