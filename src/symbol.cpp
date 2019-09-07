@@ -11,14 +11,15 @@ std::string to_ascii(int num) {
   }
   return ret;
 }
+constexpr int current_init = 0;
 }  // namespace
 
 const std::string Symbol::prefix_{"#"};
-int Symbol::current_ = 0;
+int Symbol::current_ = current_init;
 Symbol::Symbol(int n, const Type &t) : num_{n}, type_{t} {}
 Symbol Symbol::global(const Type &t) { return Symbol{-1, t}; }
 Symbol Symbol::create(const Type &t) { return Symbol{current_++, t}; }
-void Symbol::reset() { current_ = 0; }
+void Symbol::reset() { current_ = current_init; }
 int Symbol::number() const { return num_; }
 const Type &Symbol::type() const { return type_; }
 std::string Symbol::repr() const {
@@ -29,7 +30,7 @@ std::string Symbol::repr() const {
   }
 }
 std::size_t Symbol::length() const { return std::to_string(num_).size(); }
-bool Symbol::is_global() const { return num_ < 0; }
+bool Symbol::is_global() const { return num_ < current_init; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
