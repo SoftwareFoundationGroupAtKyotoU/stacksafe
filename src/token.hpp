@@ -5,6 +5,10 @@
 #include "json_fwd.hpp"
 #include "type.hpp"
 
+namespace llvm {
+class Value;
+}
+
 namespace stacksafe {
 
 class Token {
@@ -32,6 +36,20 @@ class Symbol : private Token {
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);
+
+class Value : private Token {
+  static const std::string prefix_;
+  const llvm::Value *const value_;
+
+ public:
+  using Token::number, Token::type;
+  explicit Value(const llvm::Value &v);
+  explicit Value(int n);
+  std::string repr() const;
+  bool is_register() const;
+};
+bool operator<(const Value &lhs, const Value &rhs);
+void to_json(Json &j, const Value &x);
 
 }  // namespace stacksafe
 
