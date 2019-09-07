@@ -1,5 +1,6 @@
 #include "fabric.hpp"
 #include <llvm/Support/raw_ostream.h>
+#include <utility>
 
 namespace stacksafe {
 
@@ -18,11 +19,13 @@ Fabric& Fabric::append(const std::string& str) {
   return *this;
 }
 Fabric& Fabric::append(const Fabric& fab) {
-  auto prev = pos_;
+  bool first = true;
   for (auto& line : fab.fabric_) {
-    append(line).next();
+    if (!std::exchange(first, false)) {
+      next();
+    }
+    append(line);
   }
-  pos_ = prev;
   return *this;
 }
 Fabric& Fabric::prepend(const std::string& str) {
@@ -30,11 +33,13 @@ Fabric& Fabric::prepend(const std::string& str) {
   return *this;
 }
 Fabric& Fabric::prepend(const Fabric& fab) {
-  auto prev = pos_;
+  bool first = true;
   for (auto& line : fab.fabric_) {
-    prepend(line).next();
+    if (!std::exchange(first, false)) {
+      next();
+    }
+    prepend(line);
   }
-  pos_ = prev;
   return *this;
 }
 Fabric& Fabric::quote(const std::string& open, const std::string& close) {
