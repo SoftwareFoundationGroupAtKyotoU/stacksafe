@@ -12,11 +12,11 @@ bool Domain::includes(const Domain& that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
 }
 void to_json(Json& j, const Domain& x) {
-  Json tmp;
+  Json::array_t arr;
   for (auto& e : x) {
-    tmp.push_back(e);
+    arr.push_back(e);
   }
-  j = tmp;
+  j = arr;
 }
 Fabric dump(const Domain& domain) {
   Fabric ret;

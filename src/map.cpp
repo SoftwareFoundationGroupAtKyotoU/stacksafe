@@ -59,7 +59,7 @@ bool Map<K>::includes(const Map& that) const {
 }
 template <typename K>
 void to_json(Json& j, const Map<K>& x) {
-  Json obj;
+  Json::object_t obj;
   for (auto& [key, val] : x) {
     obj[key.repr()] = val;
   }

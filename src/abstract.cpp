@@ -37,9 +37,11 @@ bool Abstract::update(llvm::BasicBlock* b, const Env& e) {
   }
 }
 void to_json(Json& j, const Abstract& x) {
+  Json::object_t obj;
   for (auto& [k, v] : x.blocks_) {
-    j[k ? Value::create(*k).repr() : ""] = v;
+    obj[k ? Value::create(*k).repr() : ""] = v;
   }
+  j = obj;
 }
 
 }  // namespace stacksafe
