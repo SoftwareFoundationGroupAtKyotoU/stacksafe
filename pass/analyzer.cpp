@@ -14,7 +14,7 @@ struct Analyzer : public llvm::FunctionPass {
     Log log{f};
     Abstract abstract{log};
     abstract.interpret(f);
-    log.print();
+    log.print(llvm::errs());
     return false;
   }
 };

@@ -31,12 +31,12 @@ Log::Log(const llvm::Function& func) : function{&func} {}
 void Log::add(const Env& prev, const llvm::BasicBlock* block, const Env& next) {
   blocks.emplace_back(prev, block, next);
 }
-void Log::print() const {
+void Log::print(llvm::raw_ostream& os) const {
   const auto hr = "--------------------------------";
-  llvm::errs() << *function;
+  os << *function;
   for (auto& log : blocks) {
-    log.print(llvm::errs());
-    llvm::errs() << "\n" << hr << "\n";
+    log.print(os);
+    os << "\n" << hr << "\n";
   }
 }
 

@@ -28,7 +28,7 @@ struct Log {
  public:
   explicit Log(const llvm::Function& func);
   void add(const Env& prev, const llvm::BasicBlock* block, const Env& next);
-  void print() const;
+  void print(llvm::raw_ostream& os) const;
 };
 
 void unknown_instruction(llvm::Instruction& i);
