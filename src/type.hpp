@@ -28,6 +28,7 @@ class Token {
 
  protected:
   Token(int n, const Type& t);
+  const Type& type() const;
 };
 
 }  // namespace stacksafe

@@ -33,5 +33,6 @@ Type Type::pointee_type() const {
 void to_json(Json& j, const Type& x) { j = x.repr(); }
 
 Token::Token(int n, const Type& t) : num_{n}, type_{t} {}
+const Type& Token::type() const { return type_; }
 
 }  // namespace stacksafe
