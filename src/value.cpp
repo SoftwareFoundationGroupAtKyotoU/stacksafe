@@ -54,9 +54,6 @@ std::string Value::repr() const {
   }
 }
 bool Value::is_register() const { return num_.has_value(); }
-std::size_t Value::length() const {
-  return num_ ? std::to_string(*num_).size() : 0;
-}
 bool operator<(const Value& lhs, const Value& rhs) {
   auto l = lhs.number().value_or(-1);
   auto r = rhs.number().value_or(-1);
