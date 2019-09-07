@@ -16,5 +16,14 @@ Fabric& Fabric::append(const std::string& str) {
   current().append(str);
   return *this;
 }
+Fabric& Fabric::append(const Fabric& fab) {
+  auto prev = pos_;
+  for (auto& line : fab.fabric_) {
+    current().append(line);
+    next();
+  }
+  pos_ = prev;
+  return *this;
+}
 
 }  // namespace stacksafe

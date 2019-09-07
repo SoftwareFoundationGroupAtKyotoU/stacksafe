@@ -15,6 +15,7 @@ class Fabric {
   void next();
   std::string& current();
   Fabric& append(const std::string& str);
+  Fabric& append(const Fabric& fab);
 };
 
 }  // namespace stacksafe
