@@ -28,7 +28,7 @@ bool Env::merge(const Env& that) {
   return ret;
 }
 void Env::argument(const Value& arg) {
-  auto sym = Symbol::global(arg.type().pointee_type());
+  auto sym = Symbol::global();
   heap_.insert(sym);
   stack_.insert(arg, sym);
 }

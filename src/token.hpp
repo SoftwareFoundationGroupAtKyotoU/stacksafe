@@ -30,7 +30,7 @@ class Symbol : private Token {
 
  public:
   using Token::number, Token::type;
-  static Symbol global(const Type &t);
+  static Symbol global();
   static Symbol create(const Type &t);
   static void reset();
   std::string repr() const;

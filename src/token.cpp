@@ -46,7 +46,7 @@ const Type &Token::type() const { return type_; }
 
 const std::string Symbol::prefix_{"#"};
 int Symbol::current_ = Symbol::current_init;
-Symbol Symbol::global(const Type &t) { return Symbol{current_init, t}; }
+Symbol Symbol::global() { return Symbol{current_init, Type{nullptr}}; }
 Symbol Symbol::create(const Type &t) { return Symbol{++current_, t}; }
 void Symbol::reset() { current_ = current_init; }
 std::string Symbol::repr() const {
