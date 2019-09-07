@@ -17,6 +17,7 @@ struct EnvTest : ::testing::Test {
   void init_stack(int key);
   void push_heap(String key, String val);
   void push_heap(int key, int val);
+  void push_stack(int key, String val);
   void push_stack(int key, int val);
   void equal() const;
   static String sym(String a);

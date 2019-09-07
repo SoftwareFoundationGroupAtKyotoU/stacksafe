@@ -17,6 +17,9 @@ void EnvTest::push_heap(String key, String val) {
 void EnvTest::push_heap(int key, int val) {
   expect["heap"][sym(key)].push_back(sym(val));
 }
+void EnvTest::push_stack(int key, String val) {
+  expect["stack"][reg(key)].push_back(sym(val));
+}
 void EnvTest::push_stack(int key, int val) {
   expect["stack"][reg(key)].push_back(sym(val));
 }
