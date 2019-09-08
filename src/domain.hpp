@@ -14,6 +14,7 @@ class Domain : private std::set<Symbol> {
  public:
   using Base::begin, Base::end;
   Domain() = default;
+  explicit Domain(std::initializer_list<Symbol> list);
   void insert(const Symbol& sym);
   void insert(const Domain& dom);
   bool includes(const Symbol& sym) const;

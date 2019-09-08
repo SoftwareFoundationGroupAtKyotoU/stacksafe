@@ -5,6 +5,7 @@
 
 namespace stacksafe {
 
+Domain::Domain(std::initializer_list<Symbol> list) : Base{list} {}
 void Domain::insert(const Symbol& sym) { Base::insert(sym); }
 void Domain::insert(const Domain& dom) { Base::insert(dom.begin(), dom.end()); }
 bool Domain::includes(const Symbol& sym) const { return 0 < Base::count(sym); }
