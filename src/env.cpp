@@ -30,9 +30,12 @@ bool Env::merge(const Env& that) {
   return ret;
 }
 bool Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
-  stack_.insert(dst, from_value(lhs));
-  stack_.insert(dst, from_value(rhs));
-  return true;
+  if (dst.is_register()) {
+    stack_.insert(dst, from_value(lhs));
+    stack_.insert(dst, from_value(rhs));
+    return true;
+  }
+  return false;
 }
 bool Env::alloc(const Value& dst) {
   if (dst.is_register()) {
@@ -44,15 +47,13 @@ bool Env::alloc(const Value& dst) {
   return false;
 }
 bool Env::load(const Value& dst, const Value& src) {
-  if (auto ptr = from_register(src); ptr && dst.is_register()) {
-    for (auto& sym : *ptr) {
-      if (auto source = heap_.get(sym)) {
-        stack_.insert(dst, *source);
-        continue;
+  if (dst.is_register()) {
+    if (auto ptr = from_register(src)) {
+      for (auto& sym : *ptr) {
+        stack_.insert(dst, from_symbol(sym));
       }
-      return false;
+      return true;
     }
-    return true;
   }
   return false;
 }
@@ -70,14 +71,20 @@ bool Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
   return load(dst, ptr) && store(val, ptr);
 }
 bool Env::cast(const Value& dst, const Value& src) {
-  stack_.insert(dst, from_value(src));
-  return true;
+  if (dst.is_register()) {
+    stack_.insert(dst, from_value(src));
+    return true;
+  }
+  return false;
 }
 bool Env::phi(const Value& dst, const Params& params) {
-  for (auto& val : params) {
-    stack_.insert(dst, from_value(val));
+  if (dst.is_register()) {
+    for (auto& val : params) {
+      stack_.insert(dst, from_value(val));
+    }
+    return true;
   }
-  return true;
+  return false;
 }
 bool Env::call(const Value& dst, const Params& params) {
   auto domain = collect(params);
@@ -90,8 +97,11 @@ bool Env::call(const Value& dst, const Params& params) {
   return true;
 }
 bool Env::constant(const Value& dst) {
-  stack_.insert(dst);
-  return true;
+  if (dst.is_register()) {
+    stack_.insert(dst);
+    return true;
+  }
+  return false;
 }
 Domain* Env::from_register(const Value& reg) {
   return reg.is_register() ? stack_.get(reg) : nullptr;
