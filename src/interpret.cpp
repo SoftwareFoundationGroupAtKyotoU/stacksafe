@@ -104,6 +104,15 @@ auto Interpret::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
     error(i);
   }
 }
+auto Interpret::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
+  auto ptr = i.getPointerOperand();
+  auto val = i.getNewValOperand();
+  if (ptr && val) {
+    env_.atomic(Value::create(i), Value::create(*ptr), Value::create(*val));
+  } else {
+    error(i);
+  }
+}
 void Interpret::error(llvm::Instruction &i) const {
   llvm::errs() << "Failed to process: " << i << "\n";
 }

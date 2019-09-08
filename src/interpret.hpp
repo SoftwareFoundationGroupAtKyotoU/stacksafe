@@ -27,6 +27,7 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
   RetTy visitPHINode(llvm::PHINode &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
   RetTy visitAtomicRMWInst(llvm::AtomicRMWInst &i);
+  RetTy visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i);
 
  private:
   void error(llvm::Instruction &i) const;
