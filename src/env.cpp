@@ -39,36 +39,30 @@ bool Env::alloc(const Value& dst) {
   return false;
 }
 bool Env::load(const Value& dst, const Value& src) {
-  if (dst.is_register() && src.is_register()) {
-    if (auto ptr = stack_.get(src)) {
-      for (auto& sym : *ptr) {
-        if (auto source = heap_.get(sym)) {
-          stack_.insert(dst, *source);
-          continue;
-        }
-        return false;
+  if (auto ptr = from_register(src); ptr && dst.is_register()) {
+    for (auto& sym : *ptr) {
+      if (auto source = heap_.get(sym)) {
+        stack_.insert(dst, *source);
+        continue;
       }
-      return true;
+      return false;
     }
+    return true;
   }
   return false;
 }
 bool Env::store(const Value& src, const Value& dst) {
-  if (dst.is_register()) {
-    if (auto target = stack_.get(dst)) {
-      Domain source;
-      if (src.is_register()) {
-        if (auto s = stack_.get(src)) {
-          source.insert(*s);
-        } else {
-          return false;
-        }
-      }
-      for (auto& t : *target) {
-        heap_.insert(t, source);
-      }
-      return true;
+  if (auto target = from_register(dst)) {
+    Domain source;
+    if (auto s = from_register(src)) {
+      source.insert(*s);
+    } else if (src.is_register()) {
+      return false;
     }
+    for (auto& t : *target) {
+      heap_.insert(t, source);
+    }
+    return true;
   }
   return false;
 }
