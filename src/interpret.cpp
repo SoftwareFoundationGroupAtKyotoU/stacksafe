@@ -15,121 +15,104 @@ auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   }
 }
 auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
-  if (auto lhs = i.getOperand(0), rhs = i.getOperand(1);
-      lhs && rhs &&
-      env_.binop(Value::create(i), Value::create(*lhs), Value::create(*rhs))) {
-    return;
+  if (auto lhs = i.getOperand(0)) {
+    if (auto rhs = i.getOperand(1)) {
+      check_interpret(i, env_.binop(Value::create(i), Value::create(*lhs),
+                                    Value::create(*rhs)));
+    }
   }
-  error(i);
 }
 auto Interpret::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
-  if (env_.alloc(Value::create(i))) {
-    return;
-  }
-  error(i);
+  check_interpret(i, env_.alloc(Value::create(i)));
 }
 auto Interpret::visitLoadInst(llvm::LoadInst &i) -> RetTy {
-  if (auto src = i.getPointerOperand();
-      src && env_.load(Value::create(i), Value::create(*src))) {
-    return;
+  if (auto src = i.getPointerOperand()) {
+    check_interpret(i, env_.load(Value::create(i), Value::create(*src)));
   }
-  error(i);
 }
 auto Interpret::visitStoreInst(llvm::StoreInst &i) -> RetTy {
-  if (auto src = i.getValueOperand(), dst = i.getPointerOperand();
-      src && dst && env_.store(Value::create(*src), Value::create(*dst))) {
-    return;
+  if (auto src = i.getValueOperand()) {
+    if (auto dst = i.getPointerOperand()) {
+      check_interpret(i, env_.store(Value::create(*src), Value::create(*dst)));
+    }
   }
-  error(i);
 }
 auto Interpret::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
-  if (auto ptr = i.getPointerOperand(), val = i.getNewValOperand();
-      ptr && val &&
-      env_.cmpxchg(Value::create(i), Value::create(*ptr),
-                   Value::create(*val))) {
-    return;
+  if (auto ptr = i.getPointerOperand()) {
+    if (auto val = i.getNewValOperand()) {
+      check_interpret(i, env_.cmpxchg(Value::create(i), Value::create(*ptr),
+                                      Value::create(*val)));
+    }
   }
-  error(i);
 }
 auto Interpret::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
-  if (auto ptr = i.getPointerOperand(), val = i.getValOperand();
-      ptr && val &&
-      env_.cmpxchg(Value::create(i), Value::create(*ptr),
-                   Value::create(*val))) {
-    return;
+  if (auto ptr = i.getPointerOperand()) {
+    if (auto val = i.getValOperand()) {
+      check_interpret(i, env_.cmpxchg(Value::create(i), Value::create(*ptr),
+                                      Value::create(*val)));
+    }
   }
-  error(i);
 }
 auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
-  if (auto v = i.getOperand(0);
-      v && env_.cast(Value::create(i), Value::create(*v))) {
-    return;
+  if (auto v = i.getOperand(0)) {
+    check_interpret(i, env_.cast(Value::create(i), Value::create(*v)));
   }
-  error(i);
 }
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
-  if (env_.constant(Value::create(i))) {
-    return;
-  }
-  error(i);
+  check_interpret(i, env_.constant(Value::create(i)));
 }
 auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;
+  bool success = true;
   for (auto &use : i.incoming_values()) {
     if (auto val = use.get()) {
       params.push_back(Value::create(*val));
     } else {
-      error(i);
+      success = false;
     }
   }
-  if (env_.phi(Value::create(i), params)) {
-    return;
-  }
-  error(i);
+  check_interpret(i, env_.phi(Value::create(i), params) && success);
 }
 auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
   Params params;
+  bool success = true;
   for (auto &a : i.args()) {
     if (auto v = a.get()) {
       params.push_back(Value::create(*v));
     } else {
-      error(i);
+      success = false;
     }
   }
   if (i.getFunctionType()->getReturnType()->isVoidTy()) {
     env_.call(params);
-    return;
-  } else if (env_.call(Value::create(i), params)) {
-    return;
+  } else {
+    success = env_.call(Value::create(i), params) && success;
   }
-  error(i);
+  check_interpret(i, success);
 }
 auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   if (auto v = i.getPointerOperand()) {
-    env_.cast(Value::create(i), Value::create(*v));
-  } else {
-    error(i);
+    check_interpret(i, env_.cast(Value::create(i), Value::create(*v)));
   }
 }
 auto Interpret::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
+  bool success = true;
   if (auto v = i.getTrueValue()) {
     params.push_back(Value::create(*v));
   } else {
-    error(i);
+    success = false;
   }
   if (auto v = i.getFalseValue()) {
     params.push_back(Value::create(*v));
   } else {
-    error(i);
+    success = false;
   }
-  env_.phi(Value::create(i), params);
+  check_interpret(i, env_.phi(Value::create(i), params) && success);
 }
 auto Interpret::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   if (auto src = i.getAggregateOperand()) {
-    env_.cast(Value::create(i), Value::create(*src));
-  } else {
-    error(i);
+    check_interpret(i, env_.cast(Value::create(i), Value::create(*src)));
   }
 }
 void Interpret::error(llvm::Instruction &i) const {
