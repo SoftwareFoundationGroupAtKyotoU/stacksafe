@@ -42,6 +42,24 @@ auto Interpret::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   }
   error(i);
 }
+auto Interpret::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
+  if (auto ptr = i.getPointerOperand(), val = i.getNewValOperand();
+      ptr && val &&
+      env_.cmpxchg(Value::create(i), Value::create(*ptr),
+                   Value::create(*val))) {
+    return;
+  }
+  error(i);
+}
+auto Interpret::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
+  if (auto ptr = i.getPointerOperand(), val = i.getValOperand();
+      ptr && val &&
+      env_.cmpxchg(Value::create(i), Value::create(*ptr),
+                   Value::create(*val))) {
+    return;
+  }
+  error(i);
+}
 auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
   if (auto v = i.getOperand(0);
       v && env_.cast(Value::create(i), Value::create(*v))) {
@@ -100,24 +118,6 @@ auto Interpret::visitSelectInst(llvm::SelectInst &i) -> RetTy {
     error(i);
   }
   env_.phi(Value::create(i), params);
-}
-auto Interpret::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
-  auto ptr = i.getPointerOperand();
-  auto val = i.getValOperand();
-  if (ptr && val) {
-    env_.cmpxchg(Value::create(i), Value::create(*ptr), Value::create(*val));
-  } else {
-    error(i);
-  }
-}
-auto Interpret::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
-  auto ptr = i.getPointerOperand();
-  auto val = i.getNewValOperand();
-  if (ptr && val) {
-    env_.cmpxchg(Value::create(i), Value::create(*ptr), Value::create(*val));
-  } else {
-    error(i);
-  }
 }
 auto Interpret::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   if (auto src = i.getAggregateOperand()) {

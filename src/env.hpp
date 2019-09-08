@@ -30,11 +30,11 @@ class Env {
   bool alloc(const Value& dst);
   bool load(const Value& dst, const Value& src);
   bool store(const Value& src, const Value& dst);
+  bool cmpxchg(const Value& dst, const Value& ptr, const Value& val);
   bool cast(const Value& dst, const Value& src);
   bool phi(const Value& dst, const Params& params);
   bool call(const Value& dst, const Params& params);
   void constant(const Value& dst);
-  void cmpxchg(const Value& dst, const Value& ptr, const Value& val);
 
  private:
   Domain* from_register(const Value& reg);

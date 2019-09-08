@@ -20,14 +20,14 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
   RetTy visitAllocaInst(llvm::AllocaInst &i);
   RetTy visitLoadInst(llvm::LoadInst &i);
   RetTy visitStoreInst(llvm::StoreInst &i);
+  RetTy visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i);
+  RetTy visitAtomicRMWInst(llvm::AtomicRMWInst &i);
   RetTy visitCastInst(llvm::CastInst &i);
   RetTy visitCmpInst(llvm::CmpInst &i);
   RetTy visitPHINode(llvm::PHINode &i);
   RetTy visitCallInst(llvm::CallInst &i);
   RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
-  RetTy visitAtomicRMWInst(llvm::AtomicRMWInst &i);
-  RetTy visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i);
   RetTy visitExtractValue(llvm::ExtractValueInst &i);
 
  private:

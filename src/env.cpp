@@ -66,6 +66,9 @@ bool Env::store(const Value& src, const Value& dst) {
   }
   return false;
 }
+bool Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
+  return load(dst, ptr) && store(val, ptr);
+}
 bool Env::cast(const Value& dst, const Value& src) {
   stack_.insert(dst, from_value(src));
   return true;
@@ -87,10 +90,6 @@ bool Env::call(const Value& dst, const Params& params) {
   return true;
 }
 void Env::constant(const Value& dst) { stack_.insert(dst); }
-void Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
-  load(dst, ptr);
-  store(val, ptr);
-}
 Domain* Env::from_register(const Value& reg) {
   return reg.is_register() ? stack_.get(reg) : nullptr;
 }
