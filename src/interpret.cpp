@@ -51,5 +51,12 @@ auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
     env_.cast(Value::create(i), Value::create(*v));
   }
 }
+auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
+  Params params;
+  for (auto &use : i.incoming_values()) {
+    params.push_back(Value::create(*use.get()));
+  }
+  env_.phi(Value::create(i), params);
+}
 
 }  // namespace stacksafe
