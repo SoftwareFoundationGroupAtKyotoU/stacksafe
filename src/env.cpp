@@ -45,14 +45,12 @@ bool Env::load(const Value& dst, const Value& src) {
   return ret;
 }
 bool Env::store(const Value& src, const Value& dst) {
-  if (dst.is_register()) {
-    auto source = from_stack(src);
-    for (auto& target : from_stack(dst)) {
-      heap_.insert(target, source);
-    }
-    return true;
+  bool ret = true;
+  auto source = from_stack(src);
+  for (auto& target : from_stack(dst)) {
+    ret = insert_heap(target, source) && ret;
   }
-  return false;
+  return ret;
 }
 bool Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
   return load(dst, ptr) && store(val, ptr);
