@@ -56,11 +56,7 @@ bool Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
   return load(dst, ptr) && store(val, ptr);
 }
 bool Env::cast(const Value& dst, const Value& src) {
-  if (dst.is_register()) {
-    stack_.insert(dst, from_stack(src));
-    return true;
-  }
-  return false;
+  return insert_stack(dst, from_stack(src));
 }
 bool Env::phi(const Value& dst, const Params& params) {
   if (dst.is_register()) {
