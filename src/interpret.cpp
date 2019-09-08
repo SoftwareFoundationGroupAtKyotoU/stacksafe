@@ -72,5 +72,12 @@ auto Interpret::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   }
   env_.phi(Value::create(i), params);
 }
+auto Interpret::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
+  auto ptr = i.getPointerOperand();
+  auto val = i.getValOperand();
+  if (ptr && val) {
+    env_.atomic(Value::create(i), Value::create(*ptr), Value::create(*val));
+  }
+}
 
 }  // namespace stacksafe
