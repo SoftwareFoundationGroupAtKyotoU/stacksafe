@@ -96,7 +96,10 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
       error(i);
     }
   }
-  if (env_.call(Value::create(i), params)) {
+  if (i.getFunctionType()->getReturnType()->isVoidTy()) {
+    env_.call(params);
+    return;
+  } else if (env_.call(Value::create(i), params)) {
     return;
   }
   error(i);
