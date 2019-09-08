@@ -48,20 +48,18 @@ bool Env::alloc(const Value& dst) {
 }
 bool Env::load(const Value& dst, const Value& src) {
   if (dst.is_register()) {
-    if (auto ptr = from_register(src)) {
-      for (auto& sym : *ptr) {
-        stack_.insert(dst, from_symbol(sym));
-      }
-      return true;
+    for (auto& sym : from_value(src)) {
+      stack_.insert(dst, from_symbol(sym));
     }
+    return true;
   }
   return false;
 }
 bool Env::store(const Value& src, const Value& dst) {
-  if (auto target = from_register(dst)) {
+  if (dst.is_register()) {
     auto source = from_value(src);
-    for (auto& t : *target) {
-      heap_.insert(t, source);
+    for (auto& target : from_value(dst)) {
+      heap_.insert(target, source);
     }
     return true;
   }
