@@ -54,7 +54,9 @@ auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
 auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;
   for (auto &use : i.incoming_values()) {
-    params.push_back(Value::create(*use.get()));
+    if (auto val = use.get()) {
+      params.push_back(Value::create(*val));
+    }
   }
   env_.phi(Value::create(i), params);
 }
