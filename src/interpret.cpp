@@ -58,5 +58,15 @@ auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
   }
   env_.phi(Value::create(i), params);
 }
+auto Interpret::visitSelectInst(llvm::SelectInst &i) -> RetTy {
+  Params params;
+  if (auto v = i.getTrueValue()) {
+    params.push_back(Value::create(*v));
+  }
+  if (auto v = i.getFalseValue()) {
+    params.push_back(Value::create(*v));
+  }
+  env_.phi(Value::create(i), params);
+}
 
 }  // namespace stacksafe
