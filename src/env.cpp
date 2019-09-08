@@ -52,6 +52,14 @@ void Env::load(const Value& dst, const Value& src) {
     }
   }
 }
+void Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
+  if (auto d = stack_.get(lhs)) {
+    stack_.insert(dst, *d);
+  }
+  if (auto d = stack_.get(rhs)) {
+    stack_.insert(dst, *d);
+  }
+}
 void Env::constant(const Value& dst) { stack_.insert(dst); }
 void Env::call(const Value& dst, const Params& params) {
   auto domain = collect(params);
