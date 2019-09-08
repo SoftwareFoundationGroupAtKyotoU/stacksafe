@@ -40,11 +40,11 @@ bool Env::alloc(const Value& dst) {
   return insert_heap(sym, Domain{}) && insert_stack(dst, Domain{sym});
 }
 bool Env::load(const Value& dst, const Value& src) {
-  bool ret = true;
+  Domain dom;
   for (auto& sym : from_stack(src)) {
-    ret = insert_stack(dst, from_heap(sym)) && ret;
+    dom.insert(from_heap(sym));
   }
-  return ret;
+  return insert_stack(dst, dom);
 }
 bool Env::store(const Value& src, const Value& dst) {
   bool ret = true;
