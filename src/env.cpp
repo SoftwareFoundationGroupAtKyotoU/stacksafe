@@ -34,13 +34,8 @@ bool Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
          insert_stack(dst, from_stack(rhs));
 }
 bool Env::alloc(const Value& dst) {
-  if (dst.is_register()) {
-    auto sym = Symbol::create(dst.type().pointee_type());
-    heap_.insert(sym);
-    stack_.insert(dst, sym);
-    return true;
-  }
-  return false;
+  auto sym = Symbol::create(dst.type().pointee_type());
+  return insert_heap(sym, Domain{}) && insert_stack(dst, Domain{sym});
 }
 bool Env::load(const Value& dst, const Value& src) {
   if (dst.is_register()) {
