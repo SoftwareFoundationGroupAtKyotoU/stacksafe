@@ -70,6 +70,12 @@ bool Env::cast(const Value& dst, const Value& src) {
   stack_.insert(dst, from_value(src));
   return true;
 }
+bool Env::phi(const Value& dst, const Params& params) {
+  for (auto& val : params) {
+    stack_.insert(dst, from_value(val));
+  }
+  return true;
+}
 void Env::constant(const Value& dst) { stack_.insert(dst); }
 void Env::call(const Value& dst, const Params& params) {
   auto domain = collect(params);
@@ -78,13 +84,6 @@ void Env::call(const Value& dst, const Params& params) {
   }
   if (dst.is_register()) {
     stack_.insert(dst, domain);
-  }
-}
-void Env::phi(const Value& dst, const Params& params) {
-  for (auto& val : params) {
-    if (auto d = stack_.get(val)) {
-      stack_.insert(dst, *d);
-    }
   }
 }
 void Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {

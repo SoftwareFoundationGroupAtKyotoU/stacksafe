@@ -52,6 +52,20 @@ auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   env_.constant(Value::create(i));
 }
+auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
+  Params params;
+  for (auto &use : i.incoming_values()) {
+    if (auto val = use.get()) {
+      params.push_back(Value::create(*val));
+    } else {
+      error(i);
+    }
+  }
+  if (env_.phi(Value::create(i), params)) {
+    return;
+  }
+  error(i);
+}
 auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
   Params params;
   for (auto &a : i.args()) {
@@ -69,17 +83,6 @@ auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   } else {
     error(i);
   }
-}
-auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
-  Params params;
-  for (auto &use : i.incoming_values()) {
-    if (auto val = use.get()) {
-      params.push_back(Value::create(*val));
-    } else {
-      error(i);
-    }
-  }
-  env_.phi(Value::create(i), params);
 }
 auto Interpret::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
