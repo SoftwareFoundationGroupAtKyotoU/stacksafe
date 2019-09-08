@@ -115,10 +115,8 @@ void Env::collect(const Symbol& symbol, Domain& done) const {
 Domain Env::collect(const Params& params) const {
   Domain ret;
   for (auto& val : params) {
-    if (auto d = stack_.get(val)) {
-      for (auto& sym : *d) {
-        collect(sym, ret);
-      }
+    for (auto& sym : from_value(val)) {
+      collect(sym, ret);
     }
   }
   return ret;
