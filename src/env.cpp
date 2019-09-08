@@ -61,11 +61,11 @@ bool Env::cast(const Value& dst, const Value& src) {
   return insert_stack(dst, from_stack(src));
 }
 bool Env::phi(const Value& dst, const Params& params) {
-  bool ret = true;
+  Domain dom;
   for (auto& val : params) {
-    ret = insert_stack(dst, from_stack(val)) && ret;
+    dom.insert(from_stack(val));
   }
-  return ret;
+  return insert_stack(dst, dom);
 }
 Domain Env::call(const Params& params) {
   auto domain = collect(params);
