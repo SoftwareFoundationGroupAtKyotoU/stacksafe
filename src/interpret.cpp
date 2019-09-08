@@ -113,6 +113,13 @@ auto Interpret::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
     error(i);
   }
 }
+auto Interpret::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
+  if (auto src = i.getAggregateOperand()) {
+    env_.cast(Value::create(i), Value::create(*src));
+  } else {
+    error(i);
+  }
+}
 void Interpret::error(llvm::Instruction &i) const {
   llvm::errs() << "Failed to process: " << i << "\n";
 }

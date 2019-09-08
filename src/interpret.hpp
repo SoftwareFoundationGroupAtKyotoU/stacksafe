@@ -28,6 +28,7 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
   RetTy visitSelectInst(llvm::SelectInst &i);
   RetTy visitAtomicRMWInst(llvm::AtomicRMWInst &i);
   RetTy visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i);
+  RetTy visitExtractValue(llvm::ExtractValueInst &i);
 
  private:
   void error(llvm::Instruction &i) const;
