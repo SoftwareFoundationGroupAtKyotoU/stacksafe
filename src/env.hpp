@@ -33,6 +33,7 @@ class Env {
   bool cmpxchg(const Value& dst, const Value& ptr, const Value& val);
   bool cast(const Value& dst, const Value& src);
   bool phi(const Value& dst, const Params& params);
+  Domain call(const Params& params);
   bool call(const Value& dst, const Params& params);
   bool constant(const Value& dst);
 
