@@ -38,21 +38,27 @@ bool Env::alloc(const Value& dst) {
   }
   return false;
 }
+bool Env::load(const Value& dst, const Value& src) {
+  if (dst.is_register() && src.is_register()) {
+    if (auto ptr = stack_.get(src)) {
+      for (auto& sym : *ptr) {
+        if (auto source = heap_.get(sym)) {
+          stack_.insert(dst, *source);
+          continue;
+        }
+        return false;
+      }
+      return true;
+    }
+  }
+  return false;
+}
 void Env::store(const Value& src, const Value& dst) {
   auto source = stack_.get(src);
   auto target = stack_.get(dst);
   if (source && target) {
     for (auto& t : *target) {
       heap_.insert(t, *source);
-    }
-  }
-}
-void Env::load(const Value& dst, const Value& src) {
-  if (auto ptr = stack_.get(src)) {
-    for (auto& sym : *ptr) {
-      if (auto source = heap_.get(sym)) {
-        stack_.insert(dst, *source);
-      }
     }
   }
 }

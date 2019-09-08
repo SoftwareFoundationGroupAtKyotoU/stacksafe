@@ -20,18 +20,18 @@ auto Interpret::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   }
   error(i);
 }
+auto Interpret::visitLoadInst(llvm::LoadInst &i) -> RetTy {
+  if (auto src = i.getPointerOperand();
+      src && env_.load(Value::create(i), Value::create(*src))) {
+    return;
+  }
+  error(i);
+}
 auto Interpret::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   auto src = i.getValueOperand();
   auto dst = i.getPointerOperand();
   if (dst && src) {
     env_.store(Value::create(*src), Value::create(*dst));
-  } else {
-    error(i);
-  }
-}
-auto Interpret::visitLoadInst(llvm::LoadInst &i) -> RetTy {
-  if (auto src = i.getPointerOperand()) {
-    env_.load(Value::create(i), Value::create(*src));
   } else {
     error(i);
   }
