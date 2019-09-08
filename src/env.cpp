@@ -29,10 +29,14 @@ bool Env::merge(const Env& that) {
   }
   return ret;
 }
-void Env::alloc(const Value& dst) {
-  auto sym = Symbol::create(dst.type().pointee_type());
-  heap_.insert(sym);
-  stack_.insert(dst, sym);
+bool Env::alloc(const Value& dst) {
+  if (dst.is_register()) {
+    auto sym = Symbol::create(dst.type().pointee_type());
+    heap_.insert(sym);
+    stack_.insert(dst, sym);
+    return true;
+  }
+  return false;
 }
 void Env::store(const Value& src, const Value& dst) {
   auto source = stack_.get(src);

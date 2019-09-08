@@ -15,7 +15,10 @@ auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   }
 }
 auto Interpret::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
-  env_.alloc(Value::create(i));
+  if (env_.alloc(Value::create(i))) {
+    return;
+  }
+  error(i);
 }
 auto Interpret::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   auto src = i.getValueOperand();
