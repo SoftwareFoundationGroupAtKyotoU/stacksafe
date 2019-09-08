@@ -37,7 +37,9 @@ auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
 auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
   Params params;
   for (auto &a : i.args()) {
-    params.push_back(Value::create(*a.get()));
+    if (auto v = a.get()) {
+      params.push_back(Value::create(*v));
+    }
   }
   env_.call(Value::create(i), params);
 }
