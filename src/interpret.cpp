@@ -68,7 +68,10 @@ auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
   error(i);
 }
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
-  env_.constant(Value::create(i));
+  if (env_.constant(Value::create(i))) {
+    return;
+  }
+  error(i);
 }
 auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;

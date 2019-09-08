@@ -89,7 +89,10 @@ bool Env::call(const Value& dst, const Params& params) {
   }
   return true;
 }
-void Env::constant(const Value& dst) { stack_.insert(dst); }
+bool Env::constant(const Value& dst) {
+  stack_.insert(dst);
+  return true;
+}
 Domain* Env::from_register(const Value& reg) {
   return reg.is_register() ? stack_.get(reg) : nullptr;
 }

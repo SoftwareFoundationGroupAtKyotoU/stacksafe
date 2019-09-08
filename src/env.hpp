@@ -34,7 +34,7 @@ class Env {
   bool cast(const Value& dst, const Value& src);
   bool phi(const Value& dst, const Params& params);
   bool call(const Value& dst, const Params& params);
-  void constant(const Value& dst);
+  bool constant(const Value& dst);
 
  private:
   Domain* from_register(const Value& reg);
