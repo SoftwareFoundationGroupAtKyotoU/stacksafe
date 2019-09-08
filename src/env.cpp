@@ -111,10 +111,8 @@ Domain Env::from_symbol(const Symbol& sym) const {
 void Env::collect(const Symbol& symbol, Domain& done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
-    if (auto d = heap_.get(symbol)) {
-      for (auto& sym : *d) {
-        collect(sym, done);
-      }
+    for (auto& sym : from_symbol(symbol)) {
+      collect(sym, done);
     }
   }
 }
