@@ -38,6 +38,8 @@ class Env {
   bool constant(const Value& dst);
 
  private:
+  bool insert_stack(const Value& key, const Domain& val);
+  bool insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const Value& reg) const;
   Domain from_heap(const Symbol& sym) const;
   void collect(const Symbol& symbol, Domain& done) const;

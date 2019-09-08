@@ -105,6 +105,17 @@ bool Env::constant(const Value& dst) {
   }
   return false;
 }
+bool Env::insert_stack(const Value& key, const Domain& val) {
+  if (key.is_register()) {
+    stack_.insert(key, val);
+    return true;
+  }
+  return false;
+}
+bool Env::insert_heap(const Symbol& key, const Domain& val) {
+  heap_.insert(key, val);
+  return true;
+}
 Domain Env::from_stack(const Value& reg) const {
   if (auto d = stack_.get(reg)) {
     return *d;
