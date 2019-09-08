@@ -11,6 +11,7 @@ auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
 auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
     unknown_instruction(i);
+    env_.constant(Value::create(i));
   }
 }
 auto Interpret::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
