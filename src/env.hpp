@@ -33,6 +33,7 @@ class Env {
   void call(const Value& dst, const Params& params);
   void cast(const Value& dst, const Value& src);
   void phi(const Value& dst, const Params& params);
+  void atomic(const Value& dst, const Value& ptr, const Value& val);
 
  private:
   void collect(const Symbol& symbol, Domain& done) const;
