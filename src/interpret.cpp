@@ -28,13 +28,11 @@ auto Interpret::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   error(i);
 }
 auto Interpret::visitStoreInst(llvm::StoreInst &i) -> RetTy {
-  auto src = i.getValueOperand();
-  auto dst = i.getPointerOperand();
-  if (dst && src) {
-    env_.store(Value::create(*src), Value::create(*dst));
-  } else {
-    error(i);
+  if (auto src = i.getValueOperand(), dst = i.getPointerOperand();
+      src && dst && env_.store(Value::create(*src), Value::create(*dst))) {
+    return;
   }
+  error(i);
 }
 auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   auto lhs = i.getOperand(0);

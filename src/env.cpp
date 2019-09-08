@@ -53,14 +53,24 @@ bool Env::load(const Value& dst, const Value& src) {
   }
   return false;
 }
-void Env::store(const Value& src, const Value& dst) {
-  auto source = stack_.get(src);
-  auto target = stack_.get(dst);
-  if (source && target) {
-    for (auto& t : *target) {
-      heap_.insert(t, *source);
+bool Env::store(const Value& src, const Value& dst) {
+  if (dst.is_register()) {
+    if (auto target = stack_.get(dst)) {
+      Domain source;
+      if (src.is_register()) {
+        if (auto s = stack_.get(src)) {
+          source.insert(*s);
+        } else {
+          return false;
+        }
+      }
+      for (auto& t : *target) {
+        heap_.insert(t, source);
+      }
+      return true;
     }
   }
+  return false;
 }
 void Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
   if (auto d = stack_.get(lhs)) {

@@ -28,7 +28,7 @@ class Env {
   bool merge(const Env& that);
   bool alloc(const Value& dst);
   bool load(const Value& dst, const Value& src);
-  void store(const Value& src, const Value& dst);
+  bool store(const Value& src, const Value& dst);
   void binop(const Value& dst, const Value& lhs, const Value& rhs);
   void constant(const Value& dst);
   void call(const Value& dst, const Params& params);
