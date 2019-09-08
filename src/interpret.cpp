@@ -29,7 +29,11 @@ auto Interpret::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   }
 }
 auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
-  env_.constant(Value::create(i));
+  auto lhs = i.getOperand(0);
+  auto rhs = i.getOperand(1);
+  if (lhs && rhs) {
+    env_.binop(Value::create(i), Value::create(*lhs), Value::create(*rhs));
+  }
 }
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   env_.constant(Value::create(i));
