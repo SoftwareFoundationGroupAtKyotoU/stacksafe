@@ -102,6 +102,12 @@ Domain Env::from_value(const Value& reg) const {
   }
   return Domain{};
 }
+Domain Env::from_symbol(const Symbol& sym) const {
+  if (auto d = heap_.get(sym)) {
+    return *d;
+  }
+  return Domain{};
+}
 void Env::collect(const Symbol& symbol, Domain& done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
