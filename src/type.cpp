@@ -34,7 +34,10 @@ Type Type::pointee_type() const {
 void to_json(Json& j, const Type& x) { j = x.repr(); }
 Fabric dump(const Type& type) {
   Fabric ret;
-  return ret.append(type.repr()).quote("<", ">");
+  if (type.get()) {
+    ret.append(type.repr()).quote("<", ">");
+  }
+  return ret;
 }
 
 }  // namespace stacksafe
