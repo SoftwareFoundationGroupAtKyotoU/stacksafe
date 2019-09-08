@@ -38,7 +38,7 @@ class Env {
 
  private:
   Domain from_stack(const Value& reg) const;
-  Domain from_symbol(const Symbol& sym) const;
+  Domain from_heap(const Symbol& sym) const;
   void collect(const Symbol& symbol, Domain& done) const;
   Domain collect(const Params& value) const;
 };

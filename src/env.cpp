@@ -49,7 +49,7 @@ bool Env::alloc(const Value& dst) {
 bool Env::load(const Value& dst, const Value& src) {
   if (dst.is_register()) {
     for (auto& sym : from_stack(src)) {
-      stack_.insert(dst, from_symbol(sym));
+      stack_.insert(dst, from_heap(sym));
     }
     return true;
   }
@@ -107,7 +107,7 @@ Domain Env::from_stack(const Value& reg) const {
   }
   return Domain{};
 }
-Domain Env::from_symbol(const Symbol& sym) const {
+Domain Env::from_heap(const Symbol& sym) const {
   if (auto d = heap_.get(sym)) {
     return *d;
   }
@@ -116,7 +116,7 @@ Domain Env::from_symbol(const Symbol& sym) const {
 void Env::collect(const Symbol& symbol, Domain& done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
-    for (auto& sym : from_symbol(symbol)) {
+    for (auto& sym : from_heap(symbol)) {
       collect(sym, done);
     }
   }
