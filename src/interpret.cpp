@@ -75,7 +75,10 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
       error(i);
     }
   }
-  env_.call(Value::create(i), params);
+  if (env_.call(Value::create(i), params)) {
+    return;
+  }
+  error(i);
 }
 auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   if (auto v = i.getPointerOperand()) {

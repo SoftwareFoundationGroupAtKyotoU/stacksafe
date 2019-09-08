@@ -76,8 +76,7 @@ bool Env::phi(const Value& dst, const Params& params) {
   }
   return true;
 }
-void Env::constant(const Value& dst) { stack_.insert(dst); }
-void Env::call(const Value& dst, const Params& params) {
+bool Env::call(const Value& dst, const Params& params) {
   auto domain = collect(params);
   for (auto& sym : domain) {
     heap_.insert(sym, domain);
@@ -85,7 +84,9 @@ void Env::call(const Value& dst, const Params& params) {
   if (dst.is_register()) {
     stack_.insert(dst, domain);
   }
+  return true;
 }
+void Env::constant(const Value& dst) { stack_.insert(dst); }
 void Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
   load(dst, ptr);
   store(val, ptr);

@@ -32,8 +32,8 @@ class Env {
   bool store(const Value& src, const Value& dst);
   bool cast(const Value& dst, const Value& src);
   bool phi(const Value& dst, const Params& params);
+  bool call(const Value& dst, const Params& params);
   void constant(const Value& dst);
-  void call(const Value& dst, const Params& params);
   void cmpxchg(const Value& dst, const Value& ptr, const Value& val);
 
  private:
