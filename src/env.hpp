@@ -37,7 +37,6 @@ class Env {
   bool constant(const Value& dst);
 
  private:
-  Domain* from_register(const Value& reg);
   Domain from_value(const Value& reg) const;
   Domain from_symbol(const Symbol& sym) const;
   void collect(const Symbol& symbol, Domain& done) const;

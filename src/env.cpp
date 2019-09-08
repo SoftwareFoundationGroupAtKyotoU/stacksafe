@@ -101,9 +101,6 @@ bool Env::constant(const Value& dst) {
   }
   return false;
 }
-Domain* Env::from_register(const Value& reg) {
-  return reg.is_register() ? stack_.get(reg) : nullptr;
-}
 Domain Env::from_value(const Value& reg) const {
   if (auto d = stack_.get(reg)) {
     return *d;
