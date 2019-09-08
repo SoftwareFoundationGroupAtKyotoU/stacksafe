@@ -42,6 +42,13 @@ auto Interpret::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   }
   error(i);
 }
+auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
+  if (auto v = i.getOperand(0);
+      v && env_.cast(Value::create(i), Value::create(*v))) {
+    return;
+  }
+  error(i);
+}
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   env_.constant(Value::create(i));
 }
@@ -55,13 +62,6 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
     }
   }
   env_.call(Value::create(i), params);
-}
-auto Interpret::visitCastInst(llvm::CastInst &i) -> RetTy {
-  if (auto v = i.getOperand(0)) {
-    env_.cast(Value::create(i), Value::create(*v));
-  } else {
-    error(i);
-  }
 }
 auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   if (auto v = i.getPointerOperand()) {

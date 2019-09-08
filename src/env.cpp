@@ -66,6 +66,10 @@ bool Env::store(const Value& src, const Value& dst) {
   }
   return false;
 }
+bool Env::cast(const Value& dst, const Value& src) {
+  stack_.insert(dst, from_value(src));
+  return true;
+}
 void Env::constant(const Value& dst) { stack_.insert(dst); }
 void Env::call(const Value& dst, const Params& params) {
   auto domain = collect(params);
@@ -74,11 +78,6 @@ void Env::call(const Value& dst, const Params& params) {
   }
   if (dst.is_register()) {
     stack_.insert(dst, domain);
-  }
-}
-void Env::cast(const Value& dst, const Value& src) {
-  if (auto d = stack_.get(src)) {
-    stack_.insert(dst, *d);
   }
 }
 void Env::phi(const Value& dst, const Params& params) {
