@@ -68,16 +68,12 @@ bool Env::phi(const Value& dst, const Params& params) {
 Domain Env::call(const Params& params) {
   auto domain = collect(params);
   for (auto& sym : domain) {
-    heap_.insert(sym, domain);
+    insert_heap(sym, domain);
   }
   return domain;
 }
 bool Env::call(const Value& dst, const Params& params) {
-  if (dst.is_register()) {
-    stack_.insert(dst, call(params));
-    return true;
-  }
-  return false;
+  return insert_stack(dst, call(params));
 }
 bool Env::constant(const Value& dst) {
   if (dst.is_register()) {
