@@ -38,6 +38,7 @@ class Env {
 
  private:
   Domain* from_register(const Value& reg);
+  Domain from_value(const Value& reg);
   void collect(const Symbol& symbol, Domain& done) const;
   Domain collect(const Params& value) const;
 };

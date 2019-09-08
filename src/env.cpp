@@ -103,6 +103,12 @@ void Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
 Domain* Env::from_register(const Value& reg) {
   return reg.is_register() ? stack_.get(reg) : nullptr;
 }
+Domain Env::from_value(const Value& reg) {
+  if (auto d = from_register(reg)) {
+    return *d;
+  }
+  return Domain{};
+}
 void Env::collect(const Symbol& symbol, Domain& done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
