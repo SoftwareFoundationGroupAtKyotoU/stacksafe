@@ -53,12 +53,7 @@ bool Env::load(const Value& dst, const Value& src) {
 }
 bool Env::store(const Value& src, const Value& dst) {
   if (auto target = from_register(dst)) {
-    Domain source;
-    if (auto s = from_register(src)) {
-      source.insert(*s);
-    } else if (src.is_register()) {
-      return false;
-    }
+    auto source = from_value(src);
     for (auto& t : *target) {
       heap_.insert(t, source);
     }
