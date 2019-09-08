@@ -37,6 +37,7 @@ class Env {
   void cmpxchg(const Value& dst, const Value& ptr, const Value& val);
 
  private:
+  Domain* from_register(const Value& reg);
   void collect(const Symbol& symbol, Domain& done) const;
   Domain collect(const Params& value) const;
 };
