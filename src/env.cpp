@@ -31,8 +31,8 @@ bool Env::merge(const Env& that) {
 }
 bool Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
   if (dst.is_register()) {
-    stack_.insert(dst, from_value(lhs));
-    stack_.insert(dst, from_value(rhs));
+    stack_.insert(dst, from_stack(lhs));
+    stack_.insert(dst, from_stack(rhs));
     return true;
   }
   return false;
@@ -48,7 +48,7 @@ bool Env::alloc(const Value& dst) {
 }
 bool Env::load(const Value& dst, const Value& src) {
   if (dst.is_register()) {
-    for (auto& sym : from_value(src)) {
+    for (auto& sym : from_stack(src)) {
       stack_.insert(dst, from_symbol(sym));
     }
     return true;
@@ -57,8 +57,8 @@ bool Env::load(const Value& dst, const Value& src) {
 }
 bool Env::store(const Value& src, const Value& dst) {
   if (dst.is_register()) {
-    auto source = from_value(src);
-    for (auto& target : from_value(dst)) {
+    auto source = from_stack(src);
+    for (auto& target : from_stack(dst)) {
       heap_.insert(target, source);
     }
     return true;
@@ -70,7 +70,7 @@ bool Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
 }
 bool Env::cast(const Value& dst, const Value& src) {
   if (dst.is_register()) {
-    stack_.insert(dst, from_value(src));
+    stack_.insert(dst, from_stack(src));
     return true;
   }
   return false;
@@ -78,7 +78,7 @@ bool Env::cast(const Value& dst, const Value& src) {
 bool Env::phi(const Value& dst, const Params& params) {
   if (dst.is_register()) {
     for (auto& val : params) {
-      stack_.insert(dst, from_value(val));
+      stack_.insert(dst, from_stack(val));
     }
     return true;
   }
@@ -101,7 +101,7 @@ bool Env::constant(const Value& dst) {
   }
   return false;
 }
-Domain Env::from_value(const Value& reg) const {
+Domain Env::from_stack(const Value& reg) const {
   if (auto d = stack_.get(reg)) {
     return *d;
   }
@@ -124,7 +124,7 @@ void Env::collect(const Symbol& symbol, Domain& done) const {
 Domain Env::collect(const Params& params) const {
   Domain ret;
   for (auto& val : params) {
-    for (auto& sym : from_value(val)) {
+    for (auto& sym : from_stack(val)) {
       collect(sym, ret);
     }
   }
