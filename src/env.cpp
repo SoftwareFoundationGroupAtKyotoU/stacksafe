@@ -1,6 +1,5 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
 #include "fabric.hpp"
 #include "json.hpp"
