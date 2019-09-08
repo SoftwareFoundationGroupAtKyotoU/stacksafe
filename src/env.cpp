@@ -75,13 +75,7 @@ Domain Env::call(const Params& params) {
 bool Env::call(const Value& dst, const Params& params) {
   return insert_stack(dst, call(params));
 }
-bool Env::constant(const Value& dst) {
-  if (dst.is_register()) {
-    stack_.insert(dst);
-    return true;
-  }
-  return false;
-}
+bool Env::constant(const Value& dst) { return insert_stack(dst, Domain{}); }
 bool Env::insert_stack(const Value& key, const Domain& val) {
   if (key.is_register()) {
     stack_.insert(key, val);
