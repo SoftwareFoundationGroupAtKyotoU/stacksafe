@@ -29,9 +29,6 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
   RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
   RetTy visitExtractValue(llvm::ExtractValueInst &i);
-
- private:
-  void error(llvm::Instruction &i) const;
 };
 
 }  // namespace stacksafe

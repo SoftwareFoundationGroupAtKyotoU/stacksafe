@@ -115,8 +115,5 @@ auto Interpret::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
     check_interpret(i, env_.cast(Value::create(i), Value::create(*src)));
   }
 }
-void Interpret::error(llvm::Instruction &i) const {
-  llvm::errs() << "Failed to process: " << i << "\n";
-}
 
 }  // namespace stacksafe
