@@ -38,13 +38,11 @@ bool Env::alloc(const Value& dst) {
   return insert_heap(sym, Domain{}) && insert_stack(dst, Domain{sym});
 }
 bool Env::load(const Value& dst, const Value& src) {
-  if (dst.is_register()) {
-    for (auto& sym : from_stack(src)) {
-      stack_.insert(dst, from_heap(sym));
-    }
-    return true;
+  bool ret = true;
+  for (auto& sym : from_stack(src)) {
+    ret = insert_stack(dst, from_heap(sym)) && ret;
   }
-  return false;
+  return ret;
 }
 bool Env::store(const Value& src, const Value& dst) {
   if (dst.is_register()) {
