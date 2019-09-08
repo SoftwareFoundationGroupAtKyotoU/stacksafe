@@ -99,7 +99,7 @@ auto Interpret::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
   auto ptr = i.getPointerOperand();
   auto val = i.getValOperand();
   if (ptr && val) {
-    env_.atomic(Value::create(i), Value::create(*ptr), Value::create(*val));
+    env_.cmpxchg(Value::create(i), Value::create(*ptr), Value::create(*val));
   } else {
     error(i);
   }
@@ -108,7 +108,7 @@ auto Interpret::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
   auto ptr = i.getPointerOperand();
   auto val = i.getNewValOperand();
   if (ptr && val) {
-    env_.atomic(Value::create(i), Value::create(*ptr), Value::create(*val));
+    env_.cmpxchg(Value::create(i), Value::create(*ptr), Value::create(*val));
   } else {
     error(i);
   }

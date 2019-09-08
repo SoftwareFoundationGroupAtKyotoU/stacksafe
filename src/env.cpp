@@ -82,7 +82,7 @@ void Env::phi(const Value& dst, const Params& params) {
     }
   }
 }
-void Env::atomic(const Value& dst, const Value& ptr, const Value& val) {
+void Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
   load(dst, ptr);
   store(val, ptr);
 }
