@@ -14,6 +14,14 @@ auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
     env_.constant(Value::create(i));
   }
 }
+auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
+  if (auto lhs = i.getOperand(0), rhs = i.getOperand(1);
+      lhs && rhs &&
+      env_.binop(Value::create(i), Value::create(*lhs), Value::create(*rhs))) {
+    return;
+  }
+  error(i);
+}
 auto Interpret::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   if (env_.alloc(Value::create(i))) {
     return;
@@ -33,15 +41,6 @@ auto Interpret::visitStoreInst(llvm::StoreInst &i) -> RetTy {
     return;
   }
   error(i);
-}
-auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
-  auto lhs = i.getOperand(0);
-  auto rhs = i.getOperand(1);
-  if (lhs && rhs) {
-    env_.binop(Value::create(i), Value::create(*lhs), Value::create(*rhs));
-  } else {
-    error(i);
-  }
 }
 auto Interpret::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   env_.constant(Value::create(i));

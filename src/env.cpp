@@ -29,6 +29,11 @@ bool Env::merge(const Env& that) {
   }
   return ret;
 }
+bool Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
+  stack_.insert(dst, from_value(lhs));
+  stack_.insert(dst, from_value(rhs));
+  return true;
+}
 bool Env::alloc(const Value& dst) {
   if (dst.is_register()) {
     auto sym = Symbol::create(dst.type().pointee_type());
@@ -60,14 +65,6 @@ bool Env::store(const Value& src, const Value& dst) {
     return true;
   }
   return false;
-}
-void Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
-  if (auto d = stack_.get(lhs)) {
-    stack_.insert(dst, *d);
-  }
-  if (auto d = stack_.get(rhs)) {
-    stack_.insert(dst, *d);
-  }
 }
 void Env::constant(const Value& dst) { stack_.insert(dst); }
 void Env::call(const Value& dst, const Params& params) {

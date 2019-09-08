@@ -16,10 +16,10 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
   void visit(llvm::BasicBlock &b);
   RetTy visit(llvm::Instruction &i);
   RetTy visitInstruction(llvm::Instruction &i);
+  RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitAllocaInst(llvm::AllocaInst &i);
   RetTy visitLoadInst(llvm::LoadInst &i);
   RetTy visitStoreInst(llvm::StoreInst &i);
-  RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitCmpInst(llvm::CmpInst &i);
   RetTy visitCallInst(llvm::CallInst &i);
   RetTy visitCastInst(llvm::CastInst &i);
