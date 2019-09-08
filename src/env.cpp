@@ -30,12 +30,8 @@ bool Env::merge(const Env& that) {
   return ret;
 }
 bool Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
-  if (dst.is_register()) {
-    stack_.insert(dst, from_stack(lhs));
-    stack_.insert(dst, from_stack(rhs));
-    return true;
-  }
-  return false;
+  return insert_stack(dst, from_stack(lhs)) &&
+         insert_stack(dst, from_stack(rhs));
 }
 bool Env::alloc(const Value& dst) {
   if (dst.is_register()) {
