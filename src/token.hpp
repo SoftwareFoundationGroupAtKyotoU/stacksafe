@@ -49,6 +49,7 @@ class Value : private Token {
   using Token::number, Token::type;
   static Value create(const llvm::Value &v);
   explicit Value(int n);
+  const llvm::Value *get() const;
   std::string repr() const;
   bool is_register() const;
 };

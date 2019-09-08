@@ -81,6 +81,7 @@ Value Value::create(const llvm::Value &v) {
   return Value{num, v.getType(), &v};
 }
 Value::Value(int n) : Value{n, nullptr, nullptr} {}
+const llvm::Value *Value::get() const { return value_; }
 std::string Value::repr() const {
   if (is_register()) {
     return prefix_ + std::to_string(number());
