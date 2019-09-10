@@ -3,6 +3,9 @@
 TEST_F(HeapTest, Initial) { equal(); }
 
 void HeapTest::SetUp() { json = stacksafe::Json::object(); }
+void HeapTest::push(std::string key, std::string val) {
+  json[sym(key)].push_back(sym(val));
+}
 void HeapTest::equal() const {
   stacksafe::Json tmp = heap;
   EXPECT_EQ(json.dump(), tmp.dump());

@@ -8,6 +8,7 @@
 
 struct HeapTest : ::testing::Test {
   void SetUp();
+  void push(std::string key, std::string val);
   void equal() const;
   static stacksafe::Symbol symbol();
   static std::string sym(std::string a);
