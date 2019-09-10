@@ -11,6 +11,10 @@ namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
   Symbol::reset();
+  Env empty;
+  for (auto& b : f) {
+    prevs_.try_emplace(&b, empty);
+  }
 }
 void Abstract::interpret() { interpret(&func_->getEntryBlock(), Env{*func_}); }
 void Abstract::interpret(const llvm::BasicBlock* b, const Env& e) {
