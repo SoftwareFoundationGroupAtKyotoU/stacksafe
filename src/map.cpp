@@ -49,8 +49,8 @@ void Map<K>::insert(const Map& that) {
 }
 template <typename K>
 bool Map<K>::includes(const Map& that) const {
-  for (auto& [key, thisv] : *this) {
-    if (auto thatv = that.get(key); thatv && thisv.includes(*thatv)) {
+  for (auto& [key, rhs] : that) {
+    if (auto lhs = get(key); lhs && lhs->includes(rhs)) {
       continue;
     }
     return false;
