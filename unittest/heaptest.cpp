@@ -34,6 +34,17 @@ TEST_F(HeapTest, InsertDomain) {
   push(b, d);
   equal();
 }
+TEST_F(HeapTest, InsertEmpty) {
+  auto s0 = symbol(), s1 = symbol();
+  auto a = "a", b = "b";
+  equal();
+  heap.insert(s0);
+  init(a);
+  equal();
+  heap.insert(s1);
+  init(b);
+  equal();
+}
 
 void HeapTest::SetUp() { json = stacksafe::Json::object(); }
 void HeapTest::init(std::string key) {
