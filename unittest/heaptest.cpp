@@ -2,46 +2,46 @@
 
 TEST_F(HeapTest, Initial) { equal(); }
 TEST_F(HeapTest, InsertSymbol) {
-  auto s0 = symbol(), s1 = symbol(), s2 = symbol();
+  auto sa = symbol(), sb = symbol(), sc = symbol();
   auto a = "a", b = "b", c = "c";
   equal();
-  heap.insert(s0, s1);
+  heap.insert(sa, sb);
   push(a, b);
   equal();
-  heap.insert(s0, s2);
+  heap.insert(sa, sc);
   push(a, c);
   equal();
-  heap.insert(s1, s2);
+  heap.insert(sb, sc);
   push(b, c);
   equal();
 }
 TEST_F(HeapTest, InsertDomain) {
   stacksafe::Domain dom0, dom1;
-  auto s0 = symbol(), s1 = symbol();
+  auto sa = symbol(), sb = symbol(), sc = symbol(), sd = symbol();
   auto a = "a", b = "b", c = "c", d = "d";
-  dom0.insert(symbol());
-  dom0.insert(symbol());
+  dom0.insert(sc);
+  dom0.insert(sd);
   dom1.insert(dom0);
-  dom0.insert(s1);
+  dom0.insert(sb);
   equal();
-  heap.insert(s0, dom0);
+  heap.insert(sa, dom0);
   push(a, b);
   push(a, c);
   push(a, d);
   equal();
-  heap.insert(s1, dom1);
+  heap.insert(sb, dom1);
   push(b, c);
   push(b, d);
   equal();
 }
 TEST_F(HeapTest, InsertEmpty) {
-  auto s0 = symbol(), s1 = symbol();
+  auto sa = symbol(), sb = symbol();
   auto a = "a", b = "b";
   equal();
-  heap.insert(s0);
+  heap.insert(sa);
   init(a);
   equal();
-  heap.insert(s1);
+  heap.insert(sb);
   init(b);
   equal();
 }
