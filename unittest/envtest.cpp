@@ -140,6 +140,7 @@ TEST_F(EnvTest, Constant) {
 }
 
 void EnvTest::SetUp() {
+  stacksafe::Symbol::reset();
   expect["heap"] = Json::object();
   expect["stack"] = Json::object();
 }

@@ -5,6 +5,7 @@
 #include <string>
 #include "json.hpp"
 #include "map.hpp"
+#include "token.hpp"
 
 struct HeapTest : ::testing::Test {
   using Domain = stacksafe::Domain;

@@ -115,7 +115,10 @@ TEST_F(HeapTest, Get) {
 #undef CHECK_EQ
 }
 
-void HeapTest::SetUp() { json = stacksafe::Json::object(); }
+void HeapTest::SetUp() {
+  stacksafe::Symbol::reset();
+  json = stacksafe::Json::object();
+}
 void HeapTest::init(std::string key) {
   json[sym(key)] = stacksafe::Json::array();
 }

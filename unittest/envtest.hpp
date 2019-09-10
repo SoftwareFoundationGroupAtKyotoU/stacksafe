@@ -5,6 +5,7 @@
 #include <string>
 #include "env.hpp"
 #include "json.hpp"
+#include "token.hpp"
 
 struct EnvTest : ::testing::Test {
   using Json = stacksafe::Json;
