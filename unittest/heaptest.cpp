@@ -60,6 +60,35 @@ TEST_F(HeapTest, InsertMap) {
   push(c, b);
   equal();
 }
+TEST_F(HeapTest, Includes) {
+  stacksafe::Heap sub;
+  auto sa = symbol(), sb = symbol(), sc = symbol();
+#define CHECK_TRUE() EXPECT_TRUE(heap.includes(sub))
+#define CHECK_FALSE() EXPECT_FALSE(heap.includes(sub))
+  CHECK_TRUE();
+  heap.insert(sa);
+  CHECK_TRUE();
+  sub.insert(sb);
+  CHECK_FALSE();
+  sub.insert(sa, sb);
+  CHECK_FALSE();
+  heap.insert(sb, sc);
+  CHECK_FALSE();
+  heap.insert(sa, sb);
+  CHECK_TRUE();
+  heap.insert(sa, sc);
+  CHECK_TRUE();
+  sub.insert(sc, sa);
+  CHECK_FALSE();
+  heap.insert(sc);
+  CHECK_FALSE();
+  sub.insert(sb, sc);
+  CHECK_FALSE();
+  heap.insert(sub);
+  CHECK_TRUE();
+#undef CHECK_TRUE
+#undef CHECK_FALSE
+}
 
 void HeapTest::SetUp() { json = stacksafe::Json::object(); }
 void HeapTest::init(std::string key) {
