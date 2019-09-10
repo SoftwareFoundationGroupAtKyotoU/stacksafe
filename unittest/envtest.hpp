@@ -7,7 +7,6 @@
 #include "json.hpp"
 
 struct EnvTest : ::testing::Test {
-  using V = stacksafe::Value;
   using Json = stacksafe::Json;
   using Params = stacksafe::Params;
   using String = std::string;
@@ -21,6 +20,7 @@ struct EnvTest : ::testing::Test {
   static std::string reg(int n);
   stacksafe::Env env;
   Json expect;
+  static const stacksafe::Value v0, v1, v2, v3;
 };
 
 #endif  // INCLUDE_GUARD_C7E72859_0086_4AA2_8E53_FAAE8ED32D45

@@ -1,7 +1,6 @@
 #include "envtest.hpp"
 
 TEST_F(EnvTest, Alloc) {
-  V v0{0}, v1{1};
   const auto a = "a", b = "b";
   equal();
   env.alloc(v0);
@@ -14,7 +13,6 @@ TEST_F(EnvTest, Alloc) {
   equal();
 }
 TEST_F(EnvTest, Store) {
-  V v0{0}, v1{1};
   const auto a = "a", b = "b";
   equal();
   env.alloc(v0);
@@ -30,7 +28,6 @@ TEST_F(EnvTest, Store) {
   equal();
 }
 TEST_F(EnvTest, Load) {
-  V v0{0}, v1{1}, v2{2};
   const auto a = "a", b = "b";
   equal();
   env.alloc(v0);
@@ -49,14 +46,12 @@ TEST_F(EnvTest, Load) {
   equal();
 }
 TEST_F(EnvTest, Constant) {
-  V v0{0};
   equal();
   env.constant(v0);
   init_stack(0);
   equal();
 }
 TEST_F(EnvTest, Call) {
-  V v0{0}, v1{1}, v2{2}, v3{3};
   const auto a = "a", b = "b", c = "c";
   equal();
   env.alloc(v0);
@@ -89,7 +84,6 @@ TEST_F(EnvTest, Call) {
   equal();
 }
 TEST_F(EnvTest, Cast) {
-  V v0{0}, v1{1};
   const auto a = "a";
   equal();
   env.alloc(v0);
@@ -123,3 +117,7 @@ void EnvTest::equal() const {
 }
 auto EnvTest::sym(String a) -> String { return "#" + a; }
 std::string EnvTest::reg(int n) { return "%" + std::to_string(n); }
+const stacksafe::Value EnvTest::v0{0};
+const stacksafe::Value EnvTest::v1{1};
+const stacksafe::Value EnvTest::v2{2};
+const stacksafe::Value EnvTest::v3{3};
