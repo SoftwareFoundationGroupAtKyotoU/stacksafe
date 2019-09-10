@@ -11,20 +11,6 @@ TEST_F(EnvTest, Alloc) {
   push_stack(1, b);
   equal();
 }
-TEST_F(EnvTest, Store) {
-  equal();
-  env.alloc(v0);
-  init_heap(a);
-  push_stack(0, a);
-  equal();
-  env.alloc(v1);
-  init_heap(b);
-  push_stack(1, b);
-  equal();
-  env.store(v0, v1);
-  push_heap(b, a);
-  equal();
-}
 TEST_F(EnvTest, Load) {
   equal();
   env.alloc(v0);
@@ -42,10 +28,28 @@ TEST_F(EnvTest, Load) {
   push_stack(2, a);
   equal();
 }
-TEST_F(EnvTest, Constant) {
+TEST_F(EnvTest, Store) {
   equal();
-  env.constant(v0);
-  init_stack(0);
+  env.alloc(v0);
+  init_heap(a);
+  push_stack(0, a);
+  equal();
+  env.alloc(v1);
+  init_heap(b);
+  push_stack(1, b);
+  equal();
+  env.store(v0, v1);
+  push_heap(b, a);
+  equal();
+}
+TEST_F(EnvTest, Cast) {
+  equal();
+  env.alloc(v0);
+  init_heap(a);
+  push_stack(0, a);
+  equal();
+  env.cast(v1, v0);
+  push_stack(1, a);
   equal();
 }
 TEST_F(EnvTest, Call) {
@@ -79,14 +83,10 @@ TEST_F(EnvTest, Call) {
   }
   equal();
 }
-TEST_F(EnvTest, Cast) {
+TEST_F(EnvTest, Constant) {
   equal();
-  env.alloc(v0);
-  init_heap(a);
-  push_stack(0, a);
-  equal();
-  env.cast(v1, v0);
-  push_stack(1, a);
+  env.constant(v0);
+  init_stack(0);
   equal();
 }
 
