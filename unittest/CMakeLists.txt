@@ -4,6 +4,7 @@ set(target ${PROJECT_NAME})
 add_executable(${target})
 target_sources(${target} PRIVATE
   envtest.cpp
+  heaptest.cpp
   testinst.cpp
   )
 include(EnsureSources)
