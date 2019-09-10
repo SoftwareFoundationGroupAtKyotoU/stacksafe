@@ -89,6 +89,31 @@ TEST_F(HeapTest, Includes) {
 #undef CHECK_TRUE
 #undef CHECK_FALSE
 }
+TEST_F(HeapTest, Get) {
+  Domain dom;
+  auto sa = symbol(), sb = symbol(), sc = symbol();
+#define CHECK_EQ(key)                        \
+  ASSERT_NE(nullptr, heap.get(key));         \
+  EXPECT_TRUE(dom.includes(*heap.get(key))); \
+  EXPECT_TRUE(heap.get(key)->includes(dom))
+  EXPECT_EQ(nullptr, heap.get(sa));
+  EXPECT_EQ(nullptr, heap.get(sb));
+  heap.insert(sa);
+  EXPECT_NE(nullptr, heap.get(sa));
+  EXPECT_EQ(nullptr, heap.get(sb));
+  CHECK_EQ(sa);
+  dom = Domain{sa, sb};
+  heap.insert(sa, dom);
+  EXPECT_NE(nullptr, heap.get(sa));
+  EXPECT_EQ(nullptr, heap.get(sb));
+  CHECK_EQ(sa);
+  dom = Domain{sa, sc};
+  heap.insert(sb, dom);
+  EXPECT_NE(nullptr, heap.get(sa));
+  EXPECT_NE(nullptr, heap.get(sb));
+  CHECK_EQ(sb);
+#undef CHECK_EQ
+}
 
 void HeapTest::SetUp() { json = stacksafe::Json::object(); }
 void HeapTest::init(std::string key) {

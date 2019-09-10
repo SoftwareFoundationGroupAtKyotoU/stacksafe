@@ -7,6 +7,7 @@
 #include "map.hpp"
 
 struct HeapTest : ::testing::Test {
+  using Domain = stacksafe::Domain;
   void SetUp();
   void init(std::string key);
   void push(std::string key, std::string val);
