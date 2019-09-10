@@ -80,6 +80,27 @@ TEST_F(EnvTest, Cast) {
   push_stack(1, a);
   equal();
 }
+TEST_F(EnvTest, Phi) {
+  equal();
+  env.alloc(v0);
+  init_heap(a);
+  push_stack(0, a);
+  equal();
+  env.alloc(v1);
+  init_heap(b);
+  push_stack(1, b);
+  equal();
+  env.alloc(v2);
+  init_heap(c);
+  push_stack(2, c);
+  equal();
+  Params params{v0, v1, v2};
+  env.phi(v3, params);
+  push_stack(3, a);
+  push_stack(3, b);
+  push_stack(3, c);
+  equal();
+}
 TEST_F(EnvTest, Call) {
   equal();
   env.alloc(v0);
