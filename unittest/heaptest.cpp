@@ -42,6 +42,24 @@ TEST_F(HeapTest, InsertEmpty) {
   init(b);
   equal();
 }
+TEST_F(HeapTest, InsertMap) {
+  stacksafe::Heap heap0, heap1;
+  auto sa = symbol(), sb = symbol(), sc = symbol();
+  auto a = "a", b = "b", c = "c";
+  heap0.insert(sa, sb);
+  heap0.insert(sb, sc);
+  heap1.insert(sc, sa);
+  heap1.insert(sc, sb);
+  equal();
+  heap.insert(heap0);
+  push(a, b);
+  push(b, c);
+  equal();
+  heap.insert(heap1);
+  push(c, a);
+  push(c, b);
+  equal();
+}
 
 void HeapTest::SetUp() { json = stacksafe::Json::object(); }
 void HeapTest::init(std::string key) {
