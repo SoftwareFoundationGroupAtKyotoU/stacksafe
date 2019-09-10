@@ -14,7 +14,7 @@ Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
 }
 void Abstract::interpret() {
   auto& f = const_cast<llvm::Function&>(*func_);
-  interpret(&f.getEntryBlock(), Env{f});
+  interpret(&f.getEntryBlock(), Env{*func_});
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   auto next = e;

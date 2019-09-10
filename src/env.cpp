@@ -7,7 +7,7 @@
 
 namespace stacksafe {
 
-Env::Env(llvm::Function& f) {
+Env::Env(const llvm::Function& f) {
   auto g = Symbol::global();
   insert_heap(g, Domain{g});
   for (auto& a : f.args()) {

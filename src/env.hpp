@@ -22,7 +22,7 @@ class Env {
 
  public:
   Env() = default;
-  explicit Env(llvm::Function& f);
+  explicit Env(const llvm::Function& f);
   const Heap& heap() const;
   const Stack& stack() const;
   bool merge(const Env& that);
