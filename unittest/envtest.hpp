@@ -9,6 +9,7 @@
 struct EnvTest : ::testing::Test {
   using Json = stacksafe::Json;
   using Params = stacksafe::Params;
+  using String = const char *;
   virtual void SetUp() override;
   void init_heap(std::string key);
   void init_stack(int key);
@@ -20,7 +21,7 @@ struct EnvTest : ::testing::Test {
   stacksafe::Env env;
   Json expect;
   static const stacksafe::Value v0, v1, v2, v3;
-  static const char *const a, *const b, *const c;
+  static const String a, b, c;
 };
 
 #endif  // INCLUDE_GUARD_C7E72859_0086_4AA2_8E53_FAAE8ED32D45
