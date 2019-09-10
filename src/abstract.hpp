@@ -15,12 +15,13 @@ namespace stacksafe {
 class Log;
 
 class Abstract {
+  const llvm::Function* const func_;
   std::map<llvm::BasicBlock*, Env> blocks_;
   Log& log_;
   friend void to_json(Json& j, const Abstract& x);
 
  public:
-  explicit Abstract(Log& log);
+  explicit Abstract(const llvm::Function& f, Log& log);
   void interpret(llvm::Function& f);
 
  private:

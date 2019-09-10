@@ -9,7 +9,7 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(Log& log) : log_{log} {}
+Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {}
 void Abstract::interpret(llvm::Function& f) {
   Symbol::reset();
   Env e{f};
