@@ -1,7 +1,6 @@
 #include "envtest.hpp"
 
 TEST_F(EnvTest, Alloc) {
-  const auto a = "a", b = "b";
   equal();
   env.alloc(v0);
   init_heap(a);
@@ -13,7 +12,6 @@ TEST_F(EnvTest, Alloc) {
   equal();
 }
 TEST_F(EnvTest, Store) {
-  const auto a = "a", b = "b";
   equal();
   env.alloc(v0);
   init_heap(a);
@@ -28,7 +26,6 @@ TEST_F(EnvTest, Store) {
   equal();
 }
 TEST_F(EnvTest, Load) {
-  const auto a = "a", b = "b";
   equal();
   env.alloc(v0);
   init_heap(a);
@@ -52,7 +49,6 @@ TEST_F(EnvTest, Constant) {
   equal();
 }
 TEST_F(EnvTest, Call) {
-  const auto a = "a", b = "b", c = "c";
   equal();
   env.alloc(v0);
   init_heap(a);
@@ -84,7 +80,6 @@ TEST_F(EnvTest, Call) {
   equal();
 }
 TEST_F(EnvTest, Cast) {
-  const auto a = "a";
   equal();
   env.alloc(v0);
   init_heap(a);
@@ -121,3 +116,6 @@ const stacksafe::Value EnvTest::v0{0};
 const stacksafe::Value EnvTest::v1{1};
 const stacksafe::Value EnvTest::v2{2};
 const stacksafe::Value EnvTest::v3{3};
+const char *const EnvTest::a = "a";
+const char *const EnvTest::b = "b";
+const char *const EnvTest::c = "c";

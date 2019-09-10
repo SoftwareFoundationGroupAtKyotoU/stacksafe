@@ -21,6 +21,7 @@ struct EnvTest : ::testing::Test {
   stacksafe::Env env;
   Json expect;
   static const stacksafe::Value v0, v1, v2, v3;
+  static const char *const a, *const b, *const c;
 };
 
 #endif  // INCLUDE_GUARD_C7E72859_0086_4AA2_8E53_FAAE8ED32D45
