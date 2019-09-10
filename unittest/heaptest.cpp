@@ -10,3 +10,4 @@ void HeapTest::equal() const {
 stacksafe::Symbol HeapTest::symbol() {
   return stacksafe::Symbol::create(stacksafe::Type{nullptr});
 }
+std::string HeapTest::sym(std::string a) { return "#" + a; }
