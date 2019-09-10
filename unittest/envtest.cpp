@@ -1,5 +1,11 @@
 #include "envtest.hpp"
 
+TEST_F(EnvTest, Binop) {
+  equal();
+  env.binop(v0, v1, v2);
+  init_stack(0);
+  equal();
+}
 TEST_F(EnvTest, Alloc) {
   equal();
   env.alloc(v0);
