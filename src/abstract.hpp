@@ -25,7 +25,7 @@ class Abstract {
   void interpret();
 
  private:
-  void interpret(llvm::BasicBlock* b, const Env& e);
+  void interpret(const llvm::BasicBlock* b, const Env& e);
   bool update(const llvm::BasicBlock* b, const Env& e);
 };
 void to_json(Json& j, const Abstract& x);

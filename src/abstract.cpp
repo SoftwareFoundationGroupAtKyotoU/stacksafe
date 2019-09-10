@@ -12,13 +12,10 @@ namespace stacksafe {
 Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
   Symbol::reset();
 }
-void Abstract::interpret() {
-  auto& f = const_cast<llvm::Function&>(*func_);
-  interpret(&f.getEntryBlock(), Env{*func_});
-}
-void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
+void Abstract::interpret() { interpret(&func_->getEntryBlock(), Env{*func_}); }
+void Abstract::interpret(const llvm::BasicBlock* b, const Env& e) {
   auto next = e;
-  Interpret{next}.visit(*b);
+  Interpret{next}.visit(const_cast<llvm::BasicBlock&>(*b));
   log_.add(e, b, next);
   if (update(b, next)) {
     if (auto t = b->getTerminator()) {
