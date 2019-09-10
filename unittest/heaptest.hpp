@@ -6,6 +6,7 @@
 #include "map.hpp"
 
 struct HeapTest : ::testing::Test {
+  void SetUp();
   void equal() const;
   stacksafe::Heap heap;
   stacksafe::Json json;
