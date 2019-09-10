@@ -8,6 +8,7 @@
 struct HeapTest : ::testing::Test {
   void SetUp();
   void equal() const;
+  static stacksafe::Symbol symbol();
   stacksafe::Heap heap;
   stacksafe::Json json;
 };
