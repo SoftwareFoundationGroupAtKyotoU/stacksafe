@@ -17,21 +17,18 @@ TEST_F(HeapTest, InsertSymbol) {
 }
 TEST_F(HeapTest, InsertDomain) {
   stacksafe::Domain dom0, dom1;
-  auto sa = symbol(), sb = symbol(), sc = symbol(), sd = symbol();
-  auto a = "a", b = "b", c = "c", d = "d";
+  auto sa = symbol(), sb = symbol(), sc = symbol();
+  auto a = "a", b = "b", c = "c";
   dom0.insert(sc);
-  dom0.insert(sd);
   dom1.insert(dom0);
   dom0.insert(sb);
   equal();
   heap.insert(sa, dom0);
   push(a, b);
   push(a, c);
-  push(a, d);
   equal();
   heap.insert(sb, dom1);
   push(b, c);
-  push(b, d);
   equal();
 }
 TEST_F(HeapTest, InsertEmpty) {
