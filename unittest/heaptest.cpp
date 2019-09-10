@@ -1,6 +1,20 @@
 #include "heaptest.hpp"
 
 TEST_F(HeapTest, Initial) { equal(); }
+TEST_F(HeapTest, InsertSymbol) {
+  auto s0 = symbol(), s1 = symbol(), s2 = symbol();
+  auto a = "a", b = "b", c = "c";
+  equal();
+  heap.insert(s0, s1);
+  push(a, b);
+  equal();
+  heap.insert(s0, s2);
+  push(a, c);
+  equal();
+  heap.insert(s1, s2);
+  push(b, c);
+  equal();
+}
 
 void HeapTest::SetUp() { json = stacksafe::Json::object(); }
 void HeapTest::push(std::string key, std::string val) {
