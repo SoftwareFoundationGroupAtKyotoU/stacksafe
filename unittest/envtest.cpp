@@ -48,6 +48,28 @@ TEST_F(EnvTest, Store) {
   push_heap(b, a);
   equal();
 }
+TEST_F(EnvTest, CmpXchg) {
+  equal();
+  env.alloc(v0);
+  init_heap(a);
+  push_stack(0, a);
+  equal();
+  env.alloc(v1);
+  init_heap(b);
+  push_stack(1, b);
+  equal();
+  env.alloc(v2);
+  init_heap(c);
+  push_stack(2, c);
+  equal();
+  env.store(v0, v2);
+  push_heap(c, a);
+  equal();
+  env.cmpxchg(v3, v2, v1);
+  push_stack(3, a);
+  push_heap(c, b);
+  equal();
+}
 TEST_F(EnvTest, Cast) {
   equal();
   env.alloc(v0);
