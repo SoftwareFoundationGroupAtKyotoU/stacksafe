@@ -36,6 +36,9 @@ TEST_F(HeapTest, InsertDomain) {
 }
 
 void HeapTest::SetUp() { json = stacksafe::Json::object(); }
+void HeapTest::init(std::string key) {
+  json[sym(key)] = stacksafe::Json::array();
+}
 void HeapTest::push(std::string key, std::string val) {
   json[sym(key)].push_back(sym(val));
 }
