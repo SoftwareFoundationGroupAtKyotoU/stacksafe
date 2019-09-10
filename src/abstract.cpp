@@ -29,7 +29,7 @@ void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
     }
   }
 }
-bool Abstract::update(llvm::BasicBlock* b, const Env& e) {
+bool Abstract::update(const llvm::BasicBlock* b, const Env& e) {
   if (auto it = blocks_.find(b); it != blocks_.end()) {
     return it->second.merge(e);
   } else {
