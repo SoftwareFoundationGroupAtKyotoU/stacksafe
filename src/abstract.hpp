@@ -22,7 +22,7 @@ class Abstract {
 
  public:
   explicit Abstract(const llvm::Function& f, Log& log);
-  void interpret(llvm::Function& f);
+  void interpret();
 
  private:
   void interpret(llvm::BasicBlock* b, const Env& e);

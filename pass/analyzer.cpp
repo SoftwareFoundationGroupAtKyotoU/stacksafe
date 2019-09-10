@@ -16,7 +16,7 @@ struct Analyzer : public llvm::FunctionPass {
     log = std::make_unique<Log>(f);
     if (log) {
       Abstract abstract{f, *log};
-      abstract.interpret(f);
+      abstract.interpret();
     }
     return false;
   }

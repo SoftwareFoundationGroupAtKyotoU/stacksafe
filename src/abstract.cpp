@@ -9,11 +9,12 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {}
-void Abstract::interpret(llvm::Function& f) {
+Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
   Symbol::reset();
-  Env e{f};
-  interpret(&f.getEntryBlock(), e);
+}
+void Abstract::interpret() {
+  auto& f = const_cast<llvm::Function&>(*func_);
+  interpret(&f.getEntryBlock(), Env{f});
 }
 void Abstract::interpret(llvm::BasicBlock* b, const Env& e) {
   auto next = e;
