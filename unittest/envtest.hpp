@@ -9,14 +9,13 @@
 struct EnvTest : ::testing::Test {
   using Json = stacksafe::Json;
   using Params = stacksafe::Params;
-  using String = std::string;
   virtual void SetUp() override;
-  void init_heap(String key);
+  void init_heap(std::string key);
   void init_stack(int key);
-  void push_heap(String key, String val);
-  void push_stack(int key, String val);
+  void push_heap(std::string key, std::string val);
+  void push_stack(int key, std::string val);
   void equal() const;
-  static String sym(String a);
+  static std::string sym(std::string a);
   static std::string reg(int n);
   stacksafe::Env env;
   Json expect;
