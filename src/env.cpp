@@ -16,6 +16,9 @@ Env::Env(const llvm::Function& f) {
 }
 const Heap& Env::heap() const { return heap_; }
 const Stack& Env::stack() const { return stack_; }
+bool Env::includes(const Env& that) const {
+  return heap_.includes(that.heap_) && stack_.includes(that.stack_);
+}
 bool Env::merge(const Env& that) {
   bool ret = false;
   if (!heap_.includes(that.heap_)) {

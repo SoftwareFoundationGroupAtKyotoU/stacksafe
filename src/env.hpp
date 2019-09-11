@@ -25,6 +25,7 @@ class Env {
   explicit Env(const llvm::Function& f);
   const Heap& heap() const;
   const Stack& stack() const;
+  bool includes(const Env& that) const;
   bool merge(const Env& that);
   bool binop(const Value& dst, const Value& lhs, const Value& rhs);
   bool alloc(const Value& dst);
