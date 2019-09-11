@@ -24,7 +24,6 @@ class Abstract {
 
  public:
   explicit Abstract(const llvm::Function& f, Log& log);
-  void interpret();
   static std::unique_ptr<Log> interpret(const llvm::Function& f);
 
  private:

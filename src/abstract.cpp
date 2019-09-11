@@ -17,7 +17,6 @@ Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
     blocks_.try_emplace(&b, empty);
   }
 }
-void Abstract::interpret() { interpret(&func_->getEntryBlock(), Env{*func_}); }
 std::unique_ptr<Log> Abstract::interpret(const llvm::Function& f) {
   auto log = std::make_unique<Log>(f);
   if (log) {
