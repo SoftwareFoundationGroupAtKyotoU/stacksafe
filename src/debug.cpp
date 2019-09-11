@@ -51,7 +51,7 @@ void Log::print(llvm::raw_ostream& os) const {
 }
 
 void unknown_instruction(llvm::Instruction& i) {
-  llvm::errs() << "unknown: " << i << "\n";
+  llvm::errs() << "Unknown instruction: " << i << "\n";
 }
 void check_interpret(llvm::Instruction& i, bool success) {
   if (!success) {
