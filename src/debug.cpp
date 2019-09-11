@@ -33,8 +33,17 @@ llvm::StringRef Log::get_filename() const { return llvm::StringRef{filename}; }
 void Log::add(const Env& prev, const llvm::BasicBlock* block, const Env& next) {
   blocks.emplace_back(prev, block, next);
 }
-void Log::print(llvm::raw_ostream& os) const {
+void Log::print() const {
   const auto hr = "--------------------------------";
+  llvm::StringRef name{filename};
+  std::error_code error;
+  llvm::raw_fd_ostream file{name, error};
+  if (error) {
+    llvm::errs() << "Error: " << error.message() << "\n";
+  } else {
+    llvm::outs() << "Print to: " << name << "\n";
+  }
+  llvm::raw_ostream& os = error ? llvm::outs() : file;
   os << *function;
   for (auto& log : blocks) {
     log.print(os);
