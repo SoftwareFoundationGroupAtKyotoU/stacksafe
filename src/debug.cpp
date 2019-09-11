@@ -9,7 +9,7 @@
 namespace stacksafe {
 
 LogBlock::LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n)
-    : prev{p}, next{n}, block{b} {}
+    : block{b}, prev{p}, next{n} {}
 void LogBlock::print(llvm::raw_ostream& os) const {
   Fabric env;
   {

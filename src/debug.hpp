@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A
 #define INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A
 
+#include <vector>
 #include "env.hpp"
 
 namespace llvm {
@@ -13,8 +14,8 @@ class raw_ostream;
 namespace stacksafe {
 
 struct LogBlock {
-  const Env prev, next;
   const llvm::BasicBlock* const block;
+  const Env prev, next;
 
  public:
   LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n);
