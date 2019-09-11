@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
 #include <map>
+#include <optional>
 #include <vector>
 #include "env.hpp"
 #include "json_fwd.hpp"
@@ -25,7 +26,7 @@ class Abstract {
   void interpret();
 
  private:
-  bool update(const llvm::BasicBlock* b, const Env& e);
+  std::optional<Env> update(const llvm::BasicBlock* b, const Env& pred);
   void interpret(const llvm::BasicBlock* b, const Env& pred);
 };
 void to_json(Json& j, const Abstract& x);
