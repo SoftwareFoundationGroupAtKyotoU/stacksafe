@@ -10,17 +10,15 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function& f, Log& log) : log_{log} {
-  Symbol::reset();
-  Env empty;
-  for (auto& b : f) {
-    blocks_.try_emplace(&b, empty);
-  }
-}
+Abstract::Abstract(const llvm::Function& f, Log& log) : log_{log} {}
 std::unique_ptr<Log> Abstract::interpret(const llvm::Function& f) {
   auto log = std::make_unique<Log>(f);
   if (log) {
     Abstract abstract{f, *log};
+    Symbol::reset();
+    for (auto& b : f) {
+      abstract.blocks_.try_emplace(&b, Env{});
+    }
     abstract.interpret(&f.getEntryBlock(), Env{f});
   }
   return std::move(log);
