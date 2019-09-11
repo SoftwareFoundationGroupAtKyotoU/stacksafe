@@ -19,17 +19,9 @@ const Stack& Env::stack() const { return stack_; }
 bool Env::includes(const Env& that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-bool Env::merge(const Env& that) {
-  bool ret = false;
-  if (!heap_.includes(that.heap_)) {
-    heap_.insert(that.heap_);
-    ret = true;
-  }
-  if (!stack_.includes(that.stack_)) {
-    stack_.insert(that.stack_);
-    ret = true;
-  }
-  return ret;
+void Env::merge(const Env& that) {
+  heap_.insert(that.heap_);
+  stack_.insert(that.stack_);
 }
 bool Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
   Domain dom;
