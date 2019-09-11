@@ -18,7 +18,7 @@ struct LogBlock {
   const Env prev, next;
 
  public:
-  LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n);
+  LogBlock(const llvm::BasicBlock* b, const Env& p, const Env& n);
   void print(llvm::raw_ostream& os) const;
 };
 

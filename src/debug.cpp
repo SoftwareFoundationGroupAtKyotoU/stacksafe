@@ -8,7 +8,7 @@
 
 namespace stacksafe {
 
-LogBlock::LogBlock(const Env& p, const llvm::BasicBlock* b, const Env& n)
+LogBlock::LogBlock(const llvm::BasicBlock* b, const Env& p, const Env& n)
     : block{b}, prev{p}, next{n} {}
 void LogBlock::print(llvm::raw_ostream& os) const {
   Fabric env;
@@ -30,7 +30,7 @@ void LogBlock::print(llvm::raw_ostream& os) const {
 Log::Log(const llvm::Function& func)
     : function{&func}, filename{"log/" + func.getName().str()} {}
 void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
-  blocks.emplace_back(prev, block, next);
+  blocks.emplace_back(block, prev, next);
 }
 void Log::print(llvm::raw_ostream& os) const {
   const auto hr = "--------------------------------";
