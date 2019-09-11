@@ -14,13 +14,13 @@ Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
   Symbol::reset();
   Env empty;
   for (auto& b : f) {
-    prevs_.try_emplace(&b, empty);
+    blocks_.try_emplace(&b, empty);
   }
 }
 void Abstract::interpret() { interpret(&func_->getEntryBlock(), Env{*func_}); }
 std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
                                     const Env& pred) {
-  if (auto it = prevs_.find(b); it != prevs_.end()) {
+  if (auto it = blocks_.find(b); it != blocks_.end()) {
     auto& prev = it->second;
     if (!prev.includes(pred)) {
       prev.merge(pred);
