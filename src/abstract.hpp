@@ -22,7 +22,7 @@ class Abstract {
   friend void to_json(Json& j, const Abstract& x);
 
  public:
-  explicit Abstract(const llvm::Function& f, Log& log);
+  explicit Abstract(Log& log);
   static std::unique_ptr<Log> interpret(const llvm::Function& f);
 
  private:
