@@ -10,9 +10,9 @@ class Interpret : public llvm::InstVisitor<Interpret, void> {
   using RetTy = void;
   using Base = llvm::InstVisitor<Interpret, RetTy>;
   Env &env_;
+  explicit Interpret(Env &e);
 
  public:
-  explicit Interpret(Env &e);
   static Env run(const llvm::BasicBlock *b, const Env &pred);
   void visit(llvm::BasicBlock &b);
   RetTy visit(llvm::Instruction &i);
