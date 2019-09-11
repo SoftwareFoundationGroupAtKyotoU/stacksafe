@@ -17,7 +17,6 @@ namespace stacksafe {
 class Log;
 
 class Abstract {
-  const llvm::Function* const func_;
   std::map<const llvm::BasicBlock*, Env> blocks_;
   Log& log_;
   friend void to_json(Json& j, const Abstract& x);

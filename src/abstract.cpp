@@ -10,7 +10,7 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
+Abstract::Abstract(const llvm::Function& f, Log& log) : log_{log} {
   Symbol::reset();
   Env empty;
   for (auto& b : f) {
