@@ -36,6 +36,7 @@ struct Log {
 
 void unknown_instruction(llvm::Instruction& i);
 void check_interpret(llvm::Instruction& i, bool success);
+void missing_log(llvm::raw_ostream& os);
 
 }  // namespace stacksafe
 

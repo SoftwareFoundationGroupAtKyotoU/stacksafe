@@ -1,6 +1,4 @@
-#include <llvm/IR/Function.h>
 #include <llvm/Pass.h>
-#include <llvm/Support/raw_ostream.h>
 #include <memory>
 #include "abstract.hpp"
 #include "debug.hpp"
@@ -20,7 +18,7 @@ struct Analyzer : public llvm::FunctionPass {
     if (log) {
       log->print();
     } else {
-      os << "Unknown error\n";
+      missing_log(os);
     }
   }
 };

@@ -59,5 +59,6 @@ void check_interpret(llvm::Instruction& i, bool success) {
     llvm::errs() << "Failed to interpret: " << i << "\n";
   }
 }
+void missing_log(llvm::raw_ostream& os) { os << "Error: missing log object\n"; }
 
 }  // namespace stacksafe
