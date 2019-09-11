@@ -13,11 +13,7 @@ struct Analyzer : public llvm::FunctionPass {
   std::unique_ptr<Log> log;
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
-    log = std::make_unique<Log>(f);
-    if (log) {
-      Abstract abstract{f, *log};
-      abstract.interpret();
-    }
+    log = Abstract::interpret(f);
     return false;
   }
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {

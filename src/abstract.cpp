@@ -18,6 +18,14 @@ Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
   }
 }
 void Abstract::interpret() { interpret(&func_->getEntryBlock(), Env{*func_}); }
+std::unique_ptr<Log> Abstract::interpret(const llvm::Function& f) {
+  auto log = std::make_unique<Log>(f);
+  if (log) {
+    Abstract abstract{f, *log};
+    abstract.interpret(&f.getEntryBlock(), Env{f});
+  }
+  return std::move(log);
+}
 std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
                                     const Env& pred) {
   if (auto it = blocks_.find(b); it != blocks_.end()) {

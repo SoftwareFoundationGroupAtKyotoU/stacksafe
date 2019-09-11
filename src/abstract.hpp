@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
 #include <map>
+#include <memory>
 #include <optional>
 #include <vector>
 #include "env.hpp"
@@ -24,6 +25,7 @@ class Abstract {
  public:
   explicit Abstract(const llvm::Function& f, Log& log);
   void interpret();
+  static std::unique_ptr<Log> interpret(const llvm::Function& f);
 
  private:
   std::optional<Env> update(const llvm::BasicBlock* b, const Env& pred);
