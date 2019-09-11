@@ -2,6 +2,7 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
+#include <llvm/Support/ErrorHandling.h>
 #include "debug.hpp"
 #include "interpret.hpp"
 #include "json.hpp"
@@ -16,7 +17,7 @@ Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
     prevs_.try_emplace(&b, empty);
   }
 }
-void Abstract::interpret() { interpret(&func_->getEntryBlock(), Env{*func_}); }
+void Abstract::interpret() { process(&func_->getEntryBlock(), Env{*func_}); }
 void Abstract::interpret(const llvm::BasicBlock* b, const Env& e) {
   auto next = Interpret::run(b, e);
   log_.add(e, b, next);
@@ -35,6 +36,23 @@ bool Abstract::update(const llvm::BasicBlock* b, const Env& e) {
   } else {
     blocks_.try_emplace(b, e);
     return true;
+  }
+}
+void Abstract::process(const llvm::BasicBlock* b, const Env& pred) {
+  if (auto it = prevs_.find(b); it != prevs_.end()) {
+    auto& prev = it->second;
+    if (!prev.includes(pred)) {
+      prev.merge(pred);
+      auto next = Interpret::run(b, prev);
+      log_.add(prev, b, next);
+      if (auto t = b->getTerminator()) {
+        for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
+          process(t->getSuccessor(j), next);
+        }
+      }
+    }
+  } else {
+    llvm_unreachable("Error: unknown basicblock");
   }
 }
 void to_json(Json& j, const Abstract& x) {
