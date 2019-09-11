@@ -17,19 +17,7 @@ Abstract::Abstract(const llvm::Function& f, Log& log) : func_{&f}, log_{log} {
     prevs_.try_emplace(&b, empty);
   }
 }
-void Abstract::interpret() { process(&func_->getEntryBlock(), Env{*func_}); }
-void Abstract::interpret(const llvm::BasicBlock* b, const Env& e) {
-  auto next = Interpret::run(b, e);
-  log_.add(e, b, next);
-  if (update(b, next)) {
-    if (auto t = b->getTerminator()) {
-      for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
-        auto succ = t->getSuccessor(j);
-        interpret(succ, next);
-      }
-    }
-  }
-}
+void Abstract::interpret() { interpret(&func_->getEntryBlock(), Env{*func_}); }
 bool Abstract::update(const llvm::BasicBlock* b, const Env& e) {
   if (auto it = blocks_.find(b); it != blocks_.end()) {
     return it->second.merge(e);
@@ -38,7 +26,7 @@ bool Abstract::update(const llvm::BasicBlock* b, const Env& e) {
     return true;
   }
 }
-void Abstract::process(const llvm::BasicBlock* b, const Env& pred) {
+void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
   if (auto it = prevs_.find(b); it != prevs_.end()) {
     auto& prev = it->second;
     if (!prev.includes(pred)) {
@@ -47,7 +35,7 @@ void Abstract::process(const llvm::BasicBlock* b, const Env& pred) {
       log_.add(prev, b, next);
       if (auto t = b->getTerminator()) {
         for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
-          process(t->getSuccessor(j), next);
+          interpret(t->getSuccessor(j), next);
         }
       }
     }
