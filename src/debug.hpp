@@ -8,7 +8,6 @@ class BasicBlock;
 class Function;
 class Instruction;
 class raw_ostream;
-class StringRef;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -29,7 +28,6 @@ struct Log {
 
  public:
   explicit Log(const llvm::Function& func);
-  llvm::StringRef get_filename() const;
   void add(const Env& prev, const llvm::BasicBlock* block, const Env& next);
   void print(llvm::raw_ostream& os) const;
 };

@@ -29,7 +29,6 @@ void LogBlock::print(llvm::raw_ostream& os) const {
 
 Log::Log(const llvm::Function& func)
     : function{&func}, filename{"log/" + func.getName().str()} {}
-llvm::StringRef Log::get_filename() const { return llvm::StringRef{filename}; }
 void Log::add(const Env& prev, const llvm::BasicBlock* block, const Env& next) {
   blocks.emplace_back(prev, block, next);
 }
