@@ -4,7 +4,6 @@
 #include <map>
 #include <memory>
 #include <optional>
-#include <vector>
 #include "env.hpp"
 #include "json_fwd.hpp"
 
@@ -21,13 +20,13 @@ class Abstract {
   Log& log_;
   friend void to_json(Json& j, const Abstract& x);
 
- public:
-  explicit Abstract(Log& log);
-  static std::unique_ptr<Log> interpret(const llvm::Function& f);
-
  private:
+  explicit Abstract(Log& log);
   std::optional<Env> update(const llvm::BasicBlock* b, const Env& pred);
   void interpret(const llvm::BasicBlock* b, const Env& pred);
+
+ public:
+  static std::unique_ptr<Log> interpret(const llvm::Function& f);
 };
 void to_json(Json& j, const Abstract& x);
 
