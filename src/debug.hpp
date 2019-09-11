@@ -31,7 +31,7 @@ struct Log {
   explicit Log(const llvm::Function& func);
   llvm::StringRef get_filename() const;
   void add(const Env& prev, const llvm::BasicBlock* block, const Env& next);
-  void print() const;
+  void print(llvm::raw_ostream& os) const;
 };
 
 void unknown_instruction(llvm::Instruction& i);
