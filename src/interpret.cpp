@@ -6,6 +6,11 @@
 namespace stacksafe {
 
 Interpret::Interpret(Env &e) : env_{e} {}
+Env Interpret::run(const llvm::BasicBlock *b, const Env &pred) {
+  auto ret = pred;
+  Interpret{ret}.visit(const_cast<llvm::BasicBlock &>(*b));
+  return ret;
+}
 void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
 auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
