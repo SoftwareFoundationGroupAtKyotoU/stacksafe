@@ -21,7 +21,7 @@ std::unique_ptr<Log> Abstract::interpret(const llvm::Function& f) {
     }
     abstract.interpret(&f.getEntryBlock(), Env{f});
   }
-  return std::move(log);
+  return log;
 }
 std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
                                     const Env& pred) {

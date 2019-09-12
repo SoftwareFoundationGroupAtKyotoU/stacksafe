@@ -28,7 +28,7 @@ void LogBlock::print(llvm::raw_ostream& os) const {
 }
 
 Log::Log(const llvm::Function& func)
-    : function{&func}, filename{"log/" + func.getName().str()} {}
+    : function{&func}, filename{"log/" + func.getName().str() + ".log"} {}
 void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
   blocks.emplace_back(block, prev, next);
 }
@@ -45,8 +45,8 @@ void Log::print(llvm::raw_ostream& os) const {
   llvm::raw_ostream& stream = error ? llvm::outs() : file;
   stream << *function;
   for (auto& log : blocks) {
-    log.print(stream);
     stream << "\n" << hr << "\n";
+    log.print(stream);
   }
 }
 
