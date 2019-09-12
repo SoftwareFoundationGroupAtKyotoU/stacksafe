@@ -13,7 +13,7 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Log;
+struct Log;
 
 class Abstract {
   std::map<const llvm::BasicBlock*, Env> blocks_;
