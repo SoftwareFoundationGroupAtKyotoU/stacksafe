@@ -7,7 +7,7 @@ target_include_directories(${target} INTERFACE
 target_compile_features(${target} INTERFACE
   cxx_std_17)
 target_compile_options(${target} INTERFACE
-  -Wall -Wextra -pedantic)
+  $<$<CONFIG:Debug>:-Wall -Wextra -pedantic>)
 
 set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
