@@ -23,6 +23,7 @@ target_sources(${target} PRIVATE
   symbol.cpp
   type.cpp
   token.cpp
+  utility.cpp
   value.cpp
   )
 include(EnsureSources)
