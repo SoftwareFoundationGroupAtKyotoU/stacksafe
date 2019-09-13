@@ -23,9 +23,10 @@ Symbol Symbol::make(const Type &t) { return Symbol{Kind::AUTO, ++current_, t}; }
 void Symbol::reset() { current_ = current_init; }
 int Symbol::kind() const { return static_cast<int>(kind_); }
 std::string Symbol::repr() const {
-  if (is_local()) {
+  switch (kind_) {
+  case Kind::AUTO:
     return prefix_ + to_alphabet(number());
-  } else {
+  default:
     return prefix_ + "@";
   }
 }
