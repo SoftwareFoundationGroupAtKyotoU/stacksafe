@@ -1,5 +1,6 @@
 #include "utility.hpp"
 #include <llvm/IR/Constants.h>
+#include <llvm/IR/Instruction.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
@@ -54,6 +55,9 @@ void constant_info(const llvm::Value& v) {
                    llvm::isa<llvm::GlobalValue>(v) ? "global" : "constant";
     llvm::errs() << tag << ": " << v << "\n";
   }
+}
+void unknown_instruction(const llvm::Instruction& i) {
+  llvm::errs() << "Unknown instruction: " << i << "\n";
 }
 
 }  // namespace stacksafe

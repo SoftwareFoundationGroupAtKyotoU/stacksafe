@@ -6,6 +6,7 @@
 #include <string_view>
 
 namespace llvm {
+class Instruction;
 class Type;
 class Value;
 }  // namespace llvm
@@ -19,6 +20,7 @@ std::string to_str(const llvm::Value& value);
 std::string get_operand(const llvm::Value& value);
 
 void constant_info(const llvm::Value& v);
+void unknown_instruction(const llvm::Instruction& i);
 
 }  // namespace stacksafe
 

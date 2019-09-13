@@ -2,6 +2,7 @@
 #include "debug.hpp"
 #include "env.hpp"
 #include "token.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
