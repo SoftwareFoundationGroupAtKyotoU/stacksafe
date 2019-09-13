@@ -22,24 +22,6 @@ class Token {
   const Type &type() const;
 };
 
-class Symbol : private Token {
-  static const std::string prefix_;
-  static constexpr int current_init = 0;
-  static int current_;
-  using Token::Token;
-
- public:
-  using Token::number, Token::type;
-  static Symbol global();
-  static Symbol create(const Type &t);
-  static void reset();
-  std::string repr() const;
-  bool is_global() const;
-};
-bool operator<(const Symbol &lhs, const Symbol &rhs);
-void to_json(Json &j, const Symbol &x);
-Fabric dump(const Symbol &symbol);
-
 class Value : private Token {
   static const std::string prefix_;
   const llvm::Value *const value_;

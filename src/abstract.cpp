@@ -6,7 +6,7 @@
 #include "debug.hpp"
 #include "interpret.hpp"
 #include "json.hpp"
-#include "token.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 
