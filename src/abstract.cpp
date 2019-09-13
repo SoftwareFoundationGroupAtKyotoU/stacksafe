@@ -50,7 +50,7 @@ void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
 void to_json(Json& j, const Abstract& x) {
   Json::object_t obj;
   for (auto& [k, v] : x.blocks_) {
-    obj[k ? Value::create(*k).repr() : ""] = v;
+    obj[k ? Value::make(*k).repr() : ""] = v;
   }
   j = obj;
 }

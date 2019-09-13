@@ -19,7 +19,7 @@ class Value : private Token {
 
  public:
   using Token::number, Token::type;
-  static Value create(const llvm::Value &v);
+  static Value make(const llvm::Value &v);
   explicit Value(int n);
   const llvm::Value *get() const;
   std::string repr() const;

@@ -36,7 +36,7 @@ std::string get_operand(const llvm::Value &value) {
 const std::string Value::prefix_{"%"};
 Value::Value(int n, llvm::Type *t, const llvm::Value *v)
     : Token{n, Type{t}}, value_{v} {}
-Value Value::create(const llvm::Value &v) {
+Value Value::make(const llvm::Value &v) {
   int num = -1;
   auto operand = get_operand(v);
   std::string_view view{operand};
