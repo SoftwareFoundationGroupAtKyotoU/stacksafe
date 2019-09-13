@@ -6,6 +6,7 @@
 #include <string_view>
 #include "fabric.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 namespace {
@@ -19,12 +20,6 @@ std::optional<int> to_int(std::string_view view) {
     }
   }
   return std::nullopt;
-}
-std::string to_str(const llvm::Value &value) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  stream << value;
-  return stream.str();
 }
 std::string get_operand(const llvm::Value &value) {
   std::string buf;
