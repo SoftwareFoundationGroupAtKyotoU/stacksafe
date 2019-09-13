@@ -5,6 +5,17 @@
 
 namespace stacksafe {
 
+std::optional<int> to_int(std::string_view view) {
+  if (!view.empty()) {
+    std::string str{view};
+    std::size_t pos = std::string_view::npos;
+    auto val = std::stoi(str, &pos, 10);
+    if (pos == view.size()) {
+      return val;
+    }
+  }
+  return std::nullopt;
+}
 std::string to_str(const llvm::Type& type) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};

@@ -2,26 +2,11 @@
 #include <llvm/IR/Constants.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
-#include <optional>
-#include <string_view>
 #include "fabric.hpp"
 #include "json.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
-namespace {
-std::optional<int> to_int(std::string_view view) {
-  if (!view.empty()) {
-    std::string str{view};
-    std::size_t pos = std::string_view::npos;
-    auto val = std::stoi(str, &pos, 10);
-    if (pos == view.size()) {
-      return val;
-    }
-  }
-  return std::nullopt;
-}
-}  // namespace
 
 const std::string Value::prefix_{"%"};
 Value::Value(int n, llvm::Type *t, const llvm::Value *v)
