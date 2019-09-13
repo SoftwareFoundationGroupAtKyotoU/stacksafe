@@ -17,6 +17,13 @@ std::optional<int> to_int(std::string_view view) {
   }
   return std::nullopt;
 }
+std::string to_alphabet(int num) {
+  std::string ret;
+  for (; 0 < num; num /= 26) {
+    ret.insert(0, 1, 'a' + --num % 26);
+  }
+  return ret;
+}
 std::string to_str(const llvm::Type& type) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};

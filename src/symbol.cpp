@@ -1,17 +1,9 @@
 #include "symbol.hpp"
 #include "fabric.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
-namespace {
-std::string to_alphabet(int num) {
-  std::string ret;
-  for (; 0 < num; num /= 26) {
-    ret.insert(0, 1, 'a' + --num % 26);
-  }
-  return ret;
-}
-}  // namespace
 
 const std::string Symbol::prefix_{"#"};
 int Symbol::current_ = Symbol::current_init;
