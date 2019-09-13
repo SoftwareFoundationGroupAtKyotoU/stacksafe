@@ -16,6 +16,16 @@ Abstract::Abstract(const llvm::Function& f) : func_{f}, log_{f} {
   }
 }
 void Abstract::interpret() { interpret(&func_.getEntryBlock(), Env{func_}); }
+void Abstract::print(llvm::raw_ostream& os) const { log_.print(os); }
+void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
+  if (auto next = update(b, pred)) {
+    if (auto t = b->getTerminator()) {
+      for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
+        interpret(t->getSuccessor(j), *next);
+      }
+    }
+  }
+}
 std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
                                     const Env& pred) {
   if (auto it = blocks_.find(b); it != blocks_.end()) {
@@ -31,16 +41,6 @@ std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
   }
   return std::nullopt;
 }
-void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
-  if (auto next = update(b, pred)) {
-    if (auto t = b->getTerminator()) {
-      for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
-        interpret(t->getSuccessor(j), *next);
-      }
-    }
-  }
-}
-void Abstract::print(llvm::raw_ostream& os) const { log_.print(os); }
 void to_json(Json& j, const Abstract& x) {
   Json::object_t obj;
   for (auto& [k, v] : x.blocks_) {

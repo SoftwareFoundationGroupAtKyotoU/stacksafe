@@ -23,14 +23,14 @@ class Abstract {
   Log log_;
   friend void to_json(Json& j, const Abstract& x);
 
- private:
-  std::optional<Env> update(const llvm::BasicBlock* b, const Env& pred);
-
  public:
   explicit Abstract(const llvm::Function& f);
   void interpret();
-  void interpret(const llvm::BasicBlock* b, const Env& pred);
   void print(llvm::raw_ostream& os) const;
+
+ private:
+  void interpret(const llvm::BasicBlock* b, const Env& pred);
+  std::optional<Env> update(const llvm::BasicBlock* b, const Env& pred);
 };
 void to_json(Json& j, const Abstract& x);
 
