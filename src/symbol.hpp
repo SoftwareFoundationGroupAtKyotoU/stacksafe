@@ -22,7 +22,6 @@ class Symbol : private Token {
   static void reset();
   int kind() const;
   std::string repr() const;
-  bool is_local() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 void to_json(Json &j, const Symbol &x);

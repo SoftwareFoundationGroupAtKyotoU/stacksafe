@@ -30,7 +30,6 @@ std::string Symbol::repr() const {
     return prefix_ + "@";
   }
 }
-bool Symbol::is_local() const { return current_init < number(); }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   if (lhs.kind() == rhs.kind()) {
     return lhs.number() < rhs.number();
