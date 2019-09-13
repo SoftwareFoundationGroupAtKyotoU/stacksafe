@@ -21,12 +21,6 @@ std::optional<int> to_int(std::string_view view) {
   }
   return std::nullopt;
 }
-std::string get_operand(const llvm::Value &value) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  value.printAsOperand(stream, false);
-  return stream.str();
-}
 }  // namespace
 
 const std::string Value::prefix_{"%"};

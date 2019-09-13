@@ -12,6 +12,7 @@ namespace stacksafe {
 
 std::string to_str(const llvm::Type& type);
 std::string to_str(const llvm::Value& value);
+std::string get_operand(const llvm::Value& value);
 
 }  // namespace stacksafe
 
