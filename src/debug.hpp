@@ -32,8 +32,6 @@ struct Log {
   void print(llvm::raw_ostream& os) const;
 };
 
-void missing_log(llvm::raw_ostream& os);
-
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A

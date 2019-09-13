@@ -49,6 +49,4 @@ void Log::print(llvm::raw_ostream& os) const {
   }
 }
 
-void missing_log(llvm::raw_ostream& os) { os << "Error: missing log object\n"; }
-
 }  // namespace stacksafe
