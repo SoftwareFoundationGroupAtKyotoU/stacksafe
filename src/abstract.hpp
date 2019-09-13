@@ -28,7 +28,6 @@ class Abstract {
 
  public:
   explicit Abstract(const llvm::Function& f);
-  static std::unique_ptr<Log> interpret(const llvm::Function& f);
   void interpret(const llvm::BasicBlock* b, const Env& pred);
   void print(llvm::raw_ostream& os) const;
 };

@@ -15,18 +15,6 @@ Abstract::Abstract(const llvm::Function& f) : func_{f}, log_{f} {
     blocks_.try_emplace(&b, Env{});
   }
 }
-std::unique_ptr<Log> Abstract::interpret(const llvm::Function& f) {
-  Symbol::reset();
-  auto log = std::make_unique<Log>(f);
-  if (log) {
-    Abstract abstract{f};
-    for (auto& b : f) {
-      abstract.blocks_.try_emplace(&b, Env{});
-    }
-    abstract.interpret(&f.getEntryBlock(), Env{f});
-  }
-  return log;
-}
 std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
                                     const Env& pred) {
   if (auto it = blocks_.find(b); it != blocks_.end()) {
