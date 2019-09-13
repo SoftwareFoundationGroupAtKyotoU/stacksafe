@@ -7,7 +7,6 @@ namespace stacksafe {
 
 struct Analyzer : public llvm::FunctionPass {
   static char ID;
-  std::unique_ptr<Log> log;
   std::unique_ptr<Abstract> abst;
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
