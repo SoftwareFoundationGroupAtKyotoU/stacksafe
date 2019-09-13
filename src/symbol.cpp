@@ -19,6 +19,7 @@ Symbol::Symbol(Kind k, int n, const Type &t) : Token{n, t}, kind_{k} {}
 Symbol Symbol::global() { return Symbol{STATIC, current_init, Type{nullptr}}; }
 Symbol Symbol::make(const Type &t) { return Symbol{AUTO, ++current_, t}; }
 void Symbol::reset() { current_ = current_init; }
+auto Symbol::kind() const -> Kind { return kind_; }
 std::string Symbol::repr() const {
   if (is_local()) {
     return prefix_ + to_alphabet(number());

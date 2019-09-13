@@ -20,6 +20,7 @@ class Symbol : private Token {
   static Symbol global();
   static Symbol make(const Type &t);
   static void reset();
+  Kind kind() const;
   std::string repr() const;
   bool is_local() const;
 };
