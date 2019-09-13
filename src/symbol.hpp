@@ -17,7 +17,7 @@ class Symbol : private Token {
  public:
   using Token::number, Token::type;
   static Symbol global();
-  static Symbol create(const Type &t);
+  static Symbol make(const Type &t);
   static void reset();
   std::string repr() const;
   bool is_local() const;
