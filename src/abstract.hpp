@@ -14,7 +14,6 @@ class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
-struct Log;
 
 class Abstract {
   using Blocks = std::map<const llvm::BasicBlock*, Env>;
