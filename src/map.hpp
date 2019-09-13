@@ -5,6 +5,7 @@
 #include "domain.hpp"
 #include "json_fwd.hpp"
 #include "symbol.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 class Fabric;

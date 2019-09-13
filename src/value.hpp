@@ -1,4 +1,34 @@
 #ifndef INCLUDE_GUARD_5A10BD0B_E34B_4331_BBA6_9475637B0566
 #define INCLUDE_GUARD_5A10BD0B_E34B_4331_BBA6_9475637B0566
 
+#include <string>
+#include "json_fwd.hpp"
+#include "token.hpp"
+
+namespace llvm {
+class Value;
+}
+
+namespace stacksafe {
+class Fabric;
+
+class Value : private Token {
+  static const std::string prefix_;
+  const llvm::Value *const value_;
+  Value(int n, llvm::Type *t, const llvm::Value *v);
+
+ public:
+  using Token::number, Token::type;
+  static Value create(const llvm::Value &v);
+  explicit Value(int n);
+  const llvm::Value *get() const;
+  std::string repr() const;
+  bool is_register() const;
+};
+bool operator<(const Value &lhs, const Value &rhs);
+void to_json(Json &j, const Value &x);
+Fabric dump(const Value &value);
+
+}  // namespace stacksafe
+
 #endif  // INCLUDE_GUARD_5A10BD0B_E34B_4331_BBA6_9475637B0566
