@@ -1,8 +1,7 @@
 #include "interpret.hpp"
-#include "debug.hpp"
 #include "env.hpp"
-#include "token.hpp"
 #include "utility.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 
