@@ -12,7 +12,7 @@ class Symbol : private Token {
   static const std::string prefix_;
   static constexpr int current_init = 0;
   static int current_;
-  enum Kind { STATIC, OUTLIVING, AUTO } kind_;
+  enum class Kind { STATIC, OUTLIVING, AUTO } kind_;
   Symbol(Kind k, int n, const Type &t);
 
  public:
@@ -20,7 +20,7 @@ class Symbol : private Token {
   static Symbol global();
   static Symbol make(const Type &t);
   static void reset();
-  Kind kind() const;
+  int kind() const;
   std::string repr() const;
   bool is_local() const;
 };
