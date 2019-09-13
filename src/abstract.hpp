@@ -18,6 +18,7 @@ struct Log;
 
 class Abstract {
   std::map<const llvm::BasicBlock*, Env> blocks_;
+  const llvm::Function& func_;
   Log& log_;
   friend void to_json(Json& j, const Abstract& x);
 
@@ -26,7 +27,7 @@ class Abstract {
   void interpret(const llvm::BasicBlock* b, const Env& pred);
 
  public:
-  explicit Abstract(Log& log);
+  explicit Abstract(Log& log, const llvm::Function& f);
   static std::unique_ptr<Log> interpret(const llvm::Function& f);
   void print(llvm::raw_ostream& os) const;
 };

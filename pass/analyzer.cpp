@@ -13,7 +13,7 @@ struct Analyzer : public llvm::FunctionPass {
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
     log = Abstract::interpret(f);
-    abst = std::make_unique<Abstract>(*log);
+    abst = std::make_unique<Abstract>(*log, f);
     return false;
   }
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {
