@@ -29,10 +29,10 @@ bool Symbol::is_local() const { return current_init < number(); }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
-void to_json(Json &j, const Symbol &x) { j = x.repr(); }
+void to_json(Json &j, const Symbol &x) { j = x.repr() + x.type().repr(); }
 Fabric dump(const Symbol &symbol) {
   Fabric ret;
-  return ret.append(symbol.repr()).append(dump(symbol.type())).quote();
+  return ret.append(symbol.repr()).quote();
 }
 
 }  // namespace stacksafe
