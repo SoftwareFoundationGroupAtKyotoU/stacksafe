@@ -3,19 +3,18 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
 #include <llvm/Support/ErrorHandling.h>
-#include "debug.hpp"
 #include "interpret.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
 
 namespace stacksafe {
 
-Abstract::Abstract(Log& log, const llvm::Function& f) : func_{f}, log_{log} {}
+Abstract::Abstract(const llvm::Function& f) : func_{f}, log_{f} {}
 std::unique_ptr<Log> Abstract::interpret(const llvm::Function& f) {
   Symbol::reset();
   auto log = std::make_unique<Log>(f);
   if (log) {
-    Abstract abstract{*log, f};
+    Abstract abstract{f};
     for (auto& b : f) {
       abstract.blocks_.try_emplace(&b, Env{});
     }

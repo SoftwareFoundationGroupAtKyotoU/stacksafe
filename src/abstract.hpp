@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <optional>
+#include "debug.hpp"
 #include "env.hpp"
 #include "json_fwd.hpp"
 
@@ -19,7 +20,7 @@ struct Log;
 class Abstract {
   std::map<const llvm::BasicBlock*, Env> blocks_;
   const llvm::Function& func_;
-  Log& log_;
+  Log log_;
   friend void to_json(Json& j, const Abstract& x);
 
  private:
@@ -27,7 +28,7 @@ class Abstract {
   void interpret(const llvm::BasicBlock* b, const Env& pred);
 
  public:
-  explicit Abstract(Log& log, const llvm::Function& f);
+  explicit Abstract(const llvm::Function& f);
   static std::unique_ptr<Log> interpret(const llvm::Function& f);
   void print(llvm::raw_ostream& os) const;
 };
