@@ -12,7 +12,6 @@ struct Analyzer : public llvm::FunctionPass {
   std::unique_ptr<Abstract> abst;
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
-    log = Abstract::interpret(f);
     abst = std::make_unique<Abstract>(f);
     return false;
   }
