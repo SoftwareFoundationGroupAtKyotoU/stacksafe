@@ -47,6 +47,7 @@ void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
     }
   }
 }
+void Abstract::print(llvm::raw_ostream& os) const { log_.print(os); }
 void to_json(Json& j, const Abstract& x) {
   Json::object_t obj;
   for (auto& [k, v] : x.blocks_) {

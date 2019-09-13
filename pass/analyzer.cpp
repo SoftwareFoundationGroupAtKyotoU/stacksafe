@@ -17,10 +17,8 @@ struct Analyzer : public llvm::FunctionPass {
     return false;
   }
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {
-    if (log) {
-      log->print(os);
-    } else {
-      missing_log(os);
+    if (abst) {
+      abst->print(os);
     }
   }
 };

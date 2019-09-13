@@ -10,6 +10,7 @@
 namespace llvm {
 class BasicBlock;
 class Function;
+class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -27,6 +28,7 @@ class Abstract {
  public:
   explicit Abstract(Log& log);
   static std::unique_ptr<Log> interpret(const llvm::Function& f);
+  void print(llvm::raw_ostream& os) const;
 };
 void to_json(Json& j, const Abstract& x);
 
