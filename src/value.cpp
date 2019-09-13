@@ -64,10 +64,10 @@ bool operator<(const Value &lhs, const Value &rhs) {
     return lhs.repr() < rhs.repr();
   }
 }
-void to_json(Json &j, const Value &x) { j = x.repr(); }
+void to_json(Json &j, const Value &x) { j = x.repr() + x.type().repr(); }
 Fabric dump(const Value &value) {
   Fabric ret;
-  return ret.append(value.repr()).append(dump(value.type())).quote();
+  return ret.append(value.repr()).quote();
 }
 
 }  // namespace stacksafe
