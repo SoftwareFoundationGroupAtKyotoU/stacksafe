@@ -54,7 +54,12 @@ void constant_info(const llvm::Value& v) {
                    llvm::isa<llvm::ConstantExpr>(v) ?
                    "expr" :
                    llvm::isa<llvm::GlobalValue>(v) ? "global" : "constant";
-    llvm::errs() << tag << ": " << v << "\n";
+    llvm::errs() << tag << ": ";
+    if (llvm::isa<llvm::Function>(v)) {
+      llvm::errs() << v.getName() << "\n";
+    } else {
+      llvm::errs() << v << "\n";
+    }
   }
 }
 void unknown_instruction(const llvm::Instruction& i) {
