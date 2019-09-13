@@ -19,13 +19,13 @@ Symbol Symbol::global() { return Symbol{current_init, Type{nullptr}}; }
 Symbol Symbol::create(const Type &t) { return Symbol{++current_, t}; }
 void Symbol::reset() { current_ = current_init; }
 std::string Symbol::repr() const {
-  if (is_global()) {
-    return prefix_ + "@";
-  } else {
+  if (is_local()) {
     return prefix_ + to_alphabet(number());
+  } else {
+    return prefix_ + "@";
   }
 }
-bool Symbol::is_global() const { return number() <= current_init; }
+bool Symbol::is_local() const { return current_init < number(); }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
