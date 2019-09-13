@@ -1,7 +1,6 @@
 #include "debug.hpp"
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
-#include <llvm/IR/Instruction.h>
 #include <llvm/Support/raw_ostream.h>
 #include "fabric.hpp"
 #include "json.hpp"
@@ -50,11 +49,6 @@ void Log::print(llvm::raw_ostream& os) const {
   }
 }
 
-void check_interpret(llvm::Instruction& i, bool success) {
-  if (!success) {
-    llvm::errs() << "Failed to interpret: " << i << "\n";
-  }
-}
 void missing_log(llvm::raw_ostream& os) { os << "Error: missing log object\n"; }
 
 }  // namespace stacksafe

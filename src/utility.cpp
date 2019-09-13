@@ -59,5 +59,10 @@ void constant_info(const llvm::Value& v) {
 void unknown_instruction(const llvm::Instruction& i) {
   llvm::errs() << "Unknown instruction: " << i << "\n";
 }
+void check_interpret(const llvm::Instruction& i, bool success) {
+  if (!success) {
+    llvm::errs() << "Failed to interpret: " << i << "\n";
+  }
+}
 
 }  // namespace stacksafe

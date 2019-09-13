@@ -21,6 +21,7 @@ std::string get_operand(const llvm::Value& value);
 
 void constant_info(const llvm::Value& v);
 void unknown_instruction(const llvm::Instruction& i);
+void check_interpret(const llvm::Instruction& i, bool success);
 
 }  // namespace stacksafe
 

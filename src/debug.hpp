@@ -7,7 +7,6 @@
 namespace llvm {
 class BasicBlock;
 class Function;
-class Instruction;
 class raw_ostream;
 }  // namespace llvm
 
@@ -33,7 +32,6 @@ struct Log {
   void print(llvm::raw_ostream& os) const;
 };
 
-void check_interpret(llvm::Instruction& i, bool success);
 void missing_log(llvm::raw_ostream& os);
 
 }  // namespace stacksafe
