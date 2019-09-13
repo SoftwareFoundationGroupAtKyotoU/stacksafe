@@ -12,7 +12,8 @@ class Symbol : private Token {
   static const std::string prefix_;
   static constexpr int current_init = 0;
   static int current_;
-  using Token::Token;
+  enum Kind { STATIC, OUTLIVING, AUTO } kind_;
+  Symbol(Kind k, int n, const Type &t);
 
  public:
   using Token::number, Token::type;
