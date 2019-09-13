@@ -1,3 +1,4 @@
+#include <llvm/IR/Function.h>
 #include <llvm/Pass.h>
 #include <memory>
 #include "abstract.hpp"
@@ -12,7 +13,9 @@ struct Analyzer : public llvm::FunctionPass {
   std::unique_ptr<Abstract> abst;
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
-    abst = std::make_unique<Abstract>(f);
+    if ((abst = std::make_unique<Abstract>(f))) {
+      abst->interpret(&f.getEntryBlock(), Env{f});
+    }
     return false;
   }
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {

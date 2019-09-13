@@ -25,11 +25,11 @@ class Abstract {
 
  private:
   std::optional<Env> update(const llvm::BasicBlock* b, const Env& pred);
-  void interpret(const llvm::BasicBlock* b, const Env& pred);
 
  public:
   explicit Abstract(const llvm::Function& f);
   static std::unique_ptr<Log> interpret(const llvm::Function& f);
+  void interpret(const llvm::BasicBlock* b, const Env& pred);
   void print(llvm::raw_ostream& os) const;
 };
 void to_json(Json& j, const Abstract& x);
