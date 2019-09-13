@@ -1,4 +1,5 @@
 #include "utility.hpp"
+#include <llvm/IR/Constants.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
@@ -33,6 +34,19 @@ std::string get_operand(const llvm::Value& value) {
   llvm::raw_string_ostream stream{buf};
   value.printAsOperand(stream, false);
   return stream.str();
+}
+
+void constant_info(const llvm::Value& v) {
+  if (llvm::isa<llvm::Constant>(v)) {
+    auto tag = llvm::isa<llvm::ConstantAggregate>(v) ?
+                   "aggregate" :
+                   llvm::isa<llvm::ConstantData>(v) ?
+                   "data" :
+                   llvm::isa<llvm::ConstantExpr>(v) ?
+                   "expr" :
+                   llvm::isa<llvm::GlobalValue>(v) ? "global" : "constant";
+    llvm::errs() << tag << ": " << v << "\n";
+  }
 }
 
 }  // namespace stacksafe

@@ -1,7 +1,5 @@
 #include "value.hpp"
-#include <llvm/IR/Constants.h>
 #include <llvm/IR/Value.h>
-#include <llvm/Support/raw_ostream.h>
 #include "fabric.hpp"
 #include "json.hpp"
 #include "utility.hpp"
@@ -12,16 +10,7 @@ const std::string Value::prefix_{"%"};
 Value::Value(int n, llvm::Type *t, const llvm::Value *v)
     : Token{n, Type{t}}, value_{v} {}
 Value Value::make(const llvm::Value &v) {
-  if (llvm::isa<llvm::Constant>(v)) {
-    auto tag = llvm::isa<llvm::ConstantAggregate>(v) ?
-                   "aggregate" :
-                   llvm::isa<llvm::ConstantData>(v) ?
-                   "data" :
-                   llvm::isa<llvm::ConstantExpr>(v) ?
-                   "expr" :
-                   llvm::isa<llvm::GlobalValue>(v) ? "global" : "constant";
-    llvm::errs() << tag << ": " << v << "\n";
-  }
+  constant_info(v);
   int num = -1;
   auto operand = get_operand(v);
   std::string_view view{operand};
