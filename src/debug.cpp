@@ -14,17 +14,17 @@ void LogBlock::print(llvm::raw_ostream& os) const {
   Fabric env;
   {
     Fabric left, right;
-    left.append("heap: [prev]").next().append(dump(prev.heap()));
-    right.append("heap: [next]").next().append(dump(next.heap()));
+    left.append("heap [prev]:").next().append(dump(prev.heap()));
+    right.append("heap [next]:").next().append(dump(next.heap()));
     env.append(left.patch(right.indent(2))).next();
   }
   {
     Fabric left, right;
-    left.append("stack: [prev]").next().append(dump(prev.stack()));
-    right.append("stack: [next]").next().append(dump(next.stack()));
+    left.append("stack [prev]:").next().append(dump(prev.stack()));
+    right.append("stack [next]:").next().append(dump(next.stack()));
     env.append(left.patch(right.indent(2))).next();
   }
-  os << *block << "\n" << env;
+  os << *block << "\n" << env << "\n";
 }
 
 Log::Log(const llvm::Function& func)

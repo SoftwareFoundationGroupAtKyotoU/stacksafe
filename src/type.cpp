@@ -31,11 +31,11 @@ bool Type::is_pointer() const {
 Type Type::pointee_type() const {
   return Type{is_pointer() ? type_->getPointerElementType() : nullptr};
 }
-void to_json(Json& j, const Type& x) { j = x.repr(); }
+void to_json(Json& j, const Type& x) { j = "<" + x.repr() + ">"; }
 Fabric dump(const Type& type) {
   Fabric ret;
   if (type.get()) {
-    ret.append(type.repr()).quote("<", ">");
+    ret.append(type.repr());
   }
   return ret;
 }

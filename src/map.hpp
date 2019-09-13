@@ -4,7 +4,8 @@
 #include <map>
 #include "domain.hpp"
 #include "json_fwd.hpp"
-#include "token.hpp"
+#include "symbol.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 class Fabric;

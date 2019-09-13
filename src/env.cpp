@@ -1,9 +1,9 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
-#include "fabric.hpp"
 #include "json.hpp"
-#include "token.hpp"
+#include "symbol.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 
@@ -11,7 +11,7 @@ Env::Env(const llvm::Function& f) {
   auto g = Symbol::global();
   insert_heap(g, Domain{g});
   for (auto& a : f.args()) {
-    insert_stack(Value::create(a), Domain{g});
+    insert_stack(Value::make(a), Domain{g});
   }
 }
 const Heap& Env::heap() const { return heap_; }
@@ -30,7 +30,7 @@ bool Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
   return insert_stack(dst, dom);
 }
 bool Env::alloc(const Value& dst) {
-  auto sym = Symbol::create(dst.type().pointee_type());
+  auto sym = Symbol::make(dst.type().pointee_type());
   return insert_heap(sym, Domain{}) && insert_stack(dst, Domain{sym});
 }
 bool Env::load(const Value& dst, const Value& src) {
@@ -115,16 +115,6 @@ Domain Env::collect(const Params& params) const {
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack();
   j["heap"] = x.heap();
-}
-Fabric dump(const Env& env) {
-  Fabric ret, tmp;
-  tmp.append("heap").quote().append(": ");
-  tmp.append(dump(env.heap())).append(",").next();
-  tmp.append("stack").quote().append(": ");
-  tmp.append(dump(env.stack()));
-  ret.append("{").next();
-  ret.append(tmp.indent(2)).next();
-  return ret.append("}");
 }
 
 }  // namespace stacksafe

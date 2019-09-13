@@ -130,6 +130,6 @@ void HeapTest::equal() const {
   EXPECT_EQ(json.dump(), tmp.dump());
 }
 stacksafe::Symbol HeapTest::symbol() {
-  return stacksafe::Symbol::create(stacksafe::Type{nullptr});
+  return stacksafe::Symbol::make(stacksafe::Type{nullptr});
 }
 std::string HeapTest::sym(std::string a) { return "#" + a; }

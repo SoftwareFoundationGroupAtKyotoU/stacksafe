@@ -3,7 +3,7 @@
 
 #include <set>
 #include "json_fwd.hpp"
-#include "token.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 class Fabric;
@@ -12,7 +12,7 @@ class Domain : private std::set<Symbol> {
   using Base = std::set<Symbol>;
 
  public:
-  using Base::begin, Base::end;
+  using Base::begin, Base::end, Base::size;
   Domain() = default;
   explicit Domain(std::initializer_list<Symbol> list);
   void insert(const Symbol& sym);

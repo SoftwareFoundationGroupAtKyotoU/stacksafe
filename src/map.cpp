@@ -73,8 +73,13 @@ Fabric dump(const Map<K>& map) {
     if (!std::exchange(first, false)) {
       tmp.append(",").next();
     }
-    tmp.append(dump(key)).append(":").next();
-    tmp.append(dump(value).indent(2));
+    tmp.append(dump(key)).append(":");
+    if (1 < value.size()) {
+      tmp.next();
+      tmp.append(dump(value).indent(2));
+    } else {
+      tmp.append(" ").append(dump(value));
+    }
   }
   ret.append("{").next();
   ret.append(tmp.indent(2)).next();
