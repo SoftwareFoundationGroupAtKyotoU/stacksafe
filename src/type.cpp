@@ -1,18 +1,10 @@
 #include "type.hpp"
 #include <llvm/IR/Type.h>
-#include <llvm/Support/raw_ostream.h>
 #include "fabric.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
-namespace {
-std::string to_str(const llvm::Type& type) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  type.print(stream, false, true);
-  return stream.str();
-}
-}  // namespace
 
 Type::Type(const llvm::Type* t) : type_{t} {}
 const llvm::Type* Type::get() const { return type_; }
