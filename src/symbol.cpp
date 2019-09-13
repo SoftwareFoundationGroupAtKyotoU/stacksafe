@@ -29,7 +29,11 @@ std::string Symbol::repr() const {
 }
 bool Symbol::is_local() const { return current_init < number(); }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.number() < rhs.number();
+  if (lhs.kind() == rhs.kind()) {
+    return lhs.number() < rhs.number();
+  } else {
+    return lhs.kind() < rhs.kind();
+  }
 }
 void to_json(Json &j, const Symbol &x) { j = x.repr() + x.type().repr(); }
 Fabric dump(const Symbol &symbol) {
