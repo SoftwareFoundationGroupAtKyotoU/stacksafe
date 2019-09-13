@@ -44,6 +44,7 @@ std::string get_operand(const llvm::Value& value) {
   return stream.str();
 }
 
+void print_string(llvm::raw_ostream& os, const std::string& str) { os << str; }
 void constant_info(const llvm::Value& v) {
   if (llvm::isa<llvm::Constant>(v)) {
     auto tag = llvm::isa<llvm::ConstantAggregate>(v) ?

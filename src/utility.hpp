@@ -9,6 +9,7 @@ namespace llvm {
 class Instruction;
 class Type;
 class Value;
+class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -19,6 +20,7 @@ std::string to_str(const llvm::Type& type);
 std::string to_str(const llvm::Value& value);
 std::string get_operand(const llvm::Value& value);
 
+void print_string(llvm::raw_ostream& os, const std::string& str);
 void constant_info(const llvm::Value& v);
 void unknown_instruction(const llvm::Instruction& i);
 void check_interpret(const llvm::Instruction& i, bool success);

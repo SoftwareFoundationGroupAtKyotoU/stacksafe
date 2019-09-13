@@ -1,6 +1,6 @@
 #include "fabric.hpp"
-#include <llvm/Support/raw_ostream.h>
 #include <utility>
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -85,9 +85,9 @@ void Fabric::print(llvm::raw_ostream& os) const {
   bool first = true;
   for (auto& line : fabric_) {
     if (!std::exchange(first, false)) {
-      os << "\n";
+      print_string(os, "\n");
     }
-    os << line;
+    print_string(os, line);
   }
 }
 llvm::raw_ostream& operator<<(llvm::raw_ostream& os, const Fabric& fab) {
