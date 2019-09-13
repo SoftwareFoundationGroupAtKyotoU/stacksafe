@@ -15,6 +15,7 @@ Abstract::Abstract(const llvm::Function& f) : func_{f}, log_{f} {
     blocks_.try_emplace(&b, Env{});
   }
 }
+void Abstract::interpret() { interpret(&func_.getEntryBlock(), Env{func_}); }
 std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
                                     const Env& pred) {
   if (auto it = blocks_.find(b); it != blocks_.end()) {

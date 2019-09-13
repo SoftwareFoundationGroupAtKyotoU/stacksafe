@@ -1,8 +1,6 @@
-#include <llvm/IR/Function.h>
 #include <llvm/Pass.h>
 #include <memory>
 #include "abstract.hpp"
-#include "debug.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
@@ -14,7 +12,7 @@ struct Analyzer : public llvm::FunctionPass {
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
     if ((abst = std::make_unique<Abstract>(f))) {
-      abst->interpret(&f.getEntryBlock(), Env{f});
+      abst->interpret();
     }
     return false;
   }
