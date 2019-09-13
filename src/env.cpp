@@ -1,9 +1,9 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
-#include "fabric.hpp"
 #include "json.hpp"
-#include "token.hpp"
+#include "symbol.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 
@@ -115,16 +115,6 @@ Domain Env::collect(const Params& params) const {
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack();
   j["heap"] = x.heap();
-}
-Fabric dump(const Env& env) {
-  Fabric ret, tmp;
-  tmp.append("heap").quote().append(": ");
-  tmp.append(dump(env.heap())).append(",").next();
-  tmp.append("stack").quote().append(": ");
-  tmp.append(dump(env.stack()));
-  ret.append("{").next();
-  ret.append(tmp.indent(2)).next();
-  return ret.append("}");
 }
 
 }  // namespace stacksafe
