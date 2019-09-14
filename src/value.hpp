@@ -14,6 +14,7 @@ class Fabric;
 
 class Value : private Token {
   static const std::string prefix_;
+  enum class Kind { REGISTER, CONSTANT, OTHER } kind_;
   const llvm::Value *const value_;
   Value(int n, const llvm::Value &v);
 

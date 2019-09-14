@@ -8,7 +8,7 @@ namespace stacksafe {
 
 const std::string Value::prefix_{"%"};
 Value::Value(int n, const llvm::Value &v)
-    : Token{n, Type{v.getType()}}, value_{&v} {}
+    : Token{n, Type{v.getType()}}, kind_{Kind::REGISTER}, value_{&v} {}
 Value Value::make(const llvm::Value &v) {
   if (check_register(v)) {
     auto operand = get_operand(v);
@@ -25,7 +25,8 @@ Value Value::make(const llvm::Value &v) {
     stacksafe_unreachable("neither register nor constant", v);
   }
 }
-Value::Value(int n) : Token{n, Type{nullptr}}, value_{nullptr} {}
+Value::Value(int n)
+    : Token{n, Type{nullptr}}, kind_{Kind::OTHER}, value_{nullptr} {}
 const llvm::Value *Value::get() const { return value_; }
 std::string Value::repr() const {
   if (is_register()) {
