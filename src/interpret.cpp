@@ -1,4 +1,5 @@
 #include "interpret.hpp"
+#include <llvm/Support/ErrorHandling.h>
 #include "env.hpp"
 #include "utility.hpp"
 #include "value.hpp"
@@ -15,8 +16,7 @@ void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
 auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
-    unknown_instruction(i);
-    env_.constant(Value::make(i));
+    llvm_unreachable(to_str(i).c_str());
   }
 }
 auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
