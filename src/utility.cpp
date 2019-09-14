@@ -62,6 +62,13 @@ void constant_info(const llvm::Value& v) {
     }
   }
 }
+bool check_register(const llvm::Value& v) {
+  if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
+    return !i->isTerminator();
+  } else {
+    return llvm::isa<llvm::Argument>(v);
+  }
+}
 void unknown_instruction(const llvm::Instruction& i) {
   llvm::errs() << "Unknown instruction: " << i << "\n";
 }
