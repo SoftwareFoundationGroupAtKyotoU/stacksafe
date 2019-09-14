@@ -13,7 +13,6 @@ Symbol Symbol::global() {
 }
 Symbol Symbol::make(const Type &t) { return Symbol{Kind::AUTO, ++current_, t}; }
 void Symbol::reset() { current_ = current_init; }
-int Symbol::kind() const { return static_cast<int>(kind_); }
 std::string Symbol::repr() const {
   switch (kind_) {
   case Kind::AUTO:
@@ -22,6 +21,8 @@ std::string Symbol::repr() const {
     return prefix_ + "@";
   }
 }
+int Symbol::kind() const { return static_cast<int>(kind_); }
+bool Symbol::is_local() const { return kind_ == Kind::AUTO; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   if (lhs.kind() == rhs.kind()) {
     return lhs.number() < rhs.number();
