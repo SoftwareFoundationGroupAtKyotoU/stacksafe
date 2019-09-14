@@ -45,23 +45,6 @@ std::string get_operand(const llvm::Value& value) {
 }
 
 void print_string(llvm::raw_ostream& os, const std::string& str) { os << str; }
-void constant_info(const llvm::Value& v) {
-  if (llvm::isa<llvm::Constant>(v)) {
-    auto tag = llvm::isa<llvm::ConstantAggregate>(v) ?
-                   "aggregate" :
-                   llvm::isa<llvm::ConstantData>(v) ?
-                   "data" :
-                   llvm::isa<llvm::ConstantExpr>(v) ?
-                   "expr" :
-                   llvm::isa<llvm::GlobalValue>(v) ? "global" : "constant";
-    llvm::errs() << tag << ": ";
-    if (llvm::isa<llvm::Function>(v)) {
-      llvm::errs() << v.getName() << "\n";
-    } else {
-      llvm::errs() << v << "\n";
-    }
-  }
-}
 bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
 }
