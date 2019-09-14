@@ -15,7 +15,7 @@ class Fabric;
 class Value : private Token {
   static const std::string prefix_;
   const llvm::Value *const value_;
-  Value(int n, llvm::Type *t, const llvm::Value *v);
+  Value(int n, const llvm::Value &v);
 
  public:
   using Token::number, Token::type;
