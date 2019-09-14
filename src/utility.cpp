@@ -45,10 +45,11 @@ std::string get_operand(const llvm::Value& value) {
 }
 
 void endline(llvm::raw_ostream& os) { (os << "\n").flush(); }
-void print_string(llvm::raw_ostream& os, const std::string& str) {
-  os << str << "\n";
+void print_string(llvm::raw_ostream& os, const std::string& str) { os << str; }
+void print_stdout(const std::string& str) {
+  print_string(llvm::outs(), str);
+  endline(llvm::outs());
 }
-void print_stdout(const std::string& str) { print_string(llvm::outs(), str); }
 bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
 }
@@ -62,11 +63,11 @@ bool check_register(const llvm::Value& v) {
   }
 }
 void unknown_instruction(const llvm::Instruction& i) {
-  llvm::errs() << "Unknown instruction: " << i << "\n";
+  endline(llvm::errs() << "Unknown instruction: " << i);
 }
 void check_interpret(const llvm::Instruction& i, bool success) {
   if (!success) {
-    llvm::errs() << "Failed to interpret: " << i << "\n";
+    endline(llvm::errs() << "Failed to interpret: " << i);
   }
 }
 

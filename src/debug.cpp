@@ -4,6 +4,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include "fabric.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -23,7 +24,8 @@ void LogBlock::print(llvm::raw_ostream& os) const {
     right.append("stack [next]:").next().append(dump(next.stack()));
     env.append(left.patch(right.indent(2))).next();
   }
-  os << *block << "\n" << env << "\n";
+  endline(os << *block);
+  endline(os << env);
 }
 
 Log::Log(const llvm::Function& func)
@@ -37,14 +39,15 @@ void Log::print(llvm::raw_ostream& os) const {
   std::error_code error;
   llvm::raw_fd_ostream file{name, error};
   if (error) {
-    llvm::errs() << "Error: " << error.message() << "\n";
+    endline(llvm::errs() << "Error: " << error.message());
   } else {
-    os << "Print to: " << name << "\n";
+    endline(os << "Print to: " << name);
   }
   llvm::raw_ostream& stream = error ? llvm::outs() : file;
   stream << *function;
   for (auto& log : blocks) {
-    stream << "\n" << hr << "\n";
+    endline(stream);
+    endline(stream << hr);
     log.print(stream);
   }
 }

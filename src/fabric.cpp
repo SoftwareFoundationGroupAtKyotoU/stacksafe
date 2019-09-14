@@ -85,7 +85,7 @@ void Fabric::print(llvm::raw_ostream& os) const {
   bool first = true;
   for (auto& line : fabric_) {
     if (!std::exchange(first, false)) {
-      print_string(os, "\n");
+      endline(os);
     }
     print_string(os, line);
   }
