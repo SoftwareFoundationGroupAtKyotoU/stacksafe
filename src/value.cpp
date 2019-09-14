@@ -1,5 +1,6 @@
 #include "value.hpp"
 #include <llvm/IR/Value.h>
+#include <llvm/Support/ErrorHandling.h>
 #include "fabric.hpp"
 #include "json.hpp"
 #include "utility.hpp"
@@ -10,16 +11,19 @@ const std::string Value::prefix_{"%"};
 Value::Value(int n, llvm::Type *t, const llvm::Value *v)
     : Token{n, Type{t}}, value_{v} {}
 Value Value::make(const llvm::Value &v) {
-  constant_info(v);
-  int num = -1;
-  auto operand = get_operand(v);
-  std::string_view view{operand};
-  if (!view.empty() && view.substr(0, 1) == prefix_) {
-    if (auto i = to_int(view.substr(1))) {
-      num = *i;
+  if (check_register(v)) {
+    auto operand = get_operand(v);
+    std::string_view view{operand};
+    if (!view.empty() && view.substr(0, 1) == prefix_) {
+      if (auto i = to_int(view.substr(1))) {
+        return Value{*i, v.getType(), &v};
+      }
     }
+    llvm_unreachable("Error: failed register check");
+  } else {
+    assert(check_constant(v) && "Error: neither register nor constant: ");
+    return Value{-1, v.getType(), &v};
   }
-  return Value{num, v.getType(), &v};
 }
 Value::Value(int n) : Value{n, nullptr, nullptr} {}
 const llvm::Value *Value::get() const { return value_; }
