@@ -45,6 +45,7 @@ std::string get_operand(const llvm::Value& value) {
 }
 
 void print_string(llvm::raw_ostream& os, const std::string& str) { os << str; }
+void print_stdout(const std::string& str) { print_string(llvm::outs(), str); }
 bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
 }

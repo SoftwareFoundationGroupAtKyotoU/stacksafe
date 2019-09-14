@@ -21,6 +21,7 @@ std::string to_str(const llvm::Value& value);
 std::string get_operand(const llvm::Value& value);
 
 void print_string(llvm::raw_ostream& os, const std::string& str);
+void print_stdout(const std::string& str);
 bool check_constant(const llvm::Value& v);
 bool check_register(const llvm::Value& v);
 void unknown_instruction(const llvm::Instruction& i);
