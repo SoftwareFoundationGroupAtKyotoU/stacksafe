@@ -26,20 +26,20 @@ class Env {
   const Stack& stack() const;
   bool includes(const Env& that) const;
   void merge(const Env& that);
-  bool binop(const Value& dst, const Value& lhs, const Value& rhs);
-  bool alloc(const Value& dst);
-  bool load(const Value& dst, const Value& src);
-  bool store(const Value& src, const Value& dst);
-  bool cmpxchg(const Value& dst, const Value& ptr, const Value& val);
-  bool cast(const Value& dst, const Value& src);
-  bool phi(const Value& dst, const Params& params);
+  void binop(const Value& dst, const Value& lhs, const Value& rhs);
+  void alloc(const Value& dst);
+  void load(const Value& dst, const Value& src);
+  void store(const Value& src, const Value& dst);
+  void cmpxchg(const Value& dst, const Value& ptr, const Value& val);
+  void cast(const Value& dst, const Value& src);
+  void phi(const Value& dst, const Params& params);
   Domain call(const Params& params);
-  bool call(const Value& dst, const Params& params);
-  bool constant(const Value& dst);
+  void call(const Value& dst, const Params& params);
+  void constant(const Value& dst);
 
  private:
-  bool insert_stack(const Value& key, const Domain& val);
-  bool insert_heap(const Symbol& key, const Domain& val);
+  void insert_stack(const Value& key, const Domain& val);
+  void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const Value& reg) const;
   Domain from_heap(const Symbol& sym) const;
   void collect(const Symbol& symbol, Domain& done) const;
