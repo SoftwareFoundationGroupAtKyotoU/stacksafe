@@ -24,8 +24,10 @@ std::string Symbol::repr() const {
 int Symbol::kind() const { return static_cast<int>(kind_); }
 bool Symbol::is_local() const { return kind_ == Kind::AUTO; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
-  if (lhs.kind() == rhs.kind()) {
+  if (lhs.is_local() && rhs.is_local()) {
     return lhs.number() < rhs.number();
+  } else if (lhs.kind() == rhs.kind()) {
+    return lhs.repr() < rhs.repr();
   } else {
     return lhs.kind() < rhs.kind();
   }
