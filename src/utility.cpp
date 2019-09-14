@@ -44,6 +44,7 @@ std::string get_operand(const llvm::Value& value) {
   return stream.str();
 }
 
+void endline(llvm::raw_ostream& os) { (os << "\n").flush(); }
 void print_string(llvm::raw_ostream& os, const std::string& str) {
   os << str << "\n";
 }
