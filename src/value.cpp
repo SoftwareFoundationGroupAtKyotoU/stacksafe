@@ -40,10 +40,12 @@ std::string Value::repr() const {
 int Value::kind() const { return static_cast<int>(kind_); }
 bool Value::is_register() const { return 0 <= number(); }
 bool operator<(const Value &lhs, const Value &rhs) {
-  if (lhs.is_register() || rhs.is_register()) {
+  if (lhs.is_register() && rhs.is_register()) {
     return lhs.number() < rhs.number();
-  } else {
+  } else if (lhs.kind() == rhs.kind()) {
     return lhs.repr() < rhs.repr();
+  } else {
+    return lhs.kind() < rhs.kind();
   }
 }
 void to_json(Json &j, const Value &x) { j = x.repr() + x.type().repr(); }
