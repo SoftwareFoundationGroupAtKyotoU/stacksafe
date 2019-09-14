@@ -62,6 +62,9 @@ void constant_info(const llvm::Value& v) {
     }
   }
 }
+bool check_constant(const llvm::Value& v) {
+  return llvm::isa<llvm::Constant>(v);
+}
 bool check_register(const llvm::Value& v) {
   if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
     return !i->isTerminator();
