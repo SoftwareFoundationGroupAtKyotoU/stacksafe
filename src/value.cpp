@@ -42,7 +42,7 @@ std::string Value::repr() const {
   stacksafe_unreachable("unknown kind", *this);
 }
 int Value::kind() const { return static_cast<int>(kind_); }
-bool Value::is_register() const { return 0 <= number(); }
+bool Value::is_register() const { return kind_ == Kind::REGISTER; }
 bool operator<(const Value &lhs, const Value &rhs) {
   if (lhs.is_register() && rhs.is_register()) {
     return lhs.number() < rhs.number();
