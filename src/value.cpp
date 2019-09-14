@@ -37,6 +37,7 @@ std::string Value::repr() const {
     return to_str(*value_);
   }
 }
+int Value::kind() const { return static_cast<int>(kind_); }
 bool Value::is_register() const { return 0 <= number(); }
 bool operator<(const Value &lhs, const Value &rhs) {
   if (lhs.is_register() || rhs.is_register()) {

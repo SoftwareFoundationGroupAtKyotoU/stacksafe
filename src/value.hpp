@@ -25,6 +25,7 @@ class Value : private Token {
   explicit Value(int n);
   const llvm::Value *get() const;
   std::string repr() const;
+  int kind() const;
   bool is_register() const;
 };
 bool operator<(const Value &lhs, const Value &rhs);
