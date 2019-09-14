@@ -3,6 +3,7 @@
 #include "domain.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
+#include "utility.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
@@ -86,10 +87,19 @@ bool Env::insert_heap(const Symbol& key, const Domain& val) {
   return true;
 }
 Domain Env::from_stack(const Value& reg) const {
-  if (auto d = stack_.get(reg)) {
-    return *d;
+  if (reg.is_register()) {
+    if (auto d = stack_.get(reg)) {
+      return *d;
+    }
+    stacksafe_unreachable("Error: read from nonexistent register: " +
+                          to_str(reg));
+  } else if (check_constant(*reg.get())) {
+    print_stdout(to_str(reg));
+    return Domain{};
+  } else {
+    stacksafe_unreachable("Error: read from neither register nor constant: " +
+                          to_str(reg));
   }
-  return Domain{};
 }
 Domain Env::from_heap(const Symbol& sym) const {
   if (auto d = heap_.get(sym)) {
