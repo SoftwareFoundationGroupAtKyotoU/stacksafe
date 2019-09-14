@@ -17,6 +17,7 @@ class Value : private Token {
   enum class Kind { REGISTER, CONSTANT, OTHER } kind_;
   const llvm::Value *const value_;
   Value(int n, const llvm::Value &v);
+  explicit Value(const llvm::Value &v);
 
  public:
   using Token::number, Token::type;
