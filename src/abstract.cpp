@@ -38,7 +38,7 @@ std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
       return next;
     }
   } else {
-    stacksafe_unreachable("Error: unknown basicblock");
+    stacksafe_unreachable("unknown basicblock", *b);
   }
   return std::nullopt;
 }

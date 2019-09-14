@@ -15,7 +15,7 @@ void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
 auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
-    stacksafe_unreachable(to_str(i));
+    stacksafe_unreachable("unsupported instruction", i);
   }
 }
 auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
@@ -68,7 +68,7 @@ auto Interpret::visitPHINode(llvm::PHINode &i) -> RetTy {
     if (auto val = use.get()) {
       params.push_back(Value::make(*val));
     } else {
-      stacksafe_unreachable("Error: unknown phi node: " + to_str(i));
+      stacksafe_unreachable("unknown phi node", i);
     }
   }
   env_.phi(Value::make(i), params);
@@ -79,7 +79,7 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
     if (auto v = a.get()) {
       params.push_back(Value::make(*v));
     } else {
-      stacksafe_unreachable("Error: unknown parameter: " + to_str(i));
+      stacksafe_unreachable("unknown parameter", i);
     }
   }
   if (check_register(i)) {
@@ -98,12 +98,12 @@ auto Interpret::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   if (auto v = i.getTrueValue()) {
     params.push_back(Value::make(*v));
   } else {
-    stacksafe_unreachable("Error: unknown select node: " + to_str(i));
+    stacksafe_unreachable("unknown select node", i);
   }
   if (auto v = i.getFalseValue()) {
     params.push_back(Value::make(*v));
   } else {
-    stacksafe_unreachable("Error: unknown select node: " + to_str(i));
+    stacksafe_unreachable("unknown select node", i);
   }
   env_.phi(Value::make(i), params);
 }

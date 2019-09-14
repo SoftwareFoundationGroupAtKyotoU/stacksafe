@@ -16,7 +16,8 @@ class raw_ostream;
 namespace stacksafe {
 class Value;
 
-#define stacksafe_unreachable(msg) llvm_unreachable(std::string{msg}.c_str())
+#define stacksafe_unreachable(msg, obj) \
+  llvm_unreachable((std::string{"Error: " msg ": "} + to_str(obj)).c_str())
 
 std::optional<int> to_int(std::string_view view);
 std::string to_alphabet(int num);

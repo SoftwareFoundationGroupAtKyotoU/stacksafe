@@ -79,7 +79,7 @@ void Env::insert_stack(const Value& key, const Domain& val) {
   if (key.is_register()) {
     stack_.insert(key, val);
   } else {
-    stacksafe_unreachable("Error: insert to non-register: " + to_str(key));
+    stacksafe_unreachable("insert to non-register", key);
   }
 }
 void Env::insert_heap(const Symbol& key, const Domain& val) {
@@ -90,14 +90,12 @@ Domain Env::from_stack(const Value& reg) const {
     if (auto d = stack_.get(reg)) {
       return *d;
     }
-    stacksafe_unreachable("Error: read from nonexistent register: " +
-                          to_str(reg));
+    stacksafe_unreachable("read from nonexistent register", reg);
   } else if (check_constant(*reg.get())) {
     print_stdout(to_str(reg));
     return Domain{};
   } else {
-    stacksafe_unreachable("Error: read from neither register nor constant: " +
-                          to_str(reg));
+    stacksafe_unreachable("read from neither register nor constant", reg);
   }
 }
 Domain Env::from_heap(const Symbol& sym) const {
