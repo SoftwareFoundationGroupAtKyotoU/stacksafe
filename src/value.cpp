@@ -25,7 +25,7 @@ Value Value::make(const llvm::Value &v) {
     stacksafe_unreachable("neither register nor constant", v);
   }
 }
-Value::Value(int n) : Value{n, nullptr, nullptr} {}
+Value::Value(int n) : Token{n, Type{nullptr}}, value_{nullptr} {}
 const llvm::Value *Value::get() const { return value_; }
 std::string Value::repr() const {
   if (is_register()) {
