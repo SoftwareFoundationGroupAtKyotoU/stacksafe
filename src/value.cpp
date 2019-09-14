@@ -31,11 +31,15 @@ Value::Value(int n)
     : Token{n, Type{nullptr}}, kind_{Kind::OTHER}, value_{nullptr} {}
 const llvm::Value *Value::get() const { return value_; }
 std::string Value::repr() const {
-  if (is_register()) {
+  switch (kind_) {
+  case Kind::OTHER:
+    [[fallthrough]];
+  case Kind::REGISTER:
     return prefix_ + std::to_string(number());
-  } else {
+  case Kind::CONSTANT:
     return to_str(*value_);
   }
+  stacksafe_unreachable("unknown kind", *this);
 }
 int Value::kind() const { return static_cast<int>(kind_); }
 bool Value::is_register() const { return 0 <= number(); }
