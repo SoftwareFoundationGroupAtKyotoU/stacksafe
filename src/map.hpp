@@ -13,10 +13,10 @@ class Fabric;
 template <typename K>
 class Map : private std::map<K, Domain> {
   using Base = std::map<K, Domain>;
-  bool exists(const K& key) const;
 
  public:
   using Base::begin, Base::end;
+  bool exists(const K& key) const;
   Domain* get(const K& key);
   const Domain* get(const K& key) const;
   void insert(const K& key, const Symbol& sym);

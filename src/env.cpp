@@ -57,7 +57,9 @@ bool Env::cast(const Value& dst, const Value& src) {
 bool Env::phi(const Value& dst, const Params& params) {
   Domain dom;
   for (auto& val : params) {
-    dom.insert(from_stack(val));
+    if (stack().exists(val)) {
+      dom.insert(from_stack(val));
+    }
   }
   return insert_stack(dst, dom);
 }
