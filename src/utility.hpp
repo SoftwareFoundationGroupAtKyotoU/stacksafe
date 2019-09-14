@@ -14,6 +14,7 @@ class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
+class Value;
 
 #define stacksafe_unreachable(msg) llvm_unreachable(std::string{msg}.c_str())
 
@@ -21,6 +22,7 @@ std::optional<int> to_int(std::string_view view);
 std::string to_alphabet(int num);
 std::string to_str(const llvm::Type& type);
 std::string to_str(const llvm::Value& value);
+std::string to_str(const Value& value);
 std::string get_operand(const llvm::Value& value);
 
 void endline(llvm::raw_ostream& os);
