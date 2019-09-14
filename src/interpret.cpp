@@ -88,10 +88,10 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
       success = false;
     }
   }
-  if (i.getFunctionType()->getReturnType()->isVoidTy()) {
-    env_.call(params);
-  } else {
+  if (check_register(i)) {
     success = env_.call(Value::make(i), params) && success;
+  } else {
+    env_.call(params);
   }
   check_interpret(i, success);
 }
