@@ -1,6 +1,6 @@
 #include "utility.hpp"
 #include <llvm/IR/Constants.h>
-#include <llvm/IR/Instruction.h>
+#include <llvm/IR/Instructions.h>
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
@@ -66,7 +66,9 @@ bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
 }
 bool check_register(const llvm::Value& v) {
-  if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
+  if (auto i = llvm::dyn_cast<llvm::CallInst>(&v)) {
+    return !i->getFunctionType()->getReturnType()->isVoidTy();
+  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
     return !i->isTerminator();
   } else {
     return llvm::isa<llvm::Argument>(v);
