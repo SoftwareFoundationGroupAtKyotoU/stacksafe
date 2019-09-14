@@ -2,7 +2,6 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
-#include <llvm/Support/ErrorHandling.h>
 #include "interpret.hpp"
 #include "json.hpp"
 #include "symbol.hpp"

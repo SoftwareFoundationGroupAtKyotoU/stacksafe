@@ -1,6 +1,5 @@
 #include "value.hpp"
 #include <llvm/IR/Value.h>
-#include <llvm/Support/ErrorHandling.h>
 #include "fabric.hpp"
 #include "json.hpp"
 #include "utility.hpp"
