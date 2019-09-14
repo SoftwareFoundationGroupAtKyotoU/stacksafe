@@ -2,8 +2,14 @@
 
 TEST_F(EnvTest, Binop) {
   equal();
-  env.binop(v0, v1, v2);
+  env.constant(v0);
   init_stack(0);
+  equal();
+  env.constant(v1);
+  init_stack(1);
+  equal();
+  env.binop(v2, v1, v0);
+  init_stack(2);
   equal();
 }
 TEST_F(EnvTest, Alloc) {
