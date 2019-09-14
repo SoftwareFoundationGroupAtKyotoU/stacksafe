@@ -15,7 +15,7 @@ void Interpret::visit(llvm::BasicBlock &b) { Base::visit(b); }
 auto Interpret::visit(llvm::Instruction &i) -> RetTy { return Base::visit(i); }
 auto Interpret::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
-    llvm_unreachable(to_str(i).c_str());
+    stacksafe_unreachable(to_str(i));
   }
 }
 auto Interpret::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {

@@ -5,6 +5,7 @@
 #include "interpret.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -37,7 +38,7 @@ std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
       return next;
     }
   } else {
-    llvm_unreachable("Error: unknown basicblock");
+    stacksafe_unreachable("Error: unknown basicblock");
   }
   return std::nullopt;
 }

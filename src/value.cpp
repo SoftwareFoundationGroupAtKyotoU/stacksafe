@@ -18,7 +18,7 @@ Value Value::make(const llvm::Value &v) {
         return Value{*i, v.getType(), &v};
       }
     }
-    llvm_unreachable("Error: failed register check");
+    stacksafe_unreachable("Error: failed register check");
   } else {
     assert(check_constant(v) && "Error: neither register nor constant: ");
     return Value{-1, v.getType(), &v};
