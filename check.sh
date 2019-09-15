@@ -8,6 +8,7 @@ if [[ "$1" == -i ]]; then
 fi
 cmake .. -GNinja || exit $?
 if [[ "$1" == develop ]]; then
+    ninja
     ninja develop
     exit
 elif [[ "$1" == -v ]]; then
