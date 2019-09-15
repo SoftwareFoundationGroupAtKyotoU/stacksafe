@@ -33,7 +33,7 @@ void print_stdout(const std::string& str);
 bool is_voidfunc(const llvm::Value& v);
 bool is_register(const llvm::Value& v);
 bool is_global(const llvm::Value& v);
-bool check_constant(const llvm::Value& v);
+bool is_constant(const llvm::Value& v);
 bool check_register(const llvm::Value& v);
 void unknown_instruction(const llvm::Instruction& i);
 void check_interpret(const llvm::Instruction& i, bool success);
