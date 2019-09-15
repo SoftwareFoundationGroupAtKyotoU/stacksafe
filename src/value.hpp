@@ -13,9 +13,13 @@ namespace stacksafe {
 class Fabric;
 
 class Value : private Token {
+ public:
+  enum class Kind { REGISTER, CONSTANT, OTHER };
+
+ private:
   static const std::string prefix_;
-  enum class Kind { REGISTER, CONSTANT, OTHER } kind_;
   const llvm::Value *const value_;
+  Kind kind_;
   Value(int n, const llvm::Value &v);
   explicit Value(const llvm::Value &v);
 
