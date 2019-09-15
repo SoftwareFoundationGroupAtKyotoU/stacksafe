@@ -14,7 +14,7 @@ class Fabric;
 
 class Value : private Token {
  public:
-  enum class Kind { REGISTER, CONSTANT, OTHER };
+  enum class Kind { REGISTER, CONSTANT, GLOBAL };
 
  private:
   static const std::string prefix_;

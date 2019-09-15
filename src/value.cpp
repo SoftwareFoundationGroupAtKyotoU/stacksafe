@@ -28,15 +28,15 @@ Value Value::make(const llvm::Value &v) {
   }
 }
 Value::Value(int n)
-    : Token{n, Type{nullptr}}, value_{nullptr}, kind_{Kind::OTHER} {}
+    : Token{n, Type{nullptr}}, value_{nullptr}, kind_{Kind::REGISTER} {}
 const llvm::Value *Value::get() const { return value_; }
 std::string Value::repr() const {
   switch (kind_) {
-  case Kind::OTHER:
-    [[fallthrough]];
   case Kind::REGISTER:
     return prefix_ + std::to_string(number());
   case Kind::CONSTANT:
+    [[fallthrough]];
+  default:
     return to_str(*value_);
   }
   stacksafe_unreachable("unknown kind", *this);
