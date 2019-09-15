@@ -65,6 +65,15 @@ bool is_register(const llvm::Value& v) {
     return llvm::isa<llvm::Argument>(v);
   }
 }
+bool is_global(const llvm::Value& v) {
+  if (llvm::isa<llvm::GlobalValue>(v)) {
+    return true;
+  } else if (llvm::isa<llvm::Constant>(v)) {
+    return false;
+  } else {
+    stacksafe_unreachable("neither global nor constant", v);
+  }
+}
 bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
 }

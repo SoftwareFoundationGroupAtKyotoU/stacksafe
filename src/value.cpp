@@ -19,6 +19,8 @@ Value Value::make(const llvm::Value &v) {
       }
     }
     stacksafe_unreachable("failed register check", v);
+  } else if (is_global(v)) {
+    return Value{-1, v, Kind::GLOBAL};
   } else if (check_constant(v)) {
     return Value{-1, v, Kind::CONSTANT};
   } else {
