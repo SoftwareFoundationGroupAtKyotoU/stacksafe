@@ -15,6 +15,7 @@ class raw_ostream;
 
 namespace stacksafe {
 class Value;
+enum class ValueKind;
 
 #define stacksafe_unreachable(msg, obj) \
   llvm_unreachable((std::string{"Error: " msg ": "} + to_str(obj)).c_str())

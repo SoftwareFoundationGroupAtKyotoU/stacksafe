@@ -12,11 +12,9 @@ class Value;
 namespace stacksafe {
 class Fabric;
 
+enum class ValueKind { REGISTER, CONSTANT, GLOBAL };
 class Value : private Token {
- public:
-  enum class Kind { REGISTER, CONSTANT, GLOBAL };
-
- private:
+  using Kind = ValueKind;
   static const std::string prefix_;
   const llvm::Value *const value_;
   Kind kind_;
