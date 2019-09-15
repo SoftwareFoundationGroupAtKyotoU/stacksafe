@@ -1,7 +1,9 @@
 #include "value.hpp"
 #include <llvm/IR/Value.h>
+#include "domain.hpp"
 #include "fabric.hpp"
 #include "json.hpp"
+#include "symbol.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -43,6 +45,16 @@ std::string Value::repr() const {
 }
 int Value::kind() const { return static_cast<int>(kind_); }
 bool Value::is_register() const { return kind_ == Kind::REGISTER; }
+Domain Value::get_domain() const {
+  switch (kind_) {
+  case Kind::CONSTANT:
+    return Domain{};
+  case Kind::GLOBAL:
+    return Domain{Symbol::global()};
+  default:
+    stacksafe_unreachable("get_domain must be called from non-register", *this);
+  }
+}
 bool operator<(const Value &lhs, const Value &rhs) {
   if (lhs.is_register() && rhs.is_register()) {
     return lhs.number() < rhs.number();

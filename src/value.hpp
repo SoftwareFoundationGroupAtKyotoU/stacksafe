@@ -10,6 +10,7 @@ class Value;
 }
 
 namespace stacksafe {
+class Domain;
 class Fabric;
 
 enum class ValueKind { REGISTER, CONSTANT, GLOBAL };
@@ -28,6 +29,7 @@ class Value : private Token {
   std::string repr() const;
   int kind() const;
   bool is_register() const;
+  Domain get_domain() const;
 };
 bool operator<(const Value &lhs, const Value &rhs);
 void to_json(Json &j, const Value &x);
