@@ -66,13 +66,35 @@ bool check_register(const llvm::Value& v) {
   }
 }
 bool check_global(const llvm::Value& v) {
-  if (llvm::isa<llvm::GlobalValue>(v)) {
-    return true;
-  } else if (check_constant(v)) {
-    return false;
-  } else {
-    stacksafe_unreachable("neither global nor constant", v);
+  auto type = v.getType();
+  if (auto c = llvm::dyn_cast<llvm::Constant>(&v); c && type) {
+    if (llvm::isa<llvm::GlobalValue>(c)) {
+      return true;
+    } else if (auto a = llvm::dyn_cast<llvm::ConstantAggregate>(c)) {
+      endline(llvm::errs() << "Aggregate: " << *a);
+      return false;
+    } else if (auto d = llvm::dyn_cast<llvm::ConstantData>(c)) {
+      if (type->isIntegerTy() || type->isFloatingPointTy()) {
+        return false;
+      }
+      endline(llvm::errs() << "Data: " << *d);
+      return false;
+    } else if (auto e = llvm::dyn_cast<llvm::ConstantExpr>(c)) {
+      bool ret = false;
+      for (unsigned i = 0; i < e->getNumOperands(); ++i) {
+        auto op = e->getOperand(i);
+        if (check_global(*op)) {
+          ret = true;
+        }
+      }
+      if (!ret) {
+        endline(llvm::errs() << "Expr: " << *e);
+      }
+      return ret;
+    }
+    stacksafe_unreachable("unknown constant", *c);
   }
+  stacksafe_unreachable("check_global", v);
 }
 bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
