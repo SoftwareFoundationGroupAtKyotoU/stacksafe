@@ -9,10 +9,6 @@ namespace stacksafe {
 const std::string Value::prefix_{"%"};
 Value::Value(int n, const llvm::Value &v, Kind k)
     : Token{n, Type{v.getType()}}, value_{&v}, kind_{k} {}
-Value::Value(int n, const llvm::Value &v)
-    : Token{n, Type{v.getType()}}, value_{&v}, kind_{Kind::REGISTER} {}
-Value::Value(const llvm::Value &v, Kind k)
-    : Token{-1, Type{v.getType()}}, value_{&v}, kind_{k} {}
 Value Value::make(const llvm::Value &v) {
   if (check_register(v)) {
     auto operand = get_operand(v);
