@@ -22,7 +22,6 @@ class Type {
   Type pointee_type() const;
 };
 void to_json(Json& j, const Type& x);
-Fabric dump(const Type& type);
 
 }  // namespace stacksafe
 

@@ -24,12 +24,5 @@ Type Type::pointee_type() const {
   return Type{is_pointer() ? type_->getPointerElementType() : nullptr};
 }
 void to_json(Json& j, const Type& x) { j = x.repr(); }
-Fabric dump(const Type& type) {
-  Fabric ret;
-  if (type.get()) {
-    ret.append(type.repr());
-  }
-  return ret;
-}
 
 }  // namespace stacksafe
