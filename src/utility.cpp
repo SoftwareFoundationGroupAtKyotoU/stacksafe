@@ -52,6 +52,12 @@ void print_stdout(const std::string& str) {
   print_string(llvm::outs(), str);
   endline(llvm::outs());
 }
+bool is_voidfunc(const llvm::Value& v) {
+  if (auto i = llvm::dyn_cast<llvm::CallInst>(&v)) {
+    return i->getFunctionType()->getReturnType()->isVoidTy();
+  }
+  return false;
+}
 bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
 }

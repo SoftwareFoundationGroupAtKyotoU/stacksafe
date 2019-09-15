@@ -30,6 +30,7 @@ std::string get_operand(const llvm::Value& value);
 void endline(llvm::raw_ostream& os);
 void print_string(llvm::raw_ostream& os, const std::string& str);
 void print_stdout(const std::string& str);
+bool is_voidfunc(const llvm::Value& v);
 bool check_constant(const llvm::Value& v);
 bool check_register(const llvm::Value& v);
 void unknown_instruction(const llvm::Instruction& i);

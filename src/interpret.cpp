@@ -82,10 +82,10 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
       stacksafe_unreachable("unknown parameter", i);
     }
   }
-  if (check_register(i)) {
-    env_.call(Value::make(i), params);
-  } else {
+  if (is_voidfunc(i)) {
     env_.call(params);
+  } else {
+    env_.call(Value::make(i), params);
   }
 }
 auto Interpret::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
