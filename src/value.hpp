@@ -21,7 +21,7 @@ class Value : private Token {
   const llvm::Value *const value_;
   Kind kind_;
   Value(int n, const llvm::Value &v);
-  explicit Value(const llvm::Value &v);
+  Value(const llvm::Value &v, Kind k);
 
  public:
   using Token::number, Token::type;
