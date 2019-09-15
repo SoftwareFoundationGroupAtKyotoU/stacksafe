@@ -91,7 +91,7 @@ Domain Env::from_stack(const Value& reg) const {
       return *d;
     }
     stacksafe_unreachable("read from nonexistent register", reg);
-  } else if (is_constant(*reg.get())) {
+  } else if (check_constant(*reg.get())) {
     return Domain{};
   } else {
     stacksafe_unreachable("read from neither register nor constant", reg);

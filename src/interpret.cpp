@@ -82,7 +82,7 @@ auto Interpret::visitCallInst(llvm::CallInst &i) -> RetTy {
       stacksafe_unreachable("unknown parameter", i);
     }
   }
-  if (is_voidfunc(i)) {
+  if (check_voidfunc(i)) {
     env_.call(params);
   } else {
     env_.call(Value::make(i), params);
