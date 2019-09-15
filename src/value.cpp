@@ -7,6 +7,8 @@
 namespace stacksafe {
 
 const std::string Value::prefix_{"%"};
+Value::Value(int n, const llvm::Value &v, Kind k)
+    : Token{n, Type{v.getType()}}, value_{&v}, kind_{k} {}
 Value::Value(int n, const llvm::Value &v)
     : Token{n, Type{v.getType()}}, value_{&v}, kind_{Kind::REGISTER} {}
 Value::Value(const llvm::Value &v, Kind k)
@@ -17,12 +19,12 @@ Value Value::make(const llvm::Value &v) {
     std::string_view view{operand};
     if (!view.empty() && view.substr(0, 1) == prefix_) {
       if (auto i = to_int(view.substr(1))) {
-        return Value{*i, v};
+        return Value{*i, v, Kind::REGISTER};
       }
     }
     stacksafe_unreachable("failed register check", v);
   } else if (check_constant(v)) {
-    return Value{v, Kind::CONSTANT};
+    return Value{-1, v, Kind::CONSTANT};
   } else {
     stacksafe_unreachable("neither register nor constant", v);
   }

@@ -20,6 +20,7 @@ class Value : private Token {
   static const std::string prefix_;
   const llvm::Value *const value_;
   Kind kind_;
+  Value(int n, const llvm::Value &v, Kind k);
   Value(int n, const llvm::Value &v);
   Value(const llvm::Value &v, Kind k);
 
