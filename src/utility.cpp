@@ -75,22 +75,5 @@ bool is_global(const llvm::Value& v) {
   }
 }
 bool is_constant(const llvm::Value& v) { return llvm::isa<llvm::Constant>(v); }
-bool check_register(const llvm::Value& v) {
-  if (auto i = llvm::dyn_cast<llvm::CallInst>(&v)) {
-    return !i->getFunctionType()->getReturnType()->isVoidTy();
-  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
-    return !i->isTerminator();
-  } else {
-    return llvm::isa<llvm::Argument>(v);
-  }
-}
-void unknown_instruction(const llvm::Instruction& i) {
-  endline(llvm::errs() << "Unknown instruction: " << i);
-}
-void check_interpret(const llvm::Instruction& i, bool success) {
-  if (!success) {
-    endline(llvm::errs() << "Failed to interpret: " << i);
-  }
-}
 
 }  // namespace stacksafe

@@ -7,7 +7,6 @@
 #include <string_view>
 
 namespace llvm {
-class Instruction;
 class Type;
 class Value;
 class raw_ostream;
@@ -15,7 +14,6 @@ class raw_ostream;
 
 namespace stacksafe {
 class Value;
-enum class ValueKind;
 
 #define stacksafe_unreachable(msg, obj) \
   llvm_unreachable((std::string{"Error: " msg ": "} + to_str(obj)).c_str())
@@ -34,9 +32,6 @@ bool is_voidfunc(const llvm::Value& v);
 bool is_register(const llvm::Value& v);
 bool is_global(const llvm::Value& v);
 bool is_constant(const llvm::Value& v);
-bool check_register(const llvm::Value& v);
-void unknown_instruction(const llvm::Instruction& i);
-void check_interpret(const llvm::Instruction& i, bool success);
 
 }  // namespace stacksafe
 
