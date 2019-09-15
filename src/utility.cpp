@@ -58,6 +58,13 @@ bool is_voidfunc(const llvm::Value& v) {
   }
   return false;
 }
+bool is_register(const llvm::Value& v) {
+  if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
+    return !i->isTerminator() && !is_voidfunc(*i);
+  } else {
+    return llvm::isa<llvm::Argument>(v);
+  }
+}
 bool check_constant(const llvm::Value& v) {
   return llvm::isa<llvm::Constant>(v);
 }

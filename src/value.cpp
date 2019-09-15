@@ -10,7 +10,7 @@ const std::string Value::prefix_{"%"};
 Value::Value(int n, const llvm::Value &v, Kind k)
     : Token{n, Type{v.getType()}}, value_{&v}, kind_{k} {}
 Value Value::make(const llvm::Value &v) {
-  if (check_register(v)) {
+  if (stacksafe::is_register(v)) {
     auto operand = get_operand(v);
     std::string_view view{operand};
     if (!view.empty() && view.substr(0, 1) == prefix_) {
