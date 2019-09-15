@@ -1,4 +1,5 @@
 #include "value.hpp"
+#include <llvm/ADT/StringRef.h>
 #include <llvm/IR/Value.h>
 #include "domain.hpp"
 #include "fabric.hpp"
@@ -37,9 +38,9 @@ std::string Value::repr() const {
   case Kind::REGISTER:
     return prefix_ + std::to_string(number());
   case Kind::CONSTANT:
-    [[fallthrough]];
-  default:
     return to_str(*value_);
+  case Kind::GLOBAL:
+    return "@" + value_->getName().str() + type().repr();
   }
   stacksafe_unreachable("unknown kind", *this);
 }
