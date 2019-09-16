@@ -17,7 +17,7 @@ Abstract::Abstract(const llvm::Function& f) : func_{f}, log_{f} {
 }
 auto Abstract::blocks() const -> const Blocks& { return blocks_; }
 void Abstract::interpret() { interpret(&func_.getEntryBlock(), Env{func_}); }
-void Abstract::print(llvm::raw_ostream& os) const { log_.print(os); }
+void Abstract::print(llvm::raw_ostream&) const {}
 void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
   if (auto next = update(b, pred)) {
     if (auto t = b->getTerminator()) {

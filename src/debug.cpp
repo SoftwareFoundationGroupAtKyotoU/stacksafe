@@ -53,14 +53,5 @@ void Log::print(const llvm::BasicBlock* block, const Env& prev,
   LogBlock{block, prev, next}.print(os);
   os.flush();
 }
-void Log::print(llvm::raw_ostream&) const {
-  const auto hr = "--------------------------------";
-  llvm::raw_ostream& stream = file.get();
-  for (auto& log : blocks) {
-    endline(stream);
-    endline(stream << hr);
-    log.print(stream);
-  }
-}
 
 }  // namespace stacksafe
