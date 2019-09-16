@@ -16,26 +16,6 @@ LogFile::LogFile(const std::string& name) {
 }
 llvm::raw_ostream& LogFile::get() const { return file ? *file : llvm::errs(); }
 
-LogBlock::LogBlock(const llvm::BasicBlock* b, const Env& p, const Env& n)
-    : block{b}, prev{p}, next{n} {}
-void LogBlock::print(llvm::raw_ostream& os) const {
-  Fabric env;
-  {
-    Fabric left, right;
-    left.append("heap [prev]:").next().append(dump(prev.heap()));
-    right.append("heap [next]:").next().append(dump(next.heap()));
-    env.append(left.patch(right.indent(2))).next();
-  }
-  {
-    Fabric left, right;
-    left.append("stack [prev]:").next().append(dump(prev.stack()));
-    right.append("stack [next]:").next().append(dump(next.stack()));
-    env.append(left.patch(right.indent(2))).next();
-  }
-  endline(os << *block);
-  endline(os << env);
-}
-
 std::string Log::logfilename(const llvm::Function& f) {
   return "log/" + f.getName().str() + ".log";
 }

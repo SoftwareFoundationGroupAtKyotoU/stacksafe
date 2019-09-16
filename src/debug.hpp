@@ -21,15 +21,6 @@ struct LogFile {
   llvm::raw_ostream& get() const;
 };
 
-struct LogBlock {
-  const llvm::BasicBlock* const block;
-  const Env prev, next;
-
- public:
-  LogBlock(const llvm::BasicBlock* b, const Env& p, const Env& n);
-  void print(llvm::raw_ostream& os) const;
-};
-
 struct Log {
   LogFile file;
   static std::string logfilename(const llvm::Function& f);
