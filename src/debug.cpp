@@ -36,10 +36,13 @@ void LogBlock::print(llvm::raw_ostream& os) const {
   endline(os << env);
 }
 
+std::string Log::logfilename(const llvm::Function& f) {
+  return "log/" + f.getName().str() + ".log";
+}
 Log::Log(const llvm::Function& func)
     : function{&func},
       filename{"log/" + func.getName().str() + ".log"},
-      file{filename} {}
+      file{logfilename(func)} {}
 void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
   blocks.emplace_back(block, prev, next);
 }
