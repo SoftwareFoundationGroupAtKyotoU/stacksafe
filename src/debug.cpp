@@ -44,6 +44,10 @@ Log::Log(const llvm::Function& func)
 void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
   blocks.emplace_back(block, prev, next);
 }
+void Log::print(const llvm::BasicBlock* block, const Env& prev,
+                const Env& next) {
+  LogBlock{block, prev, next}.print(file.get());
+}
 void Log::print(llvm::raw_ostream&) const {
   const auto hr = "--------------------------------";
   llvm::raw_ostream& stream = file.get();
