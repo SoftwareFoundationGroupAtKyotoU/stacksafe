@@ -32,7 +32,6 @@ struct LogBlock {
 
 struct Log {
   const llvm::Function* const function;
-  std::string filename;
   std::vector<LogBlock> blocks;
   LogFile file;
   static std::string logfilename(const llvm::Function& f);
