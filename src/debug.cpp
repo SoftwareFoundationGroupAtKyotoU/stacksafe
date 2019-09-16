@@ -42,9 +42,6 @@ std::string Log::logfilename(const llvm::Function& f) {
 Log::Log(const llvm::Function& func) : file{logfilename(func)} {
   file.get() << func;
 }
-void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
-  blocks.emplace_back(block, prev, next);
-}
 void Log::print(const llvm::BasicBlock* block, const Env& prev,
                 const Env& next) {
   const auto hr = "--------------------------------";
