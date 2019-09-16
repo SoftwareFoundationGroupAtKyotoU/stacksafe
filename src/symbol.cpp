@@ -15,10 +15,11 @@ Symbol Symbol::make(const Type &t) { return Symbol{Kind::AUTO, ++current_, t}; }
 void Symbol::reset() { current_ = current_init; }
 std::string Symbol::repr() const {
   switch (kind_) {
+  default:
+  case Kind::STATIC:
+    return prefix_ + "@";
   case Kind::AUTO:
     return prefix_ + to_alphabet(number());
-  default:
-    return prefix_ + "@";
   }
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
