@@ -43,7 +43,6 @@ std::string Value::repr() const {
   }
   stacksafe_unreachable("unknown kind", *this);
 }
-int Value::kind() const { return static_cast<int>(kind_); }
 bool Value::is_register() const { return kind_ == Kind::REGISTER; }
 Domain Value::get_domain() const {
   switch (kind_) {

@@ -16,7 +16,7 @@ class Fabric;
 class Value : private Token {
   static const std::string prefix_;
   const llvm::Value *const value_;
-  enum class Kind : int { REGISTER, CONSTANT, GLOBAL } kind_;
+  enum class Kind { REGISTER, CONSTANT, GLOBAL } kind_;
   Value(int n, const llvm::Value &v, Kind k);
 
  public:
@@ -25,7 +25,6 @@ class Value : private Token {
   explicit Value(int n);
   const llvm::Value *get() const;
   std::string repr() const;
-  int kind() const;
   bool is_register() const;
   Domain get_domain() const;
 };
