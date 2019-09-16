@@ -21,7 +21,6 @@ std::string Symbol::repr() const {
     return prefix_ + "@";
   }
 }
-int Symbol::kind() const { return static_cast<int>(kind_); }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
