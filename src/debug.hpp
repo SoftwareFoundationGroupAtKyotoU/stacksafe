@@ -34,6 +34,7 @@ struct Log {
   const llvm::Function* const function;
   std::string filename;
   std::vector<LogBlock> blocks;
+  LogFile file;
 
  public:
   explicit Log(const llvm::Function& func);
