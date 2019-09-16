@@ -39,8 +39,9 @@ void LogBlock::print(llvm::raw_ostream& os) const {
 std::string Log::logfilename(const llvm::Function& f) {
   return "log/" + f.getName().str() + ".log";
 }
-Log::Log(const llvm::Function& func)
-    : function{func}, file{logfilename(func)} {}
+Log::Log(const llvm::Function& func) : function{func}, file{logfilename(func)} {
+  file.get() << func;
+}
 void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
   blocks.emplace_back(block, prev, next);
 }
@@ -51,7 +52,6 @@ void Log::print(const llvm::BasicBlock* block, const Env& prev,
 void Log::print(llvm::raw_ostream&) const {
   const auto hr = "--------------------------------";
   llvm::raw_ostream& stream = file.get();
-  stream << function;
   for (auto& log : blocks) {
     endline(stream);
     endline(stream << hr);
