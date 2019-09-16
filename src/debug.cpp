@@ -40,14 +40,14 @@ std::string Log::logfilename(const llvm::Function& f) {
   return "log/" + f.getName().str() + ".log";
 }
 Log::Log(const llvm::Function& func)
-    : function{&func}, file{logfilename(func)} {}
+    : function{func}, file{logfilename(func)} {}
 void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
   blocks.emplace_back(block, prev, next);
 }
 void Log::print(llvm::raw_ostream&) const {
   const auto hr = "--------------------------------";
   llvm::raw_ostream& stream = file.get();
-  stream << *function;
+  stream << function;
   for (auto& log : blocks) {
     endline(stream);
     endline(stream << hr);
