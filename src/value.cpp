@@ -46,12 +46,13 @@ std::string Value::repr() const {
 bool Value::is_register() const { return kind_ == Kind::REGISTER; }
 Domain Value::get_domain() const {
   switch (kind_) {
+  default:
+  case Kind::REGISTER:
+    stacksafe_unreachable("get_domain must be called from non-register", *this);
   case Kind::CONSTANT:
     return Domain{};
   case Kind::GLOBAL:
     return Domain{Symbol::global()};
-  default:
-    stacksafe_unreachable("get_domain must be called from non-register", *this);
   }
 }
 bool operator<(const Value &lhs, const Value &rhs) {
