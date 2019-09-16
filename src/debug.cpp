@@ -43,17 +43,9 @@ Log::Log(const llvm::Function& func)
 void Log::add(const llvm::BasicBlock* block, const Env& prev, const Env& next) {
   blocks.emplace_back(block, prev, next);
 }
-void Log::print(llvm::raw_ostream& os) const {
+void Log::print(llvm::raw_ostream&) const {
   const auto hr = "--------------------------------";
-  llvm::StringRef name{filename};
-  std::error_code error;
-  llvm::raw_fd_ostream file{name, error};
-  if (error) {
-    endline(llvm::errs() << "Error: " << error.message());
-  } else {
-    endline(os << "Print to: " << name);
-  }
-  llvm::raw_ostream& stream = this->file.get();
+  llvm::raw_ostream& stream = file.get();
   stream << *function;
   for (auto& log : blocks) {
     endline(stream);
