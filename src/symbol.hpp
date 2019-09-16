@@ -12,7 +12,7 @@ class Symbol : private Token {
   static const std::string prefix_;
   static constexpr int current_init = 0;
   static int current_;
-  enum class Kind { STATIC, OUTLIVING, AUTO } kind_;
+  enum class Kind { STATIC, AUTO } kind_;
   Symbol(Kind k, int n, const Type &t);
 
  public:
