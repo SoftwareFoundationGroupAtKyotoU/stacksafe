@@ -2,6 +2,7 @@
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
+#include <llvm/Support/Debug.h>
 #include "interpret.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
@@ -10,7 +11,9 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function& f) : func_{f} {
-  log_ = Log{f};
+#define DEBUG_TYPE "log"
+  LLVM_DEBUG(log_ = Log{f});
+#undef DEBUG_TYPE
   Symbol::reset();
   for (auto& b : f) {
     blocks_.try_emplace(&b, Env{});
@@ -35,9 +38,9 @@ std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
     if (!prev.includes(pred)) {
       prev.merge(pred);
       auto next = Interpret::run(b, prev);
-      if (log_) {
-        log_->print(b, prev, next);
-      }
+#define DEBUG_TYPE "log"
+      LLVM_DEBUG(log_->print(b, prev, next));
+#undef DEBUG_TYPE
       return next;
     }
   } else {
