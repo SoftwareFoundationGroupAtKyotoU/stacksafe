@@ -14,6 +14,7 @@ LogFile::LogFile(const std::string& name) {
     endline(llvm::errs() << "Error: " << error.message());
   }
 }
+llvm::raw_ostream& LogFile::get() const { return file ? *file : llvm::errs(); }
 
 LogBlock::LogBlock(const llvm::BasicBlock* b, const Env& p, const Env& n)
     : block{b}, prev{p}, next{n} {}

@@ -18,6 +18,7 @@ struct LogFile {
 
  public:
   explicit LogFile(const std::string& name);
+  llvm::raw_ostream& get() const;
 };
 
 struct LogBlock {
