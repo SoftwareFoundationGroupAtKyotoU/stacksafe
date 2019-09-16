@@ -34,7 +34,7 @@ std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
     if (!prev.includes(pred)) {
       prev.merge(pred);
       auto next = Interpret::run(b, prev);
-      log_.add(b, prev, next);
+      log_.print(b, prev, next);
       return next;
     }
   } else {
