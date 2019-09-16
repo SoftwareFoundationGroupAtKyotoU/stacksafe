@@ -56,13 +56,9 @@ Domain Value::get_domain() const {
   }
 }
 bool operator<(const Value &lhs, const Value &rhs) {
-  if (lhs.is_register() && rhs.is_register()) {
-    return lhs.number() < rhs.number();
-  } else if (lhs.kind() == rhs.kind()) {
-    return lhs.repr() < rhs.repr();
-  } else {
-    return lhs.kind() < rhs.kind();
-  }
+  assert(lhs.is_register() && rhs.is_register() &&
+         "value comparison must be on registers");
+  return lhs.number() < rhs.number();
 }
 void to_json(Json &j, const Value &x) { j = x.repr() + x.type().repr(); }
 Fabric dump(const Value &value) {
