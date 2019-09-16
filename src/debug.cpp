@@ -1,12 +1,19 @@
 #include "debug.hpp"
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
-#include <llvm/Support/raw_ostream.h>
 #include "fabric.hpp"
 #include "json.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
+
+LogFile::LogFile(const std::string& name) {
+  std::error_code error;
+  file = std::make_unique<llvm::raw_fd_ostream>(name, error);
+  if (error) {
+    endline(llvm::errs() << "Error: " << error.message());
+  }
+}
 
 LogBlock::LogBlock(const llvm::BasicBlock* b, const Env& p, const Env& n)
     : block{b}, prev{p}, next{n} {}

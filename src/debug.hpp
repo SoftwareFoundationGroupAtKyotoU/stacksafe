@@ -1,16 +1,24 @@
 #ifndef INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A
 #define INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A
 
+#include <llvm/Support/raw_ostream.h>
+#include <memory>
 #include <vector>
 #include "env.hpp"
 
 namespace llvm {
 class BasicBlock;
 class Function;
-class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
+
+struct LogFile {
+  std::unique_ptr<llvm::raw_fd_ostream> file;
+
+ public:
+  explicit LogFile(const std::string& name);
+};
 
 struct LogBlock {
   const llvm::BasicBlock* const block;
