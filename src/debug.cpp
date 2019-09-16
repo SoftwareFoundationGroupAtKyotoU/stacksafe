@@ -54,19 +54,17 @@ void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
     right.append("stack [next]:").next().append(dump(next.stack()));
     env.append(left.patch(right.indent(2))).next();
   }
-  endline(os << *block);
-  endline(os << env);
+  endline(os << *block << env);
 }
 Log::Log(const llvm::Function& func) : file{logfilename(func)} {
   file.get() << func;
 }
 void Log::print(const llvm::BasicBlock* block, const Env& prev,
-                const Env& next) {
+                const Env& next) const {
   const auto hr = "--------------------------------";
   auto& os = file.get();
   os << hr;
-  LogBlock{block, prev, next}.print(os);
-  os.flush();
+  print_block(os, block, prev, next);
 }
 
 }  // namespace stacksafe
