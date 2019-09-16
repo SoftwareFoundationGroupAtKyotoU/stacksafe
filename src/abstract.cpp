@@ -9,7 +9,8 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function& f) : func_{f}, log_{f} {
+Abstract::Abstract(const llvm::Function& f) : func_{f} {
+  log_ = Log{f};
   Symbol::reset();
   for (auto& b : f) {
     blocks_.try_emplace(&b, Env{});
@@ -34,7 +35,9 @@ std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
     if (!prev.includes(pred)) {
       prev.merge(pred);
       auto next = Interpret::run(b, prev);
-      log_.print(b, prev, next);
+      if (log_) {
+        log_->print(b, prev, next);
+      }
       return next;
     }
   } else {

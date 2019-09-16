@@ -19,7 +19,7 @@ class Abstract {
   using Blocks = std::map<const llvm::BasicBlock*, Env>;
   Blocks blocks_;
   const llvm::Function& func_;
-  Log log_;
+  std::optional<Log> log_;
 
  public:
   explicit Abstract(const llvm::Function& f);
