@@ -34,6 +34,7 @@ Value::Value(int n)
 const llvm::Value *Value::get() const { return value_; }
 std::string Value::repr() const {
   switch (kind_) {
+  default:
   case Kind::REGISTER:
     return prefix_ + std::to_string(number());
   case Kind::CONSTANT:
@@ -41,7 +42,6 @@ std::string Value::repr() const {
   case Kind::GLOBAL:
     return "@" + value_->getName().str() + type().repr();
   }
-  stacksafe_unreachable("unknown kind", *this);
 }
 bool Value::is_register() const { return kind_ == Kind::REGISTER; }
 Domain Value::get_domain() const {
