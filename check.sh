@@ -26,5 +26,5 @@ else
         target="${1%.c}".ll
         clang -S -emit-llvm -c "$1" -o "$target"
     fi
-    opt -analyze -load=build/stacksafe.so -stacksafe "$target"
+    opt -analyze -load=build/stacksafe.so -stacksafe -debug-only=log "$target"
 fi
