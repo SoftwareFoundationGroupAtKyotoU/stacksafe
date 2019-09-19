@@ -23,8 +23,10 @@ struct Analyzer : public llvm::FunctionPass {
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {
     if (abst) {
       abst->print(os);
+    } else {
+      os.changeColor(llvm::raw_ostream::YELLOW);
+      (os << "analysis failed: " << name).flush();
     }
-    os.flush();
   }
 };
 
