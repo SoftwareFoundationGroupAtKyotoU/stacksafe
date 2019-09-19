@@ -25,6 +25,7 @@ target_sources(${target} PRIVATE
   token.cpp
   utility.cpp
   value.cpp
+  verify.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
