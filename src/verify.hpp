@@ -4,8 +4,12 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
+class Env;
 
-class Verifier : public llvm::InstVisitor<Verifier, void> {};
+class Verifier : public llvm::InstVisitor<Verifier, void> {
+  const Env& env_;
+  explicit Verifier(const Env& e);
+};
 
 }  // namespace stacksafe
 
