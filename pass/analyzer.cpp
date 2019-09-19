@@ -12,6 +12,7 @@ struct Analyzer : public llvm::FunctionPass {
   bool runOnFunction(llvm::Function &f) override {
     if ((abst = std::make_unique<Abstract>(f))) {
       abst->interpret();
+      abst->verify();
     }
     return false;
   }
