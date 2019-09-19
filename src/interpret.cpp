@@ -73,9 +73,9 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
 }
 auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   Params params;
-  for (auto &a : i.args()) {
-    if (auto v = a.get()) {
-      params.push_back(Value::make(*v));
+  for (auto &use : i.args()) {
+    if (auto arg = use.get()) {
+      params.push_back(Value::make(*arg));
     } else {
       stacksafe_unreachable("unknown parameter", i);
     }

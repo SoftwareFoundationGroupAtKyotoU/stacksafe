@@ -1,5 +1,6 @@
 #include "verify.hpp"
 #include "env.hpp"
+#include "utility.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
@@ -17,6 +18,23 @@ auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
   for (auto &i : const_cast<llvm::BasicBlock &>(b)) {
     if (!Super::visit(i)) {
       return unsafe;
+    }
+  }
+  return safe;
+}
+auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
+  for (auto &use : i.args()) {
+    if (auto arg = use.get()) {
+      auto reg = Value::make(*arg);
+      if (auto dom = env_.stack().get(reg)) {
+        if (dom->has_local() && dom->includes(Symbol::global())) {
+          return unsafe;
+        }
+      } else {
+        stacksafe_unreachable("unknown register", reg);
+      }
+    } else {
+      stacksafe_unreachable("unknown parameter", i);
     }
   }
   return safe;
