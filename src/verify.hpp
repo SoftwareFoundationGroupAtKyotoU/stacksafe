@@ -14,6 +14,7 @@ class Verifier : public llvm::InstVisitor<Verifier, void> {
 
  public:
   static void run(const llvm::BasicBlock* b, const Env& pred);
+  RetTy visitInstruction(llvm::Instruction& i);
 };
 
 }  // namespace stacksafe
