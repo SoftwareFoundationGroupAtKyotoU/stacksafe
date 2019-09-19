@@ -6,11 +6,11 @@
 namespace stacksafe {
 class Env;
 
-class Interpret : public llvm::InstVisitor<Interpret, void> {
+class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
-  using Base = llvm::InstVisitor<Interpret, RetTy>;
+  using Base = llvm::InstVisitor<Interpreter, RetTy>;
   Env &env_;
-  explicit Interpret(Env &e);
+  explicit Interpreter(Env &e);
 
  public:
   static Env run(const llvm::BasicBlock *b, const Env &pred);

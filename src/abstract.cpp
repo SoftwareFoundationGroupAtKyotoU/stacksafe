@@ -37,7 +37,7 @@ std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
     auto& prev = it->second;
     if (!prev.includes(pred)) {
       prev.merge(pred);
-      auto next = Interpret::run(b, prev);
+      auto next = Interpreter::run(b, prev);
 #define DEBUG_TYPE "log"
       LLVM_DEBUG(log_->print(b, prev, next));
 #undef DEBUG_TYPE
