@@ -6,8 +6,8 @@
 namespace stacksafe {
 class Env;
 
-class Verifier : public llvm::InstVisitor<Verifier, void> {
-  using RetTy = void;
+class Verifier : public llvm::InstVisitor<Verifier, bool> {
+  using RetTy = bool;
   using Super = llvm::InstVisitor<Verifier, RetTy>;
   const Env& env_;
   explicit Verifier(const Env& e);
