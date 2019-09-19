@@ -8,7 +8,7 @@ class Env;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
-  using Base = llvm::InstVisitor<Interpreter, RetTy>;
+  using Super = llvm::InstVisitor<Interpreter, RetTy>;
   Env &env_;
   explicit Interpreter(Env &e);
 

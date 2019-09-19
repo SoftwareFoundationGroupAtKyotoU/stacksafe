@@ -8,7 +8,7 @@ namespace stacksafe {
 Interpreter::Interpreter(Env &e) : env_{e} {}
 Env Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
   auto ret = pred;
-  Interpreter{ret}.Base::visit(const_cast<llvm::BasicBlock &>(*b));
+  Interpreter{ret}.Super::visit(const_cast<llvm::BasicBlock &>(*b));
   return ret;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {

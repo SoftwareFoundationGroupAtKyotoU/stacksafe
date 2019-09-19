@@ -9,10 +9,10 @@ namespace stacksafe {
 class Fabric;
 
 class Domain : private std::set<Symbol> {
-  using Base = std::set<Symbol>;
+  using Super = std::set<Symbol>;
 
  public:
-  using Base::begin, Base::end, Base::size;
+  using Super::begin, Super::end, Super::size;
   Domain() = default;
   explicit Domain(std::initializer_list<Symbol> list);
   void insert(const Symbol& sym);

@@ -12,10 +12,10 @@ class Fabric;
 
 template <typename K>
 class Map : private std::map<K, Domain> {
-  using Base = std::map<K, Domain>;
+  using Super = std::map<K, Domain>;
 
  public:
-  using Base::begin, Base::end;
+  using Super::begin, Super::end;
   bool exists(const K& key) const;
   Domain* get(const K& key);
   const Domain* get(const K& key) const;

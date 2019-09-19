@@ -7,7 +7,7 @@ namespace stacksafe {
 
 template <typename K>
 bool Map<K>::exists(const K& key) const {
-  return 0 < Base::count(key);
+  return 0 < Super::count(key);
 }
 template <typename K>
 auto Map<K>::get(const K& key) -> Domain* {
@@ -16,7 +16,7 @@ auto Map<K>::get(const K& key) -> Domain* {
 }
 template <typename K>
 auto Map<K>::get(const K& key) const -> const Domain* {
-  if (auto it = Base::find(key); it != end()) {
+  if (auto it = Super::find(key); it != end()) {
     return &it->second;
   }
   return nullptr;
@@ -32,13 +32,13 @@ void Map<K>::insert(const K& key, const Domain& val) {
   if (auto p = get(key)) {
     p->insert(val);
   } else {
-    Base::try_emplace(key, val);
+    Super::try_emplace(key, val);
   }
 }
 template <typename K>
 void Map<K>::insert(const K& key) {
   if (!exists(key)) {
-    Base::try_emplace(key, Domain{});
+    Super::try_emplace(key, Domain{});
   }
 }
 template <typename K>
