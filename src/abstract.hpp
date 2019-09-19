@@ -19,12 +19,14 @@ class Abstract {
   using Blocks = std::map<const llvm::BasicBlock*, Env>;
   Blocks blocks_;
   const llvm::Function& func_;
+  bool safe_;
   std::optional<Log> log_;
 
  public:
   explicit Abstract(const llvm::Function& f);
   const Blocks& blocks() const;
   void interpret();
+  void verify();
   void print(llvm::raw_ostream& os) const;
 
  private:

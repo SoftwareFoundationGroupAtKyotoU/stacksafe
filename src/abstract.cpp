@@ -7,10 +7,11 @@
 #include "json.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
+#include "verify.hpp"
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function& f) : func_{f} {
+Abstract::Abstract(const llvm::Function& f) : func_{f}, safe_{false} {
 #define DEBUG_TYPE "log"
   LLVM_DEBUG(log_ = Log{f});
 #undef DEBUG_TYPE
@@ -21,6 +22,17 @@ Abstract::Abstract(const llvm::Function& f) : func_{f} {
 }
 auto Abstract::blocks() const -> const Blocks& { return blocks_; }
 void Abstract::interpret() { interpret(&func_.getEntryBlock(), Env{func_}); }
+void Abstract::verify() {
+  for (auto& b : func_) {
+    if (auto it = blocks_.find(&b); it != blocks_.end()) {
+      auto env = Interpreter::run(it->first, it->second);
+      if (!Verifier::run(&b, env)) {
+        return;
+      }
+    }
+  }
+  safe_ = true;
+}
 void Abstract::print(llvm::raw_ostream&) const {}
 void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
   if (auto next = update(b, pred)) {
