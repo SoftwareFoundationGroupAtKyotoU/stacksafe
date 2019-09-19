@@ -9,6 +9,8 @@ class Env;
 class Verifier : public llvm::InstVisitor<Verifier, bool> {
   using RetTy = bool;
   using Super = llvm::InstVisitor<Verifier, RetTy>;
+  static constexpr RetTy safe = true;
+  static constexpr RetTy unsafe = false;
   const Env& env_;
   explicit Verifier(const Env& e);
 
