@@ -11,9 +11,6 @@ Env Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
   Interpreter{ret}.Base::visit(const_cast<llvm::BasicBlock &>(*b));
   return ret;
 }
-auto Interpreter::visit(llvm::Instruction &i) -> RetTy {
-  return Base::visit(i);
-}
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
     stacksafe_unreachable("unsupported instruction", i);
