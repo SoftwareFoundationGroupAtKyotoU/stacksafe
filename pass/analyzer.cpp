@@ -19,6 +19,7 @@ struct Analyzer : public llvm::FunctionPass {
     if (abst) {
       abst->print(os);
     }
+    os.flush();
   }
 };
 
