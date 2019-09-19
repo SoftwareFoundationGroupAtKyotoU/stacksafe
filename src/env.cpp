@@ -87,13 +87,12 @@ void Env::insert_heap(const Symbol& key, const Domain& val) {
 }
 Domain Env::from_stack(const Value& reg) const {
   if (reg.is_register()) {
+    // comparison on only registers is allowed
     if (auto d = stack_.get(reg)) {
       return *d;
     }
-    stacksafe_unreachable("read from nonexistent register", reg);
-  } else {
-    return reg.get_domain();
   }
+  return reg.get_domain();
 }
 Domain Env::from_heap(const Symbol& sym) const {
   if (auto d = heap_.get(sym)) {
