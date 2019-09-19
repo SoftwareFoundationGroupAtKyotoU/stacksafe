@@ -22,6 +22,7 @@ std::string Symbol::repr() const {
     return prefix_ + to_alphabet(number());
   }
 }
+bool Symbol::is_local() const { return kind_ == Kind::AUTO; }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
