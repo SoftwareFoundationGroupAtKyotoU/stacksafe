@@ -31,7 +31,6 @@ struct Analyzer : public llvm::FunctionPass {
 };
 
 char Analyzer::ID = 0;
-static llvm::RegisterPass<Analyzer> registerpass("stacksafe",
-                                                 "stacksafe analysis pass",
+static llvm::RegisterPass<Analyzer> registerpass("stacksafe", "stacksafe",
                                                  false, true);
 }  // namespace stacksafe
