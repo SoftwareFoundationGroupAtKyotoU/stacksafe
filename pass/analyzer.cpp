@@ -25,7 +25,8 @@ struct Analyzer : public llvm::FunctionPass {
       abst->print(os);
     } else {
       os.changeColor(llvm::raw_ostream::YELLOW);
-      (os << "analysis failed: " << name).flush();
+      os << "analysis failed: " << name << "\n";
+      os.resetColor().flush();
     }
   }
 };
