@@ -76,11 +76,8 @@ void Env::call(const Value& dst, const Params& params) {
 }
 void Env::constant(const Value& dst) { insert_stack(dst, Domain{}); }
 void Env::insert_stack(const Value& key, const Domain& val) {
-  if (key.is_register()) {
-    stack_.insert(key, val);
-  } else {
-    stacksafe_unreachable("insert to non-register", key);
-  }
+  assert(key.is_register() && "insert to non-register");
+  stack_.insert(key, val);
 }
 void Env::insert_heap(const Symbol& key, const Domain& val) {
   heap_.insert(key, val);
