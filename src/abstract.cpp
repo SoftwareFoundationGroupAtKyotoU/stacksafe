@@ -33,7 +33,17 @@ void Abstract::verify() {
   }
   safe_ = true;
 }
-void Abstract::print(llvm::raw_ostream&) const {}
+void Abstract::print(llvm::raw_ostream& os) const {
+  auto name = func_.getName();
+  if (safe_) {
+    os.changeColor(llvm::raw_ostream::GREEN);
+    endline(os << "Safe: " << name);
+  } else {
+    os.changeColor(llvm::raw_ostream::RED, true);
+    endline(os << "Unsafe: " << name);
+  }
+  os.resetColor();
+}
 void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
   if (auto next = update(b, pred)) {
     if (auto t = b->getTerminator()) {
