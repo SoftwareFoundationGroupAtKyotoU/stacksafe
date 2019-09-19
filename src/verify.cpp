@@ -3,8 +3,14 @@
 namespace stacksafe {
 
 Verifier::Verifier(const Env &e) : env_{e} {}
-void Verifier::run(const llvm::BasicBlock *b, const Env &pred) {
-  Verifier{pred}.Super::visit(const_cast<llvm::BasicBlock &>(*b));
+auto Verifier::run(const llvm::BasicBlock *b, const Env &pred) -> RetTy {
+  Verifier v{pred};
+  for (auto &i : const_cast<llvm::BasicBlock &>(*b)) {
+    if (!v.visit(i)) {
+      return false;
+    }
+  }
+  return true;
 }
 auto Verifier::visitInstruction(llvm::Instruction &) -> RetTy { return true; }
 
