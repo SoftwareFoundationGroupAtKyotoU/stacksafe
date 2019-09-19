@@ -19,6 +19,7 @@ class Domain : private std::set<Symbol> {
   void insert(const Domain& dom);
   bool includes(const Symbol& sym) const;
   bool includes(const Domain& that) const;
+  bool has_local() const;
 };
 void to_json(Json& j, const Domain& x);
 Fabric dump(const Domain& domain);

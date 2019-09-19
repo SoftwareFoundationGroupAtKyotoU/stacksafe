@@ -12,6 +12,14 @@ bool Domain::includes(const Symbol& sym) const { return 0 < Base::count(sym); }
 bool Domain::includes(const Domain& that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
 }
+bool Domain::has_local() const {
+  for (auto& sym : *this) {
+    if (sym.is_local()) {
+      return true;
+    }
+  }
+  return false;
+}
 void to_json(Json& j, const Domain& x) {
   Json::array_t arr;
   for (auto& e : x) {
