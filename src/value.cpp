@@ -48,7 +48,7 @@ Domain Value::get_domain() const {
   switch (kind_) {
   default:
   case Kind::REGISTER:
-    stacksafe_unreachable("get_domain must be called from non-register", *this);
+    [[fallthrough]];
   case Kind::CONSTANT:
     return Domain{};
   case Kind::GLOBAL:
