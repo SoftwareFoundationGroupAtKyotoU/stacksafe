@@ -64,18 +64,14 @@ void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
 }
 std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
                                     const Env& pred) {
-  if (auto it = blocks_.find(b); it != blocks_.end()) {
-    auto& prev = it->second;
-    if (!prev.includes(pred)) {
-      prev.merge(pred);
-      auto next = Interpreter::run(b, prev);
+  auto& prev = blocks_.get(b);
+  if (!prev.includes(pred)) {
+    prev.merge(pred);
+    auto next = Interpreter::run(b, prev);
 #define DEBUG_TYPE "log"
-      LLVM_DEBUG(log_->print(b, prev, next));
+    LLVM_DEBUG(log_->print(b, prev, next));
 #undef DEBUG_TYPE
-      return next;
-    }
-  } else {
-    stacksafe_unreachable("unknown basicblock", *b);
+    return next;
   }
   return std::nullopt;
 }
