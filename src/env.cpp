@@ -24,11 +24,6 @@ void Env::merge(const Env& that) {
   heap_.insert(that.heap_);
   stack_.insert(that.stack_);
 }
-void Env::call(const Domain& dom) {
-  for (auto& sym : dom) {
-    insert_heap(sym, dom);
-  }
-}
 void Env::insert_stack(const Value& key, const Domain& val) {
   assert(key.is_register() && "insert to non-register");
   stack_.insert(key, val);
@@ -51,12 +46,9 @@ Domain Env::from_heap(const Symbol& sym) const {
   }
   return Domain{};
 }
-void Env::collect(const Symbol& symbol, Domain& done) const {
-  if (!done.includes(symbol)) {
-    done.insert(symbol);
-    for (auto& sym : from_heap(symbol)) {
-      collect(sym, done);
-    }
+void Env::call(const Domain& dom) {
+  for (auto& sym : dom) {
+    insert_heap(sym, dom);
   }
 }
 Domain Env::collect(const Params& params) const {
@@ -67,6 +59,14 @@ Domain Env::collect(const Params& params) const {
     }
   }
   return ret;
+}
+void Env::collect(const Symbol& symbol, Domain& done) const {
+  if (!done.includes(symbol)) {
+    done.insert(symbol);
+    for (auto& sym : from_heap(symbol)) {
+      collect(sym, done);
+    }
+  }
 }
 void to_json(Json& j, const Env& x) {
   j["stack"] = x.stack();

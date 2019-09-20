@@ -26,15 +26,15 @@ class Env {
   const Stack& stack() const;
   bool includes(const Env& that) const;
   void merge(const Env& that);
-  void call(const Domain& dom);
-
- public:
   void insert_stack(const Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const Value& reg) const;
   Domain from_heap(const Symbol& sym) const;
-  void collect(const Symbol& symbol, Domain& done) const;
+  void call(const Domain& dom);
   Domain collect(const Params& value) const;
+
+ private:
+  void collect(const Symbol& symbol, Domain& done) const;
 };
 void to_json(Json& j, const Env& x);
 
