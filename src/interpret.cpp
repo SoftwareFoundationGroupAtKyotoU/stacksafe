@@ -1,5 +1,6 @@
 #include "interpret.hpp"
 #include "env.hpp"
+#include "instruction.hpp"
 #include "utility.hpp"
 #include "value.hpp"
 
