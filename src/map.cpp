@@ -22,23 +22,11 @@ auto Map<K>::get(const K& key) const -> const Domain* {
   return nullptr;
 }
 template <typename K>
-void Map<K>::insert(const K& key, const Symbol& sym) {
-  Domain val;
-  val.insert(sym);
-  insert(key, val);
-}
-template <typename K>
 void Map<K>::insert(const K& key, const Domain& val) {
   if (auto p = get(key)) {
     p->insert(val);
   } else {
     Super::try_emplace(key, val);
-  }
-}
-template <typename K>
-void Map<K>::insert(const K& key) {
-  if (!exists(key)) {
-    Super::try_emplace(key, Domain{});
   }
 }
 template <typename K>

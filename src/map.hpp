@@ -19,9 +19,7 @@ class Map : private std::map<K, Domain> {
   bool exists(const K& key) const;
   Domain* get(const K& key);
   const Domain* get(const K& key) const;
-  void insert(const K& key, const Symbol& sym);
   void insert(const K& key, const Domain& val);
-  void insert(const K& key);
   void insert(const Map& that);
   bool includes(const Map& that) const;
 };
