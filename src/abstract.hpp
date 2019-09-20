@@ -15,8 +15,14 @@ class raw_ostream;
 
 namespace stacksafe {
 
+class Blocks : private std::map<const llvm::BasicBlock*, Env> {
+  using Super = std::map<const llvm::BasicBlock*, Env>;
+
+ public:
+  using Super::try_emplace, Super::find, Super::begin, Super::end;
+};
+
 class Abstract {
-  using Blocks = std::map<const llvm::BasicBlock*, Env>;
   Blocks blocks_;
   const llvm::Function& func_;
   bool safe_;
