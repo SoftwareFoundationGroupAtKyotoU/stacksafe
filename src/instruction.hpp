@@ -6,7 +6,13 @@
 namespace stacksafe {
 class Env;
 class Value;
-using Params = std::vector<Value>;
+
+class Params : private std::vector<Value> {
+  using Super = std::vector<Value>;
+
+ public:
+  using Super::Super, Super::begin, Super::end, Super::push_back;
+};
 
 namespace instr {
 

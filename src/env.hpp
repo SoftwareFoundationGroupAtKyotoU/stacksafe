@@ -13,7 +13,7 @@ namespace stacksafe {
 class Domain;
 class Symbol;
 class Value;
-using Params = std::vector<Value>;
+class Params;
 
 class Env {
   Heap heap_;

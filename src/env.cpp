@@ -1,6 +1,7 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
+#include "instruction.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
