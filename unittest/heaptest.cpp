@@ -1,20 +1,6 @@
 #include "heaptest.hpp"
 
 TEST_F(HeapTest, Initial) { equal(); }
-TEST_F(HeapTest, InsertSymbol) {
-  auto sa = symbol(), sb = symbol(), sc = symbol();
-  auto a = "a", b = "b", c = "c";
-  equal();
-  heap.insert(sa, sb);
-  push(a, b);
-  equal();
-  heap.insert(sa, sc);
-  push(a, c);
-  equal();
-  heap.insert(sb, sc);
-  push(b, c);
-  equal();
-}
 TEST_F(HeapTest, InsertDomain) {
   stacksafe::Domain dom0, dom1;
   auto sa = symbol(), sb = symbol(), sc = symbol();
@@ -31,25 +17,13 @@ TEST_F(HeapTest, InsertDomain) {
   push(b, c);
   equal();
 }
-TEST_F(HeapTest, InsertEmpty) {
-  auto sa = symbol(), sb = symbol();
-  auto a = "a", b = "b";
-  equal();
-  heap.insert(sa);
-  init(a);
-  equal();
-  heap.insert(sb);
-  init(b);
-  equal();
-}
 TEST_F(HeapTest, InsertMap) {
   stacksafe::Heap heap0, heap1;
   auto sa = symbol(), sb = symbol(), sc = symbol();
   auto a = "a", b = "b", c = "c";
-  heap0.insert(sa, sb);
-  heap0.insert(sb, sc);
-  heap1.insert(sc, sa);
-  heap1.insert(sc, sb);
+  heap0.insert(sa, Domain{sb});
+  heap0.insert(sb, Domain{sc});
+  heap1.insert(sc, Domain{sa, sb});
   equal();
   heap.insert(heap0);
   push(a, b);
@@ -66,23 +40,23 @@ TEST_F(HeapTest, Includes) {
 #define CHECK_TRUE() EXPECT_TRUE(heap.includes(sub))
 #define CHECK_FALSE() EXPECT_FALSE(heap.includes(sub))
   CHECK_TRUE();
-  heap.insert(sa);
+  heap.insert(sa, Domain{});
   CHECK_TRUE();
-  sub.insert(sb);
+  sub.insert(sb, Domain{});
   CHECK_FALSE();
-  sub.insert(sa, sb);
+  sub.insert(sa, Domain{sb});
   CHECK_FALSE();
-  heap.insert(sb, sc);
+  heap.insert(sb, Domain{sc});
   CHECK_FALSE();
-  heap.insert(sa, sb);
+  heap.insert(sa, Domain{sb});
   CHECK_TRUE();
-  heap.insert(sa, sc);
+  heap.insert(sa, Domain{sc});
   CHECK_TRUE();
-  sub.insert(sc, sa);
+  sub.insert(sc, Domain{sa});
   CHECK_FALSE();
-  heap.insert(sc);
+  heap.insert(sc, Domain{});
   CHECK_FALSE();
-  sub.insert(sb, sc);
+  sub.insert(sb, Domain{sc});
   CHECK_FALSE();
   heap.insert(sub);
   CHECK_TRUE();
@@ -98,7 +72,7 @@ TEST_F(HeapTest, Get) {
   EXPECT_TRUE(heap.get(key)->includes(dom))
   EXPECT_EQ(nullptr, heap.get(sa));
   EXPECT_EQ(nullptr, heap.get(sb));
-  heap.insert(sa);
+  heap.insert(sa, Domain{});
   EXPECT_NE(nullptr, heap.get(sa));
   EXPECT_EQ(nullptr, heap.get(sb));
   CHECK_EQ(sa);
