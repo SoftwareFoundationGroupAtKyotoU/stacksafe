@@ -21,6 +21,7 @@ class Blocks : private std::map<const llvm::BasicBlock*, Env> {
  public:
   using Super::try_emplace, Super::find, Super::begin, Super::end;
   const Env& get(const llvm::BasicBlock* b) const;
+  Env& get(const llvm::BasicBlock* b);
 };
 
 class Abstract {

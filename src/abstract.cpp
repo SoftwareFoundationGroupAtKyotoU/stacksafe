@@ -16,6 +16,9 @@ const Env& Blocks::get(const llvm::BasicBlock* b) const {
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
 }
+Env& Blocks::get(const llvm::BasicBlock* b) {
+  return const_cast<Env&>(static_cast<const Blocks&>(*this).get(b));
+}
 
 Abstract::Abstract(const llvm::Function& f) : func_{f}, safe_{false} {
 #define DEBUG_TYPE "log"
