@@ -11,6 +11,7 @@
 
 namespace stacksafe {
 
+void Blocks::init(const llvm::BasicBlock* b) { Super::try_emplace(b, Env{}); }
 const Env& Blocks::get(const llvm::BasicBlock* b) const {
   auto it = Super::find(b);
   assert(it != Super::end() && "unknown basicblock");
