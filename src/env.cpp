@@ -135,5 +135,11 @@ void load(Env& e, const Value& dst, const Value& src) {
   }
   e.insert_stack(dst, dom);
 }
+void store(Env& e, const Value& src, const Value& dst) {
+  auto source = e.from_stack(src);
+  for (auto& target : e.from_stack(dst)) {
+    e.insert_heap(target, source);
+  }
+}
 
 }  // namespace stacksafe
