@@ -24,60 +24,11 @@ void Env::merge(const Env& that) {
   heap_.insert(that.heap_);
   stack_.insert(that.stack_);
 }
-void Env::binop(const Value& dst, const Value& lhs, const Value& rhs) {
-  Domain dom;
-  dom.insert(from_stack(lhs));
-  dom.insert(from_stack(rhs));
-  insert_stack(dst, dom);
-}
-void Env::alloc(const Value& dst) {
-  auto sym = Symbol::make(dst.type().pointee_type());
-  insert_heap(sym, Domain{});
-  insert_stack(dst, Domain{sym});
-}
-void Env::load(const Value& dst, const Value& src) {
-  Domain dom;
-  for (auto& sym : from_stack(src)) {
-    dom.insert(from_heap(sym));
-  }
-  insert_stack(dst, dom);
-}
-void Env::store(const Value& src, const Value& dst) {
-  auto source = from_stack(src);
-  for (auto& target : from_stack(dst)) {
-    insert_heap(target, source);
-  }
-}
-void Env::cmpxchg(const Value& dst, const Value& ptr, const Value& val) {
-  load(dst, ptr);
-  store(val, ptr);
-}
-void Env::cast(const Value& dst, const Value& src) {
-  insert_stack(dst, from_stack(src));
-}
-void Env::phi(const Value& dst, const Params& params) {
-  Domain dom;
-  for (auto& val : params) {
-    dom.insert(from_stack(val));
-  }
-  insert_stack(dst, dom);
-}
-Domain Env::call(const Params& params) {
-  auto domain = collect(params);
-  for (auto& sym : domain) {
-    insert_heap(sym, domain);
-  }
-  return domain;
-}
-void Env::call(const Value& dst, const Params& params) {
-  insert_stack(dst, call(params));
-}
 void Env::call(const Domain& dom) {
   for (auto& sym : dom) {
     insert_heap(sym, dom);
   }
 }
-void Env::constant(const Value& dst) { insert_stack(dst, Domain{}); }
 void Env::insert_stack(const Value& key, const Domain& val) {
   assert(key.is_register() && "insert to non-register");
   stack_.insert(key, val);

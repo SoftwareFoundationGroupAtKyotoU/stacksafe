@@ -26,17 +26,7 @@ class Env {
   const Stack& stack() const;
   bool includes(const Env& that) const;
   void merge(const Env& that);
-  void binop(const Value& dst, const Value& lhs, const Value& rhs);
-  void alloc(const Value& dst);
-  void load(const Value& dst, const Value& src);
-  void store(const Value& src, const Value& dst);
-  void cmpxchg(const Value& dst, const Value& ptr, const Value& val);
-  void cast(const Value& dst, const Value& src);
-  void phi(const Value& dst, const Params& params);
-  Domain call(const Params& params);
-  void call(const Value& dst, const Params& params);
   void call(const Domain& dom);
-  void constant(const Value& dst);
 
  public:
   void insert_stack(const Value& key, const Domain& val);
