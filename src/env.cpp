@@ -160,5 +160,11 @@ void phi(Env& e, const Value& dst, const Params& params) {
   }
   e.insert_stack(dst, dom);
 }
+void call(Env& e, const Params& params) { e.call(e.collect(params)); }
+void call(Env& e, const Value& dst, const Params& params) {
+  auto dom = e.collect(params);
+  e.call(dom);
+  e.insert_stack(dst, dom);
+}
 
 }  // namespace stacksafe

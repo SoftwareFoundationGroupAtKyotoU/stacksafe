@@ -55,6 +55,8 @@ void store(Env& e, const Value& src, const Value& dst);
 void cmpxchg(Env& e, const Value& dst, const Value& ptr, const Value& val);
 void cast(Env& e, const Value& dst, const Value& src);
 void phi(Env& e, const Value& dst, const Params& params);
+void call(Env& e, const Params& params);
+void call(Env& e, const Value& dst, const Params& params);
 
 }  // namespace stacksafe
 
