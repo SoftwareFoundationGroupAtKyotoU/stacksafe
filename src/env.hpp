@@ -48,6 +48,7 @@ class Env {
 void to_json(Json& j, const Env& x);
 
 void binop(Env& e, const Value& dst, const Value& lhs, const Value& rhs);
+void alloc(Env& e, const Value& dst);
 
 }  // namespace stacksafe
 
