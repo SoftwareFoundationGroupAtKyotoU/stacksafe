@@ -72,6 +72,11 @@ Domain Env::call(const Params& params) {
 void Env::call(const Value& dst, const Params& params) {
   insert_stack(dst, call(params));
 }
+void Env::call(const Domain& dom) {
+  for (auto& sym : dom) {
+    insert_heap(sym, dom);
+  }
+}
 void Env::constant(const Value& dst) { insert_stack(dst, Domain{}); }
 void Env::insert_stack(const Value& key, const Domain& val) {
   assert(key.is_register() && "insert to non-register");

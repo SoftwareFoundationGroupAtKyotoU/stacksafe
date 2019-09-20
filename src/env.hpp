@@ -35,6 +35,7 @@ class Env {
   void phi(const Value& dst, const Params& params);
   Domain call(const Params& params);
   void call(const Value& dst, const Params& params);
+  void call(const Domain& dom);
   void constant(const Value& dst);
 
  public:
