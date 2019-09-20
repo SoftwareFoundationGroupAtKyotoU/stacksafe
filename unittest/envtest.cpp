@@ -1,107 +1,108 @@
 #include "envtest.hpp"
+#include "instruction.hpp"
 
 TEST_F(EnvTest, Binop) {
   equal();
-  env.constant(v0);
+  stacksafe::instr::constant(env, v0);
   init_stack(0);
   equal();
-  env.constant(v1);
+  stacksafe::instr::constant(env, v1);
   init_stack(1);
   equal();
-  env.binop(v2, v1, v0);
+  stacksafe::instr::binop(env, v2, v1, v0);
   init_stack(2);
   equal();
 }
 TEST_F(EnvTest, Alloc) {
   equal();
-  env.alloc(v0);
+  stacksafe::instr::alloc(env, v0);
   init_heap(a);
   push_stack(0, a);
   equal();
-  env.alloc(v1);
+  stacksafe::instr::alloc(env, v1);
   init_heap(b);
   push_stack(1, b);
   equal();
 }
 TEST_F(EnvTest, Load) {
   equal();
-  env.alloc(v0);
+  stacksafe::instr::alloc(env, v0);
   init_heap(a);
   push_stack(0, a);
   equal();
-  env.alloc(v1);
+  stacksafe::instr::alloc(env, v1);
   init_heap(b);
   push_stack(1, b);
   equal();
-  env.store(v0, v1);
+  stacksafe::instr::store(env, v0, v1);
   push_heap(b, a);
   equal();
-  env.load(v2, v1);
+  stacksafe::instr::load(env, v2, v1);
   push_stack(2, a);
   equal();
 }
 TEST_F(EnvTest, Store) {
   equal();
-  env.alloc(v0);
+  stacksafe::instr::alloc(env, v0);
   init_heap(a);
   push_stack(0, a);
   equal();
-  env.alloc(v1);
+  stacksafe::instr::alloc(env, v1);
   init_heap(b);
   push_stack(1, b);
   equal();
-  env.store(v0, v1);
+  stacksafe::instr::store(env, v0, v1);
   push_heap(b, a);
   equal();
 }
 TEST_F(EnvTest, CmpXchg) {
   equal();
-  env.alloc(v0);
+  stacksafe::instr::alloc(env, v0);
   init_heap(a);
   push_stack(0, a);
   equal();
-  env.alloc(v1);
+  stacksafe::instr::alloc(env, v1);
   init_heap(b);
   push_stack(1, b);
   equal();
-  env.alloc(v2);
+  stacksafe::instr::alloc(env, v2);
   init_heap(c);
   push_stack(2, c);
   equal();
-  env.store(v0, v2);
+  stacksafe::instr::store(env, v0, v2);
   push_heap(c, a);
   equal();
-  env.cmpxchg(v3, v2, v1);
+  stacksafe::instr::cmpxchg(env, v3, v2, v1);
   push_stack(3, a);
   push_heap(c, b);
   equal();
 }
 TEST_F(EnvTest, Cast) {
   equal();
-  env.alloc(v0);
+  stacksafe::instr::alloc(env, v0);
   init_heap(a);
   push_stack(0, a);
   equal();
-  env.cast(v1, v0);
+  stacksafe::instr::cast(env, v1, v0);
   push_stack(1, a);
   equal();
 }
 TEST_F(EnvTest, Phi) {
   equal();
-  env.alloc(v0);
+  stacksafe::instr::alloc(env, v0);
   init_heap(a);
   push_stack(0, a);
   equal();
-  env.alloc(v1);
+  stacksafe::instr::alloc(env, v1);
   init_heap(b);
   push_stack(1, b);
   equal();
-  env.alloc(v2);
+  stacksafe::instr::alloc(env, v2);
   init_heap(c);
   push_stack(2, c);
   equal();
   Params params{v0, v1, v2};
-  env.phi(v3, params);
+  stacksafe::instr::phi(env, v3, params);
   push_stack(3, a);
   push_stack(3, b);
   push_stack(3, c);
@@ -109,26 +110,26 @@ TEST_F(EnvTest, Phi) {
 }
 TEST_F(EnvTest, Call) {
   equal();
-  env.alloc(v0);
+  stacksafe::instr::alloc(env, v0);
   init_heap(a);
   push_stack(0, a);
   equal();
-  env.alloc(v1);
+  stacksafe::instr::alloc(env, v1);
   init_heap(b);
   push_stack(1, b);
   equal();
-  env.alloc(v2);
+  stacksafe::instr::alloc(env, v2);
   init_heap(c);
   push_stack(2, c);
   equal();
-  env.store(v1, v0);
+  stacksafe::instr::store(env, v1, v0);
   push_heap(a, b);
   equal();
-  env.store(v2, v0);
+  stacksafe::instr::store(env, v2, v0);
   push_heap(a, c);
   equal();
   Params params{v0, v1};
-  env.call(v3, params);
+  stacksafe::instr::call(env, v3, params);
   auto &key0 = expect["heap"][sym(a)];
   key0.insert(key0.begin(), sym(a));
   for (auto i : {a, b, c}) {
@@ -140,7 +141,7 @@ TEST_F(EnvTest, Call) {
 }
 TEST_F(EnvTest, Constant) {
   equal();
-  env.constant(v0);
+  stacksafe::instr::constant(env, v0);
   init_stack(0);
   equal();
 }
