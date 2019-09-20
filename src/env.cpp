@@ -141,5 +141,9 @@ void store(Env& e, const Value& src, const Value& dst) {
     e.insert_heap(target, source);
   }
 }
+void cmpxchg(Env& e, const Value& dst, const Value& ptr, const Value& val) {
+  e.load(dst, ptr);
+  e.store(val, ptr);
+}
 
 }  // namespace stacksafe
