@@ -128,5 +128,12 @@ void alloc(Env& e, const Value& dst) {
   e.insert_heap(sym, Domain{});
   e.insert_stack(dst, Domain{sym});
 }
+void load(Env& e, const Value& dst, const Value& src) {
+  Domain dom;
+  for (auto& sym : e.from_stack(src)) {
+    dom.insert(e.from_heap(sym));
+  }
+  e.insert_stack(dst, dom);
+}
 
 }  // namespace stacksafe
