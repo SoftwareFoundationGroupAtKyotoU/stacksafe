@@ -13,9 +13,7 @@ Env Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
   return ret;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
-  if (!i.isTerminator()) {
-    stacksafe_unreachable("unsupported instruction", i);
-  }
+  assert(i.isTerminator() && "unsupported instruction");
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   if (auto lhs = i.getOperand(0)) {
