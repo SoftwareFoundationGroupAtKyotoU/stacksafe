@@ -148,8 +148,8 @@ void store(Env& e, const Value& src, const Value& dst) {
   }
 }
 void cmpxchg(Env& e, const Value& dst, const Value& ptr, const Value& val) {
-  e.load(dst, ptr);
-  e.store(val, ptr);
+  load(e, dst, ptr);
+  store(e, val, ptr);
 }
 void cast(Env& e, const Value& dst, const Value& src) {
   e.insert_stack(dst, e.from_stack(src));
