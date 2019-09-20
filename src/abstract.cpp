@@ -27,7 +27,7 @@ Abstract::Abstract(const llvm::Function& f) : func_{f}, safe_{false} {
 #undef DEBUG_TYPE
   Symbol::reset();
   for (auto& b : f) {
-    blocks_.try_emplace(&b, Env{});
+    blocks_.init(&b);
   }
 }
 auto Abstract::blocks() const -> const Blocks& { return blocks_; }
