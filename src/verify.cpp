@@ -7,10 +7,9 @@ namespace stacksafe {
 
 Verifier::Verifier(const Env &e) : env_{e} {}
 auto Verifier::run(const llvm::BasicBlock *b, const Env &env) -> RetTy {
-  if (auto global = env.heap().get(Symbol::global())) {
-    if (global->has_local()) {
-      return unsafe;
-    }
+  auto dom = env.from_heap(Symbol::global());
+  if (dom.has_local()) {
+    return unsafe;
   }
   return Verifier{env}.visit(*b);
 }
