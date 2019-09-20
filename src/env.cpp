@@ -122,6 +122,7 @@ void to_json(Json& j, const Env& x) {
   j["heap"] = x.heap();
 }
 
+namespace instr {
 void binop(Env& e, const Value& dst, const Value& lhs, const Value& rhs) {
   Domain dom;
   dom.insert(e.from_stack(lhs));
@@ -167,5 +168,6 @@ void call(Env& e, const Value& dst, const Params& params) {
   e.insert_stack(dst, dom);
 }
 void constant(Env& e, const Value& dst) { e.insert_stack(dst, Domain{}); }
+}  // namespace instr
 
 }  // namespace stacksafe
