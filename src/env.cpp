@@ -166,5 +166,6 @@ void call(Env& e, const Value& dst, const Params& params) {
   e.call(dom);
   e.insert_stack(dst, dom);
 }
+void constant(Env& e, const Value& dst) { e.insert_stack(dst, Domain{}); }
 
 }  // namespace stacksafe
