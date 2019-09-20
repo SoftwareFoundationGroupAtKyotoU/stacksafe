@@ -35,14 +35,10 @@ auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
   return safe;
 }
 auto Verifier::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
-  if (auto r = i.getReturnValue()) {
-    auto v = Value::make(*r);
-    if (v.is_register()) {
-      if (auto dom = env_.stack().get(v)) {
-        if (dom->has_local()) {
-          return unsafe;
-        }
-      }
+  if (auto val = i.getReturnValue()) {
+    auto dom = env_.from_stack(Value::make(*val));
+    if (dom.has_local()) {
+      return unsafe;
     }
   }
   return safe;
