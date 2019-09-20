@@ -52,6 +52,7 @@ void alloc(Env& e, const Value& dst);
 void load(Env& e, const Value& dst, const Value& src);
 void store(Env& e, const Value& src, const Value& dst);
 void cmpxchg(Env& e, const Value& dst, const Value& ptr, const Value& val);
+void cast(Env& e, const Value& dst, const Value& src);
 
 }  // namespace stacksafe
 
