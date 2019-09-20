@@ -30,11 +30,11 @@ auto Abstract::blocks() const -> const Blocks& { return blocks_; }
 void Abstract::interpret() { interpret(&func_.getEntryBlock(), Env{func_}); }
 void Abstract::verify() {
   for (auto& b : func_) {
-    if (auto it = blocks_.find(&b); it != blocks_.end()) {
-      auto env = Interpreter::run(it->first, it->second);
-      if (!Verifier::run(&b, env)) {
-        return;
-      }
+    auto key = &b;
+    auto& prev = blocks_.get(key);
+    auto next = Interpreter::run(key, prev);
+    if (!Verifier::run(key, next)) {
+      return;
     }
   }
   safe_ = true;
