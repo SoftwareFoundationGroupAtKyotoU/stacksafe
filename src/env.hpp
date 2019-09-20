@@ -37,7 +37,7 @@ class Env {
   void call(const Value& dst, const Params& params);
   void constant(const Value& dst);
 
- private:
+ public:
   void insert_stack(const Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const Value& reg) const;
@@ -46,6 +46,8 @@ class Env {
   Domain collect(const Params& value) const;
 };
 void to_json(Json& j, const Env& x);
+
+void binop(Env& e, const Value& dst, const Value& lhs, const Value& rhs);
 
 }  // namespace stacksafe
 
