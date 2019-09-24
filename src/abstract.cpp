@@ -52,7 +52,6 @@ void Abstract::print(llvm::raw_ostream& os) const {
     os.changeColor(llvm::raw_ostream::RED, true);
     endline(os << "Unsafe: " << name);
   }
-  os.resetColor();
 }
 void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
   if (auto next = update(b, pred)) {

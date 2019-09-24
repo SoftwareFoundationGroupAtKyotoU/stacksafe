@@ -3,6 +3,7 @@
 #include <memory>
 #include "abstract.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -25,8 +26,7 @@ struct Analyzer : public llvm::FunctionPass {
       abst->print(os);
     } else {
       os.changeColor(llvm::raw_ostream::YELLOW);
-      os << "analysis failed: " << name << "\n";
-      os.resetColor().flush();
+      endline(os << "analysis failed: " << name);
     }
   }
 };
