@@ -21,7 +21,7 @@ Abstract::Abstract(const llvm::Function& f)
 }
 Abstract::~Abstract() = default;
 auto Abstract::blocks() const -> const Blocks& { return blocks_; }
-void Abstract::interpret() { interpret(&func_.getEntryBlock(), Env{func_}); }
+void Abstract::interpret() { interpret(&func_.getEntryBlock()); }
 void Abstract::verify() {
   for (auto& b : func_) {
     auto key = &b;
