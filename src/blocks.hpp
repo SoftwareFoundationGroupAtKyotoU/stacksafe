@@ -18,7 +18,6 @@ class Blocks : private std::map<const llvm::BasicBlock*, Env> {
  public:
   using Super::begin, Super::end;
   explicit Blocks(const llvm::Function& f);
-  const Env& get(const llvm::BasicBlock* b) const;
   Env& get(const llvm::BasicBlock* b);
   Env interpret(const llvm::BasicBlock* b);
   bool update(const llvm::BasicBlock* b, const Env& next);

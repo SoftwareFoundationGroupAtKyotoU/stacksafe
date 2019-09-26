@@ -13,13 +13,10 @@ Blocks::Blocks(const llvm::Function& f) {
     Super::try_emplace(&b, Env{});
   }
 }
-const Env& Blocks::get(const llvm::BasicBlock* b) const {
+Env& Blocks::get(const llvm::BasicBlock* b) {
   auto it = Super::find(b);
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
-}
-Env& Blocks::get(const llvm::BasicBlock* b) {
-  return const_cast<Env&>(static_cast<const Blocks&>(*this).get(b));
 }
 Env Blocks::interpret(const llvm::BasicBlock* b) {
   return Interpreter::run(b, get(b));
