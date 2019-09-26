@@ -22,5 +22,14 @@ Env& Blocks::get(const llvm::BasicBlock* b) {
 Env Blocks::interpret(const llvm::BasicBlock* b) {
   return Interpreter::run(b, get(b));
 }
+bool Blocks::update(const llvm::BasicBlock* b, const Env& next) {
+  auto& prev = get(b);
+  if (prev.includes(next)) {
+    return false;
+  } else {
+    prev.merge(next);
+    return true;
+  }
+}
 
 }  // namespace stacksafe

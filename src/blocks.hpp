@@ -20,6 +20,7 @@ class Blocks : private std::map<const llvm::BasicBlock*, Env> {
   const Env& get(const llvm::BasicBlock* b) const;
   Env& get(const llvm::BasicBlock* b);
   Env interpret(const llvm::BasicBlock* b);
+  bool update(const llvm::BasicBlock* b, const Env& next);
 };
 
 }  // namespace stacksafe
