@@ -6,7 +6,8 @@
 
 namespace llvm {
 class BasicBlock;
-}
+class Function;
+}  // namespace llvm
 
 namespace stacksafe {
 
@@ -15,6 +16,7 @@ class Blocks : private std::map<const llvm::BasicBlock*, Env> {
 
  public:
   using Super::begin, Super::end;
+  explicit Blocks(const llvm::Function& f);
   void init(const llvm::BasicBlock* b);
   const Env& get(const llvm::BasicBlock* b) const;
   Env& get(const llvm::BasicBlock* b);
