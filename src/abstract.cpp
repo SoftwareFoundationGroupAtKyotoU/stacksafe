@@ -54,28 +54,6 @@ void Abstract::interpret(const llvm::BasicBlock* b) {
     }
   }
 }
-void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
-  if (auto next = update(b, pred)) {
-    if (auto t = b->getTerminator()) {
-      for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
-        interpret(t->getSuccessor(j), *next);
-      }
-    }
-  }
-}
-std::optional<Env> Abstract::update(const llvm::BasicBlock* b,
-                                    const Env& pred) {
-  auto& prev = blocks_.get(b);
-  if (!prev.includes(pred)) {
-    prev.merge(pred);
-    auto next = Interpreter::run(b, prev);
-#define DEBUG_TYPE "log"
-    LLVM_DEBUG(log_->print(b, prev, next));
-#undef DEBUG_TYPE
-    return next;
-  }
-  return std::nullopt;
-}
 void to_json(Json& j, const Abstract& x) {
   Json::object_t obj;
   for (auto& [k, v] : x.blocks()) {
