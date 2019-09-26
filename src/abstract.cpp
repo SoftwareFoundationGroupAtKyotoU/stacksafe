@@ -43,6 +43,17 @@ void Abstract::print(llvm::raw_ostream& os) const {
     endline(os << "Unsafe: " << name);
   }
 }
+void Abstract::interpret(const llvm::BasicBlock* b) {
+  auto result = blocks_.interpret(b);
+  auto t = b->getTerminator();
+  assert(t && "invalid basicblock");
+  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+    auto next = t->getSuccessor(i);
+    if (blocks_.update(next, result)) {
+      interpret(next);
+    }
+  }
+}
 void Abstract::interpret(const llvm::BasicBlock* b, const Env& pred) {
   if (auto next = update(b, pred)) {
     if (auto t = b->getTerminator()) {

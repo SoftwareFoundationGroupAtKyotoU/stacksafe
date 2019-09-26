@@ -29,6 +29,7 @@ class Abstract {
   void print(llvm::raw_ostream& os) const;
 
  private:
+  void interpret(const llvm::BasicBlock* b);
   void interpret(const llvm::BasicBlock* b, const Env& pred);
   std::optional<Env> update(const llvm::BasicBlock* b, const Env& pred);
 };
