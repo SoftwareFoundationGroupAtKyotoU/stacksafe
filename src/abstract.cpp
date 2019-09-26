@@ -11,16 +11,6 @@
 
 namespace stacksafe {
 
-void Blocks::init(const llvm::BasicBlock* b) { Super::try_emplace(b, Env{}); }
-const Env& Blocks::get(const llvm::BasicBlock* b) const {
-  auto it = Super::find(b);
-  assert(it != Super::end() && "unknown basicblock");
-  return it->second;
-}
-Env& Blocks::get(const llvm::BasicBlock* b) {
-  return const_cast<Env&>(static_cast<const Blocks&>(*this).get(b));
-}
-
 Abstract::Abstract(const llvm::Function& f) : func_{f}, safe_{false} {
 #define DEBUG_TYPE "log"
   LLVM_DEBUG(log_ = Log{f});

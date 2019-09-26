@@ -1,29 +1,17 @@
 #ifndef INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
-#include <map>
 #include <optional>
+#include "blocks.hpp"
 #include "debug.hpp"
-#include "env.hpp"
 #include "json_fwd.hpp"
 
 namespace llvm {
-class BasicBlock;
 class Function;
 class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
-
-class Blocks : private std::map<const llvm::BasicBlock*, Env> {
-  using Super = std::map<const llvm::BasicBlock*, Env>;
-
- public:
-  using Super::begin, Super::end;
-  void init(const llvm::BasicBlock* b);
-  const Env& get(const llvm::BasicBlock* b) const;
-  Env& get(const llvm::BasicBlock* b);
-};
 
 class Abstract {
   Blocks blocks_;
