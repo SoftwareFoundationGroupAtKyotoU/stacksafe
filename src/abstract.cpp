@@ -57,7 +57,8 @@ void Abstract::interpret(const llvm::BasicBlock* b) {
 void to_json(Json& j, const Abstract& x) {
   Json::object_t obj;
   for (auto& [k, v] : x.blocks()) {
-    obj[k ? Value::make(*k).repr() : ""] = v;
+    assert(k && "unknown basicblock");
+    obj[Value::make(*k).repr()] = v;
   }
   j = obj;
 }
