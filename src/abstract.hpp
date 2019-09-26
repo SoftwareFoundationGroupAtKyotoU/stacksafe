@@ -1,9 +1,9 @@
 #ifndef INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
+#include <memory>
 #include <optional>
 #include "blocks.hpp"
-#include "debug.hpp"
 #include "json_fwd.hpp"
 
 namespace llvm {
@@ -12,15 +12,17 @@ class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
+struct Log;
 
 class Abstract {
   Blocks blocks_;
   const llvm::Function& func_;
   bool safe_;
-  std::optional<Log> log_;
+  std::unique_ptr<Log> log_;
 
  public:
   explicit Abstract(const llvm::Function& f);
+  ~Abstract();
   const Blocks& blocks() const;
   void interpret();
   void verify();

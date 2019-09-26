@@ -3,6 +3,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Instruction.h>
 #include <llvm/Support/Debug.h>
+#include "debug.hpp"
 #include "interpret.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
@@ -13,13 +14,14 @@ namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function& f) : func_{f}, safe_{false} {
 #define DEBUG_TYPE "log"
-  LLVM_DEBUG(log_ = Log{f});
+  LLVM_DEBUG(log_ = std::make_unique<Log>(f));
 #undef DEBUG_TYPE
   Symbol::reset();
   for (auto& b : f) {
     blocks_.init(&b);
   }
 }
+Abstract::~Abstract() = default;
 auto Abstract::blocks() const -> const Blocks& { return blocks_; }
 void Abstract::interpret() { interpret(&func_.getEntryBlock(), Env{func_}); }
 void Abstract::verify() {
