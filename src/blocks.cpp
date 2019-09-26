@@ -1,6 +1,7 @@
 #include "blocks.hpp"
 #include <llvm/IR/Function.h>
 #include <cassert>
+#include "interpret.hpp"
 
 namespace stacksafe {
 
@@ -17,6 +18,9 @@ const Env& Blocks::get(const llvm::BasicBlock* b) const {
 }
 Env& Blocks::get(const llvm::BasicBlock* b) {
   return const_cast<Env&>(static_cast<const Blocks&>(*this).get(b));
+}
+Env Blocks::interpret(const llvm::BasicBlock* b) {
+  return Interpreter::run(b, get(b));
 }
 
 }  // namespace stacksafe
