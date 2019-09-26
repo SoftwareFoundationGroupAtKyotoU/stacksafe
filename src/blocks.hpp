@@ -10,6 +10,7 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
+struct Log;
 
 class Blocks : private std::map<const llvm::BasicBlock*, Env> {
   using Super = std::map<const llvm::BasicBlock*, Env>;
@@ -22,6 +23,7 @@ class Blocks : private std::map<const llvm::BasicBlock*, Env> {
   Env interpret(const llvm::BasicBlock* b);
   bool update(const llvm::BasicBlock* b, const Env& next);
   bool verify(const llvm::BasicBlock* b);
+  void print(Log& log, const llvm::BasicBlock* b, const Env& next);
 };
 
 }  // namespace stacksafe

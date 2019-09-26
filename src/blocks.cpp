@@ -1,6 +1,7 @@
 #include "blocks.hpp"
 #include <llvm/IR/Function.h>
 #include <cassert>
+#include "debug.hpp"
 #include "interpret.hpp"
 #include "verify.hpp"
 
@@ -35,6 +36,10 @@ bool Blocks::update(const llvm::BasicBlock* b, const Env& next) {
 bool Blocks::verify(const llvm::BasicBlock* b) {
   auto result = Interpreter::run(b, get(b));
   return Verifier::run(b, result);
+}
+void Blocks::print(Log& log, const llvm::BasicBlock* b, const Env& next) {
+  const auto& prev = get(b);
+  log.print(b, prev, next);
 }
 
 }  // namespace stacksafe
