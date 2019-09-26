@@ -1,6 +1,5 @@
 #include "blocks.hpp"
 #include <llvm/IR/Function.h>
-#include <cassert>
 #include "debug.hpp"
 #include "interpret.hpp"
 #include "verify.hpp"

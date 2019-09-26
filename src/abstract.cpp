@@ -1,14 +1,10 @@
 #include "abstract.hpp"
-#include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
-#include <llvm/IR/Instruction.h>
 #include <llvm/Support/Debug.h>
 #include "debug.hpp"
-#include "interpret.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
-#include "verify.hpp"
 
 namespace stacksafe {
 
