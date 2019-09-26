@@ -13,11 +13,6 @@ Blocks::Blocks(const llvm::Function& f) {
     Super::try_emplace(&b, Env{});
   }
 }
-Env& Blocks::get(const llvm::BasicBlock* b) {
-  auto it = Super::find(b);
-  assert(it != Super::end() && "unknown basicblock");
-  return it->second;
-}
 Env Blocks::interpret(const llvm::BasicBlock* b) {
   return Interpreter::run(b, get(b));
 }
@@ -37,6 +32,11 @@ bool Blocks::verify(const llvm::BasicBlock* b) {
 void Blocks::print(Log& log, const llvm::BasicBlock* b, const Env& next) {
   const auto& prev = get(b);
   log.print(b, prev, next);
+}
+Env& Blocks::get(const llvm::BasicBlock* b) {
+  auto it = Super::find(b);
+  assert(it != Super::end() && "unknown basicblock");
+  return it->second;
 }
 
 }  // namespace stacksafe
