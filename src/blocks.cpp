@@ -2,6 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <cassert>
 #include "interpret.hpp"
+#include "verify.hpp"
 
 namespace stacksafe {
 
@@ -30,6 +31,10 @@ bool Blocks::update(const llvm::BasicBlock* b, const Env& next) {
     prev.merge(next);
     return true;
   }
+}
+bool Blocks::verify(const llvm::BasicBlock* b) {
+  auto result = Interpreter::run(b, get(b));
+  return Verifier::run(b, result);
 }
 
 }  // namespace stacksafe
