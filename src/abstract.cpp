@@ -24,10 +24,7 @@ auto Abstract::blocks() const -> const Blocks& { return blocks_; }
 void Abstract::interpret() { interpret(&func_.getEntryBlock()); }
 void Abstract::verify() {
   for (auto& b : func_) {
-    auto key = &b;
-    auto& prev = blocks_.get(key);
-    auto next = Interpreter::run(key, prev);
-    if (!Verifier::run(key, next)) {
+    if (!blocks_.verify(&b)) {
       return;
     }
   }
