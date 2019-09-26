@@ -46,7 +46,12 @@ std::string get_operand(const llvm::Value& value) {
   return stream.str();
 }
 
-void endline(llvm::raw_ostream& os) { (os.resetColor() << "\n").flush(); }
+void endline(llvm::raw_ostream& os) {
+  if (os.has_colors()) {
+    os.resetColor();
+  }
+  (os << "\n").flush();
+}
 void print_string(llvm::raw_ostream& os, const std::string& str) { os << str; }
 void print_stdout(const std::string& str) {
   print_string(llvm::outs(), str);
