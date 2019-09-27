@@ -41,6 +41,8 @@ void cmpxchg(Env& e, const llvm::Value& dst, const llvm::Value& ptr,
              const llvm::Value& val);
 void cast(Env& e, const llvm::Value& dst, const llvm::Value& src);
 void phi(Env& e, const llvm::Value& dst, const Params& params);
+void call(Env& e, const Params& params);
+void call(Env& e, const llvm::Value& dst, const Params& params);
 
 }  // namespace instr
 }  // namespace stacksafe

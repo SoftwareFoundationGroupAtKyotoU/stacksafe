@@ -92,6 +92,16 @@ void phi(Env& e, const llvm::Value& dst, const Params& params) {
   }
   e.insert_stack(dst, dom);
 }
+void call(Env& e, const Params& params) {
+  auto dom = e.collect(params);
+  for (auto& sym : dom) {
+    e.insert_heap(sym, dom);
+  }
+}
+void call(Env& e, const llvm::Value& dst, const Params& params) {
+  call(e, params);
+  e.insert_stack(dst, e.collect(params));
+}
 
 }  // namespace instr
 }  // namespace stacksafe
