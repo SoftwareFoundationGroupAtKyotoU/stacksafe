@@ -6,12 +6,12 @@ namespace stacksafe {
 
 const std::string Symbol::prefix_{"#"};
 int Symbol::current_ = Symbol::current_init;
-Symbol::Symbol(Kind k, int n, const Type &t) : Token{n, t}, kind_{k}, num_{n} {}
+Symbol::Symbol(Kind k, int n) : Token{n, Type{nullptr}}, kind_{k}, num_{n} {}
 Symbol Symbol::global() {
-  return Symbol{Kind::STATIC, current_init, Type{nullptr}};
+  return Symbol{Kind::STATIC, current_init};
 }
-Symbol Symbol::make(const Type &t) {
-  return Symbol{Kind::AUTO, ++current_, t};
+Symbol Symbol::make(const Type &) {
+  return Symbol{Kind::AUTO, ++current_};
 }
 void Symbol::reset() {
   current_ = current_init;
