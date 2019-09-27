@@ -63,7 +63,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
     assert(val && "unknown phi node");
     params.insert(val);
   }
-  instr::phi(env_, i, params);
+  env_.phi(i, params);
 }
 auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   ValueSet params;
@@ -89,7 +89,7 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
     assert(val && "unknown select node");
     params.insert(val);
   }
-  instr::phi(env_, i, params);
+  env_.phi(i, params);
 }
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   auto src = i.getAggregateOperand();

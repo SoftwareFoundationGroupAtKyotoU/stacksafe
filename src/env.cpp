@@ -86,5 +86,13 @@ void Env::cmpxchg(const llvm::Value& dst, const llvm::Value& ptr,
 void Env::cast(const llvm::Value& dst, const llvm::Value& src) {
   insert_stack(dst, from_stack(src));
 }
+void Env::phi(const llvm::Value& dst, const ValueSet& params) {
+  Domain dom;
+  for (auto& val : params) {
+    assert(val && "invalid param");
+    dom.insert(from_stack(*val));
+  }
+  insert_stack(dst, dom);
+}
 
 }  // namespace stacksafe

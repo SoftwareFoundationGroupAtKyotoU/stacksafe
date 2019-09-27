@@ -41,6 +41,7 @@ class Env {
   void cmpxchg(const llvm::Value& dst, const llvm::Value& ptr,
                const llvm::Value& val);
   void cast(const llvm::Value& dst, const llvm::Value& src);
+  void phi(const llvm::Value& dst, const ValueSet& params);
 };
 
 }  // namespace stacksafe
