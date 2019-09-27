@@ -21,8 +21,6 @@ class Params : private std::vector<Value> {
 
 namespace instr {
 
-void call(Memory& e, const Params& params);
-void call(Memory& e, const Value& dst, const Params& params);
 void constant(Memory& e, const Value& dst);
 
 void binop(Env& e, const llvm::Value& dst, const llvm::Value& lhs,

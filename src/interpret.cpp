@@ -80,9 +80,9 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
     }
   }
   if (check_voidfunc(i)) {
-    instr::call(memory_, params);
+    instr::call(env_, params);
   } else {
-    instr::call(memory_, Value::make(i), params);
+    instr::call(env_, i, params);
   }
 }
 auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {

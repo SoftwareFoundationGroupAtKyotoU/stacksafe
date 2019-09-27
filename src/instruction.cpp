@@ -6,12 +6,6 @@
 namespace stacksafe {
 namespace instr {
 
-void call(Memory& e, const Params& params) { e.call(e.collect(params)); }
-void call(Memory& e, const Value& dst, const Params& params) {
-  auto dom = e.collect(params);
-  e.call(dom);
-  e.insert_stack(dst, dom);
-}
 void constant(Memory& e, const Value& dst) { e.insert_stack(dst, Domain{}); }
 
 void binop(Env& e, const llvm::Value& dst, const llvm::Value& lhs,
