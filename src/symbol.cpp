@@ -10,7 +10,7 @@ Symbol::Symbol(Kind k, int n) : Token{n, Type{nullptr}}, kind_{k}, num_{n} {}
 Symbol Symbol::global() {
   return Symbol{Kind::STATIC, current_init};
 }
-Symbol Symbol::make(const Type &) {
+Symbol Symbol::make() {
   return Symbol{Kind::AUTO, ++current_};
 }
 void Symbol::reset() {

@@ -1,6 +1,5 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include <llvm/IR/Value.h>
 #include "cache.hpp"
 #include "utility.hpp"
 
@@ -39,7 +38,7 @@ void Env::binop(const llvm::Value &dst, const llvm::Value &lhs,
   insert(dst, dom);
 }
 void Env::alloc(const llvm::Value &dst) {
-  auto sym = Symbol::make(Type{dst.getType()}.pointee_type());
+  auto sym = Symbol::make();
   insert(sym, Domain{});
   insert(dst, Domain{sym});
 }

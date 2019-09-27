@@ -17,7 +17,7 @@ class Symbol : private Token {
 
  public:
   static Symbol global();
-  static Symbol make(const Type &t);
+  static Symbol make();
   static void reset();
   int number() const;
   std::string repr() const;
