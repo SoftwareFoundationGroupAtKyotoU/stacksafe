@@ -2,12 +2,11 @@
 #define INCLUDE_GUARD_A3B67C9B_CF18_446A_AC08_280B66DC795B
 
 #include <string>
-#include "token.hpp"
 
 namespace stacksafe {
 class Fabric;
 
-class Symbol : private Token {
+class Symbol {
   static const std::string prefix_;
   static constexpr int current_init = 0;
   static int current_;
