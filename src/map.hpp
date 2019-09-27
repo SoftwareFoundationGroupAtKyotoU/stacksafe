@@ -5,12 +5,11 @@
 #include <optional>
 #include "domain.hpp"
 #include "json_fwd.hpp"
-#include "register.hpp"
-#include "symbol.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 class Fabric;
+class Register;
+class Symbol;
 
 template <typename K>
 class Map : private std::map<K, Domain> {
