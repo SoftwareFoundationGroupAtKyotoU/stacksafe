@@ -14,6 +14,15 @@ Env::Env(const llvm::Function &f, RegisterCache &c) : cache_{c} {
     insert(a, dom);
   }
 }
+Env::Env(const Params &args, RegisterCache &c) : cache_{c} {
+  auto g = Symbol::global();
+  Domain dom{g};
+  insert(g, dom);
+  for (auto &a : args) {
+    assert(a && "invalid argument");
+    insert(*a, dom);
+  }
+}
 Memory Env::memory() const {
   return mem_;
 }

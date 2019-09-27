@@ -23,6 +23,7 @@ class Env {
  public:
   Env(const Memory& m, RegisterCache& c);
   Env(const llvm::Function& f, RegisterCache& c);
+  Env(const Params& args, RegisterCache& c);
   Memory memory() const;
   Domain lookup(const llvm::Value& key) const;
   Domain lookup(const Symbol& key) const;
