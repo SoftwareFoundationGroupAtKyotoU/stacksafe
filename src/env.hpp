@@ -19,6 +19,7 @@ class Env {
   Env(Memory& m, RegisterCache& r);
   void insert_stack(const llvm::Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
+  Domain from_stack(const llvm::Value& key);
 };
 
 }  // namespace stacksafe
