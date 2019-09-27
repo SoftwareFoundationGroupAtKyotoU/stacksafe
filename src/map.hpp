@@ -30,16 +30,12 @@ void to_json(Json& j, const Map<K>& x);
 template <typename K>
 Fabric dump(const Map<K>& map);
 
-using Heap = Map<Symbol>;
-
-extern template class Map<Symbol>;
 extern template class Map<Register>;
-
-extern template void to_json<Symbol>(Json&, const Heap&);
+extern template class Map<Symbol>;
 extern template void to_json<Register>(Json&, const Map<Register>&);
-
-extern template Fabric dump<Symbol>(const Heap&);
+extern template void to_json<Symbol>(Json&, const Map<Symbol>&);
 extern template Fabric dump<Register>(const Map<Register>&);
+extern template Fabric dump<Symbol>(const Map<Symbol>&);
 
 }  // namespace stacksafe
 

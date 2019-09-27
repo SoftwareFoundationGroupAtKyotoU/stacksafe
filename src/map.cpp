@@ -81,13 +81,11 @@ Fabric dump(const Map<K>& map) {
   return ret.append("}");
 }
 
-template class Map<Symbol>;
 template class Map<Register>;
-
-template void to_json<Symbol>(Json&, const Heap&);
+template class Map<Symbol>;
 template void to_json<Register>(Json&, const Map<Register>&);
-
-template Fabric dump<Symbol>(const Heap&);
+template void to_json<Symbol>(Json&, const Map<Symbol>&);
 template Fabric dump<Register>(const Map<Register>&);
+template Fabric dump<Symbol>(const Map<Symbol>&);
 
 }  // namespace stacksafe

@@ -3,10 +3,10 @@
 
 namespace stacksafe {
 
-const Heap& Memory::heap() const {
+const Memory::Heap& Memory::heap() const {
   return heap_;
 }
-Heap& Memory::heap() {
+Memory::Heap& Memory::heap() {
   return heap_;
 }
 const Memory::Stack& Memory::stack() const {
