@@ -1,11 +1,9 @@
 #include "verify.hpp"
 #include "env.hpp"
-#include "utility.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 
-Verifier::Verifier(const Env &e) : env_{e}, memory_{e.memory()} {}
+Verifier::Verifier(const Env &e) : env_{e} {}
 auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
   if (env_.from_heap(Symbol::global()).has_local()) {
     return unsafe;
