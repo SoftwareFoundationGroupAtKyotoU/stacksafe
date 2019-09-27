@@ -30,7 +30,7 @@ auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Verifier::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto val = i.getReturnValue()) {
-    auto dom = memory_.from_stack(Value::make(*val));
+    auto dom = env_.from_stack(*val);
     if (dom.has_local()) {
       return unsafe;
     }
