@@ -43,6 +43,7 @@ void cast(Env& e, const llvm::Value& dst, const llvm::Value& src);
 void phi(Env& e, const llvm::Value& dst, const Params& params);
 void call(Env& e, const Params& params);
 void call(Env& e, const llvm::Value& dst, const Params& params);
+void constant(Env& e, const llvm::Value& dst);
 
 }  // namespace instr
 }  // namespace stacksafe
