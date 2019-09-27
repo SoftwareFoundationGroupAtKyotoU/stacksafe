@@ -39,6 +39,7 @@ void load(Env& e, const llvm::Value& dst, const llvm::Value& src);
 void store(Env& e, const llvm::Value& src, const llvm::Value& dst);
 void cmpxchg(Env& e, const llvm::Value& dst, const llvm::Value& ptr,
              const llvm::Value& val);
+void cast(Env& e, const llvm::Value& dst, const llvm::Value& src);
 
 }  // namespace instr
 }  // namespace stacksafe
