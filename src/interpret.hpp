@@ -11,9 +11,9 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   Env &env_;
-  explicit Interpreter(Env &e);
 
  public:
+  explicit Interpreter(Env &e);
   static Memory run(const llvm::BasicBlock *b, const Env &pred);
   RetTy visit(const llvm::BasicBlock *b);
   RetTy visitInstruction(llvm::Instruction &i);

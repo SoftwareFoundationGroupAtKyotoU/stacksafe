@@ -14,7 +14,9 @@ Blocks::Blocks(const llvm::Function& f) {
   }
 }
 Memory Blocks::interpret(const llvm::BasicBlock* b) {
-  return Interpreter::run(b, Env{get(b), cache_});
+  Env env{get(b), cache_};
+  Interpreter{env}.visit(b);
+  return env.memory();
 }
 bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   auto& prev = get(b);
