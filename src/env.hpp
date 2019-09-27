@@ -9,6 +9,7 @@ namespace stacksafe {
 class Domain;
 class Memory;
 class RegisterCache;
+class Symbol;
 
 class Env {
   Memory& mem_;
@@ -17,6 +18,7 @@ class Env {
  public:
   Env(Memory& m, RegisterCache& r);
   void insert_stack(const llvm::Value& key, const Domain& val);
+  void insert_heap(const Symbol& key, const Domain& val);
 };
 
 }  // namespace stacksafe
