@@ -46,6 +46,13 @@ bool Map<K>::includes(const Map& that) const {
   return true;
 }
 template <typename K>
+Domain Map<K>::lookup(const K& key) const {
+  if (auto dom = get(key)) {
+    return *dom;
+  }
+  return Domain{};
+}
+template <typename K>
 void to_json(Json& j, const Map<K>& x) {
   Json::object_t obj;
   for (auto& [key, val] : x) {

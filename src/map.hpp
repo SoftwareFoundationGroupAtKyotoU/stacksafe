@@ -23,6 +23,7 @@ class Map : private std::map<K, Domain> {
   void insert(const K& key, const Domain& val);
   void insert(const Map& that);
   bool includes(const Map& that) const;
+  Domain lookup(const K& key) const;
 };
 template <typename K>
 void to_json(Json& j, const Map<K>& x);
