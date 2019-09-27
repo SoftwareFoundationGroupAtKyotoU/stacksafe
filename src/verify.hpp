@@ -4,6 +4,7 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
+class Env;
 class Memory;
 
 class Verifier : public llvm::InstVisitor<Verifier, bool> {
@@ -15,7 +16,7 @@ class Verifier : public llvm::InstVisitor<Verifier, bool> {
   explicit Verifier(const Memory& e);
 
  public:
-  static RetTy run(const llvm::BasicBlock* b, const Memory& pred);
+  static RetTy run(const llvm::BasicBlock* b, const Env& pred);
   RetTy visit(const llvm::BasicBlock& b);
   RetTy visitCallInst(llvm::CallInst& i);
   RetTy visitReturnInst(llvm::ReturnInst& i);

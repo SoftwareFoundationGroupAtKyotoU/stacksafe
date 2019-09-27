@@ -1,4 +1,5 @@
 #include "verify.hpp"
+#include "env.hpp"
 #include "memory.hpp"
 #include "utility.hpp"
 #include "value.hpp"
@@ -6,7 +7,8 @@
 namespace stacksafe {
 
 Verifier::Verifier(const Memory &e) : memory_{e} {}
-auto Verifier::run(const llvm::BasicBlock *b, const Memory &memory) -> RetTy {
+auto Verifier::run(const llvm::BasicBlock *b, const Env &pred) -> RetTy {
+  auto memory = pred.memory();
   auto dom = memory.from_heap(Symbol::global());
   if (dom.has_local()) {
     return unsafe;
