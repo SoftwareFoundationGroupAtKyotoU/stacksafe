@@ -18,7 +18,7 @@ class Map : private std::map<K, Domain> {
 
  public:
   using Super::begin, Super::end;
-  void insert(const K& key, const Domain& val);
+  bool insert(const K& key, const Domain& val);
   void merge(const Map& that);
   bool includes(const Map& that) const;
   Domain lookup(const K& key) const;
