@@ -52,5 +52,12 @@ void Env::collect(const Symbol& symbol, Domain& done) const {
     }
   }
 }
+void Env::binop(const llvm::Value& dst, const llvm::Value& lhs,
+                const llvm::Value& rhs) {
+  Domain dom;
+  dom.insert(from_stack(lhs));
+  dom.insert(from_stack(rhs));
+  insert_stack(dst, dom);
+}
 
 }  // namespace stacksafe

@@ -5,7 +5,6 @@
 
 namespace stacksafe {
 class Env;
-class Memory;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;

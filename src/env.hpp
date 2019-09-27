@@ -31,6 +31,10 @@ class Env {
 
  private:
   void collect(const Symbol& symbol, Domain& done) const;
+
+ public:
+  void binop(const llvm::Value& dst, const llvm::Value& lhs,
+             const llvm::Value& rhs);
 };
 
 }  // namespace stacksafe

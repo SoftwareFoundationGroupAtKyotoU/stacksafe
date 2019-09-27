@@ -17,11 +17,10 @@ auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   assert(i.isTerminator() && "unsupported instruction");
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
-  if (auto lhs = i.getOperand(0)) {
-    if (auto rhs = i.getOperand(1)) {
-      instr::binop(env_, i, *lhs, *rhs);
-    }
-  }
+  auto lhs = i.getOperand(0);
+  auto rhs = i.getOperand(1);
+  assert(lhs && rhs && "invalid operand");
+  env_.binop(i, *lhs, *rhs);
 }
 auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   instr::alloc(env_, i);
