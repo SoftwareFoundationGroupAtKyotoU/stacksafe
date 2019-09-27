@@ -72,5 +72,11 @@ void Env::load(const llvm::Value& dst, const llvm::Value& src) {
   }
   insert_stack(dst, dom);
 }
+void Env::store(const llvm::Value& src, const llvm::Value& dst) {
+  auto source = from_stack(src);
+  for (auto& target : from_stack(dst)) {
+    insert_heap(target, source);
+  }
+}
 
 }  // namespace stacksafe

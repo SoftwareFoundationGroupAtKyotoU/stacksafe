@@ -37,6 +37,7 @@ class Env {
              const llvm::Value& rhs);
   void alloc(const llvm::Value& dst);
   void load(const llvm::Value& dst, const llvm::Value& src);
+  void store(const llvm::Value& src, const llvm::Value& dst);
 };
 
 }  // namespace stacksafe

@@ -31,11 +31,10 @@ auto Interpreter::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   env_.load(i, *src);
 }
 auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
-  if (auto src = i.getValueOperand()) {
-    if (auto dst = i.getPointerOperand()) {
-      instr::store(env_, *src, *dst);
-    }
-  }
+  auto src = i.getValueOperand();
+  auto dst = i.getPointerOperand();
+  assert(src && dst && "invalid operand");
+  env_.store(*src, *dst);
 }
 auto Interpreter::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
   if (auto ptr = i.getPointerOperand()) {
