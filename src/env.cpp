@@ -65,5 +65,12 @@ void Env::alloc(const llvm::Value& dst) {
   insert_heap(sym, Domain{});
   insert_stack(dst, Domain{sym});
 }
+void Env::load(const llvm::Value& dst, const llvm::Value& src) {
+  Domain dom;
+  for (auto& sym : from_stack(src)) {
+    dom.insert(from_heap(sym));
+  }
+  insert_stack(dst, dom);
+}
 
 }  // namespace stacksafe
