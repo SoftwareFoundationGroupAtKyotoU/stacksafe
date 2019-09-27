@@ -28,7 +28,7 @@ bool Domain::has_local() const {
 void to_json(Json& j, const Domain& x) {
   Json::array_t arr;
   for (auto& e : x) {
-    arr.push_back(e);
+    arr.push_back(e.repr());
   }
   j = arr;
 }

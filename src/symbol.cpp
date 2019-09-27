@@ -1,6 +1,5 @@
 #include "symbol.hpp"
 #include "fabric.hpp"
-#include "json.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -34,9 +33,6 @@ bool Symbol::is_local() const {
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
-}
-void to_json(Json &j, const Symbol &x) {
-  j = x.repr() + x.type().repr();
 }
 Fabric dump(const Symbol &symbol) {
   Fabric ret;
