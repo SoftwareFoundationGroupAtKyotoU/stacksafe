@@ -17,6 +17,7 @@ Memory::Memory(const llvm::Function& f) {
 }
 const Heap& Memory::heap() const { return heap_; }
 const Stack& Memory::stack() const { return stack_; }
+const RegMap& Memory::regmap() const { return regmap_; }
 bool Memory::includes(const Memory& that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_) &&
          regmap_.includes(that.regmap_);
@@ -58,7 +59,7 @@ Domain Memory::from_heap(const Symbol& sym) const {
   return Domain{};
 }
 void to_json(Json& j, const Memory& x) {
-  j["stack"] = x.stack();
+  j["stack"] = x.regmap();
   j["heap"] = x.heap();
 }
 

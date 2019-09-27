@@ -24,6 +24,7 @@ class Memory {
   explicit Memory(const llvm::Function& f);
   const Heap& heap() const;
   const Stack& stack() const;
+  const RegMap& regmap() const;
   bool includes(const Memory& that) const;
   void merge(const Memory& that);
   void insert_stack(const Register& key, const Domain& val);
