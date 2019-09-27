@@ -60,13 +60,11 @@ auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   instr::constant(env_, i);
 }
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
-  Params params;
+  ValueSet params;
   for (auto &use : i.incoming_values()) {
-    if (auto val = use.get()) {
-      params.push_back(Value::make(*val));
-    } else {
-      stacksafe_unreachable("unknown phi node", i);
-    }
+    auto val = use.get();
+    assert(val && "unknown phi node");
+    params.insert(val);
   }
   instr::phi(env_, i, params);
 }
@@ -91,16 +89,10 @@ auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   }
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
-  Params params;
-  if (auto v = i.getTrueValue()) {
-    params.push_back(Value::make(*v));
-  } else {
-    stacksafe_unreachable("unknown select node", i);
-  }
-  if (auto v = i.getFalseValue()) {
-    params.push_back(Value::make(*v));
-  } else {
-    stacksafe_unreachable("unknown select node", i);
+  ValueSet params;
+  for (auto val : {i.getTrueValue(), i.getFalseValue()}) {
+    assert(val && "unknown select node");
+    params.insert(val);
   }
   instr::phi(env_, i, params);
 }
