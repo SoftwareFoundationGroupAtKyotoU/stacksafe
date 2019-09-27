@@ -10,7 +10,7 @@ namespace stacksafe {
 Blocks::Blocks(const llvm::Function& f) {
   Params args;
   for (auto& a : f.args()) {
-    args.insert(&a);
+    args.insert(a);
   }
   Super::try_emplace(&f.getEntryBlock(), Env{cache_, args}.memory());
   for (auto& b : f) {

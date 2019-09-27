@@ -4,6 +4,10 @@
 
 namespace stacksafe {
 
+void Params::insert(const llvm::Value &v) {
+  Super::insert(&v);
+}
+
 Env::Env(RegisterCache &c, const Memory &m) : cache_{c}, mem_{m} {}
 Env::Env(RegisterCache &c, const Params &args) : cache_{c} {
   auto g = Symbol::global();
