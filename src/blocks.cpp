@@ -30,9 +30,11 @@ bool Blocks::verify(const llvm::BasicBlock* b) {
   Interpreter{env}.visit(*b);
   return Verifier{env}.visit(*b);
 }
-void Blocks::print(Log& log, const llvm::BasicBlock* b, const Memory& next) {
-  const auto& prev = get(b);
-  log.print(b, prev, next);
+void Blocks::print(const Log& log, const llvm::BasicBlock* b,
+                   const Memory& next) const {
+  auto prev = Super::find(b);
+  assert(prev != Super::end() && "unknown basicblock");
+  log.print(b, prev->second, next);
 }
 Memory& Blocks::get(const llvm::BasicBlock* b) {
   auto it = Super::find(b);
