@@ -27,11 +27,11 @@ TEST_F(HeapTest, InsertMap) {
   heap0.insert(sb, Domain{sc});
   heap1.insert(sc, Domain{sa, sb});
   equal();
-  heap.insert(heap0);
+  heap.merge(heap0);
   push(a, b);
   push(b, c);
   equal();
-  heap.insert(heap1);
+  heap.merge(heap1);
   push(c, a);
   push(c, b);
   equal();
@@ -60,7 +60,7 @@ TEST_F(HeapTest, Includes) {
   CHECK_FALSE();
   sub.insert(sb, Domain{sc});
   CHECK_FALSE();
-  heap.insert(sub);
+  heap.merge(sub);
   CHECK_TRUE();
 #undef CHECK_TRUE
 #undef CHECK_FALSE

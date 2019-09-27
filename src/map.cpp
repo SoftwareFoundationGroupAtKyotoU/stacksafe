@@ -30,7 +30,7 @@ void Map<K>::insert(const K& key, const Domain& val) {
   }
 }
 template <typename K>
-void Map<K>::insert(const Map& that) {
+void Map<K>::merge(const Map& that) {
   for (auto& [k, v] : that) {
     insert(k, v);
   }
