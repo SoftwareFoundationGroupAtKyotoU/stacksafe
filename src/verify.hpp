@@ -14,9 +14,9 @@ class Verifier : public llvm::InstVisitor<Verifier, bool> {
   static constexpr RetTy unsafe = false;
   const Env& env_;
   Memory memory_;
-  explicit Verifier(const Env& e);
 
  public:
+  explicit Verifier(const Env& e);
   static RetTy run(const llvm::BasicBlock* b, const Env& pred);
   RetTy visit(const llvm::BasicBlock& b);
   RetTy visitCallInst(llvm::CallInst& i);

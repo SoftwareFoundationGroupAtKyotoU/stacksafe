@@ -30,7 +30,7 @@ bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
 bool Blocks::verify(const llvm::BasicBlock* b) {
   Env env{get(b), cache_};
   Interpreter{env}.visit(b);
-  return Verifier::run(b, env);
+  return Verifier{env}.visit(*b);
 }
 void Blocks::print(Log& log, const llvm::BasicBlock* b, const Memory& next) {
   const auto& prev = get(b);
