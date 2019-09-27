@@ -17,6 +17,7 @@ target_sources(${target} PRIVATE
   cache.cpp
   debug.cpp
   domain.cpp
+  env.cpp
   fabric.cpp
   instruction.cpp
   interpret.cpp
