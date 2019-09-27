@@ -17,6 +17,7 @@ class Params : private std::set<const llvm::Value*> {
   using Super = std::set<const llvm::Value*>;
 
  public:
+  Params() = default;
   using Super::begin, Super::end;
   void insert(const llvm::Value& v);
 };

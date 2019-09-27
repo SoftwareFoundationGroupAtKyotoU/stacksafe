@@ -14,7 +14,6 @@ Env::Env(RegisterCache &c, const Params &args) : cache_{c} {
   Domain dom{g};
   insert(g, dom);
   for (auto &a : args) {
-    assert(a && "invalid argument");
     insert(*a, dom);
   }
 }
@@ -57,7 +56,6 @@ void Env::cast(const llvm::Value &dst, const llvm::Value &src) {
 void Env::phi(const llvm::Value &dst, const Params &params) {
   Domain dom;
   for (auto &val : params) {
-    assert(val && "invalid param");
     dom.merge(lookup(*val));
   }
   insert(dst, dom);
@@ -65,7 +63,6 @@ void Env::phi(const llvm::Value &dst, const Params &params) {
 void Env::call(const llvm::Value &dst, const Params &params) {
   Domain dom;
   for (auto &val : params) {
-    assert(val && "invalid param");
     for (auto &sym : lookup(*val)) {
       collect(sym, dom);
     }
