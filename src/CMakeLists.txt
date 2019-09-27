@@ -26,7 +26,6 @@ target_sources(${target} PRIVATE
   register.cpp
   symbol.cpp
   type.cpp
-  token.cpp
   utility.cpp
   verify.cpp
   )
