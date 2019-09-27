@@ -38,8 +38,8 @@ Domain Env::lookup(const Symbol &key) const {
 void Env::binop(const llvm::Value &dst, const llvm::Value &lhs,
                 const llvm::Value &rhs) {
   Domain dom;
-  dom.insert(from_stack(lhs));
-  dom.insert(from_stack(rhs));
+  dom.insert(lookup(lhs));
+  dom.insert(lookup(rhs));
   insert(dst, dom);
 }
 void Env::alloc(const llvm::Value &dst) {
@@ -49,14 +49,14 @@ void Env::alloc(const llvm::Value &dst) {
 }
 void Env::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
-  for (auto &sym : from_stack(src)) {
-    dom.insert(from_heap(sym));
+  for (auto &sym : lookup(src)) {
+    dom.insert(lookup(sym));
   }
   insert(dst, dom);
 }
 void Env::store(const llvm::Value &src, const llvm::Value &dst) {
-  auto source = from_stack(src);
-  for (auto &target : from_stack(dst)) {
+  auto source = lookup(src);
+  for (auto &target : lookup(dst)) {
     insert(target, source);
   }
 }
@@ -66,13 +66,13 @@ void Env::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
   store(val, ptr);
 }
 void Env::cast(const llvm::Value &dst, const llvm::Value &src) {
-  insert(dst, from_stack(src));
+  insert(dst, lookup(src));
 }
 void Env::phi(const llvm::Value &dst, const Params &params) {
   Domain dom;
   for (auto &val : params) {
     assert(val && "invalid param");
-    dom.insert(from_stack(*val));
+    dom.insert(lookup(*val));
   }
   insert(dst, dom);
 }
@@ -112,7 +112,7 @@ Domain Env::collect(const Params &params) const {
   Domain ret;
   for (auto &val : params) {
     assert(val && "invalid param");
-    for (auto &sym : from_stack(*val)) {
+    for (auto &sym : lookup(*val)) {
       collect(sym, ret);
     }
   }
@@ -121,7 +121,7 @@ Domain Env::collect(const Params &params) const {
 void Env::collect(const Symbol &symbol, Domain &done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
-    for (auto &sym : from_heap(symbol)) {
+    for (auto &sym : lookup(symbol)) {
       collect(sym, done);
     }
   }
