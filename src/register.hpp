@@ -5,6 +5,9 @@ namespace stacksafe {
 
 class Register {
   int num_;
+
+ public:
+  explicit Register(int n);
 };
 
 }  // namespace stacksafe
