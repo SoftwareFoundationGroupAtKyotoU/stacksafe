@@ -8,9 +8,8 @@
 namespace stacksafe {
 
 Interpreter::Interpreter(Env &e) : env_{e} {}
-auto Interpreter::visit(const llvm::BasicBlock *b) -> RetTy {
-  assert(b && "unknown basicblock");
-  for (auto &i : const_cast<llvm::BasicBlock &>(*b)) {
+auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
+  for (auto &i : const_cast<llvm::BasicBlock &>(b)) {
     Super::visit(i);
   }
 }
