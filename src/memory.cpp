@@ -18,9 +18,15 @@ Memory::Stack& Memory::stack() {
 bool Memory::includes(const Memory& that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-void Memory::merge(const Memory& that) {
-  heap_.merge(that.heap_);
-  stack_.merge(that.stack_);
+bool Memory::merge(const Memory& that) {
+  bool ret = false;
+  if (heap_.merge(that.heap_)) {
+    ret = true;
+  }
+  if (stack_.merge(that.stack_)) {
+    ret = true;
+  }
+  return ret;
 }
 void to_json(Json& j, const Memory& x) {
   j["heap"] = x.heap();
