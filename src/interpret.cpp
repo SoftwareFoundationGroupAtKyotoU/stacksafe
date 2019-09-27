@@ -6,11 +6,11 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Memory &e) : env_{e}, memory_{env_.memory()} {}
+Interpreter::Interpreter(const Memory &e) : env_{e} {}
 Memory Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
   Interpreter i{pred.memory()};
   i.Super::visit(const_cast<llvm::BasicBlock &>(*b));
-  return i.memory_;
+  return i.env_.memory();
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   assert(i.isTerminator() && "unsupported instruction");
