@@ -18,7 +18,8 @@ Memory::Memory(const llvm::Function& f) {
 const Heap& Memory::heap() const { return heap_; }
 const Stack& Memory::stack() const { return stack_; }
 bool Memory::includes(const Memory& that) const {
-  return heap_.includes(that.heap_) && stack_.includes(that.stack_);
+  return heap_.includes(that.heap_) && stack_.includes(that.stack_) &&
+         regmap_.includes(that.regmap_);
 }
 void Memory::merge(const Memory& that) {
   heap_.insert(that.heap_);
