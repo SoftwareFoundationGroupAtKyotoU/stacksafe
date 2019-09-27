@@ -1,19 +1,10 @@
 #include "env.hpp"
-#include <llvm/IR/Function.h>
 #include "cache.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
 Env::Env(const Memory &m, RegisterCache &c) : mem_{m}, cache_{c} {}
-Env::Env(const llvm::Function &f, RegisterCache &c) : cache_{c} {
-  auto g = Symbol::global();
-  Domain dom{g};
-  insert(g, dom);
-  for (auto &a : f.args()) {
-    insert(a, dom);
-  }
-}
 Env::Env(const Params &args, RegisterCache &c) : cache_{c} {
   auto g = Symbol::global();
   Domain dom{g};
