@@ -2,18 +2,19 @@
 #define INCLUDE_GUARD_8CFD1EA5_B0CA_49A1_AE42_BA8D4F1F41DF
 
 #include <llvm/IR/InstVisitor.h>
+#include "memory.hpp"
 
 namespace stacksafe {
 class Env;
-class Memory;
 
 class Verifier : public llvm::InstVisitor<Verifier, bool> {
   using RetTy = bool;
   using Super = llvm::InstVisitor<Verifier, RetTy>;
   static constexpr RetTy safe = true;
   static constexpr RetTy unsafe = false;
-  const Memory& memory_;
-  explicit Verifier(const Memory& e);
+  const Env& env_;
+  Memory memory_;
+  explicit Verifier(const Env& e);
 
  public:
   static RetTy run(const llvm::BasicBlock* b, const Env& pred);
