@@ -1,4 +1,5 @@
 #include "env.hpp"
+#include <llvm/IR/Function.h>
 #include <llvm/IR/Value.h>
 #include "cache.hpp"
 #include "memory.hpp"
@@ -7,6 +8,14 @@
 namespace stacksafe {
 
 Env::Env(const Memory& m, RegisterCache& c) : mem_{m}, cache_{c} {}
+Env::Env(const llvm::Function& f, RegisterCache& c) : cache_{c} {
+  auto g = Symbol::global();
+  Domain dom{g};
+  insert_heap(g, dom);
+  for (auto& a : f.args()) {
+    insert_stack(a, dom);
+  }
+}
 Memory Env::memory() const { return mem_; }
 Memory& Env::memory() { return mem_; }
 void Env::insert_stack(const llvm::Value& key, const Domain& val) {

@@ -21,6 +21,7 @@ class Env {
 
  public:
   Env(const Memory& m, RegisterCache& c);
+  Env(const llvm::Function& f, RegisterCache& c);
   Memory memory() const;
   Memory& memory();
   void insert_stack(const llvm::Value& key, const Domain& val);
