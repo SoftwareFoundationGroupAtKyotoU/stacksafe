@@ -25,7 +25,6 @@ target_sources(${target} PRIVATE
   memory.cpp
   register.cpp
   symbol.cpp
-  type.cpp
   utility.cpp
   verify.cpp
   )
