@@ -78,5 +78,10 @@ void Env::store(const llvm::Value& src, const llvm::Value& dst) {
     insert_heap(target, source);
   }
 }
+void Env::cmpxchg(const llvm::Value& dst, const llvm::Value& ptr,
+                  const llvm::Value& val) {
+  load(dst, ptr);
+  store(val, ptr);
+}
 
 }  // namespace stacksafe

@@ -6,24 +6,6 @@
 namespace stacksafe {
 namespace instr {
 
-void load(Env& e, const llvm::Value& dst, const llvm::Value& src) {
-  Domain dom;
-  for (auto& sym : e.from_stack(src)) {
-    dom.insert(e.from_heap(sym));
-  }
-  e.insert_stack(dst, dom);
-}
-void store(Env& e, const llvm::Value& src, const llvm::Value& dst) {
-  auto source = e.from_stack(src);
-  for (auto& target : e.from_stack(dst)) {
-    e.insert_heap(target, source);
-  }
-}
-void cmpxchg(Env& e, const llvm::Value& dst, const llvm::Value& ptr,
-             const llvm::Value& val) {
-  load(e, dst, ptr);
-  store(e, val, ptr);
-}
 void cast(Env& e, const llvm::Value& dst, const llvm::Value& src) {
   e.insert_stack(dst, e.from_stack(src));
 }

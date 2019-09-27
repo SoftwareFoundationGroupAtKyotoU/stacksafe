@@ -37,18 +37,16 @@ auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   env_.store(*src, *dst);
 }
 auto Interpreter::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
-  if (auto ptr = i.getPointerOperand()) {
-    if (auto val = i.getNewValOperand()) {
-      instr::cmpxchg(env_, i, *ptr, *val);
-    }
-  }
+  auto ptr = i.getPointerOperand();
+  auto val = i.getNewValOperand();
+  assert(ptr && val && "invalid operand");
+  env_.cmpxchg(i, *ptr, *val);
 }
 auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
-  if (auto ptr = i.getPointerOperand()) {
-    if (auto val = i.getValOperand()) {
-      instr::cmpxchg(env_, i, *ptr, *val);
-    }
-  }
+  auto ptr = i.getPointerOperand();
+  auto val = i.getValOperand();
+  assert(ptr && val && "invalid operand");
+  env_.cmpxchg(i, *ptr, *val);
 }
 auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
   if (auto src = i.getOperand(0)) {
