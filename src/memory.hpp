@@ -1,10 +1,22 @@
 #ifndef INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
+#include <map>
 #include "json_fwd.hpp"
 #include "map.hpp"
 
+namespace llvm {
+class Value;
+}
+
 namespace stacksafe {
+
+class Cache : private std::map<const llvm::Value*, Register> {
+  using Super = std::map<const llvm::Value*, Register>;
+
+ public:
+  Register lookup(const llvm::Value& key);
+};
 
 class Memory {
   using Heap = Map<Symbol>;

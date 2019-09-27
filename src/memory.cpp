@@ -1,7 +1,21 @@
 #include "memory.hpp"
 #include "json.hpp"
+#include "register.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
+
+Register Cache::lookup(const llvm::Value& key) {
+  if (auto it = Super::find(&key); Super::end() != it) {
+    return it->second;
+  } else if (auto num = register_number(key)) {
+    Register reg{*num};
+    Super::try_emplace(&key, reg);
+    return reg;
+  } else {
+    stacksafe_unreachable("only registers are allowed", key);
+  }
+}
 
 const Memory::Heap& Memory::heap() const {
   return heap_;
