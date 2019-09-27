@@ -5,7 +5,6 @@
 #include "json.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 
@@ -59,7 +58,7 @@ void to_json(Json& j, const Abstract& x) {
   Json::object_t obj;
   for (auto& [k, v] : x.blocks()) {
     assert(k && "unknown basicblock");
-    obj[Value::make(*k).repr()] = v;
+    obj[to_str(*k)] = v;
   }
   j = obj;
 }
