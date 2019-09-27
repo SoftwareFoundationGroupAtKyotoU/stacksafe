@@ -57,11 +57,6 @@ Domain Memory::from_heap(const Symbol& sym) const {
   }
   return Domain{};
 }
-void Memory::call(const Domain& dom) {
-  for (auto& sym : dom) {
-    insert_heap(sym, dom);
-  }
-}
 void to_json(Json& j, const Memory& x) {
   j["stack"] = x.stack();
   j["heap"] = x.heap();

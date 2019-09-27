@@ -32,7 +32,6 @@ class Memory {
   Domain from_stack(const Register& key) const;
   Domain from_stack(const Value& reg) const;
   Domain from_heap(const Symbol& sym) const;
-  void call(const Domain& dom);
 };
 void to_json(Json& j, const Memory& x);
 
