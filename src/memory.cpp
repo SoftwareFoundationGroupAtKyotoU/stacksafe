@@ -11,19 +11,14 @@ namespace stacksafe {
 const Heap& Memory::heap() const {
   return heap_;
 }
-const Stack& Memory::stack() const {
-  return stack_;
-}
 const RegMap& Memory::regmap() const {
   return regmap_;
 }
 bool Memory::includes(const Memory& that) const {
-  return heap_.includes(that.heap_) && stack_.includes(that.stack_) &&
-         regmap_.includes(that.regmap_);
+  return heap_.includes(that.heap_) && regmap_.includes(that.regmap_);
 }
 void Memory::merge(const Memory& that) {
   heap_.insert(that.heap_);
-  stack_.insert(that.stack_);
   regmap_.insert(that.regmap_);
 }
 void Memory::insert_stack(const Register& key, const Domain& val) {

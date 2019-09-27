@@ -16,13 +16,11 @@ class Value;
 
 class Memory {
   Heap heap_;
-  Stack stack_;
   RegMap regmap_;
 
  public:
   Memory() = default;
   const Heap& heap() const;
-  const Stack& stack() const;
   const RegMap& regmap() const;
   bool includes(const Memory& that) const;
   void merge(const Memory& that);
