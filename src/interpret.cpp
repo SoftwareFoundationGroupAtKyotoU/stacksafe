@@ -40,16 +40,14 @@ auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
 auto Interpreter::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
   if (auto ptr = i.getPointerOperand()) {
     if (auto val = i.getNewValOperand()) {
-      instr::cmpxchg(memory_, Value::make(i), Value::make(*ptr),
-                     Value::make(*val));
+      instr::cmpxchg(env_, i, *ptr, *val);
     }
   }
 }
 auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
   if (auto ptr = i.getPointerOperand()) {
     if (auto val = i.getValOperand()) {
-      instr::cmpxchg(memory_, Value::make(i), Value::make(*ptr),
-                     Value::make(*val));
+      instr::cmpxchg(env_, i, *ptr, *val);
     }
   }
 }
