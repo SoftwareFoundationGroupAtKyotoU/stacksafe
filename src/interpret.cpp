@@ -18,8 +18,7 @@ auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   if (auto lhs = i.getOperand(0)) {
     if (auto rhs = i.getOperand(1)) {
-      instr::binop(memory_, Value::make(i), Value::make(*lhs),
-                   Value::make(*rhs));
+      instr::binop(env_, i, *lhs, *rhs);
     }
   }
 }

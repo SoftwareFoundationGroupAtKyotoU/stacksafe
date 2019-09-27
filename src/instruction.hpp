@@ -21,7 +21,6 @@ class Params : private std::vector<Value> {
 
 namespace instr {
 
-void binop(Memory& e, const Value& dst, const Value& lhs, const Value& rhs);
 void alloc(Memory& e, const Value& dst);
 void load(Memory& e, const Value& dst, const Value& src);
 void store(Memory& e, const Value& src, const Value& dst);

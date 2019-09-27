@@ -6,12 +6,6 @@
 namespace stacksafe {
 namespace instr {
 
-void binop(Memory& e, const Value& dst, const Value& lhs, const Value& rhs) {
-  Domain dom;
-  dom.insert(e.from_stack(lhs));
-  dom.insert(e.from_stack(rhs));
-  e.insert_stack(dst, dom);
-}
 void alloc(Memory& e, const Value& dst) {
   auto sym = Symbol::make(dst.type().pointee_type());
   e.insert_heap(sym, Domain{});
