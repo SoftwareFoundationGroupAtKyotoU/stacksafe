@@ -95,19 +95,6 @@ void Env::insert(const llvm::Value &key, const Domain &val) {
 void Env::insert(const Symbol &key, const Domain &val) {
   mem_.heap().insert(key, val);
 }
-Domain Env::from_stack(const llvm::Value &key) const {
-  if (check_register(key)) {
-    return mem_.from_stack(cache_.lookup(key));
-  } else if (check_global(key)) {
-    return Domain{Symbol::global()};
-  } else if (check_constant(key)) {
-    return Domain{};
-  }
-  stacksafe_unreachable("neither register nor constant", key);
-}
-Domain Env::from_heap(const Symbol &key) const {
-  return mem_.from_heap(key);
-}
 Domain Env::collect(const Params &params) const {
   Domain ret;
   for (auto &val : params) {
