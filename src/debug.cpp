@@ -4,6 +4,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include "fabric.hpp"
 #include "json.hpp"
+#include "memory.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {

@@ -2,8 +2,6 @@
 #define INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A
 
 #include <memory>
-#include <vector>
-#include "memory.hpp"
 
 namespace llvm {
 class BasicBlock;
@@ -13,6 +11,7 @@ class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
+class Memory;
 
 struct LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
