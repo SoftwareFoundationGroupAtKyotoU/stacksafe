@@ -23,7 +23,6 @@ class Env {
   Env(const Memory& m, RegisterCache& c);
   Env(const llvm::Function& f, RegisterCache& c);
   Memory memory() const;
-  Memory& memory();
   Domain lookup(const llvm::Value& key) const;
   Domain lookup(const Symbol& key) const;
   void binop(const llvm::Value& dst, const llvm::Value& lhs,

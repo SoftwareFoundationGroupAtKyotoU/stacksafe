@@ -2,7 +2,6 @@
 #include <llvm/IR/Function.h>
 #include <llvm/IR/Value.h>
 #include "cache.hpp"
-#include "memory.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -17,9 +16,6 @@ Env::Env(const llvm::Function &f, RegisterCache &c) : cache_{c} {
   }
 }
 Memory Env::memory() const {
-  return mem_;
-}
-Memory &Env::memory() {
   return mem_;
 }
 Domain Env::lookup(const llvm::Value &key) const {
