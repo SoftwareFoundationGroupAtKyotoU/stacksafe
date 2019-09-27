@@ -7,7 +7,9 @@
 namespace stacksafe {
 
 Type::Type(const llvm::Type* t) : type_{t} {}
-const llvm::Type* Type::get() const { return type_; }
+const llvm::Type* Type::get() const {
+  return type_;
+}
 std::string Type::repr() const {
   if (type_) {
     return "<" + to_str(*type_) + ">";
@@ -23,6 +25,8 @@ bool Type::is_pointer() const {
 Type Type::pointee_type() const {
   return Type{is_pointer() ? type_->getPointerElementType() : nullptr};
 }
-void to_json(Json& j, const Type& x) { j = x.repr(); }
+void to_json(Json& j, const Type& x) {
+  j = x.repr();
+}
 
 }  // namespace stacksafe

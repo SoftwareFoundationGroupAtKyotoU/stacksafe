@@ -49,7 +49,9 @@ auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
   assert(src && "invalid operand");
   env_.cast(i, *src);
 }
-auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy { env_.constant(i); }
+auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
+  env_.constant(i);
+}
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;
   for (auto &use : i.incoming_values()) {

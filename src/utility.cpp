@@ -38,7 +38,9 @@ std::string to_str(const llvm::Value& value) {
   stream << value;
   return stream.str();
 }
-std::string to_str(const Value& value) { return to_str(*value.get()); }
+std::string to_str(const Value& value) {
+  return to_str(*value.get());
+}
 std::string get_operand(const llvm::Value& value) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};
@@ -61,7 +63,9 @@ void endline(llvm::raw_ostream& os) {
   }
   (os << "\n").flush();
 }
-void print_string(llvm::raw_ostream& os, const std::string& str) { os << str; }
+void print_string(llvm::raw_ostream& os, const std::string& str) {
+  os << str;
+}
 void print_stdout(const std::string& str) {
   print_string(llvm::outs(), str);
   endline(llvm::outs());

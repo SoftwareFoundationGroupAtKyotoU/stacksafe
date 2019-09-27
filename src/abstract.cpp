@@ -16,8 +16,12 @@ Abstract::Abstract(const llvm::Function& f)
   Symbol::reset();
 }
 Abstract::~Abstract() = default;
-auto Abstract::blocks() const -> const Blocks& { return blocks_; }
-void Abstract::interpret() { interpret(&func_.getEntryBlock()); }
+auto Abstract::blocks() const -> const Blocks& {
+  return blocks_;
+}
+void Abstract::interpret() {
+  interpret(&func_.getEntryBlock());
+}
 void Abstract::verify() {
   for (auto& b : func_) {
     if (!blocks_.verify(&b)) {

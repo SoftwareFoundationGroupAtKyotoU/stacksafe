@@ -4,3 +4,4 @@ BasedOnStyle: Google
 Standard: Cpp11
 BreakBeforeTernaryOperators: false
 IndentCaseLabels: false
+AllowShortFunctionsOnASingleLine: Inline

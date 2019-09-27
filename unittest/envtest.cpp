@@ -154,7 +154,9 @@ void EnvTest::SetUp() {
 void EnvTest::init_heap(std::string key) {
   expect["heap"][sym(key)] = Json::array();
 }
-void EnvTest::init_stack(int key) { expect["stack"][reg(key)] = Json::array(); }
+void EnvTest::init_stack(int key) {
+  expect["stack"][reg(key)] = Json::array();
+}
 void EnvTest::push_heap(std::string key, std::string val) {
   expect["heap"][sym(key)].push_back(sym(val));
 }
@@ -165,8 +167,12 @@ void EnvTest::equal() const {
   Json tmp = env;
   EXPECT_EQ(expect.dump(), tmp.dump());
 }
-std::string EnvTest::sym(std::string a) { return "#" + a; }
-std::string EnvTest::reg(int n) { return "%" + std::to_string(n); }
+std::string EnvTest::sym(std::string a) {
+  return "#" + a;
+}
+std::string EnvTest::reg(int n) {
+  return "%" + std::to_string(n);
+}
 const stacksafe::Value EnvTest::v0{0};
 const stacksafe::Value EnvTest::v1{1};
 const stacksafe::Value EnvTest::v2{2};

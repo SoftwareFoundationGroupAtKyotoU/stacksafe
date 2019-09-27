@@ -31,7 +31,9 @@ Value Value::make(const llvm::Value &v) {
 }
 Value::Value(int n)
     : Token{n, Type{nullptr}}, value_{nullptr}, kind_{Kind::REGISTER} {}
-const llvm::Value *Value::get() const { return value_; }
+const llvm::Value *Value::get() const {
+  return value_;
+}
 std::string Value::repr() const {
   switch (kind_) {
   default:
@@ -43,7 +45,9 @@ std::string Value::repr() const {
     return "@" + value_->getName().str() + type().repr();
   }
 }
-bool Value::is_register() const { return kind_ == Kind::REGISTER; }
+bool Value::is_register() const {
+  return kind_ == Kind::REGISTER;
+}
 Domain Value::get_domain() const {
   switch (kind_) {
   default:
@@ -60,7 +64,9 @@ bool operator<(const Value &lhs, const Value &rhs) {
          "value comparison must be on registers");
   return lhs.number() < rhs.number();
 }
-void to_json(Json &j, const Value &x) { j = x.repr() + x.type().repr(); }
+void to_json(Json &j, const Value &x) {
+  j = x.repr() + x.type().repr();
+}
 Fabric dump(const Value &value) {
   Fabric ret;
   return ret.append(value.repr()).quote();

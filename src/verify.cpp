@@ -35,6 +35,8 @@ auto Verifier::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   }
   return safe;
 }
-auto Verifier::visitInstruction(llvm::Instruction &) -> RetTy { return safe; }
+auto Verifier::visitInstruction(llvm::Instruction &) -> RetTy {
+  return safe;
+}
 
 }  // namespace stacksafe

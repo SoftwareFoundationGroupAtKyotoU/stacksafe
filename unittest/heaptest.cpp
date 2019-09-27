@@ -1,6 +1,8 @@
 #include "heaptest.hpp"
 
-TEST_F(HeapTest, Initial) { equal(); }
+TEST_F(HeapTest, Initial) {
+  equal();
+}
 TEST_F(HeapTest, InsertDomain) {
   stacksafe::Domain dom0, dom1;
   auto sa = symbol(), sb = symbol(), sc = symbol();
@@ -106,4 +108,6 @@ void HeapTest::equal() const {
 stacksafe::Symbol HeapTest::symbol() {
   return stacksafe::Symbol::make(stacksafe::Type{nullptr});
 }
-std::string HeapTest::sym(std::string a) { return "#" + a; }
+std::string HeapTest::sym(std::string a) {
+  return "#" + a;
+}

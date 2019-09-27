@@ -14,7 +14,9 @@ LogFile::LogFile(const std::string& name) {
     endline(llvm::errs() << "Error: " << error.message());
   }
 }
-llvm::raw_ostream& LogFile::get() const { return file ? *file : llvm::errs(); }
+llvm::raw_ostream& LogFile::get() const {
+  return file ? *file : llvm::errs();
+}
 
 std::string Log::logfilename(const llvm::Function& f) {
   return "log/" + f.getName().str() + ".log";

@@ -15,9 +15,15 @@ Memory::Memory(const llvm::Function& f) {
     insert_stack(Value::make(a), Domain{g});
   }
 }
-const Heap& Memory::heap() const { return heap_; }
-const Stack& Memory::stack() const { return stack_; }
-const RegMap& Memory::regmap() const { return regmap_; }
+const Heap& Memory::heap() const {
+  return heap_;
+}
+const Stack& Memory::stack() const {
+  return stack_;
+}
+const RegMap& Memory::regmap() const {
+  return regmap_;
+}
 bool Memory::includes(const Memory& that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_) &&
          regmap_.includes(that.regmap_);

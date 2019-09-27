@@ -11,8 +11,12 @@ Symbol::Symbol(Kind k, int n, const Type &t) : Token{n, t}, kind_{k} {}
 Symbol Symbol::global() {
   return Symbol{Kind::STATIC, current_init, Type{nullptr}};
 }
-Symbol Symbol::make(const Type &t) { return Symbol{Kind::AUTO, ++current_, t}; }
-void Symbol::reset() { current_ = current_init; }
+Symbol Symbol::make(const Type &t) {
+  return Symbol{Kind::AUTO, ++current_, t};
+}
+void Symbol::reset() {
+  current_ = current_init;
+}
 std::string Symbol::repr() const {
   switch (kind_) {
   default:
@@ -22,11 +26,15 @@ std::string Symbol::repr() const {
     return prefix_ + to_alphabet(number());
   }
 }
-bool Symbol::is_local() const { return kind_ == Kind::AUTO; }
+bool Symbol::is_local() const {
+  return kind_ == Kind::AUTO;
+}
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
-void to_json(Json &j, const Symbol &x) { j = x.repr() + x.type().repr(); }
+void to_json(Json &j, const Symbol &x) {
+  j = x.repr() + x.type().repr();
+}
 Fabric dump(const Symbol &symbol) {
   Fabric ret;
   return ret.append(symbol.repr()).quote();
