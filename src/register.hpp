@@ -14,6 +14,7 @@ class Register {
   int number() const;
   std::string repr() const;
 };
+bool operator<(const Register& lhs, const Register& rhs);
 
 }  // namespace stacksafe
 
