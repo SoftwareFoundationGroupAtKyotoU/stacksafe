@@ -11,7 +11,7 @@ Env::Env(const Memory &m, RegisterCache &c) : mem_{m}, cache_{c} {}
 Env::Env(const llvm::Function &f, RegisterCache &c) : cache_{c} {
   auto g = Symbol::global();
   Domain dom{g};
-  insert_heap(g, dom);
+  insert(g, dom);
   for (auto &a : f.args()) {
     insert(a, dom);
   }
@@ -37,7 +37,7 @@ void Env::binop(const llvm::Value &dst, const llvm::Value &lhs,
 }
 void Env::alloc(const llvm::Value &dst) {
   auto sym = Symbol::make(Type{dst.getType()}.pointee_type());
-  insert_heap(sym, Domain{});
+  insert(sym, Domain{});
   insert(dst, Domain{sym});
 }
 void Env::load(const llvm::Value &dst, const llvm::Value &src) {
@@ -50,7 +50,7 @@ void Env::load(const llvm::Value &dst, const llvm::Value &src) {
 void Env::store(const llvm::Value &src, const llvm::Value &dst) {
   auto source = from_stack(src);
   for (auto &target : from_stack(dst)) {
-    insert_heap(target, source);
+    insert(target, source);
   }
 }
 void Env::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
@@ -72,7 +72,7 @@ void Env::phi(const llvm::Value &dst, const Params &params) {
 void Env::call(const llvm::Value &dst, const Params &params) {
   auto dom = collect(params);
   for (auto &sym : dom) {
-    insert_heap(sym, dom);
+    insert(sym, dom);
   }
   if (!check_voidfunc(dst)) {
     insert(dst, dom);
@@ -85,7 +85,7 @@ void Env::constant(const llvm::Value &dst) {
 void Env::insert(const llvm::Value &key, const Domain &val) {
   mem_.stack().insert(cache_.lookup(key), val);
 }
-void Env::insert_heap(const Symbol &key, const Domain &val) {
+void Env::insert(const Symbol &key, const Domain &val) {
   mem_.heap().insert(key, val);
 }
 Domain Env::from_stack(const llvm::Value &key) const {

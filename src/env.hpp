@@ -40,7 +40,7 @@ class Env {
 
  private:
   void insert(const llvm::Value& key, const Domain& val);
-  void insert_heap(const Symbol& key, const Domain& val);
+  void insert(const Symbol& key, const Domain& val);
   Domain from_stack(const llvm::Value& key) const;
   Domain from_heap(const Symbol& key) const;
   Domain collect(const Params& params) const;
