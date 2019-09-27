@@ -6,11 +6,6 @@
 namespace stacksafe {
 
 template <typename K>
-auto Map<K>::get(const K& key) -> Domain* {
-  const auto& self = *this;
-  return const_cast<Domain*>(self.get(key));
-}
-template <typename K>
 auto Map<K>::get(const K& key) const -> const Domain* {
   if (auto it = Super::find(key); it != end()) {
     return &it->second;
@@ -19,8 +14,8 @@ auto Map<K>::get(const K& key) const -> const Domain* {
 }
 template <typename K>
 void Map<K>::insert(const K& key, const Domain& val) {
-  if (auto p = get(key)) {
-    p->insert(val);
+  if (auto it = Super::find(key); it != end()) {
+    it->second.insert(val);
   } else {
     Super::try_emplace(key, val);
   }

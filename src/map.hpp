@@ -17,7 +17,6 @@ class Map : private std::map<K, Domain> {
 
  public:
   using Super::begin, Super::end;
-  Domain* get(const K& key);
   const Domain* get(const K& key) const;
   void insert(const K& key, const Domain& val);
   void merge(const Map& that);
