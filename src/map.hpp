@@ -31,7 +31,6 @@ template <typename K>
 Fabric dump(const Map<K>& map);
 
 using Heap = Map<Symbol>;
-using RegMap = Map<Register>;
 
 extern template class Map<Symbol>;
 extern template class Map<Register>;

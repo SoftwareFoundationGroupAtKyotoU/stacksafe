@@ -7,15 +7,17 @@
 namespace stacksafe {
 
 class Memory {
+  using Heap = Map<Symbol>;
+  using Stack = Map<Register>;
   Heap heap_;
-  RegMap regmap_;
+  Stack regmap_;
 
  public:
   Memory() = default;
   const Heap& heap() const;
   Heap& heap();
-  const RegMap& stack() const;
-  RegMap& stack();
+  const Stack& stack() const;
+  Stack& stack();
   bool includes(const Memory& that) const;
   void merge(const Memory& that);
 };

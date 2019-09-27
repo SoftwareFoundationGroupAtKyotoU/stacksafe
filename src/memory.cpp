@@ -9,10 +9,10 @@ const Heap& Memory::heap() const {
 Heap& Memory::heap() {
   return heap_;
 }
-const RegMap& Memory::stack() const {
+const Memory::Stack& Memory::stack() const {
   return regmap_;
 }
-RegMap& Memory::stack() {
+Memory::Stack& Memory::stack() {
   return regmap_;
 }
 bool Memory::includes(const Memory& that) const {
