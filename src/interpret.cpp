@@ -49,9 +49,9 @@ auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
   env_.cmpxchg(i, *ptr, *val);
 }
 auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
-  if (auto src = i.getOperand(0)) {
-    instr::cast(env_, i, *src);
-  }
+  auto src = i.getOperand(0);
+  assert(src && "invalid operand");
+  env_.cast(i, *src);
 }
 auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   instr::constant(env_, i);
@@ -79,9 +79,9 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   }
 }
 auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
-  if (auto src = i.getPointerOperand()) {
-    instr::cast(env_, i, *src);
-  }
+  auto src = i.getPointerOperand();
+  assert(src && "invalid operand");
+  env_.cast(i, *src);
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   ValueSet params;
@@ -92,9 +92,9 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   instr::phi(env_, i, params);
 }
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
-  if (auto src = i.getAggregateOperand()) {
-    instr::cast(env_, i, *src);
-  }
+  auto src = i.getAggregateOperand();
+  assert(src && "invalid operand");
+  env_.cast(i, *src);
 }
 
 }  // namespace stacksafe

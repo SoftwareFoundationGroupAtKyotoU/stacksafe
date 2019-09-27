@@ -83,5 +83,8 @@ void Env::cmpxchg(const llvm::Value& dst, const llvm::Value& ptr,
   load(dst, ptr);
   store(val, ptr);
 }
+void Env::cast(const llvm::Value& dst, const llvm::Value& src) {
+  insert_stack(dst, from_stack(src));
+}
 
 }  // namespace stacksafe
