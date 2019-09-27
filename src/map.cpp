@@ -6,10 +6,6 @@
 namespace stacksafe {
 
 template <typename K>
-bool Map<K>::exists(const K& key) const {
-  return 0 < Super::count(key);
-}
-template <typename K>
 auto Map<K>::get(const K& key) -> Domain* {
   const auto& self = *this;
   return const_cast<Domain*>(self.get(key));
