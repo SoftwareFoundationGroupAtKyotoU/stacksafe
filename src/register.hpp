@@ -4,10 +4,11 @@
 namespace stacksafe {
 
 class Register {
-  int num_;
+  const int num_;
 
  public:
   explicit Register(int n);
+  int number() const;
 };
 
 }  // namespace stacksafe
