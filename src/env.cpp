@@ -83,10 +83,10 @@ void Env::constant(const llvm::Value &dst) {
 }
 
 void Env::insert_stack(const llvm::Value &key, const Domain &val) {
-  mem_.insert_stack(cache_.lookup(key), val);
+  mem_.stack().insert(cache_.lookup(key), val);
 }
 void Env::insert_heap(const Symbol &key, const Domain &val) {
-  mem_.insert_heap(key, val);
+  mem_.heap().insert(key, val);
 }
 Domain Env::from_stack(const llvm::Value &key) const {
   if (check_register(key)) {
