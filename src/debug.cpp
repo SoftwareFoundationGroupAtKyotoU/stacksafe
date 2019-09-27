@@ -1,6 +1,7 @@
 #include "debug.hpp"
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
+#include <llvm/Support/raw_ostream.h>
 #include "fabric.hpp"
 #include "json.hpp"
 #include "utility.hpp"
@@ -14,6 +15,7 @@ LogFile::LogFile(const std::string& name) {
     endline(llvm::errs() << "Error: " << error.message());
   }
 }
+LogFile::~LogFile() = default;
 llvm::raw_ostream& LogFile::get() const {
   return file ? *file : llvm::errs();
 }
