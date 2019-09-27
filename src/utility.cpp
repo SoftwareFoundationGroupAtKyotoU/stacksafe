@@ -4,7 +4,6 @@
 #include <llvm/IR/Type.h>
 #include <llvm/IR/Value.h>
 #include <llvm/Support/raw_ostream.h>
-#include "value.hpp"
 
 namespace stacksafe {
 
@@ -37,9 +36,6 @@ std::string to_str(const llvm::Value& value) {
   llvm::raw_string_ostream stream{buf};
   stream << value;
   return stream.str();
-}
-std::string to_str(const Value& value) {
-  return to_str(*value.get());
 }
 std::string get_operand(const llvm::Value& value) {
   std::string buf;
