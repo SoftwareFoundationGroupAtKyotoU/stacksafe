@@ -28,7 +28,6 @@ target_sources(${target} PRIVATE
   type.cpp
   token.cpp
   utility.cpp
-  value.cpp
   verify.cpp
   )
 include(EnsureSources)
