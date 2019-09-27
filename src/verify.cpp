@@ -15,6 +15,9 @@ auto Verifier::run(const llvm::BasicBlock *b, const Env &pred) -> RetTy {
   return Verifier{pred}.visit(*b);
 }
 auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
+  if (env_.from_heap(Symbol::global()).has_local()) {
+    return unsafe;
+  }
   for (auto &i : const_cast<llvm::BasicBlock &>(b)) {
     if (!Super::visit(i)) {
       return unsafe;
