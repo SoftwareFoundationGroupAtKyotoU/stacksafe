@@ -19,7 +19,7 @@ auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
   for (auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
-    auto dom = env_.from_stack(*arg);
+    auto dom = env_.lookup(*arg);
     if (dom.has_local() && dom.includes(Symbol::global())) {
       return unsafe;
     }
@@ -28,7 +28,7 @@ auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Verifier::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto val = i.getReturnValue()) {
-    auto dom = env_.from_stack(*val);
+    auto dom = env_.lookup(*val);
     if (dom.has_local()) {
       return unsafe;
     }
