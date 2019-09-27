@@ -33,7 +33,7 @@ auto Interpreter::visitLoadInst(llvm::LoadInst &i) -> RetTy {
 auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   if (auto src = i.getValueOperand()) {
     if (auto dst = i.getPointerOperand()) {
-      instr::store(memory_, Value::make(*src), Value::make(*dst));
+      instr::store(env_, *src, *dst);
     }
   }
 }

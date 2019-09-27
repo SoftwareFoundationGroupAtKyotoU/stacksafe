@@ -21,7 +21,6 @@ class Params : private std::vector<Value> {
 
 namespace instr {
 
-void store(Memory& e, const Value& src, const Value& dst);
 void cmpxchg(Memory& e, const Value& dst, const Value& ptr, const Value& val);
 void cast(Memory& e, const Value& dst, const Value& src);
 void phi(Memory& e, const Value& dst, const Params& params);
