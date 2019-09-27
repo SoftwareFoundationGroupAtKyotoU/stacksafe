@@ -1,5 +1,4 @@
 #include "env.hpp"
-#include "cache.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -8,8 +7,8 @@ void Params::insert(const llvm::Value &v) {
   Super::insert(&v);
 }
 
-Env::Env(RegisterCache &c, const Memory &m) : cache_{c}, mem_{m} {}
-Env::Env(RegisterCache &c, const Params &args) : cache_{c} {
+Env::Env(Cache &c, const Memory &m) : cache_{c}, mem_{m} {}
+Env::Env(Cache &c, const Params &args) : cache_{c} {
   auto g = Symbol::global();
   Domain dom{g};
   insert(g, dom);

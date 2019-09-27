@@ -10,7 +10,6 @@ class Value;
 
 namespace stacksafe {
 class Domain;
-class RegisterCache;
 class Symbol;
 
 class Params : private std::set<const llvm::Value*> {
@@ -23,12 +22,12 @@ class Params : private std::set<const llvm::Value*> {
 };
 
 class Env {
-  RegisterCache& cache_;
+  Cache& cache_;
   Memory mem_;
 
  public:
-  Env(RegisterCache& c, const Memory& m);
-  Env(RegisterCache& c, const Params& args);
+  Env(Cache& c, const Memory& m);
+  Env(Cache& c, const Params& args);
   Memory memory() const;
   void binop(const llvm::Value& dst, const llvm::Value& lhs,
              const llvm::Value& rhs);

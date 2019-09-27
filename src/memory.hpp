@@ -4,12 +4,14 @@
 #include <map>
 #include "json_fwd.hpp"
 #include "map.hpp"
+#include "register.hpp"
 
 namespace llvm {
 class Value;
 }
 
 namespace stacksafe {
+class Register;
 
 class Cache : private std::map<const llvm::Value*, Register> {
   using Super = std::map<const llvm::Value*, Register>;
