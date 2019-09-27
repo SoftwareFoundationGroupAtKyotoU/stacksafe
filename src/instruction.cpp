@@ -1,4 +1,5 @@
 #include "instruction.hpp"
+#include "env.hpp"
 #include "memory.hpp"
 
 namespace stacksafe {
@@ -49,6 +50,14 @@ void call(Memory& e, const Value& dst, const Params& params) {
   e.insert_stack(dst, dom);
 }
 void constant(Memory& e, const Value& dst) { e.insert_stack(dst, Domain{}); }
+
+void binop(Env& e, const llvm::Value& dst, const llvm::Value& lhs,
+           const llvm::Value& rhs) {
+  Domain dom;
+  dom.insert(e.from_stack(lhs));
+  dom.insert(e.from_stack(rhs));
+  e.insert_stack(dst, dom);
+}
 
 }  // namespace instr
 }  // namespace stacksafe

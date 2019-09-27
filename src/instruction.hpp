@@ -3,7 +3,12 @@
 
 #include <vector>
 
+namespace llvm {
+class Value;
+}
+
 namespace stacksafe {
+class Env;
 class Memory;
 class Value;
 
@@ -26,6 +31,9 @@ void phi(Memory& e, const Value& dst, const Params& params);
 void call(Memory& e, const Params& params);
 void call(Memory& e, const Value& dst, const Params& params);
 void constant(Memory& e, const Value& dst);
+
+void binop(Env& e, const llvm::Value& dst, const llvm::Value& lhs,
+           const llvm::Value& rhs);
 
 }  // namespace instr
 }  // namespace stacksafe
