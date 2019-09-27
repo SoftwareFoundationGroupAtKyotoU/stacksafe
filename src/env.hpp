@@ -13,7 +13,12 @@ class Domain;
 class RegisterCache;
 class Symbol;
 
-using Params = std::set<const llvm::Value*>;
+class Params : private std::set<const llvm::Value*> {
+  using Super = std::set<const llvm::Value*>;
+
+ public:
+  using Super::begin, Super::end, Super::insert;
+};
 
 class Env {
   RegisterCache& cache_;
