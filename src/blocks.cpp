@@ -1,6 +1,7 @@
 #include "blocks.hpp"
 #include <llvm/IR/Function.h>
 #include "debug.hpp"
+#include "env.hpp"
 #include "interpret.hpp"
 #include "verify.hpp"
 
@@ -13,7 +14,7 @@ Blocks::Blocks(const llvm::Function& f) {
   }
 }
 Memory Blocks::interpret(const llvm::BasicBlock* b) {
-  return Interpreter::run(b, get(b));
+  return Interpreter::run(b, Env{get(b)});
 }
 bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   auto& prev = get(b);
@@ -25,7 +26,7 @@ bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   }
 }
 bool Blocks::verify(const llvm::BasicBlock* b) {
-  auto result = Interpreter::run(b, get(b));
+  auto result = Interpreter::run(b, Env{get(b)});
   return Verifier::run(b, result);
 }
 void Blocks::print(Log& log, const llvm::BasicBlock* b, const Memory& next) {

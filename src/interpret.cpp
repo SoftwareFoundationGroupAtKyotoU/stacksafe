@@ -1,4 +1,5 @@
 #include "interpret.hpp"
+#include "env.hpp"
 #include "instruction.hpp"
 #include "memory.hpp"
 #include "utility.hpp"
@@ -7,8 +8,8 @@
 namespace stacksafe {
 
 Interpreter::Interpreter(Memory &e) : memory_{e} {}
-Memory Interpreter::run(const llvm::BasicBlock *b, const Memory &pred) {
-  auto ret = pred;
+Memory Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
+  auto ret = pred.memory();
   Interpreter{ret}.Super::visit(const_cast<llvm::BasicBlock &>(*b));
   return ret;
 }
