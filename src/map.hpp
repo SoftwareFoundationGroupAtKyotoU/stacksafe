@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
 #include <map>
+#include <optional>
 #include "domain.hpp"
 #include "json_fwd.hpp"
 #include "register.hpp"
@@ -14,10 +15,10 @@ class Fabric;
 template <typename K>
 class Map : private std::map<K, Domain> {
   using Super = std::map<K, Domain>;
+  std::optional<Domain> get(const K& key) const;
 
  public:
   using Super::begin, Super::end;
-  const Domain* get(const K& key) const;
   void insert(const K& key, const Domain& val);
   void merge(const Map& that);
   bool includes(const Map& that) const;

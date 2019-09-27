@@ -2,15 +2,17 @@
 #include <utility>
 #include "fabric.hpp"
 #include "json.hpp"
+#include "register.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 
 template <typename K>
-auto Map<K>::get(const K& key) const -> const Domain* {
+std::optional<Domain> Map<K>::get(const K& key) const {
   if (auto it = Super::find(key); it != end()) {
-    return &it->second;
+    return it->second;
   }
-  return nullptr;
+  return std::nullopt;
 }
 template <typename K>
 void Map<K>::insert(const K& key, const Domain& val) {
