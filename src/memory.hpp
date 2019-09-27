@@ -26,8 +26,6 @@ class Memory {
   RegMap& stack();
   bool includes(const Memory& that) const;
   void merge(const Memory& that);
-  void insert_stack(const Register& key, const Domain& val);
-  void insert_heap(const Symbol& key, const Domain& val);
 };
 void to_json(Json& j, const Memory& x);
 

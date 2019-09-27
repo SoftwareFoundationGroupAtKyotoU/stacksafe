@@ -27,12 +27,6 @@ void Memory::merge(const Memory& that) {
   heap_.insert(that.heap_);
   regmap_.insert(that.regmap_);
 }
-void Memory::insert_stack(const Register& key, const Domain& val) {
-  regmap_.insert(key, val);
-}
-void Memory::insert_heap(const Symbol& key, const Domain& val) {
-  heap_.insert(key, val);
-}
 void to_json(Json& j, const Memory& x) {
   j["stack"] = x.stack();
   j["heap"] = x.heap();
