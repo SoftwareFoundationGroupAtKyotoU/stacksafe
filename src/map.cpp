@@ -81,15 +81,12 @@ Fabric dump(const Map<K>& map) {
   return ret.append("}");
 }
 
-template class Map<Value>;
 template class Map<Symbol>;
 template class Map<Register>;
 
-template void to_json<Value>(Json&, const Stack&);
 template void to_json<Symbol>(Json&, const Heap&);
 template void to_json<Register>(Json&, const Map<Register>&);
 
-template Fabric dump<Value>(const Stack&);
 template Fabric dump<Symbol>(const Heap&);
 template Fabric dump<Register>(const Map<Register>&);
 
