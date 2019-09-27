@@ -1,22 +1,23 @@
 #ifndef INCLUDE_GUARD_C088E002_5D7C_41FC_929E_102BD43FCAEA
 #define INCLUDE_GUARD_C088E002_5D7C_41FC_929E_102BD43FCAEA
 
+#include "memory.hpp"
+
 namespace llvm {
 class Value;
 }
 
 namespace stacksafe {
 class Domain;
-class Memory;
 class Params;
 class RegisterCache;
 class Symbol;
 
 class Env {
-  Memory& mem_;
+  Memory mem_;
 
  public:
-  Env(Memory& m);
+  explicit Env(const Memory& m);
   Memory memory() const;
   void insert_stack(const llvm::Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
