@@ -35,6 +35,7 @@ class Env {
 
  public:
   Domain lookup(const llvm::Value& key) const;
+  Domain lookup(const Symbol& key) const;
   void binop(const llvm::Value& dst, const llvm::Value& lhs,
              const llvm::Value& rhs);
   void alloc(const llvm::Value& dst);

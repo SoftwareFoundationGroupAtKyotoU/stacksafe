@@ -62,6 +62,9 @@ void Env::collect(const Symbol &symbol, Domain &done) const {
 Domain Env::lookup(const llvm::Value &key) const {
   return from_stack(key);
 }
+Domain Env::lookup(const Symbol &key) const {
+  return from_heap(key);
+}
 void Env::binop(const llvm::Value &dst, const llvm::Value &lhs,
                 const llvm::Value &rhs) {
   Domain dom;
