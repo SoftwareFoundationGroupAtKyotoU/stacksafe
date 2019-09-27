@@ -19,13 +19,7 @@ Memory Blocks::interpret(const llvm::BasicBlock* b) {
   return env.memory();
 }
 bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
-  auto& prev = get(b);
-  if (prev.includes(next)) {
-    return false;
-  } else {
-    prev.merge(next);
-    return true;
-  }
+  return get(b).merge(next);
 }
 bool Blocks::verify(const llvm::BasicBlock* b) {
   Env env{get(b), cache_};
