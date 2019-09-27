@@ -34,12 +34,7 @@ Domain Env::from_stack(const llvm::Value& key) const {
   }
   stacksafe_unreachable("neither register nor constant", key);
 }
-Domain Env::from_heap(const Symbol& key) const {
-  if (auto dom = mem_.heap().get(key)) {
-    return *dom;
-  }
-  return Domain{};
-}
+Domain Env::from_heap(const Symbol& key) const { return mem_.from_heap(key); }
 Domain Env::collect(const Params& params) const {
   Domain ret;
   for (auto& val : params) {
