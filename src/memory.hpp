@@ -21,7 +21,6 @@ class Memory {
 
  public:
   Memory() = default;
-  explicit Memory(const llvm::Function& f);
   const Heap& heap() const;
   const Stack& stack() const;
   const RegMap& regmap() const;

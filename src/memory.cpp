@@ -8,13 +8,6 @@
 
 namespace stacksafe {
 
-Memory::Memory(const llvm::Function& f) {
-  auto g = Symbol::global();
-  insert_heap(g, Domain{g});
-  for (auto& a : f.args()) {
-    insert_stack(Value::make(a), Domain{g});
-  }
-}
 const Heap& Memory::heap() const {
   return heap_;
 }
