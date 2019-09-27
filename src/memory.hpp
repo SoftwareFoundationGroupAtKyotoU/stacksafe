@@ -21,7 +21,9 @@ class Memory {
  public:
   Memory() = default;
   const Heap& heap() const;
+  Heap& heap();
   const RegMap& stack() const;
+  RegMap& stack();
   bool includes(const Memory& that) const;
   void merge(const Memory& that);
   void insert_stack(const Register& key, const Domain& val);

@@ -11,7 +11,13 @@ namespace stacksafe {
 const Heap& Memory::heap() const {
   return heap_;
 }
+Heap& Memory::heap() {
+  return heap_;
+}
 const RegMap& Memory::stack() const {
+  return regmap_;
+}
+RegMap& Memory::stack() {
   return regmap_;
 }
 bool Memory::includes(const Memory& that) const {
