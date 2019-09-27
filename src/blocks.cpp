@@ -7,15 +7,15 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function& f) {
-  Super::try_emplace(&f.getEntryBlock(), Env{f});
+  Super::try_emplace(&f.getEntryBlock(), Memory{f});
   for (auto& b : f) {
-    Super::try_emplace(&b, Env{});
+    Super::try_emplace(&b, Memory{});
   }
 }
-Env Blocks::interpret(const llvm::BasicBlock* b) {
+Memory Blocks::interpret(const llvm::BasicBlock* b) {
   return Interpreter::run(b, get(b));
 }
-bool Blocks::update(const llvm::BasicBlock* b, const Env& next) {
+bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   auto& prev = get(b);
   if (prev.includes(next)) {
     return false;
@@ -28,11 +28,11 @@ bool Blocks::verify(const llvm::BasicBlock* b) {
   auto result = Interpreter::run(b, get(b));
   return Verifier::run(b, result);
 }
-void Blocks::print(Log& log, const llvm::BasicBlock* b, const Env& next) {
+void Blocks::print(Log& log, const llvm::BasicBlock* b, const Memory& next) {
   const auto& prev = get(b);
   log.print(b, prev, next);
 }
-Env& Blocks::get(const llvm::BasicBlock* b) {
+Memory& Blocks::get(const llvm::BasicBlock* b) {
   auto it = Super::find(b);
   assert(it != Super::end() && "unknown basicblock");
   return it->second;

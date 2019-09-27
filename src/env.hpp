@@ -15,17 +15,17 @@ class Symbol;
 class Value;
 class Params;
 
-class Env {
+class Memory {
   Heap heap_;
   Stack stack_;
 
  public:
-  Env() = default;
-  explicit Env(const llvm::Function& f);
+  Memory() = default;
+  explicit Memory(const llvm::Function& f);
   const Heap& heap() const;
   const Stack& stack() const;
-  bool includes(const Env& that) const;
-  void merge(const Env& that);
+  bool includes(const Memory& that) const;
+  void merge(const Memory& that);
   void insert_stack(const Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const Value& reg) const;
@@ -36,7 +36,7 @@ class Env {
  private:
   void collect(const Symbol& symbol, Domain& done) const;
 };
-void to_json(Json& j, const Env& x);
+void to_json(Json& j, const Memory& x);
 
 }  // namespace stacksafe
 

@@ -6,8 +6,8 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(Env &e) : env_{e} {}
-Env Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
+Interpreter::Interpreter(Memory &e) : env_{e} {}
+Memory Interpreter::run(const llvm::BasicBlock *b, const Memory &pred) {
   auto ret = pred;
   Interpreter{ret}.Super::visit(const_cast<llvm::BasicBlock &>(*b));
   return ret;

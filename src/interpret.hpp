@@ -4,16 +4,16 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
-class Env;
+class Memory;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
-  Env &env_;
-  explicit Interpreter(Env &e);
+  Memory &env_;
+  explicit Interpreter(Memory &e);
 
  public:
-  static Env run(const llvm::BasicBlock *b, const Env &pred);
+  static Memory run(const llvm::BasicBlock *b, const Memory &pred);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitAllocaInst(llvm::AllocaInst &i);

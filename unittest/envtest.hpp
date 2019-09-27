@@ -19,7 +19,7 @@ struct EnvTest : ::testing::Test {
   void equal() const;
   static std::string sym(std::string a);
   static std::string reg(int n);
-  stacksafe::Env env;
+  stacksafe::Memory env;
   Json expect;
   static const stacksafe::Value v0, v1, v2, v3;
   static const String a, b, c;

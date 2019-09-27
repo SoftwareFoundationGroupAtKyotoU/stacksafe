@@ -4,18 +4,18 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
-class Env;
+class Memory;
 
 class Verifier : public llvm::InstVisitor<Verifier, bool> {
   using RetTy = bool;
   using Super = llvm::InstVisitor<Verifier, RetTy>;
   static constexpr RetTy safe = true;
   static constexpr RetTy unsafe = false;
-  const Env& env_;
-  explicit Verifier(const Env& e);
+  const Memory& env_;
+  explicit Verifier(const Memory& e);
 
  public:
-  static RetTy run(const llvm::BasicBlock* b, const Env& pred);
+  static RetTy run(const llvm::BasicBlock* b, const Memory& pred);
   RetTy visit(const llvm::BasicBlock& b);
   RetTy visitCallInst(llvm::CallInst& i);
   RetTy visitReturnInst(llvm::ReturnInst& i);

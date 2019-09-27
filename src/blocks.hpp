@@ -13,20 +13,20 @@ class Function;
 namespace stacksafe {
 struct Log;
 
-class Blocks : private std::map<const llvm::BasicBlock*, Env> {
-  using Super = std::map<const llvm::BasicBlock*, Env>;
+class Blocks : private std::map<const llvm::BasicBlock*, Memory> {
+  using Super = std::map<const llvm::BasicBlock*, Memory>;
   RegisterCache cache_;
 
  public:
   using Super::begin, Super::end;
   explicit Blocks(const llvm::Function& f);
-  Env interpret(const llvm::BasicBlock* b);
-  bool update(const llvm::BasicBlock* b, const Env& next);
+  Memory interpret(const llvm::BasicBlock* b);
+  bool update(const llvm::BasicBlock* b, const Memory& next);
   bool verify(const llvm::BasicBlock* b);
-  void print(Log& log, const llvm::BasicBlock* b, const Env& next);
+  void print(Log& log, const llvm::BasicBlock* b, const Memory& next);
 
  private:
-  Env& get(const llvm::BasicBlock* b);
+  Memory& get(const llvm::BasicBlock* b);
 };
 
 }  // namespace stacksafe

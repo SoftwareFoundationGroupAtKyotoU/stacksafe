@@ -9,30 +9,30 @@
 
 namespace stacksafe {
 
-Env::Env(const llvm::Function& f) {
+Memory::Memory(const llvm::Function& f) {
   auto g = Symbol::global();
   insert_heap(g, Domain{g});
   for (auto& a : f.args()) {
     insert_stack(Value::make(a), Domain{g});
   }
 }
-const Heap& Env::heap() const { return heap_; }
-const Stack& Env::stack() const { return stack_; }
-bool Env::includes(const Env& that) const {
+const Heap& Memory::heap() const { return heap_; }
+const Stack& Memory::stack() const { return stack_; }
+bool Memory::includes(const Memory& that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-void Env::merge(const Env& that) {
+void Memory::merge(const Memory& that) {
   heap_.insert(that.heap_);
   stack_.insert(that.stack_);
 }
-void Env::insert_stack(const Value& key, const Domain& val) {
+void Memory::insert_stack(const Value& key, const Domain& val) {
   assert(key.is_register() && "insert to non-register");
   stack_.insert(key, val);
 }
-void Env::insert_heap(const Symbol& key, const Domain& val) {
+void Memory::insert_heap(const Symbol& key, const Domain& val) {
   heap_.insert(key, val);
 }
-Domain Env::from_stack(const Value& reg) const {
+Domain Memory::from_stack(const Value& reg) const {
   if (reg.is_register()) {
     // comparison on only registers is allowed
     if (auto d = stack_.get(reg)) {
@@ -41,18 +41,18 @@ Domain Env::from_stack(const Value& reg) const {
   }
   return reg.get_domain();
 }
-Domain Env::from_heap(const Symbol& sym) const {
+Domain Memory::from_heap(const Symbol& sym) const {
   if (auto d = heap_.get(sym)) {
     return *d;
   }
   return Domain{};
 }
-void Env::call(const Domain& dom) {
+void Memory::call(const Domain& dom) {
   for (auto& sym : dom) {
     insert_heap(sym, dom);
   }
 }
-Domain Env::collect(const Params& params) const {
+Domain Memory::collect(const Params& params) const {
   Domain ret;
   for (auto& val : params) {
     for (auto& sym : from_stack(val)) {
@@ -61,7 +61,7 @@ Domain Env::collect(const Params& params) const {
   }
   return ret;
 }
-void Env::collect(const Symbol& symbol, Domain& done) const {
+void Memory::collect(const Symbol& symbol, Domain& done) const {
   if (!done.includes(symbol)) {
     done.insert(symbol);
     for (auto& sym : from_heap(symbol)) {
@@ -69,7 +69,7 @@ void Env::collect(const Symbol& symbol, Domain& done) const {
     }
   }
 }
-void to_json(Json& j, const Env& x) {
+void to_json(Json& j, const Memory& x) {
   j["stack"] = x.stack();
   j["heap"] = x.heap();
 }

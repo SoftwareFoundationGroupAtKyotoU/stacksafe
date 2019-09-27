@@ -20,7 +20,7 @@ std::string Log::logfilename(const llvm::Function& f) {
   return "log/" + f.getName().str() + ".log";
 }
 void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
-                      const Env& prev, const Env& next) {
+                      const Memory& prev, const Memory& next) {
   Fabric env;
   {
     Fabric left, right;
@@ -39,8 +39,8 @@ void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
 Log::Log(const llvm::Function& func) : file{logfilename(func)} {
   file.get() << func;
 }
-void Log::print(const llvm::BasicBlock* block, const Env& prev,
-                const Env& next) const {
+void Log::print(const llvm::BasicBlock* block, const Memory& prev,
+                const Memory& next) const {
   const auto hr = "--------------------------------";
   auto& os = file.get();
   os << hr;
