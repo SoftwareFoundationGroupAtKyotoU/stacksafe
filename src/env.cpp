@@ -22,43 +22,6 @@ Memory Env::memory() const {
 Memory &Env::memory() {
   return mem_;
 }
-void Env::insert_stack(const llvm::Value &key, const Domain &val) {
-  mem_.insert_stack(cache_.lookup(key), val);
-}
-void Env::insert_heap(const Symbol &key, const Domain &val) {
-  mem_.insert_heap(key, val);
-}
-Domain Env::from_stack(const llvm::Value &key) const {
-  if (check_register(key)) {
-    return mem_.from_stack(cache_.lookup(key));
-  } else if (check_global(key)) {
-    return Domain{Symbol::global()};
-  } else if (check_constant(key)) {
-    return Domain{};
-  }
-  stacksafe_unreachable("neither register nor constant", key);
-}
-Domain Env::from_heap(const Symbol &key) const {
-  return mem_.from_heap(key);
-}
-Domain Env::collect(const Params &params) const {
-  Domain ret;
-  for (auto &val : params) {
-    assert(val && "invalid param");
-    for (auto &sym : from_stack(*val)) {
-      collect(sym, ret);
-    }
-  }
-  return ret;
-}
-void Env::collect(const Symbol &symbol, Domain &done) const {
-  if (!done.includes(symbol)) {
-    done.insert(symbol);
-    for (auto &sym : from_heap(symbol)) {
-      collect(sym, done);
-    }
-  }
-}
 Domain Env::lookup(const llvm::Value &key) const {
   return from_stack(key);
 }
@@ -117,6 +80,44 @@ void Env::call(const llvm::Value &dst, const Params &params) {
 }
 void Env::constant(const llvm::Value &dst) {
   insert_stack(dst, Domain{});
+}
+
+void Env::insert_stack(const llvm::Value &key, const Domain &val) {
+  mem_.insert_stack(cache_.lookup(key), val);
+}
+void Env::insert_heap(const Symbol &key, const Domain &val) {
+  mem_.insert_heap(key, val);
+}
+Domain Env::from_stack(const llvm::Value &key) const {
+  if (check_register(key)) {
+    return mem_.from_stack(cache_.lookup(key));
+  } else if (check_global(key)) {
+    return Domain{Symbol::global()};
+  } else if (check_constant(key)) {
+    return Domain{};
+  }
+  stacksafe_unreachable("neither register nor constant", key);
+}
+Domain Env::from_heap(const Symbol &key) const {
+  return mem_.from_heap(key);
+}
+Domain Env::collect(const Params &params) const {
+  Domain ret;
+  for (auto &val : params) {
+    assert(val && "invalid param");
+    for (auto &sym : from_stack(*val)) {
+      collect(sym, ret);
+    }
+  }
+  return ret;
+}
+void Env::collect(const Symbol &symbol, Domain &done) const {
+  if (!done.includes(symbol)) {
+    done.insert(symbol);
+    for (auto &sym : from_heap(symbol)) {
+      collect(sym, done);
+    }
+  }
 }
 
 }  // namespace stacksafe

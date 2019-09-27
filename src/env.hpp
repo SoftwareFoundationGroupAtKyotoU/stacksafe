@@ -24,16 +24,6 @@ class Env {
   Env(const llvm::Function& f, RegisterCache& c);
   Memory memory() const;
   Memory& memory();
-  void insert_stack(const llvm::Value& key, const Domain& val);
-  void insert_heap(const Symbol& key, const Domain& val);
-  Domain from_stack(const llvm::Value& key) const;
-  Domain from_heap(const Symbol& key) const;
-  Domain collect(const Params& params) const;
-
- private:
-  void collect(const Symbol& symbol, Domain& done) const;
-
- public:
   Domain lookup(const llvm::Value& key) const;
   Domain lookup(const Symbol& key) const;
   void binop(const llvm::Value& dst, const llvm::Value& lhs,
@@ -47,6 +37,14 @@ class Env {
   void phi(const llvm::Value& dst, const Params& params);
   void call(const llvm::Value& dst, const Params& params);
   void constant(const llvm::Value& dst);
+
+ private:
+  void insert_stack(const llvm::Value& key, const Domain& val);
+  void insert_heap(const Symbol& key, const Domain& val);
+  Domain from_stack(const llvm::Value& key) const;
+  Domain from_heap(const Symbol& key) const;
+  Domain collect(const Params& params) const;
+  void collect(const Symbol& symbol, Domain& done) const;
 };
 
 }  // namespace stacksafe
