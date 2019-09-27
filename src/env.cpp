@@ -77,7 +77,13 @@ void Env::phi(const llvm::Value &dst, const Params &params) {
   insert(dst, dom);
 }
 void Env::call(const llvm::Value &dst, const Params &params) {
-  auto dom = collect(params);
+  Domain dom;
+  for (auto &val : params) {
+    assert(val && "invalid param");
+    for (auto &sym : lookup(*val)) {
+      collect(sym, dom);
+    }
+  }
   for (auto &sym : dom) {
     insert(sym, dom);
   }
@@ -94,16 +100,6 @@ void Env::insert(const llvm::Value &key, const Domain &val) {
 }
 void Env::insert(const Symbol &key, const Domain &val) {
   mem_.heap().insert(key, val);
-}
-Domain Env::collect(const Params &params) const {
-  Domain ret;
-  for (auto &val : params) {
-    assert(val && "invalid param");
-    for (auto &sym : lookup(*val)) {
-      collect(sym, ret);
-    }
-  }
-  return ret;
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
   if (!done.includes(symbol)) {

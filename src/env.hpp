@@ -41,7 +41,6 @@ class Env {
  private:
   void insert(const llvm::Value& key, const Domain& val);
   void insert(const Symbol& key, const Domain& val);
-  Domain collect(const Params& params) const;
   void collect(const Symbol& symbol, Domain& done) const;
 };
 
