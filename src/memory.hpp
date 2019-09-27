@@ -13,7 +13,6 @@ namespace stacksafe {
 class Domain;
 class Symbol;
 class Value;
-class Params;
 
 class Memory {
   Heap heap_;
@@ -31,10 +30,6 @@ class Memory {
   Domain from_stack(const Value& reg) const;
   Domain from_heap(const Symbol& sym) const;
   void call(const Domain& dom);
-  Domain collect(const Params& value) const;
-
- private:
-  void collect(const Symbol& symbol, Domain& done) const;
 };
 void to_json(Json& j, const Memory& x);
 

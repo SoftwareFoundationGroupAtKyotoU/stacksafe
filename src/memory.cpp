@@ -1,7 +1,6 @@
 #include "memory.hpp"
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
-#include "instruction.hpp"
 #include "json.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
@@ -50,23 +49,6 @@ Domain Memory::from_heap(const Symbol& sym) const {
 void Memory::call(const Domain& dom) {
   for (auto& sym : dom) {
     insert_heap(sym, dom);
-  }
-}
-Domain Memory::collect(const Params& params) const {
-  Domain ret;
-  for (auto& val : params) {
-    for (auto& sym : from_stack(val)) {
-      collect(sym, ret);
-    }
-  }
-  return ret;
-}
-void Memory::collect(const Symbol& symbol, Domain& done) const {
-  if (!done.includes(symbol)) {
-    done.insert(symbol);
-    for (auto& sym : from_heap(symbol)) {
-      collect(sym, done);
-    }
   }
 }
 void to_json(Json& j, const Memory& x) {
