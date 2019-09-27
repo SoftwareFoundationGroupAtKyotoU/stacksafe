@@ -22,6 +22,7 @@ target_sources(${target} PRIVATE
   interpret.cpp
   json.cpp
   map.cpp
+  register.cpp
   symbol.cpp
   type.cpp
   token.cpp
