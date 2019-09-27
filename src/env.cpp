@@ -23,7 +23,14 @@ Memory &Env::memory() {
   return mem_;
 }
 Domain Env::lookup(const llvm::Value &key) const {
-  return from_stack(key);
+  if (check_register(key)) {
+    return mem_.stack().lookup(cache_.lookup(key));
+  } else if (check_global(key)) {
+    return Domain{Symbol::global()};
+  } else if (check_constant(key)) {
+    return Domain{};
+  }
+  stacksafe_unreachable("neither register nor constant", key);
 }
 Domain Env::lookup(const Symbol &key) const {
   return from_heap(key);
