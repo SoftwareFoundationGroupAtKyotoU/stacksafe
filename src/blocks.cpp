@@ -18,7 +18,7 @@ Blocks::Blocks(const llvm::Function& f) {
   }
 }
 Memory Blocks::interpret(const llvm::BasicBlock* b) {
-  Env env{cache_, get(b)};
+  auto env = get_env(b);
   Interpreter{env}.visit(*b);
   return env.memory();
 }
@@ -26,7 +26,7 @@ bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   return get(b).merge(next);
 }
 bool Blocks::verify(const llvm::BasicBlock* b) {
-  Env env{cache_, get(b)};
+  auto env = get_env(b);
   Interpreter{env}.visit(*b);
   return Verifier{env}.visit(*b);
 }
@@ -40,6 +40,9 @@ Memory& Blocks::get(const llvm::BasicBlock* b) {
   auto it = Super::find(b);
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
+}
+Env Blocks::get_env(const llvm::BasicBlock* b) {
+  return Env{cache_, get(b)};
 }
 
 }  // namespace stacksafe
