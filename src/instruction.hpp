@@ -13,13 +13,6 @@ class Env;
 class Memory;
 class Value;
 
-class Params : private std::vector<Value> {
-  using Super = std::vector<Value>;
-
- public:
-  using Super::Super, Super::begin, Super::end, Super::push_back;
-};
-
 using ValueSet = std::set<const llvm::Value*>;
 
 namespace instr {

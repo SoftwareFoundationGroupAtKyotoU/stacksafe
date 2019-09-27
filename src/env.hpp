@@ -10,7 +10,6 @@ class Value;
 
 namespace stacksafe {
 class Domain;
-class Params;
 class RegisterCache;
 class Symbol;
 
