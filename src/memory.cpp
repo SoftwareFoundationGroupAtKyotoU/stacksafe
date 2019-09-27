@@ -11,7 +11,7 @@ namespace stacksafe {
 const Heap& Memory::heap() const {
   return heap_;
 }
-const RegMap& Memory::regmap() const {
+const RegMap& Memory::stack() const {
   return regmap_;
 }
 bool Memory::includes(const Memory& that) const {
@@ -40,7 +40,7 @@ Domain Memory::from_heap(const Symbol& sym) const {
   return Domain{};
 }
 void to_json(Json& j, const Memory& x) {
-  j["stack"] = x.regmap();
+  j["stack"] = x.stack();
   j["heap"] = x.heap();
 }
 

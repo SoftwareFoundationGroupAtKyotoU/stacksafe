@@ -32,8 +32,8 @@ void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
   }
   {
     Fabric left, right;
-    left.append("stack [prev]:").next().append(dump(prev.regmap()));
-    right.append("stack [next]:").next().append(dump(next.regmap()));
+    left.append("stack [prev]:").next().append(dump(prev.stack()));
+    right.append("stack [next]:").next().append(dump(next.stack()));
     memory.append(left.patch(right.indent(2))).next();
   }
   endline(os << *block << memory);
