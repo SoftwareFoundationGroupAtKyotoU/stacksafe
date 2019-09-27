@@ -8,11 +8,7 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function& f) {
-  Params args;
-  for (auto& a : f.args()) {
-    args.insert(a);
-  }
-  Super::try_emplace(&f.getEntryBlock(), Env{cache_, args}.memory());
+  Super::try_emplace(&f.getEntryBlock(), get_memory(f));
   for (auto& b : f) {
     Super::try_emplace(&b, Memory{});
   }
@@ -43,6 +39,13 @@ Memory& Blocks::get(const llvm::BasicBlock* b) {
 }
 Env Blocks::get_env(const llvm::BasicBlock* b) {
   return Env{cache_, get(b)};
+}
+Memory Blocks::get_memory(const llvm::Function& f) {
+  Params args;
+  for (auto& a : f.args()) {
+    args.insert(a);
+  }
+  return Env{cache_, args}.memory();
 }
 
 }  // namespace stacksafe
