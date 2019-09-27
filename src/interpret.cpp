@@ -8,11 +8,6 @@
 namespace stacksafe {
 
 Interpreter::Interpreter(Env &e) : env_{e} {}
-Memory Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
-  auto env = pred;
-  Interpreter{env}.visit(b);
-  return env.memory();
-}
 auto Interpreter::visit(const llvm::BasicBlock *b) -> RetTy {
   assert(b && "unknown basicblock");
   for (auto &i : const_cast<llvm::BasicBlock &>(*b)) {
