@@ -24,10 +24,14 @@ bool Map<K>::insert(const K& key, const Domain& val) {
   }
 }
 template <typename K>
-void Map<K>::merge(const Map& that) {
+bool Map<K>::merge(const Map& that) {
+  bool ret = false;
   for (auto& [k, v] : that) {
-    insert(k, v);
+    if (insert(k, v)) {
+      ret = true;
+    }
   }
+  return ret;
 }
 template <typename K>
 bool Map<K>::includes(const Map& that) const {
