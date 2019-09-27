@@ -10,8 +10,14 @@ namespace stacksafe {
 Interpreter::Interpreter(Env &e) : env_{e} {}
 Memory Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
   auto env = pred;
-  Interpreter{env}.Super::visit(const_cast<llvm::BasicBlock &>(*b));
+  Interpreter{env}.visit(b);
   return env.memory();
+}
+auto Interpreter::visit(const llvm::BasicBlock *b) -> RetTy {
+  assert(b && "unknown basicblock");
+  for (auto &i : const_cast<llvm::BasicBlock &>(*b)) {
+    Super::visit(i);
+  }
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   assert(i.isTerminator() && "unsupported instruction");

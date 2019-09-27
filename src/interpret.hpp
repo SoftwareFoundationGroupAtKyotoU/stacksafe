@@ -15,6 +15,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
 
  public:
   static Memory run(const llvm::BasicBlock *b, const Env &pred);
+  RetTy visit(const llvm::BasicBlock *b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitAllocaInst(llvm::AllocaInst &i);
