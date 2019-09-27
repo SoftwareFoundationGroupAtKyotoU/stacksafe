@@ -43,6 +43,7 @@ class Env {
   void cast(const llvm::Value& dst, const llvm::Value& src);
   void phi(const llvm::Value& dst, const ValueSet& params);
   void call(const llvm::Value& dst, const ValueSet& params);
+  void constant(const llvm::Value& dst);
 };
 
 }  // namespace stacksafe

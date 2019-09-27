@@ -103,5 +103,6 @@ void Env::call(const llvm::Value& dst, const ValueSet& params) {
     insert_stack(dst, dom);
   }
 }
+void Env::constant(const llvm::Value& dst) { insert_stack(dst, Domain{}); }
 
 }  // namespace stacksafe
