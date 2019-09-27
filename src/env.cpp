@@ -1,6 +1,5 @@
 #include "env.hpp"
 #include <llvm/IR/Value.h>
-#include "instruction.hpp"
 #include "memory.hpp"
 #include "utility.hpp"
 
