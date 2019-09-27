@@ -19,6 +19,7 @@ class Env {
  public:
   explicit Env(const Memory& m);
   Memory memory() const;
+  Memory& memory();
   void insert_stack(const llvm::Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const llvm::Value& key) const;
