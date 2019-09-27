@@ -21,20 +21,20 @@ std::string Log::logfilename(const llvm::Function& f) {
 }
 void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
                       const Memory& prev, const Memory& next) {
-  Fabric env;
+  Fabric memory;
   {
     Fabric left, right;
     left.append("heap [prev]:").next().append(dump(prev.heap()));
     right.append("heap [next]:").next().append(dump(next.heap()));
-    env.append(left.patch(right.indent(2))).next();
+    memory.append(left.patch(right.indent(2))).next();
   }
   {
     Fabric left, right;
     left.append("stack [prev]:").next().append(dump(prev.stack()));
     right.append("stack [next]:").next().append(dump(next.stack()));
-    env.append(left.patch(right.indent(2))).next();
+    memory.append(left.patch(right.indent(2))).next();
   }
-  endline(os << *block << env);
+  endline(os << *block << memory);
 }
 Log::Log(const llvm::Function& func) : file{logfilename(func)} {
   file.get() << func;

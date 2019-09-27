@@ -11,7 +11,7 @@ class Verifier : public llvm::InstVisitor<Verifier, bool> {
   using Super = llvm::InstVisitor<Verifier, RetTy>;
   static constexpr RetTy safe = true;
   static constexpr RetTy unsafe = false;
-  const Memory& env_;
+  const Memory& memory_;
   explicit Verifier(const Memory& e);
 
  public:

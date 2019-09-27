@@ -3,7 +3,7 @@
 
 #include <map>
 #include "cache.hpp"
-#include "env.hpp"
+#include "memory.hpp"
 
 namespace llvm {
 class BasicBlock;

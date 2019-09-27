@@ -17,12 +17,12 @@ target_sources(${target} PRIVATE
   cache.cpp
   debug.cpp
   domain.cpp
-  env.cpp
   fabric.cpp
   instruction.cpp
   interpret.cpp
   json.cpp
   map.cpp
+  memory.cpp
   register.cpp
   symbol.cpp
   type.cpp

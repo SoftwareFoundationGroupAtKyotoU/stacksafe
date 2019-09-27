@@ -9,7 +9,7 @@ class Memory;
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
-  Memory &env_;
+  Memory &memory_;
   explicit Interpreter(Memory &e);
 
  public:

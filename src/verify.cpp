@@ -1,17 +1,17 @@
 #include "verify.hpp"
-#include "env.hpp"
+#include "memory.hpp"
 #include "utility.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
 
-Verifier::Verifier(const Memory &e) : env_{e} {}
-auto Verifier::run(const llvm::BasicBlock *b, const Memory &env) -> RetTy {
-  auto dom = env.from_heap(Symbol::global());
+Verifier::Verifier(const Memory &e) : memory_{e} {}
+auto Verifier::run(const llvm::BasicBlock *b, const Memory &memory) -> RetTy {
+  auto dom = memory.from_heap(Symbol::global());
   if (dom.has_local()) {
     return unsafe;
   }
-  return Verifier{env}.visit(*b);
+  return Verifier{memory}.visit(*b);
 }
 auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
   for (auto &i : const_cast<llvm::BasicBlock &>(b)) {
@@ -24,7 +24,7 @@ auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
 auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
   for (auto &use : i.args()) {
     if (auto arg = use.get()) {
-      auto dom = env_.from_stack(Value::make(*arg));
+      auto dom = memory_.from_stack(Value::make(*arg));
       if (dom.has_local() && dom.includes(Symbol::global())) {
         return unsafe;
       }
@@ -36,7 +36,7 @@ auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Verifier::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto val = i.getReturnValue()) {
-    auto dom = env_.from_stack(Value::make(*val));
+    auto dom = memory_.from_stack(Value::make(*val));
     if (dom.has_local()) {
       return unsafe;
     }

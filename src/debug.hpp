@@ -4,7 +4,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <memory>
 #include <vector>
-#include "env.hpp"
+#include "memory.hpp"
 
 namespace llvm {
 class BasicBlock;

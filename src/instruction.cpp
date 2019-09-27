@@ -1,5 +1,5 @@
 #include "instruction.hpp"
-#include "env.hpp"
+#include "memory.hpp"
 
 namespace stacksafe {
 namespace instr {
