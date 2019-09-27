@@ -1,4 +1,5 @@
 #include "interpret.hpp"
+#include "env.hpp"
 #include "instruction.hpp"
 #include "memory.hpp"
 #include "utility.hpp"
@@ -6,11 +7,11 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Memory &e) : env_{e} {}
+Interpreter::Interpreter(Env &e) : env_{e} {}
 Memory Interpreter::run(const llvm::BasicBlock *b, const Env &pred) {
-  Interpreter i{pred.memory()};
-  i.Super::visit(const_cast<llvm::BasicBlock &>(*b));
-  return i.env_.memory();
+  auto env = pred;
+  Interpreter{env}.Super::visit(const_cast<llvm::BasicBlock &>(*b));
+  return env.memory();
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   assert(i.isTerminator() && "unsupported instruction");
