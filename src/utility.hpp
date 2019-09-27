@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_53770CF6_24DC_46BB_B928_E142E873335B
 
 #include <llvm/Support/ErrorHandling.h>
+#include <cassert>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -24,6 +25,7 @@ std::string to_str(const llvm::Type& type);
 std::string to_str(const llvm::Value& value);
 std::string to_str(const Value& value);
 std::string get_operand(const llvm::Value& value);
+std::optional<int> register_number(const llvm::Value& value);
 
 void endline(llvm::raw_ostream& os);
 void print_string(llvm::raw_ostream& os, const std::string& str);

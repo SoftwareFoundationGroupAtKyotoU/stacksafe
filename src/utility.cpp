@@ -45,6 +45,15 @@ std::string get_operand(const llvm::Value& value) {
   value.printAsOperand(stream, false);
   return stream.str();
 }
+std::optional<int> register_number(const llvm::Value& value) {
+  static const std::string prefix{"%"};
+  auto operand = get_operand(value);
+  std::string_view view{operand};
+  if (!view.empty() && view.substr(0, 1) == prefix) {
+    return to_int(view.substr(1));
+  }
+  return std::nullopt;
+}
 
 void endline(llvm::raw_ostream& os) {
   if (os.has_colors()) {
