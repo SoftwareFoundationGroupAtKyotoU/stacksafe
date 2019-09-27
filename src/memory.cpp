@@ -36,6 +36,12 @@ void Memory::insert_stack(const Value& key, const Domain& val) {
 void Memory::insert_heap(const Symbol& key, const Domain& val) {
   heap_.insert(key, val);
 }
+Domain Memory::from_stack(const Register& key) const {
+  if (auto dom = regmap_.get(key)) {
+    return *dom;
+  }
+  return Domain{};
+}
 Domain Memory::from_stack(const Value& reg) const {
   if (reg.is_register()) {
     // comparison on only registers is allowed
