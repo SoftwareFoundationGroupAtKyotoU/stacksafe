@@ -4,6 +4,7 @@
 #include <string>
 
 namespace stacksafe {
+class Fabric;
 
 class Register {
   static const std::string prefix;
@@ -15,6 +16,7 @@ class Register {
   std::string repr() const;
 };
 bool operator<(const Register& lhs, const Register& rhs);
+Fabric dump(const Register& reg);
 
 }  // namespace stacksafe
 
