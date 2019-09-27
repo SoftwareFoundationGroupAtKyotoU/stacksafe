@@ -15,7 +15,6 @@ class Domain : private std::set<Symbol> {
   using Super::begin, Super::end, Super::size;
   Domain() = default;
   explicit Domain(std::initializer_list<Symbol> list);
-  void insert(const Symbol& sym);
   void insert(const Domain& dom);
   bool includes(const Symbol& sym) const;
   bool includes(const Domain& that) const;

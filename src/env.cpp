@@ -99,7 +99,7 @@ void Env::insert(const Symbol &key, const Domain &val) {
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
   if (!done.includes(symbol)) {
-    done.insert(symbol);
+    done.insert(Domain{symbol});
     for (auto &sym : lookup(symbol)) {
       collect(sym, done);
     }

@@ -6,9 +6,6 @@
 namespace stacksafe {
 
 Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
-void Domain::insert(const Symbol& sym) {
-  Super::insert(sym);
-}
 void Domain::insert(const Domain& dom) {
   Super::insert(dom.begin(), dom.end());
 }
