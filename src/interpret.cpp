@@ -1,7 +1,5 @@
 #include "interpret.hpp"
 #include "env.hpp"
-#include "memory.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 
@@ -53,7 +51,7 @@ auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
 }
 auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy { env_.constant(i); }
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
-  ValueSet params;
+  Params params;
   for (auto &use : i.incoming_values()) {
     auto val = use.get();
     assert(val && "unknown phi node");
@@ -62,7 +60,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   env_.phi(i, params);
 }
 auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
-  ValueSet params;
+  Params params;
   for (auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
@@ -76,7 +74,7 @@ auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   env_.cast(i, *src);
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
-  ValueSet params;
+  Params params;
   for (auto val : {i.getTrueValue(), i.getFalseValue()}) {
     assert(val && "unknown select node");
     params.insert(val);

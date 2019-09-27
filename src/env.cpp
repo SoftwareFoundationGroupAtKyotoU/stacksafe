@@ -34,7 +34,7 @@ Domain Env::from_heap(const Symbol& key) const {
   }
   return Domain{};
 }
-Domain Env::collect(const ValueSet& params) const {
+Domain Env::collect(const Params& params) const {
   Domain ret;
   for (auto& val : params) {
     assert(val && "invalid param");
@@ -85,7 +85,7 @@ void Env::cmpxchg(const llvm::Value& dst, const llvm::Value& ptr,
 void Env::cast(const llvm::Value& dst, const llvm::Value& src) {
   insert_stack(dst, from_stack(src));
 }
-void Env::phi(const llvm::Value& dst, const ValueSet& params) {
+void Env::phi(const llvm::Value& dst, const Params& params) {
   Domain dom;
   for (auto& val : params) {
     assert(val && "invalid param");
@@ -93,7 +93,7 @@ void Env::phi(const llvm::Value& dst, const ValueSet& params) {
   }
   insert_stack(dst, dom);
 }
-void Env::call(const llvm::Value& dst, const ValueSet& params) {
+void Env::call(const llvm::Value& dst, const Params& params) {
   auto dom = collect(params);
   for (auto& sym : dom) {
     insert_heap(sym, dom);

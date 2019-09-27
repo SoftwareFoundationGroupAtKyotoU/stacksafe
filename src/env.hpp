@@ -13,7 +13,7 @@ class Domain;
 class RegisterCache;
 class Symbol;
 
-using ValueSet = std::set<const llvm::Value*>;
+using Params = std::set<const llvm::Value*>;
 
 class Env {
   Memory mem_;
@@ -27,7 +27,7 @@ class Env {
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const llvm::Value& key) const;
   Domain from_heap(const Symbol& key) const;
-  Domain collect(const ValueSet& params) const;
+  Domain collect(const Params& params) const;
 
  private:
   void collect(const Symbol& symbol, Domain& done) const;
@@ -41,8 +41,8 @@ class Env {
   void cmpxchg(const llvm::Value& dst, const llvm::Value& ptr,
                const llvm::Value& val);
   void cast(const llvm::Value& dst, const llvm::Value& src);
-  void phi(const llvm::Value& dst, const ValueSet& params);
-  void call(const llvm::Value& dst, const ValueSet& params);
+  void phi(const llvm::Value& dst, const Params& params);
+  void call(const llvm::Value& dst, const Params& params);
   void constant(const llvm::Value& dst);
 };
 
