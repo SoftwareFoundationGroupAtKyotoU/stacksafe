@@ -17,10 +17,11 @@ class Symbol : private Token {
   Symbol(Kind k, int n, const Type &t);
 
  public:
-  using Token::number, Token::type;
+  using Token::type;
   static Symbol global();
   static Symbol make(const Type &t);
   static void reset();
+  int number() const;
   std::string repr() const;
   bool is_local() const;
 };

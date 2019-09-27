@@ -17,6 +17,9 @@ Symbol Symbol::make(const Type &t) {
 void Symbol::reset() {
   current_ = current_init;
 }
+int Symbol::number() const {
+  return num_;
+}
 std::string Symbol::repr() const {
   switch (kind_) {
   default:
