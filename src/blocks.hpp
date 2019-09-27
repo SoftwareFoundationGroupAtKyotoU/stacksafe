@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_1C49E28A_FFB0_4196_8F04_3179A52F9485
 
 #include <map>
+#include "cache.hpp"
 #include "env.hpp"
 
 namespace llvm {
@@ -14,6 +15,7 @@ struct Log;
 
 class Blocks : private std::map<const llvm::BasicBlock*, Env> {
   using Super = std::map<const llvm::BasicBlock*, Env>;
+  RegisterCache cache_;
 
  public:
   using Super::begin, Super::end;
