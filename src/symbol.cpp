@@ -7,7 +7,7 @@ namespace stacksafe {
 
 const std::string Symbol::prefix_{"#"};
 int Symbol::current_ = Symbol::current_init;
-Symbol::Symbol(Kind k, int n, const Type &t) : Token{n, t}, kind_{k} {}
+Symbol::Symbol(Kind k, int n, const Type &t) : Token{n, t}, kind_{k}, num_{n} {}
 Symbol Symbol::global() {
   return Symbol{Kind::STATIC, current_init, Type{nullptr}};
 }

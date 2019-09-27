@@ -13,6 +13,7 @@ class Symbol : private Token {
   static constexpr int current_init = 0;
   static int current_;
   enum class Kind { STATIC, AUTO } kind_;
+  const int num_;
   Symbol(Kind k, int n, const Type &t);
 
  public:
