@@ -1,8 +1,8 @@
+#include "memory.hpp"
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
 #include "instruction.hpp"
 #include "json.hpp"
-#include "memory.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
 #include "value.hpp"
