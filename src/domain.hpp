@@ -16,7 +16,6 @@ class Domain : private std::set<Symbol> {
   Domain() = default;
   explicit Domain(std::initializer_list<Symbol> list);
   void insert(const Domain& dom);
-  bool includes(const Symbol& sym) const;
   bool includes(const Domain& that) const;
   bool has_local() const;
 };

@@ -20,7 +20,7 @@ auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
     auto arg = use.get();
     assert(arg && "unknown parameter");
     auto dom = env_.lookup(*arg);
-    if (dom.has_local() && dom.includes(Symbol::global())) {
+    if (dom.has_local() && dom.includes(Domain{Symbol::global()})) {
       return unsafe;
     }
   }
