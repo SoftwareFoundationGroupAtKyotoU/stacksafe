@@ -21,7 +21,6 @@ class Params : private std::vector<Value> {
 
 namespace instr {
 
-void cast(Memory& e, const Value& dst, const Value& src);
 void phi(Memory& e, const Value& dst, const Params& params);
 void call(Memory& e, const Params& params);
 void call(Memory& e, const Value& dst, const Params& params);

@@ -52,8 +52,8 @@ auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
   }
 }
 auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
-  if (auto v = i.getOperand(0)) {
-    instr::cast(memory_, Value::make(i), Value::make(*v));
+  if (auto src = i.getOperand(0)) {
+    instr::cast(env_, i, *src);
   }
 }
 auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
@@ -86,8 +86,8 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   }
 }
 auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
-  if (auto v = i.getPointerOperand()) {
-    instr::cast(memory_, Value::make(i), Value::make(*v));
+  if (auto src = i.getPointerOperand()) {
+    instr::cast(env_, i, *src);
   }
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
@@ -106,7 +106,7 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
 }
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   if (auto src = i.getAggregateOperand()) {
-    instr::cast(memory_, Value::make(i), Value::make(*src));
+    instr::cast(env_, i, *src);
   }
 }
 

@@ -6,9 +6,6 @@
 namespace stacksafe {
 namespace instr {
 
-void cast(Memory& e, const Value& dst, const Value& src) {
-  e.insert_stack(dst, e.from_stack(src));
-}
 void phi(Memory& e, const Value& dst, const Params& params) {
   Domain dom;
   for (auto& val : params) {
