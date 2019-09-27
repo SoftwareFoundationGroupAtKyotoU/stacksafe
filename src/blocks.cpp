@@ -12,13 +12,13 @@ Blocks::Blocks(const llvm::Function& f) {
   for (auto& a : f.args()) {
     args.insert(&a);
   }
-  Super::try_emplace(&f.getEntryBlock(), Env{args, cache_}.memory());
+  Super::try_emplace(&f.getEntryBlock(), Env{cache_, args}.memory());
   for (auto& b : f) {
     Super::try_emplace(&b, Memory{});
   }
 }
 Memory Blocks::interpret(const llvm::BasicBlock* b) {
-  Env env{get(b), cache_};
+  Env env{cache_, get(b)};
   Interpreter{env}.visit(*b);
   return env.memory();
 }
@@ -26,7 +26,7 @@ bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   return get(b).merge(next);
 }
 bool Blocks::verify(const llvm::BasicBlock* b) {
-  Env env{get(b), cache_};
+  Env env{cache_, get(b)};
   Interpreter{env}.visit(*b);
   return Verifier{env}.visit(*b);
 }

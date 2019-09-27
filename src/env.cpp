@@ -4,8 +4,8 @@
 
 namespace stacksafe {
 
-Env::Env(const Memory &m, RegisterCache &c) : mem_{m}, cache_{c} {}
-Env::Env(const Params &args, RegisterCache &c) : cache_{c} {
+Env::Env(RegisterCache &c, const Memory &m) : cache_{c}, mem_{m} {}
+Env::Env(RegisterCache &c, const Params &args) : cache_{c} {
   auto g = Symbol::global();
   Domain dom{g};
   insert(g, dom);
@@ -16,19 +16,6 @@ Env::Env(const Params &args, RegisterCache &c) : cache_{c} {
 }
 Memory Env::memory() const {
   return mem_;
-}
-Domain Env::lookup(const llvm::Value &key) const {
-  if (check_register(key)) {
-    return mem_.stack().lookup(cache_.lookup(key));
-  } else if (check_global(key)) {
-    return Domain{Symbol::global()};
-  } else if (check_constant(key)) {
-    return Domain{};
-  }
-  stacksafe_unreachable("neither register nor constant", key);
-}
-Domain Env::lookup(const Symbol &key) const {
-  return mem_.heap().lookup(key);
 }
 void Env::binop(const llvm::Value &dst, const llvm::Value &lhs,
                 const llvm::Value &rhs) {
@@ -89,7 +76,19 @@ void Env::call(const llvm::Value &dst, const Params &params) {
 void Env::constant(const llvm::Value &dst) {
   insert(dst, Domain{});
 }
-
+Domain Env::lookup(const llvm::Value &key) const {
+  if (check_register(key)) {
+    return mem_.stack().lookup(cache_.lookup(key));
+  } else if (check_global(key)) {
+    return Domain{Symbol::global()};
+  } else if (check_constant(key)) {
+    return Domain{};
+  }
+  stacksafe_unreachable("neither register nor constant", key);
+}
+Domain Env::lookup(const Symbol &key) const {
+  return mem_.heap().lookup(key);
+}
 void Env::insert(const llvm::Value &key, const Domain &val) {
   mem_.stack().insert(cache_.lookup(key), val);
 }

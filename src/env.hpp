@@ -16,15 +16,13 @@ class Symbol;
 using Params = std::set<const llvm::Value*>;
 
 class Env {
-  Memory mem_;
   RegisterCache& cache_;
+  Memory mem_;
 
  public:
-  Env(const Memory& m, RegisterCache& c);
-  Env(const Params& args, RegisterCache& c);
+  Env(RegisterCache& c, const Memory& m);
+  Env(RegisterCache& c, const Params& args);
   Memory memory() const;
-  Domain lookup(const llvm::Value& key) const;
-  Domain lookup(const Symbol& key) const;
   void binop(const llvm::Value& dst, const llvm::Value& lhs,
              const llvm::Value& rhs);
   void alloc(const llvm::Value& dst);
@@ -36,6 +34,8 @@ class Env {
   void phi(const llvm::Value& dst, const Params& params);
   void call(const llvm::Value& dst, const Params& params);
   void constant(const llvm::Value& dst);
+  Domain lookup(const llvm::Value& key) const;
+  Domain lookup(const Symbol& key) const;
 
  private:
   void insert(const llvm::Value& key, const Domain& val);
