@@ -14,7 +14,7 @@ Blocks::Blocks(const llvm::Function& f) {
   }
 }
 Memory Blocks::interpret(const llvm::BasicBlock* b) {
-  return Interpreter::run(b, Env{get(b)});
+  return Interpreter::run(b, Env{get(b), cache_});
 }
 bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   auto& prev = get(b);
@@ -26,7 +26,7 @@ bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   }
 }
 bool Blocks::verify(const llvm::BasicBlock* b) {
-  auto result = Interpreter::run(b, Env{get(b)});
+  auto result = Interpreter::run(b, Env{get(b), cache_});
   return Verifier::run(b, result);
 }
 void Blocks::print(Log& log, const llvm::BasicBlock* b, const Memory& next) {

@@ -17,9 +17,10 @@ using ValueSet = std::set<const llvm::Value*>;
 
 class Env {
   Memory mem_;
+  RegisterCache& cache_;
 
  public:
-  explicit Env(const Memory& m);
+  Env(const Memory& m, RegisterCache& c);
   Memory memory() const;
   Memory& memory();
   void insert_stack(const llvm::Value& key, const Domain& val);
