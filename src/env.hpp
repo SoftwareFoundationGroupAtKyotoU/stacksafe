@@ -14,10 +14,9 @@ class Symbol;
 
 class Env {
   Memory& mem_;
-  RegisterCache& cache_;
 
  public:
-  Env(Memory& m, RegisterCache& r);
+  Env(Memory& m);
   void insert_stack(const llvm::Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const llvm::Value& key) const;

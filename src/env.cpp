@@ -5,7 +5,7 @@
 
 namespace stacksafe {
 
-Env::Env(Memory& m, RegisterCache& r) : mem_{m}, cache_{r} {}
+Env::Env(Memory& m) : mem_{m} {}
 void Env::insert_stack(const llvm::Value& key, const Domain& val) {
   mem_.insert_stack(Value::make(key), val);
 }
