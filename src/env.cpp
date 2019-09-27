@@ -34,10 +34,11 @@ Domain Env::from_heap(const Symbol& key) const {
   }
   return Domain{};
 }
-Domain Env::collect(const Params& params) const {
+Domain Env::collect(const ValueSet& params) const {
   Domain ret;
   for (auto& val : params) {
-    for (auto& sym : from_stack(*val.get())) {
+    assert(val && "invalid param");
+    for (auto& sym : from_stack(*val)) {
       collect(sym, ret);
     }
   }

@@ -69,13 +69,11 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   instr::phi(env_, i, params);
 }
 auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
-  Params params;
+  ValueSet params;
   for (auto &use : i.args()) {
-    if (auto arg = use.get()) {
-      params.push_back(Value::make(*arg));
-    } else {
-      stacksafe_unreachable("unknown parameter", i);
-    }
+    auto arg = use.get();
+    assert(arg && "unknown parameter");
+    params.insert(arg);
   }
   if (check_voidfunc(i)) {
     instr::call(env_, params);

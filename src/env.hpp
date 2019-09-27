@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_C088E002_5D7C_41FC_929E_102BD43FCAEA
 #define INCLUDE_GUARD_C088E002_5D7C_41FC_929E_102BD43FCAEA
 
+#include <set>
 #include "memory.hpp"
 
 namespace llvm {
@@ -13,6 +14,8 @@ class Params;
 class RegisterCache;
 class Symbol;
 
+using ValueSet = std::set<const llvm::Value*>;
+
 class Env {
   Memory mem_;
 
@@ -24,7 +27,7 @@ class Env {
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const llvm::Value& key) const;
   Domain from_heap(const Symbol& key) const;
-  Domain collect(const Params& params) const;
+  Domain collect(const ValueSet& params) const;
 
  private:
   void collect(const Symbol& symbol, Domain& done) const;

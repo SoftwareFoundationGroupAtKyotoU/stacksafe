@@ -47,13 +47,13 @@ void phi(Env& e, const llvm::Value& dst, const ValueSet& params) {
   }
   e.insert_stack(dst, dom);
 }
-void call(Env& e, const Params& params) {
+void call(Env& e, const ValueSet& params) {
   auto dom = e.collect(params);
   for (auto& sym : dom) {
     e.insert_heap(sym, dom);
   }
 }
-void call(Env& e, const llvm::Value& dst, const Params& params) {
+void call(Env& e, const llvm::Value& dst, const ValueSet& params) {
   call(e, params);
   e.insert_stack(dst, e.collect(params));
 }
