@@ -6,8 +6,6 @@
 namespace stacksafe {
 namespace instr {
 
-void constant(Memory& e, const Value& dst) { e.insert_stack(dst, Domain{}); }
-
 void binop(Env& e, const llvm::Value& dst, const llvm::Value& lhs,
            const llvm::Value& rhs) {
   Domain dom;
