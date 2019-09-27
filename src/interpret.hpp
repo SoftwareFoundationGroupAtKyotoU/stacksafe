@@ -2,16 +2,17 @@
 #define INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177
 
 #include <llvm/IR/InstVisitor.h>
+#include "env.hpp"
 
 namespace stacksafe {
-class Env;
 class Memory;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
+  Env env_;
   Memory &memory_;
-  explicit Interpreter(Memory &e);
+  explicit Interpreter(const Memory &e);
 
  public:
   static Memory run(const llvm::BasicBlock *b, const Env &pred);
