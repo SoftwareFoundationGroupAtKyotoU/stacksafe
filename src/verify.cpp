@@ -19,13 +19,11 @@ auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
 }
 auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
   for (auto &use : i.args()) {
-    if (auto arg = use.get()) {
-      auto dom = memory_.from_stack(Value::make(*arg));
-      if (dom.has_local() && dom.includes(Symbol::global())) {
-        return unsafe;
-      }
-    } else {
-      stacksafe_unreachable("unknown parameter", i);
+    auto arg = use.get();
+    assert(arg && "unknown parameter");
+    auto dom = env_.from_stack(*arg);
+    if (dom.has_local() && dom.includes(Symbol::global())) {
+      return unsafe;
     }
   }
   return safe;
