@@ -6,11 +6,6 @@
 namespace stacksafe {
 namespace instr {
 
-void alloc(Memory& e, const Value& dst) {
-  auto sym = Symbol::make(dst.type().pointee_type());
-  e.insert_heap(sym, Domain{});
-  e.insert_stack(dst, Domain{sym});
-}
 void load(Memory& e, const Value& dst, const Value& src) {
   Domain dom;
   for (auto& sym : e.from_stack(src)) {
