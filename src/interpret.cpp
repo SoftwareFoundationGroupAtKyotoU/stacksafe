@@ -27,7 +27,7 @@ auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
 }
 auto Interpreter::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   if (auto src = i.getPointerOperand()) {
-    instr::load(memory_, Value::make(i), Value::make(*src));
+    instr::load(env_, i, *src);
   }
 }
 auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
