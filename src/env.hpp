@@ -8,6 +8,7 @@ class Value;
 namespace stacksafe {
 class Domain;
 class Memory;
+class Params;
 class RegisterCache;
 class Symbol;
 
@@ -19,8 +20,9 @@ class Env {
   Env(Memory& m, RegisterCache& r);
   void insert_stack(const llvm::Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
-  Domain from_stack(const llvm::Value& key);
+  Domain from_stack(const llvm::Value& key) const;
   Domain from_heap(const Symbol& key) const;
+  Domain collect(const Params& params) const;
 
  private:
   void collect(const Symbol& symbol, Domain& done) const;
