@@ -19,9 +19,7 @@ Env::Env(const llvm::Function& f, RegisterCache& c) : cache_{c} {
 Memory Env::memory() const { return mem_; }
 Memory& Env::memory() { return mem_; }
 void Env::insert_stack(const llvm::Value& key, const Domain& val) {
-  auto reg = cache_.lookup(key);
-  mem_.insert_stack(reg, val);
-  mem_.insert_stack(Value::make(key), val);
+  mem_.insert_stack(cache_.lookup(key), val);
 }
 void Env::insert_heap(const Symbol& key, const Domain& val) {
   mem_.insert_heap(key, val);
