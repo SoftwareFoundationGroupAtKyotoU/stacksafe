@@ -33,7 +33,7 @@ Domain Env::lookup(const llvm::Value &key) const {
   stacksafe_unreachable("neither register nor constant", key);
 }
 Domain Env::lookup(const Symbol &key) const {
-  return from_heap(key);
+  return mem_.heap().lookup(key);
 }
 void Env::binop(const llvm::Value &dst, const llvm::Value &lhs,
                 const llvm::Value &rhs) {
