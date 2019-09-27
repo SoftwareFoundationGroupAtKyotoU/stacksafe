@@ -6,7 +6,7 @@
 namespace stacksafe {
 
 Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
-void Domain::insert(const Domain& dom) {
+void Domain::merge(const Domain& dom) {
   Super::insert(dom.begin(), dom.end());
 }
 bool Domain::includes(const Domain& that) const {

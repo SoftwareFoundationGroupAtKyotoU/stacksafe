@@ -15,7 +15,7 @@ class Domain : private std::set<Symbol> {
   using Super::begin, Super::end, Super::size;
   Domain() = default;
   explicit Domain(std::initializer_list<Symbol> list);
-  void insert(const Domain& dom);
+  void merge(const Domain& dom);
   bool includes(const Domain& that) const;
   bool has_local() const;
 };

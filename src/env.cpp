@@ -34,8 +34,8 @@ Domain Env::lookup(const Symbol &key) const {
 void Env::binop(const llvm::Value &dst, const llvm::Value &lhs,
                 const llvm::Value &rhs) {
   Domain dom;
-  dom.insert(lookup(lhs));
-  dom.insert(lookup(rhs));
+  dom.merge(lookup(lhs));
+  dom.merge(lookup(rhs));
   insert(dst, dom);
 }
 void Env::alloc(const llvm::Value &dst) {
@@ -46,7 +46,7 @@ void Env::alloc(const llvm::Value &dst) {
 void Env::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
   for (auto &sym : lookup(src)) {
-    dom.insert(lookup(sym));
+    dom.merge(lookup(sym));
   }
   insert(dst, dom);
 }
@@ -68,7 +68,7 @@ void Env::phi(const llvm::Value &dst, const Params &params) {
   Domain dom;
   for (auto &val : params) {
     assert(val && "invalid param");
-    dom.insert(lookup(*val));
+    dom.merge(lookup(*val));
   }
   insert(dst, dom);
 }
@@ -100,7 +100,7 @@ void Env::insert(const Symbol &key, const Domain &val) {
 void Env::collect(const Symbol &symbol, Domain &done) const {
   Domain single{symbol};
   if (!done.includes(single)) {
-    done.insert(single);
+    done.merge(single);
     for (auto &sym : lookup(symbol)) {
       collect(sym, done);
     }

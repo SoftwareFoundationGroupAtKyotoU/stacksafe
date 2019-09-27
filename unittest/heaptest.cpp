@@ -8,7 +8,7 @@ TEST_F(HeapTest, InsertDomain) {
   auto sa = symbol(), sb = symbol(), sc = symbol();
   auto a = "a", b = "b", c = "c";
   dom0.insert(sc);
-  dom1.insert(dom0);
+  dom1.merge(dom0);
   dom0.insert(sb);
   equal();
   heap.insert(sa, dom0);

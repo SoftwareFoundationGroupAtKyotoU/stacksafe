@@ -17,7 +17,7 @@ std::optional<Domain> Map<K>::get(const K& key) const {
 template <typename K>
 void Map<K>::insert(const K& key, const Domain& val) {
   if (auto it = Super::find(key); it != end()) {
-    it->second.insert(val);
+    it->second.merge(val);
   } else {
     Super::try_emplace(key, val);
   }
