@@ -25,5 +25,11 @@ Domain Env::from_stack(const llvm::Value& key) {
   }
   stacksafe_unreachable("neither register nor constant", key);
 }
+Domain Env::from_heap(const Symbol& key) {
+  if (auto dom = mem_.heap().get(key)) {
+    return *dom;
+  }
+  return Domain{};
+}
 
 }  // namespace stacksafe
