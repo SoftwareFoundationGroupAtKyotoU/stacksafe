@@ -28,11 +28,7 @@ void Env::insert_heap(const Symbol& key, const Domain& val) {
 }
 Domain Env::from_stack(const llvm::Value& key) const {
   if (check_register(key)) {
-    if (auto dom = mem_.stack().get(Value::make(key))) {
-      return *dom;
-    } else {
-      return Domain{};
-    }
+    return mem_.from_stack(cache_.lookup(key));
   } else if (check_global(key)) {
     return Domain{Symbol::global()};
   } else if (check_constant(key)) {
