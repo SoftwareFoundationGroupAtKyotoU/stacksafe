@@ -17,6 +17,7 @@ class Value;
 class Memory {
   Heap heap_;
   Stack stack_;
+  RegMap regmap_;
 
  public:
   Memory() = default;
