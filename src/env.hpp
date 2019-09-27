@@ -6,7 +6,8 @@
 
 namespace llvm {
 class Value;
-}
+class Function;
+}  // namespace llvm
 
 namespace stacksafe {
 class Domain;

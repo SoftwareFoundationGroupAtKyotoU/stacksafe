@@ -1,10 +1,5 @@
 #include "memory.hpp"
-#include <llvm/IR/Function.h>
-#include "domain.hpp"
 #include "json.hpp"
-#include "symbol.hpp"
-#include "utility.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 
@@ -28,8 +23,8 @@ void Memory::merge(const Memory& that) {
   regmap_.insert(that.regmap_);
 }
 void to_json(Json& j, const Memory& x) {
-  j["stack"] = x.stack();
   j["heap"] = x.heap();
+  j["stack"] = x.stack();
 }
 
 }  // namespace stacksafe
