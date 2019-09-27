@@ -26,6 +26,9 @@ void Memory::merge(const Memory& that) {
   stack_.insert(that.stack_);
   regmap_.insert(that.regmap_);
 }
+void Memory::insert_stack(const Register& key, const Domain& val) {
+  regmap_.insert(key, val);
+}
 void Memory::insert_stack(const Value& key, const Domain& val) {
   assert(key.is_register() && "insert to non-register");
   stack_.insert(key, val);

@@ -1,5 +1,6 @@
 #include "env.hpp"
 #include <llvm/IR/Value.h>
+#include "cache.hpp"
 #include "memory.hpp"
 #include "utility.hpp"
 
@@ -9,6 +10,8 @@ Env::Env(const Memory& m, RegisterCache& c) : mem_{m}, cache_{c} {}
 Memory Env::memory() const { return mem_; }
 Memory& Env::memory() { return mem_; }
 void Env::insert_stack(const llvm::Value& key, const Domain& val) {
+  auto reg = cache_.lookup(key);
+  mem_.insert_stack(reg, val);
   mem_.insert_stack(Value::make(key), val);
 }
 void Env::insert_heap(const Symbol& key, const Domain& val) {
