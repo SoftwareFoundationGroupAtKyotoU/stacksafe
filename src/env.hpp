@@ -35,6 +35,7 @@ class Env {
  public:
   void binop(const llvm::Value& dst, const llvm::Value& lhs,
              const llvm::Value& rhs);
+  void alloc(const llvm::Value& dst);
 };
 
 }  // namespace stacksafe

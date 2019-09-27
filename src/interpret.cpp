@@ -23,7 +23,7 @@ auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   env_.binop(i, *lhs, *rhs);
 }
 auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
-  instr::alloc(env_, i);
+  env_.alloc(i);
 }
 auto Interpreter::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   if (auto src = i.getPointerOperand()) {

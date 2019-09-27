@@ -1,4 +1,5 @@
 #include "env.hpp"
+#include <llvm/IR/Value.h>
 #include "instruction.hpp"
 #include "memory.hpp"
 #include "utility.hpp"
@@ -58,6 +59,11 @@ void Env::binop(const llvm::Value& dst, const llvm::Value& lhs,
   dom.insert(from_stack(lhs));
   dom.insert(from_stack(rhs));
   insert_stack(dst, dom);
+}
+void Env::alloc(const llvm::Value& dst) {
+  auto sym = Symbol::make(Type{dst.getType()}.pointee_type());
+  insert_heap(sym, Domain{});
+  insert_stack(dst, Domain{sym});
 }
 
 }  // namespace stacksafe

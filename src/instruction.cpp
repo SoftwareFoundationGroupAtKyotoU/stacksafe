@@ -1,16 +1,11 @@
 #include "instruction.hpp"
-#include <llvm/IR/Value.h>
+#include <cassert>
 #include "env.hpp"
 #include "memory.hpp"
 
 namespace stacksafe {
 namespace instr {
 
-void alloc(Env& e, const llvm::Value& dst) {
-  auto sym = Symbol::make(Type{dst.getType()}.pointee_type());
-  e.insert_heap(sym, Domain{});
-  e.insert_stack(dst, Domain{sym});
-}
 void load(Env& e, const llvm::Value& dst, const llvm::Value& src) {
   Domain dom;
   for (auto& sym : e.from_stack(src)) {
