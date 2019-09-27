@@ -98,9 +98,7 @@ void Env::insert(const Symbol &key, const Domain &val) {
   mem_.heap().insert(key, val);
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
-  Domain single{symbol};
-  if (!done.includes(single)) {
-    done.merge(single);
+  if (done.merge(Domain{symbol})) {
     for (auto &sym : lookup(symbol)) {
       collect(sym, done);
     }
