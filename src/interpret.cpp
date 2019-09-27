@@ -68,7 +68,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
       stacksafe_unreachable("unknown phi node", i);
     }
   }
-  instr::phi(memory_, Value::make(i), params);
+  instr::phi(env_, i, params);
 }
 auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   Params params;
@@ -102,7 +102,7 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   } else {
     stacksafe_unreachable("unknown select node", i);
   }
-  instr::phi(memory_, Value::make(i), params);
+  instr::phi(env_, i, params);
 }
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   if (auto src = i.getAggregateOperand()) {
