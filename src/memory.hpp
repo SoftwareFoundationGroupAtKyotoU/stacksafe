@@ -27,10 +27,8 @@ class Memory {
   bool includes(const Memory& that) const;
   void merge(const Memory& that);
   void insert_stack(const Register& key, const Domain& val);
-  void insert_stack(const Value& key, const Domain& val);
   void insert_heap(const Symbol& key, const Domain& val);
   Domain from_stack(const Register& key) const;
-  Domain from_stack(const Value& reg) const;
   Domain from_heap(const Symbol& sym) const;
 };
 void to_json(Json& j, const Memory& x);

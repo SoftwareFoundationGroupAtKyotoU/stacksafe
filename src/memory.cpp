@@ -29,10 +29,6 @@ void Memory::merge(const Memory& that) {
 void Memory::insert_stack(const Register& key, const Domain& val) {
   regmap_.insert(key, val);
 }
-void Memory::insert_stack(const Value& key, const Domain& val) {
-  assert(key.is_register() && "insert to non-register");
-  stack_.insert(key, val);
-}
 void Memory::insert_heap(const Symbol& key, const Domain& val) {
   heap_.insert(key, val);
 }
@@ -41,15 +37,6 @@ Domain Memory::from_stack(const Register& key) const {
     return *dom;
   }
   return Domain{};
-}
-Domain Memory::from_stack(const Value& reg) const {
-  if (reg.is_register()) {
-    // comparison on only registers is allowed
-    if (auto d = stack_.get(reg)) {
-      return *d;
-    }
-  }
-  return reg.get_domain();
 }
 Domain Memory::from_heap(const Symbol& sym) const {
   if (auto d = heap_.get(sym)) {
