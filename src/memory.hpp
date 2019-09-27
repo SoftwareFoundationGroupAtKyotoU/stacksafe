@@ -10,7 +10,7 @@ class Memory {
   using Heap = Map<Symbol>;
   using Stack = Map<Register>;
   Heap heap_;
-  Stack regmap_;
+  Stack stack_;
 
  public:
   Memory() = default;

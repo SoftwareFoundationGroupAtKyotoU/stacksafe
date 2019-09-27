@@ -10,17 +10,17 @@ Memory::Heap& Memory::heap() {
   return heap_;
 }
 const Memory::Stack& Memory::stack() const {
-  return regmap_;
+  return stack_;
 }
 Memory::Stack& Memory::stack() {
-  return regmap_;
+  return stack_;
 }
 bool Memory::includes(const Memory& that) const {
-  return heap_.includes(that.heap_) && regmap_.includes(that.regmap_);
+  return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
 void Memory::merge(const Memory& that) {
   heap_.insert(that.heap_);
-  regmap_.insert(that.regmap_);
+  stack_.insert(that.stack_);
 }
 void to_json(Json& j, const Memory& x) {
   j["heap"] = x.heap();
