@@ -6,14 +6,6 @@
 namespace stacksafe {
 
 Verifier::Verifier(const Env &e) : env_{e}, memory_{e.memory()} {}
-auto Verifier::run(const llvm::BasicBlock *b, const Env &pred) -> RetTy {
-  auto memory = pred.memory();
-  auto dom = memory.from_heap(Symbol::global());
-  if (dom.has_local()) {
-    return unsafe;
-  }
-  return Verifier{pred}.visit(*b);
-}
 auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
   if (env_.from_heap(Symbol::global()).has_local()) {
     return unsafe;
