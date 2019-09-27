@@ -34,6 +34,7 @@ void constant(Memory& e, const Value& dst);
 
 void binop(Env& e, const llvm::Value& dst, const llvm::Value& lhs,
            const llvm::Value& rhs);
+void alloc(Env& e, const llvm::Value& dst);
 
 }  // namespace instr
 }  // namespace stacksafe

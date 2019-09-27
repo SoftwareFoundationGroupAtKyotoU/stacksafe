@@ -1,4 +1,5 @@
 #include "instruction.hpp"
+#include <llvm/IR/Value.h>
 #include "env.hpp"
 #include "memory.hpp"
 
@@ -57,6 +58,11 @@ void binop(Env& e, const llvm::Value& dst, const llvm::Value& lhs,
   dom.insert(e.from_stack(lhs));
   dom.insert(e.from_stack(rhs));
   e.insert_stack(dst, dom);
+}
+void alloc(Env& e, const llvm::Value& dst) {
+  auto sym = Symbol::make(Type{dst.getType()}.pointee_type());
+  e.insert_heap(sym, Domain{});
+  e.insert_stack(dst, Domain{sym});
 }
 
 }  // namespace instr
