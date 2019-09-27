@@ -94,5 +94,14 @@ void Env::phi(const llvm::Value& dst, const ValueSet& params) {
   }
   insert_stack(dst, dom);
 }
+void Env::call(const llvm::Value& dst, const ValueSet& params) {
+  auto dom = collect(params);
+  for (auto& sym : dom) {
+    insert_heap(sym, dom);
+  }
+  if (!check_voidfunc(dst)) {
+    insert_stack(dst, dom);
+  }
+}
 
 }  // namespace stacksafe

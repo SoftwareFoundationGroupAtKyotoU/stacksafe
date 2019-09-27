@@ -17,8 +17,6 @@ using ValueSet = std::set<const llvm::Value*>;
 
 namespace instr {
 
-void call(Env& e, const ValueSet& params);
-void call(Env& e, const llvm::Value& dst, const ValueSet& params);
 void constant(Env& e, const llvm::Value& dst);
 
 }  // namespace instr

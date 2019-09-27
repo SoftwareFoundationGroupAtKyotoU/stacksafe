@@ -2,7 +2,6 @@
 #include "env.hpp"
 #include "instruction.hpp"
 #include "memory.hpp"
-#include "utility.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
@@ -72,11 +71,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
     assert(arg && "unknown parameter");
     params.insert(arg);
   }
-  if (check_voidfunc(i)) {
-    instr::call(env_, params);
-  } else {
-    instr::call(env_, i, params);
-  }
+  env_.call(i, params);
 }
 auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   auto src = i.getPointerOperand();
