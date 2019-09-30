@@ -53,8 +53,8 @@ std::optional<int> register_number(const llvm::Value& value) {
   return std::nullopt;
 }
 
-void endline(llvm::raw_ostream& os) {
-  if (os.has_colors()) {
+void endline(llvm::raw_ostream& os, bool reset) {
+  if (reset && os.is_displayed()) {
     os.resetColor();
   }
   (os << "\n").flush();
