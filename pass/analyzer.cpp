@@ -15,10 +15,9 @@ struct Analyzer : public llvm::FunctionPass {
   bool runOnFunction(llvm::Function &f) override {
     name = f.getName().str();
     abst = std::make_unique<Abstract>(f);
-    if (abst) {
-      abst->interpret();
-      abst->verify();
-    }
+    assert(abst && "allocation failed");
+    abst->interpret();
+    abst->verify();
     return false;
   }
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {
