@@ -8,7 +8,7 @@ auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
   if (env_.lookup(Symbol::global()).has_local()) {
     return unsafe;
   }
-  for (auto &i : const_cast<llvm::BasicBlock &>(b)) {
+  for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     if (!Super::visit(i)) {
       return unsafe;
     }
@@ -16,7 +16,7 @@ auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
   return safe;
 }
 auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
-  for (auto &use : i.args()) {
+  for (const auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
     auto dom = env_.lookup(*arg);

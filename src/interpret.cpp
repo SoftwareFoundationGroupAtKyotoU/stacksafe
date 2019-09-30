@@ -5,7 +5,7 @@ namespace stacksafe {
 
 Interpreter::Interpreter(Env &e) : env_{e} {}
 auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
-  for (auto &i : const_cast<llvm::BasicBlock &>(b)) {
+  for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     Super::visit(i);
   }
 }
@@ -54,7 +54,7 @@ auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
 }
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;
-  for (auto &use : i.incoming_values()) {
+  for (const auto &use : i.incoming_values()) {
     auto val = use.get();
     assert(val && "unknown phi node");
     params.insert(*val);
@@ -63,7 +63,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
 }
 auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   Params params;
-  for (auto &use : i.args()) {
+  for (const auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
     params.insert(*arg);
@@ -77,7 +77,7 @@ auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
-  for (auto val : {i.getTrueValue(), i.getFalseValue()}) {
+  for (const auto val : {i.getTrueValue(), i.getFalseValue()}) {
     assert(val && "unknown select node");
     params.insert(*val);
   }

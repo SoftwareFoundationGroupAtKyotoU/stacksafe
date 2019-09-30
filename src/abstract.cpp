@@ -23,7 +23,7 @@ void Abstract::interpret() {
   interpret(&func_.getEntryBlock());
 }
 void Abstract::verify() {
-  for (auto& b : func_) {
+  for (const auto& b : func_) {
     if (!blocks_.verify(&b)) {
       return;
     }
@@ -57,7 +57,7 @@ void Abstract::interpret(const llvm::BasicBlock* b) {
 }
 void to_json(Json& j, const Abstract& x) {
   Json::object_t obj;
-  for (auto& [k, v] : x.blocks()) {
+  for (const auto& [k, v] : x.blocks()) {
     assert(k && "unknown basicblock");
     obj[to_str(*k)] = v;
   }

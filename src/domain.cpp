@@ -18,7 +18,7 @@ bool Domain::includes(const Domain& that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
 }
 bool Domain::has_local() const {
-  for (auto& sym : *this) {
+  for (const auto& sym : *this) {
     if (sym.is_local()) {
       return true;
     }
@@ -27,7 +27,7 @@ bool Domain::has_local() const {
 }
 void to_json(Json& j, const Domain& x) {
   Json::array_t arr;
-  for (auto& e : x) {
+  for (const auto& e : x) {
     arr.push_back(e.repr());
   }
   j = arr;
@@ -35,7 +35,7 @@ void to_json(Json& j, const Domain& x) {
 Fabric dump(const Domain& domain) {
   Fabric ret;
   bool first = true;
-  for (auto& symbol : domain) {
+  for (const auto& symbol : domain) {
     if (!std::exchange(first, false)) {
       ret.append(", ");
     }

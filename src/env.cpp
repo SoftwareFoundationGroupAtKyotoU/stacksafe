@@ -12,7 +12,7 @@ Env::Env(Cache &c, const Params &args) : cache_{c} {
   auto g = Symbol::global();
   Domain dom{g};
   insert(g, dom);
-  for (auto &a : args) {
+  for (const auto &a : args) {
     insert(*a, dom);
   }
 }
@@ -33,14 +33,14 @@ void Env::alloc(const llvm::Value &dst) {
 }
 void Env::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
-  for (auto &sym : lookup(src)) {
+  for (const auto &sym : lookup(src)) {
     dom.merge(lookup(sym));
   }
   insert(dst, dom);
 }
 void Env::store(const llvm::Value &src, const llvm::Value &dst) {
   auto source = lookup(src);
-  for (auto &target : lookup(dst)) {
+  for (const auto &target : lookup(dst)) {
     insert(target, source);
   }
 }
@@ -54,19 +54,19 @@ void Env::cast(const llvm::Value &dst, const llvm::Value &src) {
 }
 void Env::phi(const llvm::Value &dst, const Params &params) {
   Domain dom;
-  for (auto &val : params) {
+  for (const auto &val : params) {
     dom.merge(lookup(*val));
   }
   insert(dst, dom);
 }
 void Env::call(const llvm::Value &dst, const Params &params) {
   Domain dom;
-  for (auto &val : params) {
-    for (auto &sym : lookup(*val)) {
+  for (const auto &val : params) {
+    for (const auto &sym : lookup(*val)) {
       collect(sym, dom);
     }
   }
-  for (auto &sym : dom) {
+  for (const auto &sym : dom) {
     insert(sym, dom);
   }
   if (!check_voidfunc(dst)) {
@@ -97,7 +97,7 @@ void Env::insert(const Symbol &key, const Domain &val) {
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
   if (done.merge(Domain{symbol})) {
-    for (auto &sym : lookup(symbol)) {
+    for (const auto &sym : lookup(symbol)) {
       collect(sym, done);
     }
   }

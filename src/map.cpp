@@ -26,7 +26,7 @@ bool Map<K>::insert(const K& key, const Domain& val) {
 template <typename K>
 bool Map<K>::merge(const Map& that) {
   bool ret = false;
-  for (auto& [k, v] : that) {
+  for (const auto& [k, v] : that) {
     if (insert(k, v)) {
       ret = true;
     }
@@ -35,7 +35,7 @@ bool Map<K>::merge(const Map& that) {
 }
 template <typename K>
 bool Map<K>::includes(const Map& that) const {
-  for (auto& [key, rhs] : that) {
+  for (const auto& [key, rhs] : that) {
     if (auto lhs = get(key); lhs && lhs->includes(rhs)) {
       continue;
     }
@@ -53,7 +53,7 @@ Domain Map<K>::lookup(const K& key) const {
 template <typename K>
 void to_json(Json& j, const Map<K>& x) {
   Json::object_t obj;
-  for (auto& [key, val] : x) {
+  for (const auto& [key, val] : x) {
     obj[key.repr()] = val;
   }
   j = obj;
@@ -62,7 +62,7 @@ template <typename K>
 Fabric dump(const Map<K>& map) {
   Fabric ret, tmp;
   bool first = true;
-  for (auto& [key, value] : map) {
+  for (const auto& [key, value] : map) {
     if (!std::exchange(first, false)) {
       tmp.append(",").next();
     }
