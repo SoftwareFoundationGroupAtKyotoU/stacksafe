@@ -1,5 +1,6 @@
 #include "interpret.hpp"
 #include "env.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -10,7 +11,9 @@ auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
   }
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
-  assert(i.isTerminator() && "unsupported instruction");
+  if (!i.isTerminator()) {
+    stacksafe_unreachable("unsupported instruction", i);
+  }
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   auto lhs = i.getOperand(0);
