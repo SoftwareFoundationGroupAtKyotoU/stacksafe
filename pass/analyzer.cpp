@@ -21,12 +21,8 @@ struct Analyzer : public llvm::FunctionPass {
     return false;
   }
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {
-    if (abst) {
-      abst->print(os);
-    } else {
-      os.changeColor(llvm::raw_ostream::YELLOW);
-      endline(os << "analysis failed: " << name);
-    }
+    assert(abst && "allocation failed");
+    abst->print(os);
   }
 };
 
