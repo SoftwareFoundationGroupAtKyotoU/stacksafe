@@ -31,14 +31,15 @@ void Abstract::verify() {
   safe_ = true;
 }
 void Abstract::print(llvm::raw_ostream& os) const {
-  auto name = func_.getName();
-  if (safe_) {
-    os.changeColor(llvm::raw_ostream::GREEN);
-    endline(os << "Safe: " << name);
-  } else {
-    os.changeColor(llvm::raw_ostream::RED, true);
-    endline(os << "Unsafe: " << name);
+  if (os.is_displayed()) {
+    if (safe_) {
+      os.changeColor(llvm::raw_ostream::GREEN);
+    } else {
+      os.changeColor(llvm::raw_ostream::RED, true);
+    }
   }
+  os << (safe_ ? "Safe" : "Unsafe") << ": " << func_.getName();
+  endline(os, true);
 }
 void Abstract::interpret(const llvm::BasicBlock* b) {
   auto result = blocks_.interpret(b);
