@@ -21,6 +21,11 @@ auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   assert(lhs && rhs && "invalid operand");
   env_.binop(i, *lhs, *rhs);
 }
+auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
+  auto src = i.getAggregateOperand();
+  assert(src && "invalid operand");
+  env_.cast(i, *src);
+}
 auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   env_.alloc(i);
 }
@@ -47,6 +52,11 @@ auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
   assert(ptr && val && "invalid operand");
   env_.cmpxchg(i, *ptr, *val);
 }
+auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
+  auto src = i.getPointerOperand();
+  assert(src && "invalid operand");
+  env_.cast(i, *src);
+}
 auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
   auto src = i.getOperand(0);
   assert(src && "invalid operand");
@@ -64,20 +74,6 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   }
   env_.phi(i, params);
 }
-auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
-  Params params;
-  for (const auto &use : i.args()) {
-    auto arg = use.get();
-    assert(arg && "unknown parameter");
-    params.insert(*arg);
-  }
-  env_.call(i, params);
-}
-auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
-  auto src = i.getPointerOperand();
-  assert(src && "invalid operand");
-  env_.cast(i, *src);
-}
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
   for (const auto val : {i.getTrueValue(), i.getFalseValue()}) {
@@ -86,10 +82,14 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   }
   env_.phi(i, params);
 }
-auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
-  auto src = i.getAggregateOperand();
-  assert(src && "invalid operand");
-  env_.cast(i, *src);
+auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
+  Params params;
+  for (const auto &use : i.args()) {
+    auto arg = use.get();
+    assert(arg && "unknown parameter");
+    params.insert(*arg);
+  }
+  env_.call(i, params);
 }
 
 }  // namespace stacksafe

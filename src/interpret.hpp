@@ -16,18 +16,18 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
+  RetTy visitExtractValue(llvm::ExtractValueInst &i);
   RetTy visitAllocaInst(llvm::AllocaInst &i);
   RetTy visitLoadInst(llvm::LoadInst &i);
   RetTy visitStoreInst(llvm::StoreInst &i);
   RetTy visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i);
   RetTy visitAtomicRMWInst(llvm::AtomicRMWInst &i);
+  RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &i);
   RetTy visitCastInst(llvm::CastInst &i);
   RetTy visitCmpInst(llvm::CmpInst &i);
   RetTy visitPHINode(llvm::PHINode &i);
-  RetTy visitCallInst(llvm::CallInst &i);
-  RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
-  RetTy visitExtractValue(llvm::ExtractValueInst &i);
+  RetTy visitCallInst(llvm::CallInst &i);
 };
 
 }  // namespace stacksafe
