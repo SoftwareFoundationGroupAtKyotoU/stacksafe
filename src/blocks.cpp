@@ -9,9 +9,9 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function& f) {
-  Super::try_emplace(&f.getEntryBlock(), get_memory(f));
+  auto m = init_env(f).memory();
   for (const auto& b : f) {
-    Super::try_emplace(&b, Memory{});
+    Super::try_emplace(&b, m);
   }
 }
 Memory Blocks::interpret(const llvm::BasicBlock* b) {
