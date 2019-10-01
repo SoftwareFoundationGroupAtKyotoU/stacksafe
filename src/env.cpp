@@ -9,11 +9,10 @@ void Params::insert(const llvm::Value &v) {
 
 Env::Env(Cache &c, const Memory &m) : cache_{c}, mem_{m} {}
 Env::Env(Cache &c, const Params &args) : cache_{c} {
-  auto g = Symbol::global();
-  Domain dom{g};
-  insert(g, dom);
+  auto g = Domain::global();
+  insert(Symbol::global(), g);
   for (const auto &a : args) {
-    insert(*a, dom);
+    insert(*a, g);
   }
 }
 Memory Env::memory() const {
