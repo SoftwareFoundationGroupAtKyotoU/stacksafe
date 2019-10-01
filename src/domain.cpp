@@ -25,6 +25,9 @@ bool Domain::has_local() const {
   }
   return false;
 }
+Domain Domain::global() {
+  return Domain{Symbol::global()};
+}
 void to_json(Json& j, const Domain& x) {
   Json::array_t arr;
   for (const auto& e : x) {
