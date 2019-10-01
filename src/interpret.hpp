@@ -17,6 +17,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractValue(llvm::ExtractValueInst &i);
+  RetTy visitInsertValue(llvm::InsertValueInst &i);
   RetTy visitAllocaInst(llvm::AllocaInst &i);
   RetTy visitLoadInst(llvm::LoadInst &i);
   RetTy visitStoreInst(llvm::StoreInst &i);

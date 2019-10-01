@@ -26,6 +26,12 @@ auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   assert(src && "invalid operand");
   env_.cast(i, *src);
 }
+auto Interpreter::visitInsertValue(llvm::InsertValueInst &i) -> RetTy {
+  auto lhs = i.getAggregateOperand();
+  auto rhs = i.getInsertedValueOperand();
+  assert(lhs && rhs && "invalid operand");
+  env_.binop(i, *lhs, *rhs);
+}
 auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   env_.alloc(i);
 }
