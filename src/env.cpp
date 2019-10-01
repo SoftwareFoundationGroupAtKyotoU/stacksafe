@@ -79,7 +79,7 @@ Domain Env::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
     return mem_.stack().lookup(cache_.lookup(key));
   } else if (check_global(key)) {
-    return Domain{Symbol::global()};
+    return Domain::global();
   } else if (check_constant(key)) {
     return Domain{};
   }
