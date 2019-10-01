@@ -37,9 +37,7 @@ void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
   memory.append(patch("stack", prev.stack(), next.stack())).next();
   endline(os << *block << memory);
 }
-Log::Log(const llvm::Function& func) : file{logfilename(func)} {
-  print(func);
-}
+Log::Log(const llvm::Function& func) : file{logfilename(func)} {}
 void Log::print(const llvm::Function& f) const {
   file.get() << f;
 }
