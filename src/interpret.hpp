@@ -18,6 +18,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
   RetTy visitInsertElementInst(llvm::InsertElementInst &i);
+  RetTy visitShuffleVectorInst(llvm::ShuffleVectorInst &i);
   RetTy visitExtractValue(llvm::ExtractValueInst &i);
   RetTy visitInsertValue(llvm::InsertValueInst &i);
   RetTy visitAllocaInst(llvm::AllocaInst &i);
