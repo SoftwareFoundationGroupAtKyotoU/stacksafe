@@ -30,6 +30,7 @@ class Blocks : private std::map<const llvm::BasicBlock*, Memory> {
   Memory& get(const llvm::BasicBlock* b);
   Env get_env(const llvm::BasicBlock* b);
   Memory get_memory(const llvm::Function& f);
+  Env init_env(const llvm::Function& f);
 };
 
 }  // namespace stacksafe
