@@ -21,6 +21,12 @@ auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   assert(lhs && rhs && "invalid operand");
   env_.binop(i, *lhs, *rhs);
 }
+auto Interpreter::visitExtractElementInst(llvm::ExtractElementInst &i)
+    -> RetTy {
+  auto src = i.getVectorOperand();
+  assert(src && "invalid operand");
+  env_.cast(i, *src);
+}
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   auto src = i.getAggregateOperand();
   assert(src && "invalid operand");
