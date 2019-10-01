@@ -33,6 +33,12 @@ void Blocks::print(const Log& log, const llvm::BasicBlock* b,
   assert(prev != Super::end() && "unknown basicblock");
   log.print(b, prev->second, next);
 }
+void Blocks::finish(const Log& log, const llvm::Function& f) {
+  log.print(f);
+  for (const auto& b : f) {
+    print(log, &b, interpret(&b));
+  }
+}
 Memory& Blocks::get(const llvm::BasicBlock* b) {
   auto it = Super::find(b);
   assert(it != Super::end() && "unknown basicblock");

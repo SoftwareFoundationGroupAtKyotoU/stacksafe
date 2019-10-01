@@ -25,6 +25,7 @@ class Blocks : private std::map<const llvm::BasicBlock*, Memory> {
   bool verify(const llvm::BasicBlock* b);
   void print(const Log& log, const llvm::BasicBlock* b,
              const Memory& next) const;
+  void finish(const Log& log, const llvm::Function& f);
 
  private:
   Memory& get(const llvm::BasicBlock* b);
