@@ -74,7 +74,8 @@ bool check_voidfunc(const llvm::Value& v) {
 }
 bool check_register(const llvm::Value& v) {
   if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
-    return !i->isTerminator() && !check_voidfunc(*i);
+    return !(i->isTerminator() || check_voidfunc(*i) ||
+             llvm::isa<llvm::StoreInst>(v) || llvm::isa<llvm::FenceInst>(v));
   } else {
     return llvm::isa<llvm::Argument>(v);
   }
