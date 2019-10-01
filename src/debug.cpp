@@ -26,19 +26,15 @@ std::string Log::logfilename(const llvm::Function& f) {
 }
 void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
                       const Memory& prev, const Memory& next) {
+  auto patch = [](const std::string& tag, const auto& p, const auto& n) {
+    Fabric left, right;
+    left.append(tag + " [prev]:").next().append(dump(p));
+    right.append(tag + " [next]:").next().append(dump(n));
+    return left.patch(right.indent(2));
+  };
   Fabric memory;
-  {
-    Fabric left, right;
-    left.append("heap [prev]:").next().append(dump(prev.heap()));
-    right.append("heap [next]:").next().append(dump(next.heap()));
-    memory.append(left.patch(right.indent(2))).next();
-  }
-  {
-    Fabric left, right;
-    left.append("stack [prev]:").next().append(dump(prev.stack()));
-    right.append("stack [next]:").next().append(dump(next.stack()));
-    memory.append(left.patch(right.indent(2))).next();
-  }
+  memory.append(patch("heap", prev.heap(), next.heap())).next();
+  memory.append(patch("stack", prev.stack(), next.stack())).next();
   endline(os << *block << memory);
 }
 Log::Log(const llvm::Function& func) : file{logfilename(func)} {
