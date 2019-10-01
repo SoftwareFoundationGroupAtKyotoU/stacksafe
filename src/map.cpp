@@ -63,15 +63,17 @@ Fabric dump(const Map<K>& map) {
   Fabric ret, tmp;
   bool first = true;
   for (const auto& [key, value] : map) {
-    if (!std::exchange(first, false)) {
-      tmp.append(",").next();
-    }
-    tmp.append(dump(key)).append(":");
-    if (1 < value.size()) {
-      tmp.next();
-      tmp.append(dump(value).indent(2));
-    } else {
-      tmp.append(" ").append(dump(value));
+    if (0 < value.size()) {
+      if (!std::exchange(first, false)) {
+        tmp.append(",").next();
+      }
+      tmp.append(dump(key)).append(":");
+      if (1 < value.size()) {
+        tmp.next();
+        tmp.append(dump(value).indent(2));
+      } else {
+        tmp.append(" ").append(dump(value));
+      }
     }
   }
   ret.append("{").next();
