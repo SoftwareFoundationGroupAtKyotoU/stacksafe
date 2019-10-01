@@ -67,9 +67,11 @@ void Env::call(const llvm::Value &dst, const Params &params) {
   }
   for (const auto &sym : dom) {
     insert(sym, dom);
+    insert(sym, Domain::global());
   }
   if (!check_voidfunc(dst)) {
     insert(dst, dom);
+    insert(dst, Domain::global());
   }
 }
 void Env::constant(const llvm::Value &dst) {
