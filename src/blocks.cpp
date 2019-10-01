@@ -41,13 +41,6 @@ Memory& Blocks::get(const llvm::BasicBlock* b) {
 Env Blocks::get_env(const llvm::BasicBlock* b) {
   return Env{cache_, get(b)};
 }
-Memory Blocks::get_memory(const llvm::Function& f) {
-  Params args;
-  for (const auto& a : f.args()) {
-    args.insert(a);
-  }
-  return Env{cache_, args}.memory();
-}
 Env Blocks::init_env(const llvm::Function& f) {
   Env env{cache_};
   auto g = Domain::global();
