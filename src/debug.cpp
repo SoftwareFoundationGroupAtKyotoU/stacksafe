@@ -42,7 +42,10 @@ void Log::print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
   endline(os << *block << memory);
 }
 Log::Log(const llvm::Function& func) : file{logfilename(func)} {
-  file.get() << func;
+  print(func);
+}
+void Log::print(const llvm::Function& f) const {
+  file.get() << f;
 }
 void Log::print(const llvm::BasicBlock* block, const Memory& prev,
                 const Memory& next) const {
