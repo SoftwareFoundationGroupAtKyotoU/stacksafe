@@ -50,9 +50,7 @@ void Log::print(const llvm::Function& f) const {
 void Log::print(const llvm::BasicBlock* block, const Memory& prev,
                 const Memory& next) const {
   const auto hr = "--------------------------------";
-  auto& os = file.get();
-  os << hr;
-  print_block(os, block, prev, next);
+  print_block((file.get() << hr), block, prev, next);
 }
 
 }  // namespace stacksafe
