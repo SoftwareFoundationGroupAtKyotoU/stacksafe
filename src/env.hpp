@@ -26,6 +26,7 @@ class Env {
   Memory mem_;
 
  public:
+  explicit Env(Cache& c);
   Env(Cache& c, const Memory& m);
   Env(Cache& c, const Params& args);
   Memory memory() const;
