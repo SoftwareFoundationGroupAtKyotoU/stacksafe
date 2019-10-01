@@ -14,12 +14,12 @@ add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
   blocks.cpp
-  debug.cpp
   domain.cpp
   env.cpp
   fabric.cpp
   interpret.cpp
   json.cpp
+  log.cpp
   map.cpp
   memory.cpp
   register.cpp

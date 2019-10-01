@@ -1,4 +1,4 @@
-#include "debug.hpp"
+#include "log.hpp"
 #include <llvm/IR/BasicBlock.h>
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>

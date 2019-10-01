@@ -1,8 +1,8 @@
 #include "blocks.hpp"
 #include <llvm/IR/Function.h>
-#include "debug.hpp"
 #include "env.hpp"
 #include "interpret.hpp"
+#include "log.hpp"
 #include "utility.hpp"
 #include "verify.hpp"
 

@@ -1,8 +1,8 @@
 #include "abstract.hpp"
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Debug.h>
-#include "debug.hpp"
 #include "json.hpp"
+#include "log.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
 
