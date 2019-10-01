@@ -43,8 +43,6 @@ class Env {
   void constant(const llvm::Value& dst);
   Domain lookup(const llvm::Value& key) const;
   Domain lookup(const Symbol& key) const;
-
- private:
   void insert(const llvm::Value& key, const Domain& val);
   void insert(const Symbol& key, const Domain& val);
   void collect(const Symbol& symbol, Domain& done) const;
