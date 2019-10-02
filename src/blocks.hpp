@@ -16,6 +16,7 @@ struct Log;
 class Blocks : private std::map<const llvm::BasicBlock*, Memory> {
   using Super = std::map<const llvm::BasicBlock*, Memory>;
   Cache cache_;
+  std::unique_ptr<Log> log_;
 
  public:
   using Super::begin, Super::end;
