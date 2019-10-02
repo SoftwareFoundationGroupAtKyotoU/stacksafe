@@ -23,7 +23,7 @@ class Params : private std::set<const llvm::Value*> {
 };
 
 class Env {
-  Cache& cache_;
+  const Cache& cache_;
   Memory mem_;
 
  public:
