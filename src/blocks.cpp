@@ -28,9 +28,7 @@ bool Blocks::verify(const llvm::BasicBlock* b) const {
 }
 void Blocks::print(const Log& log, const llvm::BasicBlock* b,
                    const Memory& next) const {
-  auto prev = Super::find(b);
-  assert(prev != Super::end() && "unknown basicblock");
-  log.print(b, prev->second, next);
+  log.print(b, get(b), next);
 }
 void Blocks::finish(const Log& log, const llvm::Function& f) {
   log.print(f);
