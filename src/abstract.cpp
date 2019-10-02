@@ -7,7 +7,6 @@ namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function& f)
     : blocks_{f}, func_{f}, safe_{false} {}
-Abstract::~Abstract() = default;
 auto Abstract::blocks() const -> const Blocks& {
   return blocks_;
 }

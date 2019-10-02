@@ -11,17 +11,14 @@ class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
-struct Log;
 
 class Abstract {
   Blocks blocks_;
   const llvm::Function& func_;
   bool safe_;
-  std::unique_ptr<Log> log_;
 
  public:
   explicit Abstract(const llvm::Function& f);
-  ~Abstract();
   const Blocks& blocks() const;
   void interpret();
   void verify();
