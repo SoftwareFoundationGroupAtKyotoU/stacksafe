@@ -27,7 +27,7 @@ class Env {
   Memory mem_;
 
  public:
-  Env(Cache& c, const Memory& m);
+  Env(const Cache& c, const Memory& m);
   Env(Cache& c, const llvm::Function& f);
   Memory memory() const;
   void binop(const llvm::Value& dst, const llvm::Value& lhs,
