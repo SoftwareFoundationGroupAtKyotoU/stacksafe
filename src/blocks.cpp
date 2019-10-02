@@ -35,10 +35,13 @@ void Blocks::print(const llvm::BasicBlock* b, const Memory& next) const {
   STACKSAFE_DEBUG_LOG(log_->print(b, get(b), next));
 }
 void Blocks::finish(const llvm::Function& f) const {
-  STACKSAFE_DEBUG_LOG(log_->print(f));
-  for (const auto& b : f) {
-    print(&b, interpret(&b));
-  }
+  auto main = [this](const llvm::Function& f) {
+    log_->print(f);
+    for (const auto& b : f) {
+      log_->print(&b, get(&b), interpret(&b));
+    }
+  };
+  STACKSAFE_DEBUG_LOG(main(f));
 }
 Memory& Blocks::get(const llvm::BasicBlock* b) {
   auto it = Super::find(b);
