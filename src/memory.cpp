@@ -16,6 +16,11 @@ Register Cache::lookup(const llvm::Value& key) {
     stacksafe_unreachable("only registers are allowed", key);
   }
 }
+void Cache::add(const llvm::Value& reg) {
+  auto num = register_number(reg);
+  assert(check_register(reg) && num && "only registers are allowed");
+  Super::try_emplace(&reg, *num);
+}
 
 const Memory::Heap& Memory::heap() const {
   return heap_;
