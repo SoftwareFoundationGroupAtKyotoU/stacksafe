@@ -29,6 +29,7 @@ class Blocks : private std::map<const llvm::BasicBlock*, Memory> {
 
  private:
   Memory& get(const llvm::BasicBlock* b);
+  const Memory& get(const llvm::BasicBlock* b) const;
   Env get_env(const llvm::BasicBlock* b);
 };
 

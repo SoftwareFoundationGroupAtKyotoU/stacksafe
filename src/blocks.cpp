@@ -43,6 +43,11 @@ Memory& Blocks::get(const llvm::BasicBlock* b) {
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
 }
+const Memory& Blocks::get(const llvm::BasicBlock* b) const {
+  auto it = Super::find(b);
+  assert(it != Super::end() && "unknown basicblock");
+  return it->second;
+}
 Env Blocks::get_env(const llvm::BasicBlock* b) {
   return Env{cache_, get(b)};
 }
