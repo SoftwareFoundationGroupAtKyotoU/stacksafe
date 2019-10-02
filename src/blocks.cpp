@@ -17,6 +17,7 @@ Blocks::Blocks(const llvm::Function& f) {
   }
   STACKSAFE_DEBUG_LOG(log_ = std::make_unique<Log>(f));
 }
+Blocks::~Blocks() = default;
 Memory Blocks::interpret(const llvm::BasicBlock* b) const {
   Env env{cache_, get(b)};
   Interpreter{env}.visit(*b);
