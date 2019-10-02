@@ -1,5 +1,4 @@
 #include "blocks.hpp"
-#include <llvm/IR/Function.h>
 #include "env.hpp"
 #include "interpret.hpp"
 #include "log.hpp"
@@ -46,21 +45,6 @@ Memory& Blocks::get(const llvm::BasicBlock* b) {
 }
 Env Blocks::get_env(const llvm::BasicBlock* b) {
   return Env{cache_, get(b)};
-}
-Env Blocks::init_env(const llvm::Function& f) {
-  Env env{cache_};
-  auto g = Domain::global();
-  for (const auto& a : f.args()) {
-    env.insert(a, g);
-  }
-  for (const auto& b : f) {
-    for (const auto& i : b) {
-      if (check_register(i)) {
-        env.insert(i, Domain{});
-      }
-    }
-  }
-  return env;
 }
 
 }  // namespace stacksafe
