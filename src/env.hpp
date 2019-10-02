@@ -45,6 +45,8 @@ class Env {
   bool has_global(const llvm::Value& arg) const;
   bool has_local(const llvm::Value& ret) const;
   bool has_local(const Symbol& sym) const;
+
+ private:
   Domain lookup(const llvm::Value& key) const;
   Domain lookup(const Symbol& key) const;
   void insert(const llvm::Value& key, const Domain& val);
