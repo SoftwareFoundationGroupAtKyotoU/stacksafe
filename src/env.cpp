@@ -87,6 +87,9 @@ void Env::call(const llvm::Value &dst, const Params &params) {
 void Env::constant(const llvm::Value &dst) {
   insert(dst, Domain{});
 }
+bool Env::has_global(const llvm::Value &arg) const {
+  return lookup(arg).includes(Domain::global());
+}
 bool Env::has_local(const llvm::Value &ret) const {
   return lookup(ret).has_local();
 }
