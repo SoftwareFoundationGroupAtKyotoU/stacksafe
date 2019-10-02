@@ -16,7 +16,7 @@ class Cache : private std::map<const llvm::Value*, Register> {
   using Super = std::map<const llvm::Value*, Register>;
 
  public:
-  Register lookup(const llvm::Value& key);
+  Register lookup(const llvm::Value& key) const;
   void add(const llvm::Value& reg);
 };
 

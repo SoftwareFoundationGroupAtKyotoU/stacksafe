@@ -5,16 +5,10 @@
 
 namespace stacksafe {
 
-Register Cache::lookup(const llvm::Value& key) {
-  if (auto it = Super::find(&key); Super::end() != it) {
-    return it->second;
-  } else if (auto num = register_number(key)) {
-    Register reg{*num};
-    Super::try_emplace(&key, reg);
-    return reg;
-  } else {
-    stacksafe_unreachable("only registers are allowed", key);
-  }
+Register Cache::lookup(const llvm::Value& key) const {
+  auto it = Super::find(&key);
+  assert(Super::end() != it && "not registered in cache");
+  return it->second;
 }
 void Cache::add(const llvm::Value& reg) {
   auto num = register_number(reg);
