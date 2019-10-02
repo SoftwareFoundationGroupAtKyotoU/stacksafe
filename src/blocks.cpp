@@ -13,7 +13,7 @@ Blocks::Blocks(const llvm::Function& f) {
     Super::try_emplace(&b, m);
   }
 }
-Memory Blocks::interpret(const llvm::BasicBlock* b) {
+Memory Blocks::interpret(const llvm::BasicBlock* b) const {
   auto env = get_env(b);
   Interpreter{env}.visit(*b);
   return env.memory();
