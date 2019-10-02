@@ -5,6 +5,7 @@
 #include "memory.hpp"
 
 namespace llvm {
+class Function;
 class Value;
 }  // namespace llvm
 
@@ -28,6 +29,7 @@ class Env {
  public:
   explicit Env(Cache& c);
   Env(Cache& c, const Memory& m);
+  Env(Cache& c, const llvm::Function& f);
   Memory memory() const;
   void binop(const llvm::Value& dst, const llvm::Value& lhs,
              const llvm::Value& rhs);

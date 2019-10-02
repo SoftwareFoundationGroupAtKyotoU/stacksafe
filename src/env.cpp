@@ -1,4 +1,5 @@
 #include "env.hpp"
+#include <llvm/IR/Function.h>
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -9,6 +10,21 @@ void Params::insert(const llvm::Value &v) {
 
 Env::Env(Cache &c) : cache_{c} {}
 Env::Env(Cache &c, const Memory &m) : cache_{c}, mem_{m} {}
+Env::Env(Cache &c, const llvm::Function &f) : cache_{c} {
+  auto g = Domain::global();
+  for (const auto &a : f.args()) {
+    c.add(a);
+    insert(a, g);
+  }
+  for (const auto &b : f) {
+    for (const auto &i : b) {
+      if (check_register(i)) {
+        c.add(i);
+        insert(i, Domain{});
+      }
+    }
+  }
+}
 Memory Env::memory() const {
   return mem_;
 }
