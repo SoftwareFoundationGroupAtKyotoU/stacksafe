@@ -30,7 +30,7 @@ void Blocks::print(const Log& log, const llvm::BasicBlock* b,
                    const Memory& next) const {
   log.print(b, get(b), next);
 }
-void Blocks::finish(const Log& log, const llvm::Function& f) {
+void Blocks::finish(const Log& log, const llvm::Function& f) const {
   log.print(f);
   for (const auto& b : f) {
     print(log, &b, interpret(&b));
