@@ -1,20 +1,12 @@
 #include "abstract.hpp"
 #include <llvm/IR/Function.h>
-#include <llvm/Support/Debug.h>
 #include "json.hpp"
-#include "log.hpp"
-#include "symbol.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function& f)
-    : blocks_{f}, func_{f}, safe_{false} {
-#define DEBUG_TYPE "log"
-  LLVM_DEBUG(log_ = std::make_unique<Log>(f));
-#undef DEBUG_TYPE
-  Symbol::reset();
-}
+    : blocks_{f}, func_{f}, safe_{false} {}
 Abstract::~Abstract() = default;
 auto Abstract::blocks() const -> const Blocks& {
   return blocks_;
