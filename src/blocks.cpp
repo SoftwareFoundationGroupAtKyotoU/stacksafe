@@ -32,7 +32,13 @@ bool Blocks::verify(const llvm::BasicBlock* b) const {
   return Verifier{env}.visit(*b);
 }
 void Blocks::print(const llvm::BasicBlock* b, const Memory& next) const {
-  STACKSAFE_DEBUG_LOG(log_->print(b, get(b), next));
+  auto main = [this](const llvm::BasicBlock* b, const Memory& next) {
+    auto& prev = get(b);
+    if (!prev.includes(next)) {
+      log_->print(b, prev, next);
+    }
+  };
+  STACKSAFE_DEBUG_LOG(main(b, next));
 }
 void Blocks::finish(const llvm::Function& f) const {
   auto main = [this](const llvm::Function& f) {
