@@ -46,9 +46,7 @@ void Abstract::print(llvm::raw_ostream& os) const {
 }
 void Abstract::interpret(const llvm::BasicBlock* b) {
   auto result = blocks_.interpret(b);
-#define DEBUG_TYPE "log"
-  LLVM_DEBUG(blocks_.print(*log_, b, result));
-#undef DEBUG_TYPE
+  blocks_.print(b, result);
   auto t = b->getTerminator();
   assert(t && "invalid basicblock");
   for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {

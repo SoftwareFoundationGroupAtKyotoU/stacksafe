@@ -15,6 +15,7 @@ Blocks::Blocks(const llvm::Function& f) {
   for (const auto& b : f) {
     Super::try_emplace(&b, m);
   }
+  STACKSAFE_DEBUG_LOG(log_ = std::make_unique<Log>(f));
 }
 Memory Blocks::interpret(const llvm::BasicBlock* b) const {
   Env env{cache_, get(b)};
@@ -29,14 +30,13 @@ bool Blocks::verify(const llvm::BasicBlock* b) const {
   Interpreter{env}.visit(*b);
   return Verifier{env}.visit(*b);
 }
-void Blocks::print(const Log& log, const llvm::BasicBlock* b,
-                   const Memory& next) const {
-  log.print(b, get(b), next);
+void Blocks::print(const llvm::BasicBlock* b, const Memory& next) const {
+  STACKSAFE_DEBUG_LOG(log_->print(b, get(b), next));
 }
 void Blocks::finish(const Log& log, const llvm::Function& f) const {
   log.print(f);
   for (const auto& b : f) {
-    print(log, &b, interpret(&b));
+    print(&b, interpret(&b));
   }
 }
 Memory& Blocks::get(const llvm::BasicBlock* b) {
