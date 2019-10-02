@@ -9,7 +9,7 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function& f) {
-  auto m = init_env(f).memory();
+  auto m = Env{cache_, f}.memory();
   for (const auto& b : f) {
     Super::try_emplace(&b, m);
   }
