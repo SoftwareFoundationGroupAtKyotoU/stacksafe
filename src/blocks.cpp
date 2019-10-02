@@ -21,7 +21,7 @@ Memory Blocks::interpret(const llvm::BasicBlock* b) const {
 bool Blocks::update(const llvm::BasicBlock* b, const Memory& next) {
   return get(b).merge(next);
 }
-bool Blocks::verify(const llvm::BasicBlock* b) {
+bool Blocks::verify(const llvm::BasicBlock* b) const {
   auto env = get_env(b);
   Interpreter{env}.visit(*b);
   return Verifier{env}.visit(*b);
