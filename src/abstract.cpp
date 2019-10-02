@@ -21,9 +21,7 @@ auto Abstract::blocks() const -> const Blocks& {
 }
 void Abstract::interpret() {
   interpret(&func_.getEntryBlock());
-#define DEBUG_TYPE "log"
-  LLVM_DEBUG(blocks_.finish(*log_, func_));
-#undef DEBUG_TYPE
+  blocks_.finish(func_);
 }
 void Abstract::verify() {
   for (const auto& b : func_) {

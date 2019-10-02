@@ -33,8 +33,8 @@ bool Blocks::verify(const llvm::BasicBlock* b) const {
 void Blocks::print(const llvm::BasicBlock* b, const Memory& next) const {
   STACKSAFE_DEBUG_LOG(log_->print(b, get(b), next));
 }
-void Blocks::finish(const Log& log, const llvm::Function& f) const {
-  log.print(f);
+void Blocks::finish(const llvm::Function& f) const {
+  STACKSAFE_DEBUG_LOG(log_->print(f));
   for (const auto& b : f) {
     print(&b, interpret(&b));
   }
