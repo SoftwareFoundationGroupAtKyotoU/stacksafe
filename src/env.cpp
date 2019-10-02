@@ -93,6 +93,9 @@ bool Env::has_global(const llvm::Value &arg) const {
 bool Env::has_local(const llvm::Value &ret) const {
   return lookup(ret).has_local();
 }
+bool Env::has_local(const Symbol &sym) const {
+  return lookup(sym).has_local();
+}
 Domain Env::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
     return mem_.stack().lookup(cache_.lookup(key));

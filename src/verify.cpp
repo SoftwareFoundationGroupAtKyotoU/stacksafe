@@ -5,7 +5,7 @@ namespace stacksafe {
 
 Verifier::Verifier(const Env &e) : env_{e} {}
 auto Verifier::visit(const llvm::BasicBlock &b) -> RetTy {
-  if (env_.lookup(Symbol::global()).has_local()) {
+  if (env_.has_local(Symbol::global())) {
     return unsafe;
   }
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
