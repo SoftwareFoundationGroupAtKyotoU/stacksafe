@@ -42,6 +42,7 @@ class Env {
   void phi(const llvm::Value& dst, const Params& params);
   void call(const llvm::Value& dst, const Params& params);
   void constant(const llvm::Value& dst);
+  bool has_local(const llvm::Value& ret) const;
   Domain lookup(const llvm::Value& key) const;
   Domain lookup(const Symbol& key) const;
   void insert(const llvm::Value& key, const Domain& val);

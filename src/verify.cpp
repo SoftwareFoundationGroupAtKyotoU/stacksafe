@@ -27,9 +27,8 @@ auto Verifier::visitCallInst(llvm::CallInst &i) -> RetTy {
   return safe;
 }
 auto Verifier::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
-  if (auto val = i.getReturnValue()) {
-    auto dom = env_.lookup(*val);
-    if (dom.has_local()) {
+  if (auto ret = i.getReturnValue()) {
+    if (env_.has_local(*ret)) {
       return unsafe;
     }
   }

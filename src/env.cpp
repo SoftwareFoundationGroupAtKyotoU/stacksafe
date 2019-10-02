@@ -87,6 +87,9 @@ void Env::call(const llvm::Value &dst, const Params &params) {
 void Env::constant(const llvm::Value &dst) {
   insert(dst, Domain{});
 }
+bool Env::has_local(const llvm::Value &ret) const {
+  return lookup(ret).has_local();
+}
 Domain Env::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
     return mem_.stack().lookup(cache_.lookup(key));
