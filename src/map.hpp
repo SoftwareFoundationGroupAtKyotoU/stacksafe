@@ -22,6 +22,7 @@ class Map : private std::map<K, Domain> {
   bool merge(const Map& that);
   bool includes(const Map& that) const;
   Domain lookup(const K& key) const;
+  Fabric diff(const Map& that) const;
 };
 template <typename K>
 void to_json(Json& j, const Map<K>& x);

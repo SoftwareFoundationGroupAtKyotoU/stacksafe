@@ -51,6 +51,23 @@ Domain Map<K>::lookup(const K& key) const {
   return Domain{};
 }
 template <typename K>
+Fabric Map<K>::diff(const Map& that) const {
+  Fabric ret;
+  for (const auto& [key, rhs] : that) {
+    if (auto it = Super::find(key); it != end()) {
+      const auto& lhs = it->second;
+      assert(rhs.includes(lhs));
+      if (lhs.includes(rhs)) {
+        ret.append(" ").append(dump(key)).append(": ").append(dump(lhs)).next();
+      } else {
+        ret.append("-").append(dump(key)).append(": ").append(dump(lhs)).next();
+        ret.append("+").append(dump(key)).append(": ").append(dump(rhs)).next();
+      }
+    }
+  }
+  return ret;
+}
+template <typename K>
 void to_json(Json& j, const Map<K>& x) {
   Json::object_t obj;
   for (const auto& [key, val] : x) {
