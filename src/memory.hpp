@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
 #include <map>
+#include "fabric.hpp"
 #include "json_fwd.hpp"
 #include "map.hpp"
 #include "register.hpp"
@@ -25,6 +26,7 @@ class Memory {
   using Stack = Map<Register>;
   Heap heap_;
   Stack stack_;
+  Fabric diff_;
 
  public:
   Memory() = default;
@@ -34,6 +36,8 @@ class Memory {
   Stack& stack();
   bool includes(const Memory& that) const;
   bool merge(const Memory& that);
+  void set_diff(const Memory& that);
+  Fabric get_diff() const;
 };
 void to_json(Json& j, const Memory& x);
 

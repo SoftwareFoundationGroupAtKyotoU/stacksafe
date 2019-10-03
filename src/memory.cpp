@@ -41,6 +41,15 @@ bool Memory::merge(const Memory& that) {
   }
   return ret;
 }
+void Memory::set_diff(const Memory& that) {
+  Fabric ret;
+  ret.append(heap().diff(that.heap())).next();
+  ret.append(stack().diff(that.stack())).next();
+  diff_ = ret;
+}
+Fabric Memory::get_diff() const {
+  return diff_;
+}
 void to_json(Json& j, const Memory& x) {
   j["heap"] = x.heap();
   j["stack"] = x.stack();
