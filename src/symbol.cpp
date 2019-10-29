@@ -22,6 +22,7 @@ int Symbol::number() const {
 std::string Symbol::repr() const {
   switch (kind_) {
     default:
+      [[fallthrough]];
     case Kind::STATIC:
       return prefix_ + "@";
     case Kind::AUTO:
