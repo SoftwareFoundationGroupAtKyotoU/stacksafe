@@ -41,12 +41,6 @@ bool Memory::merge(const Memory &that) {
   }
   return ret;
 }
-void Memory::set_diff(const Memory &that) {
-  Fabric ret;
-  ret.append(heap().diff(that.heap())).next();
-  ret.append(stack().diff(that.stack())).next();
-  diff_ = ret;
-}
 Fabric Memory::diff(const Memory &that) const {
   Fabric ret;
   ret.append(heap().diff(that.heap())).next();
