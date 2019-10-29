@@ -32,8 +32,8 @@ bool Blocks::verify(const llvm::BasicBlock &b) const {
   Interpreter{env}.visit(b);
   return Verifier{env}.visit(b);
 }
-void Blocks::print(const llvm::BasicBlock *b, const Memory &next) const {
-  STACKSAFE_DEBUG_LOG(log_->print(*b, get(*b).diff(next)));
+void Blocks::print(const llvm::BasicBlock &b, const Memory &next) const {
+  STACKSAFE_DEBUG_LOG(log_->print(b, get(b).diff(next)));
 }
 void Blocks::finish(const llvm::Function &f) const {
   STACKSAFE_DEBUG_LOG(log_->print(f));
