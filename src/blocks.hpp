@@ -11,6 +11,7 @@ class Function;
 
 namespace stacksafe {
 class Env;
+class Fabric;
 struct Log;
 
 class Blocks : private std::map<const llvm::BasicBlock *, Memory> {

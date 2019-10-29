@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
 #include <map>
-#include "fabric.hpp"
 #include "json_fwd.hpp"
 #include "map.hpp"
 #include "register.hpp"
@@ -12,6 +11,7 @@ class Value;
 }
 
 namespace stacksafe {
+class Fabric;
 
 class Cache : private std::map<const llvm::Value *, Register> {
   using Super = std::map<const llvm::Value *, Register>;
@@ -26,7 +26,6 @@ class Memory {
   using Stack = Map<Register>;
   Heap heap_;
   Stack stack_;
-  Fabric diff_;
 
  public:
   Memory() = default;

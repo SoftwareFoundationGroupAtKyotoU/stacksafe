@@ -1,4 +1,5 @@
 #include "memory.hpp"
+#include "fabric.hpp"
 #include "json.hpp"
 #include "register.hpp"
 #include "utility.hpp"
