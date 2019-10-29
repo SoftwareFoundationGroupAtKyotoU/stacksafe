@@ -26,8 +26,6 @@ struct LogFile {
 struct Log {
   LogFile file;
   static std::string logfilename(const llvm::Function &f);
-  static void print_block(llvm::raw_ostream &os, const llvm::BasicBlock *block,
-                          const Memory &prev, const Memory &next);
 
  public:
   explicit Log(const llvm::Function &func);
