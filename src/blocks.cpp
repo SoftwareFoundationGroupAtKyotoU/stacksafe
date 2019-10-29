@@ -40,9 +40,6 @@ void Blocks::finish(const llvm::Function &f) const {
     STACKSAFE_DEBUG_LOG(log_->print(b, get(&b).diff(interpret(&b))));
   }
 }
-void Blocks::set_diff(const llvm::BasicBlock *b, const Memory &next) {
-  get(b).set_diff(next);
-}
 Fabric Blocks::diff(const llvm::BasicBlock *b, const Memory &next) const {
   Fabric ret;
   const auto &prev = get(b);
