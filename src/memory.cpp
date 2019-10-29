@@ -47,9 +47,6 @@ void Memory::set_diff(const Memory &that) {
   ret.append(stack().diff(that.stack())).next();
   diff_ = ret;
 }
-Fabric Memory::get_diff() const {
-  return diff_;
-}
 Fabric Memory::diff(const Memory &that) const {
   Fabric ret;
   ret.append(heap().diff(that.heap())).next();
