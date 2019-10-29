@@ -11,7 +11,6 @@ class Function;
 
 namespace stacksafe {
 class Env;
-class Fabric;
 struct Log;
 
 class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
@@ -28,7 +27,6 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   bool verify(const llvm::BasicBlock *b) const;
   void print(const llvm::BasicBlock *b, const Memory &next) const;
   void finish(const llvm::Function &f) const;
-  Fabric diff(const llvm::BasicBlock *b, const Memory &next) const;
 
  private:
   Memory &get(const llvm::BasicBlock *b);

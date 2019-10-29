@@ -41,13 +41,6 @@ void Blocks::finish(const llvm::Function &f) const {
     STACKSAFE_DEBUG_LOG(log_->print(b, get(&b).diff(interpret(&b))));
   }
 }
-Fabric Blocks::diff(const llvm::BasicBlock *b, const Memory &next) const {
-  Fabric ret;
-  const auto &prev = get(b);
-  ret.append(prev.heap().diff(next.heap())).next();
-  ret.append(prev.stack().diff(next.stack())).next();
-  return ret;
-}
 Memory &Blocks::get(const llvm::BasicBlock *b) {
   auto it = Super::find(b);
   assert(it != Super::end() && "unknown basicblock");
