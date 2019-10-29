@@ -28,6 +28,7 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   void print(const llvm::BasicBlock *b, const Memory &next) const;
   void finish(const llvm::Function &f) const;
   void set_diff(const llvm::BasicBlock *b, const Memory &next);
+  Fabric diff(const llvm::BasicBlock *b, const Memory &next) const;
 
  private:
   Memory &get(const llvm::BasicBlock *b);
