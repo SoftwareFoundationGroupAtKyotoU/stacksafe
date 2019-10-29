@@ -38,6 +38,7 @@ class Memory {
   bool merge(const Memory &that);
   void set_diff(const Memory &that);
   Fabric get_diff() const;
+  Fabric diff(const Memory &that) const;
 };
 void to_json(Json &j, const Memory &x);
 

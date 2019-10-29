@@ -50,6 +50,12 @@ void Memory::set_diff(const Memory &that) {
 Fabric Memory::get_diff() const {
   return diff_;
 }
+Fabric Memory::diff(const Memory &that) const {
+  Fabric ret;
+  ret.append(heap().diff(that.heap())).next();
+  ret.append(stack().diff(that.stack())).next();
+  return ret;
+}
 void to_json(Json &j, const Memory &x) {
   j["heap"] = x.heap();
   j["stack"] = x.stack();
