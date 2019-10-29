@@ -20,34 +20,34 @@ Blocks::Blocks(const llvm::Function &f) {
 }
 Blocks::~Blocks() = default;
 Memory Blocks::interpret(const llvm::BasicBlock *b) const {
-  Env env{cache_, get(b)};
+  Env env{cache_, get(*b)};
   Interpreter{env}.visit(*b);
   return env.memory();
 }
 bool Blocks::update(const llvm::BasicBlock *b, const Memory &next) {
-  return get(b).merge(next);
+  return get(*b).merge(next);
 }
 bool Blocks::verify(const llvm::BasicBlock *b) const {
-  Env env{cache_, get(b)};
+  Env env{cache_, get(*b)};
   Interpreter{env}.visit(*b);
   return Verifier{env}.visit(*b);
 }
 void Blocks::print(const llvm::BasicBlock *b, const Memory &next) const {
-  STACKSAFE_DEBUG_LOG(log_->print(*b, get(b).diff(next)));
+  STACKSAFE_DEBUG_LOG(log_->print(*b, get(*b).diff(next)));
 }
 void Blocks::finish(const llvm::Function &f) const {
   STACKSAFE_DEBUG_LOG(log_->print(f));
   for (const auto &b : f) {
-    STACKSAFE_DEBUG_LOG(log_->print(b, get(&b).diff(interpret(&b))));
+    STACKSAFE_DEBUG_LOG(log_->print(b, get(b).diff(interpret(&b))));
   }
 }
-Memory &Blocks::get(const llvm::BasicBlock *b) {
-  auto it = Super::find(b);
+Memory &Blocks::get(const llvm::BasicBlock &b) {
+  auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
 }
-const Memory &Blocks::get(const llvm::BasicBlock *b) const {
-  auto it = Super::find(b);
+const Memory &Blocks::get(const llvm::BasicBlock &b) const {
+  auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
 }

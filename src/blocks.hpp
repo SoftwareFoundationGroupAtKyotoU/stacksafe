@@ -10,7 +10,6 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Env;
 struct Log;
 
 class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
@@ -29,8 +28,8 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   void finish(const llvm::Function &f) const;
 
  private:
-  Memory &get(const llvm::BasicBlock *b);
-  const Memory &get(const llvm::BasicBlock *b) const;
+  Memory &get(const llvm::BasicBlock &b);
+  const Memory &get(const llvm::BasicBlock &b) const;
 };
 
 }  // namespace stacksafe
