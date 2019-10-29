@@ -17,22 +17,22 @@ struct LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
 
  public:
-  explicit LogFile(const std::string& name);
+  explicit LogFile(const std::string &name);
   ~LogFile();
-  llvm::raw_ostream& get() const;
+  llvm::raw_ostream &get() const;
 };
 
 struct Log {
   LogFile file;
-  static std::string logfilename(const llvm::Function& f);
-  static void print_block(llvm::raw_ostream& os, const llvm::BasicBlock* block,
-                          const Memory& prev, const Memory& next);
+  static std::string logfilename(const llvm::Function &f);
+  static void print_block(llvm::raw_ostream &os, const llvm::BasicBlock *block,
+                          const Memory &prev, const Memory &next);
 
  public:
-  explicit Log(const llvm::Function& func);
-  void print(const llvm::Function& f) const;
-  void print(const llvm::BasicBlock* block, const Memory& prev,
-             const Memory& next) const;
+  explicit Log(const llvm::Function &func);
+  void print(const llvm::Function &f) const;
+  void print(const llvm::BasicBlock *block, const Memory &prev,
+             const Memory &next) const;
 };
 
 }  // namespace stacksafe

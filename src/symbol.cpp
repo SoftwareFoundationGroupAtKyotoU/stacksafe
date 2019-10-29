@@ -21,11 +21,11 @@ int Symbol::number() const {
 }
 std::string Symbol::repr() const {
   switch (kind_) {
-  default:
-  case Kind::STATIC:
-    return prefix_ + "@";
-  case Kind::AUTO:
-    return prefix_ + to_alphabet(number());
+    default:
+    case Kind::STATIC:
+      return prefix_ + "@";
+    case Kind::AUTO:
+      return prefix_ + to_alphabet(number());
   }
 }
 bool Symbol::is_local() const {

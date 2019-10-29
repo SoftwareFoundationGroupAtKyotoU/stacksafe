@@ -13,25 +13,25 @@ namespace stacksafe {
 class Env;
 struct Log;
 
-class Blocks : private std::map<const llvm::BasicBlock*, Memory> {
-  using Super = std::map<const llvm::BasicBlock*, Memory>;
+class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
+  using Super = std::map<const llvm::BasicBlock *, Memory>;
   Cache cache_;
   std::unique_ptr<Log> log_;
 
  public:
   using Super::begin, Super::end;
-  explicit Blocks(const llvm::Function& f);
+  explicit Blocks(const llvm::Function &f);
   ~Blocks();
-  Memory interpret(const llvm::BasicBlock* b) const;
-  bool update(const llvm::BasicBlock* b, const Memory& next);
-  bool verify(const llvm::BasicBlock* b) const;
-  void print(const llvm::BasicBlock* b, const Memory& next) const;
-  void finish(const llvm::Function& f) const;
-  void set_diff(const llvm::BasicBlock* b, const Memory& next);
+  Memory interpret(const llvm::BasicBlock *b) const;
+  bool update(const llvm::BasicBlock *b, const Memory &next);
+  bool verify(const llvm::BasicBlock *b) const;
+  void print(const llvm::BasicBlock *b, const Memory &next) const;
+  void finish(const llvm::Function &f) const;
+  void set_diff(const llvm::BasicBlock *b, const Memory &next);
 
  private:
-  Memory& get(const llvm::BasicBlock* b);
-  const Memory& get(const llvm::BasicBlock* b) const;
+  Memory &get(const llvm::BasicBlock *b);
+  const Memory &get(const llvm::BasicBlock *b) const;
 };
 
 }  // namespace stacksafe

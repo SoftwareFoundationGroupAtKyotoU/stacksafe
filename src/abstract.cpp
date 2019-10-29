@@ -5,9 +5,9 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function& f)
+Abstract::Abstract(const llvm::Function &f)
     : blocks_{f}, func_{f}, safe_{false} {}
-auto Abstract::blocks() const -> const Blocks& {
+auto Abstract::blocks() const -> const Blocks & {
   return blocks_;
 }
 void Abstract::interpret() {
@@ -15,14 +15,14 @@ void Abstract::interpret() {
   blocks_.finish(func_);
 }
 void Abstract::verify() {
-  for (const auto& b : func_) {
+  for (const auto &b : func_) {
     if (!blocks_.verify(&b)) {
       return;
     }
   }
   safe_ = true;
 }
-void Abstract::print(llvm::raw_ostream& os) const {
+void Abstract::print(llvm::raw_ostream &os) const {
   if (os.is_displayed()) {
     if (safe_) {
       os.changeColor(llvm::raw_ostream::GREEN);
@@ -33,7 +33,7 @@ void Abstract::print(llvm::raw_ostream& os) const {
   os << (safe_ ? "Safe" : "Unsafe") << ": " << func_.getName();
   endline(os, true);
 }
-void Abstract::interpret(const llvm::BasicBlock* b) {
+void Abstract::interpret(const llvm::BasicBlock *b) {
   auto result = blocks_.interpret(b);
   blocks_.set_diff(b, result);
   blocks_.print(b, result);
@@ -46,9 +46,9 @@ void Abstract::interpret(const llvm::BasicBlock* b) {
     }
   }
 }
-void to_json(Json& j, const Abstract& x) {
+void to_json(Json &j, const Abstract &x) {
   Json::object_t obj;
-  for (const auto& [k, v] : x.blocks()) {
+  for (const auto &[k, v] : x.blocks()) {
     assert(k && "unknown basicblock");
     obj[to_str(*k)] = v;
   }

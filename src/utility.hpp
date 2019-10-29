@@ -21,18 +21,18 @@ class Value;
 
 std::optional<int> to_int(std::string_view view);
 std::string to_alphabet(int num);
-std::string to_str(const llvm::Type& type);
-std::string to_str(const llvm::Value& value);
-std::string get_operand(const llvm::Value& value);
-std::optional<int> register_number(const llvm::Value& value);
+std::string to_str(const llvm::Type &type);
+std::string to_str(const llvm::Value &value);
+std::string get_operand(const llvm::Value &value);
+std::optional<int> register_number(const llvm::Value &value);
 
-void endline(llvm::raw_ostream& os, bool reset = false);
-void print_string(llvm::raw_ostream& os, const std::string& str);
-void print_stdout(const std::string& str);
-bool check_voidfunc(const llvm::Value& v);
-bool check_register(const llvm::Value& v);
-bool check_global(const llvm::Value& v);
-bool check_constant(const llvm::Value& v);
+void endline(llvm::raw_ostream &os, bool reset = false);
+void print_string(llvm::raw_ostream &os, const std::string &str);
+void print_stdout(const std::string &str);
+bool check_voidfunc(const llvm::Value &v);
+bool check_register(const llvm::Value &v);
+bool check_global(const llvm::Value &v);
+bool check_constant(const llvm::Value &v);
 
 }  // namespace stacksafe
 

@@ -15,13 +15,13 @@ class Domain : private std::set<Symbol> {
   using Super::begin, Super::end, Super::size;
   Domain() = default;
   explicit Domain(std::initializer_list<Symbol> list);
-  bool merge(const Domain& that);
-  bool includes(const Domain& that) const;
+  bool merge(const Domain &that);
+  bool includes(const Domain &that) const;
   bool has_local() const;
   static Domain global();
 };
-void to_json(Json& j, const Domain& x);
-Fabric dump(const Domain& domain);
+void to_json(Json &j, const Domain &x);
+Fabric dump(const Domain &domain);
 
 }  // namespace stacksafe
 

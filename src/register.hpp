@@ -15,8 +15,8 @@ class Register {
   int number() const;
   std::string repr() const;
 };
-bool operator<(const Register& lhs, const Register& rhs);
-Fabric dump(const Register& reg);
+bool operator<(const Register &lhs, const Register &rhs);
+Fabric dump(const Register &reg);
 
 }  // namespace stacksafe
 

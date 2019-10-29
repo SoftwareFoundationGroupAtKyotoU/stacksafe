@@ -5,7 +5,7 @@
 namespace stacksafe {
 
 Fabric::Fabric() : pos_{0} {}
-std::string& Fabric::current() {
+std::string &Fabric::current() {
   if (pos_ < fabric_.size()) {
     return fabric_.at(pos_);
   } else {
@@ -13,17 +13,17 @@ std::string& Fabric::current() {
     return current();
   }
 }
-Fabric& Fabric::next() {
+Fabric &Fabric::next() {
   ++pos_;
   return *this;
 }
-Fabric& Fabric::append(const std::string& str) {
+Fabric &Fabric::append(const std::string &str) {
   current().append(str);
   return *this;
 }
-Fabric& Fabric::append(const Fabric& fab) {
+Fabric &Fabric::append(const Fabric &fab) {
   bool first = true;
-  for (const auto& line : fab.fabric_) {
+  for (const auto &line : fab.fabric_) {
     if (!std::exchange(first, false)) {
       next();
     }
@@ -31,13 +31,13 @@ Fabric& Fabric::append(const Fabric& fab) {
   }
   return *this;
 }
-Fabric& Fabric::prepend(const std::string& str) {
+Fabric &Fabric::prepend(const std::string &str) {
   current().insert(0, str);
   return *this;
 }
-Fabric& Fabric::prepend(const Fabric& fab) {
+Fabric &Fabric::prepend(const Fabric &fab) {
   bool first = true;
-  for (const auto& line : fab.fabric_) {
+  for (const auto &line : fab.fabric_) {
     if (!std::exchange(first, false)) {
       next();
     }
@@ -45,26 +45,26 @@ Fabric& Fabric::prepend(const Fabric& fab) {
   }
   return *this;
 }
-Fabric& Fabric::quote(const std::string& open, const std::string& close) {
+Fabric &Fabric::quote(const std::string &open, const std::string &close) {
   return prepend(open).append(close);
 }
-Fabric& Fabric::quote() {
+Fabric &Fabric::quote() {
   const auto q = R"(")";
   return quote(q, q);
 }
-Fabric& Fabric::indent(std::size_t width) {
+Fabric &Fabric::indent(std::size_t width) {
   const auto space = ' ';
-  for (auto&& line : fabric_) {
+  for (auto &&line : fabric_) {
     line.insert(0, width, space);
   }
   return *this;
 }
-Fabric& Fabric::patch(const Fabric& fab) {
+Fabric &Fabric::patch(const Fabric &fab) {
   const auto space = ' ';
-  auto& left = fabric_;
-  auto& right = fab.fabric_;
+  auto &left = fabric_;
+  auto &right = fab.fabric_;
   std::size_t width = 0;
-  for (const auto& line : left) {
+  for (const auto &line : left) {
     width = width < line.size() ? line.size() : width;
   }
   auto i = left.size();
@@ -72,7 +72,7 @@ Fabric& Fabric::patch(const Fabric& fab) {
     left.emplace_back("");
   }
   i = 0;
-  for (auto&& line : left) {
+  for (auto &&line : left) {
     if (i < right.size()) {
       line.append(width - line.size(), space);
       line.append(right.at(i));
@@ -81,16 +81,16 @@ Fabric& Fabric::patch(const Fabric& fab) {
   }
   return *this;
 }
-void Fabric::print(llvm::raw_ostream& os) const {
+void Fabric::print(llvm::raw_ostream &os) const {
   bool first = true;
-  for (const auto& line : fabric_) {
+  for (const auto &line : fabric_) {
     if (!std::exchange(first, false)) {
       endline(os);
     }
     print_string(os, line);
   }
 }
-llvm::raw_ostream& operator<<(llvm::raw_ostream& os, const Fabric& fab) {
+llvm::raw_ostream &operator<<(llvm::raw_ostream &os, const Fabric &fab) {
   fab.print(os);
   return os;
 }

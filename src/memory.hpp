@@ -13,12 +13,12 @@ class Value;
 
 namespace stacksafe {
 
-class Cache : private std::map<const llvm::Value*, Register> {
-  using Super = std::map<const llvm::Value*, Register>;
+class Cache : private std::map<const llvm::Value *, Register> {
+  using Super = std::map<const llvm::Value *, Register>;
 
  public:
-  Register lookup(const llvm::Value& key) const;
-  void add(const llvm::Value& reg);
+  Register lookup(const llvm::Value &key) const;
+  void add(const llvm::Value &reg);
 };
 
 class Memory {
@@ -30,16 +30,16 @@ class Memory {
 
  public:
   Memory() = default;
-  const Heap& heap() const;
-  Heap& heap();
-  const Stack& stack() const;
-  Stack& stack();
-  bool includes(const Memory& that) const;
-  bool merge(const Memory& that);
-  void set_diff(const Memory& that);
+  const Heap &heap() const;
+  Heap &heap();
+  const Stack &stack() const;
+  Stack &stack();
+  bool includes(const Memory &that) const;
+  bool merge(const Memory &that);
+  void set_diff(const Memory &that);
   Fabric get_diff() const;
 };
-void to_json(Json& j, const Memory& x);
+void to_json(Json &j, const Memory &x);
 
 }  // namespace stacksafe
 

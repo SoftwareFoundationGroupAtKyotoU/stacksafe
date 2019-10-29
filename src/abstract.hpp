@@ -14,20 +14,20 @@ namespace stacksafe {
 
 class Abstract {
   Blocks blocks_;
-  const llvm::Function& func_;
+  const llvm::Function &func_;
   bool safe_;
 
  public:
-  explicit Abstract(const llvm::Function& f);
-  const Blocks& blocks() const;
+  explicit Abstract(const llvm::Function &f);
+  const Blocks &blocks() const;
   void interpret();
   void verify();
-  void print(llvm::raw_ostream& os) const;
+  void print(llvm::raw_ostream &os) const;
 
  private:
-  void interpret(const llvm::BasicBlock* b);
+  void interpret(const llvm::BasicBlock *b);
 };
-void to_json(Json& j, const Abstract& x);
+void to_json(Json &j, const Abstract &x);
 
 }  // namespace stacksafe
 

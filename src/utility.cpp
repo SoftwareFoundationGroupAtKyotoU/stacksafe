@@ -25,25 +25,25 @@ std::string to_alphabet(int num) {
   }
   return ret;
 }
-std::string to_str(const llvm::Type& type) {
+std::string to_str(const llvm::Type &type) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};
   type.print(stream, false, true);
   return stream.str();
 }
-std::string to_str(const llvm::Value& value) {
+std::string to_str(const llvm::Value &value) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};
   stream << value;
   return stream.str();
 }
-std::string get_operand(const llvm::Value& value) {
+std::string get_operand(const llvm::Value &value) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};
   value.printAsOperand(stream, false);
   return stream.str();
 }
-std::optional<int> register_number(const llvm::Value& value) {
+std::optional<int> register_number(const llvm::Value &value) {
   static const std::string prefix{"%"};
   auto operand = get_operand(value);
   std::string_view view{operand};
@@ -53,26 +53,26 @@ std::optional<int> register_number(const llvm::Value& value) {
   return std::nullopt;
 }
 
-void endline(llvm::raw_ostream& os, bool reset) {
+void endline(llvm::raw_ostream &os, bool reset) {
   if (reset && os.is_displayed()) {
     os.resetColor();
   }
   (os << "\n").flush();
 }
-void print_string(llvm::raw_ostream& os, const std::string& str) {
+void print_string(llvm::raw_ostream &os, const std::string &str) {
   os << str;
 }
-void print_stdout(const std::string& str) {
+void print_stdout(const std::string &str) {
   print_string(llvm::outs(), str);
   endline(llvm::outs());
 }
-bool check_voidfunc(const llvm::Value& v) {
+bool check_voidfunc(const llvm::Value &v) {
   if (auto i = llvm::dyn_cast<llvm::CallInst>(&v)) {
     return i->getFunctionType()->getReturnType()->isVoidTy();
   }
   return false;
 }
-bool check_register(const llvm::Value& v) {
+bool check_register(const llvm::Value &v) {
   if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
     return !(i->isTerminator() || check_voidfunc(*i) ||
              llvm::isa<llvm::StoreInst>(v) || llvm::isa<llvm::FenceInst>(v));
@@ -80,7 +80,7 @@ bool check_register(const llvm::Value& v) {
     return llvm::isa<llvm::Argument>(v);
   }
 }
-bool check_global(const llvm::Value& v) {
+bool check_global(const llvm::Value &v) {
   if (llvm::isa<llvm::GlobalValue>(v)) {
     return true;
   } else if (auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
@@ -92,7 +92,7 @@ bool check_global(const llvm::Value& v) {
   }
   return false;
 }
-bool check_constant(const llvm::Value& v) {
+bool check_constant(const llvm::Value &v) {
   return llvm::isa<llvm::Constant>(v);
 }
 

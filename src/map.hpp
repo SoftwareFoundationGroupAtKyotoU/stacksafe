@@ -14,27 +14,27 @@ class Symbol;
 template <typename K>
 class Map : private std::map<K, Domain> {
   using Super = std::map<K, Domain>;
-  std::optional<Domain> get(const K& key) const;
+  std::optional<Domain> get(const K &key) const;
 
  public:
   using Super::begin, Super::end;
-  bool insert(const K& key, const Domain& val);
-  bool merge(const Map& that);
-  bool includes(const Map& that) const;
-  Domain lookup(const K& key) const;
-  Fabric diff(const Map& that) const;
+  bool insert(const K &key, const Domain &val);
+  bool merge(const Map &that);
+  bool includes(const Map &that) const;
+  Domain lookup(const K &key) const;
+  Fabric diff(const Map &that) const;
 };
 template <typename K>
-void to_json(Json& j, const Map<K>& x);
+void to_json(Json &j, const Map<K> &x);
 template <typename K>
-Fabric dump(const Map<K>& map);
+Fabric dump(const Map<K> &map);
 
 extern template class Map<Register>;
 extern template class Map<Symbol>;
-extern template void to_json<Register>(Json&, const Map<Register>&);
-extern template void to_json<Symbol>(Json&, const Map<Symbol>&);
-extern template Fabric dump<Register>(const Map<Register>&);
-extern template Fabric dump<Symbol>(const Map<Symbol>&);
+extern template void to_json<Register>(Json &, const Map<Register> &);
+extern template void to_json<Symbol>(Json &, const Map<Symbol> &);
+extern template Fabric dump<Register>(const Map<Register> &);
+extern template Fabric dump<Symbol>(const Map<Symbol> &);
 
 }  // namespace stacksafe
 

@@ -11,10 +11,10 @@ int Register::number() const {
 std::string Register::repr() const {
   return prefix + std::to_string(number());
 }
-bool operator<(const Register& lhs, const Register& rhs) {
+bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.number() < rhs.number();
 }
-Fabric dump(const Register& reg) {
+Fabric dump(const Register &reg) {
   Fabric ret;
   return ret.append(reg.repr()).quote();
 }
