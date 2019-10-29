@@ -32,8 +32,6 @@ struct Log {
  public:
   explicit Log(const llvm::Function &func);
   void print(const llvm::Function &f) const;
-  void print(const llvm::BasicBlock *block, const Memory &prev,
-             const Memory &next) const;
   void print(const llvm::BasicBlock &block, const Fabric &fab) const;
 };
 

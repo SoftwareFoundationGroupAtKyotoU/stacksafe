@@ -42,11 +42,6 @@ void Log::print(const llvm::Function &f) const {
   const auto hr = "================================";
   file.get() << hr << f;
 }
-void Log::print(const llvm::BasicBlock *block, const Memory &prev,
-                const Memory &next) const {
-  const auto hr = "--------------------------------";
-  print_block((file.get() << hr), block, prev, next);
-}
 void Log::print(const llvm::BasicBlock &block, const Fabric &fab) const {
   const auto hr = "--------------------------------";
   endline(file.get() << hr << block);
