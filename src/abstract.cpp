@@ -16,7 +16,7 @@ void Abstract::interpret() {
 }
 void Abstract::verify() {
   for (const auto &b : func_) {
-    if (!blocks_.verify(&b)) {
+    if (!blocks_.verify(b)) {
       return;
     }
   }

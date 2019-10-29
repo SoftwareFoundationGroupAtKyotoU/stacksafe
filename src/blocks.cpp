@@ -27,10 +27,10 @@ Memory Blocks::interpret(const llvm::BasicBlock &b) const {
 bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
   return get(b).merge(next);
 }
-bool Blocks::verify(const llvm::BasicBlock *b) const {
-  Env env{cache_, get(*b)};
-  Interpreter{env}.visit(*b);
-  return Verifier{env}.visit(*b);
+bool Blocks::verify(const llvm::BasicBlock &b) const {
+  Env env{cache_, get(b)};
+  Interpreter{env}.visit(b);
+  return Verifier{env}.visit(b);
 }
 void Blocks::print(const llvm::BasicBlock *b, const Memory &next) const {
   STACKSAFE_DEBUG_LOG(log_->print(*b, get(*b).diff(next)));
