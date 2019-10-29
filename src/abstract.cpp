@@ -11,7 +11,7 @@ auto Abstract::blocks() const -> const Blocks & {
   return blocks_;
 }
 void Abstract::interpret() {
-  interpret(&func_.getEntryBlock());
+  interpret(func_.getEntryBlock());
   blocks_.finish(func_);
 }
 void Abstract::verify() {
@@ -33,15 +33,15 @@ void Abstract::print(llvm::raw_ostream &os) const {
   os << (safe_ ? "Safe" : "Unsafe") << ": " << func_.getName();
   endline(os, true);
 }
-void Abstract::interpret(const llvm::BasicBlock *b) {
-  auto result = blocks_.interpret(*b);
-  blocks_.print(*b, result);
-  auto t = b->getTerminator();
+void Abstract::interpret(const llvm::BasicBlock &b) {
+  auto result = blocks_.interpret(b);
+  blocks_.print(b, result);
+  auto t = b.getTerminator();
   assert(t && "invalid basicblock");
   for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
     const auto &next = *t->getSuccessor(i);
     if (blocks_.update(next, result)) {
-      interpret(&next);
+      interpret(next);
     }
   }
 }
