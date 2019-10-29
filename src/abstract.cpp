@@ -39,9 +39,9 @@ void Abstract::interpret(const llvm::BasicBlock *b) {
   auto t = b->getTerminator();
   assert(t && "invalid basicblock");
   for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-    auto next = t->getSuccessor(i);
+    const auto &next = *t->getSuccessor(i);
     if (blocks_.update(next, result)) {
-      interpret(next);
+      interpret(&next);
     }
   }
 }

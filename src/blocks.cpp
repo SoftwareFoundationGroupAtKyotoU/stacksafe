@@ -24,8 +24,8 @@ Memory Blocks::interpret(const llvm::BasicBlock &b) const {
   Interpreter{env}.visit(b);
   return env.memory();
 }
-bool Blocks::update(const llvm::BasicBlock *b, const Memory &next) {
-  return get(*b).merge(next);
+bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
+  return get(b).merge(next);
 }
 bool Blocks::verify(const llvm::BasicBlock *b) const {
   Env env{cache_, get(*b)};
