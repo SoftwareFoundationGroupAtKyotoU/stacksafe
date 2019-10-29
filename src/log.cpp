@@ -39,7 +39,8 @@ void Log::print_block(llvm::raw_ostream &os, const llvm::BasicBlock *block,
 }
 Log::Log(const llvm::Function &func) : file{logfilename(func)} {}
 void Log::print(const llvm::Function &f) const {
-  file.get() << f;
+  const auto hr = "================================";
+  file.get() << hr << f;
 }
 void Log::print(const llvm::BasicBlock *block, const Memory &prev,
                 const Memory &next) const {
