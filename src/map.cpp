@@ -58,7 +58,13 @@ Fabric Map<K>::diff(const Map &that) const {
       const auto &lhs = it->second;
       assert(rhs.includes(lhs));
       if (lhs.includes(rhs)) {
-        ret.append(" ").append(dump(key)).append(": ").append(dump(lhs)).next();
+        if (!lhs.empty()) {
+          ret.append(" ")
+              .append(dump(key))
+              .append(": ")
+              .append(dump(lhs))
+              .next();
+        }
       } else {
         ret.append("-").append(dump(key)).append(": ").append(dump(lhs)).next();
         ret.append("+").append(dump(key)).append(": ").append(dump(rhs)).next();

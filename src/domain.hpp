@@ -12,7 +12,7 @@ class Domain : private std::set<Symbol> {
   using Super = std::set<Symbol>;
 
  public:
-  using Super::begin, Super::end, Super::size;
+  using Super::begin, Super::end, Super::empty, Super::size;
   Domain() = default;
   explicit Domain(std::initializer_list<Symbol> list);
   bool merge(const Domain &that);
