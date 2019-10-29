@@ -11,6 +11,7 @@ class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
+class Fabric;
 class Memory;
 
 struct LogFile {
@@ -33,6 +34,7 @@ struct Log {
   void print(const llvm::Function &f) const;
   void print(const llvm::BasicBlock *block, const Memory &prev,
              const Memory &next) const;
+  void print(const llvm::BasicBlock &block, const Fabric &fab) const;
 };
 
 }  // namespace stacksafe

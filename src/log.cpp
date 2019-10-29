@@ -46,5 +46,10 @@ void Log::print(const llvm::BasicBlock *block, const Memory &prev,
   const auto hr = "--------------------------------";
   print_block((file.get() << hr), block, prev, next);
 }
+void Log::print(const llvm::BasicBlock &block, const Fabric &fab) const {
+  const auto hr = "--------------------------------";
+  endline(file.get() << hr << block);
+  endline(file.get() << fab);
+}
 
 }  // namespace stacksafe
