@@ -49,6 +49,9 @@ void Blocks::finish(const llvm::Function& f) const {
   };
   STACKSAFE_DEBUG_LOG(main(f));
 }
+void Blocks::set_diff(const llvm::BasicBlock* b, const Memory& next) {
+  get(b).set_diff(next);
+}
 Memory& Blocks::get(const llvm::BasicBlock* b) {
   auto it = Super::find(b);
   assert(it != Super::end() && "unknown basicblock");
