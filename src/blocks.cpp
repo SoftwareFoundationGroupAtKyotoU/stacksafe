@@ -19,9 +19,9 @@ Blocks::Blocks(const llvm::Function &f) {
   STACKSAFE_DEBUG_LOG(log_ = std::make_unique<Log>(f));
 }
 Blocks::~Blocks() = default;
-Memory Blocks::interpret(const llvm::BasicBlock *b) const {
-  Env env{cache_, get(*b)};
-  Interpreter{env}.visit(*b);
+Memory Blocks::interpret(const llvm::BasicBlock &b) const {
+  Env env{cache_, get(b)};
+  Interpreter{env}.visit(b);
   return env.memory();
 }
 bool Blocks::update(const llvm::BasicBlock *b, const Memory &next) {
@@ -38,7 +38,7 @@ void Blocks::print(const llvm::BasicBlock *b, const Memory &next) const {
 void Blocks::finish(const llvm::Function &f) const {
   STACKSAFE_DEBUG_LOG(log_->print(f));
   for (const auto &b : f) {
-    STACKSAFE_DEBUG_LOG(log_->print(b, get(b).diff(interpret(&b))));
+    STACKSAFE_DEBUG_LOG(log_->print(b, get(b).diff(interpret(b))));
   }
 }
 Memory &Blocks::get(const llvm::BasicBlock &b) {

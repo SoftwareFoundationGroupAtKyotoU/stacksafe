@@ -21,7 +21,7 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   using Super::begin, Super::end;
   explicit Blocks(const llvm::Function &f);
   ~Blocks();
-  Memory interpret(const llvm::BasicBlock *b) const;
+  Memory interpret(const llvm::BasicBlock &b) const;
   bool update(const llvm::BasicBlock *b, const Memory &next);
   bool verify(const llvm::BasicBlock *b) const;
   void print(const llvm::BasicBlock *b, const Memory &next) const;
