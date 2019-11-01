@@ -34,6 +34,9 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitPHINode(llvm::PHINode &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
   RetTy visitCallInst(llvm::CallInst &i);
+
+ private:
+  void print(const llvm::Instruction &i) const;
 };
 
 }  // namespace stacksafe

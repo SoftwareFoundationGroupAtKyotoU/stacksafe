@@ -1,5 +1,6 @@
 #include "interpret.hpp"
 #include "env.hpp"
+#include "log.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -8,6 +9,7 @@ Interpreter::Interpreter(Env &e, Log *l) : env_{e}, log_{l} {}
 auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     Super::visit(i);
+    print(i);
   }
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
@@ -32,7 +34,7 @@ auto Interpreter::visitInsertElementInst(llvm::InsertElementInst &i) -> RetTy {
   auto rhs = i.getOperand(1);
   assert(lhs && rhs && "invalid operand");
   env_.binop(i, *lhs, *rhs);
-};
+}
 auto Interpreter::visitShuffleVectorInst(llvm::ShuffleVectorInst &i) -> RetTy {
   auto lhs = i.getOperand(0);
   auto rhs = i.getOperand(1);
@@ -114,6 +116,11 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
     params.insert(*arg);
   }
   env_.call(i, params);
+}
+void Interpreter::print(const llvm::Instruction &i) const {
+  if (log_) {
+    log_->print_inst(i);
+  }
 }
 
 }  // namespace stacksafe
