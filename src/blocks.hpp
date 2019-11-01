@@ -25,6 +25,7 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   bool update(const llvm::BasicBlock &b, const Memory &next);
   bool verify(const llvm::BasicBlock &b) const;
   void print_diff(const llvm::BasicBlock &b, const Memory &next) const;
+  void print_env(const llvm::BasicBlock &b) const;
   void finish(const llvm::Function &f) const;
 
  private:

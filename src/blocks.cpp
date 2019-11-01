@@ -35,6 +35,9 @@ bool Blocks::verify(const llvm::BasicBlock &b) const {
 void Blocks::print_diff(const llvm::BasicBlock &b, const Memory &next) const {
   STACKSAFE_DEBUG_LOG(log_->print_diff(b, get(b).diff(next)));
 }
+void Blocks::print_env(const llvm::BasicBlock &b) const {
+  STACKSAFE_DEBUG_LOG(log_->print_env(b, get(b)));
+}
 void Blocks::finish(const llvm::Function &f) const {
   STACKSAFE_DEBUG_LOG(log_->print_func(f));
   for (const auto &b : f) {
