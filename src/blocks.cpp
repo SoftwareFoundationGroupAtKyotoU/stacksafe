@@ -41,12 +41,6 @@ void Blocks::print_diff(const llvm::BasicBlock &b, const Memory &next) const {
 void Blocks::print_env(const llvm::BasicBlock &b) const {
   STACKSAFE_DEBUG_LOG(log_->print_env(b, get(b)));
 }
-void Blocks::finish(const llvm::Function &f) const {
-  STACKSAFE_DEBUG_LOG(log_->print_func(f));
-  for (const auto &b : f) {
-    STACKSAFE_DEBUG_LOG(print_diff(b, interpret(b)));
-  }
-}
 Memory &Blocks::get(const llvm::BasicBlock &b) {
   auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");

@@ -12,7 +12,6 @@ auto Abstract::blocks() const -> const Blocks & {
 }
 void Abstract::interpret() {
   interpret(func_.getEntryBlock());
-  blocks_.finish(func_);
 }
 void Abstract::verify() {
   blocks_.print_func(func_);

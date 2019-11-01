@@ -27,7 +27,6 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   void print_func(const llvm::Function &f) const;
   void print_diff(const llvm::BasicBlock &b, const Memory &next) const;
   void print_env(const llvm::BasicBlock &b) const;
-  void finish(const llvm::Function &f) const;
 
  private:
   Memory &get(const llvm::BasicBlock &b);
