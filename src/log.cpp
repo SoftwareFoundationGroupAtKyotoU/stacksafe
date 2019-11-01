@@ -37,8 +37,8 @@ void Log::print_diff(const llvm::BasicBlock &block, const Fabric &fab) const {
 void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
   const auto hr = "--------------------------------";
   Json j = mem;
-  endline(file.get() << hr << block);
-  endline(file.get() << j.dump());
+  endline(file.get() << hr << j.dump());
+  endline(file.get() << block);
 }
 
 }  // namespace stacksafe
