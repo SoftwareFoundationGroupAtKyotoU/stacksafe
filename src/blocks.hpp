@@ -10,7 +10,7 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-struct Log;
+class Log;
 
 class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   using Super = std::map<const llvm::BasicBlock *, Memory>;

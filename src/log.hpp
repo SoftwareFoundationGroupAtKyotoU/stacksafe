@@ -14,7 +14,7 @@ namespace stacksafe {
 class Fabric;
 class Memory;
 
-struct LogFile {
+class LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
 
  public:
@@ -23,7 +23,7 @@ struct LogFile {
   llvm::raw_ostream &get() const;
 };
 
-struct Log {
+class Log {
   LogFile file;
   static std::string logfilename(const llvm::Function &f);
 
