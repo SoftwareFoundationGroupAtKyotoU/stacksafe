@@ -33,7 +33,7 @@ bool Blocks::verify(const llvm::BasicBlock &b) const {
   return Verifier{env}.visit(b);
 }
 void Blocks::print(const llvm::BasicBlock &b, const Memory &next) const {
-  STACKSAFE_DEBUG_LOG(log_->print(b, get(b).diff(next)));
+  STACKSAFE_DEBUG_LOG(log_->print_diff(b, get(b).diff(next)));
 }
 void Blocks::finish(const llvm::Function &f) const {
   STACKSAFE_DEBUG_LOG(log_->print_func(f));

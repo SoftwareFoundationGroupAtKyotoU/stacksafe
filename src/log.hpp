@@ -30,7 +30,8 @@ struct Log {
  public:
   explicit Log(const llvm::Function &func);
   void print_func(const llvm::Function &f) const;
-  void print(const llvm::BasicBlock &block, const Fabric &fab) const;
+  void print_diff(const llvm::BasicBlock &block, const Fabric &fab) const;
+  void print_env(const llvm::BasicBlock &block, const Memory &mem) const;
 };
 
 }  // namespace stacksafe

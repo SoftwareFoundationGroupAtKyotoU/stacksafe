@@ -29,10 +29,16 @@ void Log::print_func(const llvm::Function &f) const {
   const auto hr = "================================";
   file.get() << hr << f;
 }
-void Log::print(const llvm::BasicBlock &block, const Fabric &fab) const {
+void Log::print_diff(const llvm::BasicBlock &block, const Fabric &fab) const {
   const auto hr = "--------------------------------";
   endline(file.get() << hr << block);
   endline(file.get() << fab);
+}
+void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
+  const auto hr = "--------------------------------";
+  Json j = mem;
+  endline(file.get() << hr << block);
+  endline(file.get() << j.dump());
 }
 
 }  // namespace stacksafe
