@@ -36,7 +36,7 @@ void Blocks::print(const llvm::BasicBlock &b, const Memory &next) const {
   STACKSAFE_DEBUG_LOG(log_->print(b, get(b).diff(next)));
 }
 void Blocks::finish(const llvm::Function &f) const {
-  STACKSAFE_DEBUG_LOG(log_->print(f));
+  STACKSAFE_DEBUG_LOG(log_->print_func(f));
   for (const auto &b : f) {
     STACKSAFE_DEBUG_LOG(print(b, interpret(b)));
   }

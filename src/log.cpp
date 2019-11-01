@@ -25,7 +25,7 @@ std::string Log::logfilename(const llvm::Function &f) {
   return "log/" + f.getName().str() + ".log";
 }
 Log::Log(const llvm::Function &func) : file{logfilename(func)} {}
-void Log::print(const llvm::Function &f) const {
+void Log::print_func(const llvm::Function &f) const {
   const auto hr = "================================";
   file.get() << hr << f;
 }
