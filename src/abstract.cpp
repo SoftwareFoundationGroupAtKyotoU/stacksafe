@@ -6,7 +6,7 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
-    : blocks_{f}, func_{f}, safe_{false} {}
+    : blocks_{f}, func_{f}, safe_{true} {}
 auto Abstract::blocks() const -> const Blocks & {
   return blocks_;
 }
@@ -15,12 +15,14 @@ void Abstract::interpret() {
   blocks_.finish(func_);
 }
 void Abstract::verify() {
+  blocks_.print_func(func_);
+  safe_ = true;
   for (const auto &b : func_) {
+    blocks_.print_env(b);
     if (!blocks_.verify(b)) {
-      return;
+      safe_ = false;
     }
   }
-  safe_ = true;
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   if (os.is_displayed()) {
