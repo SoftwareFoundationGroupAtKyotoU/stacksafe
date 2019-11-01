@@ -42,5 +42,8 @@ void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
   endline(f << hr);
   endline(f << j.dump(2) << block);
 }
+void Log::print_inst(const llvm::Instruction &i) const {
+  endline(file.get() << to_str(i));
+}
 
 }  // namespace stacksafe
