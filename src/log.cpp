@@ -55,20 +55,6 @@ void Log::print_hr() const {
   const auto hr = "--------------------------------";
   file.get() << hr;
 }
-void Log::print_func(const llvm::Function &f) const {
-  const auto hr = "================================";
-  file.get() << hr;
-  print(f);
-}
-void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
-  const auto hr = "--------------------------------";
-  auto &f = file.get();
-  Json j = mem;
-  endline(f << hr);
-  f << j.dump(2);
-  print(block);
-  endline(f);
-}
 void Log::print_inst(const llvm::Instruction &i) const {
   endline(file.get() << to_str(i));
 }
