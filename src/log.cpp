@@ -25,14 +25,23 @@ std::string Log::logfilename(const llvm::Function &f) {
   return "log/" + f.getName().str() + ".log";
 }
 Log::Log(const llvm::Function &func) : file{logfilename(func)} {}
+void Log::print(const llvm::Function &f) const {
+  file.get() << f;
+}
+void Log::print(const llvm::BasicBlock &b) const {
+  file.get() << b;
+}
 void Log::print_func(const llvm::Function &f) const {
   const auto hr = "================================";
-  file.get() << hr << f;
+  file.get() << hr;
+  print(f);
 }
 void Log::print_diff(const llvm::BasicBlock &block, const Fabric &fab) const {
   const auto hr = "--------------------------------";
   auto &f = file.get();
-  endline(f << hr << block);
+  f << hr;
+  print(block);
+  endline(f);
   endline(f << fab);
 }
 void Log::print_diff(const Register &key, const Domain &val) const {
@@ -56,7 +65,9 @@ void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
   auto &f = file.get();
   Json j = mem;
   endline(f << hr);
-  endline(f << j.dump(2) << block);
+  f << j.dump(2);
+  print(block);
+  endline(f);
 }
 void Log::print_inst(const llvm::Instruction &i) const {
   endline(file.get() << to_str(i));

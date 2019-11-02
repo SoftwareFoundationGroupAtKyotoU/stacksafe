@@ -33,6 +33,8 @@ class Log {
 
  public:
   explicit Log(const llvm::Function &func);
+  void print(const llvm::Function &f) const;
+  void print(const llvm::BasicBlock &b) const;
   void print_func(const llvm::Function &f) const;
   void print_diff(const llvm::BasicBlock &block, const Fabric &fab) const;
   void print_diff(const Register &key, const Domain &val) const;
