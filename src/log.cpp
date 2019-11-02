@@ -52,8 +52,10 @@ void Log::print(const Symbol &key, const Domain &val) const {
   }
 }
 void Log::print_hr() const {
-  const auto hr = "--------------------------------";
-  file.get() << hr;
+  if (os) {
+    const auto hr = "--------------------------------";
+    endline(*os << hr);
+  }
 }
 void Log::print_nl() const {
   if (os) {
