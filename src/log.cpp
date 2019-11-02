@@ -56,7 +56,7 @@ const Log &Log::print(const Symbol &key, const Domain &val) const {
 const Log &Log::print_hr() const {
   if (os) {
     const auto hr = "--------------------------------";
-    endline(*os << hr);
+    *os << hr;
   }
   return *this;
 }
