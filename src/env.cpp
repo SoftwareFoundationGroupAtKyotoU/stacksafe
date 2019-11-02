@@ -1,5 +1,7 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
+#include "fabric.hpp"
+#include "log.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -111,10 +113,20 @@ Domain Env::lookup(const Symbol &key) const {
   return mem_.heap().lookup(key);
 }
 void Env::insert(const llvm::Value &key, const Domain &val) {
-  mem_.stack().insert(cache_.lookup(key), val);
+  auto reg = cache_.lookup(key);
+  auto diff = val.minus(mem_.stack().lookup(reg));
+  mem_.stack().insert(reg, diff);
+  if (log_) {
+    log_->print_diff(dump(diff));
+  }
 }
 void Env::insert(const Symbol &key, const Domain &val) {
   mem_.heap().insert(key, val);
+  auto diff = val.minus(mem_.heap().lookup(key));
+  mem_.heap().insert(key, diff);
+  if (log_) {
+    log_->print_diff(dump(diff));
+  }
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
   if (done.merge(Domain{symbol})) {
