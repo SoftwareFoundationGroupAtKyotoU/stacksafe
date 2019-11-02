@@ -35,6 +35,10 @@ void Log::print_diff(const llvm::BasicBlock &block, const Fabric &fab) const {
   endline(f << hr << block);
   endline(f << fab);
 }
+void Log::print_diff(const Fabric &fab) const {
+  auto &f = file.get();
+  endline(f << fab);
+}
 void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
   const auto hr = "--------------------------------";
   auto &f = file.get();

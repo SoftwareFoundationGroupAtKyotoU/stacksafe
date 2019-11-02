@@ -32,6 +32,7 @@ class Log {
   explicit Log(const llvm::Function &func);
   void print_func(const llvm::Function &f) const;
   void print_diff(const llvm::BasicBlock &block, const Fabric &fab) const;
+  void print_diff(const Fabric &fab) const;
   void print_env(const llvm::BasicBlock &block, const Memory &mem) const;
   void print_inst(const llvm::Instruction &i) const;
 };
