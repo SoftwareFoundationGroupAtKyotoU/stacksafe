@@ -5,6 +5,7 @@
 
 namespace stacksafe {
 
+Domain::Domain(const Super &super) : Super{super} {}
 Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
 bool Domain::merge(const Domain &that) {
   if (includes(that)) {

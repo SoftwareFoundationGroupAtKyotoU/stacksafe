@@ -10,6 +10,7 @@ class Fabric;
 
 class Domain : private std::set<Symbol> {
   using Super = std::set<Symbol>;
+  explicit Domain(const Super &super);
 
  public:
   using Super::begin, Super::end, Super::empty, Super::size;
