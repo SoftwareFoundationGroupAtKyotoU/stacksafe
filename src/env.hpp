@@ -29,7 +29,7 @@ class Env {
   Log *const log_;
 
  public:
-  Env(const Cache &c, const Memory &m);
+  Env(const Cache &c, const Memory &m, Log *l);
   Env(Cache &c, const llvm::Function &f);
   Memory memory() const;
   void binop(const llvm::Value &dst, const llvm::Value &lhs,
