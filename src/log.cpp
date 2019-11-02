@@ -32,6 +32,11 @@ std::string Log::logfilename(const llvm::Function &f) {
 Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
   STACKSAFE_DEBUG_LOG(os = &file.get());
 }
+void Log::print(const llvm::Value &v) const {
+  if (os) {
+    *os << v;
+  }
+}
 void Log::print(const llvm::Function &f) const {
   file.get() << f;
 }
