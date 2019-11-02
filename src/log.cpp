@@ -35,10 +35,6 @@ void Log::print_diff(const llvm::BasicBlock &block, const Fabric &fab) const {
   endline(f << hr << block);
   endline(f << fab);
 }
-void Log::print_diff(const Fabric &fab) const {
-  auto &f = file.get();
-  endline(f << fab);
-}
 void Log::print_diff(const Register &key, const Domain &val) const {
   if (!val.empty()) {
     auto &f = file.get();
