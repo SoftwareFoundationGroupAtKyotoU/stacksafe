@@ -11,10 +11,10 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   Env &env_;
-  Log *const log_;
+  const Log &log_;
 
  public:
-  explicit Interpreter(Env &e, Log *l);
+  explicit Interpreter(Env &e, const Log &l);
   RetTy visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
