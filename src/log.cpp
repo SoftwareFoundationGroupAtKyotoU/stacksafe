@@ -47,6 +47,14 @@ void Log::print_diff(const Register &key, const Domain &val) const {
     endline(f << fab);
   }
 }
+void Log::print_diff(const Symbol &key, const Domain &val) const {
+  if (!val.empty()) {
+    auto &f = file.get();
+    Fabric fab;
+    fab.append(dump(key)).append(": ").append(dump(val));
+    endline(f << fab);
+  }
+}
 void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
   const auto hr = "--------------------------------";
   auto &f = file.get();

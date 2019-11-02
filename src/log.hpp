@@ -16,6 +16,7 @@ class Domain;
 class Fabric;
 class Memory;
 class Register;
+class Symbol;
 
 class LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
@@ -36,6 +37,7 @@ class Log {
   void print_diff(const llvm::BasicBlock &block, const Fabric &fab) const;
   void print_diff(const Fabric &fab) const;
   void print_diff(const Register &key, const Domain &val) const;
+  void print_diff(const Symbol &key, const Domain &val) const;
   void print_env(const llvm::BasicBlock &block, const Memory &mem) const;
   void print_inst(const llvm::Instruction &i) const;
 };

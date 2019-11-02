@@ -1,6 +1,5 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include "fabric.hpp"
 #include "log.hpp"
 #include "utility.hpp"
 
@@ -125,7 +124,7 @@ void Env::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(mem_.heap().lookup(key));
   mem_.heap().insert(key, diff);
   if (log_) {
-    log_->print_diff(dump(diff));
+    log_->print_diff(key, diff);
   }
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
