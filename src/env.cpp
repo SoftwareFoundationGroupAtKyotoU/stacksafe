@@ -131,5 +131,11 @@ void Env::collect(const Symbol &symbol, Domain &done) const {
     }
   }
 }
+void Env::verify_global() const {
+  auto g = Symbol::global();
+  if (has_local(g)) {
+    log_.error_global(lookup(g));
+  }
+}
 
 }  // namespace stacksafe

@@ -53,6 +53,7 @@ class Env {
   void insert(const llvm::Value &key, const Domain &val);
   void insert(const Symbol &key, const Domain &val);
   void collect(const Symbol &symbol, Domain &done) const;
+  void verify_global() const;
 };
 
 }  // namespace stacksafe
