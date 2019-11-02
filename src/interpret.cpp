@@ -9,7 +9,7 @@ Interpreter::Interpreter(Env &e, const Log &l) : env_{e}, log_{l} {}
 auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     Super::visit(i);
-    print(i);
+    log_.print(i);
   }
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
@@ -116,9 +116,6 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
     params.insert(*arg);
   }
   env_.call(i, params);
-}
-void Interpreter::print(const llvm::Instruction &i) const {
-  log_.print(i);
 }
 
 }  // namespace stacksafe
