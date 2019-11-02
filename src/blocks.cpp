@@ -20,7 +20,7 @@ Blocks::Blocks(const llvm::Function &f, Log &l) : log_{l} {
 Blocks::~Blocks() = default;
 Memory Blocks::interpret(const llvm::BasicBlock &b) const {
   Env env{cache_, get(b), log_};
-  Interpreter{env, log_}.visit(b);
+  Interpreter{cache_, env, log_}.visit(b);
   return env.memory();
 }
 bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
@@ -28,7 +28,7 @@ bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
 }
 bool Blocks::verify(const llvm::BasicBlock &b) const {
   Env env{cache_, get(b), log_};
-  Interpreter{env, log_}.visit(b);
+  Interpreter{cache_, env, log_}.visit(b);
   return Verifier{env}.visit(b);
 }
 Memory &Blocks::get(const llvm::BasicBlock &b) {
