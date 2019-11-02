@@ -37,6 +37,20 @@ void Log::print(const llvm::Value &v) const {
     *os << v;
   }
 }
+void Log::print(const Register &key, const Domain &val) const {
+  if (os) {
+    Fabric fab;
+    fab.append(dump(key)).append(": ").append(dump(val));
+    endline(*os << fab);
+  }
+}
+void Log::print(const Symbol &key, const Domain &val) const {
+  if (os) {
+    Fabric fab;
+    fab.append(dump(key)).append(": ").append(dump(val));
+    endline(*os << fab);
+  }
+}
 void Log::print_hr() const {
   const auto hr = "--------------------------------";
   file.get() << hr;
