@@ -13,7 +13,6 @@ Env::Env(const Cache &c, const Memory &m, const Log &l)
     : cache_{c}, mem_{m}, log_{l} {}
 Env::Env(Cache &c, const llvm::Function &f, const Log &l) : cache_{c}, log_{l} {
   auto g = Domain::global();
-  insert(Symbol::global(), g);
   for (const auto &a : f.args()) {
     c.add(a);
     insert(a, g);

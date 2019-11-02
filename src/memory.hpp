@@ -28,7 +28,7 @@ class Memory {
   Stack stack_;
 
  public:
-  Memory() = default;
+  Memory();
   const Heap &heap() const;
   Heap &heap();
   const Stack &stack() const;
