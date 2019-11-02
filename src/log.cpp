@@ -73,5 +73,10 @@ const Log &Log::print_nl() const {
   }
   return *this;
 }
+void Log::error_global(const Domain &dom) const {
+  if (os) {
+    endline(*os << "GLOBAL: " << dump(dom));
+  }
+}
 
 }  // namespace stacksafe
