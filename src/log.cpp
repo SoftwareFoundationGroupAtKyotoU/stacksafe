@@ -60,30 +60,6 @@ void Log::print_func(const llvm::Function &f) const {
   file.get() << hr;
   print(f);
 }
-void Log::print_diff(const llvm::BasicBlock &block, const Fabric &fab) const {
-  const auto hr = "--------------------------------";
-  auto &f = file.get();
-  f << hr;
-  print(block);
-  endline(f);
-  endline(f << fab);
-}
-void Log::print_diff(const Register &key, const Domain &val) const {
-  if (!val.empty()) {
-    auto &f = file.get();
-    Fabric fab;
-    fab.append(dump(key)).append(": ").append(dump(val));
-    endline(f << fab);
-  }
-}
-void Log::print_diff(const Symbol &key, const Domain &val) const {
-  if (!val.empty()) {
-    auto &f = file.get();
-    Fabric fab;
-    fab.append(dump(key)).append(": ").append(dump(val));
-    endline(f << fab);
-  }
-}
 void Log::print_env(const llvm::BasicBlock &block, const Memory &mem) const {
   const auto hr = "--------------------------------";
   auto &f = file.get();

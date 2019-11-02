@@ -40,9 +40,6 @@ class Log {
   void print(const Symbol &key, const Domain &val) const;
   void print_hr() const;
   void print_func(const llvm::Function &f) const;
-  void print_diff(const llvm::BasicBlock &block, const Fabric &fab) const;
-  void print_diff(const Register &key, const Domain &val) const;
-  void print_diff(const Symbol &key, const Domain &val) const;
   void print_env(const llvm::BasicBlock &block, const Memory &mem) const;
   void print_inst(const llvm::Instruction &i) const;
 };

@@ -116,7 +116,7 @@ void Env::insert(const llvm::Value &key, const Domain &val) {
   auto diff = val.minus(mem_.stack().lookup(reg));
   mem_.stack().insert(reg, diff);
   if (log_) {
-    log_->print_diff(reg, diff);
+    log_->print(reg, diff);
   }
 }
 void Env::insert(const Symbol &key, const Domain &val) {
@@ -124,7 +124,7 @@ void Env::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(mem_.heap().lookup(key));
   mem_.heap().insert(key, diff);
   if (log_) {
-    log_->print_diff(key, diff);
+    log_->print(key, diff);
   }
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
