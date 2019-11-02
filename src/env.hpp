@@ -11,6 +11,7 @@ class Value;
 
 namespace stacksafe {
 class Domain;
+class Log;
 class Symbol;
 
 class Params : private std::set<const llvm::Value *> {
@@ -25,6 +26,7 @@ class Params : private std::set<const llvm::Value *> {
 class Env {
   const Cache &cache_;
   Memory mem_;
+  Log *const log_;
 
  public:
   Env(const Cache &c, const Memory &m);

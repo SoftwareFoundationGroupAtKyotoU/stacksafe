@@ -8,8 +8,8 @@ void Params::insert(const llvm::Value &v) {
   Super::insert(&v);
 }
 
-Env::Env(const Cache &c, const Memory &m) : cache_{c}, mem_{m} {}
-Env::Env(Cache &c, const llvm::Function &f) : cache_{c} {
+Env::Env(const Cache &c, const Memory &m) : cache_{c}, mem_{m}, log_{nullptr} {}
+Env::Env(Cache &c, const llvm::Function &f) : cache_{c}, log_{nullptr} {
   auto g = Domain::global();
   insert(Symbol::global(), g);
   for (const auto &a : f.args()) {
