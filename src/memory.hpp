@@ -33,6 +33,7 @@ class Memory {
   Heap &heap();
   const Stack &stack() const;
   Stack &stack();
+  void init_arg(const Register &reg);
   void init(const Register &reg);
   bool includes(const Memory &that) const;
   bool merge(const Memory &that);

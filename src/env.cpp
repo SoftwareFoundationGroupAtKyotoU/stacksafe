@@ -12,10 +12,9 @@ void Params::insert(const llvm::Value &v) {
 Env::Env(const Cache &c, const Memory &m, const Log &l)
     : cache_{c}, mem_{m}, log_{l} {}
 Env::Env(Cache &c, const llvm::Function &f, const Log &l) : cache_{c}, log_{l} {
-  auto g = Domain::global();
   for (const auto &a : f.args()) {
     c.add(a);
-    insert(a, g);
+    mem_.init_arg(c.lookup(a));
   }
   for (const auto &b : f) {
     for (const auto &i : b) {

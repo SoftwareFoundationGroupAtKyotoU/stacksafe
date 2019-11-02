@@ -32,6 +32,9 @@ const Memory::Stack &Memory::stack() const {
 Memory::Stack &Memory::stack() {
   return stack_;
 }
+void Memory::init_arg(const Register &reg) {
+  stack_.insert(reg, Domain::global());
+}
 void Memory::init(const Register &reg) {
   stack_.init(reg);
 }
