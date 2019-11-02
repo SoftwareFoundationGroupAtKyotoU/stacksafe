@@ -29,6 +29,7 @@ class LogFile {
 
 class Log {
   LogFile file;
+  llvm::raw_ostream *os;
   static std::string logfilename(const llvm::Function &f);
 
  public:

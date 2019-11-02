@@ -29,7 +29,9 @@ llvm::raw_ostream &LogFile::get() const {
 std::string Log::logfilename(const llvm::Function &f) {
   return "log/" + f.getName().str() + ".log";
 }
-Log::Log(const llvm::Function &func) : file{logfilename(func)} {}
+Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
+  STACKSAFE_DEBUG_LOG(os = &file.get());
+}
 void Log::print(const llvm::Function &f) const {
   file.get() << f;
 }
