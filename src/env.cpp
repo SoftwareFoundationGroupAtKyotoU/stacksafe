@@ -10,7 +10,7 @@ void Params::insert(const llvm::Value &v) {
 
 Env::Env(const Cache &c, const Memory &m, Log *l)
     : cache_{c}, mem_{m}, log_{l} {}
-Env::Env(Cache &c, const llvm::Function &f) : cache_{c}, log_{nullptr} {
+Env::Env(Cache &c, const llvm::Function &f, Log *l) : cache_{c}, log_{l} {
   auto g = Domain::global();
   insert(Symbol::global(), g);
   for (const auto &a : f.args()) {
