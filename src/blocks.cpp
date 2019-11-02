@@ -12,14 +12,14 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function &f, Log &l) : log_{l} {
-  auto m = Env{cache_, f, &log_}.memory();
+  auto m = Env{cache_, f, log_}.memory();
   for (const auto &b : f) {
     Super::try_emplace(&b, m);
   }
 }
 Blocks::~Blocks() = default;
 Memory Blocks::interpret(const llvm::BasicBlock &b) const {
-  Env env{cache_, get(b), &log_};
+  Env env{cache_, get(b), log_};
   Interpreter{env, log_}.visit(b);
   return env.memory();
 }
@@ -27,7 +27,7 @@ bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
   return get(b).merge(next);
 }
 bool Blocks::verify(const llvm::BasicBlock &b) const {
-  Env env{cache_, get(b), &log_};
+  Env env{cache_, get(b), log_};
   Interpreter{env, log_}.visit(b);
   return Verifier{env}.visit(b);
 }

@@ -9,9 +9,9 @@ void Params::insert(const llvm::Value &v) {
   Super::insert(&v);
 }
 
-Env::Env(const Cache &c, const Memory &m, Log *l)
+Env::Env(const Cache &c, const Memory &m, const Log &l)
     : cache_{c}, mem_{m}, log_{l} {}
-Env::Env(Cache &c, const llvm::Function &f, Log *l) : cache_{c}, log_{l} {
+Env::Env(Cache &c, const llvm::Function &f, const Log &l) : cache_{c}, log_{l} {
   auto g = Domain::global();
   insert(Symbol::global(), g);
   for (const auto &a : f.args()) {
@@ -115,17 +115,13 @@ void Env::insert(const llvm::Value &key, const Domain &val) {
   auto reg = cache_.lookup(key);
   auto diff = val.minus(mem_.stack().lookup(reg));
   mem_.stack().insert(reg, diff);
-  if (log_) {
-    log_->print(reg, diff);
-  }
+  log_.print(reg, diff);
 }
 void Env::insert(const Symbol &key, const Domain &val) {
   mem_.heap().insert(key, val);
   auto diff = val.minus(mem_.heap().lookup(key));
   mem_.heap().insert(key, diff);
-  if (log_) {
-    log_->print(key, diff);
-  }
+  log_.print(key, diff);
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
   if (done.merge(Domain{symbol})) {

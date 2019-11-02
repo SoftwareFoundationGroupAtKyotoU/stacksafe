@@ -26,11 +26,11 @@ class Params : private std::set<const llvm::Value *> {
 class Env {
   const Cache &cache_;
   Memory mem_;
-  Log *const log_;
+  const Log &log_;
 
  public:
-  Env(const Cache &c, const Memory &m, Log *l);
-  Env(Cache &c, const llvm::Function &f, Log *l);
+  Env(const Cache &c, const Memory &m, const Log &l);
+  Env(Cache &c, const llvm::Function &f, const Log &l);
   Memory memory() const;
   void binop(const llvm::Value &dst, const llvm::Value &lhs,
              const llvm::Value &rhs);
