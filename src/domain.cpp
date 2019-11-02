@@ -1,10 +1,13 @@
 #include "domain.hpp"
+#include <algorithm>
+#include <iterator>
 #include <utility>
 #include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
 
+Domain::Domain(const Super &super) : Super{super} {}
 Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
 bool Domain::merge(const Domain &that) {
   if (includes(that)) {
@@ -16,6 +19,12 @@ bool Domain::merge(const Domain &that) {
 }
 bool Domain::includes(const Domain &that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
+}
+Domain Domain::minus(const Domain &that) const {
+  Super ret;
+  std::set_difference(begin(), end(), that.begin(), that.end(),
+                      std::inserter(ret, ret.end()));
+  return Domain{ret};
 }
 bool Domain::has_local() const {
   for (const auto &sym : *this) {

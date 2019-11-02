@@ -6,13 +6,18 @@
 namespace llvm {
 class BasicBlock;
 class Function;
+class Instruction;
+class Value;
 class raw_fd_ostream;
 class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
+class Domain;
 class Fabric;
 class Memory;
+class Register;
+class Symbol;
 
 class LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
@@ -25,13 +30,18 @@ class LogFile {
 
 class Log {
   LogFile file;
+  llvm::raw_ostream *os;
   static std::string logfilename(const llvm::Function &f);
 
  public:
   explicit Log(const llvm::Function &func);
-  void print_func(const llvm::Function &f) const;
-  void print_diff(const llvm::BasicBlock &block, const Fabric &fab) const;
-  void print_env(const llvm::BasicBlock &block, const Memory &mem) const;
+  const Log &print(const llvm::Value &v) const;
+  const Log &print(const Register &key, const Domain &val) const;
+  const Log &print(const Symbol &key, const Domain &val) const;
+  const Log &print_hr() const;
+  const Log &print_hr2() const;
+  const Log &print_nl() const;
+  void error_global(const Domain &dom) const;
 };
 
 }  // namespace stacksafe

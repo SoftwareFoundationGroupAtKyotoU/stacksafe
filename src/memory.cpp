@@ -17,6 +17,9 @@ void Cache::add(const llvm::Value &reg) {
   Super::try_emplace(&reg, *num);
 }
 
+Memory::Memory() {
+  heap_.insert(Symbol::global(), Domain::global());
+}
 const Memory::Heap &Memory::heap() const {
   return heap_;
 }
@@ -28,6 +31,12 @@ const Memory::Stack &Memory::stack() const {
 }
 Memory::Stack &Memory::stack() {
   return stack_;
+}
+void Memory::init_arg(const Register &reg) {
+  stack_.insert(reg, Domain::global());
+}
+void Memory::init_reg(const Register &reg) {
+  stack_.insert(reg, Domain{});
 }
 bool Memory::includes(const Memory &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);

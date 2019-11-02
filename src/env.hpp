@@ -11,6 +11,7 @@ class Value;
 
 namespace stacksafe {
 class Domain;
+class Log;
 class Symbol;
 
 class Params : private std::set<const llvm::Value *> {
@@ -25,10 +26,11 @@ class Params : private std::set<const llvm::Value *> {
 class Env {
   const Cache &cache_;
   Memory mem_;
+  const Log &log_;
 
  public:
-  Env(const Cache &c, const Memory &m);
-  Env(Cache &c, const llvm::Function &f);
+  Env(const Cache &c, const Memory &m, const Log &l);
+  Env(Cache &c, const llvm::Function &f, const Log &l);
   Memory memory() const;
   void binop(const llvm::Value &dst, const llvm::Value &lhs,
              const llvm::Value &rhs);
@@ -51,6 +53,7 @@ class Env {
   void insert(const llvm::Value &key, const Domain &val);
   void insert(const Symbol &key, const Domain &val);
   void collect(const Symbol &symbol, Domain &done) const;
+  void verify_global() const;
 };
 
 }  // namespace stacksafe

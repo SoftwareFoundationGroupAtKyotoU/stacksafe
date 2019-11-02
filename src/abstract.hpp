@@ -4,6 +4,7 @@
 #include <memory>
 #include "blocks.hpp"
 #include "json_fwd.hpp"
+#include "log.hpp"
 
 namespace llvm {
 class Function;
@@ -13,6 +14,7 @@ class raw_ostream;
 namespace stacksafe {
 
 class Abstract {
+  Log log_;
   Blocks blocks_;
   const llvm::Function &func_;
   bool safe_;

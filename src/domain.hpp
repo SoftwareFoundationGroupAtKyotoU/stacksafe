@@ -10,6 +10,7 @@ class Fabric;
 
 class Domain : private std::set<Symbol> {
   using Super = std::set<Symbol>;
+  explicit Domain(const Super &super);
 
  public:
   using Super::begin, Super::end, Super::empty, Super::size;
@@ -17,6 +18,7 @@ class Domain : private std::set<Symbol> {
   explicit Domain(std::initializer_list<Symbol> list);
   bool merge(const Domain &that);
   bool includes(const Domain &that) const;
+  Domain minus(const Domain &that) const;
   bool has_local() const;
   static Domain global();
 };

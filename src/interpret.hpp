@@ -5,14 +5,16 @@
 
 namespace stacksafe {
 class Env;
+class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   Env &env_;
+  const Log &log_;
 
  public:
-  explicit Interpreter(Env &e);
+  explicit Interpreter(Env &e, const Log &l);
   RetTy visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);

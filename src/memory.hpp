@@ -28,11 +28,13 @@ class Memory {
   Stack stack_;
 
  public:
-  Memory() = default;
+  Memory();
   const Heap &heap() const;
   Heap &heap();
   const Stack &stack() const;
   Stack &stack();
+  void init_arg(const Register &reg);
+  void init_reg(const Register &reg);
   bool includes(const Memory &that) const;
   bool merge(const Memory &that);
   Fabric diff(const Memory &that) const;

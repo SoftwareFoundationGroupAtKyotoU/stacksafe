@@ -6,7 +6,7 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
-    : blocks_{f}, func_{f}, safe_{true} {}
+    : log_{f}, blocks_{f, log_}, func_{f}, safe_{true} {}
 auto Abstract::blocks() const -> const Blocks & {
   return blocks_;
 }
@@ -14,10 +14,9 @@ void Abstract::interpret() {
   interpret(func_.getEntryBlock());
 }
 void Abstract::verify() {
-  blocks_.print_func(func_);
+  log_.print(func_);
   safe_ = true;
   for (const auto &b : func_) {
-    blocks_.print_env(b);
     if (!blocks_.verify(b)) {
       safe_ = false;
     }
@@ -35,8 +34,8 @@ void Abstract::print(llvm::raw_ostream &os) const {
   endline(os, true);
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
+  log_.print_hr2().print(b).print_hr().print_nl();
   auto result = blocks_.interpret(b);
-  blocks_.print_diff(b, result);
   auto t = b.getTerminator();
   assert(t && "invalid basicblock");
   for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {

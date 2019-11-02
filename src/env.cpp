@@ -1,5 +1,6 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
+#include "log.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -8,19 +9,18 @@ void Params::insert(const llvm::Value &v) {
   Super::insert(&v);
 }
 
-Env::Env(const Cache &c, const Memory &m) : cache_{c}, mem_{m} {}
-Env::Env(Cache &c, const llvm::Function &f) : cache_{c} {
-  auto g = Domain::global();
-  insert(Symbol::global(), g);
+Env::Env(const Cache &c, const Memory &m, const Log &l)
+    : cache_{c}, mem_{m}, log_{l} {}
+Env::Env(Cache &c, const llvm::Function &f, const Log &l) : cache_{c}, log_{l} {
   for (const auto &a : f.args()) {
     c.add(a);
-    insert(a, g);
+    mem_.init_arg(c.lookup(a));
   }
   for (const auto &b : f) {
     for (const auto &i : b) {
       if (check_register(i)) {
         c.add(i);
-        insert(i, Domain{});
+        mem_.init_reg(c.lookup(i));
       }
     }
   }
@@ -110,16 +110,31 @@ Domain Env::lookup(const Symbol &key) const {
   return mem_.heap().lookup(key);
 }
 void Env::insert(const llvm::Value &key, const Domain &val) {
-  mem_.stack().insert(cache_.lookup(key), val);
+  auto reg = cache_.lookup(key);
+  auto diff = val.minus(mem_.stack().lookup(reg));
+  mem_.stack().insert(reg, diff);
+  if (!diff.empty()) {
+    log_.print(reg, diff);
+  }
 }
 void Env::insert(const Symbol &key, const Domain &val) {
-  mem_.heap().insert(key, val);
+  auto diff = val.minus(mem_.heap().lookup(key));
+  mem_.heap().insert(key, diff);
+  if (!diff.empty()) {
+    log_.print(key, diff);
+  }
 }
 void Env::collect(const Symbol &symbol, Domain &done) const {
   if (done.merge(Domain{symbol})) {
     for (const auto &sym : lookup(symbol)) {
       collect(sym, done);
     }
+  }
+}
+void Env::verify_global() const {
+  auto g = Symbol::global();
+  if (has_local(g)) {
+    log_.error_global(lookup(g));
   }
 }
 
