@@ -15,11 +15,11 @@ class Log;
 class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   using Super = std::map<const llvm::BasicBlock *, Memory>;
   Cache cache_;
-  std::unique_ptr<Log> log_;
+  Log &log_;
 
  public:
   using Super::begin, Super::end;
-  explicit Blocks(const llvm::Function &f);
+  explicit Blocks(const llvm::Function &f, Log &l);
   ~Blocks();
   Memory interpret(const llvm::BasicBlock &b) const;
   bool update(const llvm::BasicBlock &b, const Memory &next);
