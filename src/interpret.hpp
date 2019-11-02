@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177
 
 #include <llvm/IR/InstVisitor.h>
+#include "memory.hpp"
 
 namespace stacksafe {
 class Cache;
@@ -14,6 +15,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   const Cache &cache_;
   Env &env_;
   const Log &log_;
+  Memory mem_;
 
  public:
   explicit Interpreter(const Cache &c, Env &e, const Log &l);
