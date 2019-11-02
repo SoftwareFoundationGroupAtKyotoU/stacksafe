@@ -20,7 +20,7 @@ Env::Env(Cache &c, const llvm::Function &f, const Log &l) : cache_{c}, log_{l} {
     for (const auto &i : b) {
       if (check_register(i)) {
         c.add(i);
-        insert(i, Domain{});
+        mem_.init_reg(c.lookup(i));
       }
     }
   }
