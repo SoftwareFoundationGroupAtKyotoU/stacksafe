@@ -10,6 +10,7 @@ auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     Super::visit(i);
     log_.print(i);
+    log_.print_nl();
   }
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {

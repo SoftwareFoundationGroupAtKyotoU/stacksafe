@@ -55,5 +55,10 @@ void Log::print_hr() const {
   const auto hr = "--------------------------------";
   file.get() << hr;
 }
+void Log::print_nl() const {
+  if (os) {
+    endline(*os);
+  }
+}
 
 }  // namespace stacksafe
