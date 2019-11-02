@@ -34,7 +34,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
   endline(os, true);
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  log_.print_hr().print(b).print_hr().print_nl();
+  log_.print_hr2().print(b).print_hr().print_nl();
   auto result = blocks_.interpret(b);
   auto t = b.getTerminator();
   assert(t && "invalid basicblock");

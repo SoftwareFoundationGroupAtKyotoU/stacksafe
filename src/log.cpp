@@ -60,6 +60,13 @@ const Log &Log::print_hr() const {
   }
   return *this;
 }
+const Log &Log::print_hr2() const {
+  if (os) {
+    const auto hr = "================================";
+    *os << hr;
+  }
+  return *this;
+}
 const Log &Log::print_nl() const {
   if (os) {
     endline(*os);
