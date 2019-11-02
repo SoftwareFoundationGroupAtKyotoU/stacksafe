@@ -55,8 +55,5 @@ void Log::print_hr() const {
   const auto hr = "--------------------------------";
   file.get() << hr;
 }
-void Log::print_inst(const llvm::Instruction &i) const {
-  endline(file.get() << to_str(i));
-}
 
 }  // namespace stacksafe

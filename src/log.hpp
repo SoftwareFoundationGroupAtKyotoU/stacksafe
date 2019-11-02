@@ -39,7 +39,6 @@ class Log {
   void print(const Register &key, const Domain &val) const;
   void print(const Symbol &key, const Domain &val) const;
   void print_hr() const;
-  void print_inst(const llvm::Instruction &i) const;
 };
 
 }  // namespace stacksafe

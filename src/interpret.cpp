@@ -119,7 +119,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 void Interpreter::print(const llvm::Instruction &i) const {
   if (log_) {
-    log_->print_inst(i);
+    log_->print(i);
   }
 }
 
