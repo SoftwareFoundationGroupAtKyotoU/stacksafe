@@ -34,7 +34,7 @@ class Memory {
   const Stack &stack() const;
   Stack &stack();
   void init_arg(const Register &reg);
-  void init(const Register &reg);
+  void init_reg(const Register &reg);
   bool includes(const Memory &that) const;
   bool merge(const Memory &that);
   Fabric diff(const Memory &that) const;
