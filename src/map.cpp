@@ -15,10 +15,6 @@ std::optional<Domain> Map<K>::get(const K &key) const {
   return std::nullopt;
 }
 template <typename K>
-void Map<K>::init(const K &key) {
-  Super::try_emplace(key, Domain{});
-}
-template <typename K>
 bool Map<K>::insert(const K &key, const Domain &val) {
   if (auto it = Super::find(key); it != end()) {
     return it->second.merge(val);
