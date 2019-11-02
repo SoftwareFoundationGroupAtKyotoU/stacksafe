@@ -116,7 +116,6 @@ void Env::insert(const llvm::Value &key, const Domain &val) {
   log_.print(reg, diff);
 }
 void Env::insert(const Symbol &key, const Domain &val) {
-  mem_.heap().insert(key, val);
   auto diff = val.minus(mem_.heap().lookup(key));
   mem_.heap().insert(key, diff);
   log_.print(key, diff);
