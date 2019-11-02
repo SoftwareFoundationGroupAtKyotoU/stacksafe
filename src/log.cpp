@@ -14,9 +14,8 @@ namespace stacksafe {
 
 LogFile::LogFile(const std::string &name) {
   std::error_code error;
-  STACKSAFE_DEBUG_LOG(file =
-                          std::make_unique<llvm::raw_fd_ostream>(name, error));
-
+  STACKSAFE_DEBUG_LOG(
+      { file = std::make_unique<llvm::raw_fd_ostream>(name, error); });
   if (error) {
     endline(llvm::errs() << "Error: " << error.message());
   }
