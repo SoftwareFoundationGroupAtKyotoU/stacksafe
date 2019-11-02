@@ -31,15 +31,6 @@ bool Blocks::verify(const llvm::BasicBlock &b) const {
   Interpreter{env, &log_}.visit(b);
   return Verifier{env}.visit(b);
 }
-void Blocks::print_func(const llvm::Function &f) const {
-  STACKSAFE_DEBUG_LOG(log_.print_func(f));
-}
-void Blocks::print_diff(const llvm::BasicBlock &b, const Memory &next) const {
-  STACKSAFE_DEBUG_LOG(log_.print_diff(b, get(b).diff(next)));
-}
-void Blocks::print_env(const llvm::BasicBlock &b) const {
-  STACKSAFE_DEBUG_LOG(log_.print_env(b, get(b)));
-}
 Memory &Blocks::get(const llvm::BasicBlock &b) {
   auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");

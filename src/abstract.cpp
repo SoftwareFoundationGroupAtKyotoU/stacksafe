@@ -14,10 +14,9 @@ void Abstract::interpret() {
   interpret(func_.getEntryBlock());
 }
 void Abstract::verify() {
-  blocks_.print_func(func_);
+  log_.print(func_);
   safe_ = true;
   for (const auto &b : func_) {
-    blocks_.print_env(b);
     if (!blocks_.verify(b)) {
       safe_ = false;
     }
