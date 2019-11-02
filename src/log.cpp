@@ -31,6 +31,10 @@ void Log::print(const llvm::Function &f) const {
 void Log::print(const llvm::BasicBlock &b) const {
   file.get() << b;
 }
+void Log::print_hr() const {
+  const auto hr = "--------------------------------";
+  file.get() << hr;
+}
 void Log::print_func(const llvm::Function &f) const {
   const auto hr = "================================";
   file.get() << hr;
