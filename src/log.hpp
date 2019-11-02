@@ -35,11 +35,11 @@ class Log {
 
  public:
   explicit Log(const llvm::Function &func);
-  void print(const llvm::Value &v) const;
-  void print(const Register &key, const Domain &val) const;
-  void print(const Symbol &key, const Domain &val) const;
-  void print_hr() const;
-  void print_nl() const;
+  const Log &print(const llvm::Value &v) const;
+  const Log &print(const Register &key, const Domain &val) const;
+  const Log &print(const Symbol &key, const Domain &val) const;
+  const Log &print_hr() const;
+  const Log &print_nl() const;
 };
 
 }  // namespace stacksafe

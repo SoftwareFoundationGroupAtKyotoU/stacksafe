@@ -31,35 +31,40 @@ std::string Log::logfilename(const llvm::Function &f) {
 Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
   STACKSAFE_DEBUG_LOG(os = &file.get());
 }
-void Log::print(const llvm::Value &v) const {
+const Log &Log::print(const llvm::Value &v) const {
   if (os) {
     *os << v;
   }
+  return *this;
 }
-void Log::print(const Register &key, const Domain &val) const {
+const Log &Log::print(const Register &key, const Domain &val) const {
   if (os) {
     Fabric fab;
     fab.append(dump(key)).append(": ").append(dump(val));
     endline(*os << fab);
   }
+  return *this;
 }
-void Log::print(const Symbol &key, const Domain &val) const {
+const Log &Log::print(const Symbol &key, const Domain &val) const {
   if (os) {
     Fabric fab;
     fab.append(dump(key)).append(": ").append(dump(val));
     endline(*os << fab);
   }
+  return *this;
 }
-void Log::print_hr() const {
+const Log &Log::print_hr() const {
   if (os) {
     const auto hr = "--------------------------------";
     endline(*os << hr);
   }
+  return *this;
 }
-void Log::print_nl() const {
+const Log &Log::print_nl() const {
   if (os) {
     endline(*os);
   }
+  return *this;
 }
 
 }  // namespace stacksafe
