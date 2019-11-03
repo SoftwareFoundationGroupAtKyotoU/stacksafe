@@ -10,12 +10,13 @@ Interpreter::Interpreter(const Cache &c, const Log &l)
 const Memory &Interpreter::memory() const {
   return mem_;
 }
-auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
+bool Interpreter::visit(const llvm::BasicBlock &b) {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     Super::visit(i);
     log_.print(i);
     log_.print_nl();
   }
+  return error_;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
