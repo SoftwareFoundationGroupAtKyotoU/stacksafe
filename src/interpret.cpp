@@ -166,5 +166,11 @@ void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
   }
   insert(dst, dom);
 }
+void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
+  auto source = lookup(src);
+  for (const auto &target : lookup(dst)) {
+    insert(target, source);
+  }
+}
 
 }  // namespace stacksafe
