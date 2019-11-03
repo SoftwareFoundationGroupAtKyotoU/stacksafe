@@ -147,6 +147,13 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
     log_.print(reg, diff);
   }
 }
+void Interpreter::collect(const Symbol &symbol, Domain &done) const {
+  if (done.merge(Domain{symbol})) {
+    for (const auto &sym : lookup(symbol)) {
+      collect(sym, done);
+    }
+  }
+}
 void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
                         const llvm::Value &rhs) {
   Domain dom;
