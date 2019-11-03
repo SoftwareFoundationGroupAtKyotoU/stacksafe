@@ -83,5 +83,10 @@ void Log::error_call(const llvm::Value &v) const {
     endline(*os << "CALL: " << v);
   }
 }
+void Log::error_return(const llvm::Value &v) const {
+  if (os) {
+    endline(*os << "RETURN: " << v);
+  }
+}
 
 }  // namespace stacksafe
