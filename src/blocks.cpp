@@ -5,7 +5,6 @@
 #include "interpret.hpp"
 #include "log.hpp"
 #include "utility.hpp"
-#include "verify.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 

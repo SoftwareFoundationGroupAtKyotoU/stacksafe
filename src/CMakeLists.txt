@@ -25,7 +25,6 @@ target_sources(${target} PRIVATE
   register.cpp
   symbol.cpp
   utility.cpp
-  verify.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
