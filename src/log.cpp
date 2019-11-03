@@ -78,5 +78,10 @@ void Log::error_global(const Domain &dom) const {
     endline(*os << "GLOBAL: " << dump(dom));
   }
 }
+void Log::error_call(const llvm::Value &v) const {
+  if (os) {
+    endline(*os << "CALL: " << v);
+  }
+}
 
 }  // namespace stacksafe

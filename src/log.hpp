@@ -42,6 +42,7 @@ class Log {
   const Log &print_hr2() const;
   const Log &print_nl() const;
   void error_global(const Domain &dom) const;
+  void error_call(const llvm::Value &v) const;
 };
 
 }  // namespace stacksafe
