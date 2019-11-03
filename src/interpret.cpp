@@ -135,7 +135,9 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
 void Interpreter::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(mem_.lookup(key));
   mem_.insert(key, diff);
-  if (!diff.empty()) {
+  if (!key.is_local() && diff.has_local()) {
+    log_.error_global(diff);
+  } else if (!diff.empty()) {
     log_.print(key, diff);
   }
 }
