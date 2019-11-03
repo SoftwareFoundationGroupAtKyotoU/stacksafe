@@ -147,5 +147,12 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
     log_.print(reg, diff);
   }
 }
+void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
+                        const llvm::Value &rhs) {
+  Domain dom;
+  dom.merge(lookup(lhs));
+  dom.merge(lookup(rhs));
+  insert(dst, dom);
+}
 
 }  // namespace stacksafe
