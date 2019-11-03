@@ -1,35 +1,40 @@
 #include "blocks.hpp"
 #include <llvm/Support/Debug.h>
-#include "env.hpp"
 #include "fabric.hpp"
 #include "interpret.hpp"
 #include "log.hpp"
 #include "utility.hpp"
-#include "verify.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, Log &l) : log_{l} {
-  auto m = Env{cache_, f, log_}.memory();
+Blocks::Blocks(const llvm::Function &f, Log &l)
+    : cache_{f}, log_{l}, error_{false} {
+  auto g = Domain::global();
+  Memory entry;
+  entry.insert(Symbol::global(), g);
+  for (const auto &a : f.args()) {
+    entry.insert(cache_.lookup(a), g);
+  }
+  Super::try_emplace(&f.getEntryBlock(), entry);
   for (const auto &b : f) {
-    Super::try_emplace(&b, m);
+    Super::try_emplace(&b, Memory{});
   }
 }
 Blocks::~Blocks() = default;
-Memory Blocks::interpret(const llvm::BasicBlock &b) const {
-  Env env{cache_, get(b), log_};
-  Interpreter{env, log_}.visit(b);
-  return env.memory();
+bool Blocks::is_error() const {
+  return error_;
+}
+Memory Blocks::interpret(const llvm::BasicBlock &b) {
+  Interpreter i{cache_, log_, get(b)};
+  if (i.visit(b)) {
+    error_ = true;
+  }
+  return i.memory();
 }
 bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
   return get(b).merge(next);
-}
-bool Blocks::verify(const llvm::BasicBlock &b) const {
-  Env env{cache_, get(b), log_};
-  Interpreter{env, log_}.visit(b);
-  return Verifier{env}.visit(b);
 }
 Memory &Blocks::get(const llvm::BasicBlock &b) {
   auto it = Super::find(&b);

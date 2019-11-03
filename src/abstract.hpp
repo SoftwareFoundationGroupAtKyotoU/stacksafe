@@ -22,8 +22,7 @@ class Abstract {
  public:
   explicit Abstract(const llvm::Function &f);
   const Blocks &blocks() const;
-  void interpret();
-  void verify();
+  void run();
   void print(llvm::raw_ostream &os) const;
 
  private:

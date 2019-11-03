@@ -2,20 +2,25 @@
 #define INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177
 
 #include <llvm/IR/InstVisitor.h>
+#include "memory.hpp"
 
 namespace stacksafe {
-class Env;
+class Cache;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
-  Env &env_;
+  using Params = std::set<const llvm::Value *>;
+  const Cache &cache_;
   const Log &log_;
+  Memory mem_;
+  bool error_;
 
  public:
-  explicit Interpreter(Env &e, const Log &l);
-  RetTy visit(const llvm::BasicBlock &b);
+  explicit Interpreter(const Cache &c, const Log &l, const Memory &m);
+  const Memory &memory() const;
+  bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
@@ -34,6 +39,25 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitPHINode(llvm::PHINode &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
   RetTy visitCallInst(llvm::CallInst &i);
+  RetTy visitReturnInst(llvm::ReturnInst &i);
+
+ private:
+  Domain lookup(const Symbol &key) const;
+  Domain lookup(const llvm::Value &key) const;
+  void insert(const Symbol &key, const Domain &val);
+  void insert(const llvm::Value &key, const Domain &val);
+  void collect(const Symbol &symbol, Domain &done) const;
+  void binop(const llvm::Value &dst, const llvm::Value &lhs,
+             const llvm::Value &rhs);
+  void alloc(const llvm::Value &dst);
+  void load(const llvm::Value &dst, const llvm::Value &src);
+  void store(const llvm::Value &src, const llvm::Value &dst);
+  void cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
+               const llvm::Value &val);
+  void cast(const llvm::Value &dst, const llvm::Value &src);
+  void phi(const llvm::Value &dst, const Params &params);
+  void call(const llvm::Value &dst, const Params &params);
+  void constant(const llvm::Value &dst);
 };
 
 }  // namespace stacksafe

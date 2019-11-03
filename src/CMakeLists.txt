@@ -15,7 +15,6 @@ target_sources(${target} PRIVATE
   abstract.cpp
   blocks.cpp
   domain.cpp
-  env.cpp
   fabric.cpp
   interpret.cpp
   json.cpp
@@ -25,7 +24,6 @@ target_sources(${target} PRIVATE
   register.cpp
   symbol.cpp
   utility.cpp
-  verify.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})

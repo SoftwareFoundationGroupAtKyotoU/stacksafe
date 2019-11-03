@@ -10,16 +10,10 @@ Abstract::Abstract(const llvm::Function &f)
 auto Abstract::blocks() const -> const Blocks & {
   return blocks_;
 }
-void Abstract::interpret() {
+void Abstract::run() {
   interpret(func_.getEntryBlock());
-}
-void Abstract::verify() {
-  log_.print(func_);
-  safe_ = true;
-  for (const auto &b : func_) {
-    if (!blocks_.verify(b)) {
-      safe_ = false;
-    }
+  if (blocks_.is_error()) {
+    safe_ = false;
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
