@@ -36,12 +36,6 @@ const Memory::Heap &Memory::heap() const {
 const Memory::Stack &Memory::stack() const {
   return stack_;
 }
-void Memory::init_arg(const Register &reg) {
-  stack_.insert(reg, Domain::global());
-}
-void Memory::init_reg(const Register &reg) {
-  stack_.insert(reg, Domain{});
-}
 bool Memory::includes(const Memory &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
