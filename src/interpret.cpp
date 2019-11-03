@@ -1,5 +1,4 @@
 #include "interpret.hpp"
-#include "env.hpp"
 #include "log.hpp"
 #include "utility.hpp"
 

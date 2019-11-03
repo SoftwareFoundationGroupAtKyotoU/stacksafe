@@ -6,9 +6,7 @@
 
 namespace stacksafe {
 class Cache;
-class Env;
 class Log;
-class Params;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;

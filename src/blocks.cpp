@@ -1,6 +1,5 @@
 #include "blocks.hpp"
 #include <llvm/Support/Debug.h>
-#include "env.hpp"
 #include "fabric.hpp"
 #include "interpret.hpp"
 #include "log.hpp"
