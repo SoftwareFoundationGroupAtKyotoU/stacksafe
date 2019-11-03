@@ -1,4 +1,5 @@
 #include "memory.hpp"
+#include <llvm/IR/Function.h>
 #include "fabric.hpp"
 #include "json.hpp"
 #include "register.hpp"
@@ -6,6 +7,18 @@
 
 namespace stacksafe {
 
+Cache::Cache(const llvm::Function &f) {
+  for (const auto &a : f.args()) {
+    add(a);
+  }
+  for (const auto &b : f) {
+    for (const auto &i : b) {
+      if (check_register(i)) {
+        add(i);
+      }
+    }
+  }
+}
 Register Cache::lookup(const llvm::Value &key) const {
   auto it = Super::find(&key);
   assert(Super::end() != it && "not registered in cache");

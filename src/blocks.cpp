@@ -11,7 +11,7 @@
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, Log &l) : log_{l} {
+Blocks::Blocks(const llvm::Function &f, Log &l) : cache_{f}, log_{l} {
   auto m = Env{cache_, f, log_}.memory();
   for (const auto &b : f) {
     Super::try_emplace(&b, m);
