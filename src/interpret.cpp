@@ -119,6 +119,13 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   }
   env_.call(i, params);
 }
+auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
+  if (auto ret = i.getReturnValue()) {
+    if (lookup(*ret).has_local()) {
+      log_.error_return(i);
+    }
+  }
+}
 Domain Interpreter::lookup(const Symbol &key) const {
   return mem_.lookup(key);
 }

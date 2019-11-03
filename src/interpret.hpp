@@ -39,6 +39,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitPHINode(llvm::PHINode &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
   RetTy visitCallInst(llvm::CallInst &i);
+  RetTy visitReturnInst(llvm::ReturnInst &i);
 
  private:
   Domain lookup(const Symbol &key) const;
