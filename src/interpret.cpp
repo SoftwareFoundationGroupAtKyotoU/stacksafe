@@ -11,9 +11,8 @@ const Memory &Interpreter::memory() const {
 }
 bool Interpreter::visit(const llvm::BasicBlock &b) {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
+    log_.print(i).print_nl();
     Super::visit(i);
-    log_.print(i);
-    log_.print_nl();
   }
   return error_;
 }
