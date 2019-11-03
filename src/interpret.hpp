@@ -14,7 +14,6 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Cache &cache_;
-  Env &env_;
   const Log &log_;
   Memory mem_;
 
