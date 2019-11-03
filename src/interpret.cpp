@@ -159,5 +159,12 @@ void Interpreter::alloc(const llvm::Value &dst) {
   insert(sym, Domain{});
   insert(dst, Domain{sym});
 }
+void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
+  Domain dom;
+  for (const auto &sym : lookup(src)) {
+    dom.merge(lookup(sym));
+  }
+  insert(dst, dom);
+}
 
 }  // namespace stacksafe
