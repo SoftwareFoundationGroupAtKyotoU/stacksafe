@@ -18,7 +18,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   bool error_;
 
  public:
-  explicit Interpreter(const Cache &c, const Log &l);
+  explicit Interpreter(const Cache &c, const Log &l, const Memory &m);
   const Memory &memory() const;
   bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
