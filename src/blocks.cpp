@@ -11,6 +11,13 @@ namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function &f, Log &l)
     : cache_{f}, log_{l}, error_{false} {
+  auto g = Domain::global();
+  Memory entry;
+  entry.insert(Symbol::global(), g);
+  for (const auto &a : f.args()) {
+    entry.insert(cache_.lookup(a), g);
+  }
+  Super::try_emplace(&f.getEntryBlock(), entry);
   for (const auto &b : f) {
     Super::try_emplace(&b, Memory{});
   }
