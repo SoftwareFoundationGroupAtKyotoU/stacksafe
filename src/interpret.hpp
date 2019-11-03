@@ -16,6 +16,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   const Cache &cache_;
   const Log &log_;
   Memory mem_;
+  bool error_;
 
  public:
   explicit Interpreter(const Cache &c, const Log &l);
