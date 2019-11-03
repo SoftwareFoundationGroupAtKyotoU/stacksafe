@@ -38,6 +38,8 @@ class Memory {
   bool includes(const Memory &that) const;
   bool merge(const Memory &that);
   Fabric diff(const Memory &that) const;
+  Domain lookup(const Symbol &key) const;
+  Domain lookup(const Register &key) const;
 };
 void to_json(Json &j, const Memory &x);
 

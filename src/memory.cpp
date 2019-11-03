@@ -57,6 +57,12 @@ Fabric Memory::diff(const Memory &that) const {
   ret.append(stack().diff(that.stack())).next();
   return ret;
 }
+Domain Memory::lookup(const Symbol &key) const {
+  return heap_.lookup(key);
+}
+Domain Memory::lookup(const Register &key) const {
+  return stack_.lookup(key);
+}
 void to_json(Json &j, const Memory &x) {
   j["heap"] = x.heap();
   j["stack"] = x.stack();
