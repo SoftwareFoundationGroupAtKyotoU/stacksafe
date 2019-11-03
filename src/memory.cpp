@@ -33,13 +33,7 @@ void Cache::add(const llvm::Value &reg) {
 const Memory::Heap &Memory::heap() const {
   return heap_;
 }
-Memory::Heap &Memory::heap() {
-  return heap_;
-}
 const Memory::Stack &Memory::stack() const {
-  return stack_;
-}
-Memory::Stack &Memory::stack() {
   return stack_;
 }
 void Memory::init_arg(const Register &reg) {
