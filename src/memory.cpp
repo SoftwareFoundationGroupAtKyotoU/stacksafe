@@ -30,9 +30,6 @@ void Cache::add(const llvm::Value &reg) {
   Super::try_emplace(&reg, *num);
 }
 
-Memory::Memory() {
-  heap_.insert(Symbol::global(), Domain::global());
-}
 const Memory::Heap &Memory::heap() const {
   return heap_;
 }
