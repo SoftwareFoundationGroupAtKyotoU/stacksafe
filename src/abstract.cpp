@@ -16,15 +16,6 @@ void Abstract::interpret() {
     safe_ = false;
   }
 }
-void Abstract::verify() {
-  log_.print(func_);
-  safe_ = true;
-  for (const auto &b : func_) {
-    if (!blocks_.verify(b)) {
-      safe_ = false;
-    }
-  }
-}
 void Abstract::print(llvm::raw_ostream &os) const {
   if (os.is_displayed()) {
     if (safe_) {

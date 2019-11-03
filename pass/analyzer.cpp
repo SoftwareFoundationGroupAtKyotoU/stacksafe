@@ -18,7 +18,6 @@ struct Analyzer : public llvm::FunctionPass {
     assert(abst && "allocation failed");
     Symbol::reset();
     abst->interpret();
-    abst->verify();
     return false;
   }
   void print(llvm::raw_ostream &os, const llvm::Module *) const override {
