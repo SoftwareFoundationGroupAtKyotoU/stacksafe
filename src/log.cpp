@@ -84,9 +84,9 @@ void Log::error_global(const Domain &dom) const {
     endline(*os << "ERROR[GLOBAL]: " << dump(dom));
   }
 }
-void Log::error_call(const llvm::Value &v) const {
+void Log::error_call(const Domain &v) const {
   if (os) {
-    endline(*os << "ERROR[CALL]: " << v);
+    endline(*os << "ERROR[CALL]: " << dump(v));
   }
 }
 void Log::error_return(const Domain &v) const {
