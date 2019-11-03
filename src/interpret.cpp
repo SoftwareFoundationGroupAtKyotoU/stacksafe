@@ -119,6 +119,19 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   }
   env_.call(i, params);
 }
+Domain Interpreter::lookup(const Symbol &key) const {
+  return mem_.lookup(key);
+}
+Domain Interpreter::lookup(const llvm::Value &key) const {
+  if (check_register(key)) {
+    return mem_.lookup(cache_.lookup(key));
+  } else if (check_global(key)) {
+    return Domain::global();
+  } else if (check_constant(key)) {
+    return Domain{};
+  }
+  stacksafe_unreachable("neither register nor constant", key);
+}
 void Interpreter::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(mem_.lookup(key));
   mem_.insert(key, diff);

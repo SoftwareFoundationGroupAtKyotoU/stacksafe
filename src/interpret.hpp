@@ -40,6 +40,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitCallInst(llvm::CallInst &i);
 
  private:
+  Domain lookup(const Symbol &key) const;
+  Domain lookup(const llvm::Value &key) const;
   void insert(const Symbol &key, const Domain &val);
   void insert(const llvm::Value &key, const Domain &val);
 };
