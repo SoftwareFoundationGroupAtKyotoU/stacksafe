@@ -180,5 +180,12 @@ void Interpreter::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
 void Interpreter::cast(const llvm::Value &dst, const llvm::Value &src) {
   insert(dst, lookup(src));
 }
+void Interpreter::phi(const llvm::Value &dst, const Params &params) {
+  Domain dom;
+  for (const auto &val : params) {
+    dom.merge(lookup(*val));
+  }
+  insert(dst, dom);
+}
 
 }  // namespace stacksafe

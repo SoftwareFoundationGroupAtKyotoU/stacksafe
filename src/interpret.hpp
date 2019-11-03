@@ -8,6 +8,7 @@ namespace stacksafe {
 class Cache;
 class Env;
 class Log;
+class Params;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
@@ -52,6 +53,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
                const llvm::Value &val);
   void cast(const llvm::Value &dst, const llvm::Value &src);
+  void phi(const llvm::Value &dst, const Params &params);
 };
 
 }  // namespace stacksafe
