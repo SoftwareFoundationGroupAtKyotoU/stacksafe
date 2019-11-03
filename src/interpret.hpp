@@ -49,6 +49,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void alloc(const llvm::Value &dst);
   void load(const llvm::Value &dst, const llvm::Value &src);
   void store(const llvm::Value &src, const llvm::Value &dst);
+  void cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
+               const llvm::Value &val);
 };
 
 }  // namespace stacksafe
