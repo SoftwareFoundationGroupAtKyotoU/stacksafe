@@ -119,5 +119,20 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   }
   env_.call(i, params);
 }
+void Interpreter::insert(const Symbol &key, const Domain &val) {
+  auto diff = val.minus(mem_.lookup(key));
+  mem_.insert(key, diff);
+  if (!diff.empty()) {
+    log_.print(key, diff);
+  }
+}
+void Interpreter::insert(const llvm::Value &key, const Domain &val) {
+  auto reg = cache_.lookup(key);
+  auto diff = val.minus(mem_.lookup(reg));
+  mem_.insert(reg, diff);
+  if (!diff.empty()) {
+    log_.print(reg, diff);
+  }
+}
 
 }  // namespace stacksafe
