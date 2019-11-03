@@ -19,6 +19,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
 
  public:
   explicit Interpreter(const Cache &c, const Log &l);
+  const Memory &memory() const;
   RetTy visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
