@@ -5,8 +5,7 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Cache &c, Env &e, const Log &l)
-    : cache_{c}, log_{l} {}
+Interpreter::Interpreter(const Cache &c, const Log &l) : cache_{c}, log_{l} {}
 auto Interpreter::visit(const llvm::BasicBlock &b) -> RetTy {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     Super::visit(i);
