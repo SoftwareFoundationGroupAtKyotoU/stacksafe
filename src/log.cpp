@@ -81,17 +81,17 @@ const Log &Log::print_nl() const {
 }
 void Log::error_global(const Domain &dom) const {
   if (os) {
-    endline(*os << "GLOBAL: " << dump(dom));
+    endline(*os << "ERROR[GLOBAL]: " << dump(dom));
   }
 }
 void Log::error_call(const llvm::Value &v) const {
   if (os) {
-    endline(*os << "CALL: " << v);
+    endline(*os << "ERROR[CALL]: " << v);
   }
 }
 void Log::error_return(const llvm::Value &v) const {
   if (os) {
-    endline(*os << "RETURN: " << v);
+    endline(*os << "ERROR[RETURN]: " << v);
   }
 }
 
