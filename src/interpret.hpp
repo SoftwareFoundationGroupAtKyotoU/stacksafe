@@ -46,6 +46,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void insert(const llvm::Value &key, const Domain &val);
   void binop(const llvm::Value &dst, const llvm::Value &lhs,
              const llvm::Value &rhs);
+  void alloc(const llvm::Value &dst);
 };
 
 }  // namespace stacksafe

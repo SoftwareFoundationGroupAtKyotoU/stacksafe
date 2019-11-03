@@ -154,5 +154,10 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
   dom.merge(lookup(rhs));
   insert(dst, dom);
 }
+void Interpreter::alloc(const llvm::Value &dst) {
+  auto sym = Symbol::make();
+  insert(sym, Domain{});
+  insert(dst, Domain{sym});
+}
 
 }  // namespace stacksafe
