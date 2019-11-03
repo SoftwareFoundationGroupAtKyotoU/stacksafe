@@ -13,6 +13,7 @@ class Params;
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
+  using Params = std::set<const llvm::Value *>;
   const Cache &cache_;
   const Log &log_;
   Memory mem_;
