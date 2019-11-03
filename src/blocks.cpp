@@ -19,6 +19,9 @@ Blocks::Blocks(const llvm::Function &f, Log &l)
   }
 }
 Blocks::~Blocks() = default;
+bool Blocks::is_error() const {
+  return error_;
+}
 Memory Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{cache_, log_};
   if (i.visit(b)) {
