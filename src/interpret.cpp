@@ -210,5 +210,8 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
     insert(dst, Domain::global());
   }
 }
+void Interpreter::constant(const llvm::Value &dst) {
+  insert(dst, Domain{});
+}
 
 }  // namespace stacksafe
