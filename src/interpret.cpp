@@ -203,6 +203,9 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
       collect(sym, dom);
     }
   }
+  if (dom.has_local() && dom.includes(Domain::global())) {
+    log_.error_call(dst);
+  }
   for (const auto &sym : dom) {
     insert(sym, dom);
     insert(sym, Domain::global());
