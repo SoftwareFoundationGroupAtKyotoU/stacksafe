@@ -41,10 +41,5 @@ Memory &Blocks::get(const llvm::BasicBlock &b) {
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
 }
-const Memory &Blocks::get(const llvm::BasicBlock &b) const {
-  auto it = Super::find(&b);
-  assert(it != Super::end() && "unknown basicblock");
-  return it->second;
-}
 
 }  // namespace stacksafe
