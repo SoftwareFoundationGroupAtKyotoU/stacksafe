@@ -44,7 +44,7 @@ class Log {
   const Log &print_nl() const;
   void error_global(const Domain &dom) const;
   void error_call(const llvm::Value &v) const;
-  void error_return(const llvm::Value &v) const;
+  void error_return(const Domain &v) const;
 };
 
 }  // namespace stacksafe
