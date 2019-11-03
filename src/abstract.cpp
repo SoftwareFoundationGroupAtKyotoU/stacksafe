@@ -10,7 +10,7 @@ Abstract::Abstract(const llvm::Function &f)
 auto Abstract::blocks() const -> const Blocks & {
   return blocks_;
 }
-void Abstract::interpret() {
+void Abstract::run() {
   interpret(func_.getEntryBlock());
   if (blocks_.is_error()) {
     safe_ = false;
