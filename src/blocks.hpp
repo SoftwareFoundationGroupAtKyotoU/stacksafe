@@ -25,7 +25,6 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   bool is_error() const;
   Memory interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Memory &next);
-  bool verify(const llvm::BasicBlock &b) const;
 
  private:
   Memory &get(const llvm::BasicBlock &b);
