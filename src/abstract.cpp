@@ -12,6 +12,9 @@ auto Abstract::blocks() const -> const Blocks & {
 }
 void Abstract::interpret() {
   interpret(func_.getEntryBlock());
+  if (blocks_.is_error()) {
+    safe_ = false;
+  }
 }
 void Abstract::verify() {
   log_.print(func_);
