@@ -55,6 +55,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
                const llvm::Value &val);
   void cast(const llvm::Value &dst, const llvm::Value &src);
   void phi(const llvm::Value &dst, const Params &params);
+  void call(const llvm::Value &dst, const Params &params);
 };
 
 }  // namespace stacksafe

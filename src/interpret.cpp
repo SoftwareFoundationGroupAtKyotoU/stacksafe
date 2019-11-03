@@ -194,5 +194,21 @@ void Interpreter::phi(const llvm::Value &dst, const Params &params) {
   }
   insert(dst, dom);
 }
+void Interpreter::call(const llvm::Value &dst, const Params &params) {
+  Domain dom;
+  for (const auto &val : params) {
+    for (const auto &sym : lookup(*val)) {
+      collect(sym, dom);
+    }
+  }
+  for (const auto &sym : dom) {
+    insert(sym, dom);
+    insert(sym, Domain::global());
+  }
+  if (!check_voidfunc(dst)) {
+    insert(dst, dom);
+    insert(dst, Domain::global());
+  }
+}
 
 }  // namespace stacksafe
