@@ -13,9 +13,8 @@ namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function &f, Log &l)
     : cache_{f}, log_{l}, error_{false} {
-  auto m = Env{cache_, f, log_}.memory();
   for (const auto &b : f) {
-    Super::try_emplace(&b, m);
+    Super::try_emplace(&b, Memory{});
   }
 }
 Blocks::~Blocks() = default;
