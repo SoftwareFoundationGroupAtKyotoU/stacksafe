@@ -19,9 +19,9 @@ Blocks::Blocks(const llvm::Function &f, Log &l) : cache_{f}, log_{l} {
 }
 Blocks::~Blocks() = default;
 Memory Blocks::interpret(const llvm::BasicBlock &b) const {
-  Env env{cache_, get(b), log_};
-  Interpreter{cache_, log_}.visit(b);
-  return env.memory();
+  Interpreter i{cache_, log_};
+  i.visit(b);
+  return i.memory();
 }
 bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
   return get(b).merge(next);
