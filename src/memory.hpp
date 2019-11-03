@@ -40,6 +40,8 @@ class Memory {
   Fabric diff(const Memory &that) const;
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Register &key) const;
+  void insert(const Symbol &key, const Domain &val);
+  void insert(const Register &key, const Domain &val);
 };
 void to_json(Json &j, const Memory &x);
 
