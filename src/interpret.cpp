@@ -177,5 +177,8 @@ void Interpreter::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
   load(dst, ptr);
   store(val, ptr);
 }
+void Interpreter::cast(const llvm::Value &dst, const llvm::Value &src) {
+  insert(dst, lookup(src));
+}
 
 }  // namespace stacksafe
