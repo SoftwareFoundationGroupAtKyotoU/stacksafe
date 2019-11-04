@@ -7,8 +7,7 @@
 
 namespace stacksafe {
 
-template <typename K>
-bool Map<K>::insert(const Number &key, const Domain &val) {
+bool Map::insert(const Number &key, const Domain &val) {
   if (auto it = Super::find(key); it != end()) {
     return it->second.merge(val);
   } else {
@@ -16,31 +15,25 @@ bool Map<K>::insert(const Number &key, const Domain &val) {
     return true;
   }
 }
-template <typename K>
-Domain Map<K>::lookup(const Number &key) const {
+Domain Map::lookup(const Number &key) const {
   if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
   return Domain{};
 }
-template <typename K>
-bool Map<K>::insert(const Symbol &key, const Domain &val) {
+bool Map::insert(const Symbol &key, const Domain &val) {
   return insert(key.number(), val);
 }
-template <typename K>
-bool Map<K>::insert(const Register &key, const Domain &val) {
+bool Map::insert(const Register &key, const Domain &val) {
   return insert(key.number(), val);
 }
-template <typename K>
-Domain Map<K>::lookup(const Symbol &key) const {
+Domain Map::lookup(const Symbol &key) const {
   return lookup(key.number());
 }
-template <typename K>
-Domain Map<K>::lookup(const Register &key) const {
+Domain Map::lookup(const Register &key) const {
   return lookup(key.number());
 }
-template <typename K>
-bool Map<K>::merge(const Map &that) {
+bool Map::merge(const Map &that) {
   bool ret = false;
   for (const auto &[k, v] : that) {
     if (insert(k, v)) {
@@ -49,8 +42,7 @@ bool Map<K>::merge(const Map &that) {
   }
   return ret;
 }
-template <typename K>
-bool Map<K>::includes(const Map &that) const {
+bool Map::includes(const Map &that) const {
   for (const auto &[key, rhs] : that) {
     if (auto lhs = Super::find(key);
         lhs != end() && lhs->second.includes(rhs)) {
@@ -60,8 +52,7 @@ bool Map<K>::includes(const Map &that) const {
   }
   return true;
 }
-template <typename K>
-Fabric Map<K>::diff(const Map &that) const {
+Fabric Map::diff(const Map &that) const {
   Fabric ret;
   for (const auto &[key, rhs] : that) {
     if (auto it = Super::find(key); it != end()) {
@@ -91,21 +82,14 @@ Fabric Map<K>::diff(const Map &that) const {
   }
   return ret;
 }
-void to_json(Json &j, const Map<Symbol> &x) {
+void to_json(Json &j, const Map &x) {
   Json::object_t obj;
   for (const auto &[key, val] : x) {
     obj[to_str(key)] = val;
   }
   j = obj;
 }
-void to_json(Json &j, const Map<Register> &x) {
-  Json::object_t obj;
-  for (const auto &[key, val] : x) {
-    obj[to_str(key)] = val;
-  }
-  j = obj;
-}
-Fabric dump(const Map<Symbol> &map) {
+Fabric dump(const Map &map) {
   Fabric ret, tmp;
   bool first = true;
   for (const auto &[key, value] : map) {
@@ -126,29 +110,5 @@ Fabric dump(const Map<Symbol> &map) {
   ret.append(tmp.indent(2)).next();
   return ret.append("}");
 }
-Fabric dump(const Map<Register> &map) {
-  Fabric ret, tmp;
-  bool first = true;
-  for (const auto &[key, value] : map) {
-    if (0 < value.size()) {
-      if (!std::exchange(first, false)) {
-        tmp.append(",").next();
-      }
-      tmp.append(to_str(key)).append(":");
-      if (1 < value.size()) {
-        tmp.next();
-        tmp.append(dump(value).indent(2));
-      } else {
-        tmp.append(" ").append(dump(value));
-      }
-    }
-  }
-  ret.append("{").next();
-  ret.append(tmp.indent(2)).next();
-  return ret.append("}");
-}
-
-template class Map<Register>;
-template class Map<Symbol>;
 
 }  // namespace stacksafe

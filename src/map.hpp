@@ -11,7 +11,6 @@ class Fabric;
 class Register;
 class Symbol;
 
-template <typename K>
 class Map : private std::map<Number, Domain> {
   using Super = std::map<Number, Domain>;
   bool insert(const Number &key, const Domain &val);
@@ -27,13 +26,8 @@ class Map : private std::map<Number, Domain> {
   bool includes(const Map &that) const;
   Fabric diff(const Map &that) const;
 };
-void to_json(Json &j, const Map<Symbol> &x);
-void to_json(Json &j, const Map<Register> &x);
-Fabric dump(const Map<Symbol> &map);
-Fabric dump(const Map<Register> &map);
-
-extern template class Map<Register>;
-extern template class Map<Symbol>;
+void to_json(Json &j, const Map &x);
+Fabric dump(const Map &map);
 
 }  // namespace stacksafe
 

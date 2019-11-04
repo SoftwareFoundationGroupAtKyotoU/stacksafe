@@ -26,8 +26,8 @@ class Cache : private std::map<const llvm::Value *, Register> {
 };
 
 class Memory {
-  using Heap = Map<Symbol>;
-  using Stack = Map<Register>;
+  using Heap = Map;
+  using Stack = Map;
   Heap heap_;
   Stack stack_;
 
