@@ -9,7 +9,7 @@
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, Log &l)
+Blocks::Blocks(const llvm::Function &f, const Log &l)
     : cache_{f}, log_{l}, error_{false} {
   auto g = Domain::global();
   Memory entry;

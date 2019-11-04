@@ -16,12 +16,12 @@ class Log;
 class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   using Super = std::map<const llvm::BasicBlock *, Memory>;
   Cache cache_;
-  Log &log_;
+  const Log &log_;
   bool error_;
 
  public:
   using Super::begin, Super::end;
-  explicit Blocks(const llvm::Function &f, Log &l);
+  Blocks(const llvm::Function &f, const Log &l);
   bool is_error() const;
   Memory interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Memory &next);
