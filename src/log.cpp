@@ -4,7 +4,6 @@
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
-#include "fabric.hpp"
 #include "register.hpp"
 #include "utility.hpp"
 
@@ -47,9 +46,7 @@ const Log &Log::print(const llvm::Value &v) const {
 }
 const Log &Log::print(const Register &key, const Domain &val) const {
   if (os) {
-    Fabric fab;
-    fab.append(to_str(key)).append(": ").append(to_str(val));
-    endline(*os << fab);
+    endline(*os << to_str(key) << ": " << to_str(val));
   }
   return *this;
 }
