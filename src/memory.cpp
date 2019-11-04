@@ -30,9 +30,6 @@ void Memory::merge(const Memory &that) {
 const Domain &Memory::lookup(const Symbol &key) const {
   return heap_.lookup(key);
 }
-const Domain &Memory::lookup(const Register &key) const {
-  return stack_.lookup(key);
-}
 const Domain &Memory::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
     return stack_.lookup(cache_.lookup(key));
