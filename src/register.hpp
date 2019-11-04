@@ -13,6 +13,7 @@ class Value;
 namespace stacksafe {
 
 class Register : private Number {
+  friend class Cache;
   explicit Register(int n);
 
  public:
