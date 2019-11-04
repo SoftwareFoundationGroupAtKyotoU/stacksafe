@@ -1,6 +1,5 @@
 #include "abstract.hpp"
 #include <llvm/IR/Function.h>
-#include "json.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -38,14 +37,6 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
       interpret(next);
     }
   }
-}
-void to_json(Json &j, const Abstract &x) {
-  Json::object_t obj;
-  for (const auto &[k, v] : x.blocks()) {
-    assert(k && "unknown basicblock");
-    obj[to_str(*k)] = v;
-  }
-  j = obj;
 }
 
 }  // namespace stacksafe

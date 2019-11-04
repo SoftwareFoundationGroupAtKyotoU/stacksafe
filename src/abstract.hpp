@@ -1,9 +1,7 @@
 #ifndef INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
-#include <memory>
 #include "blocks.hpp"
-#include "json_fwd.hpp"
 #include "log.hpp"
 
 namespace llvm {
@@ -28,7 +26,6 @@ class Abstract {
  private:
   void interpret(const llvm::BasicBlock &b);
 };
-void to_json(Json &j, const Abstract &x);
 
 }  // namespace stacksafe
 
