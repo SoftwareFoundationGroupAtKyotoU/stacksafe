@@ -6,8 +6,8 @@ namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
     : log_{f}, blocks_{f, log_}, func_{f}, safe_{true} {}
-void Abstract::run() {
-  interpret(func_.getEntryBlock());
+void Abstract::run(const llvm::Function &f) {
+  interpret(f.getEntryBlock());
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   if (os.is_displayed()) {

@@ -19,7 +19,7 @@ class Abstract {
 
  public:
   explicit Abstract(const llvm::Function &f);
-  void run();
+  void run(const llvm::Function &f);
   void print(llvm::raw_ostream &os) const;
 
  private:
