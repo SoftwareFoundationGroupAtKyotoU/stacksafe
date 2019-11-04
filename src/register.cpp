@@ -2,7 +2,7 @@
 
 namespace stacksafe {
 
-Register::Register(int n) : Symbol{n}, num_{n} {}
+Register::Register(int n) : num_{n} {}
 int Register::number() const {
   return num_;
 }

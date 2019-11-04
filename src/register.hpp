@@ -2,11 +2,10 @@
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
 #include <string>
-#include "symbol.hpp"
 
 namespace stacksafe {
 
-class Register : public Symbol {
+class Register {
   const int num_;
   friend class Cache;
   explicit Register(int n);
