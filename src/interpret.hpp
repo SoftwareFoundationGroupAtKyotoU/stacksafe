@@ -18,7 +18,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   Safe safe_;
 
  public:
-  explicit Interpreter(const Cache &c, const Log &l, const Memory &m);
+  explicit Interpreter(const Log &l, const Memory &m);
   const Memory &memory() const;
   Safe visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);

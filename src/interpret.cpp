@@ -5,8 +5,7 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Cache &c, const Log &l, const Memory &m)
-    : log_{l}, mem_{m} {}
+Interpreter::Interpreter(const Log &l, const Memory &m) : log_{l}, mem_{m} {}
 const Memory &Interpreter::memory() const {
   return mem_;
 }
