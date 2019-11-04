@@ -15,6 +15,15 @@ std::optional<Domain> Map<K>::get(const K &key) const {
   return std::nullopt;
 }
 template <typename K>
+bool Map<K>::insert(const Number &key, const Domain &val) {
+  if (auto it = Super::find(K(key.value())); it != end()) {
+    return it->second.merge(val);
+  } else {
+    Super::try_emplace(K(key.value()), val);
+    return true;
+  }
+}
+template <typename K>
 bool Map<K>::insert(const K &key, const Domain &val) {
   if (auto it = Super::find(key); it != end()) {
     return it->second.merge(val);
