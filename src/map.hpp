@@ -47,6 +47,7 @@ class Stack : private Map {
 
  public:
   using Super::begin, Super::end;
+  void insert(const Register &key, const Domain &val);
 };
 
 }  // namespace stacksafe

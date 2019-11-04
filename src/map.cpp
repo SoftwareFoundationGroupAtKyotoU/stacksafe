@@ -129,4 +129,8 @@ void to_json(Json &j, const Heap &x) {
   j = obj;
 }
 
+void Stack::insert(const Register &key, const Domain &val) {
+  Super::insert(key.number(), val);
+}
+
 }  // namespace stacksafe
