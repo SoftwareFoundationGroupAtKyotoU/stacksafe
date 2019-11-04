@@ -14,6 +14,7 @@ add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
   blocks.cpp
+  cache.cpp
   domain.cpp
   fabric.cpp
   interpret.cpp
