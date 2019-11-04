@@ -51,7 +51,7 @@ Fabric dump(const Domain &domain) {
     if (!std::exchange(first, false)) {
       ret.append(", ");
     }
-    ret.append(dump(symbol));
+    ret.append(to_str(symbol));
   }
   return ret.quote("[", "]");
 }
