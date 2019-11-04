@@ -7,9 +7,11 @@
 namespace stacksafe {
 
 class Register : private Number {
+  explicit Register(int n);
+
  public:
-  using Number::Number;
   const Number &number() const;
+  static Register make(int n);
 };
 std::string to_str(const Register &reg);
 
