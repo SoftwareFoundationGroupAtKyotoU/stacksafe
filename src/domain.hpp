@@ -7,7 +7,6 @@
 #include "register.hpp"
 
 namespace stacksafe {
-class Fabric;
 
 class Domain : private std::set<Register> {
   using Super = std::set<Register>;

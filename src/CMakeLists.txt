@@ -16,7 +16,6 @@ target_sources(${target} PRIVATE
   blocks.cpp
   cache.cpp
   domain.cpp
-  fabric.cpp
   interpret.cpp
   json.cpp
   log.cpp

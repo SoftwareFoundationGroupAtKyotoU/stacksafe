@@ -7,7 +7,6 @@
 #include "register.hpp"
 
 namespace stacksafe {
-class Fabric;
 class Register;
 
 class Map : private std::map<Register, Domain> {
