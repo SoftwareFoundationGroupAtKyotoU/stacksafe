@@ -12,7 +12,6 @@ class Symbol : private Number {
   using Super::Super;
 
  public:
-  using Super::value;
   const Number &number() const;
   static Symbol global();
   static Symbol local(const Register &reg);
