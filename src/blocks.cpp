@@ -5,15 +5,9 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function &f, const Log &l) : cache_{f}, log_{l} {
-  auto g = Domain::global();
-  Memory entry;
-  entry.insert(Symbol::global(), g);
-  for (const auto &a : f.args()) {
-    entry.insert(cache_.lookup(a), g);
-  }
-  Super::try_emplace(&f.getEntryBlock(), entry);
+  Super::try_emplace(&f.getEntryBlock(), cache_, f);
   for (const auto &b : f) {
-    Super::try_emplace(&b, Memory{});
+    Super::try_emplace(&b, cache_);
   }
 }
 std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
