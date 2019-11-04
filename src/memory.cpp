@@ -30,7 +30,7 @@ void Cache::add(const llvm::Value &reg) {
   Super::try_emplace(&reg, *num);
 }
 
-const Memory::Heap &Memory::heap() const {
+const Heap &Memory::heap() const {
   return heap_;
 }
 const Memory::Stack &Memory::stack() const {
