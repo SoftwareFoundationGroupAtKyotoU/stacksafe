@@ -98,17 +98,17 @@ auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;
   for (const auto &use : i.incoming_values()) {
-    auto val = use.get();
-    assert(val && "unknown phi node");
-    params.insert(val);
+    auto arg = use.get();
+    assert(arg && "unknown phi node");
+    params.insert(arg);
   }
   phi(i, params);
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
-  for (const auto val : {i.getTrueValue(), i.getFalseValue()}) {
-    assert(val && "unknown select node");
-    params.insert(val);
+  for (const auto arg : {i.getTrueValue(), i.getFalseValue()}) {
+    assert(arg && "unknown select node");
+    params.insert(arg);
   }
   phi(i, params);
 }
@@ -160,15 +160,15 @@ void Interpreter::alloc(const llvm::Value &dst) {
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
-  for (const auto &sym : mem_.lookup(src)) {
-    dom.merge(mem_.lookup(sym));
+  for (const auto &reg : mem_.lookup(src)) {
+    dom.merge(mem_.lookup(reg));
   }
   insert(dst, dom);
 }
 void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
-  auto source = mem_.lookup(src);
-  for (const auto &target : mem_.lookup(dst)) {
-    insert(target, source);
+  auto val = mem_.lookup(src);
+  for (const auto &ptr : mem_.lookup(dst)) {
+    insert(ptr, val);
   }
 }
 void Interpreter::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
@@ -181,25 +181,25 @@ void Interpreter::cast(const llvm::Value &dst, const llvm::Value &src) {
 }
 void Interpreter::phi(const llvm::Value &dst, const Params &params) {
   Domain dom;
-  for (const auto &val : params) {
-    dom.merge(mem_.lookup(*val));
+  for (const auto &arg : params) {
+    dom.merge(mem_.lookup(*arg));
   }
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::Value &dst, const Params &params) {
   Domain dom;
-  for (const auto &val : params) {
-    for (const auto &sym : mem_.lookup(*val)) {
-      mem_.collect(sym, dom);
+  for (const auto &arg : params) {
+    for (const auto &reg : mem_.lookup(*arg)) {
+      mem_.collect(reg, dom);
     }
   }
   if (dom.has_local() && dom.includes(Domain::get_global())) {
     log_.error_call(dom);
     safe_.unsafe();
   }
-  for (const auto &sym : dom) {
-    insert(sym, dom);
-    insert(sym, Domain::get_global());
+  for (const auto &reg : dom) {
+    insert(reg, dom);
+    insert(reg, Domain::get_global());
   }
   if (!check_voidfunc(dst)) {
     insert(dst, dom);
