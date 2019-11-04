@@ -25,9 +25,9 @@ class Memory {
   const Stack &stack() const;
   bool includes(const Memory &that) const;
   void merge(const Memory &that);
-  Domain lookup(const Symbol &key) const;
-  Domain lookup(const Register &key) const;
-  Domain lookup(const llvm::Value &key) const;
+  const Domain &lookup(const Symbol &key) const;
+  const Domain &lookup(const Register &key) const;
+  const Domain &lookup(const llvm::Value &key) const;
   void insert(const Symbol &key, const Domain &val);
   void insert(const Register &key, const Domain &val);
   void insert(const llvm::Value &key, const Domain &val);

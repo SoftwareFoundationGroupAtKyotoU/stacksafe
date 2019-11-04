@@ -27,17 +27,17 @@ void Memory::merge(const Memory &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-Domain Memory::lookup(const Symbol &key) const {
+const Domain &Memory::lookup(const Symbol &key) const {
   return heap_.lookup(key);
 }
-Domain Memory::lookup(const Register &key) const {
+const Domain &Memory::lookup(const Register &key) const {
   return stack_.lookup(key);
 }
-Domain Memory::lookup(const llvm::Value &key) const {
+const Domain &Memory::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
     return stack_.lookup(cache_.lookup(key));
   } else if (check_global(key)) {
-    return Domain::global();
+    return Domain::get_global();
   } else if (check_constant(key)) {
     return Domain::get_empty();
   }
