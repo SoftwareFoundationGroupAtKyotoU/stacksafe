@@ -1,17 +1,12 @@
 #include "domain.hpp"
 #include <algorithm>
 #include <iterator>
-#include <utility>
 #include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
 
-Domain::Domain(std::initializer_list<Symbol> list) {
-  for (const auto &sym : list) {
-    Super::insert(sym);
-  }
-}
+Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
 void Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
 }
