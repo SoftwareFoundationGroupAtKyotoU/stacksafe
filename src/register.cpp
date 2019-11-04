@@ -23,7 +23,7 @@ Register Cache::lookup(const llvm::Value &key) const {
 }
 void Cache::add(const llvm::Value &reg) {
   auto num = register_number(reg);
-  assert(check_register(reg) && num && "only registers are allowed");
+  assert(num && "not a register");
   Super::try_emplace(&reg, Register{*num});
 }
 
