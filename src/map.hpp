@@ -30,6 +30,7 @@ class Heap : private Map {
   const Domain &lookup(const Symbol &key) const;
   void merge(const Heap &that);
   bool includes(const Heap &that) const;
+  Symbol alloc(const Register &reg);
 };
 void to_json(Json &j, const Heap &x);
 

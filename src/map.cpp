@@ -48,6 +48,11 @@ void Heap::merge(const Heap &that) {
 bool Heap::includes(const Heap &that) const {
   return Super::includes(that);
 }
+Symbol Heap::alloc(const Register &reg) {
+  auto sym = Symbol::local(reg);
+  insert(sym, Domain::get_empty());
+  return sym;
+}
 void to_json(Json &j, const Heap &x) {
   Json::object_t obj;
   for (const auto &[key, val] : x) {
