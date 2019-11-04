@@ -14,6 +14,7 @@ class Symbol : private Number {
 
  public:
   const Number &number() const;
+  bool is_local() const;
   static Symbol global();
   static Symbol local(const Register &reg);
   bool is_global() const;

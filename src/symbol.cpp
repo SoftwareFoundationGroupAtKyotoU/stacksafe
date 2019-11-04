@@ -7,6 +7,9 @@ const Symbol Symbol::global_{-1};
 const Number &Symbol::number() const {
   return *this;
 }
+bool Symbol::is_local() const {
+  return global_ < *this;
+}
 Symbol Symbol::global() {
   return global_;
 }
