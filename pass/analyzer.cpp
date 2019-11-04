@@ -13,11 +13,11 @@ struct Analyzer : public llvm::FunctionPass {
   std::string name;
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
-    llvm::outs().flush();
-    llvm::errs().flush();
     name = f.getName().str();
     abst = std::make_unique<Abstract>(f);
     assert(abst && "allocation failed");
+    llvm::outs() << "Analysis 'stacksafe' for function '" << name << "'\n";
+    llvm::outs().flush();
     abst->run(f);
     return false;
   }
