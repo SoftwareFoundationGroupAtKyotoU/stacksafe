@@ -15,16 +15,6 @@ Symbol Symbol::make(const Register &base) {
 int Symbol::number() const {
   return reg_.number();
 }
-std::string Symbol::repr() const {
-  switch (kind_) {
-    default:
-      [[fallthrough]];
-    case Kind::STATIC:
-      return prefix_ + "@";
-    case Kind::AUTO:
-      return prefix_ + std::to_string(number());
-  }
-}
 bool Symbol::is_local() const {
   return kind_ == Kind::AUTO;
 }

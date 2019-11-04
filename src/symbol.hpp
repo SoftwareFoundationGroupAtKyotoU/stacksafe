@@ -17,7 +17,6 @@ class Symbol {
   static Symbol global();
   static Symbol make(const Register &base);
   int number() const;
-  std::string repr() const;
   bool is_local() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
