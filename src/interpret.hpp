@@ -13,13 +13,12 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   using Params = std::set<const llvm::Value *>;
-  const Cache &cache_;
   const Log &log_;
   Memory mem_;
   Safe safe_;
 
  public:
-  explicit Interpreter(const Cache &c, const Log &l, const Memory &m);
+  explicit Interpreter(const Log &l, const Memory &m);
   const Memory &memory() const;
   Safe visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
@@ -43,9 +42,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitReturnInst(llvm::ReturnInst &i);
 
  private:
-  void insert(const Symbol &key, const Domain &val);
+  void insert(const Register &key, const Domain &val);
   void insert(const llvm::Value &key, const Domain &val);
-  void collect(const Symbol &symbol, Domain &done) const;
   void binop(const llvm::Value &dst, const llvm::Value &lhs,
              const llvm::Value &rhs);
   void alloc(const llvm::Value &dst);

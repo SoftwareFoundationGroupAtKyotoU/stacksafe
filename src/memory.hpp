@@ -15,20 +15,21 @@ class Cache;
 
 class Memory {
   const Cache &cache_;
-  Heap heap_;
-  Stack stack_;
+  Map heap_, stack_;
 
  public:
   explicit Memory(const Cache &c);
   Memory(const Cache &c, const llvm::Function &f);
-  const Heap &heap() const;
-  const Stack &stack() const;
+  const Map &heap() const;
+  const Map &stack() const;
   bool includes(const Memory &that) const;
   void merge(const Memory &that);
-  const Domain &lookup(const Symbol &key) const;
+  const Domain &lookup(const Register &key) const;
   const Domain &lookup(const llvm::Value &key) const;
-  void insert(const Symbol &key, const Domain &val);
+  void insert(const Register &key, const Domain &val);
   void insert(const llvm::Value &key, const Domain &val);
+  Register alloc(const llvm::Value &key);
+  void collect(const Register &curr, Domain &done) const;
 };
 void to_json(Json &j, const Memory &x);
 

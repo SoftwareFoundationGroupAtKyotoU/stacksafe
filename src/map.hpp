@@ -4,46 +4,23 @@
 #include <map>
 #include "domain.hpp"
 #include "json_fwd.hpp"
+#include "register.hpp"
 
 namespace stacksafe {
 class Fabric;
 class Register;
-class Symbol;
 
-class Map : private std::map<Number, Domain> {
-  using Super = std::map<Number, Domain>;
-
- public:
-  using Super::begin, Super::end;
-  void insert(const Number &key, const Domain &val);
-  const Domain &lookup(const Number &key) const;
-  void merge(const Map &that);
-  bool includes(const Map &that) const;
-};
-
-class Heap : private Map {
-  using Super = Map;
-
- public:
-  using Super::begin, Super::end;
-  void insert(const Symbol &key, const Domain &val);
-  const Domain &lookup(const Symbol &key) const;
-  void merge(const Heap &that);
-  bool includes(const Heap &that) const;
-};
-void to_json(Json &j, const Heap &x);
-
-class Stack : private Map {
-  using Super = Map;
+class Map : private std::map<Register, Domain> {
+  using Super = std::map<Register, Domain>;
 
  public:
   using Super::begin, Super::end;
   void insert(const Register &key, const Domain &val);
   const Domain &lookup(const Register &key) const;
-  void merge(const Stack &that);
-  bool includes(const Stack &that) const;
+  void merge(const Map &that);
+  bool includes(const Map &that) const;
 };
-void to_json(Json &j, const Stack &x);
+void to_json(Json &j, const Map &x);
 
 }  // namespace stacksafe
 

@@ -22,10 +22,8 @@ target_sources(${target} PRIVATE
   log.cpp
   map.cpp
   memory.cpp
-  number.cpp
   register.cpp
   safe.cpp
-  symbol.cpp
   utility.cpp
   )
 include(EnsureSources)

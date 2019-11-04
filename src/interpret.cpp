@@ -5,8 +5,7 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Cache &c, const Log &l, const Memory &m)
-    : cache_{c}, log_{l}, mem_{m} {}
+Interpreter::Interpreter(const Log &l, const Memory &m) : log_{l}, mem_{m} {}
 const Memory &Interpreter::memory() const {
   return mem_;
 }
@@ -99,17 +98,17 @@ auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;
   for (const auto &use : i.incoming_values()) {
-    auto val = use.get();
-    assert(val && "unknown phi node");
-    params.insert(val);
+    auto arg = use.get();
+    assert(arg && "unknown phi node");
+    params.insert(arg);
   }
   phi(i, params);
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
-  for (const auto val : {i.getTrueValue(), i.getFalseValue()}) {
-    assert(val && "unknown select node");
-    params.insert(val);
+  for (const auto arg : {i.getTrueValue(), i.getFalseValue()}) {
+    assert(arg && "unknown select node");
+    params.insert(arg);
   }
   phi(i, params);
 }
@@ -131,7 +130,7 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     }
   }
 }
-void Interpreter::insert(const Symbol &key, const Domain &val) {
+void Interpreter::insert(const Register &key, const Domain &val) {
   auto diff = val.minus(mem_.lookup(key));
   mem_.insert(key, diff);
   if (!key.is_local() && diff.has_local()) {
@@ -145,15 +144,7 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
   auto diff = val.minus(mem_.lookup(key));
   mem_.insert(key, diff);
   if (!diff.empty()) {
-    log_.print(cache_.lookup(key), diff);
-  }
-}
-void Interpreter::collect(const Symbol &symbol, Domain &done) const {
-  if (!done.includes(Domain{symbol})) {
-    done.merge(Domain{symbol});
-    for (const auto &sym : mem_.lookup(symbol)) {
-      collect(sym, done);
-    }
+    log_.print(key, diff);
   }
 }
 void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
@@ -164,21 +155,20 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::Value &dst) {
-  auto sym = Symbol::local(cache_.lookup(dst));
-  insert(sym, Domain::get_empty());
-  insert(dst, Domain{sym});
+  auto reg = mem_.alloc(dst);
+  log_.print(dst, Domain{reg});
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
-  for (const auto &sym : mem_.lookup(src)) {
-    dom.merge(mem_.lookup(sym));
+  for (const auto &reg : mem_.lookup(src)) {
+    dom.merge(mem_.lookup(reg));
   }
   insert(dst, dom);
 }
 void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
-  auto source = mem_.lookup(src);
-  for (const auto &target : mem_.lookup(dst)) {
-    insert(target, source);
+  auto val = mem_.lookup(src);
+  for (const auto &ptr : mem_.lookup(dst)) {
+    insert(ptr, val);
   }
 }
 void Interpreter::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
@@ -191,25 +181,25 @@ void Interpreter::cast(const llvm::Value &dst, const llvm::Value &src) {
 }
 void Interpreter::phi(const llvm::Value &dst, const Params &params) {
   Domain dom;
-  for (const auto &val : params) {
-    dom.merge(mem_.lookup(*val));
+  for (const auto &arg : params) {
+    dom.merge(mem_.lookup(*arg));
   }
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::Value &dst, const Params &params) {
   Domain dom;
-  for (const auto &val : params) {
-    for (const auto &sym : mem_.lookup(*val)) {
-      collect(sym, dom);
+  for (const auto &arg : params) {
+    for (const auto &reg : mem_.lookup(*arg)) {
+      mem_.collect(reg, dom);
     }
   }
   if (dom.has_local() && dom.includes(Domain::get_global())) {
     log_.error_call(dom);
     safe_.unsafe();
   }
-  for (const auto &sym : dom) {
-    insert(sym, dom);
-    insert(sym, Domain::get_global());
+  for (const auto &reg : dom) {
+    insert(reg, dom);
+    insert(reg, Domain::get_global());
   }
   if (!check_voidfunc(dst)) {
     insert(dst, dom);

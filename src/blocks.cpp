@@ -11,7 +11,7 @@ Blocks::Blocks(const llvm::Function &f, const Log &l) : cache_{f}, log_{l} {
   }
 }
 std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{cache_, log_, get(b)};
+  Interpreter i{log_, get(b)};
   if (i.visit(b)) {
     return i.memory();
   } else {

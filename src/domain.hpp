@@ -3,25 +3,24 @@
 
 #include <set>
 #include "json_fwd.hpp"
-#include "symbol.hpp"
+#include "register.hpp"
 
 namespace stacksafe {
 class Fabric;
 
-class Domain : private std::set<Symbol> {
-  using Super = std::set<Symbol>;
+class Domain : private std::set<Register> {
+  using Super = std::set<Register>;
 
  public:
   using Super::begin, Super::end, Super::empty, Super::size;
   Domain() = default;
-  explicit Domain(std::initializer_list<Symbol> list);
+  explicit Domain(std::initializer_list<Register> list);
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;
   bool has_local() const;
   static const Domain &get_empty();
   static const Domain &get_global();
-  static Domain global();
 };
 void to_json(Json &j, const Domain &x);
 Fabric dump(const Domain &domain);

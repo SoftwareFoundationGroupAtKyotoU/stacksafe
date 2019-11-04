@@ -6,7 +6,6 @@
 #include "domain.hpp"
 #include "fabric.hpp"
 #include "register.hpp"
-#include "symbol.hpp"
 #include "utility.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
@@ -54,11 +53,9 @@ const Log &Log::print(const Register &key, const Domain &val) const {
   }
   return *this;
 }
-const Log &Log::print(const Symbol &key, const Domain &val) const {
+const Log &Log::print(const llvm::Value &key, const Domain &val) const {
   if (os) {
-    Fabric fab;
-    fab.append(to_str(key)).append(": ").append(dump(val));
-    endline(*os << fab);
+    endline(*os << get_operand(key) << ": " << dump(val));
   }
   return *this;
 }

@@ -16,7 +16,7 @@ Cache::Cache(const llvm::Function &f) {
     }
   }
 }
-Register Cache::lookup(const llvm::Value &key) const {
+const Register &Cache::lookup(const llvm::Value &key) const {
   auto it = Super::find(&key);
   assert(Super::end() != it && "not registered in cache");
   return it->second;

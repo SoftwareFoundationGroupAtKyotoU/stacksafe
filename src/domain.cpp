@@ -6,7 +6,7 @@
 
 namespace stacksafe {
 
-Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
+Domain::Domain(std::initializer_list<Register> list) : Super{list} {}
 void Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
 }
@@ -32,11 +32,8 @@ const Domain &Domain::get_empty() {
   return dom;
 }
 const Domain &Domain::get_global() {
-  static const Domain dom{Symbol::global()};
+  static const Domain dom{Register::get_global()};
   return dom;
-}
-Domain Domain::global() {
-  return Domain{Symbol::global()};
 }
 void to_json(Json &j, const Domain &x) {
   Json::array_t arr;
@@ -48,11 +45,11 @@ void to_json(Json &j, const Domain &x) {
 Fabric dump(const Domain &domain) {
   Fabric ret;
   bool first = true;
-  for (const auto &symbol : domain) {
+  for (const auto &reg : domain) {
     if (!std::exchange(first, false)) {
       ret.append(", ");
     }
-    ret.append(to_str(symbol));
+    ret.append(to_str(reg));
   }
   return ret.quote("[", "]");
 }
