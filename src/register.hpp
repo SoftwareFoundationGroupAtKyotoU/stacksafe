@@ -11,7 +11,7 @@ class Register : private Number {
   using Super::Super;
 
  public:
-  using Super::number;
+  using Super::value;
 };
 bool operator<(const Register &lhs, const Register &rhs);
 std::string to_str(const Register &reg);

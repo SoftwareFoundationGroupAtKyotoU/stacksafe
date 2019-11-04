@@ -8,7 +8,7 @@ class Number {
 
  public:
   explicit Number(int n);
-  int number() const;
+  int value() const;
 };
 bool operator<(const Number& lhs, const Number& rhs);
 

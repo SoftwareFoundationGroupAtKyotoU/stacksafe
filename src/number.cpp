@@ -3,11 +3,11 @@
 namespace stacksafe {
 
 Number::Number(int n) : num_{n} {}
-int Number::number() const {
+int Number::value() const {
   return num_;
 }
 bool operator<(const Number& lhs, const Number& rhs) {
-  return lhs.number() < rhs.number();
+  return lhs.value() < rhs.value();
 }
 
 }  // namespace stacksafe

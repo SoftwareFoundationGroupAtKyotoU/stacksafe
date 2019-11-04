@@ -3,11 +3,11 @@
 namespace stacksafe {
 
 bool operator<(const Register &lhs, const Register &rhs) {
-  return lhs.number() < rhs.number();
+  return lhs.value() < rhs.value();
 }
 std::string to_str(const Register &reg) {
   static const std::string prefix{"%"};
-  return prefix + std::to_string(reg.number());
+  return prefix + std::to_string(reg.value());
 }
 
 }  // namespace stacksafe
