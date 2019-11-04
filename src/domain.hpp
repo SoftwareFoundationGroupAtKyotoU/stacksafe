@@ -24,7 +24,6 @@ class Domain : private std::set<Register> {
   static const Domain &get_global();
 };
 void to_json(Json &j, const Domain &x);
-Fabric dump(const Domain &domain);
 std::string to_str(const Domain &dom);
 
 }  // namespace stacksafe

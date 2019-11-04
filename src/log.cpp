@@ -48,14 +48,14 @@ const Log &Log::print(const llvm::Value &v) const {
 const Log &Log::print(const Register &key, const Domain &val) const {
   if (os) {
     Fabric fab;
-    fab.append(to_str(key)).append(": ").append(dump(val));
+    fab.append(to_str(key)).append(": ").append(to_str(val));
     endline(*os << fab);
   }
   return *this;
 }
 const Log &Log::print(const llvm::Value &key, const Domain &val) const {
   if (os) {
-    endline(*os << get_operand(key) << ": " << dump(val));
+    endline(*os << get_operand(key) << ": " << to_str(val));
   }
   return *this;
 }
@@ -81,17 +81,17 @@ const Log &Log::print_nl() const {
 }
 void Log::error_global(const Domain &dom) const {
   if (os) {
-    endline(*os << "ERROR[GLOBAL]: " << dump(dom));
+    endline(*os << "ERROR[GLOBAL]: " << to_str(dom));
   }
 }
 void Log::error_call(const Domain &v) const {
   if (os) {
-    endline(*os << "ERROR[CALL]: " << dump(v));
+    endline(*os << "ERROR[CALL]: " << to_str(v));
   }
 }
 void Log::error_return(const Domain &v) const {
   if (os) {
-    endline(*os << "ERROR[RETURN]: " << dump(v));
+    endline(*os << "ERROR[RETURN]: " << to_str(v));
   }
 }
 

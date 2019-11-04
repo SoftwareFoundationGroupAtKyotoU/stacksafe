@@ -1,7 +1,6 @@
 #include "domain.hpp"
 #include <algorithm>
 #include <iterator>
-#include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
@@ -41,17 +40,6 @@ void to_json(Json &j, const Domain &x) {
     arr.push_back(to_str(e));
   }
   j = arr;
-}
-Fabric dump(const Domain &domain) {
-  Fabric ret;
-  bool first = true;
-  for (const auto &reg : domain) {
-    if (!std::exchange(first, false)) {
-      ret.append(", ");
-    }
-    ret.append(to_str(reg));
-  }
-  return ret.quote("[", "]");
 }
 std::string to_str(const Domain &dom) {
   std::string ret;
