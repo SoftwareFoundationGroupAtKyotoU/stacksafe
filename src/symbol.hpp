@@ -10,7 +10,7 @@ class Fabric;
 class Symbol {
   enum class Kind { STATIC, AUTO };
   Register reg_;
-  Symbol(Kind k, int n);
+  Symbol(int n);
 
  public:
   static Symbol global();

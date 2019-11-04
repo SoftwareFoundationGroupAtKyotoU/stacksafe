@@ -4,12 +4,12 @@
 
 namespace stacksafe {
 
-Symbol::Symbol(Kind k, int n) : reg_{n} {}
+Symbol::Symbol(int n) : reg_{n} {}
 Symbol Symbol::global() {
-  return Symbol{Kind::STATIC, -1};
+  return Symbol{-1};
 }
 Symbol Symbol::make(const Register &base) {
-  return Symbol{Kind::AUTO, base.number()};
+  return Symbol{base.number()};
 }
 int Symbol::number() const {
   return reg_.number();
