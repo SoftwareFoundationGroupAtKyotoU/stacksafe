@@ -2,12 +2,13 @@
 #define INCLUDE_GUARD_A3B67C9B_CF18_446A_AC08_280B66DC795B
 
 #include <string>
-#include "register.hpp"
+#include "number.hpp"
 
 namespace stacksafe {
+class Register;
 
-class Symbol : private Register {
-  using Super = Register;
+class Symbol : private Number {
+  using Super = Number;
   using Super::Super;
 
  public:
