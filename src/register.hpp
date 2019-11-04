@@ -15,6 +15,7 @@ class Register : private Number {
   bool is_local() const;
   static const Register &get_global();
 };
+bool operator<(const Register &lhs, const Register &rhs);
 std::string to_str(const Register &reg);
 
 }  // namespace stacksafe
