@@ -7,10 +7,8 @@
 namespace stacksafe {
 
 class Register : private Number {
-  using Super = Number;
-  using Super::Super;
-
  public:
+  using Number::Number;
   const Number &number() const;
 };
 bool operator<(const Register &lhs, const Register &rhs);
