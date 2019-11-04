@@ -2,6 +2,9 @@
 
 namespace stacksafe {
 
+const Number &Register::number() const {
+  return *this;
+}
 bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.value() < rhs.value();
 }

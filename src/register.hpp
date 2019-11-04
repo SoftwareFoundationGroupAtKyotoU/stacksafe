@@ -12,6 +12,7 @@ class Register : private Number {
 
  public:
   using Super::value;
+  const Number &number() const;
 };
 bool operator<(const Register &lhs, const Register &rhs);
 std::string to_str(const Register &reg);
