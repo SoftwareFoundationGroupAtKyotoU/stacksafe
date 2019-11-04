@@ -1,15 +1,20 @@
 #include "symbol.hpp"
+#include "register.hpp"
 
 namespace stacksafe {
 
+const Symbol Symbol::global_{-1};
+const Number &Symbol::number() const {
+  return *this;
+}
+bool Symbol::is_local() const {
+  return global_ < *this;
+}
 Symbol Symbol::global() {
-  return Symbol{-1};
+  return global_;
 }
 Symbol Symbol::local(const Register &reg) {
-  return Symbol{reg.number()};
-}
-bool Symbol::is_global() const {
-  return number() < 0;
+  return Symbol{reg.number().value()};
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
@@ -17,10 +22,10 @@ bool operator<(const Symbol &lhs, const Symbol &rhs) {
 std::string to_str(const Symbol &symbol) {
   static const std::string prefix{"&"};
   static const std::string global{"@"};
-  if (symbol.is_global()) {
-    return prefix + global;
+  if (symbol.is_local()) {
+    return prefix + to_str(symbol.number());
   } else {
-    return prefix + std::to_string(symbol.number());
+    return prefix + global;
   }
 }
 

@@ -30,24 +30,18 @@ void Cache::add(const llvm::Value &reg) {
   Super::try_emplace(&reg, *num);
 }
 
-const Memory::Heap &Memory::heap() const {
+const Heap &Memory::heap() const {
   return heap_;
 }
-const Memory::Stack &Memory::stack() const {
+const Stack &Memory::stack() const {
   return stack_;
 }
 bool Memory::includes(const Memory &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-bool Memory::merge(const Memory &that) {
-  bool ret = false;
-  if (heap_.merge(that.heap_)) {
-    ret = true;
-  }
-  if (stack_.merge(that.stack_)) {
-    ret = true;
-  }
-  return ret;
+void Memory::merge(const Memory &that) {
+  heap_.merge(that.heap_);
+  stack_.merge(that.stack_);
 }
 Fabric Memory::diff(const Memory &that) const {
   Fabric ret;

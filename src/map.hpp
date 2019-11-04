@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
 #include <map>
-#include <optional>
 #include "domain.hpp"
 #include "json_fwd.hpp"
 
@@ -11,30 +10,44 @@ class Fabric;
 class Register;
 class Symbol;
 
-template <typename K>
-class Map : private std::map<K, Domain> {
-  using Super = std::map<K, Domain>;
-  std::optional<Domain> get(const K &key) const;
+class Map : private std::map<Number, Domain> {
+  using Super = std::map<Number, Domain>;
 
  public:
   using Super::begin, Super::end;
-  bool insert(const K &key, const Domain &val);
-  bool merge(const Map &that);
+  void insert(const Number &key, const Domain &val);
+  Domain lookup(const Number &key) const;
+  void merge(const Map &that);
   bool includes(const Map &that) const;
-  Domain lookup(const K &key) const;
   Fabric diff(const Map &that) const;
 };
-template <typename K>
-void to_json(Json &j, const Map<K> &x);
-template <typename K>
-Fabric dump(const Map<K> &map);
+void to_json(Json &j, const Map &x);
 
-extern template class Map<Register>;
-extern template class Map<Symbol>;
-extern template void to_json<Register>(Json &, const Map<Register> &);
-extern template void to_json<Symbol>(Json &, const Map<Symbol> &);
-extern template Fabric dump<Register>(const Map<Register> &);
-extern template Fabric dump<Symbol>(const Map<Symbol> &);
+class Heap : private Map {
+  using Super = Map;
+
+ public:
+  using Super::begin, Super::end;
+  void insert(const Symbol &key, const Domain &val);
+  Domain lookup(const Symbol &key) const;
+  void merge(const Heap &that);
+  bool includes(const Heap &that) const;
+  Fabric diff(const Heap &that) const;
+};
+void to_json(Json &j, const Heap &x);
+
+class Stack : private Map {
+  using Super = Map;
+
+ public:
+  using Super::begin, Super::end;
+  void insert(const Register &key, const Domain &val);
+  Domain lookup(const Register &key) const;
+  void merge(const Stack &that);
+  bool includes(const Stack &that) const;
+  Fabric diff(const Stack &that) const;
+};
+void to_json(Json &j, const Stack &x);
 
 }  // namespace stacksafe
 

@@ -21,6 +21,7 @@ target_sources(${target} PRIVATE
   log.cpp
   map.cpp
   memory.cpp
+  number.cpp
   register.cpp
   symbol.cpp
   utility.cpp

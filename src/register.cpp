@@ -2,16 +2,15 @@
 
 namespace stacksafe {
 
-Register::Register(int n) : num_{n} {}
-int Register::number() const {
-  return num_;
+const Number &Register::number() const {
+  return *this;
 }
 bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.number() < rhs.number();
 }
 std::string to_str(const Register &reg) {
   static const std::string prefix{"%"};
-  return prefix + std::to_string(reg.number());
+  return prefix + to_str(reg.number());
 }
 
 }  // namespace stacksafe

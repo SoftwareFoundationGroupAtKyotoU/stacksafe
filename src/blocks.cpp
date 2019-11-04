@@ -34,7 +34,12 @@ Memory Blocks::interpret(const llvm::BasicBlock &b) {
   return i.memory();
 }
 bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
-  return get(b).merge(next);
+  if (get(b).includes(next)) {
+    return false;
+  } else {
+    get(b).merge(next);
+    return true;
+  }
 }
 Memory &Blocks::get(const llvm::BasicBlock &b) {
   auto it = Super::find(&b);

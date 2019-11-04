@@ -2,19 +2,21 @@
 #define INCLUDE_GUARD_A3B67C9B_CF18_446A_AC08_280B66DC795B
 
 #include <string>
-#include "register.hpp"
+#include "number.hpp"
 
 namespace stacksafe {
+class Register;
 
-class Symbol : private Register {
-  using Super = Register;
+class Symbol : private Number {
+  static const Symbol global_;
+  using Super = Number;
   using Super::Super;
 
  public:
-  using Super::number;
+  const Number &number() const;
+  bool is_local() const;
   static Symbol global();
   static Symbol local(const Register &reg);
-  bool is_global() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 std::string to_str(const Symbol &symbol);
