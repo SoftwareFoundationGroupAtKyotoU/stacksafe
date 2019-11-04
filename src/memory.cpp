@@ -27,7 +27,7 @@ void Memory::merge(const Memory &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-const Domain &Memory::lookup(const Symbol &key) const {
+const Domain &Memory::lookup(const Register &key) const {
   return heap_.lookup(key);
 }
 const Domain &Memory::lookup(const llvm::Value &key) const {
@@ -40,13 +40,13 @@ const Domain &Memory::lookup(const llvm::Value &key) const {
   }
   stacksafe_unreachable("neither register nor constant", key);
 }
-void Memory::insert(const Symbol &key, const Domain &val) {
+void Memory::insert(const Register &key, const Domain &val) {
   heap_.insert(key, val);
 }
 void Memory::insert(const llvm::Value &key, const Domain &val) {
   stack_.insert(cache_.lookup(key), val);
 }
-Symbol Memory::alloc(const llvm::Value &key) {
+Register Memory::alloc(const llvm::Value &key) {
   const auto &reg = cache_.lookup(key);
   auto sym = heap_.alloc(reg);
   stack_.insert(reg, Domain{sym});
