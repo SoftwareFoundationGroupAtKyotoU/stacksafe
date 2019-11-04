@@ -40,13 +40,9 @@ bool Memory::includes(const Memory &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
 bool Memory::merge(const Memory &that) {
-  bool ret = false;
-  if (heap_.merge(that.heap_)) {
-    ret = true;
-  }
-  if (stack_.merge(that.stack_)) {
-    ret = true;
-  }
+  bool ret = !includes(that);
+  heap_.merge(that.heap_);
+  stack_.merge(that.stack_);
   return ret;
 }
 Fabric Memory::diff(const Memory &that) const {

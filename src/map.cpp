@@ -33,14 +33,10 @@ Domain Map::lookup(const Symbol &key) const {
 Domain Map::lookup(const Register &key) const {
   return lookup(key.number());
 }
-bool Map::merge(const Map &that) {
-  bool ret = false;
+void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {
-    if (insert(k, v)) {
-      ret = true;
-    }
+    insert(k, v);
   }
-  return ret;
 }
 bool Map::includes(const Map &that) const {
   for (const auto &[key, rhs] : that) {
