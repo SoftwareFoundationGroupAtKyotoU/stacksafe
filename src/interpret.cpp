@@ -140,7 +140,7 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
   } else if (check_global(key)) {
     return Domain::global();
   } else if (check_constant(key)) {
-    return Domain{};
+    return Domain::get_empty();
   }
   stacksafe_unreachable("neither register nor constant", key);
 }
@@ -179,7 +179,7 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
 }
 void Interpreter::alloc(const llvm::Value &dst) {
   auto sym = Symbol::local(cache_.lookup(dst));
-  insert(sym, Domain{});
+  insert(sym, Domain::get_empty());
   insert(dst, Domain{sym});
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
@@ -231,7 +231,7 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
   }
 }
 void Interpreter::constant(const llvm::Value &dst) {
-  insert(dst, Domain{});
+  insert(dst, Domain::get_empty());
 }
 
 }  // namespace stacksafe
