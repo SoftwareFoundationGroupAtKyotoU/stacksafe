@@ -9,8 +9,6 @@ class Fabric;
 
 class Symbol {
   static const std::string prefix_;
-  static constexpr int current_init = 0;
-  static int current_;
   enum class Kind { STATIC, AUTO } kind_;
   const int num_;
   Register reg_;
