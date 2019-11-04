@@ -26,7 +26,7 @@ std::string Symbol::repr() const {
     case Kind::STATIC:
       return prefix_ + "@";
     case Kind::AUTO:
-      return prefix_ + to_alphabet(number());
+      return prefix_ + std::to_string(number());
   }
 }
 bool Symbol::is_local() const {
