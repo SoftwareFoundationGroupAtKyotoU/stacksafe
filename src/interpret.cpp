@@ -138,7 +138,7 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
     return mem_.lookup(cache_.lookup(key));
   } else if (check_global(key)) {
-    return Domain::global();
+    return Domain::get_global();
   } else if (check_constant(key)) {
     return Domain::get_empty();
   }
@@ -217,17 +217,17 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
       collect(sym, dom);
     }
   }
-  if (dom.has_local() && dom.includes(Domain::global())) {
+  if (dom.has_local() && dom.includes(Domain::get_global())) {
     log_.error_call(dom);
     safe_.unsafe();
   }
   for (const auto &sym : dom) {
     insert(sym, dom);
-    insert(sym, Domain::global());
+    insert(sym, Domain::get_global());
   }
   if (!check_voidfunc(dst)) {
     insert(dst, dom);
-    insert(dst, Domain::global());
+    insert(dst, Domain::get_global());
   }
 }
 void Interpreter::constant(const llvm::Value &dst) {
