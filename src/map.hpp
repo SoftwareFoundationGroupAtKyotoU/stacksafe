@@ -19,7 +19,6 @@ class Map : private std::map<Number, Domain> {
   Domain lookup(const Number &key) const;
   void merge(const Map &that);
   bool includes(const Map &that) const;
-  Fabric diff(const Map &that) const;
 };
 void to_json(Json &j, const Map &x);
 
@@ -32,7 +31,6 @@ class Heap : private Map {
   Domain lookup(const Symbol &key) const;
   void merge(const Heap &that);
   bool includes(const Heap &that) const;
-  Fabric diff(const Heap &that) const;
 };
 void to_json(Json &j, const Heap &x);
 
@@ -45,7 +43,6 @@ class Stack : private Map {
   Domain lookup(const Register &key) const;
   void merge(const Stack &that);
   bool includes(const Stack &that) const;
-  Fabric diff(const Stack &that) const;
 };
 void to_json(Json &j, const Stack &x);
 

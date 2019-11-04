@@ -35,36 +35,6 @@ bool Map::includes(const Map &that) const {
   }
   return true;
 }
-Fabric Map::diff(const Map &that) const {
-  Fabric ret;
-  for (const auto &[key, rhs] : that) {
-    if (auto it = Super::find(key); it != end()) {
-      const auto &lhs = it->second;
-      assert(rhs.includes(lhs));
-      if (lhs.includes(rhs)) {
-        if (!lhs.empty()) {
-          ret.append(" ")
-              .append(to_str(key))
-              .append(": ")
-              .append(dump(lhs))
-              .next();
-        }
-      } else {
-        ret.append("-")
-            .append(to_str(key))
-            .append(": ")
-            .append(dump(lhs))
-            .next();
-        ret.append("+")
-            .append(to_str(key))
-            .append(": ")
-            .append(dump(rhs))
-            .next();
-      }
-    }
-  }
-  return ret;
-}
 void to_json(Json &j, const Map &x) {
   Json::object_t obj;
   for (const auto &[key, val] : x) {
@@ -85,9 +55,6 @@ void Heap::merge(const Heap &that) {
 bool Heap::includes(const Heap &that) const {
   return Super::includes(that);
 }
-Fabric Heap::diff(const Heap &that) const {
-  return Super::diff(that);
-}
 void to_json(Json &j, const Heap &x) {
   Json::object_t obj;
   for (const auto &[key, val] : x) {
@@ -107,9 +74,6 @@ void Stack::merge(const Stack &that) {
 }
 bool Stack::includes(const Stack &that) const {
   return Super::includes(that);
-}
-Fabric Stack::diff(const Stack &that) const {
-  return Super::diff(that);
 }
 void to_json(Json &j, const Stack &x) {
   Json::object_t obj;
