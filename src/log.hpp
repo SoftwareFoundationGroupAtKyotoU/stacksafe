@@ -4,9 +4,7 @@
 #include <memory>
 
 namespace llvm {
-class BasicBlock;
 class Function;
-class Instruction;
 class Value;
 class raw_fd_ostream;
 class raw_ostream;
@@ -14,8 +12,6 @@ class raw_ostream;
 
 namespace stacksafe {
 class Domain;
-class Fabric;
-class Memory;
 class Register;
 class Symbol;
 
