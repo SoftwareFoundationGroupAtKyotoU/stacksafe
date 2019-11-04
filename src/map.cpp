@@ -132,5 +132,8 @@ void to_json(Json &j, const Heap &x) {
 void Stack::insert(const Register &key, const Domain &val) {
   Super::insert(key.number(), val);
 }
+Domain Stack::lookup(const Register &key) const {
+  return Super::lookup(key.number());
+}
 
 }  // namespace stacksafe
