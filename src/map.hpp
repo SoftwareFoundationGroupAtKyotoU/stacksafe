@@ -50,6 +50,7 @@ class Stack : private Map {
   void insert(const Register &key, const Domain &val);
   Domain lookup(const Register &key) const;
   void merge(const Stack &that);
+  bool includes(const Stack &that) const;
 };
 
 }  // namespace stacksafe

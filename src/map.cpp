@@ -138,5 +138,8 @@ Domain Stack::lookup(const Register &key) const {
 void Stack::merge(const Stack &that) {
   Super::merge(that);
 }
+bool Stack::includes(const Stack &that) const {
+  return Super::includes(that);
+}
 
 }  // namespace stacksafe
