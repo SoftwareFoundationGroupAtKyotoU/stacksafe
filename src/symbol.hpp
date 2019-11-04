@@ -8,7 +8,7 @@ namespace stacksafe {
 class Fabric;
 
 class Symbol {
-  enum class Kind { STATIC, AUTO } kind_;
+  enum class Kind { STATIC, AUTO };
   Register reg_;
   Symbol(Kind k, int n);
 
