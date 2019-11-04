@@ -5,7 +5,7 @@
 namespace stacksafe {
 
 const std::string Symbol::prefix_{"#"};
-Symbol::Symbol(Kind k, int n) : kind_{k}, num_{n}, reg_{n} {}
+Symbol::Symbol(Kind k, int n) : kind_{k}, reg_{n} {}
 Symbol Symbol::global() {
   return Symbol{Kind::STATIC, -1};
 }
@@ -13,7 +13,7 @@ Symbol Symbol::make(const Register &base) {
   return Symbol{Kind::AUTO, base.number()};
 }
 int Symbol::number() const {
-  return num_;
+  return reg_.number();
 }
 std::string Symbol::repr() const {
   switch (kind_) {

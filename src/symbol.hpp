@@ -10,7 +10,6 @@ class Fabric;
 class Symbol {
   static const std::string prefix_;
   enum class Kind { STATIC, AUTO } kind_;
-  const int num_;
   Register reg_;
   Symbol(Kind k, int n);
 
