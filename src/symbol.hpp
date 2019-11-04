@@ -13,6 +13,7 @@ class Symbol : private Number {
 
  public:
   using Super::value;
+  const Number &number() const;
   static Symbol global();
   static Symbol local(const Register &reg);
   bool is_global() const;
