@@ -35,7 +35,7 @@ class Memory {
   const Heap &heap() const;
   const Stack &stack() const;
   bool includes(const Memory &that) const;
-  bool merge(const Memory &that);
+  void merge(const Memory &that);
   Fabric diff(const Memory &that) const;
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Register &key) const;
