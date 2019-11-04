@@ -5,6 +5,9 @@ namespace stacksafe {
 
 class Safe {
   bool safe_;
+
+ public:
+  Safe();
 };
 
 }  // namespace stacksafe
