@@ -39,6 +39,14 @@ bool Map<K>::insert(const Register &key, const Domain &val) {
   return insert(key.number(), val);
 }
 template <typename K>
+Domain Map<K>::lookup(const Symbol &key) const {
+  return lookup(key.number());
+}
+template <typename K>
+Domain Map<K>::lookup(const Register &key) const {
+  return lookup(key.number());
+}
+template <typename K>
 bool Map<K>::merge(const Map &that) {
   bool ret = false;
   for (const auto &[k, v] : that) {
@@ -57,13 +65,6 @@ bool Map<K>::includes(const Map &that) const {
     return false;
   }
   return true;
-}
-template <typename K>
-Domain Map<K>::lookup(const K &key) const {
-  if (auto dom = get(key)) {
-    return *dom;
-  }
-  return Domain{};
 }
 template <typename K>
 Fabric Map<K>::diff(const Map &that) const {

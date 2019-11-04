@@ -22,9 +22,10 @@ class Map : private std::map<K, Domain> {
   using Super::begin, Super::end;
   bool insert(const Symbol &key, const Domain &val);
   bool insert(const Register &key, const Domain &val);
+  Domain lookup(const Symbol &key) const;
+  Domain lookup(const Register &key) const;
   bool merge(const Map &that);
   bool includes(const Map &that) const;
-  Domain lookup(const K &key) const;
   Fabric diff(const Map &that) const;
 };
 template <typename K>
