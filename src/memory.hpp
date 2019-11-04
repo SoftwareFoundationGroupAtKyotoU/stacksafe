@@ -29,7 +29,6 @@ class Memory {
   const Domain &lookup(const Register &key) const;
   const Domain &lookup(const llvm::Value &key) const;
   void insert(const Symbol &key, const Domain &val);
-  void insert(const Register &key, const Domain &val);
   void insert(const llvm::Value &key, const Domain &val);
 };
 void to_json(Json &j, const Memory &x);

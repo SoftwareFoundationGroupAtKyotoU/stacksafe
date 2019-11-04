@@ -11,7 +11,7 @@ Memory::Memory(const Cache &c) : cache_{c} {}
 Memory::Memory(const Cache &c, const llvm::Function &f) : cache_{c} {
   insert(Symbol::global(), Domain::get_global());
   for (const auto &a : f.args()) {
-    insert(cache_.lookup(a), Domain::get_global());
+    insert(a, Domain::get_global());
   }
 }
 const Heap &Memory::heap() const {
@@ -45,9 +45,6 @@ const Domain &Memory::lookup(const llvm::Value &key) const {
 }
 void Memory::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key, val);
-}
-void Memory::insert(const Register &key, const Domain &val) {
-  stack_.insert(key, val);
 }
 void Memory::insert(const llvm::Value &key, const Domain &val) {
   stack_.insert(cache_.lookup(key), val);
