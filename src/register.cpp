@@ -8,9 +8,6 @@ Register::Register(int n) : num_{n} {}
 int Register::number() const {
   return num_;
 }
-std::string Register::repr() const {
-  return prefix + std::to_string(number());
-}
 bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.number() < rhs.number();
 }
@@ -20,7 +17,7 @@ std::string to_str(const Register &reg) {
 }
 Fabric dump(const Register &reg) {
   Fabric ret;
-  return ret.append(reg.repr()).quote();
+  return ret.append(to_str(reg)).quote();
 }
 
 }  // namespace stacksafe
