@@ -20,7 +20,6 @@ class Map : private std::map<Number, Domain> {
   void merge(const Map &that);
   bool includes(const Map &that) const;
 };
-void to_json(Json &j, const Map &x);
 
 class Heap : private Map {
   using Super = Map;

@@ -35,13 +35,6 @@ bool Map::includes(const Map &that) const {
   }
   return true;
 }
-void to_json(Json &j, const Map &x) {
-  Json::object_t obj;
-  for (const auto &[key, val] : x) {
-    obj[to_str(key)] = val;
-  }
-  j = obj;
-}
 
 void Heap::insert(const Symbol &key, const Domain &val) {
   Super::insert(key.number(), val);
