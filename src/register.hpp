@@ -12,6 +12,7 @@ class Register : public Symbol {
   explicit Register(int n);
 
  public:
+  Register(const Symbol &sym);
   using Symbol::number;
   bool is_local() const;
   static const Register &get_global();
