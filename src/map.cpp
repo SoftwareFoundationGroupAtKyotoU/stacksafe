@@ -7,11 +7,11 @@
 
 namespace stacksafe {
 
-void Map::insert(const Number &key, const Domain &val) {
-  if (auto it = Super::find(key); it != end()) {
+void Map::insert(const Register &key, const Domain &val) {
+  if (auto it = Super::find(key.number()); it != end()) {
     it->second.merge(val);
   } else {
-    Super::try_emplace(key, val);
+    Super::try_emplace(key.number(), val);
   }
 }
 const Domain &Map::lookup(const Register &key) const {
@@ -22,7 +22,7 @@ const Domain &Map::lookup(const Register &key) const {
 }
 void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {
-    insert(k, v);
+    insert(Register{Symbol{k.value()}}, v);
   }
 }
 bool Map::includes(const Map &that) const {
@@ -37,7 +37,7 @@ bool Map::includes(const Map &that) const {
 }
 
 void Heap::insert(const Register &key, const Domain &val) {
-  Super::insert(key.number(), val);
+  Super::insert(key, val);
 }
 const Domain &Heap::lookup(const Register &key) const {
   return Super::lookup(key);
@@ -57,7 +57,7 @@ void to_json(Json &j, const Heap &x) {
 }
 
 void Stack::insert(const Register &key, const Domain &val) {
-  Super::insert(key.number(), val);
+  Super::insert(key, val);
 }
 const Domain &Stack::lookup(const Register &key) const {
   return Super::lookup(key);
