@@ -7,12 +7,11 @@
 
 namespace stacksafe {
 
-bool Map::insert(const Number &key, const Domain &val) {
+void Map::insert(const Number &key, const Domain &val) {
   if (auto it = Super::find(key); it != end()) {
-    return it->second.merge(val);
+    it->second.merge(val);
   } else {
     Super::try_emplace(key, val);
-    return true;
   }
 }
 Domain Map::lookup(const Number &key) const {
@@ -21,11 +20,11 @@ Domain Map::lookup(const Number &key) const {
   }
   return Domain{};
 }
-bool Map::insert(const Symbol &key, const Domain &val) {
-  return insert(key.number(), val);
+void Map::insert(const Symbol &key, const Domain &val) {
+  insert(key.number(), val);
 }
-bool Map::insert(const Register &key, const Domain &val) {
-  return insert(key.number(), val);
+void Map::insert(const Register &key, const Domain &val) {
+  insert(key.number(), val);
 }
 Domain Map::lookup(const Symbol &key) const {
   return lookup(key.number());

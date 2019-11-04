@@ -13,13 +13,13 @@ class Symbol;
 
 class Map : private std::map<Number, Domain> {
   using Super = std::map<Number, Domain>;
-  bool insert(const Number &key, const Domain &val);
+  void insert(const Number &key, const Domain &val);
   Domain lookup(const Number &key) const;
 
  public:
   using Super::begin, Super::end;
-  bool insert(const Symbol &key, const Domain &val);
-  bool insert(const Register &key, const Domain &val);
+  void insert(const Symbol &key, const Domain &val);
+  void insert(const Register &key, const Domain &val);
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Register &key) const;
   void merge(const Map &that);
