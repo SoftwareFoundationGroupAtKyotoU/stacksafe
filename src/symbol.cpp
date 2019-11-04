@@ -10,11 +10,8 @@ Symbol::Symbol(Kind k, int n) : kind_{k}, num_{n}, reg_{n} {}
 Symbol Symbol::global() {
   return Symbol{Kind::STATIC, current_init};
 }
-Symbol Symbol::make() {
-  return Symbol{Kind::AUTO, ++current_};
-}
 Symbol Symbol::make(const Register &base) {
-  return Symbol{Kind::AUTO, ++current_};
+  return Symbol{Kind::AUTO, base.number()};
 }
 void Symbol::reset() {
   current_ = current_init;
