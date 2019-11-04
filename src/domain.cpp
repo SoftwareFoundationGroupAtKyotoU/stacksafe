@@ -9,13 +9,8 @@ namespace stacksafe {
 
 Domain::Domain(const Super &super) : Super{super} {}
 Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
-bool Domain::merge(const Domain &that) {
-  if (includes(that)) {
-    return false;
-  } else {
-    Super::insert(that.begin(), that.end());
-    return true;
-  }
+void Domain::merge(const Domain &that) {
+  Super::insert(that.begin(), that.end());
 }
 bool Domain::includes(const Domain &that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
