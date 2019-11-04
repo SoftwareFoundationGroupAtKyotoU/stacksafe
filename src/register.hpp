@@ -11,7 +11,6 @@ class Register : private Number {
   using Super::Super;
 
  public:
-  using Super::value;
   const Number &number() const;
 };
 bool operator<(const Register &lhs, const Register &rhs);

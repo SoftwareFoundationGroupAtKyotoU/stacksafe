@@ -7,7 +7,7 @@ Symbol Symbol::global() {
   return Symbol{-1};
 }
 Symbol Symbol::local(const Register &reg) {
-  return Symbol{reg.value()};
+  return Symbol{reg.number().value()};
 }
 bool Symbol::is_global() const {
   return value() < 0;
