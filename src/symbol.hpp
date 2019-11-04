@@ -7,8 +7,7 @@
 namespace stacksafe {
 class Fabric;
 
-class Symbol {
-  Register reg_;
+class Symbol : private Register {
   Symbol(int n);
 
  public:
