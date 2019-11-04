@@ -17,7 +17,6 @@ class Memory {
   const Stack &stack() const;
   bool includes(const Memory &that) const;
   void merge(const Memory &that);
-  Fabric diff(const Memory &that) const;
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Register &key) const;
   void insert(const Symbol &key, const Domain &val);

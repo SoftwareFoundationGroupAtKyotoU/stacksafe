@@ -17,12 +17,6 @@ void Memory::merge(const Memory &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-Fabric Memory::diff(const Memory &that) const {
-  Fabric ret;
-  ret.append(heap().diff(that.heap())).next();
-  ret.append(stack().diff(that.stack())).next();
-  return ret;
-}
 Domain Memory::lookup(const Symbol &key) const {
   return heap_.lookup(key);
 }
