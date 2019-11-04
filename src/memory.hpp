@@ -15,14 +15,13 @@ class Cache;
 
 class Memory {
   const Cache &cache_;
-  Heap heap_;
-  Stack stack_;
+  Map heap_, stack_;
 
  public:
   explicit Memory(const Cache &c);
   Memory(const Cache &c, const llvm::Function &f);
-  const Heap &heap() const;
-  const Stack &stack() const;
+  const Map &heap() const;
+  const Map &stack() const;
   bool includes(const Memory &that) const;
   void merge(const Memory &that);
   const Domain &lookup(const Register &key) const;

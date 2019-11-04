@@ -14,10 +14,10 @@ Memory::Memory(const Cache &c, const llvm::Function &f) : cache_{c} {
     insert(a, Domain::get_global());
   }
 }
-const Heap &Memory::heap() const {
+const Map &Memory::heap() const {
   return heap_;
 }
-const Stack &Memory::stack() const {
+const Map &Memory::stack() const {
   return stack_;
 }
 bool Memory::includes(const Memory &that) const {
