@@ -9,5 +9,8 @@ int Number::value() const {
 bool operator<(const Number& lhs, const Number& rhs) {
   return lhs.value() < rhs.value();
 }
+std::string to_str(const Number& number) {
+  return std::to_string(number.value());
+}
 
 }  // namespace stacksafe
