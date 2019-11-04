@@ -5,6 +5,7 @@ namespace stacksafe {
 
 const Symbol Symbol::global_{Number{-1}};
 Symbol::Symbol(const Number &n) : Number{n} {}
+Symbol::Symbol(int n) : Number{n} {}
 const Number &Symbol::number() const {
   return *this;
 }

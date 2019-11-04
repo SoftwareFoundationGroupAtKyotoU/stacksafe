@@ -3,15 +3,16 @@
 
 #include <string>
 #include "number.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 
-class Register : private Number {
+class Register : public Symbol {
   friend class Cache;
   explicit Register(int n);
 
  public:
-  const Number &number() const;
+  using Symbol::number;
   bool is_local() const;
   static const Register &get_global();
 };

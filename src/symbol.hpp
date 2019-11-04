@@ -13,6 +13,7 @@ class Symbol : private Number {
   explicit Symbol(const Number &n);
 
  public:
+  explicit Symbol(int n);
   const Number &number() const;
   bool is_local() const;
   static Symbol global();

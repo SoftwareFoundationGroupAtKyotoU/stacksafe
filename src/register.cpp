@@ -2,10 +2,7 @@
 
 namespace stacksafe {
 
-Register::Register(int n) : Number{n} {}
-const Number &Register::number() const {
-  return *this;
-}
+Register::Register(int n) : Symbol{n} {}
 bool Register::is_local() const {
   return get_global() < *this;
 }
