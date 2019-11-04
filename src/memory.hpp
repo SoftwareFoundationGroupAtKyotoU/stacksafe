@@ -6,13 +6,15 @@
 #include "register.hpp"
 
 namespace stacksafe {
-class Fabric;
+class Cache;
 
 class Memory {
+  const Cache &cache_;
   Heap heap_;
   Stack stack_;
 
  public:
+  explicit Memory(const Cache &c);
   const Heap &heap() const;
   const Stack &stack() const;
   bool includes(const Memory &that) const;

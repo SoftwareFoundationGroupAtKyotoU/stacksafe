@@ -4,6 +4,7 @@
 
 namespace stacksafe {
 
+Memory::Memory(const Cache &c) : cache_{c} {}
 const Heap &Memory::heap() const {
   return heap_;
 }
