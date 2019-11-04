@@ -9,7 +9,7 @@ Abstract::Abstract(const llvm::Function &f)
 void Abstract::run() {
   interpret(func_.getEntryBlock());
   if (blocks_.is_error()) {
-    safe_ = false;
+    set_unsafe();
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
@@ -38,11 +38,14 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
       }
     }
   } else {
-    safe_ = false;
+    set_unsafe();
   }
 }
 bool Abstract::is_safe() const {
   return safe_;
+}
+void Abstract::set_unsafe() {
+  safe_ = false;
 }
 
 }  // namespace stacksafe
