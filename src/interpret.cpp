@@ -146,7 +146,7 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
 void Interpreter::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(mem_.lookup(key));
   mem_.insert(key, diff);
-  if (!key.is_local() && diff.has_local()) {
+  if (key.is_global() && diff.has_local()) {
     log_.error_global(diff);
     error_ = true;
   } else if (!diff.empty()) {
@@ -176,7 +176,7 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::Value &dst) {
-  auto sym = Symbol::make();
+  auto sym = Symbol::local(cache_.lookup(dst));
   insert(sym, Domain{});
   insert(dst, Domain{sym});
 }

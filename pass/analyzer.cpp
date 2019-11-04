@@ -16,7 +16,6 @@ struct Analyzer : public llvm::FunctionPass {
     name = f.getName().str();
     abst = std::make_unique<Abstract>(f);
     assert(abst && "allocation failed");
-    Symbol::reset();
     abst->run();
     return false;
   }

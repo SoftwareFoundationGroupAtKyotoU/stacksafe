@@ -28,7 +28,7 @@ Domain Domain::minus(const Domain &that) const {
 }
 bool Domain::has_local() const {
   for (const auto &sym : *this) {
-    if (sym.is_local()) {
+    if (!sym.is_global()) {
       return true;
     }
   }
@@ -40,7 +40,7 @@ Domain Domain::global() {
 void to_json(Json &j, const Domain &x) {
   Json::array_t arr;
   for (const auto &e : x) {
-    arr.push_back(e.repr());
+    arr.push_back(to_str(e));
   }
   j = arr;
 }
@@ -51,7 +51,7 @@ Fabric dump(const Domain &domain) {
     if (!std::exchange(first, false)) {
       ret.append(", ");
     }
-    ret.append(dump(symbol));
+    ret.append(to_str(symbol));
   }
   return ret.quote("[", "]");
 }

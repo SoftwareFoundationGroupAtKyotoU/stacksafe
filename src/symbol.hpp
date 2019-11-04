@@ -2,28 +2,22 @@
 #define INCLUDE_GUARD_A3B67C9B_CF18_446A_AC08_280B66DC795B
 
 #include <string>
+#include "register.hpp"
 
 namespace stacksafe {
-class Fabric;
 
-class Symbol {
-  static const std::string prefix_;
-  static constexpr int current_init = 0;
-  static int current_;
-  enum class Kind { STATIC, AUTO } kind_;
-  const int num_;
-  Symbol(Kind k, int n);
+class Symbol : private Register {
+  using Super = Register;
+  using Super::Super;
 
  public:
+  using Super::number;
   static Symbol global();
-  static Symbol make();
-  static void reset();
-  int number() const;
-  std::string repr() const;
-  bool is_local() const;
+  static Symbol local(const Register &reg);
+  bool is_global() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
-Fabric dump(const Symbol &symbol);
+std::string to_str(const Symbol &symbol);
 
 }  // namespace stacksafe
 

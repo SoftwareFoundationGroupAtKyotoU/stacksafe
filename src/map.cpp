@@ -60,14 +60,22 @@ Fabric Map<K>::diff(const Map &that) const {
       if (lhs.includes(rhs)) {
         if (!lhs.empty()) {
           ret.append(" ")
-              .append(dump(key))
+              .append(to_str(key))
               .append(": ")
               .append(dump(lhs))
               .next();
         }
       } else {
-        ret.append("-").append(dump(key)).append(": ").append(dump(lhs)).next();
-        ret.append("+").append(dump(key)).append(": ").append(dump(rhs)).next();
+        ret.append("-")
+            .append(to_str(key))
+            .append(": ")
+            .append(dump(lhs))
+            .next();
+        ret.append("+")
+            .append(to_str(key))
+            .append(": ")
+            .append(dump(rhs))
+            .next();
       }
     }
   }
@@ -77,7 +85,7 @@ template <typename K>
 void to_json(Json &j, const Map<K> &x) {
   Json::object_t obj;
   for (const auto &[key, val] : x) {
-    obj[key.repr()] = val;
+    obj[to_str(key)] = val;
   }
   j = obj;
 }
@@ -90,7 +98,7 @@ Fabric dump(const Map<K> &map) {
       if (!std::exchange(first, false)) {
         tmp.append(",").next();
       }
-      tmp.append(dump(key)).append(":");
+      tmp.append(to_str(key)).append(":");
       if (1 < value.size()) {
         tmp.next();
         tmp.append(dump(value).indent(2));

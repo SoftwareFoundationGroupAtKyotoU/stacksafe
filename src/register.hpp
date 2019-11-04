@@ -7,16 +7,14 @@ namespace stacksafe {
 class Fabric;
 
 class Register {
-  static const std::string prefix;
   const int num_;
 
  public:
   explicit Register(int n);
   int number() const;
-  std::string repr() const;
 };
 bool operator<(const Register &lhs, const Register &rhs);
-Fabric dump(const Register &reg);
+std::string to_str(const Register &reg);
 
 }  // namespace stacksafe
 
