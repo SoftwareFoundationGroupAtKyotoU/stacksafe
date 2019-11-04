@@ -6,7 +6,7 @@
 namespace stacksafe {
 
 Interpreter::Interpreter(const Cache &c, const Log &l, const Memory &m)
-    : cache_{c}, log_{l}, mem_{m} {}
+    : log_{l}, mem_{m} {}
 const Memory &Interpreter::memory() const {
   return mem_;
 }
@@ -145,7 +145,7 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
   auto diff = val.minus(mem_.lookup(key));
   mem_.insert(key, diff);
   if (!diff.empty()) {
-    log_.print(cache_.lookup(key), diff);
+    log_.print(key, diff);
   }
 }
 void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
@@ -157,7 +157,7 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
 }
 void Interpreter::alloc(const llvm::Value &dst) {
   auto sym = mem_.alloc(dst);
-  log_.print(cache_.lookup(dst), Domain{sym});
+  log_.print(dst, Domain{sym});
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
