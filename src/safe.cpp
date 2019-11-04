@@ -2,7 +2,7 @@
 
 namespace stacksafe {
 
-Safe::Safe() : safe_{false} {}
+Safe::Safe() : safe_{true} {}
 Safe::operator bool() const {
   return safe_;
 }
