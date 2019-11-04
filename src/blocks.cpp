@@ -24,8 +24,10 @@ std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{cache_, log_, get(b)};
   if (i.visit(b)) {
     error_ = true;
+    return std::nullopt;
+  } else {
+    return i.memory();
   }
-  return i.memory();
 }
 bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
   if (get(b).includes(next)) {
