@@ -16,7 +16,7 @@ class Cache : private std::map<const llvm::Value *, Register> {
 
  public:
   explicit Cache(const llvm::Function &f);
-  Register lookup(const llvm::Value &key) const;
+  const Register &lookup(const llvm::Value &key) const;
 
  private:
   void add(const llvm::Value &reg);
