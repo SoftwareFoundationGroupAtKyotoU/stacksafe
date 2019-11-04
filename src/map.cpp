@@ -20,18 +20,6 @@ Domain Map::lookup(const Number &key) const {
   }
   return Domain{};
 }
-void Map::insert(const Symbol &key, const Domain &val) {
-  insert(key.number(), val);
-}
-void Map::insert(const Register &key, const Domain &val) {
-  insert(key.number(), val);
-}
-Domain Map::lookup(const Symbol &key) const {
-  return lookup(key.number());
-}
-Domain Map::lookup(const Register &key) const {
-  return lookup(key.number());
-}
 void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {
     insert(k, v);
@@ -83,27 +71,6 @@ void to_json(Json &j, const Map &x) {
     obj[to_str(key)] = val;
   }
   j = obj;
-}
-Fabric dump(const Map &map) {
-  Fabric ret, tmp;
-  bool first = true;
-  for (const auto &[key, value] : map) {
-    if (0 < value.size()) {
-      if (!std::exchange(first, false)) {
-        tmp.append(",").next();
-      }
-      tmp.append(to_str(key)).append(":");
-      if (1 < value.size()) {
-        tmp.next();
-        tmp.append(dump(value).indent(2));
-      } else {
-        tmp.append(" ").append(dump(value));
-      }
-    }
-  }
-  ret.append("{").next();
-  ret.append(tmp.indent(2)).next();
-  return ret.append("}");
 }
 
 void Heap::insert(const Symbol &key, const Domain &val) {
