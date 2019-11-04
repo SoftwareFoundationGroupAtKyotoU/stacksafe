@@ -2,10 +2,10 @@
 #define INCLUDE_GUARD_A3B67C9B_CF18_446A_AC08_280B66DC795B
 
 #include <string>
+#include "register.hpp"
 
 namespace stacksafe {
 class Fabric;
-class Register;
 
 class Symbol {
   static const std::string prefix_;
@@ -13,6 +13,7 @@ class Symbol {
   static int current_;
   enum class Kind { STATIC, AUTO } kind_;
   const int num_;
+  Register reg_;
   Symbol(Kind k, int n);
 
  public:
