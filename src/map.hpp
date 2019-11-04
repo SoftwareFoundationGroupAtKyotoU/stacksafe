@@ -42,6 +42,13 @@ class Heap : private Map {
 };
 void to_json(Json &j, const Heap &x);
 
+class Stack : private Map {
+  using Super = Map;
+
+ public:
+  using Super::begin, Super::end;
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
