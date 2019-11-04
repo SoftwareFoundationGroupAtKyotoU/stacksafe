@@ -32,7 +32,7 @@ const Domain &Domain::get_empty() {
   return dom;
 }
 const Domain &Domain::get_global() {
-  static const Domain dom{Symbol::global()};
+  static const Domain dom{Register::get_global()};
   return dom;
 }
 void to_json(Json &j, const Domain &x) {
