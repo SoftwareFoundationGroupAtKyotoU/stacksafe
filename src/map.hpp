@@ -14,7 +14,6 @@ class Symbol;
 template <typename K>
 class Map : private std::map<K, Domain> {
   using Super = std::map<K, Domain>;
-  std::optional<Domain> get(const K &key) const;
   bool insert(const Number &key, const Domain &val);
   Domain lookup(const Number &key) const;
 

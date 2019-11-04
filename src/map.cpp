@@ -8,13 +8,6 @@
 namespace stacksafe {
 
 template <typename K>
-std::optional<Domain> Map<K>::get(const K &key) const {
-  if (auto it = Super::find(key); it != end()) {
-    return it->second;
-  }
-  return std::nullopt;
-}
-template <typename K>
 bool Map<K>::insert(const Number &key, const Domain &val) {
   if (auto it = Super::find(K(key.value())); it != end()) {
     return it->second.merge(val);
@@ -25,8 +18,8 @@ bool Map<K>::insert(const Number &key, const Domain &val) {
 }
 template <typename K>
 Domain Map<K>::lookup(const Number &key) const {
-  if (auto dom = get(K(key.value()))) {
-    return *dom;
+  if (auto it = Super::find(K(key.value())); it != end()) {
+    return it->second;
   }
   return Domain{};
 }
@@ -59,7 +52,8 @@ bool Map<K>::merge(const Map &that) {
 template <typename K>
 bool Map<K>::includes(const Map &that) const {
   for (const auto &[key, rhs] : that) {
-    if (auto lhs = get(key); lhs && lhs->includes(rhs)) {
+    if (auto lhs = Super::find(key);
+        lhs != end() && lhs->second.includes(rhs)) {
       continue;
     }
     return false;
