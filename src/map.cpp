@@ -118,5 +118,8 @@ void Heap::merge(const Heap &that) {
 bool Heap::includes(const Heap &that) const {
   return Super::includes(that);
 }
+Fabric Heap::diff(const Heap &that) const {
+  return Super::diff(that);
+}
 
 }  // namespace stacksafe
