@@ -14,6 +14,10 @@ std::string Register::repr() const {
 bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.number() < rhs.number();
 }
+std::string to_str(const Register &reg) {
+  static const std::string prefix{"%"};
+  return prefix + std::to_string(reg.number());
+}
 Fabric dump(const Register &reg) {
   Fabric ret;
   return ret.append(reg.repr()).quote();
