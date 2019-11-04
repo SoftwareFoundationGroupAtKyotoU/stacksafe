@@ -106,4 +106,8 @@ Fabric dump(const Map &map) {
   return ret.append("}");
 }
 
+void Heap::insert(const Symbol &key, const Domain &val) {
+  Super::insert(key.number(), val);
+}
+
 }  // namespace stacksafe

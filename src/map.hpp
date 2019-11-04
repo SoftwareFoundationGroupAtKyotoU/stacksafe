@@ -13,11 +13,11 @@ class Symbol;
 
 class Map : private std::map<Number, Domain> {
   using Super = std::map<Number, Domain>;
-  void insert(const Number &key, const Domain &val);
   Domain lookup(const Number &key) const;
 
  public:
   using Super::begin, Super::end;
+  void insert(const Number &key, const Domain &val);
   void insert(const Symbol &key, const Domain &val);
   void insert(const Register &key, const Domain &val);
   Domain lookup(const Symbol &key) const;
@@ -34,6 +34,7 @@ class Heap : private Map {
 
  public:
   using Super::begin, Super::end, Super::merge, Super::includes, Super::diff;
+  void insert(const Symbol &key, const Domain &val);
 };
 
 }  // namespace stacksafe
