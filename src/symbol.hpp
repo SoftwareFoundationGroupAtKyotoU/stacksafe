@@ -8,7 +8,6 @@ namespace stacksafe {
 class Fabric;
 
 class Symbol {
-  static const std::string prefix_;
   enum class Kind { STATIC, AUTO } kind_;
   Register reg_;
   Symbol(Kind k, int n);

@@ -4,7 +4,6 @@
 
 namespace stacksafe {
 
-const std::string Symbol::prefix_{"#"};
 Symbol::Symbol(Kind k, int n) : kind_{k}, reg_{n} {}
 Symbol Symbol::global() {
   return Symbol{Kind::STATIC, -1};
