@@ -48,9 +48,9 @@ void Memory::insert(const llvm::Value &key, const Domain &val) {
 }
 Register Memory::alloc(const llvm::Value &key) {
   const auto &reg = cache_.lookup(key);
-  auto sym = heap_.alloc(reg);
-  stack_.insert(reg, Domain{sym});
-  return sym;
+  heap_.insert(reg, Domain::get_empty());
+  stack_.insert(reg, Domain{reg});
+  return reg;
 }
 void Memory::collect(const Register &curr, Domain &done) const {
   if (!done.includes(Domain{curr})) {
