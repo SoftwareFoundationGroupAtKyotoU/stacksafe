@@ -148,14 +148,6 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
     log_.print(cache_.lookup(key), diff);
   }
 }
-void Interpreter::collect(const Register &curr, Domain &done) const {
-  if (!done.includes(Domain{curr})) {
-    done.merge(Domain{curr});
-    for (const auto &next : mem_.lookup(curr)) {
-      collect(next, done);
-    }
-  }
-}
 void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
                         const llvm::Value &rhs) {
   Domain dom;
@@ -199,7 +191,7 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
   Domain dom;
   for (const auto &val : params) {
     for (const auto &sym : mem_.lookup(*val)) {
-      collect(sym, dom);
+      mem_.collect(sym, dom);
     }
   }
   if (dom.has_local() && dom.includes(Domain::get_global())) {
