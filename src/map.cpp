@@ -14,11 +14,11 @@ void Map::insert(const Number &key, const Domain &val) {
     Super::try_emplace(key, val);
   }
 }
-Domain Map::lookup(const Number &key) const {
+const Domain &Map::lookup(const Number &key) const {
   if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
-  return Domain{};
+  return Domain::get_empty();
 }
 void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {

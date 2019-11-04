@@ -39,7 +39,7 @@ Domain Memory::lookup(const llvm::Value &key) const {
   } else if (check_global(key)) {
     return Domain::global();
   } else if (check_constant(key)) {
-    return Domain{};
+    return Domain::get_empty();
   }
   stacksafe_unreachable("neither register nor constant", key);
 }
