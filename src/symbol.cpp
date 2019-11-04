@@ -17,13 +17,16 @@ int Symbol::number() const {
 bool Symbol::is_local() const {
   return kind_ == Kind::AUTO;
 }
+bool Symbol::is_global() const {
+  return number() < 0;
+}
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
 std::string to_str(const Symbol &symbol) {
   static const std::string prefix{"&"};
   static const std::string global{"@"};
-  if (symbol.number() < 0) {
+  if (symbol.is_global()) {
     return prefix + global;
   } else {
     return prefix + std::to_string(symbol.number());
