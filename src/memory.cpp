@@ -52,6 +52,14 @@ Symbol Memory::alloc(const llvm::Value &key) {
   stack_.insert(reg, Domain{sym});
   return sym;
 }
+void Memory::collect(const Register &curr, Domain &done) const {
+  if (!done.includes(Domain{curr})) {
+    done.merge(Domain{curr});
+    for (const auto &next : lookup(curr)) {
+      collect(next, done);
+    }
+  }
+}
 void to_json(Json &j, const Memory &x) {
   j["heap"] = x.heap();
   j["stack"] = x.stack();
