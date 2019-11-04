@@ -4,6 +4,7 @@
 #include <string>
 #include "blocks.hpp"
 #include "log.hpp"
+#include "safe.hpp"
 
 namespace llvm {
 class Function;
@@ -16,7 +17,7 @@ class Abstract {
   Log log_;
   Blocks blocks_;
   std::string name_;
-  bool safe_;
+  Safe safe_;
 
  public:
   explicit Abstract(const llvm::Function &f);
@@ -25,8 +26,6 @@ class Abstract {
 
  private:
   void interpret(const llvm::BasicBlock &b);
-  bool is_safe() const;
-  void set_unsafe();
 };
 
 }  // namespace stacksafe

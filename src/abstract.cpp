@@ -5,23 +5,23 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
-    : log_{f}, blocks_{f, log_}, name_{f.getName().str()}, safe_{true} {}
+    : log_{f}, blocks_{f, log_}, name_{f.getName().str()} {}
 void Abstract::run(const llvm::Function &f) {
   interpret(f.getEntryBlock());
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   if (os.is_displayed()) {
-    if (is_safe()) {
+    if (safe_) {
       os.changeColor(llvm::raw_ostream::GREEN);
     } else {
       os.changeColor(llvm::raw_ostream::RED, true);
     }
   }
-  os << (is_safe() ? "SAFE" : "UNSAFE") << ": " << name_;
+  os << (safe_ ? "SAFE" : "UNSAFE") << ": " << name_;
   endline(os, true);
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  if (!is_safe()) {
+  if (!safe_) {
     return;
   }
   log_.print_hr2().print(b).print_hr().print_nl();
@@ -35,14 +35,8 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
       }
     }
   } else {
-    set_unsafe();
+    safe_.unsafe();
   }
-}
-bool Abstract::is_safe() const {
-  return safe_;
-}
-void Abstract::set_unsafe() {
-  safe_ = false;
 }
 
 }  // namespace stacksafe
