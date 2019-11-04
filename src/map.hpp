@@ -29,6 +29,13 @@ class Map : private std::map<Number, Domain> {
 void to_json(Json &j, const Map &x);
 Fabric dump(const Map &map);
 
+class Heap : private Map {
+  using Super = Map;
+
+ public:
+  using Super::begin, Super::end, Super::merge, Super::includes, Super::diff;
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
