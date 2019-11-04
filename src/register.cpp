@@ -17,8 +17,13 @@ bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.number() < rhs.number();
 }
 std::string to_str(const Register &reg) {
-  static const std::string prefix{"%"};
-  return prefix + std::to_string(reg.number());
+  static const std::string prefix{"&"};
+  static const std::string global{"@"};
+  if (reg.is_local()) {
+    return prefix + std::to_string(reg.number());
+  } else {
+    return prefix + global;
+  }
 }
 
 }  // namespace stacksafe
