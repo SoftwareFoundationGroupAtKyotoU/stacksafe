@@ -4,13 +4,14 @@
 #include <map>
 #include "domain.hpp"
 #include "json_fwd.hpp"
+#include "register.hpp"
 
 namespace stacksafe {
 class Fabric;
 class Register;
 
-class Map : private std::map<Number, Domain> {
-  using Super = std::map<Number, Domain>;
+class Map : private std::map<Register, Domain> {
+  using Super = std::map<Register, Domain>;
 
  public:
   using Super::begin, Super::end;
