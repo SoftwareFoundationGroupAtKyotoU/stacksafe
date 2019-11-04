@@ -10,7 +10,7 @@ class Register;
 class Symbol : private Number {
   static const Symbol global_;
   using Super = Number;
-  using Super::Super;
+  explicit Symbol(const Number &n);
 
  public:
   const Number &number() const;

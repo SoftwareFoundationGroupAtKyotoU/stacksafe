@@ -3,7 +3,8 @@
 
 namespace stacksafe {
 
-const Symbol Symbol::global_{-1};
+const Symbol Symbol::global_{Number{-1}};
+Symbol::Symbol(const Number &n) : Number{n} {}
 const Number &Symbol::number() const {
   return *this;
 }
@@ -14,7 +15,7 @@ Symbol Symbol::global() {
   return global_;
 }
 Symbol Symbol::local(const Register &reg) {
-  return Symbol{reg.number().value()};
+  return Symbol{reg.number()};
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
