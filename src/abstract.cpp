@@ -27,7 +27,7 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   log_.print_hr2().print(b).print_hr().print_nl();
   auto result = blocks_.interpret(b);
   auto t = b.getTerminator();
-  assert(t && "invalid basicblock");
+  assert(t && "no terminator");
   for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
     const auto &next = *t->getSuccessor(i);
     if (blocks_.update(next, result)) {
