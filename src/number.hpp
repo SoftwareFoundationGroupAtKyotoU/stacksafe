@@ -10,6 +10,7 @@ class Number {
   explicit Number(int n);
   int number() const;
 };
+bool operator<(const Number& lhs, const Number& rhs);
 
 }  // namespace stacksafe
 
