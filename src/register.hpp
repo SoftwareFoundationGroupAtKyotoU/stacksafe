@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
 #include <string>
-#include "number.hpp"
 #include "symbol.hpp"
 
 namespace stacksafe {
@@ -13,7 +12,7 @@ class Register : public Symbol {
   explicit Register(int n);
 
  public:
-  using Symbol::number;
+  int number() const;
   bool is_local() const;
   static const Register &get_global();
 };
