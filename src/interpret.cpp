@@ -6,7 +6,7 @@
 namespace stacksafe {
 
 Interpreter::Interpreter(const Cache &c, const Log &l, const Memory &m)
-    : cache_{c}, log_{l}, mem_{m}, error_{false} {}
+    : cache_{c}, log_{l}, mem_{m} {}
 const Memory &Interpreter::memory() const {
   return mem_;
 }
@@ -127,7 +127,6 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     auto d = lookup(*ret);
     if (d.has_local()) {
       log_.error_return(d);
-      error_ = true;
       safe_.unsafe();
     }
   }
@@ -150,7 +149,6 @@ void Interpreter::insert(const Symbol &key, const Domain &val) {
   mem_.insert(key, diff);
   if (!key.is_local() && diff.has_local()) {
     log_.error_global(diff);
-    error_ = true;
     safe_.unsafe();
   } else if (!diff.empty()) {
     log_.print(key, diff);
@@ -221,7 +219,6 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
   }
   if (dom.has_local() && dom.includes(Domain::global())) {
     log_.error_call(dom);
-    error_ = true;
     safe_.unsafe();
   }
   for (const auto &sym : dom) {
