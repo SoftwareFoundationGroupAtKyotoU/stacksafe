@@ -131,7 +131,7 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     }
   }
 }
-void Interpreter::insert(const Symbol &key, const Domain &val) {
+void Interpreter::insert(const Register &key, const Domain &val) {
   auto diff = val.minus(mem_.lookup(key));
   mem_.insert(key, diff);
   if (!key.is_local() && diff.has_local()) {
