@@ -22,7 +22,6 @@ Blocks::Blocks(const llvm::Function &f, Log &l)
     Super::try_emplace(&b, Memory{});
   }
 }
-Blocks::~Blocks() = default;
 bool Blocks::is_error() const {
   return error_;
 }
