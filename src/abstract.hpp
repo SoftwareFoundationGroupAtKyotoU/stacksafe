@@ -15,7 +15,6 @@ namespace stacksafe {
 class Abstract {
   Log log_;
   Blocks blocks_;
-  const llvm::Function &func_;
   std::string name_;
   bool safe_;
 
