@@ -12,6 +12,7 @@ class Register : private Number {
 
  public:
   const Number &number() const;
+  static const Register &get_global();
 };
 std::string to_str(const Register &reg);
 
