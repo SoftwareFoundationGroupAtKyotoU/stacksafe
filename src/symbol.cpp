@@ -14,9 +14,6 @@ Symbol Symbol::make(const Register &base) {
 int Symbol::number() const {
   return reg_.number();
 }
-bool Symbol::is_local() const {
-  return kind_ == Kind::AUTO;
-}
 bool Symbol::is_global() const {
   return number() < 0;
 }
