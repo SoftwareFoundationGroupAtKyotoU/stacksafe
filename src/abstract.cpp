@@ -14,17 +14,17 @@ void Abstract::run() {
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   if (os.is_displayed()) {
-    if (safe_) {
+    if (is_safe()) {
       os.changeColor(llvm::raw_ostream::GREEN);
     } else {
       os.changeColor(llvm::raw_ostream::RED, true);
     }
   }
-  os << (safe_ ? "Safe" : "Unsafe") << ": " << func_.getName();
+  os << (is_safe() ? "Safe" : "Unsafe") << ": " << func_.getName();
   endline(os, true);
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  if (!safe_) {
+  if (!is_safe()) {
     return;
   }
   log_.print_hr2().print(b).print_hr().print_nl();
@@ -40,6 +40,9 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   } else {
     safe_ = false;
   }
+}
+bool Abstract::is_safe() const {
+  return safe_;
 }
 
 }  // namespace stacksafe

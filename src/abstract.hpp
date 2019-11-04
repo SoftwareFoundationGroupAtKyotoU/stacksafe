@@ -24,6 +24,7 @@ class Abstract {
 
  private:
   void interpret(const llvm::BasicBlock &b);
+  bool is_safe() const;
 };
 
 }  // namespace stacksafe
