@@ -176,7 +176,7 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::Value &dst) {
-  auto sym = Symbol::make();
+  auto sym = Symbol::make(cache_.lookup(dst));
   insert(sym, Domain{});
   insert(dst, Domain{sym});
 }

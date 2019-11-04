@@ -13,6 +13,9 @@ Symbol Symbol::global() {
 Symbol Symbol::make() {
   return Symbol{Kind::AUTO, ++current_};
 }
+Symbol Symbol::make(const Register &base) {
+  return Symbol{Kind::AUTO, ++current_};
+}
 void Symbol::reset() {
   current_ = current_init;
 }

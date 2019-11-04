@@ -5,6 +5,7 @@
 
 namespace stacksafe {
 class Fabric;
+class Register;
 
 class Symbol {
   static const std::string prefix_;
@@ -17,6 +18,7 @@ class Symbol {
  public:
   static Symbol global();
   static Symbol make();
+  static Symbol make(const Register &base);
   static void reset();
   int number() const;
   std::string repr() const;
