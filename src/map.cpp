@@ -9,16 +9,16 @@ namespace stacksafe {
 
 template <typename K>
 bool Map<K>::insert(const Number &key, const Domain &val) {
-  if (auto it = Super::find(K(key.value())); it != end()) {
+  if (auto it = Super::find(key); it != end()) {
     return it->second.merge(val);
   } else {
-    Super::try_emplace(K(key.value()), val);
+    Super::try_emplace(key, val);
     return true;
   }
 }
 template <typename K>
 Domain Map<K>::lookup(const Number &key) const {
-  if (auto it = Super::find(K(key.value())); it != end()) {
+  if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
   return Domain{};

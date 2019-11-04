@@ -12,8 +12,8 @@ class Register;
 class Symbol;
 
 template <typename K>
-class Map : private std::map<K, Domain> {
-  using Super = std::map<K, Domain>;
+class Map : private std::map<Number, Domain> {
+  using Super = std::map<Number, Domain>;
   bool insert(const Number &key, const Domain &val);
   Domain lookup(const Number &key) const;
 
