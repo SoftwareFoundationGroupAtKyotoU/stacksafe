@@ -8,9 +8,6 @@ Abstract::Abstract(const llvm::Function &f)
     : log_{f}, blocks_{f, log_}, func_{f}, safe_{true} {}
 void Abstract::run() {
   interpret(func_.getEntryBlock());
-  if (blocks_.is_error()) {
-    set_unsafe();
-  }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   if (os.is_displayed()) {

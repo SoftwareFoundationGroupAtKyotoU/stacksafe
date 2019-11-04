@@ -23,7 +23,6 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
  public:
   using Super::begin, Super::end;
   Blocks(const llvm::Function &f, const Log &l);
-  bool is_error() const;
   std::optional<Memory> interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Memory &next);
 

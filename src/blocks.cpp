@@ -17,9 +17,6 @@ Blocks::Blocks(const llvm::Function &f, const Log &l)
     Super::try_emplace(&b, Memory{});
   }
 }
-bool Blocks::is_error() const {
-  return error_;
-}
 std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{cache_, log_, get(b)};
   if (i.visit(b)) {
