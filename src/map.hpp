@@ -27,7 +27,7 @@ class Heap : private Map {
  public:
   using Super::begin, Super::end;
   void insert(const Symbol &key, const Domain &val);
-  Domain lookup(const Symbol &key) const;
+  const Domain &lookup(const Symbol &key) const;
   void merge(const Heap &that);
   bool includes(const Heap &that) const;
 };
@@ -39,7 +39,7 @@ class Stack : private Map {
  public:
   using Super::begin, Super::end;
   void insert(const Register &key, const Domain &val);
-  Domain lookup(const Register &key) const;
+  const Domain &lookup(const Register &key) const;
   void merge(const Stack &that);
   bool includes(const Stack &that) const;
 };

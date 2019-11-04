@@ -39,7 +39,7 @@ bool Map::includes(const Map &that) const {
 void Heap::insert(const Symbol &key, const Domain &val) {
   Super::insert(key.number(), val);
 }
-Domain Heap::lookup(const Symbol &key) const {
+const Domain &Heap::lookup(const Symbol &key) const {
   return Super::lookup(key.number());
 }
 void Heap::merge(const Heap &that) {
@@ -59,7 +59,7 @@ void to_json(Json &j, const Heap &x) {
 void Stack::insert(const Register &key, const Domain &val) {
   Super::insert(key.number(), val);
 }
-Domain Stack::lookup(const Register &key) const {
+const Domain &Stack::lookup(const Register &key) const {
   return Super::lookup(key.number());
 }
 void Stack::merge(const Stack &that) {
