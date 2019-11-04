@@ -105,8 +105,28 @@ void to_json(Json &j, const Map<Register> &x) {
   }
   j = obj;
 }
-template <typename K>
-Fabric dump(const Map<K> &map) {
+Fabric dump(const Map<Symbol> &map) {
+  Fabric ret, tmp;
+  bool first = true;
+  for (const auto &[key, value] : map) {
+    if (0 < value.size()) {
+      if (!std::exchange(first, false)) {
+        tmp.append(",").next();
+      }
+      tmp.append(to_str(key)).append(":");
+      if (1 < value.size()) {
+        tmp.next();
+        tmp.append(dump(value).indent(2));
+      } else {
+        tmp.append(" ").append(dump(value));
+      }
+    }
+  }
+  ret.append("{").next();
+  ret.append(tmp.indent(2)).next();
+  return ret.append("}");
+}
+Fabric dump(const Map<Register> &map) {
   Fabric ret, tmp;
   bool first = true;
   for (const auto &[key, value] : map) {
@@ -130,7 +150,5 @@ Fabric dump(const Map<K> &map) {
 
 template class Map<Register>;
 template class Map<Symbol>;
-template Fabric dump<Register>(const Map<Register> &);
-template Fabric dump<Symbol>(const Map<Symbol> &);
 
 }  // namespace stacksafe

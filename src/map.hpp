@@ -29,13 +29,11 @@ class Map : private std::map<Number, Domain> {
 };
 void to_json(Json &j, const Map<Symbol> &x);
 void to_json(Json &j, const Map<Register> &x);
-template <typename K>
-Fabric dump(const Map<K> &map);
+Fabric dump(const Map<Symbol> &map);
+Fabric dump(const Map<Register> &map);
 
 extern template class Map<Register>;
 extern template class Map<Symbol>;
-extern template Fabric dump<Register>(const Map<Register> &);
-extern template Fabric dump<Symbol>(const Map<Symbol> &);
 
 }  // namespace stacksafe
 
