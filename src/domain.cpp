@@ -7,8 +7,11 @@
 
 namespace stacksafe {
 
-Domain::Domain(const Super &super) : Super{super} {}
-Domain::Domain(std::initializer_list<Symbol> list) : Super{list} {}
+Domain::Domain(std::initializer_list<Symbol> list) {
+  for (const auto &sym : list) {
+    Super::insert(sym);
+  }
+}
 void Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
 }
