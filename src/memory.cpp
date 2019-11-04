@@ -46,6 +46,12 @@ void Memory::insert(const Symbol &key, const Domain &val) {
 void Memory::insert(const llvm::Value &key, const Domain &val) {
   stack_.insert(cache_.lookup(key), val);
 }
+Symbol Memory::alloc(const llvm::Value &key) {
+  const auto &reg = cache_.lookup(key);
+  auto sym = heap_.alloc(reg);
+  stack_.insert(reg, Domain{sym});
+  return sym;
+}
 void to_json(Json &j, const Memory &x) {
   j["heap"] = x.heap();
   j["stack"] = x.stack();
