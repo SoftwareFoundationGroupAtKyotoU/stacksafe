@@ -20,7 +20,8 @@ class Map : private std::map<K, Domain> {
 
  public:
   using Super::begin, Super::end;
-  bool insert(const K &key, const Domain &val);
+  bool insert(const Symbol &key, const Domain &val);
+  bool insert(const Register &key, const Domain &val);
   bool merge(const Map &that);
   bool includes(const Map &that) const;
   Domain lookup(const K &key) const;

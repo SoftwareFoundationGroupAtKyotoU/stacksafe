@@ -31,13 +31,12 @@ Domain Map<K>::lookup(const Number &key) const {
   return Domain{};
 }
 template <typename K>
-bool Map<K>::insert(const K &key, const Domain &val) {
-  if (auto it = Super::find(key); it != end()) {
-    return it->second.merge(val);
-  } else {
-    Super::try_emplace(key, val);
-    return true;
-  }
+bool Map<K>::insert(const Symbol &key, const Domain &val) {
+  return insert(key.number(), val);
+}
+template <typename K>
+bool Map<K>::insert(const Register &key, const Domain &val) {
+  return insert(key.number(), val);
 }
 template <typename K>
 bool Map<K>::merge(const Map &that) {
