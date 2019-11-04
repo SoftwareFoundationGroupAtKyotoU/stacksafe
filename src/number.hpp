@@ -8,6 +8,7 @@ class Number {
 
  public:
   explicit Number(int n);
+  int number() const;
 };
 
 }  // namespace stacksafe
