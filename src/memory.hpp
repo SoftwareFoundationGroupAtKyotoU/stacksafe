@@ -26,7 +26,6 @@ class Cache : private std::map<const llvm::Value *, Register> {
 };
 
 class Memory {
-  using Stack = Map;
   Heap heap_;
   Stack stack_;
 

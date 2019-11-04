@@ -33,7 +33,7 @@ void Cache::add(const llvm::Value &reg) {
 const Heap &Memory::heap() const {
   return heap_;
 }
-const Memory::Stack &Memory::stack() const {
+const Stack &Memory::stack() const {
   return stack_;
 }
 bool Memory::includes(const Memory &that) const {
