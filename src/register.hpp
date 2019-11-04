@@ -18,7 +18,6 @@ class Register : private Number {
 
  public:
   const Number &number() const;
-  static Register make(int n);
 };
 std::string to_str(const Register &reg);
 
