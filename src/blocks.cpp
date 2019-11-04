@@ -4,8 +4,7 @@
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, const Log &l)
-    : cache_{f}, log_{l}, error_{false} {
+Blocks::Blocks(const llvm::Function &f, const Log &l) : cache_{f}, log_{l} {
   auto g = Domain::global();
   Memory entry;
   entry.insert(Symbol::global(), g);
@@ -20,7 +19,6 @@ Blocks::Blocks(const llvm::Function &f, const Log &l)
 std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{cache_, log_, get(b)};
   if (i.visit(b)) {
-    error_ = true;
     return std::nullopt;
   } else {
     return i.memory();
