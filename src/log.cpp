@@ -62,6 +62,12 @@ const Log &Log::print(const Symbol &key, const Domain &val) const {
   }
   return *this;
 }
+const Log &Log::print(const llvm::Value &key, const Domain &val) const {
+  if (os) {
+    endline(*os << get_operand(key) << ": " << dump(val));
+  }
+  return *this;
+}
 const Log &Log::print_hr() const {
   if (os) {
     const auto hr = "--------------------------------";
