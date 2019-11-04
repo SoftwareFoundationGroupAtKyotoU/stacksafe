@@ -3,18 +3,19 @@
 
 #include <set>
 #include "json_fwd.hpp"
+#include "register.hpp"
 #include "symbol.hpp"
 
 namespace stacksafe {
 class Fabric;
 
-class Domain : private std::set<Symbol> {
-  using Super = std::set<Symbol>;
+class Domain : private std::set<Register> {
+  using Super = std::set<Register>;
 
  public:
   using Super::begin, Super::end, Super::empty, Super::size;
   Domain() = default;
-  explicit Domain(std::initializer_list<Symbol> list);
+  explicit Domain(std::initializer_list<Register> list);
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;
