@@ -31,9 +31,18 @@ bool Symbol::is_local() const {
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.number() < rhs.number();
 }
+std::string to_str(const Symbol &symbol) {
+  static const std::string prefix{"&"};
+  static const std::string global{"@"};
+  if (symbol.number() < 0) {
+    return prefix + global;
+  } else {
+    return prefix + std::to_string(symbol.number());
+  }
+}
 Fabric dump(const Symbol &symbol) {
   Fabric ret;
-  return ret.append(symbol.repr()).quote();
+  return ret.append(to_str(symbol)).quote();
 }
 
 }  // namespace stacksafe

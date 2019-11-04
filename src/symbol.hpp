@@ -21,6 +21,7 @@ class Symbol {
   bool is_local() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
+std::string to_str(const Symbol &symbol);
 Fabric dump(const Symbol &symbol);
 
 }  // namespace stacksafe
