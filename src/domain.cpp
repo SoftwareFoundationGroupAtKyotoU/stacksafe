@@ -35,9 +35,6 @@ const Domain &Domain::get_global() {
   static const Domain dom{Symbol::global()};
   return dom;
 }
-Domain Domain::global() {
-  return Domain{Symbol::global()};
-}
 void to_json(Json &j, const Domain &x) {
   Json::array_t arr;
   for (const auto &e : x) {

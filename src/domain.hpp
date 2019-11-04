@@ -22,7 +22,6 @@ class Domain : private std::set<Register> {
   bool has_local() const;
   static const Domain &get_empty();
   static const Domain &get_global();
-  static Domain global();
 };
 void to_json(Json &j, const Domain &x);
 Fabric dump(const Domain &domain);
