@@ -11,6 +11,11 @@
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
 namespace stacksafe {
+namespace {
+std::string logfilename(const llvm::Function &f) {
+  return "log/" + f.getName().str() + ".log";
+}
+}  // namespace
 
 LogFile::LogFile(const std::string &name) {
   std::error_code error;
@@ -25,9 +30,6 @@ llvm::raw_ostream &LogFile::get() const {
   return file ? *file : llvm::errs();
 }
 
-std::string Log::logfilename(const llvm::Function &f) {
-  return "log/" + f.getName().str() + ".log";
-}
 Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
   STACKSAFE_DEBUG_LOG(os = &file.get());
 }
