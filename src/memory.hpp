@@ -5,6 +5,10 @@
 #include "map.hpp"
 #include "register.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 class Cache;
 
@@ -15,6 +19,7 @@ class Memory {
 
  public:
   explicit Memory(const Cache &c);
+  Memory(const Cache &c, const llvm::Function &f);
   const Heap &heap() const;
   const Stack &stack() const;
   bool includes(const Memory &that) const;

@@ -1,10 +1,18 @@
 #include "memory.hpp"
+#include <llvm/IR/Function.h>
+#include "cache.hpp"
 #include "fabric.hpp"
 #include "json.hpp"
 
 namespace stacksafe {
 
 Memory::Memory(const Cache &c) : cache_{c} {}
+Memory::Memory(const Cache &c, const llvm::Function &f) : cache_{c} {
+  insert(Symbol::global(), Domain::global());
+  for (const auto &a : f.args()) {
+    insert(cache_.lookup(a), Domain::global());
+  }
+}
 const Heap &Memory::heap() const {
   return heap_;
 }
