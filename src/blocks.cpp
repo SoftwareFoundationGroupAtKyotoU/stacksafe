@@ -1,11 +1,6 @@
 #include "blocks.hpp"
-#include <llvm/Support/Debug.h>
-#include "fabric.hpp"
 #include "interpret.hpp"
 #include "log.hpp"
-#include "utility.hpp"
-
-#define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
 namespace stacksafe {
 
