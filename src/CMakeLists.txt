@@ -25,7 +25,6 @@ target_sources(${target} PRIVATE
   number.cpp
   register.cpp
   safe.cpp
-  symbol.cpp
   utility.cpp
   )
 include(EnsureSources)

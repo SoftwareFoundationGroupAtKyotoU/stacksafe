@@ -45,11 +45,11 @@ void to_json(Json &j, const Domain &x) {
 Fabric dump(const Domain &domain) {
   Fabric ret;
   bool first = true;
-  for (const auto &symbol : domain) {
+  for (const auto &reg : domain) {
     if (!std::exchange(first, false)) {
       ret.append(", ");
     }
-    ret.append(to_str(symbol));
+    ret.append(to_str(reg));
   }
   return ret.quote("[", "]");
 }
