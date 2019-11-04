@@ -121,5 +121,12 @@ bool Heap::includes(const Heap &that) const {
 Fabric Heap::diff(const Heap &that) const {
   return Super::diff(that);
 }
+void to_json(Json &j, const Heap &x) {
+  Json::object_t obj;
+  for (const auto &[key, val] : x) {
+    obj[to_str(key)] = val;
+  }
+  j = obj;
+}
 
 }  // namespace stacksafe

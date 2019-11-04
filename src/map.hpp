@@ -40,6 +40,7 @@ class Heap : private Map {
   bool includes(const Heap &that) const;
   Fabric diff(const Heap &that) const;
 };
+void to_json(Json &j, const Heap &x);
 
 }  // namespace stacksafe
 
