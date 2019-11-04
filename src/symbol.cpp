@@ -13,9 +13,6 @@ Symbol Symbol::global() {
 Symbol Symbol::make(const Register &base) {
   return Symbol{Kind::AUTO, base.number()};
 }
-void Symbol::reset() {
-  current_ = current_init;
-}
 int Symbol::number() const {
   return num_;
 }

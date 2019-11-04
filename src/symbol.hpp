@@ -19,7 +19,6 @@ class Symbol {
  public:
   static Symbol global();
   static Symbol make(const Register &base);
-  static void reset();
   int number() const;
   std::string repr() const;
   bool is_local() const;
