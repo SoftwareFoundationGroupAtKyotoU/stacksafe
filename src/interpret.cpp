@@ -162,7 +162,8 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
   }
 }
 void Interpreter::collect(const Symbol &symbol, Domain &done) const {
-  if (done.merge(Domain{symbol})) {
+  if (!done.includes(Domain{symbol})) {
+    done.merge(Domain{symbol});
     for (const auto &sym : lookup(symbol)) {
       collect(sym, done);
     }
