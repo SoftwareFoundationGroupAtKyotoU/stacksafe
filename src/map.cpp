@@ -24,6 +24,13 @@ bool Map<K>::insert(const Number &key, const Domain &val) {
   }
 }
 template <typename K>
+Domain Map<K>::lookup(const Number &key) const {
+  if (auto dom = get(K(key.value()))) {
+    return *dom;
+  }
+  return Domain{};
+}
+template <typename K>
 bool Map<K>::insert(const K &key, const Domain &val) {
   if (auto it = Super::find(key); it != end()) {
     return it->second.merge(val);
