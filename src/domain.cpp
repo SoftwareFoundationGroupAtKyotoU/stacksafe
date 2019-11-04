@@ -16,10 +16,10 @@ bool Domain::includes(const Domain &that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
 }
 Domain Domain::minus(const Domain &that) const {
-  Super ret;
-  std::set_difference(begin(), end(), that.begin(), that.end(),
-                      std::inserter(ret, ret.end()));
-  return Domain{ret};
+  Domain ret;
+  auto inserter = std::inserter(static_cast<Super &>(ret), ret.end());
+  std::set_difference(begin(), end(), that.begin(), that.end(), inserter);
+  return ret;
 }
 bool Domain::has_local() const {
   for (const auto &sym : *this) {
