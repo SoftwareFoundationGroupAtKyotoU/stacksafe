@@ -7,7 +7,8 @@
 
 namespace llvm {
 class Function;
-}
+class Value;
+}  // namespace llvm
 
 namespace stacksafe {
 class Cache;
@@ -26,6 +27,7 @@ class Memory {
   void merge(const Memory &that);
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Register &key) const;
+  Domain lookup(const llvm::Value &key) const;
   void insert(const Symbol &key, const Domain &val);
   void insert(const Register &key, const Domain &val);
 };

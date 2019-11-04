@@ -3,6 +3,7 @@
 #include "cache.hpp"
 #include "fabric.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -31,6 +32,16 @@ Domain Memory::lookup(const Symbol &key) const {
 }
 Domain Memory::lookup(const Register &key) const {
   return stack_.lookup(key);
+}
+Domain Memory::lookup(const llvm::Value &key) const {
+  if (check_register(key)) {
+    return stack_.lookup(cache_.lookup(key));
+  } else if (check_global(key)) {
+    return Domain::global();
+  } else if (check_constant(key)) {
+    return Domain{};
+  }
+  stacksafe_unreachable("neither register nor constant", key);
 }
 void Memory::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key, val);
