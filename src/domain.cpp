@@ -28,7 +28,7 @@ Domain Domain::minus(const Domain &that) const {
 }
 bool Domain::has_local() const {
   for (const auto &sym : *this) {
-    if (!sym.is_global()) {
+    if (sym.is_local()) {
       return true;
     }
   }

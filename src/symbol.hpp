@@ -17,7 +17,6 @@ class Symbol : private Number {
   bool is_local() const;
   static Symbol global();
   static Symbol local(const Register &reg);
-  bool is_global() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 std::string to_str(const Symbol &symbol);
