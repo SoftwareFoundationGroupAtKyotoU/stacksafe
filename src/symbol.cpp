@@ -3,6 +3,7 @@
 
 namespace stacksafe {
 
+const Symbol Symbol::global_{-1};
 const Number &Symbol::number() const {
   return *this;
 }

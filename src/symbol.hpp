@@ -8,6 +8,7 @@ namespace stacksafe {
 class Register;
 
 class Symbol : private Number {
+  static const Symbol global_;
   using Super = Number;
   using Super::Super;
 
