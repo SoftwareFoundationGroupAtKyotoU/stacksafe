@@ -128,6 +128,7 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     if (d.has_local()) {
       log_.error_return(d);
       error_ = true;
+      safe_.unsafe();
     }
   }
 }
@@ -150,6 +151,7 @@ void Interpreter::insert(const Symbol &key, const Domain &val) {
   if (!key.is_local() && diff.has_local()) {
     log_.error_global(diff);
     error_ = true;
+    safe_.unsafe();
   } else if (!diff.empty()) {
     log_.print(key, diff);
   }
@@ -220,6 +222,7 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
   if (dom.has_local() && dom.includes(Domain::global())) {
     log_.error_call(dom);
     error_ = true;
+    safe_.unsafe();
   }
   for (const auto &sym : dom) {
     insert(sym, dom);

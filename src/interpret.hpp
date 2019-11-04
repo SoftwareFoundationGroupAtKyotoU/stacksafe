@@ -3,6 +3,7 @@
 
 #include <llvm/IR/InstVisitor.h>
 #include "memory.hpp"
+#include "safe.hpp"
 
 namespace stacksafe {
 class Cache;
@@ -16,6 +17,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   const Log &log_;
   Memory mem_;
   bool error_;
+  Safe safe_;
 
  public:
   explicit Interpreter(const Cache &c, const Log &l, const Memory &m);
