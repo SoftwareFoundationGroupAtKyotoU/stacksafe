@@ -20,7 +20,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
       os.changeColor(llvm::raw_ostream::RED, true);
     }
   }
-  os << (is_safe() ? "Safe" : "Unsafe") << ": " << func_.getName();
+  os << (is_safe() ? "SAFE" : "UNSAFE") << ": " << func_.getName();
   endline(os, true);
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
