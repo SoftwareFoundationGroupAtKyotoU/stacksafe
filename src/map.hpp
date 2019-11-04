@@ -49,6 +49,7 @@ class Stack : private Map {
   using Super::begin, Super::end;
   void insert(const Register &key, const Domain &val);
   Domain lookup(const Register &key) const;
+  void merge(const Stack &that);
 };
 
 }  // namespace stacksafe

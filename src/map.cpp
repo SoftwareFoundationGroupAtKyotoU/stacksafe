@@ -135,5 +135,8 @@ void Stack::insert(const Register &key, const Domain &val) {
 Domain Stack::lookup(const Register &key) const {
   return Super::lookup(key.number());
 }
+void Stack::merge(const Stack &that) {
+  Super::merge(that);
+}
 
 }  // namespace stacksafe
