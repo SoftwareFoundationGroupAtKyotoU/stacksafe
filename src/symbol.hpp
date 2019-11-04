@@ -5,7 +5,6 @@
 #include "register.hpp"
 
 namespace stacksafe {
-class Fabric;
 
 class Symbol : private Register {
   using Super = Register;
@@ -19,7 +18,6 @@ class Symbol : private Register {
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 std::string to_str(const Symbol &symbol);
-Fabric dump(const Symbol &symbol);
 
 }  // namespace stacksafe
 

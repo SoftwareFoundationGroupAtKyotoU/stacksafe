@@ -1,6 +1,4 @@
 #include "symbol.hpp"
-#include "fabric.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -24,10 +22,6 @@ std::string to_str(const Symbol &symbol) {
   } else {
     return prefix + std::to_string(symbol.number());
   }
-}
-Fabric dump(const Symbol &symbol) {
-  Fabric ret;
-  return ret.append(to_str(symbol)).quote();
 }
 
 }  // namespace stacksafe
