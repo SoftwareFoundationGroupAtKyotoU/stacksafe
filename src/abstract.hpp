@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
+#include <string>
 #include "blocks.hpp"
 #include "log.hpp"
 
@@ -15,6 +16,7 @@ class Abstract {
   Log log_;
   Blocks blocks_;
   const llvm::Function &func_;
+  std::string name_;
   bool safe_;
 
  public:
