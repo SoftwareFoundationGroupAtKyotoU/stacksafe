@@ -7,7 +7,6 @@ namespace stacksafe {
 class Fabric;
 
 class Register {
-  static const std::string prefix;
   const int num_;
 
  public:

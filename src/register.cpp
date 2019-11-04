@@ -3,7 +3,6 @@
 
 namespace stacksafe {
 
-const std::string Register::prefix{"%"};
 Register::Register(int n) : num_{n} {}
 int Register::number() const {
   return num_;
