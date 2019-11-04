@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_1C49E28A_FFB0_4196_8F04_3179A52F9485
 
 #include <map>
+#include "cache.hpp"
 #include "memory.hpp"
 
 namespace llvm {
