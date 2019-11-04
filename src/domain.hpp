@@ -19,6 +19,7 @@ class Domain : private std::set<Symbol> {
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;
   bool has_local() const;
+  static const Domain &get_empty();
   static const Domain &get_global();
   static Domain global();
 };
