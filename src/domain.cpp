@@ -27,6 +27,10 @@ bool Domain::has_local() const {
   }
   return false;
 }
+const Domain &Domain::get_global() {
+  static const Domain dom{Symbol::global()};
+  return dom;
+}
 Domain Domain::global() {
   return Domain{Symbol::global()};
 }
