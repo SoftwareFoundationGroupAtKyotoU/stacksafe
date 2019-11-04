@@ -142,11 +142,10 @@ void Interpreter::insert(const Symbol &key, const Domain &val) {
   }
 }
 void Interpreter::insert(const llvm::Value &key, const Domain &val) {
-  auto reg = cache_.lookup(key);
-  auto diff = val.minus(mem_.lookup(reg));
-  mem_.insert(reg, diff);
+  auto diff = val.minus(mem_.lookup(key));
+  mem_.insert(key, diff);
   if (!diff.empty()) {
-    log_.print(reg, diff);
+    log_.print(cache_.lookup(key), diff);
   }
 }
 void Interpreter::collect(const Symbol &symbol, Domain &done) const {
