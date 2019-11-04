@@ -6,6 +6,9 @@ Register::Register(int n) : Number{n} {}
 const Number &Register::number() const {
   return *this;
 }
+bool Register::is_local() const {
+  return get_global() < *this;
+}
 const Register &Register::get_global() {
   static Register global{-1};
   return global;
