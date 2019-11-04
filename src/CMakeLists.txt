@@ -16,11 +16,11 @@ target_sources(${target} PRIVATE
   blocks.cpp
   cache.cpp
   domain.cpp
+  env.cpp
   interpret.cpp
   json.cpp
   log.cpp
   map.cpp
-  memory.cpp
   register.cpp
   safe.cpp
   utility.cpp

@@ -4,7 +4,7 @@
 #include <map>
 #include <optional>
 #include "cache.hpp"
-#include "memory.hpp"
+#include "env.hpp"
 
 namespace llvm {
 class BasicBlock;
