@@ -40,7 +40,7 @@ Domain Domain::global() {
 void to_json(Json &j, const Domain &x) {
   Json::array_t arr;
   for (const auto &e : x) {
-    arr.push_back(e.repr());
+    arr.push_back(to_str(e));
   }
   j = arr;
 }

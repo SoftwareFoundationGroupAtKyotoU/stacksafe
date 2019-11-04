@@ -77,7 +77,7 @@ template <typename K>
 void to_json(Json &j, const Map<K> &x) {
   Json::object_t obj;
   for (const auto &[key, val] : x) {
-    obj[key.repr()] = val;
+    obj[to_str(key)] = val;
   }
   j = obj;
 }
