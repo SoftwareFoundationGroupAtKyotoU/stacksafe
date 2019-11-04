@@ -112,5 +112,8 @@ void Heap::insert(const Symbol &key, const Domain &val) {
 Domain Heap::lookup(const Symbol &key) const {
   return Super::lookup(key.number());
 }
+void Heap::merge(const Heap &that) {
+  Super::merge(that);
+}
 
 }  // namespace stacksafe
