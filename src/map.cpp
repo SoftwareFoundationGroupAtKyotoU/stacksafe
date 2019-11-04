@@ -144,5 +144,12 @@ bool Stack::includes(const Stack &that) const {
 Fabric Stack::diff(const Stack &that) const {
   return Super::diff(that);
 }
+void to_json(Json &j, const Stack &x) {
+  Json::object_t obj;
+  for (const auto &[key, val] : x) {
+    obj[to_str(key)] = val;
+  }
+  j = obj;
+}
 
 }  // namespace stacksafe

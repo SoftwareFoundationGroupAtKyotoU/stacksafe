@@ -53,6 +53,7 @@ class Stack : private Map {
   bool includes(const Stack &that) const;
   Fabric diff(const Stack &that) const;
 };
+void to_json(Json &j, const Stack &x);
 
 }  // namespace stacksafe
 
