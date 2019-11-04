@@ -14,7 +14,7 @@ class Symbol : private Register {
  public:
   using Super::number;
   static Symbol global();
-  static Symbol make(const Register &base);
+  static Symbol local(const Register &reg);
   bool is_global() const;
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);

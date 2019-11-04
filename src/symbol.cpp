@@ -7,8 +7,8 @@ namespace stacksafe {
 Symbol Symbol::global() {
   return Symbol{-1};
 }
-Symbol Symbol::make(const Register &base) {
-  return Symbol{base.number()};
+Symbol Symbol::local(const Register &reg) {
+  return Symbol{reg.number()};
 }
 bool Symbol::is_global() const {
   return number() < 0;
