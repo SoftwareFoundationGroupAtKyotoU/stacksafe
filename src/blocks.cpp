@@ -10,7 +10,7 @@ Blocks::Blocks(const llvm::Function &f, const Log &l) : cache_{f}, log_{l} {
     Super::try_emplace(&b, cache_);
   }
 }
-std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
+std::optional<Env> Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{log_, get(b)};
   if (i.visit(b)) {
     return i.memory();
@@ -18,7 +18,7 @@ std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
     return std::nullopt;
   }
 }
-bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
+bool Blocks::update(const llvm::BasicBlock &b, const Env &next) {
   if (get(b).includes(next)) {
     return false;
   } else {
@@ -26,7 +26,7 @@ bool Blocks::update(const llvm::BasicBlock &b, const Memory &next) {
     return true;
   }
 }
-Memory &Blocks::get(const llvm::BasicBlock &b) {
+Env &Blocks::get(const llvm::BasicBlock &b) {
   auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");
   return it->second;

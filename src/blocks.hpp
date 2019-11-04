@@ -14,19 +14,19 @@ class Function;
 namespace stacksafe {
 class Log;
 
-class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
-  using Super = std::map<const llvm::BasicBlock *, Memory>;
+class Blocks : private std::map<const llvm::BasicBlock *, Env> {
+  using Super = std::map<const llvm::BasicBlock *, Env>;
   Cache cache_;
   const Log &log_;
 
  public:
   using Super::begin, Super::end;
   Blocks(const llvm::Function &f, const Log &l);
-  std::optional<Memory> interpret(const llvm::BasicBlock &b);
-  bool update(const llvm::BasicBlock &b, const Memory &next);
+  std::optional<Env> interpret(const llvm::BasicBlock &b);
+  bool update(const llvm::BasicBlock &b, const Env &next);
 
  private:
-  Memory &get(const llvm::BasicBlock &b);
+  Env &get(const llvm::BasicBlock &b);
 };
 
 }  // namespace stacksafe

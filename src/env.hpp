@@ -13,17 +13,17 @@ class Value;
 namespace stacksafe {
 class Cache;
 
-class Memory {
+class Env {
   const Cache &cache_;
   Map heap_, stack_;
 
  public:
-  explicit Memory(const Cache &c);
-  Memory(const Cache &c, const llvm::Function &f);
+  explicit Env(const Cache &c);
+  Env(const Cache &c, const llvm::Function &f);
   const Map &heap() const;
   const Map &stack() const;
-  bool includes(const Memory &that) const;
-  void merge(const Memory &that);
+  bool includes(const Env &that) const;
+  void merge(const Env &that);
   const Domain &lookup(const Register &key) const;
   const Domain &lookup(const llvm::Value &key) const;
   void insert(const Register &key, const Domain &val);
@@ -31,7 +31,7 @@ class Memory {
   Register alloc(const llvm::Value &key);
   void collect(const Register &curr, Domain &done) const;
 };
-void to_json(Json &j, const Memory &x);
+void to_json(Json &j, const Env &x);
 
 }  // namespace stacksafe
 

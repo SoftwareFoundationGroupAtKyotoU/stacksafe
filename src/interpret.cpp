@@ -5,8 +5,8 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, const Memory &m) : log_{l}, mem_{m} {}
-const Memory &Interpreter::memory() const {
+Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, mem_{m} {}
+const Env &Interpreter::memory() const {
   return mem_;
 }
 Safe Interpreter::visit(const llvm::BasicBlock &b) {
