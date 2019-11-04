@@ -8,6 +8,7 @@
 namespace stacksafe {
 
 class Register : public Symbol {
+  const int num_;
   friend class Cache;
   explicit Register(int n);
 
