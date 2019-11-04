@@ -20,7 +20,7 @@ Blocks::Blocks(const llvm::Function &f, const Log &l)
 bool Blocks::is_error() const {
   return error_;
 }
-Memory Blocks::interpret(const llvm::BasicBlock &b) {
+std::optional<Memory> Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{cache_, log_, get(b)};
   if (i.visit(b)) {
     error_ = true;

@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_1C49E28A_FFB0_4196_8F04_3179A52F9485
 
 #include <map>
+#include <optional>
 #include "cache.hpp"
 #include "memory.hpp"
 
@@ -23,7 +24,7 @@ class Blocks : private std::map<const llvm::BasicBlock *, Memory> {
   using Super::begin, Super::end;
   Blocks(const llvm::Function &f, const Log &l);
   bool is_error() const;
-  Memory interpret(const llvm::BasicBlock &b);
+  std::optional<Memory> interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Memory &next);
 
  private:
