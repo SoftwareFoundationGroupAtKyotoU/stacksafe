@@ -14,8 +14,8 @@ void Map::insert(const Number &key, const Domain &val) {
     Super::try_emplace(key, val);
   }
 }
-const Domain &Map::lookup(const Number &key) const {
-  if (auto it = Super::find(key); it != end()) {
+const Domain &Map::lookup(const Register &key) const {
+  if (auto it = Super::find(key.number()); it != end()) {
     return it->second;
   }
   return Domain::get_empty();
@@ -40,7 +40,7 @@ void Heap::insert(const Register &key, const Domain &val) {
   Super::insert(key.number(), val);
 }
 const Domain &Heap::lookup(const Register &key) const {
-  return Super::lookup(key.number());
+  return Super::lookup(key);
 }
 void Heap::merge(const Heap &that) {
   Super::merge(that);
@@ -60,7 +60,7 @@ void Stack::insert(const Register &key, const Domain &val) {
   Super::insert(key.number(), val);
 }
 const Domain &Stack::lookup(const Register &key) const {
-  return Super::lookup(key.number());
+  return Super::lookup(key);
 }
 void Stack::merge(const Stack &that) {
   Super::merge(that);
