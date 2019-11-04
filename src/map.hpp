@@ -8,7 +8,6 @@
 namespace stacksafe {
 class Fabric;
 class Register;
-class Symbol;
 
 class Map : private std::map<Number, Domain> {
   using Super = std::map<Number, Domain>;
@@ -26,8 +25,8 @@ class Heap : private Map {
 
  public:
   using Super::begin, Super::end;
-  void insert(const Symbol &key, const Domain &val);
-  const Domain &lookup(const Symbol &key) const;
+  void insert(const Register &key, const Domain &val);
+  const Domain &lookup(const Register &key) const;
   void merge(const Heap &that);
   bool includes(const Heap &that) const;
 };
