@@ -15,7 +15,6 @@ class Register {
 };
 bool operator<(const Register &lhs, const Register &rhs);
 std::string to_str(const Register &reg);
-Fabric dump(const Register &reg);
 
 }  // namespace stacksafe
 

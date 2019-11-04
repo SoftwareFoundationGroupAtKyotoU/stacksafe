@@ -1,5 +1,4 @@
 #include "register.hpp"
-#include "fabric.hpp"
 
 namespace stacksafe {
 
@@ -13,10 +12,6 @@ bool operator<(const Register &lhs, const Register &rhs) {
 std::string to_str(const Register &reg) {
   static const std::string prefix{"%"};
   return prefix + std::to_string(reg.number());
-}
-Fabric dump(const Register &reg) {
-  Fabric ret;
-  return ret.append(to_str(reg)).quote();
 }
 
 }  // namespace stacksafe
