@@ -3,7 +3,6 @@
 namespace stacksafe {
 
 Register::Register(int n) : Symbol{n} {}
-Register::Register(const Symbol &sym) : Symbol{sym} {}
 bool Register::is_local() const {
   return get_global() < *this;
 }
