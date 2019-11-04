@@ -115,5 +115,8 @@ Domain Heap::lookup(const Symbol &key) const {
 void Heap::merge(const Heap &that) {
   Super::merge(that);
 }
+bool Heap::includes(const Heap &that) const {
+  return Super::includes(that);
+}
 
 }  // namespace stacksafe

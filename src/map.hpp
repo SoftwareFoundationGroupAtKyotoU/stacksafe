@@ -33,10 +33,11 @@ class Heap : private Map {
   using Super = Map;
 
  public:
-  using Super::begin, Super::end, Super::includes, Super::diff;
+  using Super::begin, Super::end, Super::diff;
   void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Symbol &key) const;
   void merge(const Heap &that);
+  bool includes(const Heap &that) const;
 };
 
 }  // namespace stacksafe
