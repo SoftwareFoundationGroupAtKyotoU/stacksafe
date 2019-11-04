@@ -91,8 +91,14 @@ Fabric Map<K>::diff(const Map &that) const {
   }
   return ret;
 }
-template <typename K>
-void to_json(Json &j, const Map<K> &x) {
+void to_json(Json &j, const Map<Symbol> &x) {
+  Json::object_t obj;
+  for (const auto &[key, val] : x) {
+    obj[to_str(key)] = val;
+  }
+  j = obj;
+}
+void to_json(Json &j, const Map<Register> &x) {
   Json::object_t obj;
   for (const auto &[key, val] : x) {
     obj[to_str(key)] = val;
@@ -124,8 +130,6 @@ Fabric dump(const Map<K> &map) {
 
 template class Map<Register>;
 template class Map<Symbol>;
-template void to_json<Register>(Json &, const Map<Register> &);
-template void to_json<Symbol>(Json &, const Map<Symbol> &);
 template Fabric dump<Register>(const Map<Register> &);
 template Fabric dump<Symbol>(const Map<Symbol> &);
 

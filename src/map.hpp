@@ -27,15 +27,13 @@ class Map : private std::map<Number, Domain> {
   bool includes(const Map &that) const;
   Fabric diff(const Map &that) const;
 };
-template <typename K>
-void to_json(Json &j, const Map<K> &x);
+void to_json(Json &j, const Map<Symbol> &x);
+void to_json(Json &j, const Map<Register> &x);
 template <typename K>
 Fabric dump(const Map<K> &map);
 
 extern template class Map<Register>;
 extern template class Map<Symbol>;
-extern template void to_json<Register>(Json &, const Map<Register> &);
-extern template void to_json<Symbol>(Json &, const Map<Symbol> &);
 extern template Fabric dump<Register>(const Map<Register> &);
 extern template Fabric dump<Symbol>(const Map<Symbol> &);
 
