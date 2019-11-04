@@ -148,11 +148,11 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
     log_.print(cache_.lookup(key), diff);
   }
 }
-void Interpreter::collect(const Symbol &symbol, Domain &done) const {
-  if (!done.includes(Domain{symbol})) {
-    done.merge(Domain{symbol});
-    for (const auto &sym : mem_.lookup(symbol)) {
-      collect(sym, done);
+void Interpreter::collect(const Register &curr, Domain &done) const {
+  if (!done.includes(Domain{curr})) {
+    done.merge(Domain{curr});
+    for (const auto &next : mem_.lookup(curr)) {
+      collect(next, done);
     }
   }
 }
