@@ -9,7 +9,7 @@ namespace stacksafe {
 
 Memory::Memory(const Cache &c) : cache_{c} {}
 Memory::Memory(const Cache &c, const llvm::Function &f) : cache_{c} {
-  insert(Symbol::global(), Domain::get_global());
+  insert(Register::get_global(), Domain::get_global());
   for (const auto &a : f.args()) {
     insert(a, Domain::get_global());
   }
