@@ -51,6 +51,7 @@ class Stack : private Map {
   Domain lookup(const Register &key) const;
   void merge(const Stack &that);
   bool includes(const Stack &that) const;
+  Fabric diff(const Stack &that) const;
 };
 
 }  // namespace stacksafe

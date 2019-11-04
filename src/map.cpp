@@ -141,5 +141,8 @@ void Stack::merge(const Stack &that) {
 bool Stack::includes(const Stack &that) const {
   return Super::includes(that);
 }
+Fabric Stack::diff(const Stack &that) const {
+  return Super::diff(that);
+}
 
 }  // namespace stacksafe
