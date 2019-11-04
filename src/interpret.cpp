@@ -155,8 +155,8 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::Value &dst) {
-  auto sym = mem_.alloc(dst);
-  log_.print(dst, Domain{sym});
+  auto reg = mem_.alloc(dst);
+  log_.print(dst, Domain{reg});
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
