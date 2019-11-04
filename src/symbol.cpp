@@ -8,7 +8,7 @@ const Number &Symbol::number() const {
   return *this;
 }
 Symbol Symbol::global() {
-  return Symbol{-1};
+  return global_;
 }
 Symbol Symbol::local(const Register &reg) {
   return Symbol{reg.number().value()};
