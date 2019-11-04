@@ -11,7 +11,6 @@ class Register : private Number {
   using Number::Number;
   const Number &number() const;
 };
-bool operator<(const Register &lhs, const Register &rhs);
 std::string to_str(const Register &reg);
 
 }  // namespace stacksafe
