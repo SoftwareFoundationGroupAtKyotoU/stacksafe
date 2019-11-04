@@ -9,6 +9,7 @@ class Safe {
  public:
   Safe();
   explicit operator bool() const;
+  void unsafe();
 };
 
 }  // namespace stacksafe
