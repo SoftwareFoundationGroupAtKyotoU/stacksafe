@@ -3,10 +3,15 @@
 
 #include <string>
 
+namespace llvm {
+class Value;
+}
+
 namespace stacksafe {
 
 class Register {
   const int num_;
+  const llvm::Value *const reg_;
   friend class Cache;
   explicit Register(int n);
 
