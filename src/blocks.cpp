@@ -5,9 +5,9 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function &f, const Log &l) : cache_{f}, log_{l} {
-  Super::try_emplace(&f.getEntryBlock(), cache_, f);
+  Super::try_emplace(&f.getEntryBlock(), f);
   for (const auto &b : f) {
-    Super::try_emplace(&b, cache_);
+    Super::try_emplace(&b);
   }
 }
 std::optional<Env> Blocks::interpret(const llvm::BasicBlock &b) {

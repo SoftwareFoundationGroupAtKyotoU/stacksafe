@@ -1,13 +1,11 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include "cache.hpp"
 #include "json.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
-Env::Env(const Cache &c) {}
-Env::Env(const Cache &c, const llvm::Function &f) {
+Env::Env(const llvm::Function &f) {
   insert(Register::get_global(), Domain::get_global());
   for (const auto &a : f.args()) {
     insert(a, Domain::get_global());

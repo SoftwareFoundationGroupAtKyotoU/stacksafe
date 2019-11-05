@@ -17,8 +17,8 @@ class Env {
   Map heap_, stack_;
 
  public:
-  explicit Env(const Cache &c);
-  Env(const Cache &c, const llvm::Function &f);
+  Env() = default;
+  explicit Env(const llvm::Function &f);
   const Map &heap() const;
   const Map &stack() const;
   bool includes(const Env &that) const;
