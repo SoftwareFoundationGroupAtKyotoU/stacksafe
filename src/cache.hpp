@@ -11,6 +11,7 @@ class Value;
 }
 
 namespace stacksafe {
+class Domain;
 class Register;
 
 class Cache {
@@ -21,6 +22,7 @@ class Cache {
   Cache();
   std::string to_str(const Register& reg) const;
   std::string to_str(const llvm::Value& reg) const;
+  std::string to_str(const Domain& dom) const;
 
  private:
   static std::string to_str(int num);

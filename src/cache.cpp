@@ -1,6 +1,8 @@
 #include "cache.hpp"
 #include <optional>
+#include <set>
 #include <string_view>
+#include "domain.hpp"
 #include "register.hpp"
 #include "utility.hpp"
 
@@ -42,6 +44,27 @@ std::string Cache::to_str(const Register& reg) const {
 std::string Cache::to_str(const llvm::Value& reg) const {
   static const std::string prefix{"%"};
   return prefix + to_str(lookup(&reg));
+}
+std::string Cache::to_str(const Domain& dom) const {
+  static const std::string prefix{"&"};
+  static const std::string comma{", "};
+  static const std::string begin{"["};
+  static const std::string end{"]"};
+  std::set<int> nums;
+  for (const auto& reg : dom) {
+    nums.insert(lookup(reg.value()));
+  }
+  std::string ret;
+  bool first = true;
+  for (const auto& num : nums) {
+    if (!std::exchange(first, false)) {
+      ret.append(comma);
+    }
+    ret.append(prefix + to_str(num));
+  }
+  ret.insert(0, begin);
+  ret.append(end);
+  return ret;
 }
 std::string Cache::to_str(int num) {
   static const std::string global{"@"};
