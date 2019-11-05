@@ -4,13 +4,16 @@
 #include <map>
 #include "domain.hpp"
 #include "json_fwd.hpp"
-#include "register.hpp"
+
+namespace llvm {
+class Value;
+}
 
 namespace stacksafe {
 class Register;
 
-class Map : private std::map<Register, Domain> {
-  using Super = std::map<Register, Domain>;
+class Map : private std::map<const llvm::Value *, Domain> {
+  using Super = std::map<const llvm::Value *, Domain>;
 
  public:
   using Super::begin, Super::end;
