@@ -8,7 +8,7 @@
 
 namespace stacksafe {
 
-class Cache : private std::map<Register, int> {
+class Cache {
   using Super = std::map<Register, int>;
   std::unique_ptr<Super> cache_;
 
