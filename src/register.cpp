@@ -22,6 +22,9 @@ const Register &Register::get_global() {
   static Register global{};
   return global;
 }
+Register Register::get_local(const llvm::Value &v) {
+  return Register{v};
+}
 bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.less(rhs);
 }

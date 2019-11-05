@@ -20,6 +20,7 @@ class Register {
   bool less(const Register &that) const;
   bool is_local() const;
   static const Register &get_global();
+  static Register get_local(const llvm::Value &v);
 };
 bool operator<(const Register &lhs, const Register &rhs);
 std::string to_str(const Register &reg);
