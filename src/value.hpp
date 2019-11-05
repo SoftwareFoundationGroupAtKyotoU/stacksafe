@@ -10,6 +10,9 @@ namespace stacksafe {
 class Value {
   const llvm::Value* const val_;
   Value();
+
+ public:
+  const llvm::Value* value() const;
 };
 
 }  // namespace stacksafe
