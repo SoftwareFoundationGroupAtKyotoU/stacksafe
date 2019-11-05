@@ -25,11 +25,11 @@ void Env::merge(const Env &that) {
   stack_.merge(that.stack_);
 }
 const Domain &Env::lookup(const Symbol &key) const {
-  return heap_.lookup(key);
+  return heap_.lookup(key.value());
 }
 const Domain &Env::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
-    return stack_.lookup(Symbol::get_local(key));
+    return stack_.lookup(&key);
   } else if (check_global(key)) {
     return Domain::get_global();
   } else if (check_constant(key)) {

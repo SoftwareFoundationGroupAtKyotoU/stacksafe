@@ -11,8 +11,8 @@ void Map::insert(const llvm::Value *key, const Domain &val) {
     Super::try_emplace(key, val);
   }
 }
-const Domain &Map::lookup(const Symbol &key) const {
-  if (auto it = Super::find(key.value()); it != end()) {
+const Domain &Map::lookup(const llvm::Value *key) const {
+  if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
   return Domain::get_empty();
