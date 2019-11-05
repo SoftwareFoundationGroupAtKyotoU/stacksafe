@@ -1,14 +1,14 @@
 #ifndef INCLUDE_GUARD_B43C0EC1_4338_47A3_AD6C_40B0DEF734B0
 #define INCLUDE_GUARD_B43C0EC1_4338_47A3_AD6C_40B0DEF734B0
 
-#include <set>
+#include <unordered_set>
 #include "json_fwd.hpp"
 #include "register.hpp"
 
 namespace stacksafe {
 
-class Domain : private std::set<Register> {
-  using Super = std::set<Register>;
+class Domain : private std::unordered_set<Register> {
+  using Super = std::unordered_set<Register>;
 
  public:
   using Super::begin, Super::end, Super::empty, Super::size;

@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177
 
 #include <llvm/IR/InstVisitor.h>
+#include <set>
 #include "env.hpp"
 #include "safe.hpp"
 
