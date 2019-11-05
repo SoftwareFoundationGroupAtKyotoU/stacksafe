@@ -38,10 +38,10 @@ const Domain &Env::lookup(const llvm::Value &key) const {
   stacksafe_unreachable("neither register nor constant", key);
 }
 void Env::insert(const Symbol &key, const Domain &val) {
-  heap_.insert(key, val);
+  heap_.insert(key.value(), val);
 }
 void Env::insert(const llvm::Value &key, const Domain &val) {
-  stack_.insert(Symbol::get_local(key), val);
+  stack_.insert(&key, val);
 }
 void Env::collect(const Symbol &curr, Domain &done) const {
   if (!done.includes(Domain::get_singleton(curr))) {

@@ -4,11 +4,11 @@
 
 namespace stacksafe {
 
-void Map::insert(const Symbol &key, const Domain &val) {
-  if (auto it = Super::find(key.value()); it != end()) {
+void Map::insert(const llvm::Value *key, const Domain &val) {
+  if (auto it = Super::find(key); it != end()) {
     it->second.merge(val);
   } else {
-    Super::try_emplace(key.value(), val);
+    Super::try_emplace(key, val);
   }
 }
 const Domain &Map::lookup(const Symbol &key) const {
@@ -19,7 +19,7 @@ const Domain &Map::lookup(const Symbol &key) const {
 }
 void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {
-    insert(k ? Symbol::get_local(*k) : Symbol::get_global(), v);
+    insert(k, v);
   }
 }
 bool Map::includes(const Map &that) const {
