@@ -17,9 +17,6 @@ class Cache : private std::map<const llvm::Value *, Register> {
  public:
   explicit Cache(const llvm::Function &f);
   const Register &lookup(const llvm::Value &key) const;
-
- private:
-  void add(const llvm::Value &reg);
 };
 
 }  // namespace stacksafe
