@@ -13,7 +13,7 @@ class Domain : private std::unordered_set<Register> {
 
  public:
   using Super::begin, Super::end;
-  explicit Domain(std::initializer_list<Register> list);
+  explicit Domain(const Register &reg);
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;

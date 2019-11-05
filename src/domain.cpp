@@ -6,7 +6,7 @@
 
 namespace stacksafe {
 
-Domain::Domain(std::initializer_list<Register> list) : Super{list} {}
+Domain::Domain(const Register &reg) : Super{reg} {}
 void Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
 }
