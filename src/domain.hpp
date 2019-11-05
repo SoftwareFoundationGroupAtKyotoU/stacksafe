@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_B43C0EC1_4338_47A3_AD6C_40B0DEF734B0
 
 #include <set>
-#include <string>
 #include "json_fwd.hpp"
 #include "register.hpp"
 
@@ -23,7 +22,6 @@ class Domain : private std::set<Register> {
   static const Domain &get_global();
 };
 void to_json(Json &j, const Domain &x);
-std::string to_str(const Domain &dom);
 
 }  // namespace stacksafe
 

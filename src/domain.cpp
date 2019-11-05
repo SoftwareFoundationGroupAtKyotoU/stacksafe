@@ -41,18 +41,5 @@ void to_json(Json &j, const Domain &x) {
   }
   j = arr;
 }
-std::string to_str(const Domain &dom) {
-  std::string ret;
-  bool first = true;
-  for (const auto &reg : dom) {
-    if (!std::exchange(first, false)) {
-      ret.append(", ");
-    }
-    ret.append(to_str(reg));
-  }
-  ret.insert(0, "[");
-  ret.append("]");
-  return ret;
-}
 
 }  // namespace stacksafe
