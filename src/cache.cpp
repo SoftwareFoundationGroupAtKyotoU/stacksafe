@@ -22,9 +22,10 @@ std::optional<int> to_int(const llvm::Value& v) {
   auto operand = get_operand(v);
   std::string_view view{operand};
   if (!view.empty() && view.at(0) == prefix) {
-    auto num = to_int(view.substr(1));
-    assert(num && 0 <= *num);
-    return *num;
+    if (auto num = to_int(view.substr(1))) {
+      assert(0 <= *num && "invalid register number");
+      return *num;
+    };
   }
   return std::nullopt;
 }
