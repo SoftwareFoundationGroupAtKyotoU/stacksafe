@@ -1,6 +1,6 @@
 #include "abstract.hpp"
 #include <llvm/IR/Function.h>
-#include "utility.hpp"
+#include <llvm/Support/raw_ostream.h>
 
 namespace stacksafe {
 
@@ -10,15 +10,17 @@ void Abstract::run(const llvm::Function &f) {
   interpret(f.getEntryBlock());
 }
 void Abstract::print(llvm::raw_ostream &os) const {
+  auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
+  auto prefix = safe_ ? "SAFE: " : "UNSAFE: ";
+  auto msg = prefix + name_ + "\n";
   if (os.is_displayed()) {
-    if (safe_) {
-      os.changeColor(llvm::raw_ostream::GREEN);
-    } else {
-      os.changeColor(llvm::raw_ostream::RED, true);
-    }
+    os.changeColor(color, true);
+    os << msg;
+    os.resetColor();
+  } else {
+    os << msg;
   }
-  os << (safe_ ? "SAFE" : "UNSAFE") << ": " << name_;
-  endline(os, true);
+  os.flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
   if (!safe_) {
