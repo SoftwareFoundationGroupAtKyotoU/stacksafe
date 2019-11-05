@@ -15,5 +15,8 @@ int Cache::lookup(const Register& reg) {
     return -2;
   }
 }
+std::string Cache::to_str(const Register& reg) {
+  return std::to_string(lookup(reg));
+}
 
 }  // namespace stacksafe

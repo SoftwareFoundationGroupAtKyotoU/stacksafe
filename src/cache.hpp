@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_09CD683A_2DAD_4D5C_A176_5CCF7268ED8C
 
 #include <map>
+#include <string>
 #include "register.hpp"
 
 namespace stacksafe {
@@ -11,6 +12,7 @@ class Cache : private std::map<Register, int> {
 
  public:
   int lookup(const Register& reg);
+  std::string to_str(const Register& reg);
 };
 
 }  // namespace stacksafe
