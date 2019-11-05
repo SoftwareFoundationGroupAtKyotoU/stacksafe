@@ -12,6 +12,7 @@ class Value;
 namespace stacksafe {
 class Domain;
 class Symbol;
+class Register;
 
 class Env {
   Map heap_, stack_;
@@ -26,7 +27,7 @@ class Env {
   const Domain &lookup(const Symbol &key) const;
   const Domain &lookup(const llvm::Value &key) const;
   void insert(const Symbol &key, const Domain &val);
-  void insert(const llvm::Value &key, const Domain &val);
+  void insert(const Register &key, const Domain &val);
   void collect(const Symbol &curr, Domain &done) const;
 };
 void to_json(Json &j, const Env &x);

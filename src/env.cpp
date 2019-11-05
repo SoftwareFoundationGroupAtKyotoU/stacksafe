@@ -1,6 +1,7 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
 #include "json.hpp"
+#include "register.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -40,8 +41,8 @@ const Domain &Env::lookup(const llvm::Value &key) const {
 void Env::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key.value(), val);
 }
-void Env::insert(const llvm::Value &key, const Domain &val) {
-  stack_.insert(&key, val);
+void Env::insert(const Register &key, const Domain &val) {
+  stack_.insert(key.value(), val);
 }
 void Env::collect(const Symbol &curr, Domain &done) const {
   if (!done.includes(Domain::get_singleton(curr))) {
