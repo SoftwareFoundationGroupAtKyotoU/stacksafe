@@ -16,6 +16,7 @@ class Register : private Value {
   enum Kind { REGISTER, GLOBAL, CONSTANT, OTHER };
   using Value::value;
   IMPLICIT Register(const llvm::Value& v);
+  Kind kind() const;
 };
 
 }  // namespace stacksafe
