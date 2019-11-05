@@ -1,10 +1,9 @@
 #ifndef INCLUDE_GUARD_09CD683A_2DAD_4D5C_A176_5CCF7268ED8C
 #define INCLUDE_GUARD_09CD683A_2DAD_4D5C_A176_5CCF7268ED8C
 
-#include <map>
 #include <memory>
-#include <optional>
 #include <string>
+#include <unordered_map>
 
 namespace llvm {
 class Value;
@@ -15,7 +14,7 @@ class Domain;
 class Register;
 
 class Cache {
-  using Super = std::map<const llvm::Value*, int>;
+  using Super = std::unordered_map<const llvm::Value*, int>;
   std::unique_ptr<Super> cache_;
 
  public:
