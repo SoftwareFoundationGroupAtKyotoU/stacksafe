@@ -16,7 +16,7 @@ class Register;
 class Cache {
   using Super = std::map<const llvm::Value*, int>;
   std::unique_ptr<Super> cache_;
-  std::optional<int> lookup(const llvm::Value& reg) const;
+  int lookup(const llvm::Value& reg) const;
 
  public:
   Cache();
