@@ -3,7 +3,7 @@
 
 namespace stacksafe {
 
-Register::Register(int) : reg_{nullptr} {}
+Register::Register() : reg_{nullptr} {}
 Register::Register(const llvm::Value &v) : reg_{&v} {}
 int Register::number() const {
   if (reg_) {
@@ -19,7 +19,7 @@ bool Register::is_local() const {
   return reg_ != nullptr;
 }
 const Register &Register::get_global() {
-  static Register global{-1};
+  static Register global{};
   return global;
 }
 bool operator<(const Register &lhs, const Register &rhs) {
