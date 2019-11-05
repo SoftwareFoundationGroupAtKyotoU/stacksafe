@@ -46,13 +46,13 @@ const Log &Log::print(const llvm::Value &v) const {
 }
 const Log &Log::print(const Register &key, const Domain &val) const {
   if (os) {
-    endline(*os << to_str(key) << ": " << to_str(val));
+    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
   }
   return *this;
 }
 const Log &Log::print(const llvm::Value &key, const Domain &val) const {
   if (os) {
-    endline(*os << get_operand(key) << ": " << to_str(val));
+    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
   }
   return *this;
 }
