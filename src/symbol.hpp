@@ -14,7 +14,7 @@ class Symbol : private Value {
   explicit Symbol(const llvm::Value *v);
 
  public:
-  using Value::value;
+  using Value::value, Value::hash;
   bool is_local() const;
   static const Symbol &get_global();
   static Symbol get_local(const llvm::Value &v);
