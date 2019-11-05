@@ -28,15 +28,16 @@ void Env::merge(const Env &that) {
 const Domain &Env::lookup(const Symbol &key) const {
   return heap_.lookup(key.value());
 }
-const Domain &Env::lookup(const llvm::Value &key) const {
-  if (check_register(key)) {
-    return stack_.lookup(&key);
-  } else if (check_global(key)) {
+const Domain &Env::lookup(const Register &key) const {
+  auto v = key.value();
+  if (check_register(*v)) {
+    return stack_.lookup(v);
+  } else if (check_global(*v)) {
     return Domain::get_global();
-  } else if (check_constant(key)) {
+  } else if (check_constant(*v)) {
     return Domain::get_empty();
   }
-  stacksafe_unreachable("neither register nor constant", key);
+  stacksafe_unreachable("neither register nor constant", *v);
 }
 void Env::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key.value(), val);
