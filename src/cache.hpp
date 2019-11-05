@@ -11,8 +11,8 @@ class Value;
 
 namespace stacksafe {
 
-class Cache : private std::map<const llvm::Value *, Register> {
-  using Super = std::map<const llvm::Value *, Register>;
+class Cache : private std::map<Register, int> {
+  using Super = std::map<Register, int>;
 
  public:
   Register lookup(const llvm::Value &key) const;
