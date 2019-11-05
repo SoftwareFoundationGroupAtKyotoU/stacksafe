@@ -46,21 +46,13 @@ int Cache::lookup(const llvm::Value* reg) const {
     return *num;
   }
 }
-std::string Cache::to_str(const llvm::Value* reg) const {
-  static const std::string global{"@"};
-  if (auto num = lookup(reg); num < 0) {
-    return global;
-  } else {
-    return std::to_string(num);
-  }
-}
 std::string Cache::to_str(const Register& reg) const {
   static const std::string prefix{"&"};
-  return prefix + to_str(reg.value());
+  return prefix + to_str(lookup(reg.value()));
 }
 std::string Cache::to_str(const llvm::Value& reg) const {
   static const std::string prefix{"%"};
-  return prefix + to_str(&reg);
+  return prefix + to_str(lookup(&reg));
 }
 std::string Cache::to_str(int num) {
   static const std::string global{"@"};
