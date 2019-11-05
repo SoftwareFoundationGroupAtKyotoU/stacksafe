@@ -20,6 +20,7 @@ class Domain : private std::unordered_set<Symbol> {
   bool has_local() const;
   static const Domain &get_empty();
   static const Domain &get_global();
+  static const Domain get_singleton(const Symbol &sym);
 };
 void to_json(Json &j, const Domain &x);
 

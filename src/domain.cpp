@@ -35,6 +35,11 @@ const Domain &Domain::get_global() {
   static const Domain dom{Symbol::get_global()};
   return dom;
 }
+const Domain Domain::get_singleton(const Symbol &sym) {
+  auto dom = get_empty();
+  dom.Super::insert(sym);
+  return dom;
+}
 void to_json(Json &j, const Domain &x) {
   static const std::string global{"@"};
   Json::array_t arr;
