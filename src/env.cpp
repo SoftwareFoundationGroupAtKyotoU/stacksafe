@@ -6,8 +6,8 @@
 
 namespace stacksafe {
 
-Env::Env(const Cache &c) : cache_{c} {}
-Env::Env(const Cache &c, const llvm::Function &f) : cache_{c} {
+Env::Env(const Cache &c) {}
+Env::Env(const Cache &c, const llvm::Function &f) {
   insert(Register::get_global(), Domain::get_global());
   for (const auto &a : f.args()) {
     insert(a, Domain::get_global());

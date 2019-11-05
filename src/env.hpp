@@ -14,7 +14,6 @@ namespace stacksafe {
 class Cache;
 
 class Env {
-  const Cache &cache_;
   Map heap_, stack_;
 
  public:
