@@ -10,7 +10,7 @@
 namespace stacksafe {
 
 class Cache {
-  using Super = std::map<Register, int>;
+  using Super = std::map<const llvm::Value*, int>;
   std::unique_ptr<Super> cache_;
   std::optional<int> lookup(const llvm::Value& reg) const;
 
