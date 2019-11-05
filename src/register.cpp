@@ -11,6 +11,9 @@ int Register::number() const {
     return -1;
   }
 }
+const llvm::Value *Register::value() const {
+  return reg_;
+}
 bool Register::less(const Register &that) const {
   return this->reg_ < that.reg_;
 }
