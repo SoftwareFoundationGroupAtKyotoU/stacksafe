@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
 #include <functional>
+#include "value.hpp"
 
 namespace llvm {
 class Value;
@@ -9,12 +10,11 @@ class Value;
 
 namespace stacksafe {
 
-class Symbol {
-  const llvm::Value *const val_;
+class Symbol : private Value {
   explicit Symbol(const llvm::Value *v);
 
  public:
-  const llvm::Value *value() const;
+  using Value::value;
   bool is_local() const;
   static const Symbol &get_global();
   static Symbol get_local(const llvm::Value &v);

@@ -2,12 +2,9 @@
 
 namespace stacksafe {
 
-Symbol::Symbol(const llvm::Value *v) : val_{v} {}
-const llvm::Value *Symbol::value() const {
-  return val_;
-}
+Symbol::Symbol(const llvm::Value *v) : Value{v} {}
 bool Symbol::is_local() const {
-  return val_ != nullptr;
+  return value() != nullptr;
 }
 const Symbol &Symbol::get_global() {
   static Symbol global{nullptr};
