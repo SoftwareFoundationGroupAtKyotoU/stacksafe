@@ -18,7 +18,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
 
  public:
   explicit Interpreter(const Log &l, const Env &m);
-  const Env &memory() const;
+  const Env &env() const;
   Safe visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
