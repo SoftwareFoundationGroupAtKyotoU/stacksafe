@@ -11,8 +11,7 @@ namespace stacksafe {
 
 class Register {
   const llvm::Value *const reg_;
-  Register();
-  explicit Register(const llvm::Value &v);
+  explicit Register(const llvm::Value *v);
 
  public:
   int number() const;
