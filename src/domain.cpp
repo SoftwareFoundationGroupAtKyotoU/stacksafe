@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <iterator>
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -35,9 +36,14 @@ const Domain &Domain::get_global() {
   return dom;
 }
 void to_json(Json &j, const Domain &x) {
+  static const std::string global{"@"};
   Json::array_t arr;
   for (const auto &e : x) {
-    arr.push_back(to_str(e));
+    if (auto v = e.value()) {
+      arr.push_back(get_operand(*v));
+    } else {
+      arr.push_back(global);
+    }
   }
   j = arr;
 }
