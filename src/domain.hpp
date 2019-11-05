@@ -16,7 +16,6 @@ class Domain : private std::unordered_set<Symbol> {
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;
-  bool has_local() const;
   static const Domain &get_empty();
   static const Domain &get_global();
   static const Domain get_singleton(const Symbol &sym);

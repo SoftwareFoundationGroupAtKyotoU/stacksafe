@@ -18,14 +18,6 @@ Domain Domain::minus(const Domain &that) const {
   std::set_difference(begin(), end(), that.begin(), that.end(), inserter);
   return ret;
 }
-bool Domain::has_local() const {
-  for (const auto &sym : *this) {
-    if (sym.is_local()) {
-      return true;
-    }
-  }
-  return false;
-}
 const Domain &Domain::get_empty() {
   static const Domain dom{};
   return dom;
