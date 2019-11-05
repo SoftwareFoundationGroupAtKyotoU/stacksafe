@@ -11,7 +11,7 @@ class Domain : private std::unordered_set<Register> {
   using Super = std::unordered_set<Register>;
 
  public:
-  using Super::begin, Super::end, Super::empty, Super::size;
+  using Super::begin, Super::end;
   Domain() = default;
   explicit Domain(std::initializer_list<Register> list);
   void merge(const Domain &that);
