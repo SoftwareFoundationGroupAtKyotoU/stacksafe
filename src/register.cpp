@@ -4,13 +4,6 @@
 namespace stacksafe {
 
 Register::Register(const llvm::Value *v) : reg_{v} {}
-int Register::number() const {
-  if (reg_) {
-    return register_number(*reg_).value_or(-2);
-  } else {
-    return -1;
-  }
-}
 const llvm::Value *Register::value() const {
   return reg_;
 }
@@ -31,7 +24,7 @@ std::string to_str(const Register &reg) {
   static const std::string prefix{"&"};
   static const std::string global{"@"};
   if (reg.is_local()) {
-    return prefix + std::to_string(reg.number());
+    return prefix + std::to_string(register_number(*reg.value()).value_or(-1));
   } else {
     return prefix + global;
   }

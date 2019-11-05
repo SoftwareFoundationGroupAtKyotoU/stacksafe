@@ -14,7 +14,6 @@ class Register {
   explicit Register(const llvm::Value *v);
 
  public:
-  int number() const;
   const llvm::Value *value() const;
   bool is_local() const;
   static const Register &get_global();
