@@ -1,17 +1,13 @@
 #ifndef INCLUDE_GUARD_8F170DBC_839A_403D_A59A_EA8DF99056AA
 #define INCLUDE_GUARD_8F170DBC_839A_403D_A59A_EA8DF99056AA
 
-namespace llvm {
-class Value;
-}
+#include "value.hpp"
 
 namespace stacksafe {
 
-class Register {
-  const llvm::Value* const val_;
-
+class Register : private Value {
  public:
-  explicit Register(const llvm::Value* v);
+  using Value::Value, Value::value;
 };
 
 }  // namespace stacksafe
