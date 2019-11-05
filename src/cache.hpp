@@ -16,7 +16,6 @@ class Cache {
 
  public:
   Cache();
-  int lookup(const Register& reg);
   std::string to_str(const Register& reg) const;
 };
 
