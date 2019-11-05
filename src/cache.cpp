@@ -1,4 +1,5 @@
 #include "cache.hpp"
+#include "register.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {

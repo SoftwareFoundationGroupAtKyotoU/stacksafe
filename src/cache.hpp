@@ -5,9 +5,13 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include "register.hpp"
+
+namespace llvm {
+class Value;
+}
 
 namespace stacksafe {
+class Register;
 
 class Cache {
   using Super = std::map<const llvm::Value*, int>;
