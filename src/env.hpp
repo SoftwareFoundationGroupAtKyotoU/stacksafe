@@ -3,7 +3,6 @@
 
 #include "json_fwd.hpp"
 #include "map.hpp"
-#include "register.hpp"
 
 namespace llvm {
 class Function;
@@ -11,7 +10,8 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
-class Cache;
+class Domain;
+class Register;
 
 class Env {
   Map heap_, stack_;
