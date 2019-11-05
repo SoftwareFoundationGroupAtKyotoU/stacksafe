@@ -13,7 +13,7 @@ class raw_ostream;
 
 namespace stacksafe {
 class Domain;
-class Register;
+class Symbol;
 
 class LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
@@ -33,7 +33,7 @@ class Log {
   explicit Log(const llvm::Function &func);
   const Log &print(const std::string &s) const;
   const Log &print(const llvm::Value &v) const;
-  const Log &print(const Register &key, const Domain &val) const;
+  const Log &print(const Symbol &key, const Domain &val) const;
   const Log &print(const llvm::Value &key, const Domain &val) const;
   const Log &print_hr() const;
   const Log &print_hr2() const;

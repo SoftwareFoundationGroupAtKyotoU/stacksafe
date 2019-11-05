@@ -7,13 +7,13 @@
 
 namespace stacksafe {
 
-class Domain : private std::unordered_set<Register> {
-  using Super = std::unordered_set<Register>;
+class Domain : private std::unordered_set<Symbol> {
+  using Super = std::unordered_set<Symbol>;
   Domain() = default;
 
  public:
   using Super::begin, Super::end;
-  explicit Domain(const Register &reg);
+  explicit Domain(const Symbol &reg);
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;

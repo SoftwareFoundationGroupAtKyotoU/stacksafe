@@ -2,32 +2,31 @@
 
 namespace stacksafe {
 
-Register::Register(const llvm::Value *v) : reg_{v} {}
-const llvm::Value *Register::value() const {
+Symbol::Symbol(const llvm::Value *v) : reg_{v} {}
+const llvm::Value *Symbol::value() const {
   return reg_;
 }
-bool Register::is_local() const {
+bool Symbol::is_local() const {
   return reg_ != nullptr;
 }
-const Register &Register::get_global() {
-  static Register global{nullptr};
+const Symbol &Symbol::get_global() {
+  static Symbol global{nullptr};
   return global;
 }
-Register Register::get_local(const llvm::Value &v) {
-  return Register{&v};
+Symbol Symbol::get_local(const llvm::Value &v) {
+  return Symbol{&v};
 }
-bool operator<(const Register &lhs, const Register &rhs) {
+bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
 }
-bool operator==(const Register &lhs, const Register &rhs) {
+bool operator==(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() == rhs.value();
 }
 
 }  // namespace stacksafe
 
 namespace std {
-size_t hash<stacksafe::Register>::operator()(
-    const stacksafe::Register &reg) const {
+size_t hash<stacksafe::Symbol>::operator()(const stacksafe::Symbol &reg) const {
   return hash<const llvm::Value *>{}(reg.value());
 }
 }  // namespace std

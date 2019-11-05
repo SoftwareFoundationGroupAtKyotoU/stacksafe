@@ -130,7 +130,7 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     }
   }
 }
-void Interpreter::insert(const Register &key, const Domain &val) {
+void Interpreter::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(env_.lookup(key));
   env_.insert(key, diff);
   if (!key.is_local() && diff.has_local()) {
@@ -152,7 +152,7 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::Value &dst) {
-  auto reg = Register::get_local(dst);
+  auto reg = Symbol::get_local(dst);
   insert(reg, Domain::get_empty());
   insert(dst, Domain{reg});
 }

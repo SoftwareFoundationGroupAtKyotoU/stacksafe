@@ -42,7 +42,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitReturnInst(llvm::ReturnInst &i);
 
  private:
-  void insert(const Register &key, const Domain &val);
+  void insert(const Symbol &key, const Domain &val);
   void insert(const llvm::Value &key, const Domain &val);
   void binop(const llvm::Value &dst, const llvm::Value &lhs,
              const llvm::Value &rhs);

@@ -10,15 +10,15 @@ class Value;
 }
 
 namespace stacksafe {
-class Register;
+class Symbol;
 
 class Map : private std::unordered_map<const llvm::Value *, Domain> {
   using Super = std::unordered_map<const llvm::Value *, Domain>;
 
  public:
   using Super::begin, Super::end;
-  void insert(const Register &key, const Domain &val);
-  const Domain &lookup(const Register &key) const;
+  void insert(const Symbol &key, const Domain &val);
+  const Domain &lookup(const Symbol &key) const;
   void merge(const Map &that);
   bool includes(const Map &that) const;
 };

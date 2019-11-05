@@ -37,7 +37,7 @@ Cache::Cache() : cache_{std::make_unique<Super>()} {
   assert(cache_ && "failed cache init");
   cache_->try_emplace(nullptr, -1);
 }
-std::string Cache::to_str(const Register& reg) const {
+std::string Cache::to_str(const Symbol& reg) const {
   static const std::string prefix{"&"};
   return prefix + to_str(lookup(reg.value()));
 }

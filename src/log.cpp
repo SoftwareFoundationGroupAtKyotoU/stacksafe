@@ -44,7 +44,7 @@ const Log &Log::print(const llvm::Value &v) const {
   }
   return *this;
 }
-const Log &Log::print(const Register &key, const Domain &val) const {
+const Log &Log::print(const Symbol &key, const Domain &val) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
   }

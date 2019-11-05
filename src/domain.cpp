@@ -6,7 +6,7 @@
 
 namespace stacksafe {
 
-Domain::Domain(const Register &reg) : Super{reg} {}
+Domain::Domain(const Symbol &reg) : Super{reg} {}
 void Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
 }
@@ -32,7 +32,7 @@ const Domain &Domain::get_empty() {
   return dom;
 }
 const Domain &Domain::get_global() {
-  static const Domain dom{Register::get_global()};
+  static const Domain dom{Symbol::get_global()};
   return dom;
 }
 void to_json(Json &j, const Domain &x) {

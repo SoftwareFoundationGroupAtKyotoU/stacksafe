@@ -9,25 +9,25 @@ class Value;
 
 namespace stacksafe {
 
-class Register {
+class Symbol {
   const llvm::Value *const reg_;
-  explicit Register(const llvm::Value *v);
+  explicit Symbol(const llvm::Value *v);
 
  public:
   const llvm::Value *value() const;
   bool is_local() const;
-  static const Register &get_global();
-  static Register get_local(const llvm::Value &v);
+  static const Symbol &get_global();
+  static Symbol get_local(const llvm::Value &v);
 };
-bool operator<(const Register &lhs, const Register &rhs);
-bool operator==(const Register &lhs, const Register &rhs);
+bool operator<(const Symbol &lhs, const Symbol &rhs);
+bool operator==(const Symbol &lhs, const Symbol &rhs);
 
 }  // namespace stacksafe
 
 namespace std {
 template <>
-struct hash<stacksafe::Register> {
-  size_t operator()(const stacksafe::Register &reg) const;
+struct hash<stacksafe::Symbol> {
+  size_t operator()(const stacksafe::Symbol &reg) const;
 };
 }  // namespace std
 
