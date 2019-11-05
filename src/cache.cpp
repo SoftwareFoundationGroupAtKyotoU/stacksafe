@@ -3,7 +3,7 @@
 #include <set>
 #include <string_view>
 #include "domain.hpp"
-#include "register.hpp"
+#include "symbol.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {

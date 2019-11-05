@@ -1,4 +1,4 @@
-#include "register.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 

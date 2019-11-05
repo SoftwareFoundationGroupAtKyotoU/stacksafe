@@ -4,7 +4,7 @@
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
-#include "register.hpp"
+#include "symbol.hpp"
 #include "utility.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)

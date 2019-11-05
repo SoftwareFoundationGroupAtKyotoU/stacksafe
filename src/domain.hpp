@@ -3,7 +3,7 @@
 
 #include <unordered_set>
 #include "json_fwd.hpp"
-#include "register.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 
