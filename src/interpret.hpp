@@ -13,7 +13,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   using Params = std::set<const llvm::Value *>;
   const Log &log_;
-  Env mem_;
+  Env env_;
   Safe safe_;
 
  public:

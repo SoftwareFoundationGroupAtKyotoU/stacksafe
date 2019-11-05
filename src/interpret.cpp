@@ -4,9 +4,9 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, mem_{m} {}
+Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, env_{m} {}
 const Env &Interpreter::memory() const {
-  return mem_;
+  return env_;
 }
 Safe Interpreter::visit(const llvm::BasicBlock &b) {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
@@ -122,7 +122,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    auto d = mem_.lookup(*ret);
+    auto d = env_.lookup(*ret);
     if (d.has_local()) {
       log_.error_return(d);
       safe_.unsafe();
@@ -130,8 +130,8 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   }
 }
 void Interpreter::insert(const Register &key, const Domain &val) {
-  auto diff = val.minus(mem_.lookup(key));
-  mem_.insert(key, diff);
+  auto diff = val.minus(env_.lookup(key));
+  env_.insert(key, diff);
   if (!key.is_local() && diff.has_local()) {
     log_.error_global(diff);
     safe_.unsafe();
@@ -140,8 +140,8 @@ void Interpreter::insert(const Register &key, const Domain &val) {
   }
 }
 void Interpreter::insert(const llvm::Value &key, const Domain &val) {
-  auto diff = val.minus(mem_.lookup(key));
-  mem_.insert(key, diff);
+  auto diff = val.minus(env_.lookup(key));
+  env_.insert(key, diff);
   if (!diff.empty()) {
     log_.print(key, diff);
   }
@@ -149,24 +149,24 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
 void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
                         const llvm::Value &rhs) {
   Domain dom;
-  dom.merge(mem_.lookup(lhs));
-  dom.merge(mem_.lookup(rhs));
+  dom.merge(env_.lookup(lhs));
+  dom.merge(env_.lookup(rhs));
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::Value &dst) {
-  auto reg = mem_.alloc(dst);
+  auto reg = env_.alloc(dst);
   log_.print(dst, Domain{reg});
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
   Domain dom;
-  for (const auto &reg : mem_.lookup(src)) {
-    dom.merge(mem_.lookup(reg));
+  for (const auto &reg : env_.lookup(src)) {
+    dom.merge(env_.lookup(reg));
   }
   insert(dst, dom);
 }
 void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
-  auto val = mem_.lookup(src);
-  for (const auto &ptr : mem_.lookup(dst)) {
+  auto val = env_.lookup(src);
+  for (const auto &ptr : env_.lookup(dst)) {
     insert(ptr, val);
   }
 }
@@ -176,20 +176,20 @@ void Interpreter::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
   store(val, ptr);
 }
 void Interpreter::cast(const llvm::Value &dst, const llvm::Value &src) {
-  insert(dst, mem_.lookup(src));
+  insert(dst, env_.lookup(src));
 }
 void Interpreter::phi(const llvm::Value &dst, const Params &params) {
   Domain dom;
   for (const auto &arg : params) {
-    dom.merge(mem_.lookup(*arg));
+    dom.merge(env_.lookup(*arg));
   }
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::Value &dst, const Params &params) {
   Domain dom;
   for (const auto &arg : params) {
-    for (const auto &reg : mem_.lookup(*arg)) {
-      mem_.collect(reg, dom);
+    for (const auto &reg : env_.lookup(*arg)) {
+      env_.collect(reg, dom);
     }
   }
   if (dom.has_local() && dom.includes(Domain::get_global())) {
