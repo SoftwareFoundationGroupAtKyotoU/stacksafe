@@ -28,7 +28,6 @@ class Env {
   const Domain &lookup(const llvm::Value &key) const;
   void insert(const Register &key, const Domain &val);
   void insert(const llvm::Value &key, const Domain &val);
-  Register alloc(const llvm::Value &key);
   void collect(const Register &curr, Domain &done) const;
 };
 void to_json(Json &j, const Env &x);

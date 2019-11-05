@@ -45,12 +45,6 @@ void Env::insert(const Register &key, const Domain &val) {
 void Env::insert(const llvm::Value &key, const Domain &val) {
   stack_.insert(cache_.lookup(key), val);
 }
-Register Env::alloc(const llvm::Value &key) {
-  const auto &reg = cache_.lookup(key);
-  heap_.insert(reg, Domain::get_empty());
-  stack_.insert(reg, Domain{reg});
-  return reg;
-}
 void Env::collect(const Register &curr, Domain &done) const {
   if (!done.includes(Domain{curr})) {
     done.merge(Domain{curr});
