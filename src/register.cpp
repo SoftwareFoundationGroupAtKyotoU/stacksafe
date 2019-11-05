@@ -14,9 +14,6 @@ int Register::number() const {
 const llvm::Value *Register::value() const {
   return reg_;
 }
-bool Register::less(const Register &that) const {
-  return this->reg_ < that.reg_;
-}
 bool Register::is_local() const {
   return reg_ != nullptr;
 }
@@ -28,7 +25,7 @@ Register Register::get_local(const llvm::Value &v) {
   return Register{&v};
 }
 bool operator<(const Register &lhs, const Register &rhs) {
-  return lhs.less(rhs);
+  return lhs.value() < rhs.value();
 }
 std::string to_str(const Register &reg) {
   static const std::string prefix{"&"};
