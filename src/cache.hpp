@@ -16,7 +16,6 @@ class Register;
 class Cache {
   using Super = std::map<const llvm::Value*, int>;
   std::unique_ptr<Super> cache_;
-  int lookup(const llvm::Value* reg) const;
 
  public:
   Cache();
@@ -25,6 +24,7 @@ class Cache {
 
  private:
   static std::string to_str(int num);
+  int lookup(const llvm::Value* reg) const;
 };
 
 }  // namespace stacksafe
