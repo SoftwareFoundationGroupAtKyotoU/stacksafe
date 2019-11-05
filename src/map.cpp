@@ -1,5 +1,6 @@
 #include "map.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -32,9 +33,14 @@ bool Map::includes(const Map &that) const {
   return true;
 }
 void to_json(Json &j, const Map &x) {
+  static const std::string global{"@"};
   Json::object_t obj;
   for (const auto &[key, val] : x) {
-    obj[to_str(key)] = val;
+    if (auto v = key.value()) {
+      obj[get_operand(*v)] = val;
+    } else {
+      obj[global] = val;
+    }
   }
   j = obj;
 }
