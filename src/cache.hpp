@@ -23,6 +23,9 @@ class Cache {
   Cache();
   std::string to_str(const Register& reg) const;
   std::string to_str(const llvm::Value& reg) const;
+
+ private:
+  static std::string to_str(int num);
 };
 
 }  // namespace stacksafe

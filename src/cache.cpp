@@ -62,5 +62,13 @@ std::string Cache::to_str(const llvm::Value& reg) const {
   static const std::string prefix{"%"};
   return prefix + to_str(&reg);
 }
+std::string Cache::to_str(int num) {
+  static const std::string global{"@"};
+  if (num < 0) {
+    return global;
+  } else {
+    return std::to_string(num);
+  }
+}
 
 }  // namespace stacksafe
