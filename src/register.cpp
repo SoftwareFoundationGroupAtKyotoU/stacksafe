@@ -21,3 +21,10 @@ bool operator<(const Register &lhs, const Register &rhs) {
 }
 
 }  // namespace stacksafe
+
+namespace std {
+size_t hash<stacksafe::Register>::operator()(
+    const stacksafe::Register &reg) const {
+  return hash<const llvm::Value *>{}(reg.value());
+}
+}  // namespace std
