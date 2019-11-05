@@ -13,6 +13,9 @@ int Register::number() const {
     return -1;
   }
 }
+bool Register::less(const Register &that) const {
+  return this->reg_ < that.reg_;
+}
 bool Register::is_local() const {
   return get_global() < *this;
 }
@@ -21,7 +24,7 @@ const Register &Register::get_global() {
   return global;
 }
 bool operator<(const Register &lhs, const Register &rhs) {
-  return lhs.number() < rhs.number();
+  return lhs.less(rhs);
 }
 std::string to_str(const Register &reg) {
   static const std::string prefix{"&"};

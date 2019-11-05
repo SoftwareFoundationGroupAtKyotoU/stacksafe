@@ -18,6 +18,7 @@ class Register {
 
  public:
   int number() const;
+  bool less(const Register &that) const;
   bool is_local() const;
   static const Register &get_global();
 };
