@@ -6,7 +6,6 @@
 #include "safe.hpp"
 
 namespace stacksafe {
-class Cache;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
