@@ -3,7 +3,6 @@
 
 #include <map>
 #include <optional>
-#include "cache.hpp"
 #include "env.hpp"
 
 namespace llvm {
@@ -16,7 +15,6 @@ class Log;
 
 class Blocks : private std::map<const llvm::BasicBlock *, Env> {
   using Super = std::map<const llvm::BasicBlock *, Env>;
-  Cache cache_;
   const Log &log_;
 
  public:
