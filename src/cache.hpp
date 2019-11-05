@@ -4,18 +4,13 @@
 #include <map>
 #include "register.hpp"
 
-namespace llvm {
-class Function;
-class Value;
-}  // namespace llvm
-
 namespace stacksafe {
 
 class Cache : private std::map<Register, int> {
   using Super = std::map<Register, int>;
 
  public:
-  Register lookup(const llvm::Value &key) const;
+  int lookup(const Register& reg);
 };
 
 }  // namespace stacksafe

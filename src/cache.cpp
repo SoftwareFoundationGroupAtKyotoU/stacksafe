@@ -1,11 +1,19 @@
 #include "cache.hpp"
-#include <llvm/IR/Function.h>
 #include "utility.hpp"
 
 namespace stacksafe {
 
-Register Cache::lookup(const llvm::Value &key) const {
-  return Register::get_local(key);
+int Cache::lookup(const Register& reg) {
+  if (!reg.is_local()) {
+    return -1;
+  } else if (auto it = Super::find(reg); it != Super::end()) {
+    return it->second;
+  } else if (auto num = register_number(*reg.value())) {
+    Super::try_emplace(reg, *num);
+    return *num;
+  } else {
+    return -2;
+  }
 }
 
 }  // namespace stacksafe
