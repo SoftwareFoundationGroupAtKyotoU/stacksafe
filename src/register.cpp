@@ -3,9 +3,8 @@
 
 namespace stacksafe {
 
-Register::Register(int n) : num_{n}, reg_{nullptr} {}
-Register::Register(const llvm::Value &v)
-    : num_{register_number(v).value_or(-1)}, reg_{&v} {}
+Register::Register(int) : reg_{nullptr} {}
+Register::Register(const llvm::Value &v) : reg_{&v} {}
 int Register::number() const {
   if (reg_) {
     return register_number(*reg_).value_or(-2);
