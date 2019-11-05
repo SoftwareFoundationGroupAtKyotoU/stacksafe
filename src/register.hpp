@@ -20,6 +20,7 @@ class Register {
   static Register get_local(const llvm::Value &v);
 };
 bool operator<(const Register &lhs, const Register &rhs);
+bool operator==(const Register &lhs, const Register &rhs);
 
 }  // namespace stacksafe
 

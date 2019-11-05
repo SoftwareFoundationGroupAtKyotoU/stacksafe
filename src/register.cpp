@@ -19,6 +19,9 @@ Register Register::get_local(const llvm::Value &v) {
 bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.value() < rhs.value();
 }
+bool operator==(const Register &lhs, const Register &rhs) {
+  return lhs.value() == rhs.value();
+}
 
 }  // namespace stacksafe
 
