@@ -55,6 +55,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void phi(const llvm::Value &dst, const Params &params);
   void call(const llvm::Value &dst, const Params &params);
   void constant(const llvm::Value &dst);
+  static bool has_local(const Domain &dom);
 };
 
 }  // namespace stacksafe

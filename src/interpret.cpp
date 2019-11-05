@@ -124,7 +124,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
     auto d = env_.lookup(*ret);
-    if (d.has_local()) {
+    if (has_local(d)) {
       log_.error_return(d);
       safe_.unsafe();
     }
@@ -133,7 +133,7 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
 void Interpreter::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(env_.lookup(key));
   env_.insert(key, diff);
-  if (!key.is_local() && diff.has_local()) {
+  if (!key.is_local() && has_local(diff)) {
     log_.error_global(diff);
     safe_.unsafe();
   }
@@ -191,7 +191,7 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
       env_.collect(reg, dom);
     }
   }
-  if (dom.has_local() && dom.includes(Domain::get_global())) {
+  if (has_local(dom) && dom.includes(Domain::get_global())) {
     log_.error_call(dom);
     safe_.unsafe();
   }
@@ -206,6 +206,14 @@ void Interpreter::call(const llvm::Value &dst, const Params &params) {
 }
 void Interpreter::constant(const llvm::Value &dst) {
   insert(dst, Domain::get_empty());
+}
+bool Interpreter::has_local(const Domain &dom) {
+  for (const auto &sym : dom) {
+    if (sym.is_local()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 }  // namespace stacksafe
