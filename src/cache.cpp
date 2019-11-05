@@ -16,10 +16,8 @@ Cache::Cache(const llvm::Function &f) {
     }
   }
 }
-const Register &Cache::lookup(const llvm::Value &key) const {
-  auto it = Super::find(&key);
-  assert(Super::end() != it && "not registered in cache");
-  return it->second;
+Register Cache::lookup(const llvm::Value &key) const {
+  return Register::get_local(key);
 }
 
 }  // namespace stacksafe
