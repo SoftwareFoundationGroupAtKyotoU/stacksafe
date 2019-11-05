@@ -27,8 +27,16 @@ int Cache::lookup(const Register& reg) {
     return -2;
   }
 }
-std::string Cache::to_str(const Register& reg) {
-  return std::to_string(lookup(reg));
+std::string Cache::to_str(const Register& reg) const {
+  static const std::string prefix{"&"};
+  static const std::string global{"@"};
+  if (!reg.is_local()) {
+    return prefix + global;
+  } else if (auto num = lookup(*reg.value())) {
+    return prefix + std::to_string(*num);
+  } else {
+    return "[unknown]";
+  }
 }
 
 }  // namespace stacksafe
