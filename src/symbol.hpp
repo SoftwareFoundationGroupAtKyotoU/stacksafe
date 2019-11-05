@@ -10,7 +10,7 @@ class Value;
 namespace stacksafe {
 
 class Symbol {
-  const llvm::Value *const reg_;
+  const llvm::Value *const val_;
   explicit Symbol(const llvm::Value *v);
 
  public:
@@ -27,7 +27,7 @@ bool operator==(const Symbol &lhs, const Symbol &rhs);
 namespace std {
 template <>
 struct hash<stacksafe::Symbol> {
-  size_t operator()(const stacksafe::Symbol &reg) const;
+  size_t operator()(const stacksafe::Symbol &sym) const;
 };
 }  // namespace std
 

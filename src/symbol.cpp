@@ -2,12 +2,12 @@
 
 namespace stacksafe {
 
-Symbol::Symbol(const llvm::Value *v) : reg_{v} {}
+Symbol::Symbol(const llvm::Value *v) : val_{v} {}
 const llvm::Value *Symbol::value() const {
-  return reg_;
+  return val_;
 }
 bool Symbol::is_local() const {
-  return reg_ != nullptr;
+  return val_ != nullptr;
 }
 const Symbol &Symbol::get_global() {
   static Symbol global{nullptr};
@@ -26,7 +26,7 @@ bool operator==(const Symbol &lhs, const Symbol &rhs) {
 }  // namespace stacksafe
 
 namespace std {
-size_t hash<stacksafe::Symbol>::operator()(const stacksafe::Symbol &reg) const {
-  return hash<const llvm::Value *>{}(reg.value());
+size_t hash<stacksafe::Symbol>::operator()(const stacksafe::Symbol &sym) const {
+  return hash<const llvm::Value *>{}(sym.value());
 }
 }  // namespace std
