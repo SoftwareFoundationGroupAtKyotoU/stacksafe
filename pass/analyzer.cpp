@@ -2,22 +2,19 @@
 #include <llvm/Pass.h>
 #include <memory>
 #include "abstract.hpp"
-#include "json.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
 struct Analyzer : public llvm::FunctionPass {
   static char ID;
   std::unique_ptr<Abstract> abst;
-  std::string name;
   Analyzer() : llvm::FunctionPass{ID} {}
   bool runOnFunction(llvm::Function &f) override {
-    name = f.getName().str();
+    llvm::outs() << "Analysis 'stacksafe' for function '" << f.getName()
+                 << "'\n";
+    llvm::outs().flush();
     abst = std::make_unique<Abstract>(f);
     assert(abst && "allocation failed");
-    llvm::outs() << "Analysis 'stacksafe' for function '" << name << "'\n";
-    llvm::outs().flush();
     abst->run(f);
     return false;
   }
