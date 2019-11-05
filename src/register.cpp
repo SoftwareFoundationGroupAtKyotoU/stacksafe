@@ -1,3 +1,7 @@
 #include "register.hpp"
 
-namespace stacksafe {}  // namespace stacksafe
+namespace stacksafe {
+
+Register::Register(const llvm::Value& v) : Value{&v} {}
+
+}  // namespace stacksafe
