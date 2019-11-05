@@ -4,7 +4,7 @@
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, const Log &l) : cache_{f}, log_{l} {
+Blocks::Blocks(const llvm::Function &f, const Log &l) : log_{l} {
   Super::try_emplace(&f.getEntryBlock(), f);
   for (const auto &b : f) {
     Super::try_emplace(&b);
