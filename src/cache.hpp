@@ -3,6 +3,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include "register.hpp"
 
@@ -11,6 +12,7 @@ namespace stacksafe {
 class Cache {
   using Super = std::map<Register, int>;
   std::unique_ptr<Super> cache_;
+  std::optional<int> lookup(const llvm::Value& reg) const;
 
  public:
   Cache();
