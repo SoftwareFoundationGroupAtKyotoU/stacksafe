@@ -9,9 +9,9 @@ namespace stacksafe {
 
 class Value {
   const llvm::Value* const val_;
-  Value();
 
  public:
+  explicit Value(const llvm::Value* v);
   const llvm::Value* value() const;
 };
 
