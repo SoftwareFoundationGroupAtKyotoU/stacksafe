@@ -154,7 +154,7 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
 void Interpreter::alloc(const llvm::Value &dst) {
   auto reg = Symbol::get_local(dst);
   insert(reg, Domain::get_empty());
-  insert(dst, Domain{reg});
+  insert(dst, Domain::get_singleton(reg));
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
   auto dom = Domain::get_empty();

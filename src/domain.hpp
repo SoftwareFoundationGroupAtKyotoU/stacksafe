@@ -13,7 +13,6 @@ class Domain : private std::unordered_set<Symbol> {
 
  public:
   using Super::begin, Super::end;
-  explicit Domain(const Symbol &reg);
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;

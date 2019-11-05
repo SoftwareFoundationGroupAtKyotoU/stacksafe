@@ -6,7 +6,6 @@
 
 namespace stacksafe {
 
-Domain::Domain(const Symbol &reg) : Super{reg} {}
 void Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
 }
@@ -32,7 +31,7 @@ const Domain &Domain::get_empty() {
   return dom;
 }
 const Domain &Domain::get_global() {
-  static const Domain dom{Symbol::get_global()};
+  static const auto dom = get_singleton(Symbol::get_global());
   return dom;
 }
 const Domain Domain::get_singleton(const Symbol &sym) {

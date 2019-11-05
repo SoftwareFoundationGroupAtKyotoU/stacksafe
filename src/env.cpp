@@ -44,8 +44,8 @@ void Env::insert(const llvm::Value &key, const Domain &val) {
   stack_.insert(Symbol::get_local(key), val);
 }
 void Env::collect(const Symbol &curr, Domain &done) const {
-  if (!done.includes(Domain{curr})) {
-    done.merge(Domain{curr});
+  if (!done.includes(Domain::get_singleton(curr))) {
+    done.merge(Domain::get_singleton(curr));
     for (const auto &next : lookup(curr)) {
       collect(next, done);
     }
