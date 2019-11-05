@@ -13,6 +13,7 @@ namespace stacksafe {
 
 class Register : private Value {
  public:
+  enum Kind { REGISTER, GLOBAL, CONSTANT, OTHER };
   using Value::value;
   IMPLICIT Register(const llvm::Value& v);
 };
