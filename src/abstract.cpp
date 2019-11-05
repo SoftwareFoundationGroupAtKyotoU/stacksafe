@@ -5,7 +5,7 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
-    : log_{f}, blocks_{f, log_}, name_{f.getName().str()} {}
+    : log_{f}, blocks_{f}, name_{f.getName().str()} {}
 void Abstract::run(const llvm::Function &f) {
   interpret(f.getEntryBlock());
 }

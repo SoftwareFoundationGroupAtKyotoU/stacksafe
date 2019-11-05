@@ -4,6 +4,7 @@
 #include <map>
 #include <optional>
 #include "env.hpp"
+#include "log.hpp"
 
 namespace llvm {
 class BasicBlock;
@@ -11,15 +12,14 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Log;
 
 class Blocks : private std::map<const llvm::BasicBlock *, Env> {
   using Super = std::map<const llvm::BasicBlock *, Env>;
-  const Log &log_;
+  const Log log_;
 
  public:
   using Super::begin, Super::end;
-  Blocks(const llvm::Function &f, const Log &l);
+  Blocks(const llvm::Function &f);
   std::optional<Env> interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Env &next);
 

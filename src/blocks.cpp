@@ -1,10 +1,9 @@
 #include "blocks.hpp"
 #include "interpret.hpp"
-#include "log.hpp"
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, const Log &l) : log_{l} {
+Blocks::Blocks(const llvm::Function &f) : log_{f} {
   Super::try_emplace(&f.getEntryBlock(), f);
   for (const auto &b : f) {
     Super::try_emplace(&b);
