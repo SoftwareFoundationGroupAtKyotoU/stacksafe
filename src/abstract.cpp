@@ -24,7 +24,6 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   if (!safe_) {
     return;
   }
-  log_.print_hr2().print(b).print_hr().print_nl();
   if (auto result = blocks_.interpret(b)) {
     auto t = b.getTerminator();
     assert(t && "no terminator");
