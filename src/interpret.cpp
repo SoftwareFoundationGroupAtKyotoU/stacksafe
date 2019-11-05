@@ -146,7 +146,7 @@ void Interpreter::insert(const llvm::Value &key, const Domain &val) {
 }
 void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
                         const llvm::Value &rhs) {
-  Domain dom;
+  auto dom = Domain::get_empty();
   dom.merge(env_.lookup(lhs));
   dom.merge(env_.lookup(rhs));
   insert(dst, dom);
@@ -157,7 +157,7 @@ void Interpreter::alloc(const llvm::Value &dst) {
   insert(dst, Domain{reg});
 }
 void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
-  Domain dom;
+  auto dom = Domain::get_empty();
   for (const auto &reg : env_.lookup(src)) {
     dom.merge(env_.lookup(reg));
   }
@@ -178,14 +178,14 @@ void Interpreter::cast(const llvm::Value &dst, const llvm::Value &src) {
   insert(dst, env_.lookup(src));
 }
 void Interpreter::phi(const llvm::Value &dst, const Params &params) {
-  Domain dom;
+  auto dom = Domain::get_empty();
   for (const auto &arg : params) {
     dom.merge(env_.lookup(*arg));
   }
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::Value &dst, const Params &params) {
-  Domain dom;
+  auto dom = Domain::get_empty();
   for (const auto &arg : params) {
     for (const auto &reg : env_.lookup(*arg)) {
       env_.collect(reg, dom);

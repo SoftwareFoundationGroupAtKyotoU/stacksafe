@@ -9,10 +9,10 @@ namespace stacksafe {
 
 class Domain : private std::unordered_set<Register> {
   using Super = std::unordered_set<Register>;
+  Domain() = default;
 
  public:
   using Super::begin, Super::end;
-  Domain() = default;
   explicit Domain(std::initializer_list<Register> list);
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
