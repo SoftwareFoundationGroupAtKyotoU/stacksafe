@@ -11,7 +11,6 @@ namespace stacksafe {
 
 class Register {
   const llvm::Value *const reg_;
-  friend class Cache;
   Register();
   explicit Register(const llvm::Value &v);
 
