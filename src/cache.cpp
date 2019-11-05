@@ -26,5 +26,13 @@ std::string Cache::to_str(const Register& reg) const {
     return "[unknown]";
   }
 }
+std::string Cache::to_str(const llvm::Value& reg) const {
+  static const std::string prefix{"%"};
+  if (auto num = lookup(reg)) {
+    return prefix + std::to_string(*num);
+  } else {
+    return "[unknown]";
+  }
+}
 
 }  // namespace stacksafe
