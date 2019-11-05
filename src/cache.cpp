@@ -35,14 +35,14 @@ Cache::Cache() : cache_{std::make_unique<Super>()} {
   assert(cache_ && "failed cache init");
   cache_->try_emplace(nullptr, -1);
 }
-int Cache::lookup(const llvm::Value& reg) const {
-  assert(cache_ && "failed cache init");
-  if (auto it = cache_->find(&reg); it != cache_->end()) {
+int Cache::lookup(const llvm::Value* reg) const {
+  if (auto it = cache_->find(reg); it != cache_->end()) {
     return it->second;
   } else {
-    auto num = to_int(reg);
+    assert(reg && "null is always in cache");
+    auto num = to_int(*reg);
     assert(num && "not a register");
-    cache_->try_emplace(&reg, *num);
+    cache_->try_emplace(reg, *num);
     return *num;
   }
 }
@@ -52,13 +52,13 @@ std::string Cache::to_str(const Register& reg) const {
   if (!reg.is_local()) {
     return prefix + global;
   } else {
-    return prefix + std::to_string(lookup(*reg.value()));
+    return prefix + std::to_string(lookup(reg.value()));
   }
 }
 std::string Cache::to_str(const llvm::Value& reg) const {
   static const std::string prefix{"%"};
   assert(check_register(reg));
-  return prefix + std::to_string(lookup(reg));
+  return prefix + std::to_string(lookup(&reg));
 }
 
 }  // namespace stacksafe
