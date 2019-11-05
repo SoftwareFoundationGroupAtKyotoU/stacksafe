@@ -6,12 +6,12 @@ namespace stacksafe {
 
 Cache::Cache(const llvm::Function &f) {
   for (const auto &a : f.args()) {
-    add(a);
+    Super::try_emplace(&a, Register{a});
   }
   for (const auto &b : f) {
     for (const auto &i : b) {
       if (check_register(i)) {
-        add(i);
+        Super::try_emplace(&i, Register{i});
       }
     }
   }
