@@ -1,8 +1,11 @@
 #include "register.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
 Register::Register(int n) : num_{n}, reg_{nullptr} {}
+Register::Register(const llvm::Value &v)
+    : num_{register_number(v).value_or(-1)}, reg_{&v} {}
 int Register::number() const {
   return num_;
 }

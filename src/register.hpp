@@ -14,6 +14,7 @@ class Register {
   const llvm::Value *const reg_;
   friend class Cache;
   explicit Register(int n);
+  explicit Register(const llvm::Value &v);
 
  public:
   int number() const;
