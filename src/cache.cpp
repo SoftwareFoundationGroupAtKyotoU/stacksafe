@@ -56,17 +56,11 @@ std::string Cache::to_str(const llvm::Value* reg) const {
 }
 std::string Cache::to_str(const Register& reg) const {
   static const std::string prefix{"&"};
-  static const std::string global{"@"};
-  if (!reg.is_local()) {
-    return prefix + global;
-  } else {
-    return prefix + std::to_string(lookup(reg.value()));
-  }
+  return prefix + to_str(reg.value());
 }
 std::string Cache::to_str(const llvm::Value& reg) const {
   static const std::string prefix{"%"};
-  assert(check_register(reg));
-  return prefix + std::to_string(lookup(&reg));
+  return prefix + to_str(&reg);
 }
 
 }  // namespace stacksafe
