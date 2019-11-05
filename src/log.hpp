@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_91A166AC_CDE2_42E8_B393_EEBD12227F6A
 
 #include <memory>
+#include "cache.hpp"
 
 namespace llvm {
 class Function;
@@ -26,6 +27,7 @@ class LogFile {
 class Log {
   LogFile file;
   llvm::raw_ostream *os;
+  Cache cache_;
 
  public:
   explicit Log(const llvm::Function &func);
