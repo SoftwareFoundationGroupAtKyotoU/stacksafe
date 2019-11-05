@@ -13,6 +13,7 @@ class Cache : private std::map<Register, int> {
   std::unique_ptr<Super> cache_;
 
  public:
+  Cache();
   int lookup(const Register& reg);
   std::string to_str(const Register& reg);
 };

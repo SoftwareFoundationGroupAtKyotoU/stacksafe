@@ -3,6 +3,7 @@
 
 namespace stacksafe {
 
+Cache::Cache() : cache_{std::make_unique<Super>()} {}
 int Cache::lookup(const Register& reg) {
   if (!reg.is_local()) {
     return -1;
