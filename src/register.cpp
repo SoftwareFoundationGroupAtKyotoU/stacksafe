@@ -1,5 +1,4 @@
 #include "register.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -19,15 +18,6 @@ Register Register::get_local(const llvm::Value &v) {
 }
 bool operator<(const Register &lhs, const Register &rhs) {
   return lhs.value() < rhs.value();
-}
-std::string to_str(const Register &reg) {
-  static const std::string prefix{"&"};
-  static const std::string global{"@"};
-  if (reg.is_local()) {
-    return prefix + std::to_string(register_number(*reg.value()).value_or(-1));
-  } else {
-    return prefix + global;
-  }
 }
 
 }  // namespace stacksafe
