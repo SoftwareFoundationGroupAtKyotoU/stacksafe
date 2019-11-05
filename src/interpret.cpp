@@ -135,16 +135,13 @@ void Interpreter::insert(const Register &key, const Domain &val) {
   if (!key.is_local() && diff.has_local()) {
     log_.error_global(diff);
     safe_.unsafe();
-  } else if (!diff.empty()) {
-    log_.print(key, diff);
   }
+  log_.print(key, diff);
 }
 void Interpreter::insert(const llvm::Value &key, const Domain &val) {
   auto diff = val.minus(env_.lookup(key));
   env_.insert(key, diff);
-  if (!diff.empty()) {
-    log_.print(key, diff);
-  }
+  log_.print(key, diff);
 }
 void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
                         const llvm::Value &rhs) {

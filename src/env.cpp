@@ -31,7 +31,7 @@ const Domain &Env::lookup(const Register &key) const {
 }
 const Domain &Env::lookup(const llvm::Value &key) const {
   if (check_register(key)) {
-    return stack_.lookup(cache_.lookup(key));
+    return stack_.lookup(Register::get_local(key));
   } else if (check_global(key)) {
     return Domain::get_global();
   } else if (check_constant(key)) {
@@ -43,7 +43,7 @@ void Env::insert(const Register &key, const Domain &val) {
   heap_.insert(key, val);
 }
 void Env::insert(const llvm::Value &key, const Domain &val) {
-  stack_.insert(cache_.lookup(key), val);
+  stack_.insert(Register::get_local(key), val);
 }
 void Env::collect(const Register &curr, Domain &done) const {
   if (!done.includes(Domain{curr})) {
