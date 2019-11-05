@@ -9,6 +9,9 @@ namespace stacksafe {
 
 class Register {
   const llvm::Value* const val_;
+
+ public:
+  explicit Register(const llvm::Value* v);
 };
 
 }  // namespace stacksafe
