@@ -16,7 +16,7 @@ bool Register::less(const Register &that) const {
   return this->reg_ < that.reg_;
 }
 bool Register::is_local() const {
-  return get_global() < *this;
+  return reg_ != nullptr;
 }
 const Register &Register::get_global() {
   static Register global{-1};
