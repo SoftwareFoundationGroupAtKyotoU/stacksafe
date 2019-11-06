@@ -170,7 +170,7 @@ void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
     insert(ptr, val);
   }
 }
-void Interpreter::cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
+void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                           const llvm::Value &val) {
   load(dst, ptr);
   store(val, ptr);
