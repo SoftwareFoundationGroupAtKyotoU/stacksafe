@@ -43,6 +43,14 @@ const Log &Log::print(const llvm::Value &v) const {
   }
   return *this;
 }
+const Log &Log::print(const llvm::BasicBlock &b) const {
+  static const auto hr2 = "================================";
+  static const auto hr = "--------------------------------";
+  if (os) {
+    endline(*os << hr2 << b << hr);
+  }
+  return *this;
+}
 const Log &Log::print(const Symbol &key, const Domain &val) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
