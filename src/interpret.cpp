@@ -122,12 +122,15 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    auto d = env_.lookup(ret);
+    auto d = lookup(ret);
     if (has_local(d)) {
       log_.error_return(d);
       safe_.unsafe();
     }
   }
+}
+const Domain &Interpreter::lookup(const Value &key) const {
+  return env_.lookup(key);
 }
 void Interpreter::insert(const Symbol &key, const Domain &val) {
   auto diff = val.minus(env_.lookup(key));
@@ -139,15 +142,15 @@ void Interpreter::insert(const Symbol &key, const Domain &val) {
   log_.print(key, diff);
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
-  auto diff = val.minus(env_.lookup(&key));
+  auto diff = val.minus(lookup(&key));
   env_.insert(Register{key}, diff);
   log_.print(Register{key}, diff);
 }
 void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
                         const Value &rhs) {
   auto dom = Domain::get_empty();
-  dom.merge(env_.lookup(lhs));
-  dom.merge(env_.lookup(rhs));
+  dom.merge(lookup(lhs));
+  dom.merge(lookup(rhs));
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
@@ -157,14 +160,14 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   auto dom = Domain::get_empty();
-  for (const auto &reg : env_.lookup(src)) {
+  for (const auto &reg : lookup(src)) {
     dom.merge(env_.lookup(reg));
   }
   insert(dst, dom);
 }
 void Interpreter::store(const Value &src, const Value &dst) {
-  auto val = env_.lookup(src);
-  for (const auto &ptr : env_.lookup(dst)) {
+  auto val = lookup(src);
+  for (const auto &ptr : lookup(dst)) {
     insert(ptr, val);
   }
 }
@@ -174,19 +177,19 @@ void Interpreter::cmpxchg(const llvm::Instruction &dst, const Value &ptr,
   store(val, ptr);
 }
 void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
-  insert(dst, env_.lookup(src));
+  insert(dst, lookup(src));
 }
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
-    dom.merge(env_.lookup(arg));
+    dom.merge(lookup(arg));
   }
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
-    for (const auto &reg : env_.lookup(arg)) {
+    for (const auto &reg : lookup(arg)) {
       env_.collect(reg, dom);
     }
   }
