@@ -8,14 +8,11 @@
 
 namespace stacksafe {
 class Log;
-class Register;
-class Symbol;
-class Value;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
-  using Params = std::set<const llvm::Value *>;
+  using Params = std::set<Value>;
   const Log &log_;
   Env env_;
   Safe safe_;
