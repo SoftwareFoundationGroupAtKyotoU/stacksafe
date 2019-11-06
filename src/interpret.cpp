@@ -157,7 +157,7 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
   insert(reg, Domain::get_empty());
   insert(dst, Domain::get_singleton(reg));
 }
-void Interpreter::load(const llvm::Value &dst, const llvm::Value &src) {
+void Interpreter::load(const llvm::Instruction &dst, const llvm::Value &src) {
   auto dom = Domain::get_empty();
   for (const auto &reg : env_.lookup(src)) {
     dom.merge(env_.lookup(reg));
