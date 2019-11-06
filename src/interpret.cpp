@@ -134,9 +134,9 @@ void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
   insert(dst, dom.merge(lookup(lhs)).merge(lookup(rhs)));
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
-  auto reg = Symbol::get_local(dst);
-  store(reg, Domain::get_empty());
-  insert(dst, Domain::get_singleton(reg));
+  const auto sym = Symbol::get_local(dst);
+  store(sym, Domain::get_empty());
+  insert(dst, Domain::get_singleton(sym));
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   auto dom = Domain::get_empty();
