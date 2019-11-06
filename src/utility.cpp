@@ -59,13 +59,6 @@ void endline(llvm::raw_ostream &os, bool reset) {
   }
   (os << "\n").flush();
 }
-void print_string(llvm::raw_ostream &os, const std::string &str) {
-  os << str;
-}
-void print_stdout(const std::string &str) {
-  print_string(llvm::outs(), str);
-  endline(llvm::outs());
-}
 bool check_voidfunc(const llvm::Value &v) {
   if (auto i = llvm::dyn_cast<llvm::CallInst>(&v)) {
     return i->getFunctionType()->getReturnType()->isVoidTy();
