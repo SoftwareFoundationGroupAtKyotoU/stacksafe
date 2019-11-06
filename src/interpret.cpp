@@ -240,5 +240,8 @@ void Interpreter::error(const llvm::ReturnInst &i) const {
 void Interpreter::error(const llvm::CallInst &i) const {
   log_.print("ERROR[CALL]: ").print(i);
 }
+void Interpreter::error() const {
+  log_.print("ERROR[GLOBAL]: ").print(load(Symbol::get_global()));
+}
 
 }  // namespace stacksafe
