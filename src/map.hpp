@@ -16,8 +16,8 @@ class Map : private std::unordered_map<const llvm::Value *, Domain> {
 
  public:
   using Super::begin, Super::end;
-  void insert(const llvm::Value *key, const Domain &val);
-  const Domain &lookup(const llvm::Value *key) const;
+  void insert(const Value &key, const Domain &val);
+  const Domain &lookup(const Value &key) const;
   void merge(const Map &that);
   bool includes(const Map &that) const;
 };

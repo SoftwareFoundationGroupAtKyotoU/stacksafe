@@ -4,15 +4,15 @@
 
 namespace stacksafe {
 
-void Map::insert(const llvm::Value *key, const Domain &val) {
-  if (auto it = Super::find(key); it != end()) {
+void Map::insert(const Value &key, const Domain &val) {
+  if (auto it = Super::find(key.value()); it != end()) {
     it->second.merge(val);
   } else {
-    Super::try_emplace(key, val);
+    Super::try_emplace(key.value(), val);
   }
 }
-const Domain &Map::lookup(const llvm::Value *key) const {
-  if (auto it = Super::find(key); it != end()) {
+const Domain &Map::lookup(const Value &key) const {
+  if (auto it = Super::find(key.value()); it != end()) {
     return it->second;
   }
   return Domain::get_empty();
