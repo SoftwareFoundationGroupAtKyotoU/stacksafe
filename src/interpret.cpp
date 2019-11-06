@@ -129,11 +129,14 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     }
   }
 }
+const Domain &Interpreter::load(const Symbol &key) const {
+  return env_.lookup(key);
+}
 const Domain &Interpreter::lookup(const Value &key) const {
   return env_.lookup(key);
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
-  auto diff = val.minus(env_.lookup(key));
+  auto diff = val.minus(load(key));
   env_.insert(key, diff);
   if (!key.is_local() && has_local(diff)) {
     log_.error_global(diff);
@@ -161,7 +164,7 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   auto dom = Domain::get_empty();
   for (const auto &reg : lookup(src)) {
-    dom.merge(env_.lookup(reg));
+    dom.merge(load(reg));
   }
   insert(dst, dom);
 }
