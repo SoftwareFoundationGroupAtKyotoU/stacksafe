@@ -34,7 +34,7 @@ Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
 }
 const Log &Log::print(const std::string &s) const {
   if (os) {
-    endline(*os << s);
+    *os << s;
   }
   return *this;
 }
