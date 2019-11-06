@@ -132,7 +132,7 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
 const Domain &Interpreter::lookup(const Value &key) const {
   return env_.lookup(key);
 }
-void Interpreter::insert(const Symbol &key, const Domain &val) {
+void Interpreter::store(const Symbol &key, const Domain &val) {
   auto diff = val.minus(env_.lookup(key));
   env_.insert(key, diff);
   if (!key.is_local() && has_local(diff)) {
@@ -155,7 +155,7 @@ void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   auto reg = Symbol::get_local(dst);
-  insert(reg, Domain::get_empty());
+  store(reg, Domain::get_empty());
   insert(dst, Domain::get_singleton(reg));
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
@@ -168,7 +168,7 @@ void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
 void Interpreter::store(const Value &src, const Value &dst) {
   auto val = lookup(src);
   for (const auto &ptr : lookup(dst)) {
-    insert(ptr, val);
+    store(ptr, val);
   }
 }
 void Interpreter::cmpxchg(const llvm::Instruction &dst, const Value &ptr,
@@ -198,8 +198,8 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
     safe_.unsafe();
   }
   for (const auto &reg : dom) {
-    insert(reg, dom);
-    insert(reg, Domain::get_global());
+    store(reg, dom);
+    store(reg, Domain::get_global());
   }
   if (!check_voidfunc(dst)) {
     insert(dst, dom);

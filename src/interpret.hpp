@@ -43,7 +43,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
 
  private:
   const Domain &lookup(const Value &key) const;
-  void insert(const Symbol &key, const Domain &val);
+  void store(const Symbol &key, const Domain &val);
   void insert(const llvm::Instruction &key, const Domain &val);
   void binop(const llvm::Instruction &dst, const Value &lhs, const Value &rhs);
   void alloc(const llvm::AllocaInst &dst);
