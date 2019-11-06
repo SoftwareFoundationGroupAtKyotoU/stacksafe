@@ -52,6 +52,12 @@ const Log &Log::print(const llvm::BasicBlock &b) const {
   }
   return *this;
 }
+const Log &Log::print(const Domain &d) const {
+  if (os) {
+    endline(*os << cache_.to_str(d));
+  }
+  return *this;
+}
 const Log &Log::print(const Symbol &key, const Domain &val) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
