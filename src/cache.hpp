@@ -23,7 +23,7 @@ class Cache {
 
  private:
   static std::string to_str(int num);
-  int lookup(const llvm::Value* reg) const;
+  int lookup(const Value& val) const;
 };
 
 }  // namespace stacksafe

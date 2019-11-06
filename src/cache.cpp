@@ -75,14 +75,15 @@ std::string Cache::to_str(int num) {
     return std::to_string(num);
   }
 }
-int Cache::lookup(const llvm::Value* reg) const {
-  if (auto it = cache_->find(reg); it != cache_->end()) {
+int Cache::lookup(const Value& val) const {
+  if (auto it = cache_->find(val); it != cache_->end()) {
     return it->second;
   } else {
-    assert(reg && "null is always in cache");
-    auto num = to_int(*reg);
+    auto v = val.value();
+    assert(v && "null is always in cache");
+    auto num = to_int(*v);
     assert(num && "not a register");
-    cache_->try_emplace(reg, *num);
+    cache_->try_emplace(val, *num);
     return *num;
   }
 }
