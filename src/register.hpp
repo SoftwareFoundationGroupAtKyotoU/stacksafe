@@ -11,9 +11,9 @@ class Instruction;
 namespace stacksafe {
 
 class Register : private Value {
+  explicit Register(const Value& v);
+
  public:
-  explicit Register(const llvm::Argument& v);
-  explicit Register(const llvm::Instruction& v);
   static Register make(const llvm::Argument& a);
   static Register make(const llvm::Instruction& i);
   const Value& value() const;
