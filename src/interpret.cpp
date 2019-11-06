@@ -151,7 +151,7 @@ void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   insert(dst, dom);
 }
 void Interpreter::store(const Value &src, const Value &dst) {
-  auto val = lookup(src);
+  const auto val = lookup(src);
   for (const auto &ptr : lookup(dst)) {
     store(ptr, val);
   }
