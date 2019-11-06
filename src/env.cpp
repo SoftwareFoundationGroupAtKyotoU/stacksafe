@@ -32,13 +32,13 @@ const Domain &Env::lookup(const Value &key) const {
   using K = Value::Kind;
   switch (key.kind()) {
     case K::REGISTER:
-      return stack_.lookup(key.value());
+      return stack_.lookup(key);
     case K::GLOBAL:
       return Domain::get_global();
     case K::CONSTANT:
       return Domain::get_empty();
     case K::OTHER:
-      stacksafe_unreachable("unregistered register", *key.value());
+      stacksafe_unreachable("unregistered register", key);
   }
 }
 void Env::insert(const Symbol &key, const Domain &val) {
