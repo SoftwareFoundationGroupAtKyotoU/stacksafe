@@ -1,12 +1,7 @@
 #include "log.hpp"
 #include <llvm/IR/Function.h>
-#include <llvm/IR/Value.h>
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
-#include "domain.hpp"
-#include "register.hpp"
-#include "symbol.hpp"
-#include "utility.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
@@ -14,6 +9,9 @@ namespace stacksafe {
 namespace {
 std::string logfilename(const llvm::Function &f) {
   return "log/" + f.getName().str() + ".log";
+}
+void endline(llvm::raw_ostream &os) {
+  (os << "\n").flush();
 }
 }  // namespace
 
