@@ -7,9 +7,10 @@
 namespace stacksafe {
 
 Env::Env(const llvm::Function &f) {
-  insert(Symbol::get_global(), Domain::get_global());
+  const auto &g = Domain::get_global();
+  insert(Symbol::get_global(), g);
   for (const auto &a : f.args()) {
-    insert(Register::make(a), Domain::get_global());
+    insert(Register::make(a), g);
   }
 }
 const Map &Env::heap() const {

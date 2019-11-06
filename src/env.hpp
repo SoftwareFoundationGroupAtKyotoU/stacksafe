@@ -9,8 +9,6 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Domain;
-class Symbol;
 class Register;
 
 class Env {
