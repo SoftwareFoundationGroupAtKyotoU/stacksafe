@@ -32,15 +32,12 @@ std::string to_str(const llvm::Type &type) {
   type.print(stream, false, true);
   return stream.str();
 }
-std::string to_str(const llvm::Value &value) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  stream << value;
-  return stream.str();
-}
 std::string to_str(const Value &value) {
   if (auto v = value.value()) {
-    return to_str(*v);
+    std::string buf;
+    llvm::raw_string_ostream stream{buf};
+    stream << *v;
+    return stream.str();
   } else {
     return "nullptr";
   }

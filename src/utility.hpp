@@ -22,7 +22,6 @@ class Value;
 std::optional<int> to_int(std::string_view view);
 std::string to_alphabet(int num);
 std::string to_str(const llvm::Type &type);
-std::string to_str(const llvm::Value &value);
 std::string to_str(const Value &value);
 std::string get_operand(const Value &value);
 
