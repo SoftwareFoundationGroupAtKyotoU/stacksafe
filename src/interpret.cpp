@@ -156,7 +156,6 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
     if (has_local(lookup(*ret))) {
       error(i);
-      safe_.unsafe();
     }
   }
 }
@@ -217,7 +216,6 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   }
   if (has_local(dom) && has_global(dom)) {
     error(dst);
-    safe_.unsafe();
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
@@ -231,7 +229,6 @@ void Interpreter::store(const Symbol &key, const Domain &val) {
   env_.insert(key, val);
   if (!key.is_local() && has_local(load(key))) {
     error();
-    safe_.unsafe();
   }
   log_.print(key, diff);
 }
@@ -252,14 +249,17 @@ void Interpreter::collect(const Symbol &sym, Domain &done) const {
     }
   }
 }
-void Interpreter::error(const llvm::ReturnInst &i) const {
+void Interpreter::error(const llvm::ReturnInst &i) {
   log_.print("ERROR[RETURN]: ").print(i);
+  safe_.unsafe();
 }
-void Interpreter::error(const llvm::CallInst &i) const {
+void Interpreter::error(const llvm::CallInst &i) {
   log_.print("ERROR[CALL]: ").print(i);
+  safe_.unsafe();
 }
-void Interpreter::error() const {
+void Interpreter::error() {
   log_.print("ERROR[GLOBAL]: ").print(load(Symbol::get_global()));
+  safe_.unsafe();
 }
 
 }  // namespace stacksafe
