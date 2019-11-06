@@ -22,7 +22,7 @@ std::optional<int> to_int(std::string_view view) {
 }
 std::optional<int> to_int(const llvm::Value& v) {
   static const auto prefix = '%';
-  auto operand = get_operand(v);
+  auto operand = get_operand(&v);
   std::string_view view{operand};
   if (!view.empty() && view.at(0) == prefix) {
     if (auto num = to_int(view.substr(1))) {

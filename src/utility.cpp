@@ -45,15 +45,19 @@ std::string to_str(const Value &value) {
     return "nullptr";
   }
 }
-std::string get_operand(const llvm::Value &value) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  value.printAsOperand(stream, false);
-  return stream.str();
+std::string get_operand(const Value &value) {
+  if (auto v = value.value()) {
+    std::string buf;
+    llvm::raw_string_ostream stream{buf};
+    v->printAsOperand(stream, false);
+    return stream.str();
+  } else {
+    return "nullptr";
+  }
 }
 std::optional<int> register_number(const llvm::Value &value) {
   static const std::string prefix{"%"};
-  auto operand = get_operand(value);
+  auto operand = get_operand(&value);
   std::string_view view{operand};
   if (!view.empty() && view.substr(0, 1) == prefix) {
     return to_int(view.substr(1));

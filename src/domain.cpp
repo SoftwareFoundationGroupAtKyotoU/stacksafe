@@ -37,7 +37,7 @@ void to_json(Json &j, const Domain &x) {
   Json::array_t arr;
   for (const auto &e : x) {
     if (auto v = e.value()) {
-      arr.push_back(get_operand(*v));
+      arr.push_back(get_operand(v));
     } else {
       arr.push_back(global);
     }

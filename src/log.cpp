@@ -72,7 +72,7 @@ const Log &Log::print(const Register &key, const Domain &val) const {
 }
 const Log &Log::print_op(const llvm::Instruction &i) const {
   if (os) {
-    endline(*os << get_operand(i));
+    endline(*os << get_operand(&i));
   }
   return *this;
 }
