@@ -152,7 +152,7 @@ void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
   dom.merge(env_.lookup(rhs));
   insert(dst, dom);
 }
-void Interpreter::alloc(const llvm::Value &dst) {
+void Interpreter::alloc(const llvm::AllocaInst &dst) {
   auto reg = Symbol::get_local(dst);
   insert(reg, Domain::get_empty());
   insert(dst, Domain::get_singleton(reg));
