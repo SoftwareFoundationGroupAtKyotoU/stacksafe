@@ -13,8 +13,8 @@ class raw_ostream;
 
 namespace stacksafe {
 class Domain;
-class Symbol;
 class Register;
+class Symbol;
 
 class LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;

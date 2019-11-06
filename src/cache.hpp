@@ -11,8 +11,8 @@ class Value;
 
 namespace stacksafe {
 class Domain;
-class Symbol;
 class Register;
+class Symbol;
 
 class Cache {
   using Super = std::unordered_map<const llvm::Value*, int>;

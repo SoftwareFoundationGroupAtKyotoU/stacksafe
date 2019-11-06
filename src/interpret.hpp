@@ -8,6 +8,8 @@
 
 namespace stacksafe {
 class Log;
+class Register;
+class Symbol;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
