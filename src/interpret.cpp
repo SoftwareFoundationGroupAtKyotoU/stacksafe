@@ -185,7 +185,7 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   }
   insert(dst, dom);
 }
-void Interpreter::call(const llvm::Value &dst, const Params &params) {
+void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
     for (const auto &reg : env_.lookup(*arg)) {
