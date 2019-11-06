@@ -232,5 +232,8 @@ void Interpreter::collect(const Symbol &sym, Domain &done) const {
     }
   }
 }
+void Interpreter::error(const llvm::ReturnInst &i) const {
+  log_.print("ERROR[RETURN]: ").print_op(i);
+}
 
 }  // namespace stacksafe
