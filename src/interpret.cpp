@@ -69,7 +69,7 @@ auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   auto src = i.getValueOperand();
   auto dst = i.getPointerOperand();
   assert(src && dst && "invalid operand");
-  store(*src, *dst);
+  store(src, dst);
 }
 auto Interpreter::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
   auto ptr = i.getPointerOperand();
@@ -169,7 +169,7 @@ void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   }
   insert(dst, dom);
 }
-void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
+void Interpreter::store(const Value &src, const Value &dst) {
   auto val = env_.lookup(src);
   for (const auto &ptr : env_.lookup(dst)) {
     insert(ptr, val);
@@ -178,7 +178,7 @@ void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
 void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                           const llvm::Value &val) {
   load(dst, &ptr);
-  store(val, ptr);
+  store(&val, &ptr);
 }
 void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
   insert(dst, env_.lookup(src));

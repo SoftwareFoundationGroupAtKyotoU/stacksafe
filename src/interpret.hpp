@@ -51,7 +51,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void binop(const llvm::Instruction &dst, const Value &lhs, const Value &rhs);
   void alloc(const llvm::AllocaInst &dst);
   void load(const llvm::Instruction &dst, const Value &src);
-  void store(const llvm::Value &src, const llvm::Value &dst);
+  void store(const Value &src, const Value &dst);
   void cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                const llvm::Value &val);
   void cast(const llvm::Instruction &dst, const Value &src);
