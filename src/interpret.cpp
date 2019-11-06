@@ -129,26 +129,6 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     }
   }
 }
-const Domain &Interpreter::load(const Symbol &key) const {
-  return env_.lookup(key);
-}
-const Domain &Interpreter::lookup(const Value &key) const {
-  return env_.lookup(key);
-}
-void Interpreter::store(const Symbol &key, const Domain &val) {
-  auto diff = val.minus(load(key));
-  env_.insert(key, diff);
-  if (!key.is_local() && has_local(diff)) {
-    log_.error_global(diff);
-    safe_.unsafe();
-  }
-  log_.print(key, diff);
-}
-void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
-  auto diff = val.minus(lookup(&key));
-  env_.insert(Register{key}, diff);
-  log_.print(Register{key}, diff);
-}
 void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
                         const Value &rhs) {
   auto dom = Domain::get_empty();
@@ -219,6 +199,26 @@ bool Interpreter::has_local(const Domain &dom) {
     }
   }
   return false;
+}
+const Domain &Interpreter::load(const Symbol &key) const {
+  return env_.lookup(key);
+}
+void Interpreter::store(const Symbol &key, const Domain &val) {
+  auto diff = val.minus(load(key));
+  env_.insert(key, diff);
+  if (!key.is_local() && has_local(diff)) {
+    log_.error_global(diff);
+    safe_.unsafe();
+  }
+  log_.print(key, diff);
+}
+const Domain &Interpreter::lookup(const Value &key) const {
+  return env_.lookup(key);
+}
+void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
+  auto diff = val.minus(lookup(&key));
+  env_.insert(Register{key}, diff);
+  log_.print(Register{key}, diff);
 }
 
 }  // namespace stacksafe

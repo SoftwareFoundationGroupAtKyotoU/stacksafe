@@ -42,10 +42,6 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitReturnInst(llvm::ReturnInst &i);
 
  private:
-  const Domain &load(const Symbol &key) const;
-  const Domain &lookup(const Value &key) const;
-  void store(const Symbol &key, const Domain &val);
-  void insert(const llvm::Instruction &key, const Domain &val);
   void binop(const llvm::Instruction &dst, const Value &lhs, const Value &rhs);
   void alloc(const llvm::AllocaInst &dst);
   void load(const llvm::Instruction &dst, const Value &src);
@@ -56,7 +52,13 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void phi(const llvm::Instruction &dst, const Params &params);
   void call(const llvm::CallInst &dst, const Params &params);
   void constant(const llvm::Instruction &dst);
+
+ private:
   static bool has_local(const Domain &dom);
+  const Domain &load(const Symbol &key) const;
+  void store(const Symbol &key, const Domain &val);
+  const Domain &lookup(const Value &key) const;
+  void insert(const llvm::Instruction &key, const Domain &val);
 };
 
 }  // namespace stacksafe
