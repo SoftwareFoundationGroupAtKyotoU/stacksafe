@@ -79,7 +79,7 @@ int Cache::lookup(const Value& val) const {
   if (auto it = cache_->find(val); it != cache_->end()) {
     return it->second;
   } else {
-    assert(val.value() && "null is always in cache");
+    assert(val && "null is always in cache");
     auto num = to_int(val);
     assert(num && "not a register");
     cache_->try_emplace(val, *num);

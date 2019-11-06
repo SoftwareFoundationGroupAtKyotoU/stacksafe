@@ -36,8 +36,7 @@ void to_json(Json &j, const Map &x) {
   static const std::string global{"@"};
   Json::object_t obj;
   for (const auto &[key, val] : x) {
-    auto v = key.value();
-    obj[v ? get_operand(v) : global] = val;
+    obj[key ? get_operand(key) : global] = val;
   }
   j = obj;
 }

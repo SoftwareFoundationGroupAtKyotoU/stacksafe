@@ -23,14 +23,14 @@ Value::Value(const llvm::Value *v) : val_{v} {}
 Value::operator bool() const {
   return val_ != nullptr;
 }
-const llvm::Value *Value::value() const {
+const llvm::Value *Value::get() const {
   return val_;
 }
 std::size_t Value::hash() const {
   return std::hash<const llvm::Value *>{}(val_);
 }
 auto Value::kind() const -> Kind {
-  const auto v = value();
+  const auto v = get();
   if (llvm::isa<llvm::Argument>(v)) {
     return Kind::REGISTER;
   } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
@@ -53,10 +53,10 @@ auto Value::kind() const -> Kind {
   }
 }
 bool operator<(const Value &lhs, const Value &rhs) {
-  return lhs.value() < rhs.value();
+  return lhs.get() < rhs.get();
 }
 bool operator==(const Value &lhs, const Value &rhs) {
-  return lhs.value() == rhs.value();
+  return lhs.get() == rhs.get();
 }
 
 }  // namespace stacksafe

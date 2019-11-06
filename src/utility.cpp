@@ -33,20 +33,20 @@ std::string to_str(const llvm::Type &type) {
   return stream.str();
 }
 std::string to_str(const Value &value) {
-  if (auto v = value.value()) {
+  if (value) {
     std::string buf;
     llvm::raw_string_ostream stream{buf};
-    stream << *v;
+    stream << *value.get();
     return stream.str();
   } else {
     return "nullptr";
   }
 }
 std::string get_operand(const Value &value) {
-  if (auto v = value.value()) {
+  if (value) {
     std::string buf;
     llvm::raw_string_ostream stream{buf};
-    v->printAsOperand(stream, false);
+    value.get()->printAsOperand(stream, false);
     return stream.str();
   } else {
     return "nullptr";
