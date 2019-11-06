@@ -140,7 +140,7 @@ void Interpreter::insert(const Symbol &key, const Domain &val) {
   }
   log_.print(key, diff);
 }
-void Interpreter::insert(const llvm::Value &key, const Domain &val) {
+void Interpreter::insert(const Register &key, const Domain &val) {
   auto diff = val.minus(env_.lookup(key));
   env_.insert(key, diff);
   log_.print(key, diff);
