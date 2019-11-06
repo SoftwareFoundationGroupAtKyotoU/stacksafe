@@ -20,6 +20,9 @@ bool is_global(const llvm::Constant *c) {
 }  // namespace
 
 Value::Value(const llvm::Value *v) : val_{v} {}
+Value::operator bool() const {
+  return val_ != nullptr;
+}
 const llvm::Value *Value::value() const {
   return val_;
 }

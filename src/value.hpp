@@ -17,6 +17,7 @@ class Value {
  public:
   enum Kind { REGISTER, GLOBAL, CONSTANT, OTHER };
   IMPLICIT Value(const llvm::Value *v);
+  explicit operator bool() const;
   const llvm::Value *value() const;
   std::size_t hash() const;
   Kind kind() const;
