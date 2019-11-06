@@ -3,6 +3,7 @@
 #include <set>
 #include <string_view>
 #include "domain.hpp"
+#include "register.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
 
@@ -41,9 +42,9 @@ std::string Cache::to_str(const Symbol& reg) const {
   static const std::string prefix{"&"};
   return prefix + to_str(lookup(reg.value()));
 }
-std::string Cache::to_str(const llvm::Value& reg) const {
+std::string Cache::to_str(const Register& reg) const {
   static const std::string prefix{"%"};
-  return prefix + to_str(lookup(&reg));
+  return prefix + to_str(lookup(reg.value()));
 }
 std::string Cache::to_str(const Domain& dom) const {
   static const std::string prefix{"&"};

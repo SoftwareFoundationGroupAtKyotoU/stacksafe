@@ -12,6 +12,7 @@ class Value;
 namespace stacksafe {
 class Domain;
 class Symbol;
+class Register;
 
 class Cache {
   using Super = std::unordered_map<const llvm::Value*, int>;
@@ -20,7 +21,7 @@ class Cache {
  public:
   Cache();
   std::string to_str(const Symbol& reg) const;
-  std::string to_str(const llvm::Value& reg) const;
+  std::string to_str(const Register& reg) const;
   std::string to_str(const Domain& dom) const;
 
  private:
