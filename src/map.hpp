@@ -4,15 +4,12 @@
 #include <unordered_map>
 #include "domain.hpp"
 #include "json_fwd.hpp"
-
-namespace llvm {
-class Value;
-}
+#include "value.hpp"
 
 namespace stacksafe {
 
-class Map : private std::unordered_map<const llvm::Value *, Domain> {
-  using Super = std::unordered_map<const llvm::Value *, Domain>;
+class Map : private std::unordered_map<Value, Domain> {
+  using Super = std::unordered_map<Value, Domain>;
 
  public:
   using Super::begin, Super::end;

@@ -5,14 +5,14 @@
 namespace stacksafe {
 
 void Map::insert(const Value &key, const Domain &val) {
-  if (auto it = Super::find(key.value()); it != end()) {
+  if (auto it = Super::find(key); it != end()) {
     it->second.merge(val);
   } else {
-    Super::try_emplace(key.value(), val);
+    Super::try_emplace(key, val);
   }
 }
 const Domain &Map::lookup(const Value &key) const {
-  if (auto it = Super::find(key.value()); it != end()) {
+  if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
   return Domain::get_empty();
@@ -36,7 +36,8 @@ void to_json(Json &j, const Map &x) {
   static const std::string global{"@"};
   Json::object_t obj;
   for (const auto &[key, val] : x) {
-    obj[key ? get_operand(*key) : global] = val;
+    auto v = key.value();
+    obj[v ? get_operand(*v) : global] = val;
   }
   j = obj;
 }
