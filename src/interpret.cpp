@@ -189,17 +189,17 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
       collect(reg, dom);
     }
   }
+  auto src = Domain::get_global();
+  src.merge(dom);
+  for (const auto &sym : dom) {
+    store(sym, src);
+  }
+  if (!is_void_func(dst)) {
+    insert(dst, src);
+  }
   if (has_local(dom) && has_global(dom)) {
-    log_.error_call(dom);
+    error(dst);
     safe_.unsafe();
-  }
-  for (const auto &reg : dom) {
-    store(reg, dom);
-    store(reg, Domain::get_global());
-  }
-  if (!check_voidfunc(dst)) {
-    insert(dst, dom);
-    insert(dst, Domain::get_global());
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
