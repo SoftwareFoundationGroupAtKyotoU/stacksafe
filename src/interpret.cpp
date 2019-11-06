@@ -131,9 +131,7 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
 void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
                         const Value &rhs) {
   auto dom = Domain::get_empty();
-  dom.merge(lookup(lhs));
-  dom.merge(lookup(rhs));
-  insert(dst, dom);
+  insert(dst, dom.merge(lookup(lhs)).merge(lookup(rhs)));
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   auto reg = Symbol::get_local(dst);
