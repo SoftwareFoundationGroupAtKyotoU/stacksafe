@@ -173,7 +173,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
     for (const auto &reg : lookup(arg)) {
-      env_.collect(reg, dom);
+      collect(reg, dom);
     }
   }
   if (has_local(dom) && dom.includes(Domain::get_global())) {
@@ -219,6 +219,15 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   auto diff = val.minus(lookup(&key));
   env_.insert(Register{key}, diff);
   log_.print(Register{key}, diff);
+}
+void Interpreter::collect(const Symbol &sym, Domain &done) const {
+  const auto single = Domain::get_singleton(sym);
+  if (!done.includes(single)) {
+    done.merge(single);
+    for (const auto &next : load(sym)) {
+      collect(next, done);
+    }
+  }
 }
 
 }  // namespace stacksafe
