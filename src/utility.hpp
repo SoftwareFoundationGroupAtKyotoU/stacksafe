@@ -25,7 +25,6 @@ std::string to_str(const llvm::Type &type);
 std::string to_str(const llvm::Value &value);
 std::string to_str(const Value &value);
 std::string get_operand(const Value &value);
-std::optional<int> register_number(const llvm::Value &value);
 
 bool check_voidfunc(const llvm::Value &v);
 bool check_register(const llvm::Value &v);

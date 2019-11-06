@@ -55,15 +55,6 @@ std::string get_operand(const Value &value) {
     return "nullptr";
   }
 }
-std::optional<int> register_number(const llvm::Value &value) {
-  static const std::string prefix{"%"};
-  auto operand = get_operand(&value);
-  std::string_view view{operand};
-  if (!view.empty() && view.substr(0, 1) == prefix) {
-    return to_int(view.substr(1));
-  }
-  return std::nullopt;
-}
 
 bool check_voidfunc(const llvm::Value &v) {
   if (auto i = llvm::dyn_cast<llvm::CallInst>(&v)) {
