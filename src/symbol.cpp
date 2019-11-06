@@ -8,7 +8,7 @@ const Value &Symbol::value() const {
   return *this;
 }
 bool Symbol::is_local() const {
-  return Value::value() != nullptr;
+  return static_cast<bool>(value());
 }
 const Symbol &Symbol::get_global() {
   static Symbol global{Value{nullptr}};
