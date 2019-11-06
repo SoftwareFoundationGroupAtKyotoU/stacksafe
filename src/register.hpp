@@ -14,7 +14,7 @@ namespace stacksafe {
 
 class Register : private Value {
  public:
-  using Value::Kind, Value::value, Value::kind;
+  using Value::value;
   IMPLICIT Register(const llvm::Argument& v);
   IMPLICIT Register(const llvm::Instruction& v);
 };
