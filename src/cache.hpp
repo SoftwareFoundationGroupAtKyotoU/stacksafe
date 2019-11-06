@@ -4,10 +4,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
-
-namespace llvm {
-class Value;
-}
+#include "value.hpp"
 
 namespace stacksafe {
 class Domain;
@@ -15,7 +12,7 @@ class Register;
 class Symbol;
 
 class Cache {
-  using Super = std::unordered_map<const llvm::Value*, int>;
+  using Super = std::unordered_map<Value, int>;
   std::unique_ptr<Super> cache_;
 
  public:
