@@ -1,5 +1,6 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
+#include <llvm/Support/ErrorHandling.h>
 #include "json.hpp"
 #include "register.hpp"
 #include "utility.hpp"
@@ -38,7 +39,7 @@ const Domain &Env::lookup(const Value &key) const {
     case K::CONSTANT:
       return Domain::get_empty();
     case K::OTHER:
-      stacksafe_unreachable("unregistered register", key);
+      llvm_unreachable("unregistered register");
   }
 }
 void Env::insert(const Symbol &key, const Domain &val) {
