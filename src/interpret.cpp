@@ -75,13 +75,13 @@ auto Interpreter::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
   auto ptr = i.getPointerOperand();
   auto val = i.getNewValOperand();
   assert(ptr && val && "invalid operand");
-  cmpxchg(i, *ptr, *val);
+  cmpxchg(i, ptr, val);
 }
 auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
   auto ptr = i.getPointerOperand();
   auto val = i.getValOperand();
   assert(ptr && val && "invalid operand");
-  cmpxchg(i, *ptr, *val);
+  cmpxchg(i, ptr, val);
 }
 auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   auto src = i.getPointerOperand();
@@ -175,10 +175,10 @@ void Interpreter::store(const Value &src, const Value &dst) {
     insert(ptr, val);
   }
 }
-void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
-                          const llvm::Value &val) {
-  load(dst, &ptr);
-  store(&val, &ptr);
+void Interpreter::cmpxchg(const llvm::Instruction &dst, const Value &ptr,
+                          const Value &val) {
+  load(dst, ptr);
+  store(val, ptr);
 }
 void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
   insert(dst, env_.lookup(src));
