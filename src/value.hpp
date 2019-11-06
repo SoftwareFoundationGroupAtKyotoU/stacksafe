@@ -3,6 +3,8 @@
 
 #include <cstddef>
 
+#define IMPLICIT  // explicitly mark as implicit conversion constructor
+
 namespace llvm {
 class Value;
 }
@@ -14,7 +16,7 @@ class Value {
 
  public:
   enum Kind { REGISTER, GLOBAL, CONSTANT, OTHER };
-  explicit Value(const llvm::Value* v);
+  IMPLICIT Value(const llvm::Value* v);
   const llvm::Value* value() const;
   std::size_t hash() const;
   Kind kind() const;
