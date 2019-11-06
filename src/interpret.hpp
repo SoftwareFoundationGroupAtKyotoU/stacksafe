@@ -58,7 +58,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void cast(const llvm::Instruction &dst, const llvm::Value &src);
   void phi(const llvm::Instruction &dst, const Params &params);
   void call(const llvm::CallInst &dst, const Params &params);
-  void constant(const llvm::Value &dst);
+  void constant(const Value &dst);
   static bool has_local(const Domain &dom);
 };
 

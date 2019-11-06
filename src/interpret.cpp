@@ -94,7 +94,7 @@ auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
   cast(i, *src);
 }
 auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
-  constant(i);
+  constant(&i);
 }
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   Params params;
@@ -210,7 +210,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
     insert(dst, Domain::get_global());
   }
 }
-void Interpreter::constant(const llvm::Value &dst) {
+void Interpreter::constant(const Value &dst) {
   insert(dst, Domain::get_empty());
 }
 bool Interpreter::has_local(const Domain &dom) {
