@@ -54,7 +54,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                const llvm::Value &val);
   void cast(const llvm::Instruction &dst, const llvm::Value &src);
-  void phi(const llvm::Value &dst, const Params &params);
+  void phi(const llvm::Instruction &dst, const Params &params);
   void call(const llvm::Value &dst, const Params &params);
   void constant(const llvm::Value &dst);
   static bool has_local(const Domain &dom);

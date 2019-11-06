@@ -178,7 +178,7 @@ void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
 void Interpreter::cast(const llvm::Instruction &dst, const llvm::Value &src) {
   insert(dst, env_.lookup(src));
 }
-void Interpreter::phi(const llvm::Value &dst, const Params &params) {
+void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
     dom.merge(env_.lookup(*arg));
