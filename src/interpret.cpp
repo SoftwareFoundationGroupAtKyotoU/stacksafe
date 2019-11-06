@@ -175,7 +175,7 @@ void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
   load(dst, ptr);
   store(val, ptr);
 }
-void Interpreter::cast(const llvm::Value &dst, const llvm::Value &src) {
+void Interpreter::cast(const llvm::Instruction &dst, const llvm::Value &src) {
   insert(dst, env_.lookup(src));
 }
 void Interpreter::phi(const llvm::Value &dst, const Params &params) {

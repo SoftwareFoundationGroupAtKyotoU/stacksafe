@@ -53,7 +53,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void store(const llvm::Value &src, const llvm::Value &dst);
   void cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                const llvm::Value &val);
-  void cast(const llvm::Value &dst, const llvm::Value &src);
+  void cast(const llvm::Instruction &dst, const llvm::Value &src);
   void phi(const llvm::Value &dst, const Params &params);
   void call(const llvm::Value &dst, const Params &params);
   void constant(const llvm::Value &dst);
