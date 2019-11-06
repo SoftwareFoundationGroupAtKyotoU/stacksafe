@@ -6,7 +6,8 @@
 #define IMPLICIT  // explicitly mark as implicit conversion constructor
 
 namespace llvm {
-class Value;
+class Argument;
+class Instruction;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -14,6 +15,8 @@ namespace stacksafe {
 class Register : private Value {
  public:
   using Value::Kind, Value::value, Value::kind;
+  IMPLICIT Register(const llvm::Argument& v);
+  IMPLICIT Register(const llvm::Instruction& v);
   IMPLICIT Register(const llvm::Value& v);
 };
 
