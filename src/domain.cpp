@@ -36,8 +36,8 @@ void to_json(Json &j, const Domain &x) {
   static const std::string global{"@"};
   Json::array_t arr;
   for (const auto &e : x) {
-    if (auto v = e.value()) {
-      arr.push_back(get_operand(v));
+    if (e.value().value()) {
+      arr.push_back(get_operand(e.value()));
     } else {
       arr.push_back(global);
     }

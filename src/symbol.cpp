@@ -4,8 +4,11 @@
 namespace stacksafe {
 
 Symbol::Symbol(const Value &v) : Value{v} {}
+const Value &Symbol::value() const {
+  return *this;
+}
 bool Symbol::is_local() const {
-  return value() != nullptr;
+  return Value::value() != nullptr;
 }
 const Symbol &Symbol::get_global() {
   static Symbol global{Value{nullptr}};
