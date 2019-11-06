@@ -1,6 +1,5 @@
 #include "value.hpp"
 #include <llvm/IR/Instructions.h>
-#include <functional>
 
 namespace stacksafe {
 namespace {
@@ -58,3 +57,9 @@ bool operator==(const Value &lhs, const Value &rhs) {
 }
 
 }  // namespace stacksafe
+
+namespace std {
+size_t hash<stacksafe::Value>::operator()(const stacksafe::Value &val) const {
+  return val.hash();
+}
+}  // namespace std
