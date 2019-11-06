@@ -63,7 +63,7 @@ auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
 auto Interpreter::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   auto src = i.getPointerOperand();
   assert(src && "invalid operand");
-  load(i, *src);
+  load(i, src);
 }
 auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   auto src = i.getValueOperand();
@@ -162,7 +162,7 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
   insert(reg, Domain::get_empty());
   insert(dst, Domain::get_singleton(reg));
 }
-void Interpreter::load(const llvm::Instruction &dst, const llvm::Value &src) {
+void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   auto dom = Domain::get_empty();
   for (const auto &reg : env_.lookup(src)) {
     dom.merge(env_.lookup(reg));
@@ -177,7 +177,7 @@ void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
 }
 void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                           const llvm::Value &val) {
-  load(dst, ptr);
+  load(dst, &ptr);
   store(val, ptr);
 }
 void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
