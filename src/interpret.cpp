@@ -222,7 +222,7 @@ const Domain &Interpreter::lookup(const Value &key) const {
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   auto diff = val.minus(lookup(&key));
-  env_.insert(Register{key}, diff);
+  env_.insert(Register{key}, val);
   log_.print(Register{key}, diff);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
