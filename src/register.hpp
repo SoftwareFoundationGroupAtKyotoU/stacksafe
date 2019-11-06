@@ -18,6 +18,7 @@ class Register : private Value {
   IMPLICIT Register(const llvm::Argument& v);
   IMPLICIT Register(const llvm::Instruction& v);
   IMPLICIT Register(const llvm::Value& v);
+  IMPLICIT Register(const Value& v);
 };
 
 }  // namespace stacksafe
