@@ -122,9 +122,8 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    auto d = lookup(ret);
-    if (has_local(d)) {
-      log_.error_return(d);
+    if (has_local(lookup(ret))) {
+      error(i);
       safe_.unsafe();
     }
   }
