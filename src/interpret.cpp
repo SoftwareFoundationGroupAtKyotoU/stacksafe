@@ -203,8 +203,8 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
-    for (const auto &reg : lookup(arg)) {
-      collect(reg, dom);
+    for (const auto &sym : lookup(arg)) {
+      collect(sym, dom);
     }
   }
   auto src = Domain::get_global();
