@@ -13,7 +13,7 @@ namespace stacksafe {
 class Register : private Value {
  public:
   using Value::value;
-  Register(const llvm::Argument& v);
+  explicit Register(const llvm::Argument& v);
   Register(const llvm::Instruction& v);
 };
 

@@ -18,9 +18,7 @@ Safe Interpreter::visit(const llvm::BasicBlock &b) {
   return safe_;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
-  if (!i.isTerminator()) {
-    stacksafe_unreachable("unsupported instruction", i);
-  }
+  assert(i.isTerminator() && "unsupported instruction");
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   auto lhs = i.getOperand(0);
