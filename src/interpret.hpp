@@ -55,6 +55,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
 
  private:
   static bool has_local(const Domain &dom);
+  static bool has_global(const Domain &dom);
   const Domain &load(const Symbol &key) const;
   void store(const Symbol &key, const Domain &val);
   const Domain &lookup(const Value &key) const;

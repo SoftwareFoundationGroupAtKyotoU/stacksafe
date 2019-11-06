@@ -176,7 +176,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
       collect(reg, dom);
     }
   }
-  if (has_local(dom) && dom.includes(Domain::get_global())) {
+  if (has_local(dom) && has_global(dom)) {
     log_.error_call(dom);
     safe_.unsafe();
   }
@@ -199,6 +199,9 @@ bool Interpreter::has_local(const Domain &dom) {
     }
   }
   return false;
+}
+bool Interpreter::has_global(const Domain &dom) {
+  return dom.includes(Domain::get_global());
 }
 const Domain &Interpreter::load(const Symbol &key) const {
   return env_.lookup(key);
