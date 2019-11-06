@@ -6,7 +6,6 @@
 #include "json.hpp"
 #include "register.hpp"
 #include "symbol.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 namespace {

@@ -3,7 +3,6 @@
 #include <llvm/Support/ErrorHandling.h>
 #include "json.hpp"
 #include "register.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 

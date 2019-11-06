@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <iterator>
 #include "json.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
