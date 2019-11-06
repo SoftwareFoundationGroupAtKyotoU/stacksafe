@@ -145,11 +145,6 @@ void Interpreter::insert(const Register &key, const Domain &val) {
   env_.insert(key, diff);
   log_.print(key, diff);
 }
-void Interpreter::insert(const Value &key, const Domain &val) {
-  auto diff = val.minus(env_.lookup(*key.value()));
-  env_.insert(*key.value(), diff);
-  log_.print(*key.value(), diff);
-}
 void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
                         const Value &rhs) {
   auto dom = Domain::get_empty();
