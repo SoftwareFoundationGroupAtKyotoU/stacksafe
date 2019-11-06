@@ -1,7 +1,7 @@
 #include "interpret.hpp"
-#include <llvm/Support/ErrorHandling.h>
 #include "log.hpp"
 #include "register.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 namespace {
@@ -19,12 +19,6 @@ bool has_local(const Domain &dom) {
 bool has_global(const Domain &dom) {
   return dom.includes(Domain::get_global());
 }
-std::string to_str(const llvm::Instruction &i) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  i.print(stream);
-  return stream.str();
-}
 }  // namespace
 
 Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, env_{m} {}
@@ -40,9 +34,8 @@ Safe Interpreter::visit(const llvm::BasicBlock &b) {
   return safe_;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
-  static const std::string msg{"unsupported instruction: "};
   if (!i.isTerminator()) {
-    llvm_unreachable((msg + to_str(i)).c_str());
+    stacksafe_unreachable("unsupported instruction", i);
   }
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
