@@ -38,6 +38,7 @@ class Log {
   const Log &print(const llvm::BasicBlock &b) const;
   const Log &print(const Symbol &key, const Domain &val) const;
   const Log &print(const Register &key, const Domain &val) const;
+  const Log &print_op(const llvm::Instruction &i) const;
   const Log &print_hr() const;
   const Log &print_hr2() const;
   const Log &print_nl() const;
