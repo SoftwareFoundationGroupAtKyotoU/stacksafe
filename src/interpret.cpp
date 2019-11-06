@@ -124,7 +124,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    auto d = env_.lookup(*ret);
+    auto d = env_.lookup(ret);
     if (has_local(d)) {
       log_.error_return(d);
       safe_.unsafe();
@@ -141,7 +141,7 @@ void Interpreter::insert(const Symbol &key, const Domain &val) {
   log_.print(key, diff);
 }
 void Interpreter::insert(const Register &key, const Domain &val) {
-  auto diff = val.minus(env_.lookup(key));
+  auto diff = val.minus(env_.lookup(key.value()));
   env_.insert(key, diff);
   log_.print(key, diff);
 }
@@ -181,14 +181,14 @@ void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
-    dom.merge(env_.lookup(*arg));
+    dom.merge(env_.lookup(arg));
   }
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   auto dom = Domain::get_empty();
   for (const auto &arg : params) {
-    for (const auto &reg : env_.lookup(*arg)) {
+    for (const auto &reg : env_.lookup(arg)) {
       env_.collect(reg, dom);
     }
   }

@@ -24,7 +24,7 @@ class Env {
   bool includes(const Env &that) const;
   void merge(const Env &that);
   const Domain &lookup(const Symbol &key) const;
-  const Domain &lookup(const Register &key) const;
+  const Domain &lookup(const Value &key) const;
   void insert(const Symbol &key, const Domain &val);
   void insert(const Register &key, const Domain &val);
   void collect(const Symbol &curr, Domain &done) const;
