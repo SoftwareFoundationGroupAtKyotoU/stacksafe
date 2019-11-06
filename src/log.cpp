@@ -2,7 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
-#include "json.hpp"
+#include "utility.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 

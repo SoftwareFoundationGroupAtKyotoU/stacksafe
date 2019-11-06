@@ -1,5 +1,6 @@
 #include "map.hpp"
 #include "json.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 

@@ -12,6 +12,7 @@ namespace stacksafe {
 class Value;
 
 std::string to_str(const Value& v);
+std::string get_operand(const Value& v);
 
 }  // namespace stacksafe
 
