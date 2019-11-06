@@ -20,9 +20,9 @@ std::optional<int> to_int(std::string_view view) {
   }
   return std::nullopt;
 }
-std::optional<int> to_int(const llvm::Value& v) {
+std::optional<int> to_int(const Value& v) {
   static const auto prefix = '%';
-  auto operand = get_operand(&v);
+  auto operand = get_operand(v);
   std::string_view view{operand};
   if (!view.empty() && view.at(0) == prefix) {
     if (auto num = to_int(view.substr(1))) {
@@ -79,9 +79,8 @@ int Cache::lookup(const Value& val) const {
   if (auto it = cache_->find(val); it != cache_->end()) {
     return it->second;
   } else {
-    auto v = val.value();
-    assert(v && "null is always in cache");
-    auto num = to_int(*v);
+    assert(val.value() && "null is always in cache");
+    auto num = to_int(val);
     assert(num && "not a register");
     cache_->try_emplace(val, *num);
     return *num;
