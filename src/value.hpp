@@ -13,6 +13,7 @@ class Value {
   const llvm::Value* const val_;
 
  public:
+  enum Kind { REGISTER, GLOBAL, CONSTANT, OTHER };
   explicit Value(const llvm::Value* v);
   const llvm::Value* value() const;
   std::size_t hash() const;
