@@ -29,15 +29,17 @@ const Domain &Env::lookup(const Symbol &key) const {
   return heap_.lookup(key.value());
 }
 const Domain &Env::lookup(const Register &key) const {
-  auto v = key.value();
-  if (check_register(*v)) {
-    return stack_.lookup(v);
-  } else if (check_global(*v)) {
-    return Domain::get_global();
-  } else if (check_constant(*v)) {
-    return Domain::get_empty();
+  using K = Register::Kind;
+  switch (key.kind()) {
+    case K::REGISTER:
+      return stack_.lookup(key.value());
+    case K::GLOBAL:
+      return Domain::get_global();
+    case K::CONSTANT:
+      return Domain::get_empty();
+    case K::OTHER:
+      stacksafe_unreachable("unregistered register", *key.value());
   }
-  stacksafe_unreachable("neither register nor constant", *v);
 }
 void Env::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key.value(), val);
