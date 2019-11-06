@@ -140,8 +140,8 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   auto dom = Domain::get_empty();
-  for (const auto &reg : lookup(src)) {
-    dom.merge(load(reg));
+  for (const auto &sym : lookup(src)) {
+    dom.merge(load(sym));
   }
   insert(dst, dom);
 }
