@@ -145,7 +145,7 @@ void Interpreter::insert(const Register &key, const Domain &val) {
   env_.insert(key, diff);
   log_.print(key, diff);
 }
-void Interpreter::binop(const llvm::Value &dst, const llvm::Value &lhs,
+void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
                         const llvm::Value &rhs) {
   auto dom = Domain::get_empty();
   dom.merge(env_.lookup(lhs));
