@@ -1,4 +1,5 @@
 #include "symbol.hpp"
+#include <llvm/IR/Instructions.h>
 
 namespace stacksafe {
 
@@ -10,7 +11,7 @@ const Symbol &Symbol::get_global() {
   static Symbol global{nullptr};
   return global;
 }
-Symbol Symbol::get_local(const llvm::Value &v) {
+Symbol Symbol::get_local(const llvm::AllocaInst &v) {
   return Symbol{&v};
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {

@@ -5,8 +5,9 @@
 #include "value.hpp"
 
 namespace llvm {
+class AllocaInst;
 class Value;
-}
+}  // namespace llvm
 
 namespace stacksafe {
 
@@ -17,7 +18,7 @@ class Symbol : private Value {
   using Value::value, Value::hash;
   bool is_local() const;
   static const Symbol &get_global();
-  static Symbol get_local(const llvm::Value &v);
+  static Symbol get_local(const llvm::AllocaInst &v);
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 bool operator==(const Symbol &lhs, const Symbol &rhs);
