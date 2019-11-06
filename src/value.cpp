@@ -27,5 +27,28 @@ const llvm::Value* Value::value() const {
 std::size_t Value::hash() const {
   return std::hash<const llvm::Value*>{}(val_);
 }
+auto Value::kind() const -> Kind {
+  const auto v = value();
+  if (llvm::isa<llvm::Argument>(v)) {
+    return Kind::REGISTER;
+  } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
+    return is_global(c) ? Kind::GLOBAL : Kind::CONSTANT;
+  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
+    if (i->isTerminator()) {
+      return Kind::OTHER;
+    } else if (llvm::isa<llvm::StoreInst>(i)) {
+      return Kind::OTHER;
+    } else if (llvm::isa<llvm::FenceInst>(i)) {
+      return Kind::OTHER;
+    } else if (auto c = llvm::dyn_cast<llvm::CallInst>(i);
+               c && c->getFunctionType()->getReturnType()->isVoidTy()) {
+      return Kind::OTHER;
+    } else {
+      return Kind::REGISTER;
+    }
+  } else {
+    return Kind::OTHER;
+  }
+}
 
 }  // namespace stacksafe

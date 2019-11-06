@@ -17,6 +17,7 @@ class Value {
   explicit Value(const llvm::Value* v);
   const llvm::Value* value() const;
   std::size_t hash() const;
+  Kind kind() const;
 };
 
 }  // namespace stacksafe
