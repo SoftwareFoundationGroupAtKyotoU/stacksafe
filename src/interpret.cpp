@@ -32,7 +32,7 @@ auto Interpreter::visitExtractElementInst(llvm::ExtractElementInst &i)
     -> RetTy {
   auto src = i.getVectorOperand();
   assert(src && "invalid operand");
-  cast(i, *src);
+  cast(i, src);
 }
 auto Interpreter::visitInsertElementInst(llvm::InsertElementInst &i) -> RetTy {
   auto lhs = i.getOperand(0);
@@ -49,7 +49,7 @@ auto Interpreter::visitShuffleVectorInst(llvm::ShuffleVectorInst &i) -> RetTy {
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   auto src = i.getAggregateOperand();
   assert(src && "invalid operand");
-  cast(i, *src);
+  cast(i, src);
 }
 auto Interpreter::visitInsertValue(llvm::InsertValueInst &i) -> RetTy {
   auto lhs = i.getAggregateOperand();
@@ -86,12 +86,12 @@ auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
 auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   auto src = i.getPointerOperand();
   assert(src && "invalid operand");
-  cast(i, *src);
+  cast(i, src);
 }
 auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
   auto src = i.getOperand(0);
   assert(src && "invalid operand");
-  cast(i, *src);
+  cast(i, src);
 }
 auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   constant(&i);
@@ -180,7 +180,7 @@ void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
   load(dst, ptr);
   store(val, ptr);
 }
-void Interpreter::cast(const llvm::Instruction &dst, const llvm::Value &src) {
+void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
   insert(dst, env_.lookup(src));
 }
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
