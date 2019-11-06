@@ -3,8 +3,6 @@
 
 #include "value.hpp"
 
-#define IMPLICIT  // explicitly mark as implicit conversion constructor
-
 namespace llvm {
 class Argument;
 class Instruction;
@@ -15,8 +13,8 @@ namespace stacksafe {
 class Register : private Value {
  public:
   using Value::value;
-  IMPLICIT Register(const llvm::Argument& v);
-  IMPLICIT Register(const llvm::Instruction& v);
+  Register(const llvm::Argument& v);
+  Register(const llvm::Instruction& v);
 };
 
 }  // namespace stacksafe
