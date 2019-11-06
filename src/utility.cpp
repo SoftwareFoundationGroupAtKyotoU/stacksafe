@@ -9,7 +9,7 @@ std::string to_str(const Value& v) {
   assert(v && "no operand at nullptr");
   std::string buf;
   llvm::raw_string_ostream stream{buf};
-  v.get()->printAsOperand(stream, false);
+  v.get()->print(stream);
   return stream.str();
 }
 
