@@ -36,7 +36,7 @@ std::optional<int> to_int(const Value& v) {
 
 Cache::Cache() : cache_{std::make_unique<Super>()} {
   assert(cache_ && "failed cache init");
-  cache_->try_emplace(nullptr, -1);
+  cache_->try_emplace(Value{}, -1);
 }
 std::string Cache::to_str(const Symbol& reg) const {
   static const std::string prefix{"&"};

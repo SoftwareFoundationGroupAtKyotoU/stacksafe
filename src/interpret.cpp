@@ -40,36 +40,36 @@ auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   auto lhs = i.getOperand(0);
   auto rhs = i.getOperand(1);
   assert(lhs && rhs && "invalid operand");
-  binop(i, lhs, rhs);
+  binop(i, *lhs, *rhs);
 }
 auto Interpreter::visitExtractElementInst(llvm::ExtractElementInst &i)
     -> RetTy {
   auto src = i.getVectorOperand();
   assert(src && "invalid operand");
-  cast(i, src);
+  cast(i, *src);
 }
 auto Interpreter::visitInsertElementInst(llvm::InsertElementInst &i) -> RetTy {
   auto lhs = i.getOperand(0);
   auto rhs = i.getOperand(1);
   assert(lhs && rhs && "invalid operand");
-  binop(i, lhs, rhs);
+  binop(i, *lhs, *rhs);
 }
 auto Interpreter::visitShuffleVectorInst(llvm::ShuffleVectorInst &i) -> RetTy {
   auto lhs = i.getOperand(0);
   auto rhs = i.getOperand(1);
   assert(lhs && rhs && "invalid operand");
-  binop(i, lhs, rhs);
+  binop(i, *lhs, *rhs);
 }
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   auto src = i.getAggregateOperand();
   assert(src && "invalid operand");
-  cast(i, src);
+  cast(i, *src);
 }
 auto Interpreter::visitInsertValue(llvm::InsertValueInst &i) -> RetTy {
   auto lhs = i.getAggregateOperand();
   auto rhs = i.getInsertedValueOperand();
   assert(lhs && rhs && "invalid operand");
-  binop(i, lhs, rhs);
+  binop(i, *lhs, *rhs);
 }
 auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   alloc(i);
@@ -77,35 +77,35 @@ auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
 auto Interpreter::visitLoadInst(llvm::LoadInst &i) -> RetTy {
   auto src = i.getPointerOperand();
   assert(src && "invalid operand");
-  load(i, src);
+  load(i, *src);
 }
 auto Interpreter::visitStoreInst(llvm::StoreInst &i) -> RetTy {
   auto src = i.getValueOperand();
   auto dst = i.getPointerOperand();
   assert(src && dst && "invalid operand");
-  store(src, dst);
+  store(*src, *dst);
 }
 auto Interpreter::visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i) -> RetTy {
   auto ptr = i.getPointerOperand();
   auto val = i.getNewValOperand();
   assert(ptr && val && "invalid operand");
-  cmpxchg(i, ptr, val);
+  cmpxchg(i, *ptr, *val);
 }
 auto Interpreter::visitAtomicRMWInst(llvm::AtomicRMWInst &i) -> RetTy {
   auto ptr = i.getPointerOperand();
   auto val = i.getValOperand();
   assert(ptr && val && "invalid operand");
-  cmpxchg(i, ptr, val);
+  cmpxchg(i, *ptr, *val);
 }
 auto Interpreter::visitGetElementPtrInst(llvm::GetElementPtrInst &i) -> RetTy {
   auto src = i.getPointerOperand();
   assert(src && "invalid operand");
-  cast(i, src);
+  cast(i, *src);
 }
 auto Interpreter::visitCastInst(llvm::CastInst &i) -> RetTy {
   auto src = i.getOperand(0);
   assert(src && "invalid operand");
-  cast(i, src);
+  cast(i, *src);
 }
 auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   constant(i);
@@ -115,7 +115,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   for (const auto &use : i.incoming_values()) {
     auto arg = use.get();
     assert(arg && "unknown phi node");
-    params.insert(arg);
+    params.emplace(*arg);
   }
   phi(i, params);
 }
@@ -123,7 +123,7 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
   for (const auto arg : {i.getTrueValue(), i.getFalseValue()}) {
     assert(arg && "unknown select node");
-    params.insert(arg);
+    params.emplace(*arg);
   }
   phi(i, params);
 }
@@ -132,13 +132,13 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   for (const auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
-    params.insert(arg);
+    params.emplace(*arg);
   }
   call(i, params);
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    if (has_local(lookup(ret))) {
+    if (has_local(lookup(*ret))) {
       error(i);
       safe_.unsafe();
     }
@@ -221,7 +221,7 @@ const Domain &Interpreter::lookup(const Value &key) const {
   return env_.lookup(key);
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
-  auto diff = val.minus(lookup(&key));
+  auto diff = val.minus(lookup(key));
   env_.insert(Register{key}, val);
   log_.print(Register{key}, diff);
 }

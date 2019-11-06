@@ -11,11 +11,11 @@ bool Symbol::is_local() const {
   return static_cast<bool>(value());
 }
 const Symbol &Symbol::get_global() {
-  static Symbol global{Value{nullptr}};
+  static Symbol global{Value{}};
   return global;
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
-  return Symbol{Value{&v}};
+  return Symbol{v};
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
