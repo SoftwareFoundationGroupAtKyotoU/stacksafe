@@ -6,8 +6,9 @@
 
 namespace stacksafe {
 
-void Domain::merge(const Domain &that) {
+Domain &Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
+  return *this;
 }
 bool Domain::includes(const Domain &that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
