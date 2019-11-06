@@ -8,6 +8,17 @@ namespace {
 bool is_void_func(const llvm::CallInst &i) {
   return i.getFunctionType()->getReturnType()->isVoidTy();
 }
+bool has_local(const Domain &dom) {
+  for (const auto &sym : dom) {
+    if (sym.is_local()) {
+      return true;
+    }
+  }
+  return false;
+}
+bool has_global(const Domain &dom) {
+  return dom.includes(Domain::get_global());
+}
 }  // namespace
 
 Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, env_{m} {}
@@ -193,17 +204,6 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
   insert(dst, Domain::get_empty());
-}
-bool Interpreter::has_local(const Domain &dom) {
-  for (const auto &sym : dom) {
-    if (sym.is_local()) {
-      return true;
-    }
-  }
-  return false;
-}
-bool Interpreter::has_global(const Domain &dom) {
-  return dom.includes(Domain::get_global());
 }
 const Domain &Interpreter::load(const Symbol &key) const {
   return env_.lookup(key);
