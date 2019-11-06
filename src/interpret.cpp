@@ -209,10 +209,10 @@ const Domain &Interpreter::load(const Symbol &key) const {
   return env_.lookup(key);
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
-  auto diff = val.minus(load(key));
-  env_.insert(key, diff);
-  if (!key.is_local() && has_local(diff)) {
-    log_.error_global(diff);
+  const auto diff = val.minus(load(key));
+  env_.insert(key, val);
+  if (!key.is_local() && has_local(load(key))) {
+    error();
     safe_.unsafe();
   }
   log_.print(key, diff);
