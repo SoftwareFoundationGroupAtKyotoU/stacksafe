@@ -48,8 +48,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void insert(const Symbol &key, const Domain &val);
   void insert(const Register &key, const Domain &val);
   void insert(const Value &key, const Domain &val);
-  void binop(const llvm::Instruction &dst, const llvm::Value &lhs,
-             const llvm::Value &rhs);
+  void binop(const llvm::Instruction &dst, const Value &lhs, const Value &rhs);
   void alloc(const llvm::AllocaInst &dst);
   void load(const llvm::Instruction &dst, const llvm::Value &src);
   void store(const llvm::Value &src, const llvm::Value &dst);

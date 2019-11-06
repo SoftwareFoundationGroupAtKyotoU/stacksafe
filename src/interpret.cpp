@@ -26,7 +26,7 @@ auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
   auto lhs = i.getOperand(0);
   auto rhs = i.getOperand(1);
   assert(lhs && rhs && "invalid operand");
-  binop(i, *lhs, *rhs);
+  binop(i, lhs, rhs);
 }
 auto Interpreter::visitExtractElementInst(llvm::ExtractElementInst &i)
     -> RetTy {
@@ -38,13 +38,13 @@ auto Interpreter::visitInsertElementInst(llvm::InsertElementInst &i) -> RetTy {
   auto lhs = i.getOperand(0);
   auto rhs = i.getOperand(1);
   assert(lhs && rhs && "invalid operand");
-  binop(i, *lhs, *rhs);
+  binop(i, lhs, rhs);
 }
 auto Interpreter::visitShuffleVectorInst(llvm::ShuffleVectorInst &i) -> RetTy {
   auto lhs = i.getOperand(0);
   auto rhs = i.getOperand(1);
   assert(lhs && rhs && "invalid operand");
-  binop(i, *lhs, *rhs);
+  binop(i, lhs, rhs);
 }
 auto Interpreter::visitExtractValue(llvm::ExtractValueInst &i) -> RetTy {
   auto src = i.getAggregateOperand();
@@ -55,7 +55,7 @@ auto Interpreter::visitInsertValue(llvm::InsertValueInst &i) -> RetTy {
   auto lhs = i.getAggregateOperand();
   auto rhs = i.getInsertedValueOperand();
   assert(lhs && rhs && "invalid operand");
-  binop(i, *lhs, *rhs);
+  binop(i, lhs, rhs);
 }
 auto Interpreter::visitAllocaInst(llvm::AllocaInst &i) -> RetTy {
   alloc(i);
@@ -150,8 +150,8 @@ void Interpreter::insert(const Value &key, const Domain &val) {
   env_.insert(*key.value(), diff);
   log_.print(*key.value(), diff);
 }
-void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
-                        const llvm::Value &rhs) {
+void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
+                        const Value &rhs) {
   auto dom = Domain::get_empty();
   dom.merge(env_.lookup(lhs));
   dom.merge(env_.lookup(rhs));
