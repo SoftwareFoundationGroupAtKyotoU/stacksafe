@@ -53,19 +53,6 @@ std::optional<int> register_number(const llvm::Value &value) {
   return std::nullopt;
 }
 
-void endline(llvm::raw_ostream &os, bool reset) {
-  if (reset && os.is_displayed()) {
-    os.resetColor();
-  }
-  (os << "\n").flush();
-}
-void print_string(llvm::raw_ostream &os, const std::string &str) {
-  os << str;
-}
-void print_stdout(const std::string &str) {
-  print_string(llvm::outs(), str);
-  endline(llvm::outs());
-}
 bool check_voidfunc(const llvm::Value &v) {
   if (auto i = llvm::dyn_cast<llvm::CallInst>(&v)) {
     return i->getFunctionType()->getReturnType()->isVoidTy();

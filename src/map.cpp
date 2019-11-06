@@ -4,22 +4,22 @@
 
 namespace stacksafe {
 
-void Map::insert(const Register &key, const Domain &val) {
-  if (auto it = Super::find(key.value()); it != end()) {
+void Map::insert(const llvm::Value *key, const Domain &val) {
+  if (auto it = Super::find(key); it != end()) {
     it->second.merge(val);
   } else {
-    Super::try_emplace(key.value(), val);
+    Super::try_emplace(key, val);
   }
 }
-const Domain &Map::lookup(const Register &key) const {
-  if (auto it = Super::find(key.value()); it != end()) {
+const Domain &Map::lookup(const llvm::Value *key) const {
+  if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
   return Domain::get_empty();
 }
 void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {
-    insert(k ? Register::get_local(*k) : Register::get_global(), v);
+    insert(k, v);
   }
 }
 bool Map::includes(const Map &that) const {

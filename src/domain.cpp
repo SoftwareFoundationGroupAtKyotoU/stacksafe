@@ -6,9 +6,9 @@
 
 namespace stacksafe {
 
-Domain::Domain(const Register &reg) : Super{reg} {}
-void Domain::merge(const Domain &that) {
+Domain &Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
+  return *this;
 }
 bool Domain::includes(const Domain &that) const {
   return std::includes(begin(), end(), that.begin(), that.end());
@@ -19,20 +19,17 @@ Domain Domain::minus(const Domain &that) const {
   std::set_difference(begin(), end(), that.begin(), that.end(), inserter);
   return ret;
 }
-bool Domain::has_local() const {
-  for (const auto &sym : *this) {
-    if (sym.is_local()) {
-      return true;
-    }
-  }
-  return false;
-}
 const Domain &Domain::get_empty() {
   static const Domain dom{};
   return dom;
 }
 const Domain &Domain::get_global() {
-  static const Domain dom{Register::get_global()};
+  static const auto dom = get_singleton(Symbol::get_global());
+  return dom;
+}
+const Domain Domain::get_singleton(const Symbol &sym) {
+  auto dom = get_empty();
+  dom.Super::insert(sym);
   return dom;
 }
 void to_json(Json &j, const Domain &x) {

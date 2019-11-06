@@ -23,7 +23,9 @@ target_sources(${target} PRIVATE
   map.cpp
   register.cpp
   safe.cpp
+  symbol.cpp
   utility.cpp
+  value.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})

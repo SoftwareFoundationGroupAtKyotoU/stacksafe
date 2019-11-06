@@ -1,34 +1,22 @@
-#ifndef INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
-#define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
+#ifndef INCLUDE_GUARD_8F170DBC_839A_403D_A59A_EA8DF99056AA
+#define INCLUDE_GUARD_8F170DBC_839A_403D_A59A_EA8DF99056AA
 
-#include <functional>
+#include "value.hpp"
 
 namespace llvm {
-class Value;
-}
+class Argument;
+class Instruction;
+}  // namespace llvm
 
 namespace stacksafe {
 
-class Register {
-  const llvm::Value *const reg_;
-  explicit Register(const llvm::Value *v);
-
+class Register : private Value {
  public:
-  const llvm::Value *value() const;
-  bool is_local() const;
-  static const Register &get_global();
-  static Register get_local(const llvm::Value &v);
+  using Value::value;
+  explicit Register(const llvm::Argument& v);
+  explicit Register(const llvm::Instruction& v);
 };
-bool operator<(const Register &lhs, const Register &rhs);
-bool operator==(const Register &lhs, const Register &rhs);
 
 }  // namespace stacksafe
 
-namespace std {
-template <>
-struct hash<stacksafe::Register> {
-  size_t operator()(const stacksafe::Register &reg) const;
-};
-}  // namespace std
-
-#endif  // INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
+#endif  // INCLUDE_GUARD_8F170DBC_839A_403D_A59A_EA8DF99056AA

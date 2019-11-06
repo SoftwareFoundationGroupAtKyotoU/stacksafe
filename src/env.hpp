@@ -6,11 +6,11 @@
 
 namespace llvm {
 class Function;
-class Value;
 }  // namespace llvm
 
 namespace stacksafe {
 class Domain;
+class Symbol;
 class Register;
 
 class Env {
@@ -23,11 +23,10 @@ class Env {
   const Map &stack() const;
   bool includes(const Env &that) const;
   void merge(const Env &that);
-  const Domain &lookup(const Register &key) const;
-  const Domain &lookup(const llvm::Value &key) const;
+  const Domain &lookup(const Symbol &key) const;
+  const Domain &lookup(const Value &key) const;
+  void insert(const Symbol &key, const Domain &val);
   void insert(const Register &key, const Domain &val);
-  void insert(const llvm::Value &key, const Domain &val);
-  void collect(const Register &curr, Domain &done) const;
 };
 void to_json(Json &j, const Env &x);
 

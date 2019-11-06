@@ -1,10 +1,7 @@
 #include "log.hpp"
 #include <llvm/IR/Function.h>
-#include <llvm/IR/Value.h>
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
-#include "domain.hpp"
-#include "register.hpp"
 #include "utility.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
@@ -13,6 +10,9 @@ namespace stacksafe {
 namespace {
 std::string logfilename(const llvm::Function &f) {
   return "log/" + f.getName().str() + ".log";
+}
+void endline(llvm::raw_ostream &os) {
+  (os << "\n").flush();
 }
 }  // namespace
 
@@ -38,9 +38,29 @@ const Log &Log::print(const std::string &s) const {
   }
   return *this;
 }
-const Log &Log::print(const llvm::Value &v) const {
+const Log &Log::print(const llvm::Instruction &i) const {
   if (os) {
-    *os << v;
+    endline(*os << i);
+  }
+  return *this;
+}
+const Log &Log::print(const llvm::BasicBlock &b) const {
+  static const auto hr2 = "================================";
+  static const auto hr = "--------------------------------";
+  if (os) {
+    endline(*os << hr2 << b << hr);
+  }
+  return *this;
+}
+const Log &Log::print(const Domain &d) const {
+  if (os) {
+    endline(*os << cache_.to_str(d));
+  }
+  return *this;
+}
+const Log &Log::print(const Symbol &key, const Domain &val) const {
+  if (os) {
+    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
   }
   return *this;
 }
@@ -50,9 +70,9 @@ const Log &Log::print(const Register &key, const Domain &val) const {
   }
   return *this;
 }
-const Log &Log::print(const llvm::Value &key, const Domain &val) const {
+const Log &Log::print_op(const llvm::Instruction &i) const {
   if (os) {
-    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
+    endline(*os << get_operand(i));
   }
   return *this;
 }

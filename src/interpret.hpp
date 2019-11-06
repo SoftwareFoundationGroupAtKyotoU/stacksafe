@@ -12,7 +12,7 @@ class Log;
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
-  using Params = std::set<const llvm::Value *>;
+  using Params = std::set<Value>;
   const Log &log_;
   Env env_;
   Safe safe_;
@@ -42,19 +42,26 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   RetTy visitReturnInst(llvm::ReturnInst &i);
 
  private:
-  void insert(const Register &key, const Domain &val);
-  void insert(const llvm::Value &key, const Domain &val);
-  void binop(const llvm::Value &dst, const llvm::Value &lhs,
-             const llvm::Value &rhs);
-  void alloc(const llvm::Value &dst);
-  void load(const llvm::Value &dst, const llvm::Value &src);
-  void store(const llvm::Value &src, const llvm::Value &dst);
-  void cmpxchg(const llvm::Value &dst, const llvm::Value &ptr,
-               const llvm::Value &val);
-  void cast(const llvm::Value &dst, const llvm::Value &src);
-  void phi(const llvm::Value &dst, const Params &params);
-  void call(const llvm::Value &dst, const Params &params);
-  void constant(const llvm::Value &dst);
+  void binop(const llvm::Instruction &dst, const Value &lhs, const Value &rhs);
+  void alloc(const llvm::AllocaInst &dst);
+  void load(const llvm::Instruction &dst, const Value &src);
+  void store(const Value &src, const Value &dst);
+  void cmpxchg(const llvm::Instruction &dst, const Value &ptr,
+               const Value &val);
+  void cast(const llvm::Instruction &dst, const Value &src);
+  void phi(const llvm::Instruction &dst, const Params &params);
+  void call(const llvm::CallInst &dst, const Params &params);
+  void constant(const llvm::Instruction &dst);
+
+ private:
+  const Domain &load(const Symbol &key) const;
+  void store(const Symbol &key, const Domain &val);
+  const Domain &lookup(const Value &key) const;
+  void insert(const llvm::Instruction &key, const Domain &val);
+  void collect(const Symbol &sym, Domain &done) const;
+  void error(const llvm::ReturnInst &i) const;
+  void error(const llvm::CallInst &i) const;
+  void error() const;
 };
 
 }  // namespace stacksafe
