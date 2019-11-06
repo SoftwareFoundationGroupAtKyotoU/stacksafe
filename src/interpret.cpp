@@ -12,7 +12,7 @@ const Env &Interpreter::env() const {
 Safe Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
-    log_.print(i).print_nl();
+    log_.print(i);
     Super::visit(i);
   }
   return safe_;

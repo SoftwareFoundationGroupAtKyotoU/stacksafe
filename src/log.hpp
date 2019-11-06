@@ -7,7 +7,7 @@
 namespace llvm {
 class BasicBlock;
 class Function;
-class Value;
+class Instruction;
 class raw_fd_ostream;
 class raw_ostream;
 }  // namespace llvm
@@ -34,7 +34,7 @@ class Log {
  public:
   explicit Log(const llvm::Function &func);
   const Log &print(const std::string &s) const;
-  const Log &print(const llvm::Value &v) const;
+  const Log &print(const llvm::Instruction &i) const;
   const Log &print(const llvm::BasicBlock &b) const;
   const Log &print(const Symbol &key, const Domain &val) const;
   const Log &print(const Register &key, const Domain &val) const;

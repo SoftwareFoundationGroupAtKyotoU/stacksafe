@@ -37,9 +37,9 @@ const Log &Log::print(const std::string &s) const {
   }
   return *this;
 }
-const Log &Log::print(const llvm::Value &v) const {
+const Log &Log::print(const llvm::Instruction &i) const {
   if (os) {
-    *os << v;
+    endline(*os << i);
   }
   return *this;
 }
