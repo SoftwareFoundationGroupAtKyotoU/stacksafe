@@ -4,7 +4,7 @@
 
 namespace stacksafe {
 namespace {
-bool is_global(const llvm::Constant* c) {
+bool is_global(const llvm::Constant *c) {
   if (llvm::isa<llvm::GlobalValue>(c)) {
     return true;
   }
@@ -20,12 +20,12 @@ bool is_global(const llvm::Constant* c) {
 }
 }  // namespace
 
-Value::Value(const llvm::Value* v) : val_{v} {}
-const llvm::Value* Value::value() const {
+Value::Value(const llvm::Value *v) : val_{v} {}
+const llvm::Value *Value::value() const {
   return val_;
 }
 std::size_t Value::hash() const {
-  return std::hash<const llvm::Value*>{}(val_);
+  return std::hash<const llvm::Value *>{}(val_);
 }
 auto Value::kind() const -> Kind {
   const auto v = value();
@@ -49,6 +49,12 @@ auto Value::kind() const -> Kind {
   } else {
     return Kind::OTHER;
   }
+}
+bool operator<(const Value &lhs, const Value &rhs) {
+  return lhs.value() < rhs.value();
+}
+bool operator==(const Value &lhs, const Value &rhs) {
+  return lhs.value() == rhs.value();
 }
 
 }  // namespace stacksafe
