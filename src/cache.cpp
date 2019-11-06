@@ -3,6 +3,7 @@
 #include <set>
 #include <string_view>
 #include "domain.hpp"
+#include "json.hpp"
 #include "register.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"

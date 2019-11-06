@@ -42,15 +42,5 @@ std::string to_str(const Value &value) {
     return "nullptr";
   }
 }
-std::string get_operand(const Value &value) {
-  if (value) {
-    std::string buf;
-    llvm::raw_string_ostream stream{buf};
-    value.get()->printAsOperand(stream, false);
-    return stream.str();
-  } else {
-    return "nullptr";
-  }
-}
 
 }  // namespace stacksafe
