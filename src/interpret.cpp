@@ -4,6 +4,11 @@
 #include "utility.hpp"
 
 namespace stacksafe {
+namespace {
+bool is_void_func(const llvm::CallInst &i) {
+  return i.getFunctionType()->getReturnType()->isVoidTy();
+}
+}  // namespace
 
 Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, env_{m} {}
 const Env &Interpreter::env() const {
