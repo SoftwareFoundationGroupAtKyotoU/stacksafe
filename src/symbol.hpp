@@ -6,13 +6,12 @@
 
 namespace llvm {
 class AllocaInst;
-class Value;
 }  // namespace llvm
 
 namespace stacksafe {
 
 class Symbol : private Value {
-  explicit Symbol(const llvm::Value *v);
+  explicit Symbol(const Value &v);
 
  public:
   using Value::value, Value::hash;

@@ -3,16 +3,16 @@
 
 namespace stacksafe {
 
-Symbol::Symbol(const llvm::Value *v) : Value{v} {}
+Symbol::Symbol(const Value &v) : Value{v} {}
 bool Symbol::is_local() const {
   return value() != nullptr;
 }
 const Symbol &Symbol::get_global() {
-  static Symbol global{nullptr};
+  static Symbol global{Value{nullptr}};
   return global;
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
-  return Symbol{&v};
+  return Symbol{Value{&v}};
 }
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
