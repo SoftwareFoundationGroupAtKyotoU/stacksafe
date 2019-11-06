@@ -26,11 +26,6 @@ std::string to_str(const llvm::Value &value);
 std::string to_str(const Value &value);
 std::string get_operand(const Value &value);
 
-bool check_voidfunc(const llvm::Value &v);
-bool check_register(const llvm::Value &v);
-bool check_global(const llvm::Value &v);
-bool check_constant(const llvm::Value &v);
-
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_53770CF6_24DC_46BB_B928_E142E873335B
