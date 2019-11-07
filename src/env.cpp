@@ -39,6 +39,8 @@ const Domain &Env::lookup(const Value &key) const {
     case K::CONSTANT:
       return Domain::get_empty();
     case K::OTHER:
+      [[fallthrough]];
+    default:
       stacksafe_unreachable("unregistered register", key);
   }
 }
