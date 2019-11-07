@@ -221,20 +221,18 @@ const Domain &Interpreter::load(const Symbol &key) const {
   return env_.lookup(key);
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
-  const auto diff = val.minus(load(key));
   env_.insert(key, val);
   if (!key.is_local() && has_local(load(key))) {
     error();
   }
-  log_.print(key, diff);
+  log_.print(key, load(key), val);
 }
 const Domain &Interpreter::lookup(const Value &key) const {
   return env_.lookup(key);
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
-  auto diff = val.minus(lookup(key));
   env_.insert(Register::make(key), val);
-  log_.print(Register::make(key), diff);
+  log_.print(Register::make(key), lookup(key), val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   const auto single = Domain::get_singleton(sym);

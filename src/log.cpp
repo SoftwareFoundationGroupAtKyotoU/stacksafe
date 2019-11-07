@@ -2,6 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
+#include "domain.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
@@ -60,15 +61,19 @@ const Log &Log::print(const Domain &d) const {
   }
   return *this;
 }
-const Log &Log::print(const Symbol &key, const Domain &val) const {
+const Log &Log::print(const Symbol &key, const Domain &val,
+                      const Domain &add) const {
   if (os) {
-    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
+    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
+                << " += " << cache_.to_str(add));
   }
   return *this;
 }
-const Log &Log::print(const Register &key, const Domain &val) const {
+const Log &Log::print(const Register &key, const Domain &val,
+                      const Domain &add) const {
   if (os) {
-    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val));
+    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
+                << " += " << cache_.to_str(add));
   }
   return *this;
 }
