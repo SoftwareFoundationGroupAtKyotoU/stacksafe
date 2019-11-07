@@ -14,9 +14,10 @@ namespace stacksafe {
 
 class Abstract {
   Blocks blocks_;
-  std::string name_;
   Safe safe_;
+  std::string name_;
   double elapsed_;
+  std::size_t count_;
 
  public:
   explicit Abstract(const llvm::Function &f);

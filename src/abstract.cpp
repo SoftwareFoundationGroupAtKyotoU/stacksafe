@@ -7,7 +7,7 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
-    : blocks_{f}, name_{f.getName().str()} {}
+    : blocks_{f}, name_{f.getName().str()}, elapsed_{0.0}, count_{0} {}
 void Abstract::run(const llvm::Function &f) {
   using namespace std::chrono;
   auto start = high_resolution_clock::now();
@@ -15,11 +15,15 @@ void Abstract::run(const llvm::Function &f) {
   auto end = high_resolution_clock::now();
   duration<double> elapsed = end - start;
   elapsed_ = elapsed.count();
+  for (const auto &b : f) {
+    count_ += b.size();
+  }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   const auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe_ ? "SAFE" : "UNSAFE";
-  const auto msg = llvm::format(": %s %fs\n", name_.c_str(), elapsed_);
+  const auto msg =
+      llvm::format(": %s %lu %fs\n", name_.c_str(), count_, elapsed_);
   if (os.is_displayed()) {
     os.changeColor(color, true);
     os << prefix;
