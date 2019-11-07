@@ -1,13 +1,19 @@
 #include "abstract.hpp"
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
+#include <chrono>
 
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
     : blocks_{f}, name_{f.getName().str()} {}
 void Abstract::run(const llvm::Function &f) {
+  using namespace std::chrono;
+  auto start = high_resolution_clock::now();
   interpret(f.getEntryBlock());
+  auto end = high_resolution_clock::now();
+  duration<double> elapsed = end - start;
+  elapsed_ = elapsed.count();
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;

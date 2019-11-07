@@ -16,6 +16,7 @@ class Abstract {
   Blocks blocks_;
   std::string name_;
   Safe safe_;
+  double elapsed_;
 
  public:
   explicit Abstract(const llvm::Function &f);
