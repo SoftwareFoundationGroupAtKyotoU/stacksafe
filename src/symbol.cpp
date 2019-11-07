@@ -11,7 +11,7 @@ bool Symbol::is_local() const {
   return static_cast<bool>(value());
 }
 bool Symbol::is_arg() const {
-  return value().kind() == Value::Kind::ARGUMENT;
+  return is_local() && value().kind() == Value::Kind::ARGUMENT;
 }
 const Symbol &Symbol::get_global() {
   static Symbol global{Value{}};

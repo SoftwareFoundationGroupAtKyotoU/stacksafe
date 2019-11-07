@@ -4,6 +4,7 @@
 namespace stacksafe {
 namespace {
 bool is_global(const llvm::Constant *c) {
+  assert(c);
   if (llvm::isa<llvm::GlobalValue>(c)) {
     return true;
   }
@@ -18,6 +19,7 @@ bool is_global(const llvm::Constant *c) {
   return false;
 }
 bool is_register(const llvm::Instruction *i) {
+  assert(i);
   if (auto c = llvm::dyn_cast<llvm::CallInst>(i)) {
     return !c->getFunctionType()->getReturnType()->isVoidTy();
   } else if (i->isTerminator()) {
@@ -45,6 +47,7 @@ std::size_t Value::hash() const {
 }
 auto Value::kind() const -> Kind {
   const auto v = get();
+  assert(v);
   if (llvm::isa<llvm::Argument>(v)) {
     return Kind::ARGUMENT;
   } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
