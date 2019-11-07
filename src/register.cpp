@@ -5,7 +5,8 @@
 namespace stacksafe {
 
 Register::Register(const Value& v) : Value{v} {
-  assert(Value::kind() == Value::Kind::REGISTER);
+  assert(Value::kind() == Value::Kind::REGISTER ||
+         Value::kind() == Value::Kind::ARGUMENT);
 }
 Register Register::make(const llvm::Argument& a) {
   return Register{a};

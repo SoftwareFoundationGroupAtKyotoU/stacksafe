@@ -46,7 +46,7 @@ std::size_t Value::hash() const {
 auto Value::kind() const -> Kind {
   const auto v = get();
   if (llvm::isa<llvm::Argument>(v)) {
-    return Kind::REGISTER;
+    return Kind::ARGUMENT;
   } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
     return is_global(c) ? Kind::GLOBAL : Kind::CONSTANT;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
