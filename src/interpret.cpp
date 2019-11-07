@@ -258,5 +258,12 @@ void Interpreter::error() {
   log_.print("ERROR[GLOBAL]: ").print(load(Symbol::get_global()));
   safe_.unsafe();
 }
+void Interpreter::error(const Symbol &arg) {
+  log_.print("ERROR[ARGUMENT]: ")
+      .print(get_operand(arg.value()))
+      .print(": ")
+      .print(load(arg));
+  safe_.unsafe();
+}
 
 }  // namespace stacksafe

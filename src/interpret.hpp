@@ -62,6 +62,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void error(const llvm::ReturnInst &i);
   void error(const Params &params);
   void error();
+  void error(const Symbol &arg);
 };
 
 }  // namespace stacksafe
