@@ -28,6 +28,9 @@ const Env &Interpreter::env() const {
 Safe Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
+    if (!safe_) {
+      return safe_;
+    }
     log_.print(i);
     Super::visit(i);
   }
