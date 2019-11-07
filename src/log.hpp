@@ -27,9 +27,9 @@ class LogFile {
 };
 
 class Log {
-  LogFile file;
+  const Cache cache_;
+  const LogFile file;
   llvm::raw_ostream *os;
-  Cache cache_;
 
  public:
   explicit Log(const llvm::Function &func);
