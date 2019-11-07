@@ -30,6 +30,9 @@ llvm::raw_ostream &LogFile::get() const {
 
 Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
   STACKSAFE_DEBUG_LOG(os = &file.get());
+  if (os) {
+    *os << func;
+  }
 }
 const Log &Log::print(const std::string &s) const {
   if (os) {
