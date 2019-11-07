@@ -248,7 +248,7 @@ void Interpreter::error(const llvm::ReturnInst &i) {
   safe_.unsafe();
 }
 void Interpreter::error(const Params &params) {
-  log_.print("ERROR[CALL]: ");
+  log_.print("ERROR[CALL]:\n");
   for (const auto &arg : params) {
     log_.print("  ").print(get_operand(arg)).print(": ").print(lookup(arg));
   }
