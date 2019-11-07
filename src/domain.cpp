@@ -10,7 +10,12 @@ void Domain::merge(const Domain &that) {
   Super::insert(that.begin(), that.end());
 }
 bool Domain::includes(const Domain &that) const {
-  return std::includes(begin(), end(), that.begin(), that.end());
+  for (const auto &sym : that) {
+    if (Super::count(sym) == 0) {
+      return false;
+    }
+  }
+  return true;
 }
 Domain Domain::minus(const Domain &that) const {
   Domain ret;
