@@ -60,7 +60,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void insert(const llvm::Instruction &key, const Domain &val);
   void collect(const Symbol &sym, Domain &done) const;
   void error(const llvm::ReturnInst &i);
-  void error(const llvm::CallInst &i);
+  void error(const Params &params);
   void error();
 };
 

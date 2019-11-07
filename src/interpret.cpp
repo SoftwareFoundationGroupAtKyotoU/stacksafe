@@ -203,7 +203,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
     }
   }
   if (has_local(dom) && has_global(dom)) {
-    error(dst);
+    error(params);
   }
   auto src = Domain::get_global();
   src.merge(dom);
@@ -247,8 +247,11 @@ void Interpreter::error(const llvm::ReturnInst &i) {
   log_.print("ERROR[RETURN]: ").print(i);
   safe_.unsafe();
 }
-void Interpreter::error(const llvm::CallInst &i) {
-  log_.print("ERROR[CALL]: ").print(i);
+void Interpreter::error(const Params &params) {
+  log_.print("ERROR[CALL]: ");
+  for (const auto &arg : params) {
+    log_.print("  ").print(get_operand(arg)).print(": ").print(lookup(arg));
+  }
   safe_.unsafe();
 }
 void Interpreter::error() {
