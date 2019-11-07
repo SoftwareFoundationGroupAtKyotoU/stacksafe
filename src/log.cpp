@@ -96,20 +96,5 @@ const Log &Log::print_nl() const {
   }
   return *this;
 }
-void Log::error_global(const Domain &dom) const {
-  if (os) {
-    endline(*os << "ERROR[GLOBAL]: " << cache_.to_str(dom));
-  }
-}
-void Log::error_call(const Domain &v) const {
-  if (os) {
-    endline(*os << "ERROR[CALL]: " << cache_.to_str(v));
-  }
-}
-void Log::error_return(const Domain &v) const {
-  if (os) {
-    endline(*os << "ERROR[RETURN]: " << cache_.to_str(v));
-  }
-}
 
 }  // namespace stacksafe
