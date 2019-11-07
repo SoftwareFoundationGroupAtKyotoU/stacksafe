@@ -33,6 +33,8 @@ const Domain &Env::lookup(const Value &key) const {
   using K = Value::Kind;
   switch (key.kind()) {
     case K::REGISTER:
+      [[fallthrough]];
+    case K::ARGUMENT:
       return stack_.lookup(key);
     case K::GLOBAL:
       return Domain::get_global();
