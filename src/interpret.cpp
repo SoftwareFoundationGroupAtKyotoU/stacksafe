@@ -202,6 +202,9 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
       collect(sym, dom);
     }
   }
+  if (has_local(dom) && has_global(dom)) {
+    error(dst);
+  }
   auto src = Domain::get_global();
   src.merge(dom);
   for (const auto &sym : dom) {
@@ -209,9 +212,6 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   }
   if (!is_void_func(dst)) {
     insert(dst, src);
-  }
-  if (has_local(dom) && has_global(dom)) {
-    error(dst);
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
@@ -222,10 +222,10 @@ const Domain &Interpreter::load(const Symbol &key) const {
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
   env_.insert(key, val);
+  log_.print(key, load(key), val);
   if (!key.is_local() && has_local(load(key))) {
     error();
   }
-  log_.print(key, load(key), val);
 }
 const Domain &Interpreter::lookup(const Value &key) const {
   return env_.lookup(key);
