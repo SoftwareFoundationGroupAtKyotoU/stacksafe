@@ -226,6 +226,13 @@ void Interpreter::store(const Symbol &key, const Domain &val) {
   if (!key.is_local() && has_local(load(key))) {
     error();
   }
+  if (key.is_arg()) {
+    for (const auto &sym : val) {
+      if (sym.is_arg()) {
+        error(key);
+      }
+    }
+  }
 }
 const Domain &Interpreter::lookup(const Value &key) const {
   return env_.lookup(key);
