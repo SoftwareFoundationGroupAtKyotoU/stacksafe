@@ -17,6 +17,19 @@ bool is_global(const llvm::Constant *c) {
   }
   return false;
 }
+bool is_register(const llvm::Instruction *i) {
+  if (auto c = llvm::dyn_cast<llvm::CallInst>(i)) {
+    return !c->getFunctionType()->getReturnType()->isVoidTy();
+  } else if (i->isTerminator()) {
+    return false;
+  } else if (llvm::isa<llvm::StoreInst>(i)) {
+    return false;
+  } else if (llvm::isa<llvm::FenceInst>(i)) {
+    return false;
+  } else {
+    return true;
+  }
+}
 }  // namespace
 
 Value::Value() : val_{nullptr} {}
@@ -37,18 +50,7 @@ auto Value::kind() const -> Kind {
   } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
     return is_global(c) ? Kind::GLOBAL : Kind::CONSTANT;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
-    if (i->isTerminator()) {
-      return Kind::OTHER;
-    } else if (llvm::isa<llvm::StoreInst>(i)) {
-      return Kind::OTHER;
-    } else if (llvm::isa<llvm::FenceInst>(i)) {
-      return Kind::OTHER;
-    } else if (auto c = llvm::dyn_cast<llvm::CallInst>(i);
-               c && c->getFunctionType()->getReturnType()->isVoidTy()) {
-      return Kind::OTHER;
-    } else {
-      return Kind::REGISTER;
-    }
+    return is_register(i) ? Kind::REGISTER : Kind::OTHER;
   } else {
     return Kind::OTHER;
   }
