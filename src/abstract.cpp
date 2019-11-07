@@ -1,5 +1,6 @@
 #include "abstract.hpp"
 #include <llvm/IR/Function.h>
+#include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
 #include <chrono>
 
@@ -16,17 +17,17 @@ void Abstract::run(const llvm::Function &f) {
   elapsed_ = elapsed.count();
 }
 void Abstract::print(llvm::raw_ostream &os) const {
-  auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
-  auto prefix = safe_ ? "SAFE: " : "UNSAFE: ";
-  auto msg = prefix + name_ + "\n";
+  const auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
+  const auto prefix = safe_ ? "SAFE" : "UNSAFE";
+  const auto msg = llvm::format(": %s %fs\n", name_.c_str(), elapsed_);
   if (os.is_displayed()) {
     os.changeColor(color, true);
-    os << msg;
+    os << prefix;
     os.resetColor();
   } else {
-    os << msg;
+    os << prefix;
   }
-  os.flush();
+  (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
   if (!safe_) {
