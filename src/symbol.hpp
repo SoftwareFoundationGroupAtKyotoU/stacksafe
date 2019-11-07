@@ -6,6 +6,7 @@
 
 namespace llvm {
 class AllocaInst;
+class Argument;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -19,6 +20,7 @@ class Symbol : private Value {
   bool is_local() const;
   static const Symbol &get_global();
   static Symbol get_local(const llvm::AllocaInst &v);
+  static Symbol get_arg(const llvm::Argument &v);
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
 bool operator==(const Symbol &lhs, const Symbol &rhs);

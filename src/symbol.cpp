@@ -17,6 +17,9 @@ const Symbol &Symbol::get_global() {
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
   return Symbol{v};
 }
+Symbol Symbol::get_arg(const llvm::Argument &v) {
+  return Symbol{v};
+}
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
 }
