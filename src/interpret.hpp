@@ -2,7 +2,7 @@
 #define INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177
 
 #include <llvm/IR/InstVisitor.h>
-#include <set>
+#include <unordered_set>
 #include "env.hpp"
 #include "safe.hpp"
 
@@ -12,7 +12,7 @@ class Log;
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
-  using Params = std::set<Value>;
+  using Params = std::unordered_set<Value>;
   const Log &log_;
   Env env_;
   Safe safe_;
