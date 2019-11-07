@@ -1,6 +1,4 @@
 #include "domain.hpp"
-#include <algorithm>
-#include <iterator>
 #include "json.hpp"
 #include "utility.hpp"
 
@@ -19,8 +17,11 @@ bool Domain::includes(const Domain &that) const {
 }
 Domain Domain::minus(const Domain &that) const {
   Domain ret;
-  auto inserter = std::inserter(static_cast<Super &>(ret), ret.end());
-  std::set_difference(begin(), end(), that.begin(), that.end(), inserter);
+  for (const auto &sym : *this) {
+    if (that.Super::count(sym) == 0) {
+      ret.Super::insert(sym);
+    }
+  }
   return ret;
 }
 const Domain &Domain::get_empty() {
