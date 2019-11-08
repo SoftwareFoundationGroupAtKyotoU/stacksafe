@@ -13,7 +13,7 @@ void Abstract::run(const llvm::Function &f) {
   auto start = high_resolution_clock::now();
   interpret(f.getEntryBlock());
   auto end = high_resolution_clock::now();
-  duration<double> elapsed = end - start;
+  duration<double, std::milli> elapsed = end - start;
   elapsed_ = elapsed.count();
   for (const auto &b : f) {
     count_ += b.size();
@@ -23,7 +23,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
   const auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe_ ? "SAFE" : "UNSAFE";
   const auto msg =
-      llvm::format(": %s %lu %fs\n", name_.c_str(), count_, elapsed_);
+      llvm::format(": %s %lu %fms\n", name_.c_str(), count_, elapsed_);
   if (os.is_displayed()) {
     os.changeColor(color, true);
     os << prefix;
