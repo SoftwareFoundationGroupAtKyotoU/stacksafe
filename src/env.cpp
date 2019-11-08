@@ -10,9 +10,11 @@ Env::Env(const llvm::Function &f) {
   const auto &g = Domain::get_global();
   insert(Symbol::get_global(), g);
   for (const auto &a : f.args()) {
-    auto arg = Domain::get_singleton(Symbol::get_arg(a));
-    arg.merge(g);
-    insert(Register::make(a), arg);
+    auto arg = Symbol::get_arg(a);
+    auto dom = g;
+    dom.merge(Domain::get_singleton(arg));
+    insert(arg, dom);
+    insert(Register::make(a), dom);
   }
 }
 const Map &Env::heap() const {
