@@ -15,7 +15,7 @@ class Value {
   const llvm::Value *const val_;
 
  public:
-  enum Kind { REGISTER, ARGUMENT, GLOBAL, CONSTANT, OTHER };
+  enum class Kind { REGISTER, ARGUMENT, GLOBAL, CONSTANT, OTHER };
   Value();
   IMPLICIT Value(const llvm::Value &v);
   explicit operator bool() const;
