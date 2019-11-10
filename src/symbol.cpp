@@ -8,7 +8,7 @@ const Value &Symbol::value() const {
   return *this;
 }
 bool Symbol::is_local() const {
-  return static_cast<bool>(value());
+  return value().kind() == Value::Kind::REGISTER;
 }
 bool Symbol::is_arg() const {
   return is_local() && value().kind() == Value::Kind::ARGUMENT;
