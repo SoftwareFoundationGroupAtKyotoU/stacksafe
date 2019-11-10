@@ -47,8 +47,9 @@ std::size_t Value::hash() const {
 }
 auto Value::kind() const -> Kind {
   const auto v = get();
-  assert(v);
-  if (llvm::isa<llvm::Argument>(v)) {
+  if (!v) {
+    return Kind::CONSTANT;
+  } else if (llvm::isa<llvm::Argument>(v)) {
     return Kind::ARGUMENT;
   } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
     return is_global(c) ? Kind::GLOBAL : Kind::CONSTANT;
