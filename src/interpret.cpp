@@ -220,14 +220,12 @@ const Domain &Interpreter::load(const Symbol &key) const {
 void Interpreter::store(const Symbol &key, const Domain &val) {
   log_.print(key, load(key), val);
   env_.insert(key, val);
-  if (!key.is_local() && has_local(load(key))) {
-    error();
-  }
-  if (key.is_arg()) {
-    for (const auto &sym : val) {
-      if (sym.is_arg()) {
-        error(key);
-      }
+  if (has_local(val)) {
+    if (key.is_global()) {
+      error();
+    }
+    if (key.is_arg()) {
+      error(key);
     }
   }
 }
