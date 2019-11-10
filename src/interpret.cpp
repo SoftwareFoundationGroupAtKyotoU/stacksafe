@@ -206,7 +206,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
     error(params);
   }
   for (const auto &sym : dom) {
-    if (sym.is_local()) {
+    if (!sym.is_global()) {
       store(sym, dom);
     }
   }
