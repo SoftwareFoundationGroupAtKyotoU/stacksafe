@@ -7,6 +7,9 @@ Symbol::Symbol(const Value &v) : Value{v} {}
 const Value &Symbol::value() const {
   return *this;
 }
+bool Symbol::is_global() const {
+  return static_cast<bool>(value());
+}
 bool Symbol::is_local() const {
   return value().kind() == Value::Kind::REGISTER;
 }
