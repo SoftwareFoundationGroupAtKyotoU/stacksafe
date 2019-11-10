@@ -251,26 +251,34 @@ void Interpreter::collect(const Symbol &sym, Domain &done) const {
   }
 }
 void Interpreter::error(const llvm::ReturnInst &i) {
-  log_.print("ERROR[RETURN]: ").print(i);
-  safe_.unsafe();
+  if (safe_) {
+    log_.print("ERROR[RETURN]: ").print(i);
+    safe_.unsafe();
+  }
 }
 void Interpreter::error(const Params &params) {
-  log_.print("ERROR[CALL]:\n");
-  for (const auto &arg : params) {
-    log_.print("  ").print(get_operand(arg)).print(": ").print(lookup(arg));
+  if (safe_) {
+    log_.print("ERROR[CALL]:\n");
+    for (const auto &arg : params) {
+      log_.print("  ").print(get_operand(arg)).print(": ").print(lookup(arg));
+    }
+    safe_.unsafe();
   }
-  safe_.unsafe();
 }
 void Interpreter::error() {
-  log_.print("ERROR[GLOBAL]: ").print(load(Symbol::get_global()));
-  safe_.unsafe();
+  if (safe_) {
+    log_.print("ERROR[GLOBAL]: ").print(load(Symbol::get_global()));
+    safe_.unsafe();
+  }
 }
 void Interpreter::error(const Symbol &arg) {
-  log_.print("ERROR[ARGUMENT]: ")
-      .print(get_operand(arg.value()))
-      .print(": ")
-      .print(load(arg));
-  safe_.unsafe();
+  if (safe_) {
+    log_.print("ERROR[ARGUMENT]: ")
+        .print(get_operand(arg.value()))
+        .print(": ")
+        .print(load(arg));
+    safe_.unsafe();
+  }
 }
 
 }  // namespace stacksafe
