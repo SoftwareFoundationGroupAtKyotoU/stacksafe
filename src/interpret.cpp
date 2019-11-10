@@ -16,9 +16,6 @@ bool has_local(const Domain &dom) {
   }
   return false;
 }
-bool has_global(const Domain &dom) {
-  return dom.includes(Domain::get_global());
-}
 }  // namespace
 
 Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, env_{m} {}
