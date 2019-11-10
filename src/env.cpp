@@ -7,12 +7,10 @@
 namespace stacksafe {
 
 Env::Env(const llvm::Function &f) {
-  const auto &g = Domain::get_global();
-  insert(Symbol::get_global(), g);
+  insert(Symbol::get_global(), Domain::get_global());
   for (const auto &a : f.args()) {
-    auto arg = Symbol::get_arg(a);
-    auto dom = g;
-    dom.merge(Domain::get_singleton(arg));
+    const auto arg = Symbol::get_arg(a);
+    const auto dom = Domain::get_singleton(arg);
     insert(arg, dom);
     insert(Register::make(a), dom);
   }
