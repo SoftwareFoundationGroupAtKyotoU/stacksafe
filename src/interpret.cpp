@@ -196,22 +196,22 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
-  auto dom = Domain::get_empty();
+  auto dom = Domain::get_global();
   for (const auto &arg : params) {
     for (const auto &sym : lookup(arg)) {
       collect(sym, dom);
     }
   }
-  if (has_local(dom) && has_global(dom)) {
+  if (has_local(dom)) {
     error(params);
   }
-  auto src = Domain::get_global();
-  src.merge(dom);
   for (const auto &sym : dom) {
-    store(sym, src);
+    if (sym.is_local()) {
+      store(sym, dom);
+    }
   }
   if (!is_void_func(dst)) {
-    insert(dst, src);
+    insert(dst, dom);
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
