@@ -16,7 +16,6 @@ class Domain : private std::unordered_set<Symbol> {
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;
-  static Domain get_singleton(const Symbol &sym);
 };
 
 }  // namespace stacksafe

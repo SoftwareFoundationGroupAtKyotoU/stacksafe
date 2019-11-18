@@ -12,7 +12,8 @@ Env::Env(const llvm::Function &f) {
   insert(g, dom);
   for (const auto &a : f.args()) {
     const auto arg = Symbol::get_arg(a);
-    const auto dom = Domain::get_singleton(arg);
+    Domain dom;
+    dom.insert(arg);
     insert(arg, dom);
     insert(Register::make(a), dom);
   }

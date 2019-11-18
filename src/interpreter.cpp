@@ -163,7 +163,8 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
   Domain dom;
   const auto sym = Symbol::get_local(dst);
   store(sym, dom);
-  insert(dst, Domain::get_singleton(sym));
+  dom.insert(sym);
+  insert(dst, dom);
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   Domain dom;
@@ -239,9 +240,10 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   env_.insert(Register::make(key), val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
-  const auto single = Domain::get_singleton(sym);
-  if (!done.includes(single)) {
-    done.merge(single);
+  Domain dom;
+  dom.insert(sym);
+  if (!done.includes(dom)) {
+    done.merge(dom);
     for (const auto &next : load(sym)) {
       collect(next, done);
     }

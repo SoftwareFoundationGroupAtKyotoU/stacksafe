@@ -27,9 +27,4 @@ Domain Domain::minus(const Domain &that) const {
   }
   return ret;
 }
-Domain Domain::get_singleton(const Symbol &sym) {
-  Domain dom;
-  dom.insert(sym);
-  return dom;
-}
 }  // namespace stacksafe
