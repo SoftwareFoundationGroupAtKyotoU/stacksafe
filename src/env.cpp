@@ -35,23 +35,7 @@ Domain Env::lookup(const Symbol &key) const {
   return heap_.lookup(key.value());
 }
 Domain Env::lookup(const Value &key) const {
-  using K = Value::Kind;
-  Domain dom;
-  switch (key.kind()) {
-    case K::REGISTER:
-      [[fallthrough]];
-    case K::ARGUMENT:
-      return stack_.lookup(key);
-    case K::GLOBAL:
-      dom.insert(Symbol::get_global());
-      return dom;
-    case K::CONSTANT:
-      return dom;
-    case K::OTHER:
-      [[fallthrough]];
-    default:
-      stacksafe_unreachable("unregistered register", key);
-  }
+  return stack_.lookup(key);
 }
 void Env::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key.value(), val);
