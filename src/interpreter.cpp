@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include "error.hpp"
 #include "log.hpp"
 #include "register.hpp"
 #include "utility.hpp"
@@ -18,7 +19,8 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, env_{m} {}
+Interpreter::Interpreter(const Log &l, Error &error, const Env &m)
+    : log_{l}, error_{error}, env_{m} {}
 const Env &Interpreter::env() const {
   return env_;
 }

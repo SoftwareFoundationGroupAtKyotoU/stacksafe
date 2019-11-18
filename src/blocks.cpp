@@ -10,7 +10,7 @@ Blocks::Blocks(const llvm::Function &f, Error &error) : log_{f}, error_{error} {
   }
 }
 std::optional<Env> Blocks::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{log_, get(b)};
+  Interpreter i{log_, error_, get(b)};
   if (i.visit(b)) {
     return i.env();
   } else {

@@ -4,9 +4,9 @@
 #include <llvm/IR/InstVisitor.h>
 #include <unordered_set>
 #include "env.hpp"
-#include "error.hpp"
 
 namespace stacksafe {
+class Error;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
@@ -14,11 +14,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   using Params = std::unordered_set<Value>;
   const Log &log_;
+  Error &error_;
   Env env_;
-  Error error_;
 
  public:
-  explicit Interpreter(const Log &l, const Env &m);
+  explicit Interpreter(const Log &l, Error &error, const Env &m);
   const Env &env() const;
   bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
