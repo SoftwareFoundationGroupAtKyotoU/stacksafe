@@ -1,4 +1,5 @@
 #include "cache.hpp"
+#include <llvm/IR/Function.h>
 #include <cassert>
 #include <optional>
 #include <set>
@@ -35,9 +36,21 @@ std::optional<int> to_int(const Value& v) {
 }
 }  // namespace
 
-Cache::Cache() : cache_{std::make_unique<Super>()} {
+Cache::Cache(const llvm::Function& f) : cache_{std::make_unique<Super>()} {
   assert(cache_ && "failed cache init");
-  cache_->try_emplace(Value{}, -1);
+  int num = -1;
+  cache_->try_emplace(Value{}, num++);
+  for (const auto& a : f.args()) {
+    cache_->try_emplace(a, num++);
+  }
+  for (const auto& b : f) {
+    ++num;
+    for (const auto& i : b) {
+      if (is_register(i)) {
+        cache_->try_emplace(i, num++);
+      }
+    }
+  }
 }
 std::string Cache::to_str(const Symbol& reg) const {
   static const std::string prefix{"&"};

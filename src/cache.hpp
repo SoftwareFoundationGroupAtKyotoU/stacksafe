@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include "value.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 class Domain;
 class Register;
@@ -16,7 +20,7 @@ class Cache {
   std::unique_ptr<Super> cache_;
 
  public:
-  Cache();
+  explicit Cache(const llvm::Function& f);
   std::string to_str(const Symbol& reg) const;
   std::string to_str(const Register& reg) const;
   std::string to_str(const Domain& dom) const;

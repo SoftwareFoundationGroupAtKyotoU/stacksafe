@@ -29,7 +29,8 @@ llvm::raw_ostream &LogFile::get() const {
   return file ? *file : llvm::errs();
 }
 
-Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
+Log::Log(const llvm::Function &func)
+    : cache_{func}, file{logfilename(func)}, os{nullptr} {
   STACKSAFE_DEBUG_LOG(os = &file.get());
   if (os) {
     *os << func;
