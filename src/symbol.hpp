@@ -23,7 +23,6 @@ class Symbol : private Value {
   static Symbol get_arg(const llvm::Argument &v);
 };
 bool operator<(const Symbol &lhs, const Symbol &rhs);
-bool operator==(const Symbol &lhs, const Symbol &rhs);
 
 }  // namespace stacksafe
 

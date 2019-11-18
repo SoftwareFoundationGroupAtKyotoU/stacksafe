@@ -30,8 +30,5 @@ Symbol Symbol::get_arg(const llvm::Argument &v) {
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
 }
-bool operator==(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.value() == rhs.value();
-}
 
 }  // namespace stacksafe
