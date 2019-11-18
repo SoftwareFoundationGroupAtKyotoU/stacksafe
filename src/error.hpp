@@ -12,6 +12,7 @@ class Error {
 
  public:
   Error();
+  bool is_error() const;
 
  private:
   static Base shift(Kind k);
