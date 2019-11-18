@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_B43C0EC1_4338_47A3_AD6C_40B0DEF734B0
 
 #include <unordered_set>
-#include "json_fwd.hpp"
 #include "symbol.hpp"
 
 namespace stacksafe {
@@ -20,7 +19,6 @@ class Domain : private std::unordered_set<Symbol> {
   static Domain get_global();
   static Domain get_singleton(const Symbol &sym);
 };
-void to_json(Json &j, const Domain &x);
 
 }  // namespace stacksafe
 

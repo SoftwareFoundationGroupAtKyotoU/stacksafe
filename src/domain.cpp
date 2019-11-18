@@ -1,6 +1,4 @@
 #include "domain.hpp"
-#include "json.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -37,17 +35,4 @@ Domain Domain::get_singleton(const Symbol &sym) {
   dom.Super::insert(sym);
   return dom;
 }
-void to_json(Json &j, const Domain &x) {
-  static const std::string global{"@"};
-  Json::array_t arr;
-  for (const auto &e : x) {
-    if (e.is_local()) {
-      arr.push_back(get_operand(e.value()));
-    } else {
-      arr.push_back(global);
-    }
-  }
-  j = arr;
-}
-
 }  // namespace stacksafe

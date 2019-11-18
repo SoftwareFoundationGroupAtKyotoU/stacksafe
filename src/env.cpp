@@ -1,6 +1,5 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include "json.hpp"
 #include "register.hpp"
 #include "utility.hpp"
 
@@ -53,10 +52,6 @@ void Env::insert(const Symbol &key, const Domain &val) {
 }
 void Env::insert(const Register &key, const Domain &val) {
   stack_.insert(key.value(), val);
-}
-void to_json(Json &j, const Env &x) {
-  j["heap"] = x.heap();
-  j["stack"] = x.stack();
 }
 
 }  // namespace stacksafe
