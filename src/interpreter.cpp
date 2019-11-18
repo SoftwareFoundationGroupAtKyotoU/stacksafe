@@ -223,7 +223,7 @@ Domain Interpreter::heap_lookup(const Symbol &key) const {
   return env_.heap().lookup(key.value());
 }
 void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
-  log_.print(key, heap_lookup(key), val);
+  log_.print_heap(key.value(), heap_lookup(key), val);
   env_.heap().insert(key.value(), val);
   diff_.heap().insert(key.value(), val);
   if (has_local(val)) {
@@ -256,7 +256,7 @@ Domain Interpreter::stack_lookup(const Value &key) const {
 void Interpreter::stack_insert(const llvm::Instruction &key,
                                const Domain &val) {
   auto reg = Register::make(key);
-  log_.print(reg, stack_lookup(key), val);
+  log_.print_stack(reg.value(), stack_lookup(key), val);
   env_.stack().insert(reg.value(), val);
   diff_.stack().insert(reg.value(), val);
 }
