@@ -17,6 +17,7 @@ class MapRef {
  public:
   const Map& get() const;
 };
+bool operator==(const MapRef& lhs, const MapRef& rhs);
 
 using MapPtr = std::unique_ptr<Map>;
 
