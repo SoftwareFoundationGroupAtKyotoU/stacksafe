@@ -22,6 +22,7 @@ std::string get_operand(const Value& v);
 bool is_argument(const llvm::Value& v);
 bool is_global(const llvm::Constant& c);
 bool is_register(const llvm::Instruction& i);
+bool is_register(const llvm::Value& v);
 
 }  // namespace stacksafe
 
