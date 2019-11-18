@@ -22,6 +22,7 @@ target_sources(${target} PRIVATE
   json.cpp
   log.cpp
   map.cpp
+  pool.cpp
   symbol.cpp
   utility.cpp
   value.cpp
