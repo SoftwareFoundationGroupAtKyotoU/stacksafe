@@ -24,6 +24,9 @@ Interpreter::Interpreter(const Log &l, Error &error, const EnvSlice &m)
 const EnvSlice &Interpreter::env() const {
   return env_;
 }
+const EnvSlice &Interpreter::diff() const {
+  return diff_;
+}
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
