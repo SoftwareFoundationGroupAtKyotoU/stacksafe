@@ -90,15 +90,9 @@ std::string Cache::to_str(int num) {
   }
 }
 int Cache::lookup(const Value& val) const {
-  if (auto it = cache_->find(val); it != cache_->end()) {
-    return it->second;
-  } else {
-    assert(val && "null is always in cache");
-    auto num = to_int(val);
-    assert(num && "not a register");
-    cache_->try_emplace(val, *num);
-    return *num;
-  }
+  auto it = cache_->find(val);
+  assert(it != cache_->end() && "unregistered value");
+  return it->second;
 }
 
 }  // namespace stacksafe
