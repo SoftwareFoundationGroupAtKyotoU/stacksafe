@@ -32,7 +32,6 @@ class Env {
  public:
   Env() = default;
   Env(MapRef heap, MapRef stack);
-  void merge(const FlatEnv &env);
   void merge(const Env &env);
   FlatEnv concat() const;
 };
