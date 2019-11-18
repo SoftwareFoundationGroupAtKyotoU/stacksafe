@@ -159,21 +159,21 @@ void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
   Domain dom;
   dom.merge(stack_lookup(lhs));
   dom.merge(stack_lookup(rhs));
-  insert(dst, dom);
+  stack_insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   Domain dom;
   const auto sym = Symbol::get_local(dst);
   heap_insert(sym, dom);
   dom.insert(sym);
-  insert(dst, dom);
+  stack_insert(dst, dom);
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   Domain dom;
   for (const auto &sym : stack_lookup(src)) {
     dom.merge(heap_lookup(sym));
   }
-  insert(dst, dom);
+  stack_insert(dst, dom);
 }
 void Interpreter::store(const Value &src, const Value &dst) {
   const auto val = stack_lookup(src);
@@ -187,14 +187,14 @@ void Interpreter::cmpxchg(const llvm::Instruction &dst, const Value &ptr,
   store(val, ptr);
 }
 void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
-  insert(dst, stack_lookup(src));
+  stack_insert(dst, stack_lookup(src));
 }
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   Domain dom;
   for (const auto &arg : params) {
     dom.merge(stack_lookup(arg));
   }
-  insert(dst, dom);
+  stack_insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   Domain dom;
@@ -213,11 +213,11 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
     }
   }
   if (!is_void_func(dst)) {
-    insert(dst, dom);
+    stack_insert(dst, dom);
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
-  insert(dst, Domain{});
+  stack_insert(dst, Domain{});
 }
 Domain Interpreter::heap_lookup(const Symbol &key) const {
   return env_.heap().lookup(key.value());
@@ -253,7 +253,8 @@ Domain Interpreter::stack_lookup(const Value &key) const {
     return env_.stack().lookup(key);
   }
 }
-void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
+void Interpreter::stack_insert(const llvm::Instruction &key,
+                               const Domain &val) {
   auto reg = Register::make(key);
   log_.print(reg, stack_lookup(key), val);
   env_.stack().insert(reg.value(), val);
