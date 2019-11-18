@@ -18,6 +18,8 @@ EnvSlice::EnvSlice(const llvm::Function &f) {
     insert(Register::make(a), dom);
   }
 }
+EnvSlice::EnvSlice(const Map &heap, const Map &stack)
+    : heap_{heap}, stack_{stack} {}
 const Map &EnvSlice::heap() const {
   return heap_;
 }

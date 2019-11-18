@@ -18,6 +18,7 @@ class EnvSlice {
  public:
   EnvSlice() = default;
   explicit EnvSlice(const llvm::Function &f);
+  EnvSlice(const Map &heap, const Map &stack);
   const Map &heap() const;
   const Map &stack() const;
   bool includes(const EnvSlice &that) const;
