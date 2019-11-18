@@ -16,9 +16,9 @@ class Domain : private std::unordered_set<Symbol> {
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;
-  static const Domain &get_empty();
-  static const Domain &get_global();
-  static const Domain get_singleton(const Symbol &sym);
+  static Domain get_empty();
+  static Domain get_global();
+  static Domain get_singleton(const Symbol &sym);
 };
 void to_json(Json &j, const Domain &x);
 

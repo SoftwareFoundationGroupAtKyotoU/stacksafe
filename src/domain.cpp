@@ -24,15 +24,15 @@ Domain Domain::minus(const Domain &that) const {
   }
   return ret;
 }
-const Domain &Domain::get_empty() {
+Domain Domain::get_empty() {
   static const Domain dom{};
   return dom;
 }
-const Domain &Domain::get_global() {
+Domain Domain::get_global() {
   static const auto dom = get_singleton(Symbol::get_global());
   return dom;
 }
-const Domain Domain::get_singleton(const Symbol &sym) {
+Domain Domain::get_singleton(const Symbol &sym) {
   auto dom = get_empty();
   dom.Super::insert(sym);
   return dom;
