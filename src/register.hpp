@@ -14,7 +14,6 @@ class Register : private Value {
   explicit Register(const Value& v);
 
  public:
-  static Register make(const llvm::Instruction& i);
   const Value& value() const;
 };
 
