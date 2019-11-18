@@ -15,12 +15,12 @@ class Error;
 
 class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   using Super = std::unordered_map<const llvm::BasicBlock *, Env>;
-  const Log log_;
+  const Log &log_;
   Error &error_;
 
  public:
   using Super::begin, Super::end;
-  Blocks(const llvm::Function &f, Error &error);
+  Blocks(const llvm::Function &f, const Log &log, Error &error);
   Env interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Env &next);
 

@@ -25,7 +25,10 @@ class Stopwatch {
 }  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
-    : blocks_{f, error_}, name_{f.getName().str()}, elapsed_{0.0} {}
+    : log_{f},
+      blocks_{f, log_, error_},
+      name_{f.getName().str()},
+      elapsed_{0.0} {}
 void Abstract::run(const llvm::Function &f) {
   using namespace std::chrono;
   {

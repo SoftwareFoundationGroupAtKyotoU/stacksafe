@@ -13,6 +13,7 @@ class raw_ostream;
 namespace stacksafe {
 
 class Abstract {
+  const Log log_;
   Error error_;
   Blocks blocks_;
   std::string name_;
