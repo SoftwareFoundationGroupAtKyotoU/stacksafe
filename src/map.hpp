@@ -16,6 +16,7 @@ class Map : private std::unordered_map<Value, Domain> {
   Domain lookup(const Value &key) const;
   void merge(const Map &that);
   bool includes(const Map &that) const;
+  static std::size_t hash(const Map &m);
 };
 
 }  // namespace stacksafe
