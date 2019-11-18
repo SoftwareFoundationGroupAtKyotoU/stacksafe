@@ -16,11 +16,9 @@ MapRef MapPool::add(const Map& m) {
   return ref;
 }
 Env MapPool::add(const FlatEnv& e) {
-  Env ret;
   auto heap = add(e.heap());
   auto stack = add(e.stack());
-  ret.merge(FlatEnv{heap.get(), stack.get()});
-  return ret;
+  return Env{heap, stack};
 }
 
 }  // namespace stacksafe

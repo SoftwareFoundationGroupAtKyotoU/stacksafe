@@ -1,5 +1,6 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
+#include "pool.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -39,6 +40,7 @@ void FlatEnv::merge(const FlatEnv &that) {
   stack_.merge(that.stack_);
 }
 
+Env::Env(MapRef heap, MapRef stack) : heap_{heap.get()}, stack_{stack.get()} {}
 void Env::merge(const FlatEnv &env) {
   heap_.insert(env.heap());
   stack_.insert(env.stack());

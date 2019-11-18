@@ -9,6 +9,7 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
+class MapRef;
 
 class FlatEnv {
   Map heap_, stack_;
@@ -29,6 +30,8 @@ class Env {
   std::unordered_set<Map> heap_, stack_;
 
  public:
+  Env() = default;
+  Env(MapRef heap, MapRef stack);
   void merge(const FlatEnv &env);
   void merge(const Env &env);
   FlatEnv concat() const;
