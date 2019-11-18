@@ -14,6 +14,7 @@ class Domain : private std::unordered_set<Symbol> {
   Domain() = default;
   void insert(const Symbol &sym);
   void merge(const Domain &that);
+  bool element(const Symbol &sym) const;
   bool includes(const Domain &that) const;
   Domain minus(const Domain &that) const;
 };
