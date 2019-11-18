@@ -28,10 +28,10 @@ void Env::merge(const Env &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-const Domain &Env::lookup(const Symbol &key) const {
+Domain Env::lookup(const Symbol &key) const {
   return heap_.lookup(key.value());
 }
-const Domain &Env::lookup(const Value &key) const {
+Domain Env::lookup(const Value &key) const {
   using K = Value::Kind;
   switch (key.kind()) {
     case K::REGISTER:
