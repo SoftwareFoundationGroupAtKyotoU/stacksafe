@@ -8,11 +8,18 @@
   llvm_unreachable(                     \
       (std::string{"UNREACHABLE: " msg ": "} + to_str(val)).c_str())
 
+namespace llvm {
+class Constant;
+class Instruction;
+}  // namespace llvm
+
 namespace stacksafe {
 class Value;
 
 std::string to_str(const Value& v);
 std::string get_operand(const Value& v);
+bool is_global(const llvm::Constant* c);
+bool is_register(const llvm::Instruction* i);
 
 }  // namespace stacksafe
 
