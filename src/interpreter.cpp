@@ -19,8 +19,8 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, Error &error, const FlatEnv &m)
-    : log_{l}, error_{error}, env_{m} {}
+Interpreter::Interpreter(const Log &l, Error &error, FlatEnv &e)
+    : log_{l}, error_{error}, env_{e} {}
 const FlatEnv &Interpreter::env() const {
   return env_;
 }

@@ -15,10 +15,10 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Params = std::unordered_set<Value>;
   const Log &log_;
   Error &error_;
-  FlatEnv env_, diff_;
+  FlatEnv &env_, diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, const FlatEnv &m);
+  explicit Interpreter(const Log &l, Error &error, FlatEnv &e);
   const FlatEnv &env() const;
   const FlatEnv &diff() const;
   void visit(const llvm::BasicBlock &b);

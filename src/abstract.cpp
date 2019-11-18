@@ -54,7 +54,6 @@ void Abstract::print(llvm::raw_ostream &os) const {
 void Abstract::interpret(const llvm::BasicBlock &b, FlatEnv prev) {
   Interpreter i{log_, error_, prev};
   i.visit(b);
-  prev = i.env();
   auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
