@@ -20,6 +20,9 @@ std::string get_operand(const Value& v) {
   v.get()->printAsOperand(stream, false);
   return stream.str();
 }
+bool is_argument(const llvm::Value& v) {
+  return llvm::isa<llvm::Argument>(v);
+}
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
     return true;

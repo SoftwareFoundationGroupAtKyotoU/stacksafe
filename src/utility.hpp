@@ -11,6 +11,7 @@
 namespace llvm {
 class Constant;
 class Instruction;
+class Value;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -18,6 +19,7 @@ class Value;
 
 std::string to_str(const Value& v);
 std::string get_operand(const Value& v);
+bool is_argument(const llvm::Value& v);
 bool is_global(const llvm::Constant& c);
 bool is_register(const llvm::Instruction& i);
 
