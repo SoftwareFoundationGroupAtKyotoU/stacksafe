@@ -31,7 +31,7 @@ void Abstract::run(const llvm::Function &f) {
   using namespace std::chrono;
   {
     Stopwatch<std::milli> watch{elapsed_};
-    interpret(f.getEntryBlock());
+    interpret(f.getEntryBlock(), EnvSlice{f});
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
@@ -48,23 +48,25 @@ void Abstract::print(llvm::raw_ostream &os) const {
   }
   (os << msg).flush();
 }
-void Abstract::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{log_, error_, blocks_.get(b).concat()};
+void Abstract::interpret(const llvm::BasicBlock &b, EnvSlice prev) {
+  Interpreter i{log_, error_, prev};
   i.visit(b);
+  prev = i.env();
   auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
     if (error_.is_error()) {
       return;
     }
-    const auto &next = *t->getSuccessor(j);
-    auto slice = blocks_.get(next).concat();
-    if (slice.includes(i.env())) {
+    const auto &succ = *t->getSuccessor(j);
+    auto next = blocks_.get(succ).concat();
+    if (next.includes(prev)) {
       continue;
     }
-    blocks_.get(next).merge(blocks_.get(b));
-    blocks_.get(next).merge(Env{i.diff()});
-    interpret(next);
+    blocks_.get(succ).merge(blocks_.get(b));
+    blocks_.get(succ).merge(Env{i.diff()});
+    next.merge(prev);
+    interpret(succ, std::move(next));
   }
 }
 
