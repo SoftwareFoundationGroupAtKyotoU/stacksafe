@@ -46,7 +46,6 @@ void FlatEnv::insert(const Register &key, const Domain &val) {
   stack_.insert(key.value(), val);
 }
 
-Env::Env(const FlatEnv &env) : heap_{env.heap()}, stack_{env.stack()} {}
 void Env::merge(const FlatEnv &env) {
   heap_.insert(env.heap());
   stack_.insert(env.stack());

@@ -32,8 +32,6 @@ class Env {
   std::unordered_set<Map> heap_, stack_;
 
  public:
-  Env() = default;
-  explicit Env(const FlatEnv &env);
   void merge(const FlatEnv &env);
   void merge(const Env &env);
   FlatEnv concat() const;
