@@ -13,6 +13,10 @@ class Error {
  public:
   Error();
   bool is_error() const;
+  void error_return();
+  void error_call();
+  void error_global();
+  void error_argument();
 
  private:
   static Base shift(Kind k);
