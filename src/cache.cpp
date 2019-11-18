@@ -1,12 +1,7 @@
 #include "cache.hpp"
 #include <llvm/IR/Function.h>
-#include <cassert>
-#include <optional>
 #include <set>
-#include <string_view>
 #include "domain.hpp"
-#include "register.hpp"
-#include "symbol.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -29,22 +24,14 @@ Cache::Cache(const llvm::Function& f) {
 std::string Cache::to_str(const Value& val) const {
   return to_str(lookup(val));
 }
-std::string Cache::to_str(const Symbol& reg) const {
-  static const std::string prefix{"&"};
-  return prefix + to_str(lookup(reg.value()));
-}
-std::string Cache::to_str(const Register& reg) const {
-  static const std::string prefix{"%"};
-  return prefix + to_str(lookup(reg.value()));
-}
 std::string Cache::to_str(const Domain& dom) const {
   static const std::string prefix{"&"};
   static const std::string comma{", "};
   static const std::string begin{"["};
   static const std::string end{"]"};
   std::set<int> nums;
-  for (const auto& reg : dom) {
-    nums.insert(lookup(reg.value()));
+  for (const auto& sym : dom) {
+    nums.insert(lookup(sym.value()));
   }
   std::string ret;
   bool first = true;
