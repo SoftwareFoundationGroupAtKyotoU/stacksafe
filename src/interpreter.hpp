@@ -5,7 +5,6 @@
 #include <unordered_set>
 #include "env.hpp"
 #include "error.hpp"
-#include "safe.hpp"
 
 namespace stacksafe {
 class Log;
@@ -16,13 +15,12 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Params = std::unordered_set<Value>;
   const Log &log_;
   Env env_;
-  Safe safe_;
   Error error_;
 
  public:
   explicit Interpreter(const Log &l, const Env &m);
   const Env &env() const;
-  Safe visit(const llvm::BasicBlock &b);
+  bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
