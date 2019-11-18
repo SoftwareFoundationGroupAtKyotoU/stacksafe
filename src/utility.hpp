@@ -12,7 +12,6 @@ namespace stacksafe {
 class Value;
 
 void unsupported_instruction(const llvm::Instruction& i);
-bool is_argument(const Value& v);
 bool is_global(const llvm::Constant& c);
 bool is_register(const llvm::Instruction& i);
 bool is_register(const Value& v);

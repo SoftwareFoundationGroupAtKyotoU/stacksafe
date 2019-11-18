@@ -9,9 +9,6 @@ void unsupported_instruction(const llvm::Instruction& i) {
   static const auto msg = "FATAL ERROR: unsupported instruction: ";
   (llvm::errs() << msg << i << "\n").flush();
 }
-bool is_argument(const Value& v) {
-  return llvm::isa_and_nonnull<llvm::Argument>(v.get());
-}
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
     return true;
