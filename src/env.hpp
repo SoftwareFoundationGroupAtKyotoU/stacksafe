@@ -27,7 +27,7 @@ class FlatEnv {
 };
 
 class Env {
-  std::unordered_set<Map> heap_, stack_;
+  std::unordered_set<MapRef> heap_, stack_;
 
  public:
   Env() = default;
