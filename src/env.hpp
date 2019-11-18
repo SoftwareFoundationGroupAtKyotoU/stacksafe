@@ -19,7 +19,9 @@ class FlatEnv {
   explicit FlatEnv(const llvm::Function &f);
   FlatEnv(const Map &heap, const Map &stack);
   const Map &heap() const;
+  Map &heap();
   const Map &stack() const;
+  Map &stack();
   bool includes(const FlatEnv &that) const;
   void merge(const FlatEnv &that);
   Domain lookup(const Symbol &key) const;

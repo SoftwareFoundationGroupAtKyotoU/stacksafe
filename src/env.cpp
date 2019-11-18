@@ -23,7 +23,13 @@ FlatEnv::FlatEnv(const Map &heap, const Map &stack)
 const Map &FlatEnv::heap() const {
   return heap_;
 }
+Map &FlatEnv::heap() {
+  return heap_;
+}
 const Map &FlatEnv::stack() const {
+  return stack_;
+}
+Map &FlatEnv::stack() {
   return stack_;
 }
 bool FlatEnv::includes(const FlatEnv &that) const {
