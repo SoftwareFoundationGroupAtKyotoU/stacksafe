@@ -26,7 +26,7 @@ class Abstract {
   void print(llvm::raw_ostream &os) const;
 
  private:
-  void interpret(const llvm::BasicBlock &b);
+  void interpret(const llvm::BasicBlock &b, FlatEnv prev);
 };
 
 }  // namespace stacksafe

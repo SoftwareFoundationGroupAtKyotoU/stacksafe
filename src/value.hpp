@@ -19,7 +19,7 @@ class Value {
   IMPLICIT Value(const llvm::Value &v);
   explicit operator bool() const;
   const llvm::Value *get() const;
-  std::size_t hash() const;
+  static std::size_t hash(const Value &v);
 };
 bool operator<(const Value &lhs, const Value &rhs);
 bool operator==(const Value &lhs, const Value &rhs);

@@ -10,8 +10,8 @@ Value::operator bool() const {
 const llvm::Value *Value::get() const {
   return val_;
 }
-std::size_t Value::hash() const {
-  return std::hash<const llvm::Value *>{}(val_);
+std::size_t Value::hash(const Value &v) {
+  return std::hash<const llvm::Value *>{}(v.val_);
 }
 bool operator<(const Value &lhs, const Value &rhs) {
   return lhs.get() < rhs.get();
@@ -24,6 +24,6 @@ bool operator==(const Value &lhs, const Value &rhs) {
 
 namespace std {
 size_t hash<stacksafe::Value>::operator()(const stacksafe::Value &val) const {
-  return val.hash();
+  return stacksafe::Value::hash(val);
 }
 }  // namespace std

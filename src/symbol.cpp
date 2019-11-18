@@ -9,17 +9,21 @@ const Value &Symbol::value() const {
   return *this;
 }
 bool Symbol::is_global() const {
-  return !value() || is_constant(value());
+  auto v = value().get();
+  return !v || llvm::isa<llvm::Constant>(v);
 }
 bool Symbol::is_local() const {
-  return is_register(value());
+  if (auto i = llvm::dyn_cast_or_null<llvm::Instruction>(value().get())) {
+    return is_register(*i);
+  }
+  return false;
 }
 bool Symbol::is_arg() const {
-  return is_argument(value());
+  auto v = value().get();
+  return v && llvm::isa<llvm::Argument>(v);
 }
-const Symbol &Symbol::get_global() {
-  static Symbol global{Value{}};
-  return global;
+Symbol Symbol::get_global() {
+  return Symbol{Value{}};
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
   return Symbol{v};
@@ -30,14 +34,5 @@ Symbol Symbol::get_arg(const llvm::Argument &v) {
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
 }
-bool operator==(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.value() == rhs.value();
-}
 
 }  // namespace stacksafe
-
-namespace std {
-size_t hash<stacksafe::Symbol>::operator()(const stacksafe::Symbol &sym) const {
-  return sym.hash();
-}
-}  // namespace std

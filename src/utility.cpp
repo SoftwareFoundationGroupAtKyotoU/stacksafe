@@ -9,12 +9,6 @@ void unsupported_instruction(const llvm::Instruction& i) {
   static const auto msg = "FATAL ERROR: unsupported instruction: ";
   (llvm::errs() << msg << i << "\n").flush();
 }
-bool is_argument(const Value& v) {
-  return llvm::isa_and_nonnull<llvm::Argument>(v.get());
-}
-bool is_constant(const Value& v) {
-  return llvm::isa_and_nonnull<llvm::Constant>(v.get());
-}
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
     return true;
@@ -41,12 +35,6 @@ bool is_register(const llvm::Instruction& i) {
   } else {
     return true;
   }
-}
-bool is_register(const Value& v) {
-  if (auto i = llvm::dyn_cast_or_null<llvm::Instruction>(v.get())) {
-    return is_register(*i);
-  }
-  return false;
 }
 
 }  // namespace stacksafe

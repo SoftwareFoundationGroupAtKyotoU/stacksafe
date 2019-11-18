@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
+#include <unordered_set>
 #include "map.hpp"
 
 namespace llvm {
@@ -8,22 +9,29 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Register;
 
-class Env {
+class FlatEnv {
   Map heap_, stack_;
 
  public:
-  Env() = default;
-  explicit Env(const llvm::Function &f);
+  FlatEnv() = default;
+  explicit FlatEnv(const llvm::Function &f);
+  FlatEnv(const Map &heap, const Map &stack);
   const Map &heap() const;
+  Map &heap();
   const Map &stack() const;
-  bool includes(const Env &that) const;
-  void merge(const Env &that);
-  Domain lookup(const Symbol &key) const;
-  Domain lookup(const Value &key) const;
-  void insert(const Symbol &key, const Domain &val);
-  void insert(const Register &key, const Domain &val);
+  Map &stack();
+  bool includes(const FlatEnv &that) const;
+  void merge(const FlatEnv &that);
+};
+
+class Env {
+  std::unordered_set<Map> heap_, stack_;
+
+ public:
+  void merge(const FlatEnv &env);
+  void merge(const Env &env);
+  FlatEnv concat() const;
 };
 
 }  // namespace stacksafe

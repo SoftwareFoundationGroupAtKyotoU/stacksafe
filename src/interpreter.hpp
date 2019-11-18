@@ -15,11 +15,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Params = std::unordered_set<Value>;
   const Log &log_;
   Error &error_;
-  Env env_;
+  FlatEnv &env_, diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, const Env &m);
-  const Env &env() const;
+  explicit Interpreter(const Log &l, Error &error, FlatEnv &e);
+  const FlatEnv &diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
@@ -54,10 +54,10 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void constant(const llvm::Instruction &dst);
 
  private:
-  Domain load(const Symbol &key) const;
-  void store(const Symbol &key, const Domain &val);
-  Domain lookup(const Value &key) const;
-  void insert(const llvm::Instruction &key, const Domain &val);
+  Domain heap_lookup(const Symbol &key) const;
+  Domain stack_lookup(const Value &key) const;
+  void heap_insert(const Symbol &key, const Domain &val);
+  void stack_insert(const llvm::Instruction &key, const Domain &val);
   void collect(const Symbol &sym, Domain &done) const;
 };
 

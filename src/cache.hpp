@@ -12,16 +12,13 @@ class Function;
 
 namespace stacksafe {
 class Domain;
-class Register;
-class Symbol;
 
 class Cache : private std::unordered_map<Value, int> {
   using Super = std::unordered_map<Value, int>;
 
  public:
   explicit Cache(const llvm::Function& f);
-  std::string to_str(const Symbol& reg) const;
-  std::string to_str(const Register& reg) const;
+  std::string to_str(const Value& val) const;
   std::string to_str(const Domain& dom) const;
 
  private:
