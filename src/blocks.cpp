@@ -8,11 +8,6 @@ Blocks::Blocks(const llvm::Function &f, MapPool &pool) : pool_{pool} {
     Super::try_emplace(&b);
   }
 }
-Env &Blocks::get(const llvm::BasicBlock &b) {
-  auto it = Super::find(&b);
-  assert(it != Super::end() && "unknown basicblock");
-  return it->second;
-}
 void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnv &src) {
   get(dst).merge(pool_.add(src));
 }
@@ -21,6 +16,11 @@ void Blocks::merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src) {
 }
 FlatEnv Blocks::concat(const llvm::BasicBlock &src) {
   return get(src).concat();
+}
+Env &Blocks::get(const llvm::BasicBlock &b) {
+  auto it = Super::find(&b);
+  assert(it != Super::end() && "unknown basicblock");
+  return it->second;
 }
 
 }  // namespace stacksafe
