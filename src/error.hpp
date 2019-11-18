@@ -7,16 +7,16 @@ namespace stacksafe {
 
 class Error {
   using Base = std::size_t;
-  enum class Kind : Base {
-    RETURN = 1 << 0,
-    CALL = 1 << 1,
-    GLOBAL = 1 << 2,
-    ARGUMENT = 1 << 3
-  };
+  enum class Kind : Base { RETURN, CALL, GLOBAL, ARGUMENT };
   Base flags_;
 
  public:
   Error();
+
+ private:
+  static Base shift(Kind k);
+  void set(Kind k);
+  bool get(Kind k) const;
 };
 
 }  // namespace stacksafe
