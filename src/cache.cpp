@@ -11,18 +11,17 @@
 
 namespace stacksafe {
 
-Cache::Cache(const llvm::Function& f) : cache_{std::make_unique<Super>()} {
-  assert(cache_ && "failed cache init");
+Cache::Cache(const llvm::Function& f) {
   int num = -1;
-  cache_->try_emplace(Value{}, num++);
+  Super::try_emplace(Value{}, num++);
   for (const auto& a : f.args()) {
-    cache_->try_emplace(a, num++);
+    Super::try_emplace(a, num++);
   }
   for (const auto& b : f) {
     ++num;
     for (const auto& i : b) {
       if (is_register(i)) {
-        cache_->try_emplace(i, num++);
+        Super::try_emplace(i, num++);
       }
     }
   }
@@ -65,8 +64,8 @@ std::string Cache::to_str(int num) {
   }
 }
 int Cache::lookup(const Value& val) const {
-  auto it = cache_->find(val);
-  assert(it != cache_->end() && "unregistered value");
+  auto it = Super::find(val);
+  assert(it != Super::end() && "unregistered value");
   return it->second;
 }
 

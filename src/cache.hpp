@@ -15,9 +15,8 @@ class Domain;
 class Register;
 class Symbol;
 
-class Cache {
+class Cache : private std::unordered_map<Value, int> {
   using Super = std::unordered_map<Value, int>;
-  std::unique_ptr<Super> cache_;
 
  public:
   explicit Cache(const llvm::Function& f);
