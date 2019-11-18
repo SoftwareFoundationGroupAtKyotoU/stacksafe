@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
+#include <unordered_set>
 #include "map.hpp"
 
 namespace llvm {
@@ -24,6 +25,10 @@ class EnvSlice {
   Domain lookup(const Value &key) const;
   void insert(const Symbol &key, const Domain &val);
   void insert(const Register &key, const Domain &val);
+};
+
+class Env {
+  std::unordered_set<Map> heap_, stack_;
 };
 
 }  // namespace stacksafe
