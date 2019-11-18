@@ -19,7 +19,6 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
 
  public:
   explicit Interpreter(const Log &l, Error &error, FlatEnv &e);
-  const FlatEnv &env() const;
   const FlatEnv &diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);

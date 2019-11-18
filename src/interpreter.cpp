@@ -21,9 +21,6 @@ bool has_local(const Domain &dom) {
 
 Interpreter::Interpreter(const Log &l, Error &error, FlatEnv &e)
     : log_{l}, error_{error}, env_{e} {}
-const FlatEnv &Interpreter::env() const {
-  return env_;
-}
 const FlatEnv &Interpreter::diff() const {
   return diff_;
 }
