@@ -4,6 +4,7 @@
 #include <string>
 #include "blocks.hpp"
 #include "error.hpp"
+#include "log.hpp"
 
 namespace llvm {
 class Function;

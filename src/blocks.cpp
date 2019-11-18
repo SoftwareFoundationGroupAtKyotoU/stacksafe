@@ -1,10 +1,9 @@
 #include "blocks.hpp"
-#include "interpreter.hpp"
+#include <llvm/IR/Function.h>
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, const Log &log, Error &error)
-    : log_{log}, error_{error} {
+Blocks::Blocks(const llvm::Function &f) {
   Super::try_emplace(&f.getEntryBlock(), f);
   for (const auto &b : f) {
     Super::try_emplace(&b);
