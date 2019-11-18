@@ -3,6 +3,7 @@
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
+#include "error.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
@@ -69,6 +70,11 @@ void Log::print(const Register &key, const Domain &val,
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
+  }
+}
+void Log::print(const Error &err) const {
+  if (os) {
+    err.print(*os);
   }
 }
 

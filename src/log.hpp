@@ -14,6 +14,7 @@ class raw_ostream;
 
 namespace stacksafe {
 class Domain;
+class Error;
 class Register;
 class Symbol;
 
@@ -39,6 +40,7 @@ class Log {
   void print(const Domain &d) const;
   void print(const Symbol &key, const Domain &val, const Domain &add) const;
   void print(const Register &key, const Domain &val, const Domain &add) const;
+  void print(const Error &err) const;
 };
 
 }  // namespace stacksafe
