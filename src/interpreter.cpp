@@ -220,12 +220,12 @@ void Interpreter::constant(const llvm::Instruction &dst) {
   insert(dst, Domain{});
 }
 Domain Interpreter::load(const Symbol &key) const {
-  return env_.lookup(key);
+  return env_.heap().lookup(key.value());
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
   log_.print(key, load(key), val);
-  env_.insert(key, val);
-  diff_.insert(key, val);
+  env_.heap().insert(key.value(), val);
+  diff_.heap().insert(key.value(), val);
   if (has_local(val)) {
     if (key.is_global()) {
       error_.error_global();
@@ -247,17 +247,17 @@ Domain Interpreter::lookup(const Value &key) const {
     return dom;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
     assert(is_register(*i) && "invalid register lookup");
-    return env_.lookup(key);
+    return env_.stack().lookup(key);
   } else {
     assert(llvm::isa<llvm::Argument>(v) && "invalid value lookup");
-    return env_.lookup(key);
+    return env_.stack().lookup(key);
   }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   auto reg = Register::make(key);
   log_.print(reg, lookup(key), val);
-  env_.insert(reg, val);
-  diff_.insert(reg, val);
+  env_.stack().insert(reg.value(), val);
+  diff_.stack().insert(reg.value(), val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {

@@ -9,13 +9,13 @@ FlatEnv::FlatEnv(const llvm::Function &f) {
   const auto g = Symbol::get_global();
   Domain dom;
   dom.insert(g);
-  insert(g, dom);
+  heap_.insert(g.value(), dom);
   for (const auto &a : f.args()) {
     const auto arg = Symbol::get_arg(a);
     Domain dom;
     dom.insert(arg);
-    insert(arg, dom);
-    insert(Register::make(a), dom);
+    heap_.insert(arg.value(), dom);
+    stack_.insert(Register::make(a).value(), dom);
   }
 }
 FlatEnv::FlatEnv(const Map &heap, const Map &stack)
