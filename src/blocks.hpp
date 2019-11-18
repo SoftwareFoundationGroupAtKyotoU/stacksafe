@@ -16,7 +16,7 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, EnvSlice> {
 
  public:
   using Super::begin, Super::end;
-  Blocks(const llvm::Function &f);
+  explicit Blocks(const llvm::Function &f);
   EnvSlice &get(const llvm::BasicBlock &b);
 };
 
