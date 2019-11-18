@@ -24,7 +24,6 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   Env interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Env &next);
 
- private:
   Env &get(const llvm::BasicBlock &b);
 };
 

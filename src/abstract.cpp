@@ -3,6 +3,7 @@
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
 #include <chrono>
+#include "interpreter.hpp"
 
 namespace stacksafe {
 namespace {
@@ -51,20 +52,20 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  auto result = blocks_.interpret(b);
-  if (error_.is_error()) {
-    return;
-  }
+  Interpreter i{log_, error_, blocks_.get(b)};
+  i.visit(b);
   auto t = b.getTerminator();
   assert(t && "no terminator");
-  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-    const auto &next = *t->getSuccessor(i);
-    if (blocks_.update(next, result)) {
-      interpret(next);
-      if (error_.is_error()) {
-        return;
-      }
+  for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
+    if (error_.is_error()) {
+      return;
     }
+    const auto &next = *t->getSuccessor(j);
+    if (blocks_.get(next).includes(i.env())) {
+      continue;
+    }
+    blocks_.get(next).merge(i.env());
+    interpret(next);
   }
 }
 
