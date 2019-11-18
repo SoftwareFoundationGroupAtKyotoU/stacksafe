@@ -35,9 +35,3 @@ bool operator==(const Symbol &lhs, const Symbol &rhs) {
 }
 
 }  // namespace stacksafe
-
-namespace std {
-size_t hash<stacksafe::Symbol>::operator()(const stacksafe::Symbol &sym) const {
-  return stacksafe::Value::hash(sym.value());
-}
-}  // namespace std
