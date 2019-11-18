@@ -3,6 +3,10 @@
 
 #include <cstddef>
 
+namespace llvm {
+class raw_ostream;
+}
+
 namespace stacksafe {
 
 class Error {
@@ -17,6 +21,7 @@ class Error {
   void error_call();
   void error_global();
   void error_argument();
+  void print(llvm::raw_ostream& os) const;
 
  private:
   static Base shift(Kind k);
