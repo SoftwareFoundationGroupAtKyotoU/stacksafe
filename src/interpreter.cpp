@@ -1,7 +1,6 @@
 #include "interpreter.hpp"
 #include "error.hpp"
 #include "log.hpp"
-#include "register.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
