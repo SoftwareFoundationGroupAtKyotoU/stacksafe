@@ -9,7 +9,8 @@ const Value &Symbol::value() const {
   return *this;
 }
 bool Symbol::is_global() const {
-  return !value() || is_constant(value());
+  auto v = value().get();
+  return !v || llvm::isa<llvm::Constant>(v);
 }
 bool Symbol::is_local() const {
   return is_register(value());
