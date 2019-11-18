@@ -164,7 +164,7 @@ void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   Domain dom;
   const auto sym = Symbol::get_local(dst);
-  store(sym, dom);
+  heap_insert(sym, dom);
   dom.insert(sym);
   insert(dst, dom);
 }
@@ -178,7 +178,7 @@ void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
 void Interpreter::store(const Value &src, const Value &dst) {
   const auto val = stack_lookup(src);
   for (const auto &ptr : stack_lookup(dst)) {
-    store(ptr, val);
+    heap_insert(ptr, val);
   }
 }
 void Interpreter::cmpxchg(const llvm::Instruction &dst, const Value &ptr,
@@ -209,7 +209,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   }
   for (const auto &sym : dom) {
     if (!sym.is_global()) {
-      store(sym, dom);
+      heap_insert(sym, dom);
     }
   }
   if (!is_void_func(dst)) {
@@ -222,7 +222,7 @@ void Interpreter::constant(const llvm::Instruction &dst) {
 Domain Interpreter::heap_lookup(const Symbol &key) const {
   return env_.heap().lookup(key.value());
 }
-void Interpreter::store(const Symbol &key, const Domain &val) {
+void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
   log_.print(key, heap_lookup(key), val);
   env_.heap().insert(key.value(), val);
   diff_.heap().insert(key.value(), val);
