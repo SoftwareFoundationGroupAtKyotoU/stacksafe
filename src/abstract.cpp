@@ -34,8 +34,9 @@ void Abstract::run(const llvm::Function &f) {
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
-  const auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
-  const auto prefix = safe_ ? "SAFE" : "UNSAFE";
+  const auto safe = !error_.is_error();
+  const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
+  const auto prefix = safe ? "SAFE" : "UNSAFE";
   const auto msg = llvm::format(": %s %fms\n", name_.c_str(), elapsed_);
   if (os.is_displayed()) {
     os.changeColor(color, true);
@@ -47,20 +48,20 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  if (!safe_) {
+  auto result = blocks_.interpret(b);
+  if (error_.is_error()) {
     return;
   }
-  if (auto result = blocks_.interpret(b)) {
-    auto t = b.getTerminator();
-    assert(t && "no terminator");
-    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-      const auto &next = *t->getSuccessor(i);
-      if (blocks_.update(next, *result)) {
-        interpret(next);
+  auto t = b.getTerminator();
+  assert(t && "no terminator");
+  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+    const auto &next = *t->getSuccessor(i);
+    if (blocks_.update(next, *result)) {
+      interpret(next);
+      if (error_.is_error()) {
+        return;
       }
     }
-  } else {
-    safe_.unsafe();
   }
 }
 

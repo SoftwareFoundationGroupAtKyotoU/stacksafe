@@ -11,11 +11,8 @@ Blocks::Blocks(const llvm::Function &f, Error &error) : log_{f}, error_{error} {
 }
 std::optional<Env> Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{log_, error_, get(b)};
-  if (i.visit(b)) {
-    return i.env();
-  } else {
-    return std::nullopt;
-  }
+  i.visit(b);
+  return i.env();
 }
 bool Blocks::update(const llvm::BasicBlock &b, const Env &next) {
   if (get(b).includes(next)) {
