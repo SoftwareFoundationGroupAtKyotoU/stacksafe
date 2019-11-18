@@ -13,6 +13,10 @@ class Error {
     GLOBAL = 1 << 2,
     ARGUMENT = 1 << 3
   };
+  Base flags_;
+
+ public:
+  Error();
 };
 
 }  // namespace stacksafe
