@@ -2,8 +2,13 @@
 
 namespace stacksafe {
 
+void Domain::insert(const Symbol &sym) {
+  Super::insert(sym);
+}
 void Domain::merge(const Domain &that) {
-  Super::insert(that.begin(), that.end());
+  for (const auto &sym : that) {
+    insert(sym);
+  }
 }
 bool Domain::includes(const Domain &that) const {
   for (const auto &sym : that) {
@@ -17,7 +22,7 @@ Domain Domain::minus(const Domain &that) const {
   Domain ret;
   for (const auto &sym : *this) {
     if (that.Super::count(sym) == 0) {
-      ret.Super::insert(sym);
+      ret.insert(sym);
     }
   }
   return ret;
@@ -32,7 +37,7 @@ Domain Domain::get_global() {
 }
 Domain Domain::get_singleton(const Symbol &sym) {
   auto dom = get_empty();
-  dom.Super::insert(sym);
+  dom.insert(sym);
   return dom;
 }
 }  // namespace stacksafe
