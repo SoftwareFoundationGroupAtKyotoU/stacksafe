@@ -45,6 +45,10 @@ void EnvSlice::insert(const Register &key, const Domain &val) {
 }
 
 Env::Env(const EnvSlice &slice) : heap_{slice.heap()}, stack_{slice.stack()} {}
+void Env::merge(const EnvSlice &slice) {
+  heap_.insert(slice.heap());
+  stack_.insert(slice.stack());
+}
 void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());

@@ -64,7 +64,7 @@ void Abstract::interpret(const llvm::BasicBlock &b, EnvSlice prev) {
       continue;
     }
     blocks_.get(succ).merge(blocks_.get(b));
-    blocks_.get(succ).merge(Env{i.diff()});
+    blocks_.get(succ).merge(i.diff());
     next.merge(prev);
     interpret(succ, std::move(next));
   }
