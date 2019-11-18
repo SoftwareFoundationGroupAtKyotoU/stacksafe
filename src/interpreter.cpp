@@ -24,17 +24,16 @@ Interpreter::Interpreter(const Log &l, Error &error, const Env &m)
 const Env &Interpreter::env() const {
   return env_;
 }
-bool Interpreter::visit(const llvm::BasicBlock &b) {
+void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     log_.print(i);
     Super::visit(i);
     if (error_.is_error()) {
       log_.print(error_);
-      return false;
+      return;
     }
   }
-  return true;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {

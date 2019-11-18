@@ -20,7 +20,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
  public:
   explicit Interpreter(const Log &l, Error &error, const Env &m);
   const Env &env() const;
-  bool visit(const llvm::BasicBlock &b);
+  void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
