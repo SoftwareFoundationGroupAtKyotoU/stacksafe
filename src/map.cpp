@@ -50,4 +50,7 @@ namespace std {
 size_t hash<stacksafe::Map>::operator()(const stacksafe::Map &m) const {
   return stacksafe::Map::hash(m);
 }
+size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef &r) const {
+  return std::hash<stacksafe::Map>{}(r.get());
+}
 }  // namespace std

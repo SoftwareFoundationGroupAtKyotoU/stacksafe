@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include "env.hpp"
+#include "pool.hpp"
 
 namespace llvm {
 class BasicBlock;
@@ -13,10 +14,16 @@ namespace stacksafe {
 
 class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   using Super = std::unordered_map<const llvm::BasicBlock *, Env>;
+  MapPool pool_;
 
  public:
   using Super::begin, Super::end;
   explicit Blocks(const llvm::Function &f);
+  void merge(const llvm::BasicBlock &dst, const FlatEnv &src);
+  void merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src);
+  FlatEnv concat(const llvm::BasicBlock &src);
+
+ private:
   Env &get(const llvm::BasicBlock &b);
 };
 
