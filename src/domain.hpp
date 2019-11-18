@@ -8,10 +8,10 @@ namespace stacksafe {
 
 class Domain : private std::unordered_set<Symbol> {
   using Super = std::unordered_set<Symbol>;
-  Domain() = default;
 
  public:
   using Super::begin, Super::end;
+  Domain() = default;
   void insert(const Symbol &sym);
   void merge(const Domain &that);
   bool includes(const Domain &that) const;
