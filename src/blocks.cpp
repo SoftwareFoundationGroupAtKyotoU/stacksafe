@@ -13,5 +13,8 @@ Env &Blocks::get(const llvm::BasicBlock &b) {
   assert(it != Super::end() && "unknown basicblock");
   return it->second;
 }
+void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnv &src) {
+  get(dst).merge(pool_.add(src));
+}
 
 }  // namespace stacksafe
