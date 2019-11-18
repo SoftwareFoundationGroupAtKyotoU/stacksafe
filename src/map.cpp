@@ -11,7 +11,7 @@ void Map::insert(const Value &key, const Domain &val) {
     Super::try_emplace(key, val);
   }
 }
-const Domain &Map::lookup(const Value &key) const {
+Domain Map::lookup(const Value &key) const {
   if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
