@@ -3,7 +3,7 @@
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f) : log_{f} {
+Blocks::Blocks(const llvm::Function &f, Error &error) : log_{f}, error_{error} {
   Super::try_emplace(&f.getEntryBlock(), f);
   for (const auto &b : f) {
     Super::try_emplace(&b);

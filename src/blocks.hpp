@@ -12,14 +12,16 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
+class Error;
 
 class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   using Super = std::unordered_map<const llvm::BasicBlock *, Env>;
   const Log log_;
+  Error &error_;
 
  public:
   using Super::begin, Super::end;
-  Blocks(const llvm::Function &f);
+  Blocks(const llvm::Function &f, Error &error);
   std::optional<Env> interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Env &next);
 

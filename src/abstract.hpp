@@ -3,6 +3,7 @@
 
 #include <string>
 #include "blocks.hpp"
+#include "error.hpp"
 #include "safe.hpp"
 
 namespace llvm {
@@ -13,6 +14,7 @@ class raw_ostream;
 namespace stacksafe {
 
 class Abstract {
+  Error error_;
   Blocks blocks_;
   Safe safe_;
   std::string name_;
