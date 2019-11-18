@@ -65,7 +65,7 @@ void Abstract::interpret(const llvm::BasicBlock &b, FlatEnv prev) {
     if (next.includes(prev)) {
       continue;
     }
-    blocks_.get(succ).merge(blocks_.get(b));
+    blocks_.merge(succ, b);
     blocks_.merge(succ, i.diff());
     next.merge(prev);
     interpret(succ, std::move(next));
