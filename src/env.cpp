@@ -40,7 +40,7 @@ Domain Env::lookup(const Value &key) const {
     case K::GLOBAL:
       return Domain::get_global();
     case K::CONSTANT:
-      return Domain::get_empty();
+      return Domain{};
     case K::OTHER:
       [[fallthrough]];
     default:

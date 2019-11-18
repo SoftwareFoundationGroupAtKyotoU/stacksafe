@@ -13,7 +13,7 @@ Domain Map::lookup(const Value &key) const {
   if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
-  return Domain::get_empty();
+  return Domain{};
 }
 void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {

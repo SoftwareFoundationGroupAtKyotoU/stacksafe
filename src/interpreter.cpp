@@ -154,18 +154,19 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
 }
 void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
                         const Value &rhs) {
-  auto dom = Domain::get_empty();
+  Domain dom;
   dom.merge(lookup(lhs));
   dom.merge(lookup(rhs));
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
+  Domain dom;
   const auto sym = Symbol::get_local(dst);
-  store(sym, Domain::get_empty());
+  store(sym, dom);
   insert(dst, Domain::get_singleton(sym));
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
-  auto dom = Domain::get_empty();
+  Domain dom;
   for (const auto &sym : lookup(src)) {
     dom.merge(load(sym));
   }
@@ -186,7 +187,7 @@ void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
   insert(dst, lookup(src));
 }
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
-  auto dom = Domain::get_empty();
+  Domain dom;
   for (const auto &arg : params) {
     dom.merge(lookup(arg));
   }
@@ -212,7 +213,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
-  insert(dst, Domain::get_empty());
+  insert(dst, Domain{});
 }
 Domain Interpreter::load(const Symbol &key) const {
   return env_.lookup(key);

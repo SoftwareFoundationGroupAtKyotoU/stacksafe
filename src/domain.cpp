@@ -27,16 +27,12 @@ Domain Domain::minus(const Domain &that) const {
   }
   return ret;
 }
-Domain Domain::get_empty() {
-  static const Domain dom{};
-  return dom;
-}
 Domain Domain::get_global() {
   static const auto dom = get_singleton(Symbol::get_global());
   return dom;
 }
 Domain Domain::get_singleton(const Symbol &sym) {
-  auto dom = get_empty();
+  Domain dom;
   dom.insert(sym);
   return dom;
 }
