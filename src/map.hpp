@@ -21,12 +21,26 @@ class Map : private std::unordered_map<Value, Domain> {
 };
 bool operator==(const Map &lhs, const Map &rhs);
 
+class MapRef {
+  friend class MapPool;
+  const Map *map_;
+  explicit MapRef(const Map &m);
+
+ public:
+  const Map &get() const;
+};
+bool operator==(const MapRef &lhs, const MapRef &rhs);
+
 }  // namespace stacksafe
 
 namespace std {
 template <>
 struct hash<stacksafe::Map> {
   size_t operator()(const stacksafe::Map &m) const;
+};
+template <>
+struct hash<stacksafe::MapRef> {
+  size_t operator()(const stacksafe::MapRef &r) const;
 };
 }  // namespace std
 
