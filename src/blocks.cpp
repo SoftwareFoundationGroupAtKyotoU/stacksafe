@@ -4,7 +4,7 @@
 namespace stacksafe {
 
 Blocks::Blocks(const llvm::Function &f) {
-  Super::try_emplace(&f.getEntryBlock(), EnvSlice{f});
+  Super::try_emplace(&f.getEntryBlock(), FlatEnv{f});
   for (const auto &b : f) {
     Super::try_emplace(&b);
   }

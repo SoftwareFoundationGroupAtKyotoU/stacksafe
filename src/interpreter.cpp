@@ -19,12 +19,12 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, Error &error, const EnvSlice &m)
+Interpreter::Interpreter(const Log &l, Error &error, const FlatEnv &m)
     : log_{l}, error_{error}, env_{m} {}
-const EnvSlice &Interpreter::env() const {
+const FlatEnv &Interpreter::env() const {
   return env_;
 }
-const EnvSlice &Interpreter::diff() const {
+const FlatEnv &Interpreter::diff() const {
   return diff_;
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {

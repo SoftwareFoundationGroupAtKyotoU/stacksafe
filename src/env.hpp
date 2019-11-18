@@ -11,17 +11,17 @@ class Function;
 namespace stacksafe {
 class Register;
 
-class EnvSlice {
+class FlatEnv {
   Map heap_, stack_;
 
  public:
-  EnvSlice() = default;
-  explicit EnvSlice(const llvm::Function &f);
-  EnvSlice(const Map &heap, const Map &stack);
+  FlatEnv() = default;
+  explicit FlatEnv(const llvm::Function &f);
+  FlatEnv(const Map &heap, const Map &stack);
   const Map &heap() const;
   const Map &stack() const;
-  bool includes(const EnvSlice &that) const;
-  void merge(const EnvSlice &that);
+  bool includes(const FlatEnv &that) const;
+  void merge(const FlatEnv &that);
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Value &key) const;
   void insert(const Symbol &key, const Domain &val);
@@ -33,10 +33,10 @@ class Env {
 
  public:
   Env() = default;
-  explicit Env(const EnvSlice &slice);
-  void merge(const EnvSlice &slice);
+  explicit Env(const FlatEnv &env);
+  void merge(const FlatEnv &env);
   void merge(const Env &env);
-  EnvSlice concat() const;
+  FlatEnv concat() const;
 };
 
 }  // namespace stacksafe

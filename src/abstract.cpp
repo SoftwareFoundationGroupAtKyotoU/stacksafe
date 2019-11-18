@@ -31,7 +31,7 @@ void Abstract::run(const llvm::Function &f) {
   using namespace std::chrono;
   {
     Stopwatch<std::milli> watch{elapsed_};
-    interpret(f.getEntryBlock(), EnvSlice{f});
+    interpret(f.getEntryBlock(), FlatEnv{f});
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
@@ -48,7 +48,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
   }
   (os << msg).flush();
 }
-void Abstract::interpret(const llvm::BasicBlock &b, EnvSlice prev) {
+void Abstract::interpret(const llvm::BasicBlock &b, FlatEnv prev) {
   Interpreter i{log_, error_, prev};
   i.visit(b);
   prev = i.env();

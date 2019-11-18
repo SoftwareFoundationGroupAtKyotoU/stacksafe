@@ -5,7 +5,7 @@
 
 namespace stacksafe {
 
-EnvSlice::EnvSlice(const llvm::Function &f) {
+FlatEnv::FlatEnv(const llvm::Function &f) {
   const auto g = Symbol::get_global();
   Domain dom;
   dom.insert(g);
@@ -18,44 +18,44 @@ EnvSlice::EnvSlice(const llvm::Function &f) {
     insert(Register::make(a), dom);
   }
 }
-EnvSlice::EnvSlice(const Map &heap, const Map &stack)
+FlatEnv::FlatEnv(const Map &heap, const Map &stack)
     : heap_{heap}, stack_{stack} {}
-const Map &EnvSlice::heap() const {
+const Map &FlatEnv::heap() const {
   return heap_;
 }
-const Map &EnvSlice::stack() const {
+const Map &FlatEnv::stack() const {
   return stack_;
 }
-bool EnvSlice::includes(const EnvSlice &that) const {
+bool FlatEnv::includes(const FlatEnv &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-void EnvSlice::merge(const EnvSlice &that) {
+void FlatEnv::merge(const FlatEnv &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-Domain EnvSlice::lookup(const Symbol &key) const {
+Domain FlatEnv::lookup(const Symbol &key) const {
   return heap_.lookup(key.value());
 }
-Domain EnvSlice::lookup(const Value &key) const {
+Domain FlatEnv::lookup(const Value &key) const {
   return stack_.lookup(key);
 }
-void EnvSlice::insert(const Symbol &key, const Domain &val) {
+void FlatEnv::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key.value(), val);
 }
-void EnvSlice::insert(const Register &key, const Domain &val) {
+void FlatEnv::insert(const Register &key, const Domain &val) {
   stack_.insert(key.value(), val);
 }
 
-Env::Env(const EnvSlice &slice) : heap_{slice.heap()}, stack_{slice.stack()} {}
-void Env::merge(const EnvSlice &slice) {
-  heap_.insert(slice.heap());
-  stack_.insert(slice.stack());
+Env::Env(const FlatEnv &env) : heap_{env.heap()}, stack_{env.stack()} {}
+void Env::merge(const FlatEnv &env) {
+  heap_.insert(env.heap());
+  stack_.insert(env.stack());
 }
 void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
-EnvSlice Env::concat() const {
+FlatEnv Env::concat() const {
   Map heap, stack;
   for (const auto &m : heap_) {
     heap.merge(m);
@@ -63,7 +63,7 @@ EnvSlice Env::concat() const {
   for (const auto &m : stack_) {
     stack.merge(m);
   }
-  return EnvSlice{heap, stack};
+  return FlatEnv{heap, stack};
 }
 
 }  // namespace stacksafe

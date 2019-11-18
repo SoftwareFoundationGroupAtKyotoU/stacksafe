@@ -15,12 +15,12 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Params = std::unordered_set<Value>;
   const Log &log_;
   Error &error_;
-  EnvSlice env_, diff_;
+  FlatEnv env_, diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, const EnvSlice &m);
-  const EnvSlice &env() const;
-  const EnvSlice &diff() const;
+  explicit Interpreter(const Log &l, Error &error, const FlatEnv &m);
+  const FlatEnv &env() const;
+  const FlatEnv &diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
