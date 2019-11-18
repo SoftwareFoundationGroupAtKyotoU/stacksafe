@@ -20,8 +20,8 @@ std::string get_operand(const Value& v) {
   v.get()->printAsOperand(stream, false);
   return stream.str();
 }
-bool is_argument(const llvm::Value& v) {
-  return llvm::isa<llvm::Argument>(v);
+bool is_argument(const Value& v) {
+  return llvm::isa_and_nonnull<llvm::Argument>(v.get());
 }
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
@@ -50,8 +50,8 @@ bool is_register(const llvm::Instruction& i) {
     return true;
   }
 }
-bool is_register(const llvm::Value& v) {
-  if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
+bool is_register(const Value& v) {
+  if (auto i = llvm::dyn_cast_or_null<llvm::Instruction>(v.get())) {
     return is_register(*i);
   }
   return false;
