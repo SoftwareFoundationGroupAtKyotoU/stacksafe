@@ -54,9 +54,9 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void constant(const llvm::Instruction &dst);
 
  private:
-  const Domain &load(const Symbol &key) const;
+  Domain load(const Symbol &key) const;
   void store(const Symbol &key, const Domain &val);
-  const Domain &lookup(const Value &key) const;
+  Domain lookup(const Value &key) const;
   void insert(const llvm::Instruction &key, const Domain &val);
   void collect(const Symbol &sym, Domain &done) const;
   void error(const llvm::ReturnInst &i);

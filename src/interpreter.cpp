@@ -214,7 +214,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
 void Interpreter::constant(const llvm::Instruction &dst) {
   insert(dst, Domain::get_empty());
 }
-const Domain &Interpreter::load(const Symbol &key) const {
+Domain Interpreter::load(const Symbol &key) const {
   return env_.lookup(key);
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
@@ -229,7 +229,7 @@ void Interpreter::store(const Symbol &key, const Domain &val) {
     }
   }
 }
-const Domain &Interpreter::lookup(const Value &key) const {
+Domain Interpreter::lookup(const Value &key) const {
   return env_.lookup(key);
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
