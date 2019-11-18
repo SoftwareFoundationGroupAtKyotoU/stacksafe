@@ -17,7 +17,7 @@ target_sources(${target} PRIVATE
   cache.cpp
   domain.cpp
   env.cpp
-  interpret.cpp
+  interpreter.cpp
   json.cpp
   log.cpp
   map.cpp

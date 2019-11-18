@@ -1,5 +1,5 @@
 #include "blocks.hpp"
-#include "interpret.hpp"
+#include "interpreter.hpp"
 
 namespace stacksafe {
 
