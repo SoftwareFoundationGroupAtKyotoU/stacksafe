@@ -5,16 +5,33 @@
 #include <chrono>
 
 namespace stacksafe {
+namespace {
+template <class Period>
+class Stopwatch {
+  using Clock = std::chrono::high_resolution_clock;
+  using Duration = std::chrono::duration<double, Period>;
+  double &elapsed_;
+  decltype(Clock::now()) start_;
+
+ public:
+  explicit Stopwatch(double &elapsed)
+      : elapsed_{elapsed}, start_{Clock::now()} {}
+  ~Stopwatch() {
+    auto end = Clock::now();
+    Duration elapsed = end - start_;
+    elapsed_ = elapsed.count();
+  }
+};
+}  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
     : blocks_{f}, name_{f.getName().str()}, elapsed_{0.0} {}
 void Abstract::run(const llvm::Function &f) {
   using namespace std::chrono;
-  auto start = high_resolution_clock::now();
-  interpret(f.getEntryBlock());
-  auto end = high_resolution_clock::now();
-  duration<double, std::milli> elapsed = end - start;
-  elapsed_ = elapsed.count();
+  {
+    Stopwatch<std::milli> watch{elapsed_};
+    interpret(f.getEntryBlock());
+  }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
   const auto color = safe_ ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
