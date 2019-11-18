@@ -10,31 +10,6 @@
 #include "utility.hpp"
 
 namespace stacksafe {
-namespace {
-std::optional<int> to_int(std::string_view view) {
-  if (!view.empty()) {
-    std::string str{view};
-    std::size_t pos = std::string_view::npos;
-    auto val = std::stoi(str, &pos, 10);
-    if (pos == view.size()) {
-      return val;
-    }
-  }
-  return std::nullopt;
-}
-std::optional<int> to_int(const Value& v) {
-  static const auto prefix = '%';
-  auto operand = get_operand(v);
-  std::string_view view{operand};
-  if (!view.empty() && view.at(0) == prefix) {
-    if (auto num = to_int(view.substr(1))) {
-      assert(0 <= *num && "invalid register number");
-      return *num;
-    };
-  }
-  return std::nullopt;
-}
-}  // namespace
 
 Cache::Cache(const llvm::Function& f) : cache_{std::make_unique<Super>()} {
   assert(cache_ && "failed cache init");
