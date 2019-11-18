@@ -12,7 +12,6 @@ namespace stacksafe {
 class Register;
 
 class EnvSlice {
-  friend class Env;
   Map heap_, stack_;
 
  public:

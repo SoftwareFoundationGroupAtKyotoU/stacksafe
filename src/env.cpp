@@ -56,14 +56,14 @@ void Env::merge(const Env &env) {
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
 EnvSlice Env::concat() const {
-  EnvSlice ret;
+  Map heap, stack;
   for (const auto &m : heap_) {
-    ret.heap_.merge(m);
+    heap.merge(m);
   }
   for (const auto &m : stack_) {
-    ret.stack_.merge(m);
+    stack.merge(m);
   }
-  return ret;
+  return EnvSlice{heap, stack};
 }
 
 }  // namespace stacksafe
