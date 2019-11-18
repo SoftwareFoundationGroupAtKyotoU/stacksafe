@@ -22,6 +22,7 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   Env &get(const llvm::BasicBlock &b);
   void merge(const llvm::BasicBlock &dst, const FlatEnv &src);
   void merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src);
+  FlatEnv concat(const llvm::BasicBlock &src);
 };
 
 }  // namespace stacksafe

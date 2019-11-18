@@ -61,7 +61,7 @@ void Abstract::interpret(const llvm::BasicBlock &b, FlatEnv prev) {
       return;
     }
     const auto &succ = *t->getSuccessor(j);
-    auto next = blocks_.get(succ).concat();
+    auto next = blocks_.concat(succ);
     if (next.includes(prev)) {
       continue;
     }

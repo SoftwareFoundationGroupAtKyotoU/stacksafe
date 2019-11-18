@@ -19,5 +19,8 @@ void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnv &src) {
 void Blocks::merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src) {
   get(dst).merge(get(src));
 }
+FlatEnv Blocks::concat(const llvm::BasicBlock &src) {
+  return get(src).concat();
+}
 
 }  // namespace stacksafe
