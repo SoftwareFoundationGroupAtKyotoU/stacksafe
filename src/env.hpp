@@ -24,10 +24,6 @@ class FlatEnv {
   Map &stack();
   bool includes(const FlatEnv &that) const;
   void merge(const FlatEnv &that);
-  Domain lookup(const Symbol &key) const;
-  Domain lookup(const Value &key) const;
-  void insert(const Symbol &key, const Domain &val);
-  void insert(const Register &key, const Domain &val);
 };
 
 class Env {

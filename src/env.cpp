@@ -39,18 +39,6 @@ void FlatEnv::merge(const FlatEnv &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-Domain FlatEnv::lookup(const Symbol &key) const {
-  return heap_.lookup(key.value());
-}
-Domain FlatEnv::lookup(const Value &key) const {
-  return stack_.lookup(key);
-}
-void FlatEnv::insert(const Symbol &key, const Domain &val) {
-  heap_.insert(key.value(), val);
-}
-void FlatEnv::insert(const Register &key, const Domain &val) {
-  stack_.insert(key.value(), val);
-}
 
 void Env::merge(const FlatEnv &env) {
   heap_.insert(env.heap());
