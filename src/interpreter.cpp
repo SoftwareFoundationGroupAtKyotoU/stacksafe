@@ -249,7 +249,8 @@ void Interpreter::collect(const Symbol &sym, Domain &done) const {
 }
 void Interpreter::error(const llvm::ReturnInst &i) {
   if (safe_) {
-    log_.print("ERROR[RETURN]: ").print(i);
+    log_.print("ERROR[RETURN]: ");
+    log_.print(i);
     safe_.unsafe();
   }
 }
@@ -257,23 +258,27 @@ void Interpreter::error(const Params &params) {
   if (safe_) {
     log_.print("ERROR[CALL]:\n");
     for (const auto &arg : params) {
-      log_.print("  ").print(get_operand(arg)).print(": ").print(lookup(arg));
+      log_.print("  ");
+      log_.print(get_operand(arg));
+      log_.print(": ");
+      log_.print(lookup(arg));
     }
     safe_.unsafe();
   }
 }
 void Interpreter::error() {
   if (safe_) {
-    log_.print("ERROR[GLOBAL]: ").print(load(Symbol::get_global()));
+    log_.print("ERROR[GLOBAL]: ");
+    log_.print(load(Symbol::get_global()));
     safe_.unsafe();
   }
 }
 void Interpreter::error(const Symbol &arg) {
   if (safe_) {
-    log_.print("ERROR[ARGUMENT]: ")
-        .print(get_operand(arg.value()))
-        .print(": ")
-        .print(load(arg));
+    log_.print("ERROR[ARGUMENT]: ");
+    log_.print(get_operand(arg.value()));
+    log_.print(": ");
+    log_.print(load(arg));
     safe_.unsafe();
   }
 }
