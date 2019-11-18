@@ -25,3 +25,9 @@ Env MapPool::add(const FlatEnv& e) {
 }
 
 }  // namespace stacksafe
+
+namespace std {
+size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef& r) const {
+  return std::hash<stacksafe::Map>{}(r.get());
+}
+}  // namespace std

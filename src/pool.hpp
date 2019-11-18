@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
 #define INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
 
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -30,5 +31,12 @@ class MapPool : private std::vector<MapPtr> {
 };
 
 }  // namespace stacksafe
+
+namespace std {
+template <>
+struct hash<stacksafe::MapRef> {
+  size_t operator()(const stacksafe::MapRef& r) const;
+};
+}  // namespace std
 
 #endif  // INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
