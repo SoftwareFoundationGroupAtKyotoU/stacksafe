@@ -40,6 +40,7 @@ class Log {
   void print(const Domain &d) const;
   void print(const Symbol &key, const Domain &val, const Domain &add) const;
   void print(const Register &key, const Domain &val, const Domain &add) const;
+  void print_heap(const Value &key, const Domain &val, const Domain &add) const;
   void print_stack(const Value &key, const Domain &val,
                    const Domain &add) const;
   void print(const Error &err) const;
