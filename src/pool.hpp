@@ -10,10 +10,12 @@ class FlatEnv;
 class Map;
 class MapRef;
 
-using MapPtr = std::unique_ptr<Map>;
+class MapPtr : private std::unique_ptr<Map> {
+  using Super = std::unique_ptr<Map>;
+};
 
-class MapPool : private std::vector<MapPtr> {
-  using Super = std::vector<MapPtr>;
+class MapPool : private std::vector<std::unique_ptr<Map>> {
+  using Super = std::vector<std::unique_ptr<Map>>;
   MapRef add(const Map& m);
 
  public:
