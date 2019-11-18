@@ -3,7 +3,7 @@
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, MapPool &pool) : pool_{pool} {
+Blocks::Blocks(const llvm::Function &f) {
   for (const auto &b : f) {
     Super::try_emplace(&b);
   }
