@@ -15,7 +15,7 @@ FlatEnv::FlatEnv(const llvm::Function &f) {
     Domain dom;
     dom.insert(arg);
     heap_.insert(arg.value(), dom);
-    stack_.insert(Register::make(a).value(), dom);
+    stack_.insert(a, dom);
   }
 }
 FlatEnv::FlatEnv(const Map &heap, const Map &stack)
