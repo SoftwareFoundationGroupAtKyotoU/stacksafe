@@ -30,6 +30,11 @@ Safe Interpreter::visit(const llvm::BasicBlock &b) {
     }
     log_.print(i);
     Super::visit(i);
+    if (error_.is_error()) {
+      log_.print(error_);
+      safe_.unsafe();
+      break;
+    }
   }
   return safe_;
 }
