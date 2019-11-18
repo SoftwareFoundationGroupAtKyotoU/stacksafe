@@ -15,8 +15,6 @@ class raw_ostream;
 namespace stacksafe {
 class Domain;
 class Error;
-class Register;
-class Symbol;
 
 class LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
@@ -34,12 +32,8 @@ class Log {
 
  public:
   explicit Log(const llvm::Function &func);
-  void print(const std::string &s) const;
   void print(const llvm::Instruction &i) const;
   void print(const llvm::BasicBlock &b) const;
-  void print(const Domain &d) const;
-  void print(const Symbol &key, const Domain &val, const Domain &add) const;
-  void print(const Register &key, const Domain &val, const Domain &add) const;
   void print_heap(const Value &key, const Domain &val, const Domain &add) const;
   void print_stack(const Value &key, const Domain &val,
                    const Domain &add) const;

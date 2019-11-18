@@ -37,11 +37,6 @@ Log::Log(const llvm::Function &func)
     *os << func;
   }
 }
-void Log::print(const std::string &s) const {
-  if (os) {
-    *os << s;
-  }
-}
 void Log::print(const llvm::Instruction &i) const {
   if (os) {
     endline(*os << i);
@@ -52,24 +47,6 @@ void Log::print(const llvm::BasicBlock &b) const {
   static const auto hr = "--------------------------------";
   if (os) {
     endline(*os << hr2 << b << hr);
-  }
-}
-void Log::print(const Domain &d) const {
-  if (os) {
-    endline(*os << cache_.to_str(d));
-  }
-}
-void Log::print(const Symbol &key, const Domain &val, const Domain &add) const {
-  if (os) {
-    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
-                << " += " << cache_.to_str(add));
-  }
-}
-void Log::print(const Register &key, const Domain &val,
-                const Domain &add) const {
-  if (os) {
-    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
-                << " += " << cache_.to_str(add));
   }
 }
 void Log::print_heap(const Value &key, const Domain &val,
