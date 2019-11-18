@@ -13,7 +13,10 @@ bool Symbol::is_global() const {
   return !v || llvm::isa<llvm::Constant>(v);
 }
 bool Symbol::is_local() const {
-  return is_register(value());
+  if (auto i = llvm::dyn_cast_or_null<llvm::Instruction>(value().get())) {
+    return is_register(*i);
+  }
+  return false;
 }
 bool Symbol::is_arg() const {
   auto v = value().get();

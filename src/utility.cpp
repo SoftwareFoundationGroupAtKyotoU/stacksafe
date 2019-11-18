@@ -36,11 +36,5 @@ bool is_register(const llvm::Instruction& i) {
     return true;
   }
 }
-bool is_register(const Value& v) {
-  if (auto i = llvm::dyn_cast_or_null<llvm::Instruction>(v.get())) {
-    return is_register(*i);
-  }
-  return false;
-}
 
 }  // namespace stacksafe
