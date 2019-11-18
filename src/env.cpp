@@ -1,6 +1,5 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include "register.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {

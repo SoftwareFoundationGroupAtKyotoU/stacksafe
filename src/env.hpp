@@ -9,7 +9,6 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Register;
 
 class FlatEnv {
   Map heap_, stack_;
