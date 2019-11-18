@@ -228,6 +228,7 @@ Domain Interpreter::load(const Symbol &key) const {
 void Interpreter::store(const Symbol &key, const Domain &val) {
   log_.print(key, load(key), val);
   env_.insert(key, val);
+  diff_.insert(key, val);
   if (has_local(val)) {
     if (key.is_global()) {
       error_.error_global();
@@ -256,8 +257,10 @@ Domain Interpreter::lookup(const Value &key) const {
   }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
-  log_.print(Register::make(key), lookup(key), val);
-  env_.insert(Register::make(key), val);
+  auto reg = Register::make(key);
+  log_.print(reg, lookup(key), val);
+  env_.insert(reg, val);
+  diff_.insert(reg, val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
