@@ -33,6 +33,7 @@ class Env {
  public:
   Env() = default;
   explicit Env(const EnvSlice &slice);
+  void merge(const Env &env);
 };
 
 }  // namespace stacksafe
