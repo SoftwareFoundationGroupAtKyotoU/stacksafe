@@ -235,7 +235,22 @@ void Interpreter::store(const Symbol &key, const Domain &val) {
   }
 }
 Domain Interpreter::lookup(const Value &key) const {
-  return env_.lookup(key);
+  Domain dom;
+  const auto v = key.get();
+  if (!v) {
+    return dom;
+  } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
+    if (is_global(*c)) {
+      dom.insert(Symbol::get_global());
+    }
+    return dom;
+  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
+    assert(is_register(*i) && "invalid register lookup");
+    return env_.lookup(key);
+  } else {
+    assert(llvm::isa<llvm::Argument>(v) && "invalid value lookup");
+    return env_.lookup(key);
+  }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   log_.print(Register::make(key), lookup(key), val);
