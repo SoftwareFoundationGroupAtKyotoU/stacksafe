@@ -6,7 +6,10 @@
 namespace stacksafe {
 
 Env::Env(const llvm::Function &f) {
-  insert(Symbol::get_global(), Domain::get_global());
+  const auto g = Symbol::get_global();
+  Domain dom;
+  dom.insert(g);
+  insert(g, dom);
   for (const auto &a : f.args()) {
     const auto arg = Symbol::get_arg(a);
     const auto dom = Domain::get_singleton(arg);
@@ -32,15 +35,17 @@ Domain Env::lookup(const Symbol &key) const {
 }
 Domain Env::lookup(const Value &key) const {
   using K = Value::Kind;
+  Domain dom;
   switch (key.kind()) {
     case K::REGISTER:
       [[fallthrough]];
     case K::ARGUMENT:
       return stack_.lookup(key);
     case K::GLOBAL:
-      return Domain::get_global();
+      dom.insert(Symbol::get_global());
+      return dom;
     case K::CONSTANT:
-      return Domain{};
+      return dom;
     case K::OTHER:
       [[fallthrough]];
     default:

@@ -194,7 +194,8 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
-  auto dom = Domain::get_global();
+  Domain dom;
+  dom.insert(Symbol::get_global());
   for (const auto &arg : params) {
     for (const auto &sym : lookup(arg)) {
       collect(sym, dom);
