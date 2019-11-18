@@ -10,6 +10,9 @@ class Map;
 class MapRef {
   const Map* map_;
   explicit MapRef(const Map& m);
+
+ public:
+  const Map& get() const;
 };
 
 using MapPtr = std::unique_ptr<Map>;
