@@ -18,7 +18,7 @@ class Symbol : private Value {
   bool is_global() const;
   bool is_local() const;
   bool is_arg() const;
-  static const Symbol &get_global();
+  static Symbol get_global();
   static Symbol get_local(const llvm::AllocaInst &v);
   static Symbol get_arg(const llvm::Argument &v);
 };

@@ -17,9 +17,8 @@ bool Symbol::is_local() const {
 bool Symbol::is_arg() const {
   return is_argument(value());
 }
-const Symbol &Symbol::get_global() {
-  static Symbol global{Value{}};
-  return global;
+Symbol Symbol::get_global() {
+  return Symbol{Value{}};
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
   return Symbol{v};
