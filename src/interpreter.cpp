@@ -240,10 +240,8 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   env_.insert(Register::make(key), val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
-  Domain dom;
-  dom.insert(sym);
-  if (!done.includes(dom)) {
-    done.merge(dom);
+  if (!done.element(sym)) {
+    done.insert(sym);
     for (const auto &next : load(sym)) {
       collect(next, done);
     }
