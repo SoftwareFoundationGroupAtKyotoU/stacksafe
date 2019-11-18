@@ -23,7 +23,6 @@ target_sources(${target} PRIVATE
   log.cpp
   map.cpp
   register.cpp
-  safe.cpp
   symbol.cpp
   utility.cpp
   value.cpp
