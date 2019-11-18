@@ -19,6 +19,7 @@ class Map : private std::unordered_map<Value, Domain> {
   bool includes(const Map &that) const;
   static std::size_t hash(const Map &m);
 };
+bool operator==(const Map &lhs, const Map &rhs);
 
 }  // namespace stacksafe
 

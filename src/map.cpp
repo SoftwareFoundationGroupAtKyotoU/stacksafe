@@ -40,6 +40,9 @@ std::size_t Map::hash(const Map &m) {
   }
   return h;
 }
+bool operator==(const Map &lhs, const Map &rhs) {
+  return lhs.includes(rhs) && rhs.includes(lhs);
+}
 
 }  // namespace stacksafe
 
