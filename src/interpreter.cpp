@@ -153,7 +153,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
     if (has_local(lookup(*ret))) {
-      error(i);
+      error_.error_return();
     }
   }
 }
@@ -208,7 +208,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
     }
   }
   if (has_local(dom)) {
-    error(params);
+    error_.error_call();
   }
   for (const auto &sym : dom) {
     if (!sym.is_global()) {
@@ -230,10 +230,10 @@ void Interpreter::store(const Symbol &key, const Domain &val) {
   env_.insert(key, val);
   if (has_local(val)) {
     if (key.is_global()) {
-      error();
+      error_.error_global();
     }
     if (key.is_arg()) {
-      error(key);
+      error_.error_argument();
     }
   }
 }
