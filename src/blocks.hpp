@@ -3,7 +3,6 @@
 
 #include <unordered_map>
 #include "env.hpp"
-#include "log.hpp"
 
 namespace llvm {
 class BasicBlock;
@@ -11,20 +10,13 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Error;
 
 class Blocks : private std::unordered_map<const llvm::BasicBlock *, EnvSlice> {
   using Super = std::unordered_map<const llvm::BasicBlock *, EnvSlice>;
-  const Log log_;
-  Error &error_;
 
  public:
   using Super::begin, Super::end;
-  Blocks(const llvm::Function &f, Error &error);
-  EnvSlice interpret(const llvm::BasicBlock &b);
-  bool update(const llvm::BasicBlock &b, const EnvSlice &next);
-
- private:
+  Blocks(const llvm::Function &f);
   EnvSlice &get(const llvm::BasicBlock &b);
 };
 

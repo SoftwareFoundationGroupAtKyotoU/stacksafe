@@ -1,25 +1,12 @@
 #include "blocks.hpp"
-#include "interpreter.hpp"
+#include <llvm/IR/Function.h>
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f, Error &error) : log_{f}, error_{error} {
+Blocks::Blocks(const llvm::Function &f) {
   Super::try_emplace(&f.getEntryBlock(), f);
   for (const auto &b : f) {
     Super::try_emplace(&b);
-  }
-}
-EnvSlice Blocks::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{log_, error_, get(b)};
-  i.visit(b);
-  return i.env();
-}
-bool Blocks::update(const llvm::BasicBlock &b, const EnvSlice &next) {
-  if (get(b).includes(next)) {
-    return false;
-  } else {
-    get(b).merge(next);
-    return true;
   }
 }
 EnvSlice &Blocks::get(const llvm::BasicBlock &b) {
