@@ -72,6 +72,13 @@ void Log::print(const Register &key, const Domain &val,
                 << " += " << cache_.to_str(add));
   }
 }
+void Log::print_stack(const Value &key, const Domain &val,
+                      const Domain &add) const {
+  if (os) {
+    endline(*os << "%" << cache_.to_str(key) << ": " << cache_.to_str(val)
+                << " += " << cache_.to_str(add));
+  }
+}
 void Log::print(const Error &err) const {
   if (os) {
     err.print(*os);
