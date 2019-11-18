@@ -16,7 +16,6 @@ class Domain : private std::unordered_set<Symbol> {
   void merge(const Domain &that);
   bool element(const Symbol &sym) const;
   bool includes(const Domain &that) const;
-  Domain minus(const Domain &that) const;
 };
 
 }  // namespace stacksafe

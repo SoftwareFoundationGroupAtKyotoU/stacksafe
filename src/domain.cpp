@@ -21,13 +21,5 @@ bool Domain::includes(const Domain &that) const {
   }
   return true;
 }
-Domain Domain::minus(const Domain &that) const {
-  Domain ret;
-  for (const auto &sym : *this) {
-    if (!that.element(sym)) {
-      ret.insert(sym);
-    }
-  }
-  return ret;
-}
+
 }  // namespace stacksafe
