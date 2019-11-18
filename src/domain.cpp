@@ -1,9 +1,13 @@
 #include "domain.hpp"
+#include <algorithm>
 
 namespace stacksafe {
 
 void Domain::insert(const Symbol &sym) {
-  Super::insert(sym);
+  const auto [lb, ub] = std::equal_range(begin(), end(), sym);
+  if (lb == ub) {
+    Super::insert(lb, sym);
+  }
 }
 void Domain::merge(const Domain &that) {
   for (const auto &sym : that) {
@@ -11,7 +15,7 @@ void Domain::merge(const Domain &that) {
   }
 }
 bool Domain::element(const Symbol &sym) const {
-  return Super::count(sym) != 0;
+  return std::binary_search(begin(), end(), sym);
 }
 bool Domain::includes(const Domain &that) const {
   for (const auto &sym : that) {
