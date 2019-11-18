@@ -29,6 +29,10 @@ class EnvSlice {
 
 class Env {
   std::unordered_set<Map> heap_, stack_;
+
+ public:
+  Env() = default;
+  explicit Env(const EnvSlice &slice);
 };
 
 }  // namespace stacksafe

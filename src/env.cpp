@@ -44,4 +44,6 @@ void EnvSlice::insert(const Register &key, const Domain &val) {
   stack_.insert(key.value(), val);
 }
 
+Env::Env(const EnvSlice &slice) : heap_{slice.heap()}, stack_{slice.stack()} {}
+
 }  // namespace stacksafe
