@@ -8,6 +8,7 @@ namespace stacksafe {
 class Map;
 
 class MapRef {
+  friend class MapPool;
   const Map* map_;
   explicit MapRef(const Map& m);
 
@@ -19,6 +20,9 @@ using MapPtr = std::unique_ptr<Map>;
 
 class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
+
+ public:
+  MapRef add(const Map& m);
 };
 
 }  // namespace stacksafe
