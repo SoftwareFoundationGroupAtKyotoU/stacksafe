@@ -11,13 +11,13 @@ class Function;
 
 namespace stacksafe {
 
-class Blocks : private std::unordered_map<const llvm::BasicBlock *, EnvSlice> {
-  using Super = std::unordered_map<const llvm::BasicBlock *, EnvSlice>;
+class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
+  using Super = std::unordered_map<const llvm::BasicBlock *, Env>;
 
  public:
   using Super::begin, Super::end;
   explicit Blocks(const llvm::Function &f);
-  EnvSlice &get(const llvm::BasicBlock &b);
+  Env &get(const llvm::BasicBlock &b);
 };
 
 }  // namespace stacksafe

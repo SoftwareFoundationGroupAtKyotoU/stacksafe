@@ -49,7 +49,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{log_, error_, blocks_.get(b)};
+  Interpreter i{log_, error_, blocks_.get(b).concat()};
   i.visit(b);
   auto t = b.getTerminator();
   assert(t && "no terminator");
@@ -58,10 +58,12 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
       return;
     }
     const auto &next = *t->getSuccessor(j);
-    if (blocks_.get(next).includes(i.env())) {
+    auto slice = blocks_.get(next).concat();
+    if (slice.includes(i.env())) {
       continue;
     }
-    blocks_.get(next).merge(i.env());
+    blocks_.get(next).merge(blocks_.get(b));
+    blocks_.get(next).merge(Env{i.diff()});
     interpret(next);
   }
 }
