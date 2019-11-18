@@ -15,7 +15,6 @@ class Symbol : private Value {
   explicit Symbol(const Value &v);
 
  public:
-  using Value::hash;
   const Value &value() const;
   bool is_global() const;
   bool is_local() const;
