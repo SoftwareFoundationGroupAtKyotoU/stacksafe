@@ -37,7 +37,7 @@ void Interpreter::visit(const llvm::BasicBlock &b) {
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
-    stacksafe_unreachable("unsupported instruction", i);
+    unsupported_instruction(i);
   }
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {

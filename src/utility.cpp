@@ -20,6 +20,10 @@ std::string get_operand(const Value& v) {
   v.get()->printAsOperand(stream, false);
   return stream.str();
 }
+void unsupported_instruction(const llvm::Instruction& i) {
+  static const auto msg = "FATAL ERROR: unsupported instruction: ";
+  (llvm::errs() << msg << i << "\n").flush();
+}
 bool is_argument(const Value& v) {
   return llvm::isa_and_nonnull<llvm::Argument>(v.get());
 }

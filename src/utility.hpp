@@ -18,6 +18,7 @@ class Value;
 
 std::string to_str(const Value& v);
 std::string get_operand(const Value& v);
+void unsupported_instruction(const llvm::Instruction& i);
 bool is_argument(const Value& v);
 bool is_constant(const Value& v);
 bool is_global(const llvm::Constant& c);
