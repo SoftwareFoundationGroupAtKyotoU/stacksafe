@@ -171,7 +171,7 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
   Domain dom;
   for (const auto &sym : lookup(src)) {
-    dom.merge(load(sym));
+    dom.merge(heap_lookup(sym));
   }
   insert(dst, dom);
 }
@@ -219,11 +219,11 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
 void Interpreter::constant(const llvm::Instruction &dst) {
   insert(dst, Domain{});
 }
-Domain Interpreter::load(const Symbol &key) const {
+Domain Interpreter::heap_lookup(const Symbol &key) const {
   return env_.heap().lookup(key.value());
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
-  log_.print(key, load(key), val);
+  log_.print(key, heap_lookup(key), val);
   env_.heap().insert(key.value(), val);
   diff_.heap().insert(key.value(), val);
   if (has_local(val)) {
@@ -262,7 +262,7 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
     done.insert(sym);
-    for (const auto &next : load(sym)) {
+    for (const auto &next : heap_lookup(sym)) {
       collect(next, done);
     }
   }
