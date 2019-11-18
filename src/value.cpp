@@ -23,9 +23,9 @@ auto Value::kind() const -> Kind {
   } else if (llvm::isa<llvm::Argument>(v)) {
     return Kind::ARGUMENT;
   } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
-    return is_global(c) ? Kind::GLOBAL : Kind::CONSTANT;
+    return is_global(*c) ? Kind::GLOBAL : Kind::CONSTANT;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
-    return is_register(i) ? Kind::REGISTER : Kind::OTHER;
+    return is_register(*i) ? Kind::REGISTER : Kind::OTHER;
   } else {
     return Kind::OTHER;
   }
