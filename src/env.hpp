@@ -10,16 +10,16 @@ class Function;
 namespace stacksafe {
 class Register;
 
-class Env {
+class EnvSlice {
   Map heap_, stack_;
 
  public:
-  Env() = default;
-  explicit Env(const llvm::Function &f);
+  EnvSlice() = default;
+  explicit EnvSlice(const llvm::Function &f);
   const Map &heap() const;
   const Map &stack() const;
-  bool includes(const Env &that) const;
-  void merge(const Env &that);
+  bool includes(const EnvSlice &that) const;
+  void merge(const EnvSlice &that);
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Value &key) const;
   void insert(const Symbol &key, const Domain &val);

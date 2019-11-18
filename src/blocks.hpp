@@ -13,19 +13,19 @@ class Function;
 namespace stacksafe {
 class Error;
 
-class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
-  using Super = std::unordered_map<const llvm::BasicBlock *, Env>;
+class Blocks : private std::unordered_map<const llvm::BasicBlock *, EnvSlice> {
+  using Super = std::unordered_map<const llvm::BasicBlock *, EnvSlice>;
   const Log log_;
   Error &error_;
 
  public:
   using Super::begin, Super::end;
   Blocks(const llvm::Function &f, Error &error);
-  Env interpret(const llvm::BasicBlock &b);
-  bool update(const llvm::BasicBlock &b, const Env &next);
+  EnvSlice interpret(const llvm::BasicBlock &b);
+  bool update(const llvm::BasicBlock &b, const EnvSlice &next);
 
  private:
-  Env &get(const llvm::BasicBlock &b);
+  EnvSlice &get(const llvm::BasicBlock &b);
 };
 
 }  // namespace stacksafe

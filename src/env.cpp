@@ -5,7 +5,7 @@
 
 namespace stacksafe {
 
-Env::Env(const llvm::Function &f) {
+EnvSlice::EnvSlice(const llvm::Function &f) {
   const auto g = Symbol::get_global();
   Domain dom;
   dom.insert(g);
@@ -18,29 +18,29 @@ Env::Env(const llvm::Function &f) {
     insert(Register::make(a), dom);
   }
 }
-const Map &Env::heap() const {
+const Map &EnvSlice::heap() const {
   return heap_;
 }
-const Map &Env::stack() const {
+const Map &EnvSlice::stack() const {
   return stack_;
 }
-bool Env::includes(const Env &that) const {
+bool EnvSlice::includes(const EnvSlice &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-void Env::merge(const Env &that) {
+void EnvSlice::merge(const EnvSlice &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-Domain Env::lookup(const Symbol &key) const {
+Domain EnvSlice::lookup(const Symbol &key) const {
   return heap_.lookup(key.value());
 }
-Domain Env::lookup(const Value &key) const {
+Domain EnvSlice::lookup(const Value &key) const {
   return stack_.lookup(key);
 }
-void Env::insert(const Symbol &key, const Domain &val) {
+void EnvSlice::insert(const Symbol &key, const Domain &val) {
   heap_.insert(key.value(), val);
 }
-void Env::insert(const Register &key, const Domain &val) {
+void EnvSlice::insert(const Register &key, const Domain &val) {
   stack_.insert(key.value(), val);
 }
 

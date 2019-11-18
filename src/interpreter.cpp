@@ -19,9 +19,9 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, Error &error, const Env &m)
+Interpreter::Interpreter(const Log &l, Error &error, const EnvSlice &m)
     : log_{l}, error_{error}, env_{m} {}
-const Env &Interpreter::env() const {
+const EnvSlice &Interpreter::env() const {
   return env_;
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
