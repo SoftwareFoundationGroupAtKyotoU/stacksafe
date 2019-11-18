@@ -9,7 +9,7 @@ Blocks::Blocks(const llvm::Function &f, Error &error) : log_{f}, error_{error} {
     Super::try_emplace(&b);
   }
 }
-std::optional<Env> Blocks::interpret(const llvm::BasicBlock &b) {
+Env Blocks::interpret(const llvm::BasicBlock &b) {
   Interpreter i{log_, error_, get(b)};
   i.visit(b);
   return i.env();

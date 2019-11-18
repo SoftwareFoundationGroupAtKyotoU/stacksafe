@@ -1,7 +1,6 @@
 #ifndef INCLUDE_GUARD_1C49E28A_FFB0_4196_8F04_3179A52F9485
 #define INCLUDE_GUARD_1C49E28A_FFB0_4196_8F04_3179A52F9485
 
-#include <optional>
 #include <unordered_map>
 #include "env.hpp"
 #include "log.hpp"
@@ -22,7 +21,7 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
  public:
   using Super::begin, Super::end;
   Blocks(const llvm::Function &f, Error &error);
-  std::optional<Env> interpret(const llvm::BasicBlock &b);
+  Env interpret(const llvm::BasicBlock &b);
   bool update(const llvm::BasicBlock &b, const Env &next);
 
  private:

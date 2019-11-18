@@ -56,7 +56,7 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   assert(t && "no terminator");
   for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
     const auto &next = *t->getSuccessor(i);
-    if (blocks_.update(next, *result)) {
+    if (blocks_.update(next, result)) {
       interpret(next);
       if (error_.is_error()) {
         return;
