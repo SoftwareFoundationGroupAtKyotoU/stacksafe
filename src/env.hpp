@@ -12,6 +12,7 @@ namespace stacksafe {
 class Register;
 
 class EnvSlice {
+  friend class Env;
   Map heap_, stack_;
 
  public:
@@ -34,6 +35,7 @@ class Env {
   Env() = default;
   explicit Env(const EnvSlice &slice);
   void merge(const Env &env);
+  EnvSlice concat() const;
 };
 
 }  // namespace stacksafe
