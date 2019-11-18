@@ -1,21 +1,18 @@
 #include "blocks.hpp"
-#include "interpret.hpp"
+#include "interpreter.hpp"
 
 namespace stacksafe {
 
-Blocks::Blocks(const llvm::Function &f) : log_{f} {
+Blocks::Blocks(const llvm::Function &f, Error &error) : log_{f}, error_{error} {
   Super::try_emplace(&f.getEntryBlock(), f);
   for (const auto &b : f) {
     Super::try_emplace(&b);
   }
 }
-std::optional<Env> Blocks::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{log_, get(b)};
-  if (i.visit(b)) {
-    return i.env();
-  } else {
-    return std::nullopt;
-  }
+Env Blocks::interpret(const llvm::BasicBlock &b) {
+  Interpreter i{log_, error_, get(b)};
+  i.visit(b);
+  return i.env();
 }
 bool Blocks::update(const llvm::BasicBlock &b, const Env &next) {
   if (get(b).includes(next)) {

@@ -3,7 +3,7 @@
 
 #include <string>
 #include "blocks.hpp"
-#include "safe.hpp"
+#include "error.hpp"
 
 namespace llvm {
 class Function;
@@ -13,11 +13,10 @@ class raw_ostream;
 namespace stacksafe {
 
 class Abstract {
+  Error error_;
   Blocks blocks_;
-  Safe safe_;
   std::string name_;
   double elapsed_;
-  std::size_t count_;
 
  public:
   explicit Abstract(const llvm::Function &f);

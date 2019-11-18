@@ -1,5 +1,6 @@
 #include "symbol.hpp"
 #include <llvm/IR/Instructions.h>
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -8,13 +9,13 @@ const Value &Symbol::value() const {
   return *this;
 }
 bool Symbol::is_global() const {
-  return value().kind() == Value::Kind::GLOBAL;
+  return !value() || is_constant(value());
 }
 bool Symbol::is_local() const {
-  return value().kind() == Value::Kind::REGISTER;
+  return is_register(value());
 }
 bool Symbol::is_arg() const {
-  return value().kind() == Value::Kind::ARGUMENT;
+  return is_argument(value());
 }
 const Symbol &Symbol::get_global() {
   static Symbol global{Value{}};

@@ -1,4 +1,5 @@
 #include "cache.hpp"
+#include <llvm/IR/Function.h>
 #include <cassert>
 #include <optional>
 #include <set>
@@ -9,35 +10,21 @@
 #include "utility.hpp"
 
 namespace stacksafe {
-namespace {
-std::optional<int> to_int(std::string_view view) {
-  if (!view.empty()) {
-    std::string str{view};
-    std::size_t pos = std::string_view::npos;
-    auto val = std::stoi(str, &pos, 10);
-    if (pos == view.size()) {
-      return val;
+
+Cache::Cache(const llvm::Function& f) {
+  int num = -1;
+  Super::try_emplace(Value{}, num++);
+  for (const auto& a : f.args()) {
+    Super::try_emplace(a, num++);
+  }
+  for (const auto& b : f) {
+    ++num;
+    for (const auto& i : b) {
+      if (is_register(i)) {
+        Super::try_emplace(i, num++);
+      }
     }
   }
-  return std::nullopt;
-}
-std::optional<int> to_int(const Value& v) {
-  static const auto prefix = '%';
-  auto operand = get_operand(v);
-  std::string_view view{operand};
-  if (!view.empty() && view.at(0) == prefix) {
-    if (auto num = to_int(view.substr(1))) {
-      assert(0 <= *num && "invalid register number");
-      return *num;
-    };
-  }
-  return std::nullopt;
-}
-}  // namespace
-
-Cache::Cache() : cache_{std::make_unique<Super>()} {
-  assert(cache_ && "failed cache init");
-  cache_->try_emplace(Value{}, -1);
 }
 std::string Cache::to_str(const Symbol& reg) const {
   static const std::string prefix{"&"};
@@ -77,15 +64,9 @@ std::string Cache::to_str(int num) {
   }
 }
 int Cache::lookup(const Value& val) const {
-  if (auto it = cache_->find(val); it != cache_->end()) {
-    return it->second;
-  } else {
-    assert(val && "null is always in cache");
-    auto num = to_int(val);
-    assert(num && "not a register");
-    cache_->try_emplace(val, *num);
-    return *num;
-  }
+  auto it = Super::find(val);
+  assert(it != Super::end() && "unregistered value");
+  return it->second;
 }
 
 }  // namespace stacksafe

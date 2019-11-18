@@ -1,12 +1,12 @@
 #include "register.hpp"
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/Instruction.h>
+#include "utility.hpp"
 
 namespace stacksafe {
 
 Register::Register(const Value& v) : Value{v} {
-  assert(Value::kind() == Value::Kind::REGISTER ||
-         Value::kind() == Value::Kind::ARGUMENT);
+  assert(is_argument(*v.get()) || is_register(*v.get()));
 }
 Register Register::make(const llvm::Argument& a) {
   return Register{a};

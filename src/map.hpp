@@ -3,7 +3,6 @@
 
 #include <unordered_map>
 #include "domain.hpp"
-#include "json_fwd.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
@@ -14,11 +13,10 @@ class Map : private std::unordered_map<Value, Domain> {
  public:
   using Super::begin, Super::end;
   void insert(const Value &key, const Domain &val);
-  const Domain &lookup(const Value &key) const;
+  Domain lookup(const Value &key) const;
   void merge(const Map &that);
   bool includes(const Map &that) const;
 };
-void to_json(Json &j, const Map &x);
 
 }  // namespace stacksafe
 

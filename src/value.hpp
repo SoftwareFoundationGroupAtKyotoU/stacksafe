@@ -12,16 +12,14 @@ class Value;
 namespace stacksafe {
 
 class Value {
-  const llvm::Value *const val_;
+  const llvm::Value *val_;
 
  public:
-  enum class Kind { REGISTER, ARGUMENT, GLOBAL, CONSTANT, OTHER };
   Value();
   IMPLICIT Value(const llvm::Value &v);
   explicit operator bool() const;
   const llvm::Value *get() const;
   std::size_t hash() const;
-  Kind kind() const;
 };
 bool operator<(const Value &lhs, const Value &rhs);
 bool operator==(const Value &lhs, const Value &rhs);

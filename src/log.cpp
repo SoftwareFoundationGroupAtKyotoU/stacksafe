@@ -3,6 +3,7 @@
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
+#include "error.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
@@ -29,53 +30,52 @@ llvm::raw_ostream &LogFile::get() const {
   return file ? *file : llvm::errs();
 }
 
-Log::Log(const llvm::Function &func) : file{logfilename(func)}, os{nullptr} {
+Log::Log(const llvm::Function &func)
+    : cache_{func}, file{logfilename(func)}, os{nullptr} {
   STACKSAFE_DEBUG_LOG(os = &file.get());
   if (os) {
     *os << func;
   }
 }
-const Log &Log::print(const std::string &s) const {
+void Log::print(const std::string &s) const {
   if (os) {
     *os << s;
   }
-  return *this;
 }
-const Log &Log::print(const llvm::Instruction &i) const {
+void Log::print(const llvm::Instruction &i) const {
   if (os) {
     endline(*os << i);
   }
-  return *this;
 }
-const Log &Log::print(const llvm::BasicBlock &b) const {
+void Log::print(const llvm::BasicBlock &b) const {
   static const auto hr2 = "================================";
   static const auto hr = "--------------------------------";
   if (os) {
     endline(*os << hr2 << b << hr);
   }
-  return *this;
 }
-const Log &Log::print(const Domain &d) const {
+void Log::print(const Domain &d) const {
   if (os) {
     endline(*os << cache_.to_str(d));
   }
-  return *this;
 }
-const Log &Log::print(const Symbol &key, const Domain &val,
-                      const Domain &add) const {
+void Log::print(const Symbol &key, const Domain &val, const Domain &add) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
-  return *this;
 }
-const Log &Log::print(const Register &key, const Domain &val,
-                      const Domain &add) const {
+void Log::print(const Register &key, const Domain &val,
+                const Domain &add) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
-  return *this;
+}
+void Log::print(const Error &err) const {
+  if (os) {
+    err.print(*os);
+  }
 }
 
 }  // namespace stacksafe

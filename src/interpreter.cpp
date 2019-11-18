@@ -1,4 +1,5 @@
-#include "interpret.hpp"
+#include "interpreter.hpp"
+#include "error.hpp"
 #include "log.hpp"
 #include "register.hpp"
 #include "utility.hpp"
@@ -18,24 +19,25 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, const Env &m) : log_{l}, env_{m} {}
+Interpreter::Interpreter(const Log &l, Error &error, const Env &m)
+    : log_{l}, error_{error}, env_{m} {}
 const Env &Interpreter::env() const {
   return env_;
 }
-Safe Interpreter::visit(const llvm::BasicBlock &b) {
+void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
-    if (!safe_) {
-      return safe_;
-    }
     log_.print(i);
     Super::visit(i);
+    if (error_.is_error()) {
+      log_.print(error_);
+      return;
+    }
   }
-  return safe_;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
-    stacksafe_unreachable("unsupported instruction", i);
+    unsupported_instruction(i);
   }
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {
@@ -148,24 +150,26 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
     if (has_local(lookup(*ret))) {
-      error(i);
+      error_.error_return();
     }
   }
 }
 void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
                         const Value &rhs) {
-  auto dom = Domain::get_empty();
+  Domain dom;
   dom.merge(lookup(lhs));
   dom.merge(lookup(rhs));
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
+  Domain dom;
   const auto sym = Symbol::get_local(dst);
-  store(sym, Domain::get_empty());
-  insert(dst, Domain::get_singleton(sym));
+  store(sym, dom);
+  dom.insert(sym);
+  insert(dst, dom);
 }
 void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
-  auto dom = Domain::get_empty();
+  Domain dom;
   for (const auto &sym : lookup(src)) {
     dom.merge(load(sym));
   }
@@ -186,21 +190,22 @@ void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
   insert(dst, lookup(src));
 }
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
-  auto dom = Domain::get_empty();
+  Domain dom;
   for (const auto &arg : params) {
     dom.merge(lookup(arg));
   }
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
-  auto dom = Domain::get_global();
+  Domain dom;
+  dom.insert(Symbol::get_global());
   for (const auto &arg : params) {
     for (const auto &sym : lookup(arg)) {
       collect(sym, dom);
     }
   }
   if (has_local(dom)) {
-    error(params);
+    error_.error_call();
   }
   for (const auto &sym : dom) {
     if (!sym.is_global()) {
@@ -212,9 +217,9 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
-  insert(dst, Domain::get_empty());
+  insert(dst, Domain{});
 }
-const Domain &Interpreter::load(const Symbol &key) const {
+Domain Interpreter::load(const Symbol &key) const {
   return env_.lookup(key);
 }
 void Interpreter::store(const Symbol &key, const Domain &val) {
@@ -222,57 +227,41 @@ void Interpreter::store(const Symbol &key, const Domain &val) {
   env_.insert(key, val);
   if (has_local(val)) {
     if (key.is_global()) {
-      error();
+      error_.error_global();
     }
     if (key.is_arg()) {
-      error(key);
+      error_.error_argument();
     }
   }
 }
-const Domain &Interpreter::lookup(const Value &key) const {
-  return env_.lookup(key);
+Domain Interpreter::lookup(const Value &key) const {
+  Domain dom;
+  const auto v = key.get();
+  if (!v) {
+    return dom;
+  } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
+    if (is_global(*c)) {
+      dom.insert(Symbol::get_global());
+    }
+    return dom;
+  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
+    assert(is_register(*i) && "invalid register lookup");
+    return env_.lookup(key);
+  } else {
+    assert(llvm::isa<llvm::Argument>(v) && "invalid value lookup");
+    return env_.lookup(key);
+  }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   log_.print(Register::make(key), lookup(key), val);
   env_.insert(Register::make(key), val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
-  const auto single = Domain::get_singleton(sym);
-  if (!done.includes(single)) {
-    done.merge(single);
+  if (!done.element(sym)) {
+    done.insert(sym);
     for (const auto &next : load(sym)) {
       collect(next, done);
     }
-  }
-}
-void Interpreter::error(const llvm::ReturnInst &i) {
-  if (safe_) {
-    log_.print("ERROR[RETURN]: ").print(i);
-    safe_.unsafe();
-  }
-}
-void Interpreter::error(const Params &params) {
-  if (safe_) {
-    log_.print("ERROR[CALL]:\n");
-    for (const auto &arg : params) {
-      log_.print("  ").print(get_operand(arg)).print(": ").print(lookup(arg));
-    }
-    safe_.unsafe();
-  }
-}
-void Interpreter::error() {
-  if (safe_) {
-    log_.print("ERROR[GLOBAL]: ").print(load(Symbol::get_global()));
-    safe_.unsafe();
-  }
-}
-void Interpreter::error(const Symbol &arg) {
-  if (safe_) {
-    log_.print("ERROR[ARGUMENT]: ")
-        .print(get_operand(arg.value()))
-        .print(": ")
-        .print(load(arg));
-    safe_.unsafe();
   }
 }
 

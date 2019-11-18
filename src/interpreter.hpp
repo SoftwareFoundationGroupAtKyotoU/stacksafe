@@ -4,9 +4,9 @@
 #include <llvm/IR/InstVisitor.h>
 #include <unordered_set>
 #include "env.hpp"
-#include "safe.hpp"
 
 namespace stacksafe {
+class Error;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
@@ -14,13 +14,13 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   using Params = std::unordered_set<Value>;
   const Log &log_;
+  Error &error_;
   Env env_;
-  Safe safe_;
 
  public:
-  explicit Interpreter(const Log &l, const Env &m);
+  explicit Interpreter(const Log &l, Error &error, const Env &m);
   const Env &env() const;
-  Safe visit(const llvm::BasicBlock &b);
+  void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
@@ -54,15 +54,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void constant(const llvm::Instruction &dst);
 
  private:
-  const Domain &load(const Symbol &key) const;
+  Domain load(const Symbol &key) const;
   void store(const Symbol &key, const Domain &val);
-  const Domain &lookup(const Value &key) const;
+  Domain lookup(const Value &key) const;
   void insert(const llvm::Instruction &key, const Domain &val);
   void collect(const Symbol &sym, Domain &done) const;
-  void error(const llvm::ReturnInst &i);
-  void error(const Params &params);
-  void error();
-  void error(const Symbol &arg);
 };
 
 }  // namespace stacksafe

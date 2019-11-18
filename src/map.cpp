@@ -1,6 +1,4 @@
 #include "map.hpp"
-#include "json.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -11,11 +9,11 @@ void Map::insert(const Value &key, const Domain &val) {
     Super::try_emplace(key, val);
   }
 }
-const Domain &Map::lookup(const Value &key) const {
+Domain Map::lookup(const Value &key) const {
   if (auto it = Super::find(key); it != end()) {
     return it->second;
   }
-  return Domain::get_empty();
+  return Domain{};
 }
 void Map::merge(const Map &that) {
   for (const auto &[k, v] : that) {
@@ -31,14 +29,6 @@ bool Map::includes(const Map &that) const {
     return false;
   }
   return true;
-}
-void to_json(Json &j, const Map &x) {
-  static const std::string global{"@"};
-  Json::object_t obj;
-  for (const auto &[key, val] : x) {
-    obj[key ? get_operand(key) : global] = val;
-  }
-  j = obj;
 }
 
 }  // namespace stacksafe
