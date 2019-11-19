@@ -15,7 +15,6 @@ namespace stacksafe {
 
 class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   using Super = std::unordered_map<const llvm::BasicBlock *, Env>;
-  MapPool pool_;
   FlatMapPool flat_;
 
  public:
