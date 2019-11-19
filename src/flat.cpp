@@ -21,14 +21,14 @@ MapsTo::MapsTo(const Value& val, const Symbol& sym) : Super{val, sym} {}
 const Value& MapsTo::key() const {
   return std::get<0>(*this);
 }
-const Symbol& MapsTo::symbol() const {
+const Symbol& MapsTo::val() const {
   return std::get<1>(*this);
 }
 std::size_t MapsTo::hash(const MapsTo& to) {
-  return hash_combine(Value::hash(to.key()), Symbol::hash(to.symbol()));
+  return hash_combine(Value::hash(to.key()), Symbol::hash(to.val()));
 }
 bool operator==(const MapsTo& lhs, const MapsTo& rhs) {
-  return lhs.key() == rhs.key() && lhs.symbol() == rhs.symbol();
+  return lhs.key() == rhs.key() && lhs.val() == rhs.val();
 }
 
 void FlatMap::insert(const Value& key, const Symbol& val) {
@@ -53,7 +53,7 @@ bool FlatMap::includes(const FlatMap& flat) const {
 Map FlatMap::to_map(const FlatMap& flat) {
   Map map;
   for (const auto& to : flat) {
-    map.insert(to.key(), to.symbol());
+    map.insert(to.key(), to.val());
   }
   return map;
 }

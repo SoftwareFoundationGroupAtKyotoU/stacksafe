@@ -36,7 +36,7 @@ class MapsTo : private std::tuple<Value, Symbol> {
  public:
   MapsTo(const Value& val, const Symbol& sym);
   const Value& key() const;
-  const Symbol& symbol() const;
+  const Symbol& val() const;
   static std::size_t hash(const MapsTo& to);
 };
 bool operator==(const MapsTo& lhs, const MapsTo& rhs);
