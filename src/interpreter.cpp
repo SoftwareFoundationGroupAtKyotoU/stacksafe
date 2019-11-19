@@ -19,7 +19,7 @@ bool has_local(const Domain &dom) {
 }  // namespace
 
 Interpreter::Interpreter(const Log &l, Error &error, const DoubleMap &m)
-    : log_{l}, error_{error}, map_{m}, heap_{m.heap()}, stack_{m.stack()} {}
+    : log_{l}, error_{error}, heap_{m.heap()}, stack_{m.stack()} {}
 FlatEnv Interpreter::diff() const {
   return FlatEnv{heap_diff_, stack_diff_};
 }
