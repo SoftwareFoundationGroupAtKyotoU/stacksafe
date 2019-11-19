@@ -29,6 +29,9 @@ void FlatMap::insert(const Value& key, const Symbol& val) {
 
 FlatMapPtr::FlatMapPtr(const FlatMap& flat)
     : Super{std::make_unique<FlatMap>(flat)} {}
+const FlatMap& FlatMapPtr::get() const {
+  return *Super::get();
+}
 
 FlatMapRef::FlatMapRef(const FlatMap& flat) : flat_{&flat} {}
 const FlatMap& FlatMapRef::get() const {
