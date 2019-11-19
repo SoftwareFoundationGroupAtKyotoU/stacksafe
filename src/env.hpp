@@ -24,8 +24,6 @@ class FlatEnv {
   FlatMap &heap();
   const FlatMap &stack() const;
   FlatMap &stack();
-  bool includes(const FlatEnv &flat) const;
-  void merge(const FlatEnv &flat);
 };
 
 class Env {
