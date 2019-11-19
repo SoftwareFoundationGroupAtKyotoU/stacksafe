@@ -47,6 +47,10 @@ class FlatEnv {
   bool includes(const FlatEnv &flat) const;
 };
 
+class Env {
+  std::unordered_set<FlatMapRef> heap_, stack_;
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
