@@ -22,7 +22,12 @@ class Map : private std::unordered_map<Value, Domain> {
 };
 bool operator==(const Map &lhs, const Map &rhs);
 
-class Heap : private Map {};
+class Heap : private Map {
+ public:
+  void insert(const Symbol &key, const Domain &val);
+  Domain lookup(const Symbol &key) const;
+  void merge(const Heap &that);
+};
 
 class Stack : private Map {};
 

@@ -47,6 +47,16 @@ bool operator==(const Map &lhs, const Map &rhs) {
   return lhs.includes(rhs) && rhs.includes(lhs);
 }
 
+void Heap::insert(const Symbol &key, const Domain &val) {
+  Map::insert(key.value(), val);
+}
+Domain Heap::lookup(const Symbol &key) const {
+  return Map::lookup(key.value());
+}
+void Heap::merge(const Heap &that) {
+  Map::merge(that);
+}
+
 }  // namespace stacksafe
 
 namespace std {
