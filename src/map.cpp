@@ -4,10 +4,9 @@
 namespace stacksafe {
 
 void Map::insert(const Value &key, const Domain &val) {
-  if (auto it = Super::find(key); it != end()) {
+  auto [it, updated] = Super::try_emplace(key, val);
+  if (!updated) {
     it->second.merge(val);
-  } else {
-    Super::try_emplace(key, val);
   }
 }
 void Map::insert(const Value &key, const Symbol &val) {
