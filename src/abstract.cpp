@@ -56,10 +56,10 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{log_, error_, get(b).to_map()};
+  auto prev = get(b);
+  Interpreter i{log_, error_, DoubleMap{prev.heap(), prev.stack()}};
   i.visit(b);
   const auto diff = pool_.add(i.diff());
-  auto prev = get(b);
   prev.merge(diff);
   const auto t = b.getTerminator();
   assert(t && "no terminator");
