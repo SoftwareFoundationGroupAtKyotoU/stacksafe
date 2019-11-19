@@ -4,6 +4,7 @@
 #include <llvm/IR/InstVisitor.h>
 #include <unordered_set>
 #include "env.hpp"
+#include "flat.hpp"
 
 namespace stacksafe {
 class Error;
@@ -16,6 +17,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   const Log &log_;
   Error &error_;
   FlatEnv &env_, diff_;
+  FlatMap heap_, stack_;
 
  public:
   explicit Interpreter(const Log &l, Error &error, FlatEnv &e);
