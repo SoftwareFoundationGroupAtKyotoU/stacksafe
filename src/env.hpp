@@ -58,7 +58,7 @@ class Env {
   Env() = default;
   Env(FlatMapRef heap, FlatMapRef stack);
   void merge(const Env &env);
-  FlatEnv concat() const;
+  FlatEnvOld concat() const;
 };
 
 }  // namespace stacksafe

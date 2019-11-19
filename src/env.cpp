@@ -1,5 +1,6 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
+#include "flat.hpp"
 #include "pool.hpp"
 #include "utility.hpp"
 
@@ -85,15 +86,15 @@ void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
-FlatEnv Env::concat() const {
-  FlatMap heap, stack;
+FlatEnvOld Env::concat() const {
+  Map heap, stack;
   for (const auto &r : heap_) {
-    heap.merge(r.get());
+    heap.merge(FlatMap::to_map(r.get()));
   }
   for (const auto &r : stack_) {
-    stack.merge(r.get());
+    stack.merge(FlatMap::to_map(r.get()));
   }
-  return FlatEnv{heap, stack};
+  return FlatEnvOld{heap, stack};
 }
 
 }  // namespace stacksafe
