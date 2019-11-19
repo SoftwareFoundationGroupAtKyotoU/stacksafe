@@ -9,6 +9,7 @@
 #include "value.hpp"
 
 namespace stacksafe {
+class Domain;
 class Map;
 class MapsTo;
 }  // namespace stacksafe
@@ -38,6 +39,7 @@ class FlatMap : private std::unordered_set<MapsTo> {
 
  public:
   void insert(const Value& key, const Symbol& val);
+  void insert(const Value& key, const Domain& val);
   void insert(const Map& map);
   bool includes(const FlatMap& flat) const;
   static size_t hash(const FlatMap& flat);
