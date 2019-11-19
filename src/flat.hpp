@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_9AD1204C_8632_4047_8AC2_467F02D9DFF8
 
 #include <functional>
+#include <unordered_set>
 #include "symbol.hpp"
 #include "value.hpp"
 
@@ -28,6 +29,10 @@ class MapsTo : private std::tuple<Value, Symbol> {
   static std::size_t hash(const MapsTo& to);
 };
 bool operator==(const MapsTo& lhs, const MapsTo& rhs);
+
+class FlatMap : private std::unordered_set<MapsTo> {
+  using Super = std::unordered_set<MapsTo>;
+};
 
 }  // namespace stacksafe
 
