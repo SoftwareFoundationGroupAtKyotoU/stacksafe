@@ -10,6 +10,7 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
+class FlatEnv;
 class MapRef;
 
 class FlatEnvOld {
@@ -25,6 +26,7 @@ class FlatEnvOld {
   Map &stack();
   bool includes(const FlatEnvOld &that) const;
   void merge(const FlatEnvOld &that);
+  FlatEnv to_flat_env() const;
 };
 
 class EnvOld {

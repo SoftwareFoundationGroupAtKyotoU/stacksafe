@@ -39,6 +39,12 @@ void FlatEnvOld::merge(const FlatEnvOld &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
+FlatEnv FlatEnvOld::to_flat_env() const {
+  FlatMap heap, stack;
+  heap.insert(heap_);
+  stack.insert(stack_);
+  return FlatEnv{heap, stack};
+}
 
 EnvOld::EnvOld(MapRef heap, MapRef stack) : heap_{heap}, stack_{stack} {}
 void EnvOld::merge(const EnvOld &env) {
