@@ -55,8 +55,7 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   Interpreter i{log_, error_, blocks_.get(b).to_map()};
   i.visit(b);
   auto prev = blocks_.get(b);
-  auto diff = blocks_.add(i.new_diff());
-  prev.merge(diff);
+  prev.merge(blocks_.add(i.diff()));
   auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {

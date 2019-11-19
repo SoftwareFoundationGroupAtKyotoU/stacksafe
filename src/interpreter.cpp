@@ -20,7 +20,7 @@ bool has_local(const Domain &dom) {
 
 Interpreter::Interpreter(const Log &l, Error &error, const DoubleMap &m)
     : log_{l}, error_{error}, map_{m} {}
-FlatEnv Interpreter::new_diff() const {
+FlatEnv Interpreter::diff() const {
   return FlatEnv{heap_, stack_};
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
