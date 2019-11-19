@@ -106,5 +106,15 @@ FlatEnv Env::flatten() const {
   }
   return FlatEnv{heap, stack};
 }
+FlatEnvOld Env::to_map() const {
+  Map heap, stack;
+  for (const auto &r : heap_) {
+    heap.merge(FlatMap::to_map(r.get()));
+  }
+  for (const auto &r : stack_) {
+    stack.merge(FlatMap::to_map(r.get()));
+  }
+  return FlatEnvOld{heap, stack};
+}
 
 }  // namespace stacksafe

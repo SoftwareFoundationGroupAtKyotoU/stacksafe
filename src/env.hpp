@@ -54,6 +54,7 @@ class Env {
   bool includes(const Env &env);
   FlatEnvOld concat() const;
   FlatEnv flatten() const;
+  FlatEnvOld to_map() const;
 };
 
 }  // namespace stacksafe
