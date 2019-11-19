@@ -9,8 +9,9 @@
 #include "value.hpp"
 
 namespace stacksafe {
+class Map;
 class MapsTo;
-}
+}  // namespace stacksafe
 
 namespace std {
 template <>
@@ -37,6 +38,7 @@ class FlatMap : private std::unordered_set<MapsTo> {
 
  public:
   void insert(const Value& key, const Symbol& val);
+  void insert(const Map& map);
   bool includes(const FlatMap& flat) const;
   static size_t hash(const FlatMap& flat);
   static bool equals(const FlatMap& lhs, const FlatMap& rhs);
