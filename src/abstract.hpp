@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
 #include <string>
+#include <unordered_map>
 #include "blocks.hpp"
 #include "error.hpp"
 #include "log.hpp"
@@ -18,7 +19,7 @@ class Abstract {
   const Log log_;
   Error error_;
   FlatMapPool pool_;
-  Blocks blocks_;
+  std::unordered_map<const llvm::BasicBlock *, Env> blocks_;
   std::string name_;
   double elapsed_;
 

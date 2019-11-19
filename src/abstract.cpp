@@ -26,7 +26,11 @@ class Stopwatch {
 }  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
-    : log_{f}, blocks_{f}, name_{f.getName().str()}, elapsed_{0.0} {}
+    : log_{f}, name_{f.getName().str()}, elapsed_{0.0} {
+  for (const auto &b : f) {
+    blocks_.try_emplace(&b);
+  }
+}
 void Abstract::run(const llvm::Function &f) {
   using namespace std::chrono;
   {
@@ -72,7 +76,9 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   }
 }
 Env &Abstract::get(const llvm::BasicBlock &b) {
-  return blocks_.get(b);
+  auto it = blocks_.find(&b);
+  assert(it != blocks_.end() && "unknown basicblock");
+  return it->second;
 }
 
 }  // namespace stacksafe
