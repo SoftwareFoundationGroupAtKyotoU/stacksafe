@@ -12,6 +12,9 @@ const Map& MapPtr::get() const {
 bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
   return Map::hash(lhs.get()) < Map::hash(rhs.get());
 }
+bool operator==(const MapPtr& lhs, const MapPtr& rhs) {
+  return lhs.get() == rhs.get();
+}
 
 MapRef MapPool::add(const Map& m) {
   MapPtr ptr{m};
