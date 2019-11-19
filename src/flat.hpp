@@ -13,6 +13,7 @@ class MapsTo : private std::tuple<Value, Symbol> {
   MapsTo(const Value& val, const Symbol& sym);
   const Value& value() const;
   const Symbol& symbol() const;
+  static std::size_t hash(const MapsTo& to);
 };
 
 }  // namespace stacksafe
