@@ -21,7 +21,7 @@ bool has_local(const Domain &dom) {
 Interpreter::Interpreter(const Log &l, Error &error, const DoubleMap &m)
     : log_{l}, error_{error}, map_{m} {}
 FlatEnv Interpreter::diff() const {
-  return FlatEnv{heap_, stack_};
+  return FlatEnv{heap_diff_, stack_diff_};
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
@@ -245,7 +245,7 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
   }
   log_.print_heap(key.value(), heap_lookup(key), val);
   map_.heap().insert(key.value(), val);
-  heap_.insert(key.value(), val);
+  heap_diff_.insert(key.value(), val);
   if (has_local(val)) {
     if (key.is_global()) {
       error_.error_global();
@@ -262,7 +262,7 @@ void Interpreter::stack_insert(const llvm::Instruction &key,
   }
   log_.print_stack(key, stack_lookup(key), val);
   map_.stack().insert(key, val);
-  stack_.insert(key, val);
+  stack_diff_.insert(key, val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
