@@ -14,9 +14,9 @@ using MapPtr = std::unique_ptr<Map>;
 
 class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
+  MapRef add(const Map& m);
 
  public:
-  MapRef add(const Map& m);
   Env add(const FlatEnv& e);
 };
 
