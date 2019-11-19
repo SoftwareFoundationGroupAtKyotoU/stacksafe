@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_9AD1204C_8632_4047_8AC2_467F02D9DFF8
 
 #include <functional>
+#include <memory>
 #include <unordered_set>
 #include "symbol.hpp"
 #include "value.hpp"
@@ -35,6 +36,10 @@ class FlatMap : private std::unordered_set<MapsTo> {
 
  public:
   void insert(const Value& key, const Symbol& val);
+};
+
+class FlatMapPtr : private std::unique_ptr<FlatMap> {
+  using Super = std::unique_ptr<FlatMap>;
 };
 
 class FlatMapRef {
