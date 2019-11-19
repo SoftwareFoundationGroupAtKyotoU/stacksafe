@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
 #define INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
 
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -8,7 +9,18 @@ namespace stacksafe {
 class Env;
 class FlatEnv;
 class Map;
+class MapPtr;
 class MapRef;
+}  // namespace stacksafe
+
+namespace std {
+template <>
+struct hash<stacksafe::MapPtr> {
+  size_t operator()(const stacksafe::MapPtr& p) const;
+};
+}  // namespace std
+
+namespace stacksafe {
 
 class MapPtr : private std::unique_ptr<Map> {
   friend class MapPool;
