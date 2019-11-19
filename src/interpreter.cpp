@@ -23,6 +23,9 @@ Interpreter::Interpreter(const Log &l, Error &error, FlatEnvOld &e)
 const FlatEnvOld &Interpreter::diff() const {
   return diff_;
 }
+FlatEnv Interpreter::new_diff() const {
+  return FlatEnv{heap_, stack_};
+}
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
