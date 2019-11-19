@@ -53,6 +53,20 @@ void FlatEnv::merge(const FlatEnv &flat) {
 }
 
 Env::Env(FlatMapRef heap, FlatMapRef stack) : heap_{heap}, stack_{stack} {}
+Map Env::heap() const {
+  Map ret;
+  for (const auto &r : heap_) {
+    ret.merge(FlatMap::to_map(r.get()));
+  }
+  return ret;
+}
+Map Env::stack() const {
+  Map ret;
+  for (const auto &r : stack_) {
+    ret.merge(FlatMap::to_map(r.get()));
+  }
+  return ret;
+}
 void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
