@@ -11,6 +11,8 @@ class MapsTo : private std::tuple<Value, Symbol> {
 
  public:
   MapsTo(const Value& val, const Symbol& sym);
+  const Value& value() const;
+  const Symbol& symbol() const;
 };
 
 }  // namespace stacksafe
