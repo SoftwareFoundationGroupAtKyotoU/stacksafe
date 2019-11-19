@@ -1,9 +1,7 @@
 #include "pool.hpp"
-#include <llvm/Support/raw_ostream.h>
 #include <algorithm>
 #include "env.hpp"
 #include "map.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -20,12 +18,8 @@ MapRef MapPool::add(const Map& m) {
   const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
   auto it = lb;
   for (; it != ub; ++it) {
-    if (it->get() == ptr.get()) {
-      (llvm::errs() << "INFO: duplicate\n").flush();
-      (llvm::errs() << debug::to_str(m) << "\n").flush();
+    if (it->get() == m) {
       return MapRef{it->get()};
-    } else {
-      (llvm::errs() << "INFO: conflict\n").flush();
     }
   }
   MapRef ref{ptr.get()};
