@@ -40,6 +40,7 @@ class FlatMap : private std::unordered_set<MapsTo> {
 
 class FlatMapPtr : private std::unique_ptr<FlatMap> {
   using Super = std::unique_ptr<FlatMap>;
+  explicit FlatMapPtr(const FlatMap& flat);
 };
 
 class FlatMapRef {
