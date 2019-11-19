@@ -37,4 +37,26 @@ bool is_register(const llvm::Instruction& i) {
   }
 }
 
+namespace debug {
+int get_operand(const Value& v) {
+  static const auto prefix = '%';
+  if (!v) {
+    return -1;
+  }
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  v.get()->printAsOperand(stream, false);
+  std::string_view view{stream.str()};
+  if (!view.empty() && view.at(0) == prefix) {
+    std::string str{view.substr(1)};
+    std::size_t pos = std::string::npos;
+    auto val = std::stoi(str, &pos, 10);
+    if (pos == str.size()) {
+      return (pos < 0) ? -2 : val;
+    }
+    return -3;
+  }
+  return -4;
+}
+}  // namespace debug
 }  // namespace stacksafe
