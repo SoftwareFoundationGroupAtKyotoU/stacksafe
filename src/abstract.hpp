@@ -5,6 +5,7 @@
 #include "blocks.hpp"
 #include "error.hpp"
 #include "log.hpp"
+#include "pool.hpp"
 
 namespace llvm {
 class Function;
@@ -16,6 +17,7 @@ namespace stacksafe {
 class Abstract {
   const Log log_;
   Error error_;
+  FlatMapPool pool_;
   Blocks blocks_;
   std::string name_;
   double elapsed_;

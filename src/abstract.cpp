@@ -32,7 +32,7 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    const auto env = blocks_.add(FlatEnv{f});
+    const auto env = pool_.add(FlatEnv{f});
     blocks_.get(entry).merge(env);
     interpret(entry);
   }
@@ -54,7 +54,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
 void Abstract::interpret(const llvm::BasicBlock &b) {
   Interpreter i{log_, error_, blocks_.get(b).to_map()};
   i.visit(b);
-  const auto diff = blocks_.add(i.diff());
+  const auto diff = pool_.add(i.diff());
   auto prev = blocks_.get(b);
   prev.merge(diff);
   const auto t = b.getTerminator();
