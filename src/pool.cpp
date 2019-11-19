@@ -1,8 +1,11 @@
 #include "pool.hpp"
 #include <llvm/Support/raw_ostream.h>
 #include <algorithm>
+#include <set>
+#include <string>
 #include "env.hpp"
 #include "map.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
