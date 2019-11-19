@@ -40,6 +40,9 @@ size_t FlatMap::hash(const FlatMap& flat) {
   }
   return h;
 }
+bool FlatMap::equals(const FlatMap& lhs, const FlatMap& rhs) {
+  return lhs.includes(rhs) && rhs.includes(lhs);
+}
 
 FlatMapPtr::FlatMapPtr(const FlatMap& flat)
     : Super{std::make_unique<FlatMap>(flat)} {}
