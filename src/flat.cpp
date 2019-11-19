@@ -73,40 +73,12 @@ bool FlatMap::equals(const FlatMap& lhs, const FlatMap& rhs) {
   return lhs.includes(rhs) && rhs.includes(lhs);
 }
 
-FlatMapPtr::FlatMapPtr(const FlatMap& flat)
-    : Super{std::make_unique<FlatMap>(flat)} {}
-const FlatMap& FlatMapPtr::get() const {
-  return *Super::get();
-}
-bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs) {
-  return FlatMap::hash(lhs.get()) < FlatMap::hash(rhs.get());
-}
-
 FlatMapRef::FlatMapRef(const FlatMap& flat) : flat_{&flat} {}
 const FlatMap& FlatMapRef::get() const {
   return *flat_;
 }
 bool operator==(const FlatMapRef& lhs, const FlatMapRef& rhs) {
   return FlatMap::equals(lhs.get(), rhs.get());
-}
-
-FlatMapRef FlatMapPool::add(const FlatMap& flat) {
-  FlatMapPtr ptr{flat};
-  const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
-  auto it = lb;
-  for (; it != ub; ++it) {
-    if (FlatMap::equals(it->get(), flat)) {
-      return FlatMapRef{it->get()};
-    }
-  }
-  FlatMapRef ref{ptr.get()};
-  Super::insert(it, std::move(ptr));
-  return ref;
-}
-Env FlatMapPool::add(const FlatEnv& env) {
-  auto heap = add(env.heap());
-  auto stack = add(env.stack());
-  return Env{heap, stack};
 }
 
 }  // namespace stacksafe

@@ -11,6 +11,7 @@ class Function;
 
 namespace stacksafe {
 class FlatEnv;
+class FlatMapRef;
 class MapRef;
 
 class FlatEnvOld {

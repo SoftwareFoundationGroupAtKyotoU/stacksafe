@@ -6,8 +6,10 @@
 #include <vector>
 
 namespace stacksafe {
-class EnvOld;
-class FlatEnvOld;
+class Env;
+class FlatEnv;
+class FlatMap;
+class FlatMapRef;
 class Map;
 class MapRef;
 
@@ -20,6 +22,24 @@ class MapPtr : private std::unique_ptr<Map> {
   const Map& get() const;
 };
 bool operator<(const MapPtr& lhs, const MapPtr& rhs);
+
+class FlatMapPtr : private std::unique_ptr<FlatMap> {
+  friend class FlatMapPool;
+  using Super = std::unique_ptr<FlatMap>;
+  explicit FlatMapPtr(const FlatMap& flat);
+
+ public:
+  const FlatMap& get() const;
+};
+bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs);
+
+class FlatMapPool : private std::vector<FlatMapPtr> {
+  using Super = std::vector<FlatMapPtr>;
+
+ public:
+  FlatMapRef add(const FlatMap& flat);
+  Env add(const FlatEnv& env);
+};
 
 }  // namespace stacksafe
 
