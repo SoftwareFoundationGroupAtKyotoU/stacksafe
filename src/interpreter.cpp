@@ -221,22 +221,6 @@ void Interpreter::constant(const llvm::Instruction &dst) {
 Domain Interpreter::heap_lookup(const Symbol &key) const {
   return env_.heap().lookup(key.value());
 }
-void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
-  if (val.empty()) {
-    return;
-  }
-  log_.print_heap(key.value(), heap_lookup(key), val);
-  env_.heap().insert(key.value(), val);
-  diff_.heap().insert(key.value(), val);
-  if (has_local(val)) {
-    if (key.is_global()) {
-      error_.error_global();
-    }
-    if (key.is_arg()) {
-      error_.error_argument();
-    }
-  }
-}
 Domain Interpreter::stack_lookup(const Value &key) const {
   Domain dom;
   const auto v = key.get();
@@ -255,6 +239,23 @@ Domain Interpreter::stack_lookup(const Value &key) const {
     return env_.stack().lookup(key);
   }
 }
+void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
+  if (val.empty()) {
+    return;
+  }
+  log_.print_heap(key.value(), heap_lookup(key), val);
+  env_.heap().insert(key.value(), val);
+  diff_.heap().insert(key.value(), val);
+  heap_.insert(key.value(), val);
+  if (has_local(val)) {
+    if (key.is_global()) {
+      error_.error_global();
+    }
+    if (key.is_arg()) {
+      error_.error_argument();
+    }
+  }
+}
 void Interpreter::stack_insert(const llvm::Instruction &key,
                                const Domain &val) {
   if (val.empty()) {
@@ -263,6 +264,7 @@ void Interpreter::stack_insert(const llvm::Instruction &key,
   log_.print_stack(key, stack_lookup(key), val);
   env_.stack().insert(key, val);
   diff_.stack().insert(key, val);
+  stack_.insert(key, val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
