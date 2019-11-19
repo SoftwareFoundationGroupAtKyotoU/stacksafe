@@ -73,6 +73,10 @@ FlatMap &FlatEnv::stack() {
 bool FlatEnv::includes(const FlatEnv &flat) const {
   return heap_.includes(flat.heap_) && stack_.includes(flat.stack_);
 }
+void FlatEnv::merge(const FlatEnv &flat) {
+  heap_.merge(flat.heap_);
+  stack_.merge(flat.stack_);
+}
 
 Env::Env(FlatMapRef heap, FlatMapRef stack) : heap_{heap}, stack_{stack} {}
 void Env::merge(const Env &env) {
