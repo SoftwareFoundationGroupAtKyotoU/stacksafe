@@ -5,7 +5,7 @@
 
 namespace stacksafe {
 
-FlatEnv::FlatEnv(const llvm::Function &f) {
+FlatEnvOld::FlatEnvOld(const llvm::Function &f) {
   const auto g = Symbol::get_global();
   Domain dom;
   dom.insert(g);
@@ -18,24 +18,24 @@ FlatEnv::FlatEnv(const llvm::Function &f) {
     stack_.insert(a, dom);
   }
 }
-FlatEnv::FlatEnv(const Map &heap, const Map &stack)
+FlatEnvOld::FlatEnvOld(const Map &heap, const Map &stack)
     : heap_{heap}, stack_{stack} {}
-const Map &FlatEnv::heap() const {
+const Map &FlatEnvOld::heap() const {
   return heap_;
 }
-Map &FlatEnv::heap() {
+Map &FlatEnvOld::heap() {
   return heap_;
 }
-const Map &FlatEnv::stack() const {
+const Map &FlatEnvOld::stack() const {
   return stack_;
 }
-Map &FlatEnv::stack() {
+Map &FlatEnvOld::stack() {
   return stack_;
 }
-bool FlatEnv::includes(const FlatEnv &that) const {
+bool FlatEnvOld::includes(const FlatEnvOld &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-void FlatEnv::merge(const FlatEnv &that) {
+void FlatEnvOld::merge(const FlatEnvOld &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
@@ -45,7 +45,7 @@ void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
-FlatEnv Env::concat() const {
+FlatEnvOld Env::concat() const {
   Map heap, stack;
   for (const auto &m : heap_) {
     heap.merge(m.get());
@@ -53,7 +53,7 @@ FlatEnv Env::concat() const {
   for (const auto &m : stack_) {
     stack.merge(m.get());
   }
-  return FlatEnv{heap, stack};
+  return FlatEnvOld{heap, stack};
 }
 
 }  // namespace stacksafe

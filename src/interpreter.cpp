@@ -18,9 +18,9 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, Error &error, FlatEnv &e)
+Interpreter::Interpreter(const Log &l, Error &error, FlatEnvOld &e)
     : log_{l}, error_{error}, env_{e} {}
-const FlatEnv &Interpreter::diff() const {
+const FlatEnvOld &Interpreter::diff() const {
   return diff_;
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {

@@ -11,19 +11,19 @@ class Function;
 namespace stacksafe {
 class MapRef;
 
-class FlatEnv {
+class FlatEnvOld {
   Map heap_, stack_;
 
  public:
-  FlatEnv() = default;
-  explicit FlatEnv(const llvm::Function &f);
-  FlatEnv(const Map &heap, const Map &stack);
+  FlatEnvOld() = default;
+  explicit FlatEnvOld(const llvm::Function &f);
+  FlatEnvOld(const Map &heap, const Map &stack);
   const Map &heap() const;
   Map &heap();
   const Map &stack() const;
   Map &stack();
-  bool includes(const FlatEnv &that) const;
-  void merge(const FlatEnv &that);
+  bool includes(const FlatEnvOld &that) const;
+  void merge(const FlatEnvOld &that);
 };
 
 class Env {
@@ -33,7 +33,7 @@ class Env {
   Env() = default;
   Env(MapRef heap, MapRef stack);
   void merge(const Env &env);
-  FlatEnv concat() const;
+  FlatEnvOld concat() const;
 };
 
 }  // namespace stacksafe
