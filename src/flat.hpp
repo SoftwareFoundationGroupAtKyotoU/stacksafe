@@ -47,7 +47,6 @@ class FlatMap : private std::unordered_set<MapsTo> {
  public:
   void insert(const Value& key, const Symbol& val);
   void insert(const Value& key, const Domain& val);
-  void insert(const Map& map);
   void merge(const FlatMap& flat);
   bool includes(const FlatMap& flat) const;
   static Map to_map(const FlatMap& flat);

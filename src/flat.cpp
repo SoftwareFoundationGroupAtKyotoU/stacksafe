@@ -39,11 +39,6 @@ void FlatMap::insert(const Value& key, const Domain& val) {
     insert(key, sym);
   }
 }
-void FlatMap::insert(const Map& map) {
-  for (const auto& [key, val] : map) {
-    insert(key, val);
-  }
-}
 void FlatMap::merge(const FlatMap& flat) {
   for (const auto& to : flat) {
     Super::insert(to);
