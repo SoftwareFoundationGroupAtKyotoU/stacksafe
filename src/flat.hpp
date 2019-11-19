@@ -4,6 +4,7 @@
 #include <functional>
 #include <memory>
 #include <unordered_set>
+#include <vector>
 #include "symbol.hpp"
 #include "value.hpp"
 
@@ -52,6 +53,10 @@ class FlatMapRef {
 
  public:
   const FlatMap& get() const;
+};
+
+class FlatMapPool : private std::vector<FlatMapPtr> {
+  using Super = std::vector<FlatMapPtr>;
 };
 
 }  // namespace stacksafe
