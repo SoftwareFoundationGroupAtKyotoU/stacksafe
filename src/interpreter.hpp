@@ -3,11 +3,12 @@
 
 #include <llvm/IR/InstVisitor.h>
 #include <unordered_set>
-#include "env.hpp"
 #include "flat.hpp"
+#include "map.hpp"
 
 namespace stacksafe {
 class Error;
+class FlatEnv;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {

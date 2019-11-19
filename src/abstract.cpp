@@ -4,6 +4,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <chrono>
 #include "interpreter.hpp"
+#include "map.hpp"
 
 namespace stacksafe {
 namespace {

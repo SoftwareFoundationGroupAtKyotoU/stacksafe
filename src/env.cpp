@@ -1,7 +1,6 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include "flat.hpp"
-#include "pool.hpp"
+#include "map.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {

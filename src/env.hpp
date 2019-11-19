@@ -3,16 +3,13 @@
 
 #include <unordered_set>
 #include "flat.hpp"
-#include "map.hpp"
 
 namespace llvm {
 class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class FlatEnv;
-class FlatMapRef;
-class MapRef;
+class Map;
 
 class FlatEnv {
   FlatMap heap_, stack_;
