@@ -50,6 +50,7 @@ class FlatMap : private std::unordered_set<MapsTo> {
   void insert(const Map& map);
   void merge(const FlatMap& flat);
   bool includes(const FlatMap& flat) const;
+  static Map to_map(const FlatMap& flat);
   static size_t hash(const FlatMap& flat);
   static bool equals(const FlatMap& lhs, const FlatMap& rhs);
 };

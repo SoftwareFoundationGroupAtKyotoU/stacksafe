@@ -55,6 +55,13 @@ bool FlatMap::includes(const FlatMap& flat) const {
   };
   return std::all_of(flat.begin(), flat.end(), pred);
 }
+Map FlatMap::to_map(const FlatMap& flat) {
+  Map map;
+  for (const auto& to : flat) {
+    map.insert(to.value(), to.symbol());
+  }
+  return map;
+}
 size_t FlatMap::hash(const FlatMap& flat) {
   std::size_t h = 0;
   for (const auto& to : flat) {
