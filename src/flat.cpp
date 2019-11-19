@@ -27,4 +27,6 @@ void FlatMap::insert(const Value& key, const Symbol& val) {
   Super::emplace(key, val);
 }
 
+FlatMapRef::FlatMapRef(const FlatMap& flat) : flat_{&flat} {}
+
 }  // namespace stacksafe

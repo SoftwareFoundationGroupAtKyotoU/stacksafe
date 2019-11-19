@@ -37,6 +37,11 @@ class FlatMap : private std::unordered_set<MapsTo> {
   void insert(const Value& key, const Symbol& val);
 };
 
+class FlatMapRef {
+  const FlatMap* flat_;
+  explicit FlatMapRef(const FlatMap& flat);
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_9AD1204C_8632_4047_8AC2_467F02D9DFF8
