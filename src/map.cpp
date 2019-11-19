@@ -24,6 +24,7 @@ void Map::merge(const Map &that) {
   }
 }
 
+Heap::Heap(const Map &m) : Map{m} {}
 void Heap::insert(const Symbol &key, const Domain &val) {
   Map::insert(key.value(), val);
 }

@@ -21,6 +21,7 @@ class Map : private std::unordered_map<Value, Domain> {
 
 class Heap : private Map {
  public:
+  explicit Heap(const Map &m);
   void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Symbol &key) const;
   void merge(const Heap &that);
