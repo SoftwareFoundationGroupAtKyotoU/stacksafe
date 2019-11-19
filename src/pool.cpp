@@ -4,14 +4,6 @@
 
 namespace stacksafe {
 
-MapRef::MapRef(const Map& m) : map_{&m} {}
-const Map& MapRef::get() const {
-  return *map_;
-}
-bool operator==(const MapRef& lhs, const MapRef& rhs) {
-  return lhs.get() == rhs.get();
-}
-
 MapRef MapPool::add(const Map& m) {
   auto ptr = std::make_unique<Map>(m);
   MapRef ref{*ptr.get()};

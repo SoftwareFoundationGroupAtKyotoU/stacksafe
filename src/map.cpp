@@ -44,6 +44,14 @@ bool operator==(const Map &lhs, const Map &rhs) {
   return lhs.includes(rhs) && rhs.includes(lhs);
 }
 
+MapRef::MapRef(const Map &m) : map_{&m} {}
+const Map &MapRef::get() const {
+  return *map_;
+}
+bool operator==(const MapRef &lhs, const MapRef &rhs) {
+  return lhs.get() == rhs.get();
+}
+
 }  // namespace stacksafe
 
 namespace std {
