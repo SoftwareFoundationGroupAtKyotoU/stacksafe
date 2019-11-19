@@ -92,7 +92,7 @@ FlatMapRef FlatMapPool::add(const FlatMap& flat) {
       return FlatMapRef{it->get()};
     }
   }
-  FlatMapRef ref{it->get()};
+  FlatMapRef ref{ptr.get()};
   Super::insert(it, std::move(ptr));
   return ref;
 }
