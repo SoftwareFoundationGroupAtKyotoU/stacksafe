@@ -43,6 +43,11 @@ void FlatMap::insert(const Map& map) {
     insert(key, val);
   }
 }
+void FlatMap::merge(const FlatMap& flat) {
+  for (const auto& to : flat) {
+    Super::insert(to);
+  }
+}
 bool FlatMap::includes(const FlatMap& flat) const {
   auto pred = [& self = *this](const auto& to) {
     return self.Super::count(to) != 0;
