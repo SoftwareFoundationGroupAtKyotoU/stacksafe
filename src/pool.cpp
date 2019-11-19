@@ -1,4 +1,6 @@
 #include "pool.hpp"
+#include <llvm/Support/raw_ostream.h>
+#include <algorithm>
 #include "env.hpp"
 #include "map.hpp"
 
@@ -15,7 +17,23 @@ bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
 MapRef MapPool::add(const Map& m) {
   MapPtr ptr{m};
   MapRef ref{ptr.get()};
-  Super::push_back(std::move(ptr));
+  const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
+  if (lb == ub) {
+    Super::insert(lb, std::move(ptr));
+  } else {
+    bool dup = false;
+    for (auto it = lb; it != ub; ++it) {
+      if (it->get() == ptr.get()) {
+        (llvm::errs() << "INFO: duplicate\n").flush();
+        dup = true;
+      } else {
+        (llvm::errs() << "INFO: conflict\n").flush();
+      }
+    }
+    if (!dup) {
+      Super::insert(ub, std::move(ptr));
+    }
+  }
   return ref;
 }
 Env MapPool::add(const FlatEnv& e) {
