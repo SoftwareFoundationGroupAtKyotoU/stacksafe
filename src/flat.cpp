@@ -1,6 +1,12 @@
 #include "flat.hpp"
 #include "utility.hpp"
 
+namespace std {
+size_t hash<stacksafe::MapsTo>::operator()(const stacksafe::MapsTo& to) const {
+  return stacksafe::MapsTo::hash(to);
+}
+}  // namespace std
+
 namespace stacksafe {
 
 MapsTo::MapsTo(const Value& val, const Symbol& sym) : Super{val, sym} {}
