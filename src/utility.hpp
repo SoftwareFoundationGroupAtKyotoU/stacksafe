@@ -16,6 +16,7 @@ class Value;
 void unsupported_instruction(const llvm::Instruction& i);
 bool is_global(const llvm::Constant& c);
 bool is_register(const llvm::Instruction& i);
+std::size_t hash_value(const void* ptr);
 
 namespace debug {
 int get_operand(const Value& v);

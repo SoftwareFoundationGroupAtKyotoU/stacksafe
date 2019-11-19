@@ -1,4 +1,5 @@
 #include "utility.hpp"
+#include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
 #include <set>
@@ -38,6 +39,9 @@ bool is_register(const llvm::Instruction& i) {
   } else {
     return true;
   }
+}
+std::size_t hash_value(const void* ptr) {
+  return llvm::hash_value(ptr);
 }
 
 namespace debug {
