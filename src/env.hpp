@@ -26,13 +26,13 @@ class FlatEnvOld {
   void merge(const FlatEnvOld &that);
 };
 
-class Env {
+class EnvOld {
   std::unordered_set<MapRef> heap_, stack_;
 
  public:
-  Env() = default;
-  Env(MapRef heap, MapRef stack);
-  void merge(const Env &env);
+  EnvOld() = default;
+  EnvOld(MapRef heap, MapRef stack);
+  void merge(const EnvOld &env);
   FlatEnvOld concat() const;
 };
 

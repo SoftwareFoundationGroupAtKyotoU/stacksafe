@@ -40,12 +40,12 @@ void FlatEnvOld::merge(const FlatEnvOld &that) {
   stack_.merge(that.stack_);
 }
 
-Env::Env(MapRef heap, MapRef stack) : heap_{heap}, stack_{stack} {}
-void Env::merge(const Env &env) {
+EnvOld::EnvOld(MapRef heap, MapRef stack) : heap_{heap}, stack_{stack} {}
+void EnvOld::merge(const EnvOld &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
-FlatEnvOld Env::concat() const {
+FlatEnvOld EnvOld::concat() const {
   Map heap, stack;
   for (const auto &m : heap_) {
     heap.merge(m.get());

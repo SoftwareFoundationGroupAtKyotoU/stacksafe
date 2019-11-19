@@ -26,10 +26,10 @@ MapRef MapPool::add(const Map& m) {
   Super::insert(it, std::move(ptr));
   return ref;
 }
-Env MapPool::add(const FlatEnvOld& e) {
+EnvOld MapPool::add(const FlatEnvOld& e) {
   auto heap = add(e.heap());
   auto stack = add(e.stack());
-  return Env{heap, stack};
+  return EnvOld{heap, stack};
 }
 
 }  // namespace stacksafe

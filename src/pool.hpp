@@ -6,7 +6,7 @@
 #include <vector>
 
 namespace stacksafe {
-class Env;
+class EnvOld;
 class FlatEnvOld;
 class Map;
 class MapRef;
@@ -26,7 +26,7 @@ class MapPool : private std::vector<MapPtr> {
   MapRef add(const Map& m);
 
  public:
-  Env add(const FlatEnvOld& e);
+  EnvOld add(const FlatEnvOld& e);
 };
 
 }  // namespace stacksafe

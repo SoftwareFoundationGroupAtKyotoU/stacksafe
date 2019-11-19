@@ -13,8 +13,8 @@ class Function;
 
 namespace stacksafe {
 
-class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
-  using Super = std::unordered_map<const llvm::BasicBlock *, Env>;
+class Blocks : private std::unordered_map<const llvm::BasicBlock *, EnvOld> {
+  using Super = std::unordered_map<const llvm::BasicBlock *, EnvOld>;
   MapPool pool_;
   FlatMapPool flat_;
 
@@ -26,7 +26,7 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   FlatEnvOld concat(const llvm::BasicBlock &src);
 
  private:
-  Env &get(const llvm::BasicBlock &b);
+  EnvOld &get(const llvm::BasicBlock &b);
 };
 
 }  // namespace stacksafe
