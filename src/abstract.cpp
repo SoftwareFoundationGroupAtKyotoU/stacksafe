@@ -51,9 +51,12 @@ void Abstract::print(llvm::raw_ostream &os) const {
   }
   (os << msg).flush();
 }
-void Abstract::interpret(const llvm::BasicBlock &b, DoubleMap prev) {
-  Interpreter i{log_, error_, prev};
+void Abstract::interpret(const llvm::BasicBlock &b, DoubleMap map) {
+  Interpreter i{log_, error_, map};
   i.visit(b);
+  auto prev = blocks_.get(b);
+  auto diff = blocks_.add(i.new_diff());
+  prev.merge(diff);
   auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
@@ -61,14 +64,11 @@ void Abstract::interpret(const llvm::BasicBlock &b, DoubleMap prev) {
       return;
     }
     const auto &succ = *t->getSuccessor(j);
-    auto next = blocks_.concat(succ);
-    if (next.includes(prev)) {
-      continue;
+    auto &next = blocks_.get(succ);
+    if (!next.includes(prev)) {
+      next.merge(prev);
+      interpret(succ, next.to_map());
     }
-    blocks_.merge(succ, b);
-    blocks_.merge(succ, i.new_diff());
-    next.merge(prev);
-    interpret(succ, std::move(next));
   }
 }
 

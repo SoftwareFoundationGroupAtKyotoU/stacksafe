@@ -26,7 +26,6 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   void merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src);
   DoubleMap concat(const llvm::BasicBlock &src);
 
- private:
   Env &get(const llvm::BasicBlock &b);
 };
 
