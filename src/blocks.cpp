@@ -14,9 +14,6 @@ Env Blocks::add(const FlatEnv &env) {
 void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnv &src) {
   get(dst).merge(flat_.add(src));
 }
-DoubleMap Blocks::concat(const llvm::BasicBlock &src) {
-  return get(src).concat();
-}
 const Env &Blocks::get(const llvm::BasicBlock &b) const {
   auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");
