@@ -13,5 +13,8 @@ const Symbol& MapsTo::symbol() const {
 std::size_t MapsTo::hash(const MapsTo& to) {
   return hash_combine(Value::hash(to.value()), Symbol::hash(to.symbol()));
 }
+bool operator==(const MapsTo& lhs, const MapsTo& rhs) {
+  return lhs.value() == rhs.value() && lhs.symbol() == rhs.symbol();
+}
 
 }  // namespace stacksafe

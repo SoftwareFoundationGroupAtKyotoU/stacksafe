@@ -15,6 +15,7 @@ class MapsTo : private std::tuple<Value, Symbol> {
   const Symbol& symbol() const;
   static std::size_t hash(const MapsTo& to);
 };
+bool operator==(const MapsTo& lhs, const MapsTo& rhs);
 
 }  // namespace stacksafe
 
