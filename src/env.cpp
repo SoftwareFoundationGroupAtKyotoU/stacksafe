@@ -73,5 +73,15 @@ void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
+FlatEnv Env::concat() const {
+  FlatMap heap, stack;
+  for (const auto &r : heap_) {
+    heap.merge(r.get());
+  }
+  for (const auto &r : stack_) {
+    stack.merge(r.get());
+  }
+  return FlatEnv{heap, stack};
+}
 
 }  // namespace stacksafe
