@@ -34,6 +34,9 @@ Symbol Symbol::get_arg(const llvm::Argument &v) {
 std::size_t hash(const Symbol &sym) {
   return Value::hash(sym.value());
 }
+bool operator==(const Symbol &lhs, const Symbol &rhs) {
+  return lhs.value() == rhs.value();
+}
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
 }
