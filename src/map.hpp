@@ -14,6 +14,7 @@ class Map : private std::unordered_map<Value, Domain> {
  public:
   using Super::begin, Super::end;
   void insert(const Value &key, const Domain &val);
+  void insert(const Value &key, const Symbol &val);
   Domain lookup(const Value &key) const;
   void merge(const Map &that);
   bool includes(const Map &that) const;
