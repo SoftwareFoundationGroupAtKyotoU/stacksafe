@@ -20,6 +20,7 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
  public:
   using Super::begin, Super::end;
   explicit Blocks(const llvm::Function &f);
+  Env add(const FlatEnv &env);
   void merge(const llvm::BasicBlock &dst, const FlatEnv &src);
   void merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src);
   FlatEnvOld concat(const llvm::BasicBlock &src);

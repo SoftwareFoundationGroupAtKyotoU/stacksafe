@@ -8,6 +8,9 @@ Blocks::Blocks(const llvm::Function &f) {
     Super::try_emplace(&b);
   }
 }
+Env Blocks::add(const FlatEnv &env) {
+  return flat_.add(env);
+}
 void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnv &src) {
   get(dst).merge(flat_.add(src));
 }
