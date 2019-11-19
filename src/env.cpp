@@ -6,21 +6,6 @@
 
 namespace stacksafe {
 
-DoubleMap::DoubleMap(const Map &heap, const Map &stack)
-    : heap_{heap}, stack_{stack} {}
-const Map &DoubleMap::heap() const {
-  return heap_;
-}
-Map &DoubleMap::heap() {
-  return heap_;
-}
-const Map &DoubleMap::stack() const {
-  return stack_;
-}
-Map &DoubleMap::stack() {
-  return stack_;
-}
-
 FlatEnv::FlatEnv(const llvm::Function &f) {
   const auto g = Symbol::get_global();
   heap_.insert(g.value(), g);

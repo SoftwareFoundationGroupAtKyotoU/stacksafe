@@ -14,17 +14,6 @@ class FlatEnv;
 class FlatMapRef;
 class MapRef;
 
-class DoubleMap {
-  Map heap_, stack_;
-
- public:
-  DoubleMap(const Map &heap, const Map &stack);
-  const Map &heap() const;
-  Map &heap();
-  const Map &stack() const;
-  Map &stack();
-};
-
 class FlatEnv {
   FlatMap heap_, stack_;
 
