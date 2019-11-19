@@ -29,7 +29,10 @@ class Heap : private Map {
   void merge(const Heap &that);
 };
 
-class Stack : private Map {};
+class Stack : private Map {
+ public:
+  using Map::insert, Map::lookup, Map::merge;
+};
 
 }  // namespace stacksafe
 
