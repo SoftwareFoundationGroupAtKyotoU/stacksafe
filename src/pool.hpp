@@ -9,18 +9,7 @@ namespace stacksafe {
 class Env;
 class FlatEnv;
 class Map;
-class MapPtr;
 class MapRef;
-}  // namespace stacksafe
-
-namespace std {
-template <>
-struct hash<stacksafe::MapPtr> {
-  size_t operator()(const stacksafe::MapPtr& p) const;
-};
-}  // namespace std
-
-namespace stacksafe {
 
 class MapPtr : private std::unique_ptr<Map> {
   friend class MapPool;

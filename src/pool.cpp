@@ -3,12 +3,6 @@
 #include "env.hpp"
 #include "map.hpp"
 
-namespace std {
-size_t hash<stacksafe::MapPtr>::operator()(const stacksafe::MapPtr& p) const {
-  return stacksafe::Map::hash(p.get());
-}
-}  // namespace std
-
 namespace stacksafe {
 
 MapPtr::MapPtr(const Map& m) : Super{std::make_unique<Map>(m)} {}
