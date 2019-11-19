@@ -3,12 +3,13 @@
 
 #include <string>
 #include <unordered_map>
-#include "blocks.hpp"
+#include "env.hpp"
 #include "error.hpp"
 #include "log.hpp"
 #include "pool.hpp"
 
 namespace llvm {
+class BasicBlock;
 class Function;
 class raw_ostream;
 }  // namespace llvm
