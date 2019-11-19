@@ -1,8 +1,6 @@
 #include "pool.hpp"
 #include <llvm/Support/raw_ostream.h>
 #include <algorithm>
-#include <set>
-#include <string>
 #include "env.hpp"
 #include "map.hpp"
 #include "utility.hpp"
@@ -23,6 +21,8 @@ MapRef MapPool::add(const Map& m) {
   auto it = lb;
   for (; it != ub; ++it) {
     if (it->get() == ptr.get()) {
+      (llvm::errs() << "INFO: duplicate\n").flush();
+      (llvm::errs() << debug::to_str(m) << "\n").flush();
       return MapRef{it->get()};
     } else {
       (llvm::errs() << "INFO: conflict\n").flush();
