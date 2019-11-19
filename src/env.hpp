@@ -43,6 +43,7 @@ class FlatEnv {
   FlatMap heap_, stack_;
 
  public:
+  explicit FlatEnv(const llvm::Function &f);
   FlatEnv(const FlatMap &heap, const FlatMap &stack);
   const FlatMap &heap() const;
   FlatMap &heap();

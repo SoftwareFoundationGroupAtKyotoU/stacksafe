@@ -63,6 +63,15 @@ FlatEnvOld EnvOld::concat() const {
   return FlatEnvOld{heap, stack};
 }
 
+FlatEnv::FlatEnv(const llvm::Function &f) {
+  const auto g = Symbol::get_global();
+  heap_.insert(g.value(), g);
+  for (const auto &a : f.args()) {
+    const auto arg = Symbol::get_arg(a);
+    heap_.insert(arg.value(), arg);
+    stack_.insert(a, arg);
+  }
+}
 FlatEnv::FlatEnv(const FlatMap &heap, const FlatMap &stack)
     : heap_{heap}, stack_{stack} {}
 const FlatMap &FlatEnv::heap() const {
