@@ -17,13 +17,5 @@ void Domain::merge(const Domain &that) {
 bool Domain::element(const Symbol &sym) const {
   return std::binary_search(begin(), end(), sym);
 }
-bool Domain::includes(const Domain &that) const {
-  for (const auto &sym : that) {
-    if (!element(sym)) {
-      return false;
-    }
-  }
-  return true;
-}
 
 }  // namespace stacksafe

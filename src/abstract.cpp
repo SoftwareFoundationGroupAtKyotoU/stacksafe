@@ -4,6 +4,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <chrono>
 #include "interpreter.hpp"
+#include "map.hpp"
 
 namespace stacksafe {
 namespace {
@@ -26,15 +27,19 @@ class Stopwatch {
 }  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
-    : log_{f}, blocks_{f}, name_{f.getName().str()}, elapsed_{0.0} {}
+    : log_{f}, name_{f.getName().str()}, elapsed_{0.0} {
+  for (const auto &b : f) {
+    blocks_.try_emplace(&b);
+  }
+}
 void Abstract::run(const llvm::Function &f) {
   using namespace std::chrono;
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    FlatEnv env{f};
-    blocks_.merge(entry, env);
-    interpret(entry, env);
+    const auto env = pool_.add(FlatEnv{f});
+    get(entry).merge(env);
+    interpret(entry);
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
@@ -51,25 +56,30 @@ void Abstract::print(llvm::raw_ostream &os) const {
   }
   (os << msg).flush();
 }
-void Abstract::interpret(const llvm::BasicBlock &b, FlatEnv prev) {
-  Interpreter i{log_, error_, prev};
+void Abstract::interpret(const llvm::BasicBlock &b) {
+  auto prev = get(b);
+  Interpreter i{log_, error_, prev.heap(), prev.stack()};
   i.visit(b);
-  auto t = b.getTerminator();
+  const auto diff = pool_.add(i.diff());
+  prev.merge(diff);
+  const auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
     if (error_.is_error()) {
       return;
     }
     const auto &succ = *t->getSuccessor(j);
-    auto next = blocks_.concat(succ);
-    if (next.includes(prev)) {
-      continue;
+    auto &next = get(succ);
+    if (!next.includes(prev)) {
+      next.merge(prev);
+      interpret(succ);
     }
-    blocks_.merge(succ, b);
-    blocks_.merge(succ, i.diff());
-    next.merge(prev);
-    interpret(succ, std::move(next));
   }
+}
+Env &Abstract::get(const llvm::BasicBlock &b) {
+  auto it = blocks_.find(&b);
+  assert(it != blocks_.end() && "unknown basicblock");
+  return it->second;
 }
 
 }  // namespace stacksafe

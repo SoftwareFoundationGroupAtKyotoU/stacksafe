@@ -14,34 +14,24 @@ class Map : private std::unordered_map<Value, Domain> {
  public:
   using Super::begin, Super::end;
   void insert(const Value &key, const Domain &val);
+  void insert(const Value &key, const Symbol &val);
   Domain lookup(const Value &key) const;
   void merge(const Map &that);
-  bool includes(const Map &that) const;
-  static std::size_t hash(const Map &m);
 };
-bool operator==(const Map &lhs, const Map &rhs);
 
-class MapRef {
-  friend class MapPool;
-  const Map *map_;
-  explicit MapRef(const Map &m);
-
+class Heap : private Map {
  public:
-  const Map &get() const;
+  explicit Heap(const Map &m);
+  void insert(const Symbol &key, const Domain &val);
+  Domain lookup(const Symbol &key) const;
+  void merge(const Heap &that);
 };
-bool operator==(const MapRef &lhs, const MapRef &rhs);
+class Stack : private Map {
+ public:
+  using Map::insert, Map::lookup, Map::merge;
+  explicit Stack(const Map &m);
+};
 
 }  // namespace stacksafe
-
-namespace std {
-template <>
-struct hash<stacksafe::Map> {
-  size_t operator()(const stacksafe::Map &m) const;
-};
-template <>
-struct hash<stacksafe::MapRef> {
-  size_t operator()(const stacksafe::MapRef &r) const;
-};
-}  // namespace std
 
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855

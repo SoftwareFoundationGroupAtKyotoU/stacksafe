@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include "env.hpp"
 #include "error.hpp"
 #include "log.hpp"
 #include "utility.hpp"
@@ -18,10 +19,11 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, Error &error, FlatEnv &e)
-    : log_{l}, error_{error}, env_{e} {}
-const FlatEnv &Interpreter::diff() const {
-  return diff_;
+Interpreter::Interpreter(const Log &l, Error &error, const Heap &heap,
+                         const Stack &stack)
+    : log_{l}, error_{error}, heap_{heap}, stack_{stack} {}
+FlatEnv Interpreter::diff() const {
+  return FlatEnv{heap_diff_, stack_diff_};
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
@@ -219,23 +221,7 @@ void Interpreter::constant(const llvm::Instruction &dst) {
   stack_insert(dst, Domain{});
 }
 Domain Interpreter::heap_lookup(const Symbol &key) const {
-  return env_.heap().lookup(key.value());
-}
-void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
-  if (val.empty()) {
-    return;
-  }
-  log_.print_heap(key.value(), heap_lookup(key), val);
-  env_.heap().insert(key.value(), val);
-  diff_.heap().insert(key.value(), val);
-  if (has_local(val)) {
-    if (key.is_global()) {
-      error_.error_global();
-    }
-    if (key.is_arg()) {
-      error_.error_argument();
-    }
-  }
+  return heap_.lookup(key);
 }
 Domain Interpreter::stack_lookup(const Value &key) const {
   Domain dom;
@@ -249,10 +235,26 @@ Domain Interpreter::stack_lookup(const Value &key) const {
     return dom;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
     assert(is_register(*i) && "invalid register lookup");
-    return env_.stack().lookup(key);
+    return stack_.lookup(key);
   } else {
     assert(llvm::isa<llvm::Argument>(v) && "invalid value lookup");
-    return env_.stack().lookup(key);
+    return stack_.lookup(key);
+  }
+}
+void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
+  if (val.empty()) {
+    return;
+  }
+  log_.print_heap(key.value(), heap_lookup(key), val);
+  heap_.insert(key, val);
+  heap_diff_.insert(key.value(), val);
+  if (has_local(val)) {
+    if (key.is_global()) {
+      error_.error_global();
+    }
+    if (key.is_arg()) {
+      error_.error_argument();
+    }
   }
 }
 void Interpreter::stack_insert(const llvm::Instruction &key,
@@ -261,8 +263,8 @@ void Interpreter::stack_insert(const llvm::Instruction &key,
     return;
   }
   log_.print_stack(key, stack_lookup(key), val);
-  env_.stack().insert(key, val);
-  diff_.stack().insert(key, val);
+  stack_.insert(key, val);
+  stack_diff_.insert(key, val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {

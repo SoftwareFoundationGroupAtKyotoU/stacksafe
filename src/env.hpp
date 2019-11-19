@@ -2,38 +2,37 @@
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
 #include <unordered_set>
-#include "map.hpp"
+#include "flat.hpp"
 
 namespace llvm {
 class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class MapRef;
+class Heap;
+class Map;
+class Stack;
 
 class FlatEnv {
-  Map heap_, stack_;
+  FlatMap heap_, stack_;
 
  public:
-  FlatEnv() = default;
   explicit FlatEnv(const llvm::Function &f);
-  FlatEnv(const Map &heap, const Map &stack);
-  const Map &heap() const;
-  Map &heap();
-  const Map &stack() const;
-  Map &stack();
-  bool includes(const FlatEnv &that) const;
-  void merge(const FlatEnv &that);
+  FlatEnv(const FlatMap &heap, const FlatMap &stack);
+  const FlatMap &heap() const;
+  const FlatMap &stack() const;
 };
 
 class Env {
-  std::unordered_set<MapRef> heap_, stack_;
+  std::unordered_set<FlatMapRef> heap_, stack_;
 
  public:
   Env() = default;
-  Env(MapRef heap, MapRef stack);
+  Env(FlatMapRef heap, FlatMapRef stack);
+  Heap heap() const;
+  Stack stack() const;
   void merge(const Env &env);
-  FlatEnv concat() const;
+  bool includes(const Env &env);
 };
 
 }  // namespace stacksafe

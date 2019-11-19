@@ -3,10 +3,12 @@
 
 #include <llvm/IR/InstVisitor.h>
 #include <unordered_set>
-#include "env.hpp"
+#include "flat.hpp"
+#include "map.hpp"
 
 namespace stacksafe {
 class Error;
+class FlatEnv;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
@@ -15,11 +17,14 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Params = std::unordered_set<Value>;
   const Log &log_;
   Error &error_;
-  FlatEnv &env_, diff_;
+  Heap heap_;
+  Stack stack_;
+  FlatMap heap_diff_, stack_diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, FlatEnv &e);
-  const FlatEnv &diff() const;
+  explicit Interpreter(const Log &l, Error &error, const Heap &heap,
+                       const Stack &stack);
+  FlatEnv diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
