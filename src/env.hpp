@@ -25,7 +25,6 @@ class DoubleMap {
   Map &stack();
   bool includes(const DoubleMap &that) const;
   void merge(const DoubleMap &that);
-  FlatEnv to_flat_env() const;
 };
 
 class FlatEnv {

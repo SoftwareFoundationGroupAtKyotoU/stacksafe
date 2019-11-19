@@ -27,12 +27,6 @@ void DoubleMap::merge(const DoubleMap &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-FlatEnv DoubleMap::to_flat_env() const {
-  FlatMap heap, stack;
-  heap.insert(heap_);
-  stack.insert(stack_);
-  return FlatEnv{heap, stack};
-}
 
 FlatEnv::FlatEnv(const llvm::Function &f) {
   const auto g = Symbol::get_global();
