@@ -10,7 +10,6 @@ Blocks::Blocks(const llvm::Function &f) {
 }
 void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnvOld &src) {
   get(dst).merge(pool_.add(src));
-  flat_.add(src);
 }
 void Blocks::merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src) {
   get(dst).merge(get(src));
