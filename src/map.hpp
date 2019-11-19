@@ -26,10 +26,10 @@ class Heap : private Map {
   Domain lookup(const Symbol &key) const;
   void merge(const Heap &that);
 };
-
 class Stack : private Map {
  public:
   using Map::insert, Map::lookup, Map::merge;
+  explicit Stack(const Map &m);
 };
 
 }  // namespace stacksafe

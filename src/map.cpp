@@ -34,5 +34,6 @@ Domain Heap::lookup(const Symbol &key) const {
 void Heap::merge(const Heap &that) {
   Map::merge(that);
 }
+Stack::Stack(const Map &m) : Map{m} {}
 
 }  // namespace stacksafe
