@@ -47,6 +47,7 @@ class FlatMapPtr : private std::unique_ptr<FlatMap> {
  public:
   const FlatMap& get() const;
 };
+bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs);
 
 class FlatMapRef {
   const FlatMap* flat_;

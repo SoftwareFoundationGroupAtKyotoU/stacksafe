@@ -39,6 +39,9 @@ FlatMapPtr::FlatMapPtr(const FlatMap& flat)
 const FlatMap& FlatMapPtr::get() const {
   return *Super::get();
 }
+bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs) {
+  return FlatMap::hash(lhs.get()) < FlatMap::hash(lhs.get());
+}
 
 FlatMapRef::FlatMapRef(const FlatMap& flat) : flat_{&flat} {}
 const FlatMap& FlatMapRef::get() const {
