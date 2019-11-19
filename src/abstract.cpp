@@ -33,7 +33,7 @@ void Abstract::run(const llvm::Function &f) {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
     const auto env = pool_.add(FlatEnv{f});
-    blocks_.get(entry).merge(env);
+    get(entry).merge(env);
     interpret(entry);
   }
 }
@@ -52,10 +52,10 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  Interpreter i{log_, error_, blocks_.get(b).to_map()};
+  Interpreter i{log_, error_, get(b).to_map()};
   i.visit(b);
   const auto diff = pool_.add(i.diff());
-  auto prev = blocks_.get(b);
+  auto prev = get(b);
   prev.merge(diff);
   const auto t = b.getTerminator();
   assert(t && "no terminator");
@@ -64,12 +64,15 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
       return;
     }
     const auto &succ = *t->getSuccessor(j);
-    auto &next = blocks_.get(succ);
+    auto &next = get(succ);
     if (!next.includes(prev)) {
       next.merge(prev);
       interpret(succ);
     }
   }
+}
+Env &Abstract::get(const llvm::BasicBlock &b) {
+  return blocks_.get(b);
 }
 
 }  // namespace stacksafe

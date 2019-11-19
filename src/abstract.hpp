@@ -29,6 +29,7 @@ class Abstract {
 
  private:
   void interpret(const llvm::BasicBlock &b);
+  Env &get(const llvm::BasicBlock &b);
 };
 
 }  // namespace stacksafe
