@@ -8,6 +8,10 @@ namespace std {
 size_t hash<stacksafe::MapsTo>::operator()(const stacksafe::MapsTo& to) const {
   return stacksafe::MapsTo::hash(to);
 }
+size_t hash<stacksafe::FlatMapRef>::operator()(
+    const stacksafe::FlatMapRef& f) const {
+  return stacksafe::FlatMap::hash(f.get());
+}
 }  // namespace std
 
 namespace stacksafe {

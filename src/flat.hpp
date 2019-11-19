@@ -12,12 +12,17 @@ namespace stacksafe {
 class Domain;
 class Map;
 class MapsTo;
+class FlatMapRef;
 }  // namespace stacksafe
 
 namespace std {
 template <>
 struct hash<stacksafe::MapsTo> {
   size_t operator()(const stacksafe::MapsTo& to) const;
+};
+template <>
+struct hash<stacksafe::FlatMapRef> {
+  size_t operator()(const stacksafe::FlatMapRef& f) const;
 };
 }  // namespace std
 
