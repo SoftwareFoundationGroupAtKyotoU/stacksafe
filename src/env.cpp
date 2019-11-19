@@ -6,19 +6,6 @@
 
 namespace stacksafe {
 
-DoubleMap::DoubleMap(const llvm::Function &f) {
-  const auto g = Symbol::get_global();
-  Domain dom;
-  dom.insert(g);
-  heap_.insert(g.value(), dom);
-  for (const auto &a : f.args()) {
-    const auto arg = Symbol::get_arg(a);
-    Domain dom;
-    dom.insert(arg);
-    heap_.insert(arg.value(), dom);
-    stack_.insert(a, dom);
-  }
-}
 DoubleMap::DoubleMap(const Map &heap, const Map &stack)
     : heap_{heap}, stack_{stack} {}
 const Map &DoubleMap::heap() const {

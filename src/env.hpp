@@ -18,8 +18,6 @@ class DoubleMap {
   Map heap_, stack_;
 
  public:
-  DoubleMap() = default;
-  explicit DoubleMap(const llvm::Function &f);
   DoubleMap(const Map &heap, const Map &stack);
   const Map &heap() const;
   Map &heap();
