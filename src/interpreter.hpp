@@ -16,11 +16,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Params = std::unordered_set<Value>;
   const Log &log_;
   Error &error_;
-  DoubleMap env_;
+  DoubleMap map_;
   FlatMap heap_, stack_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, const DoubleMap &e);
+  explicit Interpreter(const Log &l, Error &error, const DoubleMap &m);
   FlatEnv new_diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
