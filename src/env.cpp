@@ -84,7 +84,21 @@ void Env::merge(const Env &env) {
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
 bool Env::includes(const Env &env) {
-  return flatten().includes(env.flatten());
+  auto compare = [](const auto &lhs, const auto &rhs) {
+    FlatMap lmap, rmap;
+    for (const auto &ref : lhs) {
+      if (rhs.count(ref) == 0) {
+        lmap.merge(ref.get());
+      }
+    }
+    for (const auto &ref : rhs) {
+      if (lhs.count(ref) == 0) {
+        rmap.merge(ref.get());
+      }
+    }
+    return lmap.includes(rmap);
+  };
+  return compare(heap_, env.heap_) && compare(stack_, env.stack_);
 }
 DoubleMap Env::concat() const {
   Map heap, stack;
