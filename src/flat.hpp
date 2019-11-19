@@ -37,6 +37,7 @@ class FlatMap : private std::unordered_set<MapsTo> {
 
  public:
   void insert(const Value& key, const Symbol& val);
+  static size_t hash(const FlatMap& flat);
 };
 
 class FlatMapPtr : private std::unique_ptr<FlatMap> {

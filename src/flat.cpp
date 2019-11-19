@@ -26,6 +26,13 @@ bool operator==(const MapsTo& lhs, const MapsTo& rhs) {
 void FlatMap::insert(const Value& key, const Symbol& val) {
   Super::emplace(key, val);
 }
+size_t FlatMap::hash(const FlatMap& flat) {
+  std::size_t h = 0;
+  for (const auto& to : flat) {
+    h ^= MapsTo::hash(to);
+  }
+  return h;
+}
 
 FlatMapPtr::FlatMapPtr(const FlatMap& flat)
     : Super{std::make_unique<FlatMap>(flat)} {}
