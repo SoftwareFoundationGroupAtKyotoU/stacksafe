@@ -31,7 +31,7 @@ Symbol Symbol::get_local(const llvm::AllocaInst &v) {
 Symbol Symbol::get_arg(const llvm::Argument &v) {
   return Symbol{v};
 }
-std::size_t hash(const Symbol &sym) {
+std::size_t Symbol::hash(const Symbol &sym) {
   return Value::hash(sym.value());
 }
 bool operator==(const Symbol &lhs, const Symbol &rhs) {
