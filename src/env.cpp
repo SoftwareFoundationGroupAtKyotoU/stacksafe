@@ -58,5 +58,11 @@ FlatEnvOld EnvOld::concat() const {
 
 FlatEnv::FlatEnv(const FlatMap &heap, const FlatMap &stack)
     : heap_{heap}, stack_{stack} {}
+FlatMap &FlatEnv::heap() {
+  return heap_;
+}
+FlatMap &FlatEnv::stack() {
+  return stack_;
+}
 
 }  // namespace stacksafe

@@ -42,6 +42,8 @@ class FlatEnv {
 
  public:
   FlatEnv(const FlatMap &heap, const FlatMap &stack);
+  FlatMap &heap();
+  FlatMap &stack();
 };
 
 }  // namespace stacksafe
