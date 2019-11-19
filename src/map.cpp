@@ -24,16 +24,6 @@ void Map::merge(const Map &that) {
     insert(k, v);
   }
 }
-bool Map::includes(const Map &that) const {
-  for (const auto &[key, rhs] : that) {
-    if (auto lhs = Super::find(key);
-        lhs != end() && lhs->second.includes(rhs)) {
-      continue;
-    }
-    return false;
-  }
-  return true;
-}
 std::size_t Map::hash(const Map &m) {
   std::size_t h = 0;
   for (const auto &[val, dom] : m) {
@@ -42,9 +32,6 @@ std::size_t Map::hash(const Map &m) {
     }
   }
   return h;
-}
-bool operator==(const Map &lhs, const Map &rhs) {
-  return lhs.includes(rhs) && rhs.includes(lhs);
 }
 
 void Heap::insert(const Symbol &key, const Domain &val) {

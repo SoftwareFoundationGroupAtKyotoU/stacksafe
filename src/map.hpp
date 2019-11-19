@@ -17,10 +17,8 @@ class Map : private std::unordered_map<Value, Domain> {
   void insert(const Value &key, const Symbol &val);
   Domain lookup(const Value &key) const;
   void merge(const Map &that);
-  bool includes(const Map &that) const;
   static std::size_t hash(const Map &m);
 };
-bool operator==(const Map &lhs, const Map &rhs);
 
 class Heap : private Map {
  public:
