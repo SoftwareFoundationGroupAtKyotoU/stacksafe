@@ -22,6 +22,10 @@ class Map : private std::unordered_map<Value, Domain> {
 };
 bool operator==(const Map &lhs, const Map &rhs);
 
+class Heap : private Map {};
+
+class Stack : private Map {};
+
 }  // namespace stacksafe
 
 namespace std {
