@@ -21,9 +21,7 @@ class FlatEnv {
   explicit FlatEnv(const llvm::Function &f);
   FlatEnv(const FlatMap &heap, const FlatMap &stack);
   const FlatMap &heap() const;
-  FlatMap &heap();
   const FlatMap &stack() const;
-  FlatMap &stack();
 };
 
 class Env {
