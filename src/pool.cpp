@@ -4,13 +4,14 @@
 
 namespace stacksafe {
 
+MapPtr::MapPtr(const Map& m) : Super{std::make_unique<Map>(m)} {}
 const Map& MapPtr::get() const {
   return *Super::get();
 }
 
 MapRef MapPool::add(const Map& m) {
-  auto ptr = std::make_unique<Map>(m);
-  MapRef ref{*ptr.get()};
+  MapPtr ptr{m};
+  MapRef ref{ptr.get()};
   Super::push_back(std::move(ptr));
   return ref;
 }

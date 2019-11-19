@@ -11,14 +11,16 @@ class Map;
 class MapRef;
 
 class MapPtr : private std::unique_ptr<Map> {
+  friend class MapPool;
   using Super = std::unique_ptr<Map>;
+  explicit MapPtr(const Map& m);
 
  public:
   const Map& get() const;
 };
 
-class MapPool : private std::vector<std::unique_ptr<Map>> {
-  using Super = std::vector<std::unique_ptr<Map>>;
+class MapPool : private std::vector<MapPtr> {
+  using Super = std::vector<MapPtr>;
   MapRef add(const Map& m);
 
  public:
