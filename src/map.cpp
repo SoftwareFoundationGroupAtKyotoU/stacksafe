@@ -1,5 +1,5 @@
 #include "map.hpp"
-#include <llvm/ADT/Hashing.h>
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -35,13 +35,21 @@ std::size_t Map::hash(const Map &m) {
   std::size_t h = 0;
   for (const auto &[val, dom] : m) {
     for (const auto &sym : dom) {
-      h ^= llvm::hash_combine(Value::hash(val), Value::hash(sym.value()));
+      h ^= hash_combine(Value::hash(val), Value::hash(sym.value()));
     }
   }
   return h;
 }
 bool operator==(const Map &lhs, const Map &rhs) {
   return lhs.includes(rhs) && rhs.includes(lhs);
+}
+
+MapRef::MapRef(const Map &m) : map_{&m} {}
+const Map &MapRef::get() const {
+  return *map_;
+}
+bool operator==(const MapRef &lhs, const MapRef &rhs) {
+  return lhs.get() == rhs.get();
 }
 
 }  // namespace stacksafe

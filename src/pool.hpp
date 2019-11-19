@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
 #define INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
 
+#include <functional>
 #include <memory>
 #include <vector>
 
@@ -10,13 +11,22 @@ class FlatEnv;
 class Map;
 class MapRef;
 
-using MapPtr = std::unique_ptr<Map>;
+class MapPtr : private std::unique_ptr<Map> {
+  friend class MapPool;
+  using Super = std::unique_ptr<Map>;
+  explicit MapPtr(const Map& m);
+
+ public:
+  const Map& get() const;
+};
+bool operator<(const MapPtr& lhs, const MapPtr& rhs);
 
 class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
+  MapRef add(const Map& m);
 
  public:
-  MapRef add(const Map& m);
+  using Super::size;
   Env add(const FlatEnv& e);
 };
 

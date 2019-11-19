@@ -1,6 +1,10 @@
 #include "utility.hpp"
+#include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
+#include <set>
+#include "domain.hpp"
+#include "map.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
@@ -36,5 +40,71 @@ bool is_register(const llvm::Instruction& i) {
     return true;
   }
 }
+std::size_t hash_value(const void* ptr) {
+  return llvm::hash_value(ptr);
+}
+std::size_t hash_combine(std::size_t lhs, std::size_t rhs) {
+  return llvm::hash_combine(lhs, rhs);
+}
 
+namespace debug {
+int get_operand(const Value& v) {
+  static const auto prefix = '%';
+  if (!v) {
+    return -1;
+  }
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  v.get()->printAsOperand(stream, false);
+  std::string_view view{stream.str()};
+  if (!view.empty() && view.at(0) == prefix) {
+    std::string str{view.substr(1)};
+    std::size_t pos = std::string::npos;
+    auto val = std::stoi(str, &pos, 10);
+    if (pos == str.size()) {
+      return (pos < 0) ? -2 : val;
+    }
+    return -3;
+  }
+  return -4;
+}
+std::string to_str(int num) {
+  switch (num) {
+    case -1:
+      return "@";
+    case -2:
+      return "negative number";
+    case -3:
+      return "not integer";
+    case -4:
+      return "invalid register";
+    default:
+      return num < 0 ? "unknown" : std::to_string(num);
+  }
+}
+std::string to_str(const Domain& dom) {
+  std::string ret;
+  std::set<int> nums;
+  for (const auto& sym : dom) {
+    nums.insert(get_operand(sym.value()));
+  }
+  ret.append("[");
+  for (const auto& num : nums) {
+    ret.append(to_str(num));
+    ret.append(", ");
+  }
+  ret.append("]");
+  return ret;
+}
+std::string to_str(const Map& map) {
+  std::string ret;
+  for (const auto& [key, val] : map) {
+    ret.append(to_str(get_operand(key)));
+    ret.append(": ");
+    ret.append(to_str(val));
+    ret.append(", ");
+  }
+  return ret;
+}
+}  // namespace debug
 }  // namespace stacksafe

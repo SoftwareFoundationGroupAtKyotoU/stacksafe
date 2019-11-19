@@ -10,7 +10,7 @@ class Domain : private std::vector<Symbol> {
   using Super = std::vector<Symbol>;
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::empty;
   Domain() = default;
   void insert(const Symbol &sym);
   void merge(const Domain &that);

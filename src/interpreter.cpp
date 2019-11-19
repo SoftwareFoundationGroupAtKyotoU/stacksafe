@@ -222,6 +222,9 @@ Domain Interpreter::heap_lookup(const Symbol &key) const {
   return env_.heap().lookup(key.value());
 }
 void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
+  if (val.empty()) {
+    return;
+  }
   log_.print_heap(key.value(), heap_lookup(key), val);
   env_.heap().insert(key.value(), val);
   diff_.heap().insert(key.value(), val);
@@ -254,6 +257,9 @@ Domain Interpreter::stack_lookup(const Value &key) const {
 }
 void Interpreter::stack_insert(const llvm::Instruction &key,
                                const Domain &val) {
+  if (val.empty()) {
+    return;
+  }
   log_.print_stack(key, stack_lookup(key), val);
   env_.stack().insert(key, val);
   diff_.stack().insert(key, val);

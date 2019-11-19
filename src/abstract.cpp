@@ -41,7 +41,9 @@ void Abstract::print(llvm::raw_ostream &os) const {
   const auto safe = !error_.is_error();
   const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe ? "SAFE" : "UNSAFE";
-  const auto msg = llvm::format(": %s %fms\n", name_.c_str(), elapsed_);
+  int size = blocks_.size();
+  const auto msg =
+      llvm::format(": %s %fms %d\n", name_.c_str(), elapsed_, size);
   if (os.is_displayed()) {
     os.changeColor(color, true);
     os << prefix;

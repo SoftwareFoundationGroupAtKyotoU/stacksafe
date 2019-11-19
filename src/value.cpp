@@ -1,4 +1,5 @@
 #include "value.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -11,7 +12,7 @@ const llvm::Value *Value::get() const {
   return val_;
 }
 std::size_t Value::hash(const Value &v) {
-  return std::hash<const llvm::Value *>{}(v.val_);
+  return hash_value(v.val_);
 }
 bool operator<(const Value &lhs, const Value &rhs) {
   return lhs.get() < rhs.get();

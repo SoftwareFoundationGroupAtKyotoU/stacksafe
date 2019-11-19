@@ -1,21 +1,29 @@
 #include "pool.hpp"
+#include <algorithm>
 #include "env.hpp"
 #include "map.hpp"
 
 namespace stacksafe {
 
-MapRef::MapRef(const Map& m) : map_{&m} {}
-const Map& MapRef::get() const {
-  return *map_;
+MapPtr::MapPtr(const Map& m) : Super{std::make_unique<Map>(m)} {}
+const Map& MapPtr::get() const {
+  return *Super::get();
 }
-bool operator==(const MapRef& lhs, const MapRef& rhs) {
-  return lhs.get() == rhs.get();
+bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
+  return Map::hash(lhs.get()) < Map::hash(rhs.get());
 }
 
 MapRef MapPool::add(const Map& m) {
-  auto ptr = std::make_unique<Map>(m);
-  MapRef ref{*ptr.get()};
-  Super::push_back(std::move(ptr));
+  MapPtr ptr{m};
+  const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
+  auto it = lb;
+  for (; it != ub; ++it) {
+    if (it->get() == m) {
+      return MapRef{it->get()};
+    }
+  }
+  MapRef ref{ptr.get()};
+  Super::insert(it, std::move(ptr));
   return ref;
 }
 Env MapPool::add(const FlatEnv& e) {
