@@ -43,6 +43,9 @@ bool is_register(const llvm::Instruction& i) {
 std::size_t hash_value(const void* ptr) {
   return llvm::hash_value(ptr);
 }
+std::size_t hash_combine(std::size_t lhs, std::size_t rhs) {
+  return llvm::hash_combine(lhs, rhs);
+}
 
 namespace debug {
 int get_operand(const Value& v) {
