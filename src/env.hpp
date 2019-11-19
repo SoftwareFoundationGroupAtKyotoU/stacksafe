@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
 #include <unordered_set>
+#include "flat.hpp"
 #include "map.hpp"
 
 namespace llvm {
@@ -34,6 +35,13 @@ class EnvOld {
   EnvOld(MapRef heap, MapRef stack);
   void merge(const EnvOld &env);
   FlatEnvOld concat() const;
+};
+
+class FlatEnv {
+  FlatMap heap_, stack_;
+
+ public:
+  FlatEnv(const FlatMap &heap, const FlatMap &stack);
 };
 
 }  // namespace stacksafe
