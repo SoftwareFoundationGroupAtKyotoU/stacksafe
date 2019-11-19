@@ -1,6 +1,7 @@
 #include "flat.hpp"
 #include <algorithm>
 #include "domain.hpp"
+#include "env.hpp"
 #include "map.hpp"
 #include "utility.hpp"
 
@@ -94,6 +95,11 @@ FlatMapRef FlatMapPool::add(const FlatMap& flat) {
   FlatMapRef ref{it->get()};
   Super::insert(it, std::move(ptr));
   return ref;
+}
+Env FlatMapPool::add(const FlatEnv& env) {
+  auto heap = add(env.heap());
+  auto stack = add(env.stack());
+  return Env{heap, stack};
 }
 
 }  // namespace stacksafe

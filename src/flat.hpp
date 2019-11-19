@@ -10,6 +10,8 @@
 
 namespace stacksafe {
 class Domain;
+class Env;
+class FlatEnv;
 class Map;
 class MapsTo;
 class FlatMapRef;
@@ -77,6 +79,7 @@ class FlatMapPool : private std::vector<FlatMapPtr> {
 
  public:
   FlatMapRef add(const FlatMap& flat);
+  Env add(const FlatEnv& env);
 };
 
 }  // namespace stacksafe
