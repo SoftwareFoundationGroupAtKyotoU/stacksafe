@@ -17,9 +17,6 @@ void Blocks::merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src) {
 FlatEnv Blocks::concat(const llvm::BasicBlock &src) {
   return get(src).concat();
 }
-std::size_t Blocks::size() const {
-  return pool_.size();
-}
 Env &Blocks::get(const llvm::BasicBlock &b) {
   auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");

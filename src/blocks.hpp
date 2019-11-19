@@ -22,7 +22,6 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   void merge(const llvm::BasicBlock &dst, const FlatEnv &src);
   void merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src);
   FlatEnv concat(const llvm::BasicBlock &src);
-  std::size_t size() const;
 
  private:
   Env &get(const llvm::BasicBlock &b);
