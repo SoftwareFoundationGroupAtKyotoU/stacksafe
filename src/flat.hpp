@@ -40,6 +40,9 @@ class FlatMap : private std::unordered_set<MapsTo> {
 class FlatMapRef {
   const FlatMap* flat_;
   explicit FlatMapRef(const FlatMap& flat);
+
+ public:
+  const FlatMap& get() const;
 };
 
 }  // namespace stacksafe

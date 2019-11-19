@@ -28,5 +28,8 @@ void FlatMap::insert(const Value& key, const Symbol& val) {
 }
 
 FlatMapRef::FlatMapRef(const FlatMap& flat) : flat_{&flat} {}
+const FlatMap& FlatMapRef::get() const {
+  return *flat_;
+}
 
 }  // namespace stacksafe
