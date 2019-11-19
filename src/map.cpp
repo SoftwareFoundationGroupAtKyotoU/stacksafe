@@ -47,21 +47,10 @@ bool operator==(const Map &lhs, const Map &rhs) {
   return lhs.includes(rhs) && rhs.includes(lhs);
 }
 
-MapRef::MapRef(const Map &m) : map_{&m} {}
-const Map &MapRef::get() const {
-  return *map_;
-}
-bool operator==(const MapRef &lhs, const MapRef &rhs) {
-  return lhs.get() == rhs.get();
-}
-
 }  // namespace stacksafe
 
 namespace std {
 size_t hash<stacksafe::Map>::operator()(const stacksafe::Map &m) const {
   return stacksafe::Map::hash(m);
-}
-size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef &r) const {
-  return std::hash<stacksafe::Map>{}(r.get());
 }
 }  // namespace std
