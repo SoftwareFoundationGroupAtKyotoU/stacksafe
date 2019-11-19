@@ -10,11 +10,9 @@
 
 namespace stacksafe {
 class Domain;
-class Env;
-class FlatEnv;
+class FlatMapRef;
 class Map;
 class MapsTo;
-class FlatMapRef;
 }  // namespace stacksafe
 
 namespace std {
