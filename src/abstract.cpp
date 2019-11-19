@@ -34,7 +34,7 @@ void Abstract::run(const llvm::Function &f) {
     const auto &entry = f.getEntryBlock();
     DoubleMap env{f};
     blocks_.merge(entry, env.to_flat_env());
-    interpret(entry, env);
+    interpret(entry);
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
@@ -51,8 +51,8 @@ void Abstract::print(llvm::raw_ostream &os) const {
   }
   (os << msg).flush();
 }
-void Abstract::interpret(const llvm::BasicBlock &b, DoubleMap map) {
-  Interpreter i{log_, error_, map};
+void Abstract::interpret(const llvm::BasicBlock &b) {
+  Interpreter i{log_, error_, blocks_.get(b).to_map()};
   i.visit(b);
   auto prev = blocks_.get(b);
   auto diff = blocks_.add(i.new_diff());
@@ -67,7 +67,7 @@ void Abstract::interpret(const llvm::BasicBlock &b, DoubleMap map) {
     auto &next = blocks_.get(succ);
     if (!next.includes(prev)) {
       next.merge(prev);
-      interpret(succ, next.to_map());
+      interpret(succ);
     }
   }
 }
