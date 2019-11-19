@@ -23,15 +23,6 @@ void Map::merge(const Map &that) {
     insert(k, v);
   }
 }
-std::size_t Map::hash(const Map &m) {
-  std::size_t h = 0;
-  for (const auto &[val, dom] : m) {
-    for (const auto &sym : dom) {
-      h ^= hash_combine(Value::hash(val), Value::hash(sym.value()));
-    }
-  }
-  return h;
-}
 
 void Heap::insert(const Symbol &key, const Domain &val) {
   Map::insert(key.value(), val);

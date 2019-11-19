@@ -17,7 +17,6 @@ class Map : private std::unordered_map<Value, Domain> {
   void insert(const Value &key, const Symbol &val);
   Domain lookup(const Value &key) const;
   void merge(const Map &that);
-  static std::size_t hash(const Map &m);
 };
 
 class Heap : private Map {
