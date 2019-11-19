@@ -32,7 +32,8 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    blocks_.merge(entry, FlatEnv{f});
+    const auto env = blocks_.add(FlatEnv{f});
+    blocks_.get(entry).merge(env);
     interpret(entry);
   }
 }
