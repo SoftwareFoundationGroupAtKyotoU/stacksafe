@@ -20,13 +20,6 @@ const Map &DoubleMap::stack() const {
 Map &DoubleMap::stack() {
   return stack_;
 }
-bool DoubleMap::includes(const DoubleMap &that) const {
-  return heap_.includes(that.heap_) && stack_.includes(that.stack_);
-}
-void DoubleMap::merge(const DoubleMap &that) {
-  heap_.merge(that.heap_);
-  stack_.merge(that.stack_);
-}
 
 FlatEnv::FlatEnv(const llvm::Function &f) {
   const auto g = Symbol::get_global();

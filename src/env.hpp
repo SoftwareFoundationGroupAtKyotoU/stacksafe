@@ -23,8 +23,6 @@ class DoubleMap {
   Map &heap();
   const Map &stack() const;
   Map &stack();
-  bool includes(const DoubleMap &that) const;
-  void merge(const DoubleMap &that);
 };
 
 class FlatEnv {
