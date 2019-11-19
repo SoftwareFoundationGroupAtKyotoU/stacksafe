@@ -69,6 +69,9 @@ FlatMapRef::FlatMapRef(const FlatMap& flat) : flat_{&flat} {}
 const FlatMap& FlatMapRef::get() const {
   return *flat_;
 }
+bool operator==(const FlatMapRef& lhs, const FlatMapRef& rhs) {
+  return FlatMap::equals(lhs.get(), rhs.get());
+}
 
 FlatMapRef FlatMapPool::add(const FlatMap& flat) {
   FlatMapPtr ptr{flat};

@@ -64,6 +64,7 @@ class FlatMapRef {
  public:
   const FlatMap& get() const;
 };
+bool operator==(const FlatMapRef& lhs, const FlatMapRef& rhs);
 
 class FlatMapPool : private std::vector<FlatMapPtr> {
   using Super = std::vector<FlatMapPtr>;
