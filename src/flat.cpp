@@ -58,4 +58,18 @@ const FlatMap& FlatMapRef::get() const {
   return *flat_;
 }
 
+FlatMapRef FlatMapPool::add(const FlatMap& flat) {
+  FlatMapPtr ptr{flat};
+  const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
+  auto it = lb;
+  for (; it != ub; ++it) {
+    if (FlatMap::equals(it->get(), flat)) {
+      return FlatMapRef{it->get()};
+    }
+  }
+  FlatMapRef ref{it->get()};
+  Super::insert(it, std::move(ptr));
+  return ref;
+}
+
 }  // namespace stacksafe
