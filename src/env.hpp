@@ -30,16 +30,6 @@ class FlatEnvOld {
   FlatEnv to_flat_env() const;
 };
 
-class EnvOld {
-  std::unordered_set<MapRef> heap_, stack_;
-
- public:
-  EnvOld() = default;
-  EnvOld(MapRef heap, MapRef stack);
-  void merge(const EnvOld &env);
-  FlatEnvOld concat() const;
-};
-
 class FlatEnv {
   FlatMap heap_, stack_;
 

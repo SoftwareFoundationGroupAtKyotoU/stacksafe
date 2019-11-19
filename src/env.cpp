@@ -47,22 +47,6 @@ FlatEnv FlatEnvOld::to_flat_env() const {
   return FlatEnv{heap, stack};
 }
 
-EnvOld::EnvOld(MapRef heap, MapRef stack) : heap_{heap}, stack_{stack} {}
-void EnvOld::merge(const EnvOld &env) {
-  heap_.insert(env.heap_.begin(), env.heap_.end());
-  stack_.insert(env.stack_.begin(), env.stack_.end());
-}
-FlatEnvOld EnvOld::concat() const {
-  Map heap, stack;
-  for (const auto &m : heap_) {
-    heap.merge(m.get());
-  }
-  for (const auto &m : stack_) {
-    stack.merge(m.get());
-  }
-  return FlatEnvOld{heap, stack};
-}
-
 FlatEnv::FlatEnv(const llvm::Function &f) {
   const auto g = Symbol::get_global();
   heap_.insert(g.value(), g);
