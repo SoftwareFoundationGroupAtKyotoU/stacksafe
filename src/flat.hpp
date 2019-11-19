@@ -56,11 +56,10 @@ class FlatMap : private std::unordered_set<MapsTo> {
 };
 
 class FlatMapRef {
-  friend class FlatMapPool;
   const FlatMap* flat_;
-  explicit FlatMapRef(const FlatMap& flat);
 
  public:
+  explicit FlatMapRef(const FlatMap& flat);
   const FlatMap& get() const;
 };
 bool operator==(const FlatMapRef& lhs, const FlatMapRef& rhs);
