@@ -24,6 +24,7 @@ class MapPool : private std::vector<MapPtr> {
   MapRef add(const Map& m);
 
  public:
+  using Super::size;
   Env add(const FlatEnv& e);
 };
 
