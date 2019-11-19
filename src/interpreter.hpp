@@ -22,8 +22,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   FlatMap heap_diff_, stack_diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, const Map &heap,
-                       const Map &stack);
+  explicit Interpreter(const Log &l, Error &error, const Heap &heap,
+                       const Stack &stack);
   FlatEnv diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
