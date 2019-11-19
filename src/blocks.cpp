@@ -11,6 +11,9 @@ Blocks::Blocks(const llvm::Function &f) {
 Env Blocks::add(const FlatEnv &env) {
   return flat_.add(env);
 }
+void Blocks::merge(const llvm::BasicBlock &dst, const Env &src) {
+  get(dst).merge(src);
+}
 void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnv &src) {
   get(dst).merge(flat_.add(src));
 }
