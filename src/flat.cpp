@@ -23,4 +23,8 @@ bool operator==(const MapsTo& lhs, const MapsTo& rhs) {
   return lhs.value() == rhs.value() && lhs.symbol() == rhs.symbol();
 }
 
+void FlatMap::insert(const Value& key, const Symbol& val) {
+  Super::emplace(key, val);
+}
+
 }  // namespace stacksafe

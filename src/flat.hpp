@@ -32,6 +32,9 @@ bool operator==(const MapsTo& lhs, const MapsTo& rhs);
 
 class FlatMap : private std::unordered_set<MapsTo> {
   using Super = std::unordered_set<MapsTo>;
+
+ public:
+  void insert(const Value& key, const Symbol& val);
 };
 
 }  // namespace stacksafe
