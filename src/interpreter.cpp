@@ -221,7 +221,7 @@ void Interpreter::constant(const llvm::Instruction &dst) {
   stack_insert(dst, Domain{});
 }
 Domain Interpreter::heap_lookup(const Symbol &key) const {
-  return heap_.lookup(key.value());
+  return heap_.lookup(key);
 }
 Domain Interpreter::stack_lookup(const Value &key) const {
   Domain dom;
@@ -246,7 +246,7 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
     return;
   }
   log_.print_heap(key.value(), heap_lookup(key), val);
-  heap_.insert(key.value(), val);
+  heap_.insert(key, val);
   heap_diff_.insert(key.value(), val);
   if (has_local(val)) {
     if (key.is_global()) {

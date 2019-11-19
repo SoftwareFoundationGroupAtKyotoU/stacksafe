@@ -17,7 +17,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Params = std::unordered_set<Value>;
   const Log &log_;
   Error &error_;
-  Map heap_, stack_;
+  Heap heap_;
+  Stack stack_;
   FlatMap heap_diff_, stack_diff_;
 
  public:
