@@ -83,6 +83,9 @@ void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
+bool Env::includes(const Env &env) {
+  return flatten().includes(env.flatten());
+}
 FlatEnvOld Env::concat() const {
   Map heap, stack;
   for (const auto &r : heap_) {
