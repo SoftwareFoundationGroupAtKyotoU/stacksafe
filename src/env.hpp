@@ -53,6 +53,7 @@ class Env {
  public:
   Env() = default;
   Env(FlatMapRef heap, FlatMapRef stack);
+  void merge(const Env &env);
 };
 
 }  // namespace stacksafe

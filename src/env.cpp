@@ -69,5 +69,9 @@ bool FlatEnv::includes(const FlatEnv &flat) const {
 }
 
 Env::Env(FlatMapRef heap, FlatMapRef stack) : heap_{heap}, stack_{stack} {}
+void Env::merge(const Env &env) {
+  heap_.insert(env.heap_.begin(), env.heap_.end());
+  stack_.insert(env.stack_.begin(), env.stack_.end());
+}
 
 }  // namespace stacksafe
