@@ -17,6 +17,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   const Log &log_;
   Error &error_;
   DoubleMap map_;
+  Map heap_, stack_;
   FlatMap heap_diff_, stack_diff_;
 
  public:
