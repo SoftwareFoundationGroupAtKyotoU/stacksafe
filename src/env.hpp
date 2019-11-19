@@ -49,6 +49,10 @@ class FlatEnv {
 
 class Env {
   std::unordered_set<FlatMapRef> heap_, stack_;
+
+ public:
+  Env() = default;
+  Env(FlatMapRef heap, FlatMapRef stack);
 };
 
 }  // namespace stacksafe
