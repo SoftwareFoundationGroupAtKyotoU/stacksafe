@@ -37,6 +37,7 @@ class FlatMap : private std::unordered_set<MapsTo> {
 
  public:
   void insert(const Value& key, const Symbol& val);
+  bool includes(const FlatMap& flat) const;
   static size_t hash(const FlatMap& flat);
 };
 

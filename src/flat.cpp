@@ -1,4 +1,5 @@
 #include "flat.hpp"
+#include <algorithm>
 #include "utility.hpp"
 
 namespace std {
@@ -25,6 +26,12 @@ bool operator==(const MapsTo& lhs, const MapsTo& rhs) {
 
 void FlatMap::insert(const Value& key, const Symbol& val) {
   Super::emplace(key, val);
+}
+bool FlatMap::includes(const FlatMap& flat) const {
+  auto pred = [& self = *this](const auto& to) {
+    return self.Super::count(to) != 0;
+  };
+  return std::all_of(flat.begin(), flat.end(), pred);
 }
 size_t FlatMap::hash(const FlatMap& flat) {
   std::size_t h = 0;
