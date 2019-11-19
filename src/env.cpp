@@ -64,8 +64,14 @@ FlatEnvOld EnvOld::concat() const {
 
 FlatEnv::FlatEnv(const FlatMap &heap, const FlatMap &stack)
     : heap_{heap}, stack_{stack} {}
+const FlatMap &FlatEnv::heap() const {
+  return heap_;
+}
 FlatMap &FlatEnv::heap() {
   return heap_;
+}
+const FlatMap &FlatEnv::stack() const {
+  return stack_;
 }
 FlatMap &FlatEnv::stack() {
   return stack_;

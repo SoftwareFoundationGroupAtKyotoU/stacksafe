@@ -44,7 +44,9 @@ class FlatEnv {
 
  public:
   FlatEnv(const FlatMap &heap, const FlatMap &stack);
+  const FlatMap &heap() const;
   FlatMap &heap();
+  const FlatMap &stack() const;
   FlatMap &stack();
   bool includes(const FlatEnv &flat) const;
 };
