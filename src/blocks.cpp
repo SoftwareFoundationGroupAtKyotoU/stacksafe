@@ -20,7 +20,7 @@ void Blocks::merge(const llvm::BasicBlock &dst, const FlatEnv &src) {
 void Blocks::merge(const llvm::BasicBlock &dst, const llvm::BasicBlock &src) {
   get(dst).merge(get(src));
 }
-FlatEnvOld Blocks::concat(const llvm::BasicBlock &src) {
+DoubleMap Blocks::concat(const llvm::BasicBlock &src) {
   return get(src).concat();
 }
 Env &Blocks::get(const llvm::BasicBlock &b) {

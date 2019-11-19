@@ -6,7 +6,7 @@
 
 namespace stacksafe {
 
-FlatEnvOld::FlatEnvOld(const llvm::Function &f) {
+DoubleMap::DoubleMap(const llvm::Function &f) {
   const auto g = Symbol::get_global();
   Domain dom;
   dom.insert(g);
@@ -19,28 +19,28 @@ FlatEnvOld::FlatEnvOld(const llvm::Function &f) {
     stack_.insert(a, dom);
   }
 }
-FlatEnvOld::FlatEnvOld(const Map &heap, const Map &stack)
+DoubleMap::DoubleMap(const Map &heap, const Map &stack)
     : heap_{heap}, stack_{stack} {}
-const Map &FlatEnvOld::heap() const {
+const Map &DoubleMap::heap() const {
   return heap_;
 }
-Map &FlatEnvOld::heap() {
+Map &DoubleMap::heap() {
   return heap_;
 }
-const Map &FlatEnvOld::stack() const {
+const Map &DoubleMap::stack() const {
   return stack_;
 }
-Map &FlatEnvOld::stack() {
+Map &DoubleMap::stack() {
   return stack_;
 }
-bool FlatEnvOld::includes(const FlatEnvOld &that) const {
+bool DoubleMap::includes(const DoubleMap &that) const {
   return heap_.includes(that.heap_) && stack_.includes(that.stack_);
 }
-void FlatEnvOld::merge(const FlatEnvOld &that) {
+void DoubleMap::merge(const DoubleMap &that) {
   heap_.merge(that.heap_);
   stack_.merge(that.stack_);
 }
-FlatEnv FlatEnvOld::to_flat_env() const {
+FlatEnv DoubleMap::to_flat_env() const {
   FlatMap heap, stack;
   heap.insert(heap_);
   stack.insert(stack_);
@@ -86,7 +86,7 @@ void Env::merge(const Env &env) {
 bool Env::includes(const Env &env) {
   return flatten().includes(env.flatten());
 }
-FlatEnvOld Env::concat() const {
+DoubleMap Env::concat() const {
   Map heap, stack;
   for (const auto &r : heap_) {
     heap.merge(FlatMap::to_map(r.get()));
@@ -94,7 +94,7 @@ FlatEnvOld Env::concat() const {
   for (const auto &r : stack_) {
     stack.merge(FlatMap::to_map(r.get()));
   }
-  return FlatEnvOld{heap, stack};
+  return DoubleMap{heap, stack};
 }
 FlatEnv Env::flatten() const {
   FlatMap heap, stack;
@@ -106,7 +106,7 @@ FlatEnv Env::flatten() const {
   }
   return FlatEnv{heap, stack};
 }
-FlatEnvOld Env::to_map() const {
+DoubleMap Env::to_map() const {
   Map heap, stack;
   for (const auto &r : heap_) {
     heap.merge(FlatMap::to_map(r.get()));
@@ -114,7 +114,7 @@ FlatEnvOld Env::to_map() const {
   for (const auto &r : stack_) {
     stack.merge(FlatMap::to_map(r.get()));
   }
-  return FlatEnvOld{heap, stack};
+  return DoubleMap{heap, stack};
 }
 
 }  // namespace stacksafe

@@ -14,19 +14,19 @@ class FlatEnv;
 class FlatMapRef;
 class MapRef;
 
-class FlatEnvOld {
+class DoubleMap {
   Map heap_, stack_;
 
  public:
-  FlatEnvOld() = default;
-  explicit FlatEnvOld(const llvm::Function &f);
-  FlatEnvOld(const Map &heap, const Map &stack);
+  DoubleMap() = default;
+  explicit DoubleMap(const llvm::Function &f);
+  DoubleMap(const Map &heap, const Map &stack);
   const Map &heap() const;
   Map &heap();
   const Map &stack() const;
   Map &stack();
-  bool includes(const FlatEnvOld &that) const;
-  void merge(const FlatEnvOld &that);
+  bool includes(const DoubleMap &that) const;
+  void merge(const DoubleMap &that);
   FlatEnv to_flat_env() const;
 };
 
@@ -52,9 +52,9 @@ class Env {
   Env(FlatMapRef heap, FlatMapRef stack);
   void merge(const Env &env);
   bool includes(const Env &env);
-  FlatEnvOld concat() const;
+  DoubleMap concat() const;
   FlatEnv flatten() const;
-  FlatEnvOld to_map() const;
+  DoubleMap to_map() const;
 };
 
 }  // namespace stacksafe
