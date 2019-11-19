@@ -8,6 +8,9 @@ namespace stacksafe {
 
 class MapsTo : private std::tuple<Value, Symbol> {
   using Super = std::tuple<Value, Symbol>;
+
+ public:
+  MapsTo(const Value& val, const Symbol& sym);
 };
 
 }  // namespace stacksafe
