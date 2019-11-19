@@ -44,9 +44,3 @@ void Heap::merge(const Heap &that) {
 }
 
 }  // namespace stacksafe
-
-namespace std {
-size_t hash<stacksafe::Map>::operator()(const stacksafe::Map &m) const {
-  return stacksafe::Map::hash(m);
-}
-}  // namespace std

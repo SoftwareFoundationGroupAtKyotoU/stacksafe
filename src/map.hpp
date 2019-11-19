@@ -34,11 +34,4 @@ class Stack : private Map {
 
 }  // namespace stacksafe
 
-namespace std {
-template <>
-struct hash<stacksafe::Map> {
-  size_t operator()(const stacksafe::Map &m) const;
-};
-}  // namespace std
-
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
