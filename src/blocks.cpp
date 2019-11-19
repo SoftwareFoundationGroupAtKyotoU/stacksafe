@@ -11,11 +11,6 @@ Blocks::Blocks(const llvm::Function &f) {
 Env Blocks::add(const FlatEnv &env) {
   return flat_.add(env);
 }
-const Env &Blocks::get(const llvm::BasicBlock &b) const {
-  auto it = Super::find(&b);
-  assert(it != Super::end() && "unknown basicblock");
-  return it->second;
-}
 Env &Blocks::get(const llvm::BasicBlock &b) {
   auto it = Super::find(&b);
   assert(it != Super::end() && "unknown basicblock");

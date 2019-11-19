@@ -21,7 +21,6 @@ class Blocks : private std::unordered_map<const llvm::BasicBlock *, Env> {
   using Super::begin, Super::end;
   explicit Blocks(const llvm::Function &f);
   Env add(const FlatEnv &env);
-  const Env &get(const llvm::BasicBlock &b) const;
   Env &get(const llvm::BasicBlock &b);
 };
 
