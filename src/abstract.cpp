@@ -33,7 +33,7 @@ void Abstract::run(const llvm::Function &f) {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
     FlatEnvOld env{f};
-    blocks_.merge(entry, env);
+    blocks_.merge(entry, env.to_flat_env());
     interpret(entry, env);
   }
 }
@@ -66,7 +66,7 @@ void Abstract::interpret(const llvm::BasicBlock &b, FlatEnvOld prev) {
       continue;
     }
     blocks_.merge(succ, b);
-    blocks_.merge(succ, i.diff());
+    blocks_.merge(succ, i.new_diff());
     next.merge(prev);
     interpret(succ, std::move(next));
   }
