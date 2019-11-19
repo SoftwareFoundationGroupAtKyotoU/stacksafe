@@ -88,35 +88,5 @@ bool Env::includes(const Env &env) {
   };
   return compare(heap_, env.heap_) && compare(stack_, env.stack_);
 }
-DoubleMap Env::concat() const {
-  Map heap, stack;
-  for (const auto &r : heap_) {
-    heap.merge(FlatMap::to_map(r.get()));
-  }
-  for (const auto &r : stack_) {
-    stack.merge(FlatMap::to_map(r.get()));
-  }
-  return DoubleMap{heap, stack};
-}
-FlatEnv Env::flatten() const {
-  FlatMap heap, stack;
-  for (const auto &r : heap_) {
-    heap.merge(r.get());
-  }
-  for (const auto &r : stack_) {
-    stack.merge(r.get());
-  }
-  return FlatEnv{heap, stack};
-}
-DoubleMap Env::to_map() const {
-  Map heap, stack;
-  for (const auto &r : heap_) {
-    heap.merge(FlatMap::to_map(r.get()));
-  }
-  for (const auto &r : stack_) {
-    stack.merge(FlatMap::to_map(r.get()));
-  }
-  return DoubleMap{heap, stack};
-}
 
 }  // namespace stacksafe

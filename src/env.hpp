@@ -49,9 +49,6 @@ class Env {
   Map stack() const;
   void merge(const Env &env);
   bool includes(const Env &env);
-  DoubleMap concat() const;
-  FlatEnv flatten() const;
-  DoubleMap to_map() const;
 };
 
 }  // namespace stacksafe
