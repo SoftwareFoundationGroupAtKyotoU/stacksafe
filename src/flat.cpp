@@ -66,6 +66,13 @@ size_t FlatMap::hash(const FlatMap& flat) {
 bool FlatMap::equals(const FlatMap& lhs, const FlatMap& rhs) {
   return lhs.includes(rhs) && rhs.includes(lhs);
 }
+MultiMap FlatMap::to_multi() const {
+  MultiMap m;
+  for (const auto& to : *this) {
+    m.insert(to.key(), to.val());
+  }
+  return m;
+}
 
 FlatMapRef::FlatMapRef(const FlatMap& flat) : flat_{&flat} {}
 const FlatMap& FlatMapRef::get() const {

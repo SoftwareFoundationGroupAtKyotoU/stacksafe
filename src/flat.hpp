@@ -13,6 +13,7 @@ class Domain;
 class FlatMapRef;
 class Map;
 class MapsTo;
+class MultiMap;
 }  // namespace stacksafe
 
 namespace std {
@@ -50,6 +51,7 @@ class FlatMap : private std::unordered_set<MapsTo> {
   static Map to_map(const FlatMap& flat);
   static size_t hash(const FlatMap& flat);
   static bool equals(const FlatMap& lhs, const FlatMap& rhs);
+  MultiMap to_multi() const;
 };
 
 class FlatMapRef {
