@@ -58,7 +58,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
   auto prev = get(b);
-  Interpreter i{log_, error_, prev.heap().to_multi(), prev.stack().to_multi()};
+  Interpreter i{log_, error_, prev.heap(), prev.stack()};
   i.visit(b);
   const auto diff = pool_.add(i.diff());
   prev.merge(diff);

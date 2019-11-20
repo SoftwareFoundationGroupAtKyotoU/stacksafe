@@ -24,17 +24,17 @@ const FlatMap &FlatEnv::stack() const {
 }
 
 Env::Env(FlatMapRef heap, FlatMapRef stack) : heap_{heap}, stack_{stack} {}
-Map Env::heap() const {
-  Map ret;
+MultiMap Env::heap() const {
+  MultiMap ret;
   for (const auto &r : heap_) {
-    ret.merge(FlatMap::to_map(r.get()));
+    ret.merge(FlatMap::to_map(r.get()).to_multi());
   }
   return ret;
 }
-Map Env::stack() const {
-  Map ret;
+MultiMap Env::stack() const {
+  MultiMap ret;
   for (const auto &r : stack_) {
-    ret.merge(FlatMap::to_map(r.get()));
+    ret.merge(FlatMap::to_map(r.get()).to_multi());
   }
   return ret;
 }
