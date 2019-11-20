@@ -14,7 +14,9 @@ class MultiMap : private std::unordered_multimap<Value, Symbol> {
  public:
   void insert(const Value &key, const Symbol &val);
   void insert(const Value &key, const Domain &val);
+  void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Value &key) const;
+  Domain lookup(const Symbol &key) const;
   void merge(const MultiMap &map);
 };
 

@@ -17,6 +17,9 @@ void MultiMap::insert(const Value &key, const Domain &val) {
     insert(key, sym);
   }
 }
+void MultiMap::insert(const Symbol &key, const Domain &val) {
+  insert(key.value(), val);
+}
 Domain MultiMap::lookup(const Value &key) const {
   Domain dom;
   auto [lb, ub] = Super::equal_range(key);
@@ -24,6 +27,9 @@ Domain MultiMap::lookup(const Value &key) const {
     dom.insert(it->second);
   }
   return dom;
+}
+Domain MultiMap::lookup(const Symbol &key) const {
+  return lookup(key.value());
 }
 void MultiMap::merge(const MultiMap &map) {
   for (const auto &[k, v] : map) {
