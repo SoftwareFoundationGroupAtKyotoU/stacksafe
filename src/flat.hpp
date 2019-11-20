@@ -40,20 +40,6 @@ class MapsTo : private std::tuple<Value, Symbol> {
 };
 bool operator==(const MapsTo& lhs, const MapsTo& rhs);
 
-class FlatMap : private std::unordered_set<MapsTo> {
-  using Super = std::unordered_set<MapsTo>;
-
- public:
-  void insert(const Value& key, const Symbol& val);
-  void insert(const Value& key, const Domain& val);
-  void merge(const FlatMap& flat);
-  bool includes(const FlatMap& flat) const;
-  static Map to_map(const FlatMap& flat);
-  static size_t hash(const FlatMap& flat);
-  static bool equals(const FlatMap& lhs, const FlatMap& rhs);
-  MultiMap to_multi() const;
-};
-
 class MapRef {
   const MultiMap* flat_;
 
