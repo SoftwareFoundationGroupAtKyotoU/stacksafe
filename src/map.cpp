@@ -17,6 +17,9 @@ void MultiMap::insert(const Value &key, const Domain &val) {
     insert(key, sym);
   }
 }
+void MultiMap::insert(const Symbol &key, const Symbol &val) {
+  insert(key.value(), val);
+}
 void MultiMap::insert(const Symbol &key, const Domain &val) {
   insert(key.value(), val);
 }
