@@ -10,7 +10,7 @@ class Instruction;
 
 namespace stacksafe {
 class Domain;
-class Map;
+class MultiMap;
 class Value;
 
 void unsupported_instruction(const llvm::Instruction& i);
@@ -23,7 +23,7 @@ namespace debug {
 int get_operand(const Value& v);
 std::string to_str(int num);
 std::string to_str(const Domain& dom);
-std::string to_str(const Map& map);
+std::string to_str(const MultiMap& map);
 }  // namespace debug
 }  // namespace stacksafe
 
