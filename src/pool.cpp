@@ -6,12 +6,15 @@
 namespace stacksafe {
 
 FlatMapPtr::FlatMapPtr(const FlatMap& flat)
-    : Super{std::make_unique<FlatMap>(flat)} {}
-const FlatMap& FlatMapPtr::get() const {
+    : Super{std::make_unique<MultiMap>(flat.to_multi())} {}
+FlatMapPtr::FlatMapPtr(FlatMapPtr&&) = default;
+FlatMapPtr::~FlatMapPtr() = default;
+FlatMapPtr& FlatMapPtr::operator=(FlatMapPtr&&) = default;
+const MultiMap& FlatMapPtr::get() const {
   return *Super::get();
 }
 bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs) {
-  return FlatMap::hash(lhs.get()) < FlatMap::hash(rhs.get());
+  return MultiMap::hash(lhs.get()) < MultiMap::hash(rhs.get());
 }
 
 FlatMapRef FlatMapPool::add(const FlatMap& flat) {
@@ -19,7 +22,7 @@ FlatMapRef FlatMapPool::add(const FlatMap& flat) {
   const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
   auto it = lb;
   for (; it != ub; ++it) {
-    if (FlatMap::equals(it->get(), flat)) {
+    if (MultiMap::equals(it->get(), flat.to_multi())) {
       return FlatMapRef{it->get()};
     }
   }

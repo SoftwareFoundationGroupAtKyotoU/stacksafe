@@ -55,11 +55,11 @@ class FlatMap : private std::unordered_set<MapsTo> {
 };
 
 class FlatMapRef {
-  const FlatMap* flat_;
+  const MultiMap* flat_;
 
  public:
-  explicit FlatMapRef(const FlatMap& flat);
-  const FlatMap& get() const;
+  explicit FlatMapRef(const MultiMap& flat);
+  const MultiMap& get() const;
 };
 bool operator==(const FlatMapRef& lhs, const FlatMapRef& rhs);
 

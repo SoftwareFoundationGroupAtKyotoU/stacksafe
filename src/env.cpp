@@ -27,14 +27,14 @@ Env::Env(FlatMapRef heap, FlatMapRef stack) : heap_{heap}, stack_{stack} {}
 MultiMap Env::heap() const {
   MultiMap ret;
   for (const auto &r : heap_) {
-    ret.merge(FlatMap::to_map(r.get()).to_multi());
+    ret.merge(r.get());
   }
   return ret;
 }
 MultiMap Env::stack() const {
   MultiMap ret;
   for (const auto &r : stack_) {
-    ret.merge(FlatMap::to_map(r.get()).to_multi());
+    ret.merge(r.get());
   }
   return ret;
 }
@@ -44,7 +44,7 @@ void Env::merge(const Env &env) {
 }
 bool Env::includes(const Env &env) {
   auto compare = [](const auto &lhs, const auto &rhs) {
-    FlatMap lmap, rmap;
+    MultiMap lmap, rmap;
     for (const auto &ref : lhs) {
       if (rhs.count(ref) == 0) {
         lmap.merge(ref.get());

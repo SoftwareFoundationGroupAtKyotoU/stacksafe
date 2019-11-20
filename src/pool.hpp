@@ -9,14 +9,18 @@ class Env;
 class FlatEnv;
 class FlatMap;
 class FlatMapRef;
+class MultiMap;
 
-class FlatMapPtr : private std::unique_ptr<FlatMap> {
+class FlatMapPtr : private std::unique_ptr<MultiMap> {
   friend class FlatMapPool;
-  using Super = std::unique_ptr<FlatMap>;
+  using Super = std::unique_ptr<MultiMap>;
   explicit FlatMapPtr(const FlatMap& flat);
 
  public:
-  const FlatMap& get() const;
+  FlatMapPtr(FlatMapPtr&&);
+  ~FlatMapPtr();
+  FlatMapPtr& operator=(FlatMapPtr&&);
+  const MultiMap& get() const;
 };
 bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs);
 
