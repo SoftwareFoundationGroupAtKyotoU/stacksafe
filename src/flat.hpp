@@ -13,7 +13,7 @@ class Domain;
 class MapRef;
 class Map;
 class MapsTo;
-class MultiMap;
+class Map;
 }  // namespace stacksafe
 
 namespace std {
@@ -26,11 +26,11 @@ struct hash<stacksafe::MapRef> {
 namespace stacksafe {
 
 class MapRef {
-  const MultiMap* flat_;
+  const Map* flat_;
 
  public:
-  explicit MapRef(const MultiMap& flat);
-  const MultiMap& get() const;
+  explicit MapRef(const Map& flat);
+  const Map& get() const;
 };
 bool operator==(const MapRef& lhs, const MapRef& rhs);
 

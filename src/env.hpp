@@ -10,16 +10,16 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class MultiMap;
+class Map;
 
 class FlatEnv {
-  MultiMap heap_, stack_;
+  Map heap_, stack_;
 
  public:
   explicit FlatEnv(const llvm::Function &f);
-  FlatEnv(const MultiMap &heap, const MultiMap &stack);
-  const MultiMap &heap() const;
-  const MultiMap &stack() const;
+  FlatEnv(const Map &heap, const Map &stack);
+  const Map &heap() const;
+  const Map &stack() const;
 };
 
 class Env {
@@ -28,8 +28,8 @@ class Env {
  public:
   Env() = default;
   Env(MapRef heap, MapRef stack);
-  MultiMap heap() const;
-  MultiMap stack() const;
+  Map heap() const;
+  Map stack() const;
   void merge(const Env &env);
   bool includes(const Env &env);
 };

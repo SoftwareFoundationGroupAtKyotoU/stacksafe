@@ -96,9 +96,9 @@ std::string to_str(const Domain& dom) {
   ret.append("]");
   return ret;
 }
-std::string to_str(const MultiMap& map) {
+std::string to_str(const Map& map) {
   std::string ret;
-  for (const auto& key : MultiMap::keys(map)) {
+  for (const auto& key : Map::keys(map)) {
     ret.append(to_str(get_operand(key)));
     ret.append(": ");
     ret.append(to_str(map.lookup(key)));

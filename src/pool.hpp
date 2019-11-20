@@ -9,18 +9,18 @@ class Env;
 class FlatEnv;
 class FlatMap;
 class MapRef;
-class MultiMap;
+class Map;
 
-class MapPtr : private std::unique_ptr<MultiMap> {
+class MapPtr : private std::unique_ptr<Map> {
   friend class MapPool;
-  using Super = std::unique_ptr<MultiMap>;
-  explicit MapPtr(const MultiMap& flat);
+  using Super = std::unique_ptr<Map>;
+  explicit MapPtr(const Map& flat);
 
  public:
   MapPtr(MapPtr&&);
   ~MapPtr();
   MapPtr& operator=(MapPtr&&);
-  const MultiMap& get() const;
+  const Map& get() const;
 };
 bool operator<(const MapPtr& lhs, const MapPtr& rhs);
 
@@ -28,7 +28,7 @@ class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
 
  public:
-  MapRef add(const MultiMap& flat);
+  MapRef add(const Map& flat);
   Env add(const FlatEnv& env);
 };
 

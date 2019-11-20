@@ -9,7 +9,7 @@
 
 namespace stacksafe {
 
-class MultiMap : private std::unordered_multimap<Value, Symbol> {
+class Map : private std::unordered_multimap<Value, Symbol> {
   using Super = std::unordered_multimap<Value, Symbol>;
 
  public:
@@ -19,11 +19,11 @@ class MultiMap : private std::unordered_multimap<Value, Symbol> {
   void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Value &key) const;
   Domain lookup(const Symbol &key) const;
-  bool includes(const MultiMap &map) const;
-  void merge(const MultiMap &map);
-  static bool equals(const MultiMap &lhs, const MultiMap &rhs);
-  static std::unordered_set<Value> keys(const MultiMap &map);
-  static std::size_t hash(const MultiMap &map);
+  bool includes(const Map &map) const;
+  void merge(const Map &map);
+  static bool equals(const Map &lhs, const Map &rhs);
+  static std::unordered_set<Value> keys(const Map &map);
+  static std::size_t hash(const Map &map);
 };
 
 }  // namespace stacksafe

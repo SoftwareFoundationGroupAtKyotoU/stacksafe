@@ -13,25 +13,25 @@ FlatEnv::FlatEnv(const llvm::Function &f) {
     stack_.insert(a, arg);
   }
 }
-FlatEnv::FlatEnv(const MultiMap &heap, const MultiMap &stack)
+FlatEnv::FlatEnv(const Map &heap, const Map &stack)
     : heap_{heap}, stack_{stack} {}
-const MultiMap &FlatEnv::heap() const {
+const Map &FlatEnv::heap() const {
   return heap_;
 }
-const MultiMap &FlatEnv::stack() const {
+const Map &FlatEnv::stack() const {
   return stack_;
 }
 
 Env::Env(MapRef heap, MapRef stack) : heap_{heap}, stack_{stack} {}
-MultiMap Env::heap() const {
-  MultiMap ret;
+Map Env::heap() const {
+  Map ret;
   for (const auto &r : heap_) {
     ret.merge(r.get());
   }
   return ret;
 }
-MultiMap Env::stack() const {
-  MultiMap ret;
+Map Env::stack() const {
+  Map ret;
   for (const auto &r : stack_) {
     ret.merge(r.get());
   }
@@ -43,7 +43,7 @@ void Env::merge(const Env &env) {
 }
 bool Env::includes(const Env &env) {
   auto compare = [](const auto &lhs, const auto &rhs) {
-    MultiMap lmap, rmap;
+    Map lmap, rmap;
     for (const auto &ref : lhs) {
       if (rhs.count(ref) == 0) {
         lmap.merge(ref.get());
