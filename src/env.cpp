@@ -41,6 +41,12 @@ void Env::merge(const Env &env) {
   heap_.insert(env.heap_.begin(), env.heap_.end());
   stack_.insert(env.stack_.begin(), env.stack_.end());
 }
+void Env::merge_heap(MapRef ref) {
+  heap_.emplace(ref);
+}
+void Env::merge_stack(MapRef ref) {
+  stack_.emplace(ref);
+}
 bool Env::includes(const Env &env) {
   auto compare = [](const auto &lhs, const auto &rhs) {
     Map lmap, rmap;
