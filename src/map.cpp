@@ -63,38 +63,4 @@ std::size_t MultiMap::hash(const MultiMap &map) {
   return ret;
 }
 
-void Map::insert(const Symbol &key, const Domain &val) {
-  insert(key.value(), val);
-}
-void Map::insert(const Value &key, const Domain &val) {
-  auto [it, updated] = Super::try_emplace(key, val);
-  if (!updated) {
-    it->second.merge(val);
-  }
-}
-void Map::insert(const Value &key, const Symbol &val) {
-  Super::try_emplace(key, Domain{}).first->second.insert(val);
-}
-Domain Map::lookup(const Symbol &key) const {
-  return lookup(key.value());
-}
-Domain Map::lookup(const Value &key) const {
-  if (auto it = Super::find(key); it != end()) {
-    return it->second;
-  }
-  return Domain{};
-}
-void Map::merge(const Map &that) {
-  for (const auto &[k, v] : that) {
-    insert(k, v);
-  }
-}
-MultiMap Map::to_multi() const {
-  MultiMap m;
-  for (const auto &[k, v] : *this) {
-    m.insert(k, v);
-  }
-  return m;
-}
-
 }  // namespace stacksafe
