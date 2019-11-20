@@ -3,6 +3,7 @@
 
 #include <unordered_set>
 #include "flat.hpp"
+#include "map.hpp"
 
 namespace llvm {
 class Function;
@@ -12,13 +13,13 @@ namespace stacksafe {
 class MultiMap;
 
 class FlatEnv {
-  FlatMap heap_, stack_;
+  MultiMap heap_, stack_;
 
  public:
   explicit FlatEnv(const llvm::Function &f);
   FlatEnv(const FlatMap &heap, const FlatMap &stack);
-  const FlatMap &heap() const;
-  const FlatMap &stack() const;
+  const MultiMap &heap() const;
+  const MultiMap &stack() const;
 };
 
 class Env {

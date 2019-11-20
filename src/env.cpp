@@ -1,25 +1,24 @@
 #include "env.hpp"
 #include <llvm/IR/Function.h>
-#include "map.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
 FlatEnv::FlatEnv(const llvm::Function &f) {
   const auto g = Symbol::get_global();
-  heap_.insert(g.value(), g);
+  heap_.insert(g, g);
   for (const auto &a : f.args()) {
     const auto arg = Symbol::get_arg(a);
-    heap_.insert(arg.value(), arg);
+    heap_.insert(arg, arg);
     stack_.insert(a, arg);
   }
 }
 FlatEnv::FlatEnv(const FlatMap &heap, const FlatMap &stack)
-    : heap_{heap}, stack_{stack} {}
-const FlatMap &FlatEnv::heap() const {
+    : heap_{heap.to_multi()}, stack_{stack.to_multi()} {}
+const MultiMap &FlatEnv::heap() const {
   return heap_;
 }
-const FlatMap &FlatEnv::stack() const {
+const MultiMap &FlatEnv::stack() const {
   return stack_;
 }
 

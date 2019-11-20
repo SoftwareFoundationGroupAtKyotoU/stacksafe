@@ -31,8 +31,8 @@ MapRef MapPool::add(const MultiMap& flat) {
   return ref;
 }
 Env MapPool::add(const FlatEnv& env) {
-  auto heap = add(env.heap().to_multi());
-  auto stack = add(env.stack().to_multi());
+  auto heap = add(env.heap());
+  auto stack = add(env.stack());
   return Env{heap, stack};
 }
 
