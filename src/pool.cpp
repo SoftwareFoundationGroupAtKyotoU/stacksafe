@@ -5,8 +5,8 @@
 
 namespace stacksafe {
 
-MapPtr::MapPtr(const FlatMap& flat)
-    : Super{std::make_unique<MultiMap>(flat.to_multi())} {}
+MapPtr::MapPtr(const MultiMap& flat)
+    : Super{std::make_unique<MultiMap>(flat)} {}
 MapPtr::MapPtr(MapPtr&&) = default;
 MapPtr::~MapPtr() = default;
 MapPtr& MapPtr::operator=(MapPtr&&) = default;
@@ -17,12 +17,12 @@ bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
   return MultiMap::hash(lhs.get()) < MultiMap::hash(rhs.get());
 }
 
-MapRef MapPool::add(const FlatMap& flat) {
+MapRef MapPool::add(const MultiMap& flat) {
   MapPtr ptr{flat};
   const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
   auto it = lb;
   for (; it != ub; ++it) {
-    if (MultiMap::equals(it->get(), flat.to_multi())) {
+    if (MultiMap::equals(it->get(), flat)) {
       return MapRef{it->get()};
     }
   }
@@ -31,8 +31,8 @@ MapRef MapPool::add(const FlatMap& flat) {
   return ref;
 }
 Env MapPool::add(const FlatEnv& env) {
-  auto heap = add(env.heap());
-  auto stack = add(env.stack());
+  auto heap = add(env.heap().to_multi());
+  auto stack = add(env.stack().to_multi());
   return Env{heap, stack};
 }
 
