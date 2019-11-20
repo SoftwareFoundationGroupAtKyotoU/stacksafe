@@ -37,9 +37,8 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    const FlatEnv flat{f};
-    get(entry).merge_heap(pool_.add(flat.heap()));
-    get(entry).merge_stack(pool_.add(flat.stack()));
+    get(entry).merge_heap(pool_.add(Map::init_heap(f)));
+    get(entry).merge_stack(pool_.add(Map::init_stack(f)));
     interpret(entry);
   }
 }
