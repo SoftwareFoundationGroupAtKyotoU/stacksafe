@@ -31,6 +31,7 @@ class Map : private std::unordered_map<Value, Domain> {
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Value &key) const;
   void merge(const Map &that);
+  MultiMap to_multi() const;
 };
 
 }  // namespace stacksafe

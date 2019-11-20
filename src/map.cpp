@@ -63,5 +63,12 @@ void Map::merge(const Map &that) {
     insert(k, v);
   }
 }
+MultiMap Map::to_multi() const {
+  MultiMap m;
+  for (const auto &[k, v] : *this) {
+    m.insert(k, v);
+  }
+  return m;
+}
 
 }  // namespace stacksafe
