@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include <llvm/IR/Function.h>
 #include "domain.hpp"
 #include "utility.hpp"
 
@@ -45,6 +46,24 @@ void Map::merge(const Map &map) {
   for (const auto &[key, val] : map) {
     insert(key, val);
   }
+}
+Map Map::init_heap(const llvm::Function &f) {
+  Map heap;
+  const auto g = Symbol::get_global();
+  heap.insert(g, g);
+  for (const auto &a : f.args()) {
+    const auto arg = Symbol::get_arg(a);
+    heap.insert(arg, arg);
+  }
+  return heap;
+}
+Map Map::init_stack(const llvm::Function &f) {
+  Map stack;
+  for (const auto &a : f.args()) {
+    const auto arg = Symbol::get_arg(a);
+    stack.insert(a, arg);
+  }
+  return stack;
 }
 bool Map::equals(const Map &lhs, const Map &rhs) {
   return lhs == rhs;

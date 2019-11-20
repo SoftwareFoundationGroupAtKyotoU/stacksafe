@@ -7,6 +7,10 @@
 #include "symbol.hpp"
 #include "value.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 class Domain;
 
@@ -22,6 +26,8 @@ class Map : private std::unordered_multimap<Value, Symbol> {
   Domain lookup(const Symbol &key) const;
   bool includes(const Map &map) const;
   void merge(const Map &map);
+  static Map init_heap(const llvm::Function &f);
+  static Map init_stack(const llvm::Function &f);
   static bool equals(const Map &lhs, const Map &rhs);
   static std::unordered_set<Value> keys(const Map &map);
   static std::size_t hash(const Map &map);
