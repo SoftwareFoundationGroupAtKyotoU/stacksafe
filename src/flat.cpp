@@ -8,8 +8,7 @@ namespace std {
 size_t hash<stacksafe::MapsTo>::operator()(const stacksafe::MapsTo& to) const {
   return stacksafe::MapsTo::hash(to);
 }
-size_t hash<stacksafe::FlatMapRef>::operator()(
-    const stacksafe::FlatMapRef& f) const {
+size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef& f) const {
   return stacksafe::MultiMap::hash(f.get());
 }
 }  // namespace std
@@ -74,11 +73,11 @@ MultiMap FlatMap::to_multi() const {
   return m;
 }
 
-FlatMapRef::FlatMapRef(const MultiMap& flat) : flat_{&flat} {}
-const MultiMap& FlatMapRef::get() const {
+MapRef::MapRef(const MultiMap& flat) : flat_{&flat} {}
+const MultiMap& MapRef::get() const {
   return *flat_;
 }
-bool operator==(const FlatMapRef& lhs, const FlatMapRef& rhs) {
+bool operator==(const MapRef& lhs, const MapRef& rhs) {
   return MultiMap::equals(lhs.get(), rhs.get());
 }
 

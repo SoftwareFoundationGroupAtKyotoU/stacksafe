@@ -10,7 +10,7 @@
 
 namespace stacksafe {
 class Domain;
-class FlatMapRef;
+class MapRef;
 class Map;
 class MapsTo;
 class MultiMap;
@@ -22,8 +22,8 @@ struct hash<stacksafe::MapsTo> {
   size_t operator()(const stacksafe::MapsTo& to) const;
 };
 template <>
-struct hash<stacksafe::FlatMapRef> {
-  size_t operator()(const stacksafe::FlatMapRef& f) const;
+struct hash<stacksafe::MapRef> {
+  size_t operator()(const stacksafe::MapRef& f) const;
 };
 }  // namespace std
 
@@ -54,14 +54,14 @@ class FlatMap : private std::unordered_set<MapsTo> {
   MultiMap to_multi() const;
 };
 
-class FlatMapRef {
+class MapRef {
   const MultiMap* flat_;
 
  public:
-  explicit FlatMapRef(const MultiMap& flat);
+  explicit MapRef(const MultiMap& flat);
   const MultiMap& get() const;
 };
-bool operator==(const FlatMapRef& lhs, const FlatMapRef& rhs);
+bool operator==(const MapRef& lhs, const MapRef& rhs);
 
 }  // namespace stacksafe
 

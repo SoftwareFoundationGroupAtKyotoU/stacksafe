@@ -17,16 +17,16 @@ bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
   return MultiMap::hash(lhs.get()) < MultiMap::hash(rhs.get());
 }
 
-FlatMapRef MapPool::add(const FlatMap& flat) {
+MapRef MapPool::add(const FlatMap& flat) {
   MapPtr ptr{flat};
   const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
   auto it = lb;
   for (; it != ub; ++it) {
     if (MultiMap::equals(it->get(), flat.to_multi())) {
-      return FlatMapRef{it->get()};
+      return MapRef{it->get()};
     }
   }
-  FlatMapRef ref{ptr.get()};
+  MapRef ref{ptr.get()};
   Super::insert(it, std::move(ptr));
   return ref;
 }

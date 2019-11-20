@@ -23,7 +23,7 @@ const FlatMap &FlatEnv::stack() const {
   return stack_;
 }
 
-Env::Env(FlatMapRef heap, FlatMapRef stack) : heap_{heap}, stack_{stack} {}
+Env::Env(MapRef heap, MapRef stack) : heap_{heap}, stack_{stack} {}
 MultiMap Env::heap() const {
   MultiMap ret;
   for (const auto &r : heap_) {

@@ -22,11 +22,11 @@ class FlatEnv {
 };
 
 class Env {
-  std::unordered_set<FlatMapRef> heap_, stack_;
+  std::unordered_set<MapRef> heap_, stack_;
 
  public:
   Env() = default;
-  Env(FlatMapRef heap, FlatMapRef stack);
+  Env(MapRef heap, MapRef stack);
   MultiMap heap() const;
   MultiMap stack() const;
   void merge(const Env &env);

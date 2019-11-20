@@ -8,7 +8,7 @@ namespace stacksafe {
 class Env;
 class FlatEnv;
 class FlatMap;
-class FlatMapRef;
+class MapRef;
 class MultiMap;
 
 class MapPtr : private std::unique_ptr<MultiMap> {
@@ -28,7 +28,7 @@ class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
 
  public:
-  FlatMapRef add(const FlatMap& flat);
+  MapRef add(const FlatMap& flat);
   Env add(const FlatEnv& env);
 };
 
