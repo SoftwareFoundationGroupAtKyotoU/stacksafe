@@ -18,27 +18,12 @@ class MultiMap;
 
 namespace std {
 template <>
-struct hash<stacksafe::MapsTo> {
-  size_t operator()(const stacksafe::MapsTo& to) const;
-};
-template <>
 struct hash<stacksafe::MapRef> {
   size_t operator()(const stacksafe::MapRef& f) const;
 };
 }  // namespace std
 
 namespace stacksafe {
-
-class MapsTo : private std::tuple<Value, Symbol> {
-  using Super = std::tuple<Value, Symbol>;
-
- public:
-  MapsTo(const Value& val, const Symbol& sym);
-  const Value& key() const;
-  const Symbol& val() const;
-  static std::size_t hash(const MapsTo& to);
-};
-bool operator==(const MapsTo& lhs, const MapsTo& rhs);
 
 class MapRef {
   const MultiMap* flat_;
