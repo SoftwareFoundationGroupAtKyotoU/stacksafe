@@ -37,6 +37,7 @@ class MapRef {
   const Map *ptr_;
 
  public:
+  const std::size_t hash;
   explicit MapRef(const Map &map);
   const Map &get() const;
 };
