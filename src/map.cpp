@@ -20,6 +20,11 @@ Domain MultiMap::lookup(const Value &key) const {
   }
   return dom;
 }
+void MultiMap::merge(const MultiMap &map) {
+  for (const auto &[k, v] : map) {
+    insert(k, v);
+  }
+}
 
 void Map::insert(const Value &key, const Domain &val) {
   auto [it, updated] = Super::try_emplace(key, val);
