@@ -17,7 +17,6 @@ target_sources(${target} PRIVATE
   domain.cpp
   env.cpp
   error.cpp
-  flat.cpp
   interpreter.cpp
   json.cpp
   log.cpp

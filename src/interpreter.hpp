@@ -3,7 +3,6 @@
 
 #include <llvm/IR/InstVisitor.h>
 #include <unordered_set>
-#include "flat.hpp"
 #include "map.hpp"
 
 namespace stacksafe {
