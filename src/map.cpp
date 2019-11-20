@@ -83,9 +83,9 @@ std::size_t Map::hash(const Map &map) {
   return ret;
 }
 
-MapRef::MapRef(const Map &flat) : flat_{&flat} {}
+MapRef::MapRef(const Map &map) : ptr_{&map} {}
 const Map &MapRef::get() const {
-  return *flat_;
+  return *ptr_;
 }
 bool operator==(const MapRef &lhs, const MapRef &rhs) {
   return Map::equals(lhs.get(), rhs.get());

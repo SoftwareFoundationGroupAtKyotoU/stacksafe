@@ -12,7 +12,7 @@ class MapRef;
 class MapPtr : private std::unique_ptr<Map> {
   friend class MapPool;
   using Super = std::unique_ptr<Map>;
-  explicit MapPtr(const Map& flat);
+  explicit MapPtr(const Map& map);
 
  public:
   MapPtr(MapPtr&&);
@@ -26,7 +26,7 @@ class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
 
  public:
-  MapRef add(const Map& flat);
+  MapRef add(const Map& map);
 };
 
 }  // namespace stacksafe

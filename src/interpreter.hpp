@@ -7,7 +7,6 @@
 
 namespace stacksafe {
 class Error;
-class FlatEnv;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {

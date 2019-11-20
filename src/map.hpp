@@ -34,10 +34,10 @@ class Map : private std::unordered_multimap<Value, Symbol> {
 };
 
 class MapRef {
-  const Map *flat_;
+  const Map *ptr_;
 
  public:
-  explicit MapRef(const Map &flat);
+  explicit MapRef(const Map &map);
   const Map &get() const;
 };
 bool operator==(const MapRef &lhs, const MapRef &rhs);
