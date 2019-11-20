@@ -31,9 +31,15 @@ Domain MultiMap::lookup(const Value &key) const {
 Domain MultiMap::lookup(const Symbol &key) const {
   return lookup(key.value());
 }
+bool MultiMap::includes(const MultiMap &map) const {
+  auto pred = [&self = *this](const auto &pair) {
+    return self.find(pair.first) != self.end();
+  };
+  return std::all_of(map.begin(), map.end(), pred);
+}
 void MultiMap::merge(const MultiMap &map) {
-  for (const auto &[k, v] : map) {
-    insert(k, v);
+  for (const auto &[key, val] : map) {
+    insert(key, val);
   }
 }
 

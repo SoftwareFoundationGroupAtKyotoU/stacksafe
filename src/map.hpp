@@ -17,6 +17,7 @@ class MultiMap : private std::unordered_multimap<Value, Symbol> {
   void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Value &key) const;
   Domain lookup(const Symbol &key) const;
+  bool includes(const MultiMap &map) const;
   void merge(const MultiMap &map);
 };
 
