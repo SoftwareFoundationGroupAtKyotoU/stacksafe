@@ -9,9 +9,7 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Heap;
 class Map;
-class Stack;
 
 class FlatEnv {
   FlatMap heap_, stack_;
@@ -29,8 +27,8 @@ class Env {
  public:
   Env() = default;
   Env(FlatMapRef heap, FlatMapRef stack);
-  Heap heap() const;
-  Stack stack() const;
+  Map heap() const;
+  Map stack() const;
   void merge(const Env &env);
   bool includes(const Env &env);
 };
