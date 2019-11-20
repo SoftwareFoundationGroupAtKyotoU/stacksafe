@@ -5,20 +5,20 @@
 
 namespace stacksafe {
 
-FlatMapPtr::FlatMapPtr(const FlatMap& flat)
+MapPtr::MapPtr(const FlatMap& flat)
     : Super{std::make_unique<MultiMap>(flat.to_multi())} {}
-FlatMapPtr::FlatMapPtr(FlatMapPtr&&) = default;
-FlatMapPtr::~FlatMapPtr() = default;
-FlatMapPtr& FlatMapPtr::operator=(FlatMapPtr&&) = default;
-const MultiMap& FlatMapPtr::get() const {
+MapPtr::MapPtr(MapPtr&&) = default;
+MapPtr::~MapPtr() = default;
+MapPtr& MapPtr::operator=(MapPtr&&) = default;
+const MultiMap& MapPtr::get() const {
   return *Super::get();
 }
-bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs) {
+bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
   return MultiMap::hash(lhs.get()) < MultiMap::hash(rhs.get());
 }
 
 FlatMapRef FlatMapPool::add(const FlatMap& flat) {
-  FlatMapPtr ptr{flat};
+  MapPtr ptr{flat};
   const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
   auto it = lb;
   for (; it != ub; ++it) {

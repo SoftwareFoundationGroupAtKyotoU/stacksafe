@@ -11,21 +11,21 @@ class FlatMap;
 class FlatMapRef;
 class MultiMap;
 
-class FlatMapPtr : private std::unique_ptr<MultiMap> {
+class MapPtr : private std::unique_ptr<MultiMap> {
   friend class FlatMapPool;
   using Super = std::unique_ptr<MultiMap>;
-  explicit FlatMapPtr(const FlatMap& flat);
+  explicit MapPtr(const FlatMap& flat);
 
  public:
-  FlatMapPtr(FlatMapPtr&&);
-  ~FlatMapPtr();
-  FlatMapPtr& operator=(FlatMapPtr&&);
+  MapPtr(MapPtr&&);
+  ~MapPtr();
+  MapPtr& operator=(MapPtr&&);
   const MultiMap& get() const;
 };
-bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs);
+bool operator<(const MapPtr& lhs, const MapPtr& rhs);
 
-class FlatMapPool : private std::vector<FlatMapPtr> {
-  using Super = std::vector<FlatMapPtr>;
+class FlatMapPool : private std::vector<MapPtr> {
+  using Super = std::vector<MapPtr>;
 
  public:
   FlatMapRef add(const FlatMap& flat);
