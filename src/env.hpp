@@ -4,21 +4,7 @@
 #include <unordered_set>
 #include "map.hpp"
 
-namespace llvm {
-class Function;
-}  // namespace llvm
-
 namespace stacksafe {
-
-class FlatEnv {
-  Map heap_, stack_;
-
- public:
-  explicit FlatEnv(const llvm::Function &f);
-  FlatEnv(const Map &heap, const Map &stack);
-  const Map &heap() const;
-  const Map &stack() const;
-};
 
 class Env {
   std::unordered_set<MapRef> heap_, stack_;
