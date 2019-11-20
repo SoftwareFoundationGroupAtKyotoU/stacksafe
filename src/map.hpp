@@ -13,6 +13,7 @@ class MultiMap : private std::unordered_multimap<Value, Symbol> {
 
  public:
   void insert(const Value &key, const Symbol &val);
+  Domain lookup(const Value &key) const;
 };
 
 class Map : private std::unordered_map<Value, Domain> {

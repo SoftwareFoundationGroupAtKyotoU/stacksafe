@@ -12,6 +12,14 @@ void MultiMap::insert(const Value &key, const Symbol &val) {
   }
   Super::emplace_hint(lb, key, val);
 }
+Domain MultiMap::lookup(const Value &key) const {
+  Domain dom;
+  auto [lb, ub] = Super::equal_range(key);
+  for (auto it = lb; it != ub; ++it) {
+    dom.insert(it->second);
+  }
+  return dom;
+}
 
 void Map::insert(const Value &key, const Domain &val) {
   auto [it, updated] = Super::try_emplace(key, val);
