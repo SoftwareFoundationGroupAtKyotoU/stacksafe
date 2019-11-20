@@ -1,39 +1,100 @@
 #include "map.hpp"
+#include <llvm/IR/Function.h>
+#include "domain.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
+void Map::insert(const Value &key, const Symbol &val) {
+  auto [lb, ub] = Super::equal_range(key);
+  for (auto it = lb; it != ub; ++it) {
+    if (it->second == val) {
+      return;
+    }
+  }
+  Super::emplace_hint(lb, key, val);
+}
 void Map::insert(const Value &key, const Domain &val) {
-  auto [it, updated] = Super::try_emplace(key, val);
-  if (!updated) {
-    it->second.merge(val);
+  for (const auto &sym : val) {
+    insert(key, sym);
   }
 }
-void Map::insert(const Value &key, const Symbol &val) {
-  Super::try_emplace(key, Domain{}).first->second.insert(val);
+void Map::insert(const Symbol &key, const Symbol &val) {
+  insert(key.value(), val);
+}
+void Map::insert(const Symbol &key, const Domain &val) {
+  insert(key.value(), val);
 }
 Domain Map::lookup(const Value &key) const {
-  if (auto it = Super::find(key); it != end()) {
-    return it->second;
+  Domain dom;
+  auto [lb, ub] = Super::equal_range(key);
+  for (auto it = lb; it != ub; ++it) {
+    dom.insert(it->second);
   }
-  return Domain{};
+  return dom;
 }
-void Map::merge(const Map &that) {
-  for (const auto &[k, v] : that) {
-    insert(k, v);
+Domain Map::lookup(const Symbol &key) const {
+  return lookup(key.value());
+}
+bool Map::includes(const Map &map) const {
+  auto pred = [&self = *this](const auto &pair) {
+    return self.find(pair.first) != self.end();
+  };
+  return std::all_of(map.begin(), map.end(), pred);
+}
+void Map::merge(const Map &map) {
+  for (const auto &[key, val] : map) {
+    insert(key, val);
   }
+}
+Map Map::init_heap(const llvm::Function &f) {
+  Map heap;
+  const auto g = Symbol::get_global();
+  heap.insert(g, g);
+  for (const auto &a : f.args()) {
+    const auto arg = Symbol::get_arg(a);
+    heap.insert(arg, arg);
+  }
+  return heap;
+}
+Map Map::init_stack(const llvm::Function &f) {
+  Map stack;
+  for (const auto &a : f.args()) {
+    const auto arg = Symbol::get_arg(a);
+    stack.insert(a, arg);
+  }
+  return stack;
+}
+bool Map::equals(const Map &lhs, const Map &rhs) {
+  return lhs == rhs;
+}
+std::unordered_set<Value> Map::keys(const Map &map) {
+  std::unordered_set<Value> vec;
+  for (const auto &pair : map) {
+    vec.emplace(pair.first);
+  }
+  return vec;
+}
+std::size_t Map::hash(const Map &map) {
+  std::size_t ret = 0;
+  for (const auto &[key, val] : map) {
+    ret ^= hash_combine(Value::hash(key), Symbol::hash(val));
+  }
+  return ret;
 }
 
-Heap::Heap(const Map &m) : Map{m} {}
-void Heap::insert(const Symbol &key, const Domain &val) {
-  Map::insert(key.value(), val);
+MapRef::MapRef(const Map &map) : ptr_{&map} {}
+const Map &MapRef::get() const {
+  return *ptr_;
 }
-Domain Heap::lookup(const Symbol &key) const {
-  return Map::lookup(key.value());
+bool operator==(const MapRef &lhs, const MapRef &rhs) {
+  return Map::equals(lhs.get(), rhs.get());
 }
-void Heap::merge(const Heap &that) {
-  Map::merge(that);
-}
-Stack::Stack(const Map &m) : Map{m} {}
 
 }  // namespace stacksafe
+
+namespace std {
+size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef &f) const {
+  return stacksafe::Map::hash(f.get());
+}
+}  // namespace std

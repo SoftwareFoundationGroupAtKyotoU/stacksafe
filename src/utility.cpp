@@ -98,10 +98,10 @@ std::string to_str(const Domain& dom) {
 }
 std::string to_str(const Map& map) {
   std::string ret;
-  for (const auto& [key, val] : map) {
+  for (const auto& key : Map::keys(map)) {
     ret.append(to_str(get_operand(key)));
     ret.append(": ");
-    ret.append(to_str(val));
+    ret.append(to_str(map.lookup(key)));
     ret.append(", ");
   }
   return ret;

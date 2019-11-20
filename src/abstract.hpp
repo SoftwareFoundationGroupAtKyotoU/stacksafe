@@ -19,7 +19,7 @@ namespace stacksafe {
 class Abstract {
   const Log log_;
   Error error_;
-  FlatMapPool pool_;
+  MapPool pool_;
   std::unordered_map<const llvm::BasicBlock *, Env> blocks_;
   std::string name_;
   double elapsed_;

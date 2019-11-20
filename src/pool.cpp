@@ -1,36 +1,32 @@
 #include "pool.hpp"
 #include <algorithm>
-#include "env.hpp"
 #include "map.hpp"
 
 namespace stacksafe {
 
-FlatMapPtr::FlatMapPtr(const FlatMap& flat)
-    : Super{std::make_unique<FlatMap>(flat)} {}
-const FlatMap& FlatMapPtr::get() const {
+MapPtr::MapPtr(const Map& map) : Super{std::make_unique<Map>(map)} {}
+MapPtr::MapPtr(MapPtr&&) = default;
+MapPtr::~MapPtr() = default;
+MapPtr& MapPtr::operator=(MapPtr&&) = default;
+const Map& MapPtr::get() const {
   return *Super::get();
 }
-bool operator<(const FlatMapPtr& lhs, const FlatMapPtr& rhs) {
-  return FlatMap::hash(lhs.get()) < FlatMap::hash(rhs.get());
+bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
+  return Map::hash(lhs.get()) < Map::hash(rhs.get());
 }
 
-FlatMapRef FlatMapPool::add(const FlatMap& flat) {
-  FlatMapPtr ptr{flat};
+MapRef MapPool::add(const Map& map) {
+  MapPtr ptr{map};
   const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
   auto it = lb;
   for (; it != ub; ++it) {
-    if (FlatMap::equals(it->get(), flat)) {
-      return FlatMapRef{it->get()};
+    if (Map::equals(it->get(), map)) {
+      return MapRef{it->get()};
     }
   }
-  FlatMapRef ref{ptr.get()};
+  MapRef ref{ptr.get()};
   Super::insert(it, std::move(ptr));
   return ref;
-}
-Env FlatMapPool::add(const FlatEnv& env) {
-  auto heap = add(env.heap());
-  auto stack = add(env.stack());
-  return Env{heap, stack};
 }
 
 }  // namespace stacksafe

@@ -37,8 +37,8 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    const auto env = pool_.add(FlatEnv{f});
-    get(entry).merge(env);
+    get(entry).merge_heap(pool_.add(Map::init_heap(f)));
+    get(entry).merge_stack(pool_.add(Map::init_stack(f)));
     interpret(entry);
   }
 }
@@ -60,8 +60,8 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   auto prev = get(b);
   Interpreter i{log_, error_, prev.heap(), prev.stack()};
   i.visit(b);
-  const auto diff = pool_.add(i.diff());
-  prev.merge(diff);
+  prev.merge_heap(pool_.add(i.heap_diff()));
+  prev.merge_stack(pool_.add(i.stack_diff()));
   const auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {

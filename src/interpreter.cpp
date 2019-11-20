@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include "domain.hpp"
 #include "env.hpp"
 #include "error.hpp"
 #include "log.hpp"
@@ -19,11 +20,14 @@ bool has_local(const Domain &dom) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, Error &error, const Heap &heap,
-                         const Stack &stack)
+Interpreter::Interpreter(const Log &l, Error &error, const Map &heap,
+                         const Map &stack)
     : log_{l}, error_{error}, heap_{heap}, stack_{stack} {}
-FlatEnv Interpreter::diff() const {
-  return FlatEnv{heap_diff_, stack_diff_};
+const Map &Interpreter::heap_diff() const {
+  return heap_diff_;
+}
+const Map &Interpreter::stack_diff() const {
+  return stack_diff_;
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
