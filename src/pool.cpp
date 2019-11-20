@@ -17,7 +17,7 @@ bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
   return MultiMap::hash(lhs.get()) < MultiMap::hash(rhs.get());
 }
 
-FlatMapRef FlatMapPool::add(const FlatMap& flat) {
+FlatMapRef MapPool::add(const FlatMap& flat) {
   MapPtr ptr{flat};
   const auto [lb, ub] = std::equal_range(begin(), end(), ptr);
   auto it = lb;
@@ -30,7 +30,7 @@ FlatMapRef FlatMapPool::add(const FlatMap& flat) {
   Super::insert(it, std::move(ptr));
   return ref;
 }
-Env FlatMapPool::add(const FlatEnv& env) {
+Env MapPool::add(const FlatEnv& env) {
   auto heap = add(env.heap());
   auto stack = add(env.stack());
   return Env{heap, stack};

@@ -12,7 +12,7 @@ class FlatMapRef;
 class MultiMap;
 
 class MapPtr : private std::unique_ptr<MultiMap> {
-  friend class FlatMapPool;
+  friend class MapPool;
   using Super = std::unique_ptr<MultiMap>;
   explicit MapPtr(const FlatMap& flat);
 
@@ -24,7 +24,7 @@ class MapPtr : private std::unique_ptr<MultiMap> {
 };
 bool operator<(const MapPtr& lhs, const MapPtr& rhs);
 
-class FlatMapPool : private std::vector<MapPtr> {
+class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
 
  public:
