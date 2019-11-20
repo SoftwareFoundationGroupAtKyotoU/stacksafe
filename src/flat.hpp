@@ -16,24 +16,6 @@ class MapsTo;
 class Map;
 }  // namespace stacksafe
 
-namespace std {
-template <>
-struct hash<stacksafe::MapRef> {
-  size_t operator()(const stacksafe::MapRef& f) const;
-};
-}  // namespace std
-
-namespace stacksafe {
-
-class MapRef {
-  const Map* flat_;
-
- public:
-  explicit MapRef(const Map& flat);
-  const Map& get() const;
-};
-bool operator==(const MapRef& lhs, const MapRef& rhs);
-
-}  // namespace stacksafe
+namespace stacksafe {}  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_9AD1204C_8632_4047_8AC2_467F02D9DFF8

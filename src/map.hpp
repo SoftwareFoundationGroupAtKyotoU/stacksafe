@@ -26,6 +26,22 @@ class Map : private std::unordered_multimap<Value, Symbol> {
   static std::size_t hash(const Map &map);
 };
 
+class MapRef {
+  const Map *flat_;
+
+ public:
+  explicit MapRef(const Map &flat);
+  const Map &get() const;
+};
+bool operator==(const MapRef &lhs, const MapRef &rhs);
+
 }  // namespace stacksafe
+
+namespace std {
+template <>
+struct hash<stacksafe::MapRef> {
+  size_t operator()(const stacksafe::MapRef &f) const;
+};
+}  // namespace std
 
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
