@@ -31,6 +31,9 @@ void MultiMap::merge(const MultiMap &map) {
   }
 }
 
+void Map::insert(const Symbol &key, const Domain &val) {
+  insert(key.value(), val);
+}
 void Map::insert(const Value &key, const Domain &val) {
   auto [it, updated] = Super::try_emplace(key, val);
   if (!updated) {
@@ -39,6 +42,9 @@ void Map::insert(const Value &key, const Domain &val) {
 }
 void Map::insert(const Value &key, const Symbol &val) {
   Super::try_emplace(key, Domain{}).first->second.insert(val);
+}
+Domain Map::lookup(const Symbol &key) const {
+  return lookup(key.value());
 }
 Domain Map::lookup(const Value &key) const {
   if (auto it = Super::find(key); it != end()) {
