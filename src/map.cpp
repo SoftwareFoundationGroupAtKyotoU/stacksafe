@@ -3,6 +3,16 @@
 
 namespace stacksafe {
 
+void MultiMap::insert(const Value &key, const Symbol &val) {
+  auto [lb, ub] = Super::equal_range(key);
+  for (auto it = lb; it != ub; ++it) {
+    if (it->second == val) {
+      return;
+    }
+  }
+  Super::emplace_hint(lb, key, val);
+}
+
 void Map::insert(const Value &key, const Domain &val) {
   auto [it, updated] = Super::try_emplace(key, val);
   if (!updated) {

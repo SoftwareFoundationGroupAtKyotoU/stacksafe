@@ -10,6 +10,9 @@ namespace stacksafe {
 
 class MultiMap : private std::unordered_multimap<Value, Symbol> {
   using Super = std::unordered_multimap<Value, Symbol>;
+
+ public:
+  void insert(const Value &key, const Symbol &val);
 };
 
 class Map : private std::unordered_map<Value, Domain> {
