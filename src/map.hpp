@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <unordered_map>
+#include <unordered_set>
 #include "domain.hpp"
 #include "value.hpp"
 
@@ -21,6 +22,7 @@ class MultiMap : private std::unordered_multimap<Value, Symbol> {
   bool includes(const MultiMap &map) const;
   void merge(const MultiMap &map);
   static bool equals(const MultiMap &lhs, const MultiMap &rhs);
+  static std::unordered_set<Value> keys(const MultiMap &map);
   static std::size_t hash(const MultiMap &map);
 };
 

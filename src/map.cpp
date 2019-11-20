@@ -48,6 +48,13 @@ void MultiMap::merge(const MultiMap &map) {
 bool MultiMap::equals(const MultiMap &lhs, const MultiMap &rhs) {
   return lhs == rhs;
 }
+std::unordered_set<Value> MultiMap::keys(const MultiMap &map) {
+  std::unordered_set<Value> vec;
+  for (const auto &pair : map) {
+    vec.emplace(pair.first);
+  }
+  return vec;
+}
 std::size_t MultiMap::hash(const MultiMap &map) {
   std::size_t ret = 0;
   for (const auto &[key, val] : map) {
