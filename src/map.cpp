@@ -45,6 +45,13 @@ void MultiMap::merge(const MultiMap &map) {
 bool MultiMap::equals(const MultiMap &lhs, const MultiMap &rhs) {
   return lhs == rhs;
 }
+std::size_t MultiMap::hash(const MultiMap &map) {
+  std::size_t ret = 0;
+  for (const auto &[key, val] : map) {
+    ret ^= hash_combine(Value::hash(key), Symbol::hash(val));
+  }
+  return ret;
+}
 
 void Map::insert(const Symbol &key, const Domain &val) {
   insert(key.value(), val);

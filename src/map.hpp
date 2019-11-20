@@ -20,6 +20,7 @@ class MultiMap : private std::unordered_multimap<Value, Symbol> {
   bool includes(const MultiMap &map) const;
   void merge(const MultiMap &map);
   static bool equals(const MultiMap &lhs, const MultiMap &rhs);
+  static std::size_t hash(const MultiMap &map);
 };
 
 class Map : private std::unordered_map<Value, Domain> {
