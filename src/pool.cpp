@@ -1,6 +1,5 @@
 #include "pool.hpp"
 #include <algorithm>
-#include "env.hpp"
 #include "map.hpp"
 
 namespace stacksafe {
@@ -28,11 +27,6 @@ MapRef MapPool::add(const Map& flat) {
   MapRef ref{ptr.get()};
   Super::insert(it, std::move(ptr));
   return ref;
-}
-Env MapPool::add(const FlatEnv& env) {
-  auto heap = add(env.heap());
-  auto stack = add(env.stack());
-  return Env{heap, stack};
 }
 
 }  // namespace stacksafe
