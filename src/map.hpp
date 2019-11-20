@@ -4,10 +4,11 @@
 #include <functional>
 #include <unordered_map>
 #include <unordered_set>
-#include "domain.hpp"
+#include "symbol.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
+class Domain;
 
 class Map : private std::unordered_multimap<Value, Symbol> {
   using Super = std::unordered_multimap<Value, Symbol>;

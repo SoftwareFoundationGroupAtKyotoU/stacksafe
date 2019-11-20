@@ -7,9 +7,8 @@
 namespace stacksafe {
 class Env;
 class FlatEnv;
-class FlatMap;
-class MapRef;
 class Map;
+class MapRef;
 
 class MapPtr : private std::unique_ptr<Map> {
   friend class MapPool;

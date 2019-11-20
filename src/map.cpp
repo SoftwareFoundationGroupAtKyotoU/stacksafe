@@ -1,4 +1,5 @@
 #include "map.hpp"
+#include "domain.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
