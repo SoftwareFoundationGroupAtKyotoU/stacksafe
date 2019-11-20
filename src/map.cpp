@@ -42,6 +42,9 @@ void MultiMap::merge(const MultiMap &map) {
     insert(key, val);
   }
 }
+bool MultiMap::equals(const MultiMap &lhs, const MultiMap &rhs) {
+  return lhs == rhs;
+}
 
 void Map::insert(const Symbol &key, const Domain &val) {
   insert(key.value(), val);
