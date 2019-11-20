@@ -13,8 +13,8 @@ FlatEnv::FlatEnv(const llvm::Function &f) {
     stack_.insert(a, arg);
   }
 }
-FlatEnv::FlatEnv(const FlatMap &heap, const FlatMap &stack)
-    : heap_{heap.to_multi()}, stack_{stack.to_multi()} {}
+FlatEnv::FlatEnv(const MultiMap &heap, const MultiMap &stack)
+    : heap_{heap}, stack_{stack} {}
 const MultiMap &FlatEnv::heap() const {
   return heap_;
 }

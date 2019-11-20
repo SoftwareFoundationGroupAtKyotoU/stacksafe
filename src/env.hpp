@@ -17,7 +17,7 @@ class FlatEnv {
 
  public:
   explicit FlatEnv(const llvm::Function &f);
-  FlatEnv(const FlatMap &heap, const FlatMap &stack);
+  FlatEnv(const MultiMap &heap, const MultiMap &stack);
   const MultiMap &heap() const;
   const MultiMap &stack() const;
 };

@@ -23,7 +23,7 @@ Interpreter::Interpreter(const Log &l, Error &error, const MultiMap &heap,
                          const MultiMap &stack)
     : log_{l}, error_{error}, heap_{heap}, stack_{stack} {}
 FlatEnv Interpreter::diff() const {
-  return FlatEnv{heap_diff_, stack_diff_};
+  return FlatEnv{heap_diff_.to_multi(), stack_diff_.to_multi()};
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
