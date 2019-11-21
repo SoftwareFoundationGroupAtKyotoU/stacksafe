@@ -7,12 +7,12 @@ namespace llvm {
 class CallInst;
 class Constant;
 class Instruction;
+class Value;
 }  // namespace llvm
 
 namespace stacksafe {
 class Domain;
 class Map;
-class Value;
 
 void unsupported_instruction(const llvm::Instruction& i);
 bool is_global(const llvm::Constant& c);
@@ -22,7 +22,7 @@ std::size_t hash_value(const void* ptr);
 std::size_t hash_combine(std::size_t lhs, std::size_t rhs);
 
 namespace debug {
-int get_operand(const Value& v);
+int get_operand(const llvm::Value* v);
 std::string to_str(int num);
 std::string to_str(const Domain& dom);
 std::string to_str(const Map& map);
