@@ -20,14 +20,7 @@ bool compare(const RefSet &lhs, const RefSet &rhs) {
 }  // namespace
 
 Env::Env(MapRef ref) : set_{ref} {}
-Map Env::heap() const {
-  Map ret;
-  for (const auto &r : set_) {
-    ret.merge(r.get());
-  }
-  return ret;
-}
-Map Env::stack() const {
+Map Env::concat() const {
   Map ret;
   for (const auto &r : set_) {
     ret.merge(r.get());

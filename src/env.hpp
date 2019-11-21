@@ -12,8 +12,7 @@ class Env {
  public:
   Env() = default;
   Env(MapRef ref);
-  Map heap() const;
-  Map stack() const;
+  Map concat() const;
   void merge(const Env &env);
   void insert(MapRef ref);
   bool includes(const Env &env);
