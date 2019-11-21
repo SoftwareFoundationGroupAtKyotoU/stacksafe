@@ -2,6 +2,16 @@
 
 namespace stacksafe {
 
+auto Params::begin() const -> ParamsIterator {
+  return ParamsIterator{Super::begin()};
+}
+auto Params::end() const -> ParamsIterator {
+  return ParamsIterator{Super::end()};
+}
+void Params::push_back(const llvm::Value &v) {
+  Super::push_back(&v);
+}
+
 Params::ParamsIterator::ParamsIterator(Super it) : Super{it} {}
 auto Params::ParamsIterator::super() -> Super & {
   return *this;
@@ -21,16 +31,6 @@ bool Params::ParamsIterator::operator==(ParamsIterator it) const {
 }
 bool Params::ParamsIterator::operator!=(ParamsIterator it) const {
   return super() != it.super();
-}
-
-auto Params::begin() const -> ParamsIterator {
-  return ParamsIterator{Super::begin()};
-}
-auto Params::end() const -> ParamsIterator {
-  return ParamsIterator{Super::end()};
-}
-void Params::push_back(const llvm::Value &v) {
-  Super::push_back(&v);
 }
 
 }  // namespace stacksafe
