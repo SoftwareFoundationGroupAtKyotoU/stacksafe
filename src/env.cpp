@@ -19,7 +19,6 @@ Map Env::concat() const {
   for (const auto &r : *this) {
     ret.merge(r.get());
   }
-  ret.unique();
   return ret;
 }
 void Env::merge(const Env &env) {
