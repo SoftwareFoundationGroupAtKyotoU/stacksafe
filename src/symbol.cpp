@@ -20,7 +20,7 @@ bool Symbol::is_argument() const {
 Symbol Symbol::get_symbol() {
   return Symbol{nullptr, false};
 }
-Symbol Symbol::get_local(const llvm::AllocaInst &v) {
+Symbol Symbol::get_symbol(const llvm::AllocaInst &v) {
   return Symbol{&v, false};
 }
 Symbol Symbol::get_arg(const llvm::Argument &v) {

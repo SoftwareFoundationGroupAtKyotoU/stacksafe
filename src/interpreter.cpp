@@ -191,7 +191,7 @@ void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   Domain dom;
-  const auto sym = Symbol::get_local(dst);
+  const auto sym = Symbol::get_symbol(dst);
   insert(sym, dom);
   dom.insert(sym);
   insert(dst, dom);
