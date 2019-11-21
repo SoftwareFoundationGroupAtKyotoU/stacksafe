@@ -14,8 +14,7 @@ Key::Key(const llvm::AllocaInst& val) : Key{&val, symbol_flag} {}
 Key::Key(const llvm::Argument& val) : Key{&val, global_flag} {}
 Key::Key(const llvm::Instruction& val) : val_{&val} {}
 Key::Key(const llvm::Value& val) : val_{&val} {}
-Key::Key(const llvm::Value& val, bool is_arg)
-    : Key{&val, is_arg ? global_flag : symbol_flag} {}
+Key::Key(Ptr val, bool is_arg) : Key{val, is_arg ? global_flag : symbol_flag} {}
 const llvm::Value* Key::value() const {
   if (is_register()) {
     return static_cast<const llvm::Value*>(val_);
