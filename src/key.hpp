@@ -17,6 +17,7 @@ class Key {
     Base sym_;
   };
   static const Base symbol_flag, global_flag;
+  Key(Ptr ptr, Base flag);
 
  public:
   Key();

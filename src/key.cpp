@@ -5,12 +5,13 @@ namespace stacksafe {
 
 const Key::Base Key::symbol_flag{0x1};
 const Key::Base Key::global_flag{0x3};
-Key::Key() : sym_{global_flag} {}
-Key::Key(const llvm::Value& val) : val_{&val} {}
-Key::Key(const llvm::Value& val, bool is_arg) : Key{val} {
-  static_assert(sizeof(val_) == sizeof(sym_));
-  sym_ |= (is_arg ? global_flag : symbol_flag);
+Key::Key(Ptr ptr, Base flag) : sym_{reinterpret_cast<Base>(ptr) | flag} {}
+Key::Key() : sym_{global_flag} {
+  static_assert(sizeof(Ptr) == sizeof(Base));
 }
+Key::Key(const llvm::Value& val) : val_{&val} {}
+Key::Key(const llvm::Value& val, bool is_arg)
+    : Key{&val, is_arg ? global_flag : symbol_flag} {}
 const llvm::Value* Key::value() const {
   return is_symbol() ? nullptr : reinterpret_cast<const llvm::Value*>(val_);
 }
