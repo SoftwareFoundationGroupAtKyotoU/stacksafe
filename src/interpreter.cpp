@@ -7,9 +7,6 @@
 
 namespace stacksafe {
 namespace {
-bool is_void_func(const llvm::CallInst &i) {
-  return i.getFunctionType()->getReturnType()->isVoidTy();
-}
 bool has_local(const Domain &dom) {
   for (const auto &sym : dom) {
     if (sym.is_local()) {
