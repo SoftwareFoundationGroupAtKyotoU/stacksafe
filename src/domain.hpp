@@ -15,6 +15,7 @@ class Domain : private std::vector<Symbol> {
   void insert(const Symbol &sym);
   void merge(const Domain &that);
   bool element(const Symbol &sym) const;
+  bool has_local() const;
 };
 
 }  // namespace stacksafe

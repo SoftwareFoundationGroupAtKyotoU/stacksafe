@@ -1,10 +1,18 @@
 #include "cache.hpp"
 #include <llvm/IR/Function.h>
-#include <set>
+#include <vector>
 #include "domain.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
+std::string to_string(int num) {
+  static const std::string global{"@"};
+  if (num < 0) {
+    return global;
+  } else {
+    return std::to_string(num);
+  }
+}
 
 Cache::Cache(const llvm::Function& f) {
   int num = -1;
@@ -21,37 +29,30 @@ Cache::Cache(const llvm::Function& f) {
     }
   }
 }
-std::string Cache::to_str(const Value& val) const {
-  return to_str(lookup(val));
+std::string Cache::to_str(const Symbol& sym) const {
+  static const std::string prefix{"&"};
+  return prefix + to_string(lookup(sym.value()));
+}
+std::string Cache::to_str(const llvm::Instruction& reg) const {
+  static const std::string prefix{"%"};
+  return prefix + to_string(lookup(reg));
 }
 std::string Cache::to_str(const Domain& dom) const {
-  static const std::string prefix{"&"};
-  static const std::string comma{", "};
-  static const std::string begin{"["};
-  static const std::string end{"]"};
-  std::set<int> nums;
-  for (const auto& sym : dom) {
-    nums.insert(lookup(sym.value()));
-  }
-  std::string ret;
+  const auto cmp = [& self = *this](const auto& lhs, const auto& rhs) {
+    return self.lookup(lhs.value()) < self.lookup(rhs.value());
+  };
+  std::vector<Symbol> symbols{dom.begin(), dom.end()};
+  std::sort(symbols.begin(), symbols.end(), cmp);
+  std::string ret{"["};
   bool first = true;
-  for (const auto& num : nums) {
+  for (const auto& sym : symbols) {
     if (!std::exchange(first, false)) {
-      ret.append(comma);
+      ret.append(", ");
     }
-    ret.append(prefix + to_str(num));
+    ret.append(to_str(sym));
   }
-  ret.insert(0, begin);
-  ret.append(end);
+  ret.append("]");
   return ret;
-}
-std::string Cache::to_str(int num) {
-  static const std::string global{"@"};
-  if (num < 0) {
-    return global;
-  } else {
-    return std::to_string(num);
-  }
 }
 int Cache::lookup(const Value& val) const {
   auto it = Super::find(val);

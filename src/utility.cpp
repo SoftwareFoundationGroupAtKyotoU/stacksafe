@@ -40,6 +40,9 @@ bool is_register(const llvm::Instruction& i) {
     return true;
   }
 }
+bool is_return(const llvm::CallInst& i) {
+  return !i.getFunctionType()->getReturnType()->isVoidTy();
+}
 std::size_t hash_value(const void* ptr) {
   return llvm::hash_value(ptr);
 }

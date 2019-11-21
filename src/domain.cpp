@@ -17,5 +17,9 @@ void Domain::merge(const Domain &that) {
 bool Domain::element(const Symbol &sym) const {
   return std::binary_search(begin(), end(), sym);
 }
+bool Domain::has_local() const {
+  const auto pred = [](const auto &sym) { return sym.is_local(); };
+  return std::any_of(begin(), end(), pred);
+}
 
 }  // namespace stacksafe
