@@ -25,8 +25,6 @@ class Map : private std::unordered_multimap<Symbol, Symbol> {
   bool includes(const Map &map) const;
   void merge(const Map &map);
   static Map init(const llvm::Function &f);
-  static Map init_heap(const llvm::Function &f);
-  static Map init_stack(const llvm::Function &f);
   static bool equals(const Map &lhs, const Map &rhs);
   static Domain keys(const Map &map);
   static std::size_t hash(const Map &map);

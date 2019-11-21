@@ -50,23 +50,6 @@ Map Map::init(const llvm::Function &f) {
   }
   return map;
 }
-Map Map::init_heap(const llvm::Function &f) {
-  Map heap;
-  const auto g = Symbol::get_global();
-  heap.insert(g, g);
-  for (const auto &a : f.args()) {
-    const auto arg = Symbol::get_arg(a);
-    heap.insert(arg, arg);
-  }
-  return heap;
-}
-Map Map::init_stack(const llvm::Function &f) {
-  Map stack;
-  for (const auto &a : f.args()) {
-    stack.insert(Symbol::get_register(a), Symbol::get_arg(a));
-  }
-  return stack;
-}
 bool Map::equals(const Map &lhs, const Map &rhs) {
   return lhs == rhs;
 }
