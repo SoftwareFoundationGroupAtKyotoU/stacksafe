@@ -41,10 +41,19 @@ class Params : private std::unordered_set<const llvm::Value *> {
   };
 
  public:
-  ParamIterator begin() const { return ParamIterator{Super::begin()}; }
-  ParamIterator end() const { return ParamIterator{Super::end()}; }
-  void emplace(const llvm::Value &v) { Super::emplace(&v); }
+  ParamIterator begin() const;
+  ParamIterator end() const;
+  void emplace(const llvm::Value &v);
 };
+auto Params::begin() const -> ParamIterator {
+  return ParamIterator{Super::begin()};
+}
+auto Params::end() const -> ParamIterator {
+  return ParamIterator{Super::end()};
+}
+void Params::emplace(const llvm::Value &v) {
+  Super::emplace(&v);
+}
 }  // namespace
 
 Interpreter::Interpreter(const Log &l, Error &error, const Map &heap,
