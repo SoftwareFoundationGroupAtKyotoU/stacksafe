@@ -5,6 +5,9 @@
 
 namespace stacksafe {
 namespace {
+bool equals(MapRef lhs, MapRef rhs) {
+  return &lhs.get() == &rhs.get();
+}
 bool compare(MapRef lhs, MapRef rhs) {
   return hash_value(lhs.get()) < hash_value(rhs.get());
 }
@@ -19,10 +22,9 @@ Map Env::concat() const {
   return ret;
 }
 void Env::merge(const Env &env) {
-  auto size = Super::size();
   Super::insert(end(), env.begin(), env.end());
-  auto middle = std::next(begin(), size);
-  std::inplace_merge(begin(), middle, end(), compare);
+  std::sort(begin(), end(), compare);
+  erase(std::unique(begin(), end(), equals), end());
 }
 void Env::insert(MapRef ref) {
   const auto [lb, ub] = std::equal_range(begin(), end(), ref, compare);
