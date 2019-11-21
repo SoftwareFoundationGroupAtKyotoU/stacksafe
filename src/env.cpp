@@ -2,22 +2,6 @@
 #include "utility.hpp"
 
 namespace stacksafe {
-namespace {
-using RefSet = std::unordered_set<MapRef>;
-Map diff_merge(const RefSet &lhs, const RefSet &rhs) {
-  Map map;
-  for (const auto &ref : lhs) {
-    if (rhs.count(ref) == 0) {
-      map.merge(ref.get());
-    }
-  }
-  return map;
-}
-bool compare(const RefSet &lhs, const RefSet &rhs) {
-  return diff_merge(lhs, rhs).includes(diff_merge(rhs, lhs));
-}
-
-}  // namespace
 
 Env::Env(MapRef ref) : set_{ref} {}
 Map Env::concat() const {
@@ -34,7 +18,7 @@ void Env::insert(MapRef ref) {
   set_.emplace(ref);
 }
 bool Env::includes(const Env &env) {
-  return compare(set_, env.set_);
+  return concat().includes(env.concat());
 }
 
 }  // namespace stacksafe
