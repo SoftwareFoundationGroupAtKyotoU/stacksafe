@@ -43,5 +43,8 @@ bool operator==(const Symbol &lhs, const Symbol &rhs) {
 bool operator<(const Symbol &lhs, const Symbol &rhs) {
   return lhs.value() < rhs.value();
 }
+llvm::hash_code hash_value(const Symbol &sym) {
+  return hash_value(sym.key_);
+}
 
 }  // namespace stacksafe

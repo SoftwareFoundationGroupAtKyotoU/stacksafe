@@ -7,6 +7,7 @@
 namespace llvm {
 class AllocaInst;
 class Argument;
+class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -27,9 +28,11 @@ class Symbol : private Value {
   static Symbol get_local(const llvm::AllocaInst &v);
   static Symbol get_arg(const llvm::Argument &v);
   static std::size_t hash(const Symbol &sym);
+  friend llvm::hash_code hash_value(const Symbol &sym);
 };
 bool operator==(const Symbol &lhs, const Symbol &rhs);
 bool operator<(const Symbol &lhs, const Symbol &rhs);
+llvm::hash_code hash_value(const Symbol &sym);
 
 }  // namespace stacksafe
 
