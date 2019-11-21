@@ -6,6 +6,7 @@
 
 namespace stacksafe {
 
+Map::Map() : hash_{0} {}
 void Map::insert(const Symbol &key, const Symbol &val) {
   auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {

@@ -14,9 +14,11 @@ class Domain;
 
 class Map : private std::unordered_multimap<Symbol, Symbol> {
   using Super = std::unordered_multimap<Symbol, Symbol>;
+  std::size_t hash_;
   void insert(const Symbol &key, const Symbol &val);
 
  public:
+  Map();
   void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Symbol &key) const;
   bool includes(const Map &map) const;
