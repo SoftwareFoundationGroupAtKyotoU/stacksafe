@@ -22,6 +22,7 @@ bool has_local(const Domain &dom) {
 class Params : private std::unordered_set<const llvm::Value *> {
   using Super = std::unordered_set<const llvm::Value *>;
   class ParamIterator : private Super::const_iterator {
+    friend class Params;
     using Iter = Super::const_iterator;
     explicit ParamIterator(Iter it) : Iter{it} {}
 
@@ -32,6 +33,8 @@ class Params : private std::unordered_set<const llvm::Value *> {
   };
 
  public:
+  ParamIterator begin() const { return ParamIterator{Super::begin()}; }
+  ParamIterator end() const { return ParamIterator{Super::end()}; }
   void emplace(const llvm::Value &v) { Super::emplace(&v); }
 };
 }  // namespace
