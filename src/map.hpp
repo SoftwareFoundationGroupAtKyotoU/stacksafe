@@ -36,7 +36,6 @@ class MapRef {
   explicit MapRef(const Map &map);
   const Map &get() const;
 };
-bool operator==(const MapRef &lhs, const MapRef &rhs);
 
 }  // namespace stacksafe
 
