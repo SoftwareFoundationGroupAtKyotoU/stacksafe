@@ -36,9 +36,7 @@ bool Map::includes(const Map &map) const {
   return std::all_of(map.begin(), map.end(), pred);
 }
 void Map::merge(const Map &map) {
-  for (const auto &[key, val] : map) {
-    insert(key, val);
-  }
+  Super::insert(map.begin(), map.end());
 }
 Map Map::init(const llvm::Function &f) {
   Map map;
