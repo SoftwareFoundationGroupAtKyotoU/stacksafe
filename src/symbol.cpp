@@ -8,7 +8,6 @@ Symbol::Symbol() : Value{}, key_{} {}
 Symbol::Symbol(const llvm::AllocaInst &val) : Value{val}, key_{val} {}
 Symbol::Symbol(const llvm::Argument &val) : Value{val}, key_{val} {}
 Symbol::Symbol(const llvm::Instruction &val) : Value{val}, key_{val} {}
-Symbol::Symbol(const Value &v) : Value{v} {}
 const Value &Symbol::value() const {
   return *this;
 }
@@ -27,7 +26,7 @@ bool Symbol::is_arg() const {
   return v && llvm::isa<llvm::Argument>(v);
 }
 Symbol Symbol::get_global() {
-  return Symbol{Value{}};
+  return Symbol{};
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
   return Symbol{v};
