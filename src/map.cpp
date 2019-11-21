@@ -1,11 +1,12 @@
 #include "map.hpp"
+#include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
-void Map::insert(const Value &key, const Symbol &val) {
+void Map::insert(const Symbol &key, const Symbol &val) {
   auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {
     if (it->second == val) {
@@ -14,29 +15,23 @@ void Map::insert(const Value &key, const Symbol &val) {
   }
   Super::emplace_hint(lb, key, val);
 }
-void Map::insert(const Symbol &key, const Symbol &val) {
-  insert(key.value(), val);
-}
 void Map::insert(const llvm::Instruction &key, const Domain &val) {
   for (const auto &sym : val) {
-    insert(key, sym);
+    insert(Symbol::get_register(key), sym);
   }
 }
 void Map::insert(const Symbol &key, const Domain &val) {
   for (const auto &sym : val) {
-    insert(key.value(), sym);
+    insert(key, sym);
   }
 }
-Domain Map::lookup(const Value &key) const {
+Domain Map::lookup(const Symbol &key) const {
   Domain dom;
   auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {
     dom.insert(it->second);
   }
   return dom;
-}
-Domain Map::lookup(const Symbol &key) const {
-  return lookup(key.value());
 }
 bool Map::includes(const Map &map) const {
   auto pred = [&self = *this](const auto &pair) {
@@ -62,25 +57,24 @@ Map Map::init_heap(const llvm::Function &f) {
 Map Map::init_stack(const llvm::Function &f) {
   Map stack;
   for (const auto &a : f.args()) {
-    const auto arg = Symbol::get_arg(a);
-    stack.insert(a, arg);
+    stack.insert(Symbol::get_register(a), Symbol::get_arg(a));
   }
   return stack;
 }
 bool Map::equals(const Map &lhs, const Map &rhs) {
   return lhs == rhs;
 }
-std::unordered_set<Value> Map::keys(const Map &map) {
-  std::unordered_set<Value> vec;
+Domain Map::keys(const Map &map) {
+  Domain dom;
   for (const auto &pair : map) {
-    vec.emplace(pair.first);
+    dom.insert(pair.first);
   }
-  return vec;
+  return dom;
 }
 std::size_t Map::hash(const Map &map) {
   std::size_t ret = 0;
   for (const auto &[key, val] : map) {
-    ret ^= hash_combine(Value::hash(key), Symbol::hash(val));
+    ret ^= llvm::hash_combine(key, val);
   }
   return ret;
 }

@@ -262,10 +262,10 @@ Domain Interpreter::stack_lookup(const llvm::Value &key) const {
     return dom;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
-    return stack_.lookup(key);
+    return stack_.lookup(Symbol::get_register(key));
   } else {
     assert(llvm::isa<llvm::Argument>(key) && "invalid value lookup");
-    return stack_.lookup(key);
+    return stack_.lookup(Symbol::get_register(key));
   }
 }
 void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
