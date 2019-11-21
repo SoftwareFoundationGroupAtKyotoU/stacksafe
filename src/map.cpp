@@ -15,6 +15,7 @@ void Map::insert(const Symbol &key, const Symbol &val) {
     }
   }
   Super::emplace_hint(lb, key, val);
+  hash_ ^= llvm::hash_combine(key, val);
 }
 void Map::insert(const Symbol &key, const Domain &val) {
   for (const auto &sym : val) {
