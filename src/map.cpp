@@ -38,6 +38,19 @@ bool Map::includes(const Map &map) const {
 void Map::merge(const Map &map) {
   Super::insert(map.begin(), map.end());
 }
+void Map::unique() {
+  for (const auto &key : Map::keys(*this)) {
+    auto [lb, ub] = Super::equal_range(key);
+    Domain dom;
+    for (auto it = lb; it != ub; ++it) {
+      if (dom.element(it->second)) {
+        Super::erase(it);
+      } else {
+        dom.insert(it->second);
+      }
+    }
+  }
+}
 Map Map::init(const llvm::Function &f) {
   Map map;
   const auto g = Value::get_symbol();
