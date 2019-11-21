@@ -6,6 +6,7 @@
 namespace llvm {
 class AllocaInst;
 class Argument;
+class Instruction;
 class hash_code;
 }  // namespace llvm
 
@@ -24,7 +25,8 @@ class Symbol {
   static Symbol get_symbol();
   static Symbol get_symbol(const llvm::AllocaInst &v);
   static Symbol get_symbol(const llvm::Argument &v);
-  static Symbol get_register(const llvm::Value &v);
+  static Symbol get_register(const llvm::Argument &v);
+  static Symbol get_register(const llvm::Instruction &v);
   bool operator==(const Symbol &sym) const;
   bool operator<(const Symbol &sym) const;
   friend llvm::hash_code hash_value(const Symbol &sym);

@@ -1,4 +1,6 @@
 #include "symbol.hpp"
+#include <llvm/IR/Argument.h>
+#include <llvm/IR/Instruction.h>
 #include "hash.hpp"
 
 namespace stacksafe {
@@ -26,7 +28,10 @@ Symbol Symbol::get_symbol(const llvm::AllocaInst &v) {
 Symbol Symbol::get_symbol(const llvm::Argument &v) {
   return Symbol{&v, true};
 }
-Symbol Symbol::get_register(const llvm::Value &v) {
+Symbol Symbol::get_register(const llvm::Argument &v) {
+  return Symbol{v};
+}
+Symbol Symbol::get_register(const llvm::Instruction &v) {
   return Symbol{v};
 }
 bool Symbol::operator==(const Symbol &sym) const {
