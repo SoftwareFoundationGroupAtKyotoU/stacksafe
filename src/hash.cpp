@@ -5,7 +5,7 @@
 
 namespace stacksafe {
 
-llvm::hash_code hash_value(const Key& key) {
+llvm::hash_code hash_value(const Base& key) {
   return llvm::hash_value(key.sym_);
 }
 llvm::hash_code hash_value(const Map& map) {

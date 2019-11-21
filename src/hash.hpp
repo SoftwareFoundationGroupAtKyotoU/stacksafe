@@ -5,12 +5,12 @@
 #include <functional>
 
 namespace stacksafe {
-class Key;
+class Base;
 class Map;
 class MapRef;
 class Value;
 
-llvm::hash_code hash_value(const Key& key);
+llvm::hash_code hash_value(const Base& key);
 llvm::hash_code hash_value(const Map& map);
 llvm::hash_code hash_value(const Value& sym);
 

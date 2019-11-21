@@ -10,7 +10,7 @@ class hash_code;
 
 namespace stacksafe {
 
-class Key {
+class Base {
   using Ptr = const void*;
   using Int = std::uintptr_t;
   union {
@@ -19,17 +19,17 @@ class Key {
   };
 
  public:
-  explicit Key(const llvm::Value& val);
-  Key(Ptr val, bool is_arg);
+  explicit Base(const llvm::Value& val);
+  Base(Ptr val, bool is_arg);
   const llvm::Value* value() const;
   bool is_symbol() const;
   bool is_register() const;
   bool is_local() const;
   bool is_global() const;
   bool is_argument() const;
-  static bool equals(const Key& lhs, const Key& rhs);
-  static bool less(const Key& lhs, const Key& rhs);
-  friend llvm::hash_code hash_value(const Key& key);
+  static bool equals(const Base& lhs, const Base& rhs);
+  static bool less(const Base& lhs, const Base& rhs);
+  friend llvm::hash_code hash_value(const Base& key);
 };
 
 }  // namespace stacksafe

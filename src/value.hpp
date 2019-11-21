@@ -13,7 +13,7 @@ class hash_code;
 namespace stacksafe {
 
 class Value {
-  Key key_;
+  Base key_;
   explicit Value(const llvm::Value &val);
   Value(const void *sym, bool is_arg);
 

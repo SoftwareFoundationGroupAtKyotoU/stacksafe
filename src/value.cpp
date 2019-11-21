@@ -35,10 +35,10 @@ Value Value::get_register(const llvm::Instruction &v) {
   return Value{v};
 }
 bool Value::operator==(const Value &sym) const {
-  return Key::equals(key_, sym.key_);
+  return Base::equals(key_, sym.key_);
 }
 bool Value::operator<(const Value &sym) const {
-  return Key::less(key_, sym.key_);
+  return Base::less(key_, sym.key_);
 }
 
 }  // namespace stacksafe
