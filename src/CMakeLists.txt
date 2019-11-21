@@ -23,6 +23,7 @@ target_sources(${target} PRIVATE
   key.cpp
   log.cpp
   map.cpp
+  params.cpp
   pool.cpp
   symbol.cpp
   utility.cpp
