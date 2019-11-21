@@ -18,6 +18,10 @@ bool has_local(const Domain &dom) {
   }
   return false;
 }
+
+class Params : private std::unordered_set<const llvm::Value *> {
+  using Super = std::unordered_set<const llvm::Value *>;
+};
 }  // namespace
 
 Interpreter::Interpreter(const Log &l, Error &error, const Map &heap,
