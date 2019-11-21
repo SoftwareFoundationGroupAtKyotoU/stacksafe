@@ -240,7 +240,8 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
-  insert(dst, Domain{});
+  Domain dom;
+  insert(dst, dom);
 }
 Domain Interpreter::lookup(const Symbol &key) const {
   return map_.lookup(key);
