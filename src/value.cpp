@@ -17,7 +17,7 @@ bool Value::is_local() const {
   return key_.is_local();
 }
 bool Value::is_argument() const {
-  return key_.is_argument();
+  return !is_local() && !is_global();
 }
 Value Value::get_symbol() {
   return Value{nullptr, false};
