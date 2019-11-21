@@ -1,6 +1,6 @@
 #include "pool.hpp"
-#include <llvm/ADT/Hashing.h>
 #include <algorithm>
+#include "hash.hpp"
 #include "map.hpp"
 
 namespace stacksafe {
