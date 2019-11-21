@@ -19,7 +19,7 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    get(entry).insert(pool_.add(Map::init(f)));
+    get(entry).insert(pool_.add(Map{f}));
     interpret(entry);
   }
 }

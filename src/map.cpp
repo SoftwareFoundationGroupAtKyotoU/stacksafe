@@ -53,17 +53,6 @@ bool Map::includes(const Map &map) const {
 void Map::merge(const Map &map) {
   Super::insert(map.begin(), map.end());
 }
-Map Map::init(const llvm::Function &f) {
-  Map map;
-  const auto g = Value::get_symbol();
-  map.insert(g, g);
-  for (const auto &a : f.args()) {
-    const auto arg = Value::get_symbol(a);
-    map.insert(arg, arg);
-    map.insert(Value::get_register(a), arg);
-  }
-  return map;
-}
 bool Map::equals(const Map &lhs, const Map &rhs) {
   return lhs == rhs;
 }
