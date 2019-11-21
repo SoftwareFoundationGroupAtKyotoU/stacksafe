@@ -1,5 +1,5 @@
-#include "key.hpp"
 #include <cassert>
+#include "base.hpp"
 
 namespace stacksafe {
 namespace {
