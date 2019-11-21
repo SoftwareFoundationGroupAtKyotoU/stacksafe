@@ -16,7 +16,7 @@ class Env : private std::vector<MapRef> {
   void merge(const Env &env);
   void insert(MapRef ref);
   bool element(const Value &key, const Value &val) const;
-  bool includes(const Env &env);
+  bool includes(const Env &env) const;
 };
 
 }  // namespace stacksafe
