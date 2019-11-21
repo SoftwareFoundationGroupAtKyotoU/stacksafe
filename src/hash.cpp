@@ -1,7 +1,7 @@
 #include "hash.hpp"
 #include "key.hpp"
 #include "map.hpp"
-#include "symbol.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 

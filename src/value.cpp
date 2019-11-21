@@ -1,4 +1,4 @@
-#include "symbol.hpp"
+#include "value.hpp"
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/Instruction.h>
 #include "hash.hpp"

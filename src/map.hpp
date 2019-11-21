@@ -3,7 +3,7 @@
 
 #include <unordered_map>
 #include "hash.hpp"
-#include "symbol.hpp"
+#include "value.hpp"
 
 namespace llvm {
 class Function;

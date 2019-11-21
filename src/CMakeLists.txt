@@ -26,8 +26,8 @@ target_sources(${target} PRIVATE
   params.cpp
   pool.cpp
   stopwatch.cpp
-  symbol.cpp
   utility.cpp
+  value.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
