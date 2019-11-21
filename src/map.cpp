@@ -45,7 +45,7 @@ Map Map::init(const llvm::Function &f) {
   const auto g = Symbol::get_symbol();
   map.insert(g, g);
   for (const auto &a : f.args()) {
-    const auto arg = Symbol::get_arg(a);
+    const auto arg = Symbol::get_symbol(a);
     map.insert(arg, arg);
     map.insert(Symbol::get_register(a), arg);
   }

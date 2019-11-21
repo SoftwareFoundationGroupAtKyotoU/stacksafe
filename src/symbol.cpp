@@ -23,7 +23,7 @@ Symbol Symbol::get_symbol() {
 Symbol Symbol::get_symbol(const llvm::AllocaInst &v) {
   return Symbol{&v, false};
 }
-Symbol Symbol::get_arg(const llvm::Argument &v) {
+Symbol Symbol::get_symbol(const llvm::Argument &v) {
   return Symbol{&v, true};
 }
 Symbol Symbol::get_register(const llvm::Value &v) {
