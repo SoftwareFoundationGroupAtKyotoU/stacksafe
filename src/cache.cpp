@@ -1,6 +1,6 @@
 #include "cache.hpp"
 #include <llvm/IR/Function.h>
-#include <set>
+#include <vector>
 #include "domain.hpp"
 #include "utility.hpp"
 
@@ -30,24 +30,20 @@ std::string Cache::to_str(const llvm::Instruction& reg) const {
   return prefix + to_str(lookup(reg));
 }
 std::string Cache::to_str(const Domain& dom) const {
-  static const std::string prefix{"&"};
-  static const std::string comma{", "};
-  static const std::string begin{"["};
-  static const std::string end{"]"};
-  std::set<int> nums;
-  for (const auto& sym : dom) {
-    nums.insert(lookup(sym.value()));
-  }
-  std::string ret;
+  const auto cmp = [& self = *this](const auto& lhs, const auto& rhs) {
+    return self.lookup(lhs.value()) < self.lookup(rhs.value());
+  };
+  std::vector<Symbol> symbols{dom.begin(), dom.end()};
+  std::sort(symbols.begin(), symbols.end(), cmp);
+  std::string ret{"["};
   bool first = true;
-  for (const auto& num : nums) {
+  for (const auto& sym : symbols) {
     if (!std::exchange(first, false)) {
-      ret.append(comma);
+      ret.append(", ");
     }
-    ret.append(prefix + to_str(num));
+    ret.append(to_str(sym));
   }
-  ret.insert(0, begin);
-  ret.append(end);
+  ret.append("]");
   return ret;
 }
 std::string Cache::to_str(int num) {
