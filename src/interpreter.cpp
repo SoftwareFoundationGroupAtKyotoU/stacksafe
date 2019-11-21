@@ -114,7 +114,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   for (const auto &use : i.incoming_values()) {
     auto arg = use.get();
     assert(arg && "unknown phi node");
-    params.emplace(*arg);
+    params.push_back(*arg);
   }
   phi(i, params);
 }
@@ -122,7 +122,7 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
   for (const auto arg : {i.getTrueValue(), i.getFalseValue()}) {
     assert(arg && "unknown select node");
-    params.emplace(*arg);
+    params.push_back(*arg);
   }
   phi(i, params);
 }
@@ -131,7 +131,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   for (const auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
-    params.emplace(*arg);
+    params.push_back(*arg);
   }
   call(i, params);
 }

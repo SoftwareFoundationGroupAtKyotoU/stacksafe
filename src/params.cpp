@@ -29,8 +29,8 @@ auto Params::begin() const -> ParamsIterator {
 auto Params::end() const -> ParamsIterator {
   return ParamsIterator{Super::end()};
 }
-void Params::emplace(const llvm::Value &v) {
-  Super::emplace(Super::end(), &v);
+void Params::push_back(const llvm::Value &v) {
+  Super::push_back(&v);
 }
 
 }  // namespace stacksafe

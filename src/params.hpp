@@ -16,7 +16,7 @@ class Params : private std::vector<const llvm::Value *> {
  public:
   ParamsIterator begin() const;
   ParamsIterator end() const;
-  void emplace(const llvm::Value &v);
+  void push_back(const llvm::Value &v);
 };
 
 class Params::ParamsIterator : private Params::Super::const_iterator {
