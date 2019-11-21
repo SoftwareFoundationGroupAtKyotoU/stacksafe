@@ -19,6 +19,7 @@ class Symbol {
   explicit Symbol(const llvm::AllocaInst &val);
   explicit Symbol(const llvm::Argument &val);
   explicit Symbol(const llvm::Instruction &val);
+  Symbol(const void *sym, bool is_arg);
 
  public:
   Value value() const;

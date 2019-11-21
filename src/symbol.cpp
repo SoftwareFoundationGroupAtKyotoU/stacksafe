@@ -9,6 +9,7 @@ Symbol::Symbol() : key_{} {}
 Symbol::Symbol(const llvm::AllocaInst &val) : key_{val} {}
 Symbol::Symbol(const llvm::Argument &val) : key_{val} {}
 Symbol::Symbol(const llvm::Instruction &val) : key_{val} {}
+Symbol::Symbol(const void *sym, bool is_arg) : key_{sym, is_arg} {}
 Value Symbol::value() const {
   const auto ptr = key_.value();
   return ptr ? Value{*ptr} : Value{};
@@ -26,10 +27,10 @@ Symbol Symbol::get_global() {
   return Symbol{};
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
-  return Symbol{v};
+  return Symbol{&v, false};
 }
 Symbol Symbol::get_arg(const llvm::Argument &v) {
-  return Symbol{v};
+  return Symbol{&v, true};
 }
 Symbol Symbol::get_register(const llvm::Instruction &v) {
   return Symbol{v};
