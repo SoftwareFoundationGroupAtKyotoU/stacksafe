@@ -48,8 +48,9 @@ bool Env::includes(const Env &env) const {
   const auto pred = [&self = *this](const auto &pair) {
     return self.element(pair.first, pair.second);
   };
-  const auto pred2 = [pred](const auto &ref) {
-    return std::all_of(ref.get().begin(), ref.get().end(), pred);
+  const auto pred2 = [&self = *this, pred](const auto &ref) {
+    return (self.element(ref) ||
+            std::all_of(ref.get().begin(), ref.get().end(), pred));
   };
   return std::all_of(env.begin(), env.end(), pred2);
 }
