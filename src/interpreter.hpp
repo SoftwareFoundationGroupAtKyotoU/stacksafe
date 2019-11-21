@@ -7,15 +7,7 @@
 
 namespace stacksafe {
 namespace {
-class Params : private std::unordered_set<const llvm::Value *> {
-  using Super = std::unordered_set<const llvm::Value *>;
-  class ParamsIterator;
-
- public:
-  ParamsIterator begin() const;
-  ParamsIterator end() const;
-  void emplace(const llvm::Value &v);
-};
+class Params;
 }  // namespace
 class Error;
 class Log;

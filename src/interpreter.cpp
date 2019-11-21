@@ -18,6 +18,15 @@ bool has_local(const Domain &dom) {
   }
   return false;
 }
+class Params : private std::unordered_set<const llvm::Value *> {
+  using Super = std::unordered_set<const llvm::Value *>;
+  class ParamsIterator;
+
+ public:
+  ParamsIterator begin() const;
+  ParamsIterator end() const;
+  void emplace(const llvm::Value &v);
+};
 
 class Params::ParamsIterator : private Super::const_iterator {
   friend class Params;
