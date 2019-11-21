@@ -24,6 +24,10 @@ Cache::Cache(const llvm::Function& f) {
 std::string Cache::to_str(const Value& val) const {
   return to_str(lookup(val));
 }
+std::string Cache::to_str(const llvm::Instruction& reg) const {
+  static const std::string prefix{"%"};
+  return prefix + to_str(lookup(reg));
+}
 std::string Cache::to_str(const Domain& dom) const {
   static const std::string prefix{"&"};
   static const std::string comma{", "};
