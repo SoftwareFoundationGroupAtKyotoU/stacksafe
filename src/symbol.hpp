@@ -7,6 +7,7 @@
 namespace llvm {
 class AllocaInst;
 class Argument;
+class Instruction;
 class hash_code;
 }  // namespace llvm
 
@@ -27,6 +28,7 @@ class Symbol : private Value {
   static Symbol get_global();
   static Symbol get_local(const llvm::AllocaInst &v);
   static Symbol get_arg(const llvm::Argument &v);
+  static Symbol get_register(const llvm::Instruction &v);
   static std::size_t hash(const Symbol &sym);
   friend llvm::hash_code hash_value(const Symbol &sym);
 };
