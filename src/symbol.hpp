@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
 #include "key.hpp"
-#include "value.hpp"
 
 namespace llvm {
 class AllocaInst;
@@ -12,8 +11,9 @@ class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
+class Value;
 
-class Symbol : private Value {
+class Symbol {
   Key key_;
   Symbol();
   explicit Symbol(const llvm::AllocaInst &val);
