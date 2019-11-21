@@ -13,14 +13,11 @@ class Stopwatch {
   decltype(Clock::now()) start_;
 
  public:
-  explicit Stopwatch(double &elapsed)
-      : elapsed_{elapsed}, start_{Clock::now()} {}
-  ~Stopwatch() {
-    auto end = Clock::now();
-    Duration elapsed = end - start_;
-    elapsed_ = elapsed.count();
-  }
+  explicit Stopwatch(double &elapsed);
+  ~Stopwatch();
 };
+
+extern template class Stopwatch<std::milli>;
 
 }  // namespace stacksafe
 
