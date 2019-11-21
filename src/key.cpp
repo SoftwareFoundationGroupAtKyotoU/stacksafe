@@ -1,4 +1,5 @@
 #include "key.hpp"
+#include <llvm/ADT/Hashing.h>
 #include <cassert>
 
 namespace stacksafe {
@@ -41,6 +42,9 @@ bool Key::equals(const Key& lhs, const Key& rhs) {
 }
 bool Key::less(const Key& lhs, const Key& rhs) {
   return lhs.sym_ < rhs.sym_;
+}
+llvm::hash_code hash_value(const Key& key) {
+  return llvm::hash_value(key.sym_);
 }
 
 }  // namespace stacksafe

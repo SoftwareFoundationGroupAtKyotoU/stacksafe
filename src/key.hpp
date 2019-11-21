@@ -8,6 +8,7 @@ class AllocaInst;
 class Argument;
 class Instruction;
 class Value;
+class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -37,7 +38,9 @@ class Key {
   bool is_argument() const;
   static bool equals(const Key& lhs, const Key& rhs);
   static bool less(const Key& lhs, const Key& rhs);
+  friend llvm::hash_code hash_value(const Key& key);
 };
+llvm::hash_code hash_value(const Key& key);
 
 }  // namespace stacksafe
 
