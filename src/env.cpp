@@ -12,11 +12,11 @@ Map Env::concat() const {
   return ret;
 }
 void Env::merge(const Env &env) {
-  Super::insert(env.begin(), env.end());
+  Super::insert(Super::end(), env.begin(), env.end());
 }
 void Env::insert(MapRef ref) {
   if (!concat().includes(ref.get())) {
-    Super::emplace(ref);
+    Super::push_back(ref);
   }
 }
 bool Env::includes(const Env &env) {
