@@ -34,6 +34,12 @@ void Env::insert(MapRef ref) {
     Super::insert(lb, ref);
   }
 }
+bool Env::element(const Value &key, const Value &val) const {
+  const auto pred = [&key, &val](const auto &ref) {
+    return ref.get().element(key, val);
+  };
+  return std::any_of(begin(), end(), pred);
+}
 bool Env::includes(const Env &env) {
   return concat().includes(env.concat());
 }
