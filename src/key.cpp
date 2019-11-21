@@ -14,6 +14,9 @@ Key::Key(const llvm::Value& val, bool is_arg) : Key{val} {
     sym_ |= global_flag;
   }
 }
+const llvm::Value* Key::value() const {
+  return is_symbol() ? nullptr : val_;
+}
 bool Key::is_symbol() const {
   return sym_ & symbol_flag;
 }
