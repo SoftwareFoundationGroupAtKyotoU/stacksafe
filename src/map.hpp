@@ -33,7 +33,6 @@ class MapRef {
   const Map *ptr_;
 
  public:
-  const std::size_t hash;
   explicit MapRef(const Map &map);
   const Map &get() const;
 };
@@ -44,7 +43,7 @@ bool operator==(const MapRef &lhs, const MapRef &rhs);
 namespace std {
 template <>
 struct hash<stacksafe::MapRef> {
-  size_t operator()(const stacksafe::MapRef &f) const;
+  size_t operator()(const stacksafe::MapRef &r) const;
 };
 }  // namespace std
 

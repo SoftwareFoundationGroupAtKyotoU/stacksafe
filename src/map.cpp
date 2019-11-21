@@ -63,7 +63,7 @@ Domain Map::keys(const Map &map) {
   return dom;
 }
 
-MapRef::MapRef(const Map &map) : ptr_{&map}, hash{hash_value(map)} {}
+MapRef::MapRef(const Map &map) : ptr_{&map} {}
 const Map &MapRef::get() const {
   return *ptr_;
 }
@@ -74,7 +74,7 @@ bool operator==(const MapRef &lhs, const MapRef &rhs) {
 }  // namespace stacksafe
 
 namespace std {
-size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef &f) const {
-  return f.hash;
+size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef &r) const {
+  return hash_value(r.get());
 }
 }  // namespace std
