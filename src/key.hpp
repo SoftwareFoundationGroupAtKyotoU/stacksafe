@@ -14,6 +14,11 @@ class Key {
     const llvm::Value* val_;
     std::uintptr_t sym_;
   };
+
+ public:
+  Key();
+  explicit Key(const llvm::Value& val);
+  Key(const llvm::Value& val, bool is_arg);
 };
 
 }  // namespace stacksafe
