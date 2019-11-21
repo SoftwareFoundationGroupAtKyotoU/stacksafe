@@ -25,7 +25,6 @@ class Cache : private std::unordered_map<Value, int> {
   std::string to_str(const Domain& dom) const;
 
  private:
-  static std::string to_str(int num);
   int lookup(const Value& val) const;
 };
 

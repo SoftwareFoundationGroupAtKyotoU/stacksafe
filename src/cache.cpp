@@ -5,6 +5,14 @@
 #include "utility.hpp"
 
 namespace stacksafe {
+std::string to_string(int num) {
+  static const std::string global{"@"};
+  if (num < 0) {
+    return global;
+  } else {
+    return std::to_string(num);
+  }
+}
 
 Cache::Cache(const llvm::Function& f) {
   int num = -1;
@@ -23,11 +31,11 @@ Cache::Cache(const llvm::Function& f) {
 }
 std::string Cache::to_str(const Symbol& sym) const {
   static const std::string prefix{"&"};
-  return prefix + to_str(lookup(sym.value()));
+  return prefix + to_string(lookup(sym.value()));
 }
 std::string Cache::to_str(const llvm::Instruction& reg) const {
   static const std::string prefix{"%"};
-  return prefix + to_str(lookup(reg));
+  return prefix + to_string(lookup(reg));
 }
 std::string Cache::to_str(const Domain& dom) const {
   const auto cmp = [& self = *this](const auto& lhs, const auto& rhs) {
@@ -45,14 +53,6 @@ std::string Cache::to_str(const Domain& dom) const {
   }
   ret.append("]");
   return ret;
-}
-std::string Cache::to_str(int num) {
-  static const std::string global{"@"};
-  if (num < 0) {
-    return global;
-  } else {
-    return std::to_string(num);
-  }
 }
 int Cache::lookup(const Value& val) const {
   auto it = Super::find(val);
