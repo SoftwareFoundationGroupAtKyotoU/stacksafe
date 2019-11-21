@@ -25,6 +25,8 @@ class Params : private std::unordered_set<const llvm::Value *> {
     friend class Params;
     using Iter = Super::const_iterator;
     explicit ParamIterator(Iter it) : Iter{it} {}
+    Iter &super() { return *this; }
+    const Iter &super() const { return *this; }
 
    public:
     using Iter::iterator_category, Iter::value_type, Iter::difference_type,
