@@ -19,6 +19,7 @@ target_sources(${target} PRIVATE
   error.cpp
   interpreter.cpp
   json.cpp
+  key.cpp
   log.cpp
   map.cpp
   pool.cpp
