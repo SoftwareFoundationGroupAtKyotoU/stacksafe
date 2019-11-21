@@ -7,13 +7,13 @@ namespace llvm {
 class AllocaInst;
 class Argument;
 class Instruction;
+class Value;
 class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
 
-class Value {
-  Base key_;
+class Value : private Base {
   explicit Value(const llvm::Value &val);
   Value(const void *sym, bool is_local);
 

@@ -5,16 +5,16 @@
 
 namespace stacksafe {
 
-Value::Value(const llvm::Value &val) : key_{val} {}
-Value::Value(const void *sym, bool is_local) : key_{sym, is_local} {}
+Value::Value(const llvm::Value &val) : Base{val} {}
+Value::Value(const void *sym, bool is_local) : Base{sym, is_local} {}
 const llvm::Value *Value::value() const {
-  return key_.value();
+  return Base::value();
 }
 bool Value::is_global() const {
-  return key_.is_global();
+  return Base::is_global();
 }
 bool Value::is_local() const {
-  return key_.is_local();
+  return Base::is_local();
 }
 bool Value::is_argument() const {
   return !is_local() && !is_global();
@@ -35,10 +35,10 @@ Value Value::get_register(const llvm::Instruction &v) {
   return Value{v};
 }
 bool Value::operator==(const Value &sym) const {
-  return Base::equals(key_, sym.key_);
+  return Base::equals(*this, sym);
 }
 bool Value::operator<(const Value &sym) const {
-  return Base::less(key_, sym.key_);
+  return Base::less(*this, sym);
 }
 
 }  // namespace stacksafe
