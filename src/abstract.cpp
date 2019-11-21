@@ -37,8 +37,7 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    get(entry).merge_heap(pool_.add(Map::init_heap(f)));
-    get(entry).merge_stack(pool_.add(Map::init_stack(f)));
+    get(entry).insert(pool_.add(Map::init(f)));
     interpret(entry);
   }
 }
@@ -58,10 +57,9 @@ void Abstract::print(llvm::raw_ostream &os) const {
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
   auto prev = get(b);
-  Interpreter i{log_, error_, prev.heap(), prev.stack()};
+  Interpreter i{log_, error_, prev.concat()};
   i.visit(b);
-  prev.merge_heap(pool_.add(i.heap_diff()));
-  prev.merge_stack(pool_.add(i.stack_diff()));
+  prev.insert(pool_.add(i.diff()));
   const auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {

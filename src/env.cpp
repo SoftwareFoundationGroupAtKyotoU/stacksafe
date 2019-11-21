@@ -19,33 +19,22 @@ bool compare(const RefSet &lhs, const RefSet &rhs) {
 
 }  // namespace
 
-Env::Env(MapRef heap, MapRef stack) : heap_{heap}, stack_{stack} {}
-Map Env::heap() const {
+Env::Env(MapRef ref) : set_{ref} {}
+Map Env::concat() const {
   Map ret;
-  for (const auto &r : heap_) {
-    ret.merge(r.get());
-  }
-  return ret;
-}
-Map Env::stack() const {
-  Map ret;
-  for (const auto &r : stack_) {
+  for (const auto &r : set_) {
     ret.merge(r.get());
   }
   return ret;
 }
 void Env::merge(const Env &env) {
-  heap_.insert(env.heap_.begin(), env.heap_.end());
-  stack_.insert(env.stack_.begin(), env.stack_.end());
+  set_.insert(env.set_.begin(), env.set_.end());
 }
-void Env::merge_heap(MapRef ref) {
-  heap_.emplace(ref);
-}
-void Env::merge_stack(MapRef ref) {
-  stack_.emplace(ref);
+void Env::insert(MapRef ref) {
+  set_.emplace(ref);
 }
 bool Env::includes(const Env &env) {
-  return compare(heap_, env.heap_) && compare(stack_, env.stack_);
+  return compare(set_, env.set_);
 }
 
 }  // namespace stacksafe

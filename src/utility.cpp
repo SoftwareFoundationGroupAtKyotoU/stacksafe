@@ -2,10 +2,10 @@
 #include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
-#include <set>
+#include <algorithm>
+#include <vector>
 #include "domain.hpp"
 #include "map.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 
@@ -51,14 +51,14 @@ std::size_t hash_combine(std::size_t lhs, std::size_t rhs) {
 }
 
 namespace debug {
-int get_operand(const Value& v) {
+int get_operand(const llvm::Value* v) {
   static const auto prefix = '%';
   if (!v) {
     return -1;
   }
   std::string buf;
   llvm::raw_string_ostream stream{buf};
-  v.get()->printAsOperand(stream, false);
+  v->printAsOperand(stream, false);
   std::string_view view{stream.str()};
   if (!view.empty() && view.at(0) == prefix) {
     std::string str{view.substr(1)};
@@ -87,10 +87,11 @@ std::string to_str(int num) {
 }
 std::string to_str(const Domain& dom) {
   std::string ret;
-  std::set<int> nums;
+  std::vector<int> nums;
   for (const auto& sym : dom) {
-    nums.insert(get_operand(sym.value()));
+    nums.push_back(get_operand(sym.value()));
   }
+  std::sort(nums.begin(), nums.end());
   ret.append("[");
   for (const auto& num : nums) {
     ret.append(to_str(num));
@@ -102,7 +103,7 @@ std::string to_str(const Domain& dom) {
 std::string to_str(const Map& map) {
   std::string ret;
   for (const auto& key : Map::keys(map)) {
-    ret.append(to_str(get_operand(key)));
+    ret.append(to_str(get_operand(key.value())));
     ret.append(": ");
     ret.append(to_str(map.lookup(key)));
     ret.append(", ");

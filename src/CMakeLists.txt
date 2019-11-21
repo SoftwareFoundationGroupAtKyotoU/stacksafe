@@ -25,7 +25,6 @@ target_sources(${target} PRIVATE
   pool.cpp
   symbol.cpp
   utility.cpp
-  value.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})

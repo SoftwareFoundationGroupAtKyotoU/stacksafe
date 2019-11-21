@@ -3,36 +3,32 @@
 
 #include <functional>
 #include <unordered_map>
-#include <unordered_set>
 #include "symbol.hpp"
-#include "value.hpp"
 
 namespace llvm {
 class Function;
-class Instruction;
 }  // namespace llvm
 
 namespace stacksafe {
 class Domain;
 
-class Map : private std::unordered_multimap<Value, Symbol> {
-  using Super = std::unordered_multimap<Value, Symbol>;
-  void insert(const Value &key, const Symbol &val);
+class Map : private std::unordered_multimap<Symbol, Symbol> {
+  using Super = std::unordered_multimap<Symbol, Symbol>;
+  std::size_t hash_;
   void insert(const Symbol &key, const Symbol &val);
 
  public:
-  void insert(const llvm::Instruction &key, const Domain &val);
+  Map();
   void insert(const Symbol &key, const Domain &val);
-  Domain lookup(const Value &key) const;
   Domain lookup(const Symbol &key) const;
   bool includes(const Map &map) const;
   void merge(const Map &map);
-  static Map init_heap(const llvm::Function &f);
-  static Map init_stack(const llvm::Function &f);
+  static Map init(const llvm::Function &f);
   static bool equals(const Map &lhs, const Map &rhs);
-  static std::unordered_set<Value> keys(const Map &map);
-  static std::size_t hash(const Map &map);
+  static Domain keys(const Map &map);
+  friend llvm::hash_code hash_value(const Map &map);
 };
+llvm::hash_code hash_value(const Map &map);
 
 class MapRef {
   const Map *ptr_;
