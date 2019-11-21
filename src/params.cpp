@@ -30,7 +30,7 @@ auto Params::end() const -> ParamsIterator {
   return ParamsIterator{Super::end()};
 }
 void Params::emplace(const llvm::Value &v) {
-  Super::emplace(&v);
+  Super::emplace(Super::end(), &v);
 }
 
 }  // namespace stacksafe

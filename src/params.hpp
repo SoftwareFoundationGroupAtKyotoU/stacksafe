@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_7033D3E3_92CE_493B_862B_265AB050E953
 #define INCLUDE_GUARD_7033D3E3_92CE_493B_862B_265AB050E953
 
-#include <unordered_set>
+#include <vector>
 
 namespace llvm {
 class Value;
@@ -9,8 +9,8 @@ class Value;
 
 namespace stacksafe {
 
-class Params : private std::unordered_set<const llvm::Value *> {
-  using Super = std::unordered_set<const llvm::Value *>;
+class Params : private std::vector<const llvm::Value *> {
+  using Super = std::vector<const llvm::Value *>;
   class ParamsIterator;
 
  public:
