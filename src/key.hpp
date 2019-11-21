@@ -12,10 +12,10 @@ namespace stacksafe {
 
 class Key {
   using Ptr = const void*;
-  using Base = std::uintptr_t;
+  using Int = std::uintptr_t;
   union {
     Ptr val_;
-    Base sym_;
+    Int sym_;
   };
 
  public:

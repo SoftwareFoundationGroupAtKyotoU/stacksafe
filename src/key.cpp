@@ -9,10 +9,10 @@ const std::uintptr_t global_flag{0x3};
 
 Key::Key(const llvm::Value& val) : val_{&val} {}
 Key::Key(Ptr val, bool is_arg)
-    : sym_{(val ? reinterpret_cast<Base>(val) : global_flag) |
+    : sym_{(val ? reinterpret_cast<Int>(val) : global_flag) |
            (is_arg ? global_flag : symbol_flag)} {
-  static_assert(sizeof(Ptr) == sizeof(Base));
-  assert((reinterpret_cast<Base>(val) & global_flag) == 0);
+  static_assert(sizeof(Ptr) == sizeof(Int));
+  assert((reinterpret_cast<Int>(val) & global_flag) == 0);
 }
 const llvm::Value* Key::value() const {
   if (is_register()) {
