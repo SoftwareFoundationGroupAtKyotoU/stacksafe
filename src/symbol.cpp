@@ -1,13 +1,10 @@
 #include "symbol.hpp"
-#include <llvm/IR/Instructions.h>
-#include "utility.hpp"
+#include <llvm/ADT/Hashing.h>
 #include "value.hpp"
 
 namespace stacksafe {
 
 Symbol::Symbol() : key_{} {}
-Symbol::Symbol(const llvm::AllocaInst &val) : key_{val} {}
-Symbol::Symbol(const llvm::Argument &val) : key_{val} {}
 Symbol::Symbol(const llvm::Instruction &val) : key_{val} {}
 Symbol::Symbol(const void *sym, bool is_arg) : key_{sym, is_arg} {}
 Value Symbol::value() const {
