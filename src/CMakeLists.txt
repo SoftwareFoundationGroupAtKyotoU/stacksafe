@@ -25,6 +25,7 @@ target_sources(${target} PRIVATE
   map.cpp
   params.cpp
   pool.cpp
+  stopwatch.cpp
   symbol.cpp
   utility.cpp
   )
