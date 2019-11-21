@@ -6,9 +6,8 @@ namespace stacksafe {
 
 Symbol::Symbol(const llvm::Value &val) : key_{val} {}
 Symbol::Symbol(const void *sym, bool is_arg) : key_{sym, is_arg} {}
-Value Symbol::value() const {
-  const auto ptr = key_.value();
-  return ptr ? Value{*ptr} : Value{};
+const llvm::Value *Symbol::value() const {
+  return key_.value();
 }
 bool Symbol::is_global() const {
   return key_.is_global();

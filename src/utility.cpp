@@ -89,7 +89,7 @@ std::string to_str(const Domain& dom) {
   std::string ret;
   std::set<int> nums;
   for (const auto& sym : dom) {
-    nums.insert(get_operand(sym.value().get()));
+    nums.insert(get_operand(sym.value()));
   }
   ret.append("[");
   for (const auto& num : nums) {
@@ -102,7 +102,7 @@ std::string to_str(const Domain& dom) {
 std::string to_str(const Map& map) {
   std::string ret;
   for (const auto& key : Map::keys(map)) {
-    ret.append(to_str(get_operand(key.value().get())));
+    ret.append(to_str(get_operand(key.value())));
     ret.append(": ");
     ret.append(to_str(map.lookup(key)));
     ret.append(", ");

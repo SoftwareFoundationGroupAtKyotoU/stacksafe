@@ -33,7 +33,7 @@ Cache::Cache(const llvm::Function& f) {
 }
 std::string Cache::to_str(const Symbol& sym) const {
   static const std::string prefix{"&"};
-  return prefix + to_string(lookup(sym.value().get()));
+  return prefix + to_string(lookup(sym.value()));
 }
 std::string Cache::to_str(const llvm::Instruction& reg) const {
   static const std::string prefix{"%"};
@@ -41,7 +41,7 @@ std::string Cache::to_str(const llvm::Instruction& reg) const {
 }
 std::string Cache::to_str(const Domain& dom) const {
   const auto cmp = [& self = *this](const Symbol& lhs, const Symbol& rhs) {
-    return self.lookup(lhs.value().get()) < self.lookup(rhs.value().get());
+    return self.lookup(lhs.value()) < self.lookup(rhs.value());
   };
   std::vector<Symbol> symbols{dom.begin(), dom.end()};
   std::sort(symbols.begin(), symbols.end(), cmp);

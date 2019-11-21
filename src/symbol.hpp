@@ -11,7 +11,6 @@ class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
-class Value;
 
 class Symbol {
   Key key_;
@@ -19,7 +18,7 @@ class Symbol {
   Symbol(const void *sym, bool is_arg);
 
  public:
-  Value value() const;
+  const llvm::Value *value() const;
   bool is_global() const;
   bool is_local() const;
   bool is_argument() const;
