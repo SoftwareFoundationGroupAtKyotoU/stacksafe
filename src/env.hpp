@@ -7,11 +7,11 @@
 namespace stacksafe {
 
 class Env {
-  std::unordered_set<MapRef> heap_, stack_;
+  std::unordered_set<MapRef> set_;
 
  public:
   Env() = default;
-  Env(MapRef heap, MapRef stack);
+  Env(MapRef ref);
   Map heap() const;
   Map stack() const;
   void merge(const Env &env);
