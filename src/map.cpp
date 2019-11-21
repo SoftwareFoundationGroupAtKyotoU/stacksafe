@@ -7,6 +7,15 @@
 namespace stacksafe {
 
 Map::Map() : hash_{0} {}
+Map::Map(const llvm::Function &f) : Map{} {
+  const auto g = Value::get_symbol();
+  insert(g, g);
+  for (const auto &a : f.args()) {
+    const auto arg = Value::get_symbol(a);
+    insert(arg, arg);
+    insert(Value::get_register(a), arg);
+  }
+}
 void Map::insert(const Value &key, const Value &val) {
   auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {

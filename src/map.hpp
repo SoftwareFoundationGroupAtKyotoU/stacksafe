@@ -20,6 +20,7 @@ class Map : private std::unordered_multimap<Value, Value> {
  public:
   using Super::begin, Super::end;
   Map();
+  explicit Map(const llvm::Function &f);
   void insert(const Value &key, const Domain &val);
   Domain lookup(const Value &key) const;
   bool element(const Value &key, const Value &val) const;
