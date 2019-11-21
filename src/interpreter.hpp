@@ -5,11 +5,9 @@
 #include "map.hpp"
 
 namespace stacksafe {
-namespace {
-class Params;
-}  // namespace
 class Error;
 class Log;
+class Params;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
