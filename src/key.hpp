@@ -4,8 +4,6 @@
 #include <cstdint>
 
 namespace llvm {
-class Argument;
-class Instruction;
 class Value;
 class hash_code;
 }  // namespace llvm
