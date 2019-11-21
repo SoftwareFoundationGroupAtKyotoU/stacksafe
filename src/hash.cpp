@@ -1,6 +1,7 @@
 #include "hash.hpp"
 #include "key.hpp"
 #include "map.hpp"
+#include "symbol.hpp"
 
 namespace stacksafe {
 
@@ -9,6 +10,9 @@ llvm::hash_code hash_value(const Key& key) {
 }
 llvm::hash_code hash_value(const Map& map) {
   return map.hash_;
+}
+llvm::hash_code hash_value(const Symbol& sym) {
+  return hash_value(sym.key_);
 }
 
 }  // namespace stacksafe

@@ -1,5 +1,5 @@
 #include "symbol.hpp"
-#include <llvm/ADT/Hashing.h>
+#include "hash.hpp"
 
 namespace stacksafe {
 
@@ -34,9 +34,6 @@ bool Symbol::operator==(const Symbol &sym) const {
 }
 bool Symbol::operator<(const Symbol &sym) const {
   return Key::less(key_, sym.key_);
-}
-llvm::hash_code hash_value(const Symbol &sym) {
-  return hash_value(sym.key_);
 }
 
 }  // namespace stacksafe

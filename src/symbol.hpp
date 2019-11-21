@@ -30,7 +30,6 @@ class Symbol {
   bool operator<(const Symbol &sym) const;
   friend llvm::hash_code hash_value(const Symbol &sym);
 };
-llvm::hash_code hash_value(const Symbol &sym);
 
 }  // namespace stacksafe
 
