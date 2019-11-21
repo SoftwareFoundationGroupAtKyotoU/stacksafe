@@ -36,11 +36,11 @@ Symbol Symbol::get_register(const llvm::Instruction &v) {
 std::size_t Symbol::hash(const Symbol &sym) {
   return Value::hash(sym.value());
 }
-bool operator==(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.value() == rhs.value();
+bool Symbol::operator==(const Symbol &sym) const {
+  return Key::equals(key_, sym.key_);
 }
-bool operator<(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.value() < rhs.value();
+bool Symbol::operator<(const Symbol &sym) const {
+  return Key::less(key_, sym.key_);
 }
 llvm::hash_code hash_value(const Symbol &sym) {
   return hash_value(sym.key_);

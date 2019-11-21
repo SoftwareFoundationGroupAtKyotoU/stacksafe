@@ -30,10 +30,10 @@ class Symbol : private Value {
   static Symbol get_arg(const llvm::Argument &v);
   static Symbol get_register(const llvm::Instruction &v);
   static std::size_t hash(const Symbol &sym);
+  bool operator==(const Symbol &sym) const;
+  bool operator<(const Symbol &sym) const;
   friend llvm::hash_code hash_value(const Symbol &sym);
 };
-bool operator==(const Symbol &lhs, const Symbol &rhs);
-bool operator<(const Symbol &lhs, const Symbol &rhs);
 llvm::hash_code hash_value(const Symbol &sym);
 
 }  // namespace stacksafe
