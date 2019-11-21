@@ -6,7 +6,7 @@
 namespace stacksafe {
 
 Value::Value(const llvm::Value &val) : key_{val} {}
-Value::Value(const void *sym, bool is_arg) : key_{sym, is_arg} {}
+Value::Value(const void *sym, bool is_arg) : key_{sym, !is_arg} {}
 const llvm::Value *Value::value() const {
   return key_.value();
 }

@@ -8,9 +8,9 @@ const std::uintptr_t global_flag{0x3};
 }  // namespace
 
 Base::Base(const llvm::Value& val) : val_{&val} {}
-Base::Base(Ptr val, bool is_arg)
+Base::Base(Ptr val, bool is_local)
     : sym_{(val ? reinterpret_cast<Int>(val) : global_flag) |
-           (is_arg ? global_flag : symbol_flag)} {
+           (is_local ? symbol_flag : global_flag)} {
   static_assert(sizeof(Ptr) == sizeof(Int));
   assert((reinterpret_cast<Int>(val) & global_flag) == 0);
 }
