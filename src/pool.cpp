@@ -1,4 +1,5 @@
 #include "pool.hpp"
+#include <llvm/ADT/Hashing.h>
 #include <algorithm>
 #include "map.hpp"
 
@@ -12,7 +13,7 @@ const Map& MapPtr::get() const {
   return *Super::get();
 }
 bool operator<(const MapPtr& lhs, const MapPtr& rhs) {
-  return Map::hash(lhs.get()) < Map::hash(rhs.get());
+  return hash_value(lhs.get()) < hash_value(rhs.get());
 }
 
 MapRef MapPool::add(const Map& map) {
