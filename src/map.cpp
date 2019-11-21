@@ -63,11 +63,7 @@ Domain Map::keys(const Map &map) {
   return dom;
 }
 llvm::hash_code hash_value(const Map &map) {
-  std::size_t ret = 0;
-  for (const auto &[key, val] : map) {
-    ret ^= llvm::hash_combine(key, val);
-  }
-  return ret;
+  return map.hash_;
 }
 
 MapRef::MapRef(const Map &map) : ptr_{&map}, hash{hash_value(map)} {}
