@@ -4,6 +4,10 @@
 
 namespace stacksafe {
 
+Symbol::Symbol() : Value{}, key_{} {}
+Symbol::Symbol(const llvm::AllocaInst &val) : Value{val}, key_{val} {}
+Symbol::Symbol(const llvm::Argument &val) : Value{val}, key_{val} {}
+Symbol::Symbol(const llvm::Instruction &val) : Value{val}, key_{val} {}
 Symbol::Symbol(const Value &v) : Value{v} {}
 const Value &Symbol::value() const {
   return *this;

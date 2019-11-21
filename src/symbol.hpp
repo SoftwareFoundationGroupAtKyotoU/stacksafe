@@ -13,6 +13,10 @@ namespace stacksafe {
 
 class Symbol : private Value {
   Key key_;
+  Symbol();
+  explicit Symbol(const llvm::AllocaInst &val);
+  explicit Symbol(const llvm::Argument &val);
+  explicit Symbol(const llvm::Instruction &val);
   explicit Symbol(const Value &v);
 
  public:
