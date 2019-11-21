@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <unordered_map>
+#include "hash.hpp"
 #include "symbol.hpp"
 
 namespace llvm {

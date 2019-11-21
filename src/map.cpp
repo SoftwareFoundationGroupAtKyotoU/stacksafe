@@ -1,7 +1,6 @@
 #include "map.hpp"
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
-#include "hash.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
