@@ -4,6 +4,7 @@
 #include "key.hpp"
 
 namespace llvm {
+class Argument;
 class Instruction;
 class hash_code;
 }  // namespace llvm
@@ -14,6 +15,7 @@ class Value;
 class Symbol {
   Key key_;
   Symbol();
+  explicit Symbol(const llvm::Argument &val);
   explicit Symbol(const llvm::Instruction &val);
   Symbol(const void *sym, bool is_arg);
 
