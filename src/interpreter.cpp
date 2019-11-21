@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include <unordered_set>
 #include "domain.hpp"
 #include "error.hpp"
 #include "log.hpp"
