@@ -20,7 +20,6 @@ class MapPtr : private std::unique_ptr<Map> {
   MapPtr& operator=(MapPtr&&);
   const Map& get() const;
 };
-bool operator<(const MapPtr& lhs, const MapPtr& rhs);
 
 class MapPool : private std::vector<MapPtr> {
   using Super = std::vector<MapPtr>;
