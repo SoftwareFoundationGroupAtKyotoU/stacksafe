@@ -37,7 +37,7 @@ Map Env::stack() const {
 void Env::merge(const Env &env) {
   set_.insert(env.set_.begin(), env.set_.end());
 }
-void Env::merge(MapRef ref) {
+void Env::insert(MapRef ref) {
   set_.emplace(ref);
 }
 bool Env::includes(const Env &env) {

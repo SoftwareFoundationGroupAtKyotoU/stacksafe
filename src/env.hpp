@@ -15,7 +15,7 @@ class Env {
   Map heap() const;
   Map stack() const;
   void merge(const Env &env);
-  void merge(MapRef ref);
+  void insert(MapRef ref);
   bool includes(const Env &env);
 };
 
