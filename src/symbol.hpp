@@ -15,7 +15,6 @@ class Value;
 
 class Symbol {
   Key key_;
-  Symbol();
   explicit Symbol(const llvm::Argument &val);
   explicit Symbol(const llvm::Instruction &val);
   Symbol(const void *sym, bool is_arg);

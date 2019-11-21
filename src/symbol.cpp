@@ -1,10 +1,11 @@
 #include "symbol.hpp"
 #include <llvm/ADT/Hashing.h>
+#include <llvm/IR/Argument.h>
+#include <llvm/IR/Instruction.h>
 #include "value.hpp"
 
 namespace stacksafe {
 
-Symbol::Symbol() : key_{} {}
 Symbol::Symbol(const llvm::Argument &val) : key_{val} {}
 Symbol::Symbol(const llvm::Instruction &val) : key_{val} {}
 Symbol::Symbol(const void *sym, bool is_arg) : key_{sym, is_arg} {}
@@ -22,7 +23,7 @@ bool Symbol::is_argument() const {
   return key_.is_argument();
 }
 Symbol Symbol::get_global() {
-  return Symbol{};
+  return Symbol{nullptr, false};
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
   return Symbol{&v, false};

@@ -20,12 +20,9 @@ class Key {
     Base sym_;
   };
   static const Base symbol_flag, global_flag;
-  Key(Ptr ptr, Base flag);
 
  public:
-  Key();
-  explicit Key(const llvm::Argument& val);
-  explicit Key(const llvm::Instruction& val);
+  explicit Key(const llvm::Value& val);
   Key(Ptr val, bool is_arg);
   const llvm::Value* value() const;
   bool is_symbol() const;
