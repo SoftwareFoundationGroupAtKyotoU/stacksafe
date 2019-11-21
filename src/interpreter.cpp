@@ -254,21 +254,18 @@ void Interpreter::constant(const llvm::Instruction &dst) {
 Domain Interpreter::heap_lookup(const Symbol &key) const {
   return heap_.lookup(key);
 }
-Domain Interpreter::stack_lookup(const Value &key) const {
+Domain Interpreter::stack_lookup(const llvm::Value &key) const {
   Domain dom;
-  const auto v = key.get();
-  if (!v) {
-    return dom;
-  } else if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
+  if (auto c = llvm::dyn_cast<llvm::Constant>(&key)) {
     if (is_global(*c)) {
       dom.insert(Symbol::get_global());
     }
     return dom;
-  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
+  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
     return stack_.lookup(key);
   } else {
-    assert(llvm::isa<llvm::Argument>(v) && "invalid value lookup");
+    assert(llvm::isa<llvm::Argument>(key) && "invalid value lookup");
     return stack_.lookup(key);
   }
 }
