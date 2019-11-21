@@ -32,6 +32,10 @@ class Params : private std::unordered_set<const llvm::Value *> {
     using Iter::iterator_category, Iter::value_type, Iter::difference_type,
         Iter::pointer, Iter::reference;
     const llvm::Value &operator*() const { return *Iter::operator*(); }
+    ParamIterator &operator++() {
+      ++super();
+      return *this;
+    }
   };
 
  public:
