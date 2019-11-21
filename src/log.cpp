@@ -49,15 +49,14 @@ void Log::print(const llvm::BasicBlock &b) const {
     endline(*os << hr2 << b << hr);
   }
 }
-void Log::print_heap(const Value &key, const Domain &val,
-                     const Domain &add) const {
+void Log::print(const Value &key, const Domain &val, const Domain &add) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
 }
-void Log::print_stack(const llvm::Instruction &key, const Domain &val,
-                      const Domain &add) const {
+void Log::print(const llvm::Instruction &key, const Domain &val,
+                const Domain &add) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));

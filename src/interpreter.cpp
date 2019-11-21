@@ -226,7 +226,7 @@ void Interpreter::insert(const Value &key, const Domain &val) {
   if (val.empty()) {
     return;
   }
-  log_.print_heap(key, lookup(key), val);
+  log_.print(key, lookup(key), val);
   map_.insert(key, val);
   diff_.insert(key, val);
   if (val.has_local() && !key.is_local()) {
@@ -241,7 +241,7 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   if (val.empty()) {
     return;
   }
-  log_.print_stack(key, lookup(key), val);
+  log_.print(key, lookup(key), val);
   const auto reg = Value::get_register(key);
   map_.insert(reg, val);
   diff_.insert(reg, val);
