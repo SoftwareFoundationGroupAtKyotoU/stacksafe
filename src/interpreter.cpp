@@ -232,13 +232,8 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
       collect(sym, dom);
     }
   }
-  if (dom.has_local()) {
-    error_.error_call();
-  }
   for (const auto &sym : dom) {
-    if (!sym.is_global()) {
-      insert(sym, dom);
-    }
+    insert(sym, dom);
   }
   if (is_return(dst)) {
     insert(dst, dom);
