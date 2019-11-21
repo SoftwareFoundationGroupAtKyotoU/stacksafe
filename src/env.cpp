@@ -3,20 +3,20 @@
 
 namespace stacksafe {
 
-Env::Env(MapRef ref) : set_{ref} {}
+Env::Env(MapRef ref) : Super{ref} {}
 Map Env::concat() const {
   Map ret;
-  for (const auto &r : set_) {
+  for (const auto &r : *this) {
     ret.merge(r.get());
   }
   return ret;
 }
 void Env::merge(const Env &env) {
-  set_.insert(env.set_.begin(), env.set_.end());
+  Super::insert(env.begin(), env.end());
 }
 void Env::insert(MapRef ref) {
   if (!concat().includes(ref.get())) {
-    set_.emplace(ref);
+    Super::emplace(ref);
   }
 }
 bool Env::includes(const Env &env) {

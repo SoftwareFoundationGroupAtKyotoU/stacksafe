@@ -6,8 +6,8 @@
 
 namespace stacksafe {
 
-class Env {
-  std::unordered_set<MapRef> set_;
+class Env : private std::unordered_set<MapRef> {
+  using Super = std::unordered_set<MapRef>;
 
  public:
   Env() = default;
