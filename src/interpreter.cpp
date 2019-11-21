@@ -50,10 +50,10 @@ Interpreter::Interpreter(const Log &l, Error &error, const Map &heap,
                          const Map &)
     : log_{l}, error_{error}, map_{heap} {}
 const Map &Interpreter::heap_diff() const {
-  return heap_diff_;
+  return diff_;
 }
 const Map &Interpreter::stack_diff() const {
-  return stack_diff_;
+  return diff_;
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
@@ -274,8 +274,7 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
   }
   log_.print_heap(key, heap_lookup(key), val);
   map_.insert(key, val);
-  heap_diff_.insert(key, val);
-  stack_diff_.insert(key, val);
+  diff_.insert(key, val);
   if (val.has_local()) {
     if (key.is_global()) {
       error_.error_global();
@@ -293,8 +292,7 @@ void Interpreter::stack_insert(const llvm::Instruction &key,
   log_.print_stack(key, stack_lookup(key), val);
   const auto reg = Symbol::get_register(key);
   map_.insert(reg, val);
-  heap_diff_.insert(reg, val);
-  stack_diff_.insert(reg, val);
+  diff_.insert(reg, val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
