@@ -1,5 +1,5 @@
-#include <cassert>
 #include "base.hpp"
+#include <cassert>
 
 namespace stacksafe {
 namespace {
@@ -36,10 +36,6 @@ bool Base::is_local() const {
 bool Base::is_global() const {
   assert(is_symbol());
   return sym_ == global_flag;
-}
-bool Base::is_argument() const {
-  assert(is_symbol());
-  return !is_global() && !is_local();
 }
 bool Base::equals(const Base& lhs, const Base& rhs) {
   return lhs.sym_ == rhs.sym_;

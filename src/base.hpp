@@ -26,7 +26,6 @@ class Base {
   bool is_register() const;
   bool is_local() const;
   bool is_global() const;
-  bool is_argument() const;
   static bool equals(const Base& lhs, const Base& rhs);
   static bool less(const Base& lhs, const Base& rhs);
   friend llvm::hash_code hash_value(const Base& key);
