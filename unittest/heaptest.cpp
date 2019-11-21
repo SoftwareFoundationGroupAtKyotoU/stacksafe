@@ -105,7 +105,7 @@ void HeapTest::equal() const {
   stacksafe::Json tmp = heap;
   EXPECT_EQ(json.dump(), tmp.dump());
 }
-stacksafe::Symbol HeapTest::symbol() {
+stacksafe::Value HeapTest::symbol() {
   return stacksafe::Symbol::make(stacksafe::Type{nullptr});
 }
 std::string HeapTest::sym(std::string a) {

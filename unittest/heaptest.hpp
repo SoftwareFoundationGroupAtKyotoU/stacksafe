@@ -13,7 +13,7 @@ struct HeapTest : ::testing::Test {
   void init(std::string key);
   void push(std::string key, std::string val);
   void equal() const;
-  static stacksafe::Symbol symbol();
+  static stacksafe::Value symbol();
   static std::string sym(std::string a);
   stacksafe::Heap heap;
   stacksafe::Json json;

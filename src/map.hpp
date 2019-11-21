@@ -12,15 +12,15 @@ class Function;
 namespace stacksafe {
 class Domain;
 
-class Map : private std::unordered_multimap<Symbol, Symbol> {
-  using Super = std::unordered_multimap<Symbol, Symbol>;
+class Map : private std::unordered_multimap<Value, Value> {
+  using Super = std::unordered_multimap<Value, Value>;
   std::size_t hash_;
-  void insert(const Symbol &key, const Symbol &val);
+  void insert(const Value &key, const Value &val);
 
  public:
   Map();
-  void insert(const Symbol &key, const Domain &val);
-  Domain lookup(const Symbol &key) const;
+  void insert(const Value &key, const Domain &val);
+  Domain lookup(const Value &key) const;
   bool includes(const Map &map) const;
   void merge(const Map &map);
   static Map init(const llvm::Function &f);

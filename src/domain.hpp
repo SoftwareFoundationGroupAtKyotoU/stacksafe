@@ -6,15 +6,15 @@
 
 namespace stacksafe {
 
-class Domain : private std::vector<Symbol> {
-  using Super = std::vector<Symbol>;
+class Domain : private std::vector<Value> {
+  using Super = std::vector<Value>;
 
  public:
   using Super::begin, Super::end, Super::empty;
   Domain() = default;
-  void insert(const Symbol &sym);
+  void insert(const Value &sym);
   void merge(const Domain &that);
-  bool element(const Symbol &sym) const;
+  bool element(const Value &sym) const;
   bool has_local() const;
 };
 

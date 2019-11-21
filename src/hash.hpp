@@ -8,11 +8,11 @@ namespace stacksafe {
 class Key;
 class Map;
 class MapRef;
-class Symbol;
+class Value;
 
 llvm::hash_code hash_value(const Key& key);
 llvm::hash_code hash_value(const Map& map);
-llvm::hash_code hash_value(const Symbol& sym);
+llvm::hash_code hash_value(const Value& sym);
 
 }  // namespace stacksafe
 
@@ -22,8 +22,8 @@ struct hash<stacksafe::MapRef> {
   size_t operator()(const stacksafe::MapRef& r) const;
 };
 template <>
-struct hash<stacksafe::Symbol> {
-  size_t operator()(const stacksafe::Symbol& sym) const;
+struct hash<stacksafe::Value> {
+  size_t operator()(const stacksafe::Value& sym) const;
 };
 }  // namespace std
 

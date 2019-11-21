@@ -151,7 +151,7 @@ void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   Domain dom;
-  const auto sym = Symbol::get_symbol(dst);
+  const auto sym = Value::get_symbol(dst);
   insert(sym, dom);
   dom.insert(sym);
   insert(dst, dom);
@@ -186,7 +186,7 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   Domain dom;
-  dom.insert(Symbol::get_symbol());
+  dom.insert(Value::get_symbol());
   for (const auto &arg : params) {
     for (const auto &sym : lookup(arg)) {
       collect(sym, dom);
@@ -203,26 +203,26 @@ void Interpreter::constant(const llvm::Instruction &dst) {
   Domain dom;
   insert(dst, dom);
 }
-Domain Interpreter::lookup(const Symbol &key) const {
+Domain Interpreter::lookup(const Value &key) const {
   return map_.lookup(key);
 }
 Domain Interpreter::lookup(const llvm::Value &key) const {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&key)) {
     Domain dom;
     if (is_global(*c)) {
-      dom.insert(Symbol::get_symbol());
+      dom.insert(Value::get_symbol());
     }
     return dom;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
-    return map_.lookup(Symbol::get_register(*i));
+    return map_.lookup(Value::get_register(*i));
   } else if (auto a = llvm::dyn_cast<llvm::Argument>(&key)) {
-    return map_.lookup(Symbol::get_register(*a));
+    return map_.lookup(Value::get_register(*a));
   } else {
     llvm_unreachable("invalid value lookup");
   }
 }
-void Interpreter::insert(const Symbol &key, const Domain &val) {
+void Interpreter::insert(const Value &key, const Domain &val) {
   if (val.empty()) {
     return;
   }
@@ -242,11 +242,11 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
     return;
   }
   log_.print_stack(key, lookup(key), val);
-  const auto reg = Symbol::get_register(key);
+  const auto reg = Value::get_register(key);
   map_.insert(reg, val);
   diff_.insert(reg, val);
 }
-void Interpreter::collect(const Symbol &sym, Domain &done) const {
+void Interpreter::collect(const Value &sym, Domain &done) const {
   if (!done.element(sym)) {
     done.insert(sym);
     for (const auto &next : lookup(sym)) {

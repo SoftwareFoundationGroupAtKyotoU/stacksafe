@@ -5,39 +5,39 @@
 
 namespace stacksafe {
 
-Symbol::Symbol(const llvm::Value &val) : key_{val} {}
-Symbol::Symbol(const void *sym, bool is_arg) : key_{sym, is_arg} {}
-const llvm::Value *Symbol::value() const {
+Value::Value(const llvm::Value &val) : key_{val} {}
+Value::Value(const void *sym, bool is_arg) : key_{sym, is_arg} {}
+const llvm::Value *Value::value() const {
   return key_.value();
 }
-bool Symbol::is_global() const {
+bool Value::is_global() const {
   return key_.is_global();
 }
-bool Symbol::is_local() const {
+bool Value::is_local() const {
   return key_.is_local();
 }
-bool Symbol::is_argument() const {
+bool Value::is_argument() const {
   return key_.is_argument();
 }
-Symbol Symbol::get_symbol() {
-  return Symbol{nullptr, false};
+Value Value::get_symbol() {
+  return Value{nullptr, false};
 }
-Symbol Symbol::get_symbol(const llvm::AllocaInst &v) {
-  return Symbol{&v, false};
+Value Value::get_symbol(const llvm::AllocaInst &v) {
+  return Value{&v, false};
 }
-Symbol Symbol::get_symbol(const llvm::Argument &v) {
-  return Symbol{&v, true};
+Value Value::get_symbol(const llvm::Argument &v) {
+  return Value{&v, true};
 }
-Symbol Symbol::get_register(const llvm::Argument &v) {
-  return Symbol{v};
+Value Value::get_register(const llvm::Argument &v) {
+  return Value{v};
 }
-Symbol Symbol::get_register(const llvm::Instruction &v) {
-  return Symbol{v};
+Value Value::get_register(const llvm::Instruction &v) {
+  return Value{v};
 }
-bool Symbol::operator==(const Symbol &sym) const {
+bool Value::operator==(const Value &sym) const {
   return Key::equals(key_, sym.key_);
 }
-bool Symbol::operator<(const Symbol &sym) const {
+bool Value::operator<(const Value &sym) const {
   return Key::less(key_, sym.key_);
 }
 

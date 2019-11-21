@@ -12,24 +12,24 @@ class hash_code;
 
 namespace stacksafe {
 
-class Symbol {
+class Value {
   Key key_;
-  explicit Symbol(const llvm::Value &val);
-  Symbol(const void *sym, bool is_arg);
+  explicit Value(const llvm::Value &val);
+  Value(const void *sym, bool is_arg);
 
  public:
   const llvm::Value *value() const;
   bool is_global() const;
   bool is_local() const;
   bool is_argument() const;
-  static Symbol get_symbol();
-  static Symbol get_symbol(const llvm::AllocaInst &v);
-  static Symbol get_symbol(const llvm::Argument &v);
-  static Symbol get_register(const llvm::Argument &v);
-  static Symbol get_register(const llvm::Instruction &v);
-  bool operator==(const Symbol &sym) const;
-  bool operator<(const Symbol &sym) const;
-  friend llvm::hash_code hash_value(const Symbol &sym);
+  static Value get_symbol();
+  static Value get_symbol(const llvm::AllocaInst &v);
+  static Value get_symbol(const llvm::Argument &v);
+  static Value get_register(const llvm::Argument &v);
+  static Value get_register(const llvm::Instruction &v);
+  bool operator==(const Value &sym) const;
+  bool operator<(const Value &sym) const;
+  friend llvm::hash_code hash_value(const Value &sym);
 };
 
 }  // namespace stacksafe
