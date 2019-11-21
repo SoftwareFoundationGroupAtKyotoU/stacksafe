@@ -255,7 +255,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
       heap_insert(sym, dom);
     }
   }
-  if (!is_void_func(dst)) {
+  if (is_return(dst)) {
     stack_insert(dst, dom);
   }
 }
