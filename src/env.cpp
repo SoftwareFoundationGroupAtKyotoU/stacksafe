@@ -34,6 +34,10 @@ void Env::insert(MapRef ref) {
     Super::insert(lb, ref);
   }
 }
+bool Env::element(MapRef ref) const {
+  const auto pred = [ref](const auto &map) { return equals(map, ref); };
+  return std::find_if(begin(), end(), pred) != end();
+}
 bool Env::element(const Value &key, const Value &val) const {
   const auto pred = [&key, &val](const auto &ref) {
     return ref.get().element(key, val);

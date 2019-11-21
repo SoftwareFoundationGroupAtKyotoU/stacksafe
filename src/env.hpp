@@ -15,6 +15,7 @@ class Env : private std::vector<MapRef> {
   Map concat() const;
   void merge(const Env &env);
   void insert(MapRef ref);
+  bool element(MapRef ref) const;
   bool element(const Value &key, const Value &val) const;
   bool includes(const Env &env) const;
 };
