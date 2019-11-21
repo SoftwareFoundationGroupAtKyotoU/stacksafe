@@ -279,7 +279,7 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
     if (key.is_global()) {
       error_.error_global();
     }
-    if (key.is_arg()) {
+    if (key.is_argument()) {
       error_.error_argument();
     }
   }

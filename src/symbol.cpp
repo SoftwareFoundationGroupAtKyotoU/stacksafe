@@ -21,9 +21,8 @@ bool Symbol::is_local() const {
   }
   return false;
 }
-bool Symbol::is_arg() const {
-  auto v = value().get();
-  return v && llvm::isa<llvm::Argument>(v);
+bool Symbol::is_argument() const {
+  return key_.is_argument();
 }
 Symbol Symbol::get_global() {
   return Symbol{};
