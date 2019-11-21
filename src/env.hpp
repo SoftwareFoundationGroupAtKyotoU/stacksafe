@@ -1,13 +1,13 @@
 #ifndef INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 #define INCLUDE_GUARD_FCDC6E4A_7148_4D58_920E_D9467F2A6CBA
 
-#include <unordered_set>
+#include <vector>
 #include "map.hpp"
 
 namespace stacksafe {
 
-class Env {
-  std::unordered_set<MapRef> set_;
+class Env : private std::vector<MapRef> {
+  using Super = std::vector<MapRef>;
 
  public:
   Env() = default;
@@ -15,7 +15,9 @@ class Env {
   Map concat() const;
   void merge(const Env &env);
   void insert(MapRef ref);
-  bool includes(const Env &env);
+  bool element(MapRef ref) const;
+  bool element(const Value &key, const Value &val) const;
+  bool includes(const Env &env) const;
 };
 
 }  // namespace stacksafe

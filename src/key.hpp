@@ -4,8 +4,6 @@
 #include <cstdint>
 
 namespace llvm {
-class Argument;
-class Instruction;
 class Value;
 class hash_code;
 }  // namespace llvm
@@ -34,7 +32,6 @@ class Key {
   static bool less(const Key& lhs, const Key& rhs);
   friend llvm::hash_code hash_value(const Key& key);
 };
-llvm::hash_code hash_value(const Key& key);
 
 }  // namespace stacksafe
 

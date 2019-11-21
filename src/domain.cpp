@@ -3,7 +3,7 @@
 
 namespace stacksafe {
 
-void Domain::insert(const Symbol &sym) {
+void Domain::insert(const Value &sym) {
   const auto [lb, ub] = std::equal_range(begin(), end(), sym);
   if (lb == ub) {
     Super::insert(lb, sym);
@@ -14,7 +14,7 @@ void Domain::merge(const Domain &that) {
     insert(sym);
   }
 }
-bool Domain::element(const Symbol &sym) const {
+bool Domain::element(const Value &sym) const {
   return std::binary_search(begin(), end(), sym);
 }
 bool Domain::has_local() const {

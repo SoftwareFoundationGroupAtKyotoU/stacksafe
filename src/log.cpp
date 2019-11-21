@@ -49,7 +49,7 @@ void Log::print(const llvm::BasicBlock &b) const {
     endline(*os << hr2 << b << hr);
   }
 }
-void Log::print_heap(const Symbol &key, const Domain &val,
+void Log::print_heap(const Value &key, const Domain &val,
                      const Domain &add) const {
   if (os) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)

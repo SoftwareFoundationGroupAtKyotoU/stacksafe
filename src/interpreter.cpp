@@ -1,51 +1,11 @@
 #include "interpreter.hpp"
-#include <unordered_set>
 #include "domain.hpp"
 #include "error.hpp"
 #include "log.hpp"
+#include "params.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
-namespace {
-class Params : private std::unordered_set<const llvm::Value *> {
-  using Super = std::unordered_set<const llvm::Value *>;
-  class ParamsIterator;
-
- public:
-  ParamsIterator begin() const;
-  ParamsIterator end() const;
-  void emplace(const llvm::Value &v);
-};
-
-class Params::ParamsIterator : private Super::const_iterator {
-  friend class Params;
-  using Base = Super::const_iterator;
-  explicit ParamsIterator(Base it) : Base{it} {}
-  Base &base() { return *this; }
-  const Base &base() const { return *this; }
-
- public:
-  using Base::iterator_category, Base::value_type, Base::difference_type,
-      Base::pointer, Base::reference;
-  const llvm::Value &operator*() const { return **base(); }
-  ParamsIterator &operator++() {
-    ++base();
-    return *this;
-  }
-  bool operator==(ParamsIterator it) const { return base() == it.base(); }
-  bool operator!=(ParamsIterator it) const { return base() != it.base(); }
-};
-
-auto Params::begin() const -> ParamsIterator {
-  return ParamsIterator{Super::begin()};
-}
-auto Params::end() const -> ParamsIterator {
-  return ParamsIterator{Super::end()};
-}
-void Params::emplace(const llvm::Value &v) {
-  Super::emplace(&v);
-}
-}  // namespace
 
 Interpreter::Interpreter(const Log &l, Error &error, const Map &map)
     : log_{l}, error_{error}, map_{map} {}
@@ -154,7 +114,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   for (const auto &use : i.incoming_values()) {
     auto arg = use.get();
     assert(arg && "unknown phi node");
-    params.emplace(*arg);
+    params.push_back(*arg);
   }
   phi(i, params);
 }
@@ -162,7 +122,7 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   Params params;
   for (const auto arg : {i.getTrueValue(), i.getFalseValue()}) {
     assert(arg && "unknown select node");
-    params.emplace(*arg);
+    params.push_back(*arg);
   }
   phi(i, params);
 }
@@ -171,13 +131,13 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
   for (const auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
-    params.emplace(*arg);
+    params.push_back(*arg);
   }
   call(i, params);
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    if (stack_lookup(*ret).has_local()) {
+    if (lookup(*ret).has_local()) {
       error_.error_return();
     }
   }
@@ -185,28 +145,28 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
 void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
                         const llvm::Value &rhs) {
   Domain dom;
-  dom.merge(stack_lookup(lhs));
-  dom.merge(stack_lookup(rhs));
-  stack_insert(dst, dom);
+  dom.merge(lookup(lhs));
+  dom.merge(lookup(rhs));
+  insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   Domain dom;
-  const auto sym = Symbol::get_local(dst);
-  heap_insert(sym, dom);
+  const auto sym = Value::get_symbol(dst);
+  insert(sym, dom);
   dom.insert(sym);
-  stack_insert(dst, dom);
+  insert(dst, dom);
 }
 void Interpreter::load(const llvm::Instruction &dst, const llvm::Value &src) {
   Domain dom;
-  for (const auto &sym : stack_lookup(src)) {
-    dom.merge(heap_lookup(sym));
+  for (const auto &sym : lookup(src)) {
+    dom.merge(lookup(sym));
   }
-  stack_insert(dst, dom);
+  insert(dst, dom);
 }
 void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
-  const auto val = stack_lookup(src);
-  for (const auto &ptr : stack_lookup(dst)) {
-    heap_insert(ptr, val);
+  const auto val = lookup(src);
+  for (const auto &ptr : lookup(dst)) {
+    insert(ptr, val);
   }
 }
 void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
@@ -215,86 +175,81 @@ void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
   store(val, ptr);
 }
 void Interpreter::cast(const llvm::Instruction &dst, const llvm::Value &src) {
-  stack_insert(dst, stack_lookup(src));
+  insert(dst, lookup(src));
 }
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   Domain dom;
   for (const auto &arg : params) {
-    dom.merge(stack_lookup(arg));
+    dom.merge(lookup(arg));
   }
-  stack_insert(dst, dom);
+  insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   Domain dom;
-  dom.insert(Symbol::get_global());
+  dom.insert(Value::get_symbol());
   for (const auto &arg : params) {
-    for (const auto &sym : stack_lookup(arg)) {
+    for (const auto &sym : lookup(arg)) {
       collect(sym, dom);
     }
   }
-  if (dom.has_local()) {
-    error_.error_call();
-  }
   for (const auto &sym : dom) {
-    if (!sym.is_global()) {
-      heap_insert(sym, dom);
-    }
+    insert(sym, dom);
   }
   if (is_return(dst)) {
-    stack_insert(dst, dom);
+    insert(dst, dom);
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
-  stack_insert(dst, Domain{});
+  Domain dom;
+  insert(dst, dom);
 }
-Domain Interpreter::heap_lookup(const Symbol &key) const {
+Domain Interpreter::lookup(const Value &key) const {
   return map_.lookup(key);
 }
-Domain Interpreter::stack_lookup(const llvm::Value &key) const {
-  Domain dom;
+Domain Interpreter::lookup(const llvm::Value &key) const {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&key)) {
+    Domain dom;
     if (is_global(*c)) {
-      dom.insert(Symbol::get_global());
+      dom.insert(Value::get_symbol());
     }
     return dom;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
-    return map_.lookup(Symbol::get_register(key));
+    return map_.lookup(Value::get_register(*i));
+  } else if (auto a = llvm::dyn_cast<llvm::Argument>(&key)) {
+    return map_.lookup(Value::get_register(*a));
   } else {
-    assert(llvm::isa<llvm::Argument>(key) && "invalid value lookup");
-    return map_.lookup(Symbol::get_register(key));
+    llvm_unreachable("invalid value lookup");
   }
 }
-void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
+void Interpreter::insert(const Value &key, const Domain &val) {
   if (val.empty()) {
     return;
   }
-  log_.print_heap(key, heap_lookup(key), val);
+  log_.print_heap(key, lookup(key), val);
   map_.insert(key, val);
   diff_.insert(key, val);
-  if (val.has_local()) {
+  if (val.has_local() && !key.is_local()) {
     if (key.is_global()) {
       error_.error_global();
-    }
-    if (key.is_argument()) {
+    } else {
       error_.error_argument();
     }
   }
 }
-void Interpreter::stack_insert(const llvm::Instruction &key,
-                               const Domain &val) {
+void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   if (val.empty()) {
     return;
   }
-  log_.print_stack(key, stack_lookup(key), val);
-  const auto reg = Symbol::get_register(key);
+  log_.print_stack(key, lookup(key), val);
+  const auto reg = Value::get_register(key);
   map_.insert(reg, val);
   diff_.insert(reg, val);
 }
-void Interpreter::collect(const Symbol &sym, Domain &done) const {
+void Interpreter::collect(const Value &sym, Domain &done) const {
   if (!done.element(sym)) {
     done.insert(sym);
-    for (const auto &next : heap_lookup(sym)) {
+    for (const auto &next : lookup(sym)) {
       collect(next, done);
     }
   }

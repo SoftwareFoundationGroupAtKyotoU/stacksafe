@@ -5,11 +5,9 @@
 #include "map.hpp"
 
 namespace stacksafe {
-namespace {
-class Params;
-}  // namespace
 class Error;
 class Log;
+class Params;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
@@ -56,11 +54,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void constant(const llvm::Instruction &dst);
 
  private:
-  Domain heap_lookup(const Symbol &key) const;
-  Domain stack_lookup(const llvm::Value &key) const;
-  void heap_insert(const Symbol &key, const Domain &val);
-  void stack_insert(const llvm::Instruction &key, const Domain &val);
-  void collect(const Symbol &sym, Domain &done) const;
+  Domain lookup(const Value &key) const;
+  Domain lookup(const llvm::Value &key) const;
+  void insert(const Value &key, const Domain &val);
+  void insert(const llvm::Instruction &key, const Domain &val);
+  void collect(const Value &sym, Domain &done) const;
 };
 
 }  // namespace stacksafe

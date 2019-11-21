@@ -1,13 +1,13 @@
 #include "map.hpp"
-#include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Function.h>
+#include <algorithm>
 #include "domain.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
 Map::Map() : hash_{0} {}
-void Map::insert(const Symbol &key, const Symbol &val) {
+void Map::insert(const Value &key, const Value &val) {
   auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {
     if (it->second == val) {
@@ -17,18 +17,23 @@ void Map::insert(const Symbol &key, const Symbol &val) {
   Super::emplace_hint(lb, key, val);
   hash_ ^= llvm::hash_combine(key, val);
 }
-void Map::insert(const Symbol &key, const Domain &val) {
+void Map::insert(const Value &key, const Domain &val) {
   for (const auto &sym : val) {
     insert(key, sym);
   }
 }
-Domain Map::lookup(const Symbol &key) const {
+Domain Map::lookup(const Value &key) const {
   Domain dom;
   auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {
     dom.insert(it->second);
   }
   return dom;
+}
+bool Map::element(const Value &key, const Value &val) const {
+  const auto pred = [&val](const auto &pair) { return pair.second == val; };
+  auto [lb, ub] = Super::equal_range(key);
+  return std::any_of(lb, ub, pred);
 }
 bool Map::includes(const Map &map) const {
   auto pred = [&self = *this](const auto &pair) {
@@ -37,18 +42,16 @@ bool Map::includes(const Map &map) const {
   return std::all_of(map.begin(), map.end(), pred);
 }
 void Map::merge(const Map &map) {
-  for (const auto &[key, val] : map) {
-    insert(key, val);
-  }
+  Super::insert(map.begin(), map.end());
 }
 Map Map::init(const llvm::Function &f) {
   Map map;
-  const auto g = Symbol::get_global();
+  const auto g = Value::get_symbol();
   map.insert(g, g);
   for (const auto &a : f.args()) {
-    const auto arg = Symbol::get_arg(a);
+    const auto arg = Value::get_symbol(a);
     map.insert(arg, arg);
-    map.insert(Symbol::get_register(a), arg);
+    map.insert(Value::get_register(a), arg);
   }
   return map;
 }
@@ -62,22 +65,10 @@ Domain Map::keys(const Map &map) {
   }
   return dom;
 }
-llvm::hash_code hash_value(const Map &map) {
-  return map.hash_;
-}
 
-MapRef::MapRef(const Map &map) : ptr_{&map}, hash{hash_value(map)} {}
+MapRef::MapRef(const Map &map) : ptr_{&map} {}
 const Map &MapRef::get() const {
   return *ptr_;
 }
-bool operator==(const MapRef &lhs, const MapRef &rhs) {
-  return Map::equals(lhs.get(), rhs.get());
-}
 
 }  // namespace stacksafe
-
-namespace std {
-size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef &f) const {
-  return f.hash;
-}
-}  // namespace std

@@ -17,14 +17,17 @@ target_sources(${target} PRIVATE
   domain.cpp
   env.cpp
   error.cpp
+  hash.cpp
   interpreter.cpp
   json.cpp
   key.cpp
   log.cpp
   map.cpp
+  params.cpp
   pool.cpp
-  symbol.cpp
+  stopwatch.cpp
   utility.cpp
+  value.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})

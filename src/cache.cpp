@@ -2,8 +2,8 @@
 #include <llvm/IR/Function.h>
 #include <vector>
 #include "domain.hpp"
-#include "symbol.hpp"
 #include "utility.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 std::string to_string(int num) {
@@ -30,7 +30,7 @@ Cache::Cache(const llvm::Function& f) {
     }
   }
 }
-std::string Cache::to_str(const Symbol& sym) const {
+std::string Cache::to_str(const Value& sym) const {
   static const std::string prefix{"&"};
   return prefix + to_string(lookup(sym.value()));
 }
@@ -39,10 +39,10 @@ std::string Cache::to_str(const llvm::Instruction& reg) const {
   return prefix + to_string(lookup(&reg));
 }
 std::string Cache::to_str(const Domain& dom) const {
-  const auto cmp = [& self = *this](const Symbol& lhs, const Symbol& rhs) {
+  const auto cmp = [& self = *this](const Value& lhs, const Value& rhs) {
     return self.lookup(lhs.value()) < self.lookup(rhs.value());
   };
-  std::vector<Symbol> symbols{dom.begin(), dom.end()};
+  std::vector<Value> symbols{dom.begin(), dom.end()};
   std::sort(symbols.begin(), symbols.end(), cmp);
   std::string ret{"["};
   bool first = true;

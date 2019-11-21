@@ -2,19 +2,19 @@
 #define INCLUDE_GUARD_B43C0EC1_4338_47A3_AD6C_40B0DEF734B0
 
 #include <vector>
-#include "symbol.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 
-class Domain : private std::vector<Symbol> {
-  using Super = std::vector<Symbol>;
+class Domain : private std::vector<Value> {
+  using Super = std::vector<Value>;
 
  public:
   using Super::begin, Super::end, Super::empty;
   Domain() = default;
-  void insert(const Symbol &sym);
+  void insert(const Value &sym);
   void merge(const Domain &that);
-  bool element(const Symbol &sym) const;
+  bool element(const Value &sym) const;
   bool has_local() const;
 };
 

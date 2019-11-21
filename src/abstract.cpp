@@ -2,29 +2,11 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
-#include <chrono>
 #include "interpreter.hpp"
 #include "map.hpp"
+#include "stopwatch.hpp"
 
 namespace stacksafe {
-namespace {
-template <class Period>
-class Stopwatch {
-  using Clock = std::chrono::high_resolution_clock;
-  using Duration = std::chrono::duration<double, Period>;
-  double &elapsed_;
-  decltype(Clock::now()) start_;
-
- public:
-  explicit Stopwatch(double &elapsed)
-      : elapsed_{elapsed}, start_{Clock::now()} {}
-  ~Stopwatch() {
-    auto end = Clock::now();
-    Duration elapsed = end - start_;
-    elapsed_ = elapsed.count();
-  }
-};
-}  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
     : log_{f}, name_{f.getName().str()}, elapsed_{0.0} {

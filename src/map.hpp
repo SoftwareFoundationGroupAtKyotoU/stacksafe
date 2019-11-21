@@ -1,9 +1,9 @@
 #ifndef INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
-#include <functional>
 #include <unordered_map>
-#include "symbol.hpp"
+#include "hash.hpp"
+#include "value.hpp"
 
 namespace llvm {
 class Function;
@@ -12,15 +12,17 @@ class Function;
 namespace stacksafe {
 class Domain;
 
-class Map : private std::unordered_multimap<Symbol, Symbol> {
-  using Super = std::unordered_multimap<Symbol, Symbol>;
+class Map : private std::unordered_multimap<Value, Value> {
+  using Super = std::unordered_multimap<Value, Value>;
   std::size_t hash_;
-  void insert(const Symbol &key, const Symbol &val);
+  void insert(const Value &key, const Value &val);
 
  public:
+  using Super::begin, Super::end;
   Map();
-  void insert(const Symbol &key, const Domain &val);
-  Domain lookup(const Symbol &key) const;
+  void insert(const Value &key, const Domain &val);
+  Domain lookup(const Value &key) const;
+  bool element(const Value &key, const Value &val) const;
   bool includes(const Map &map) const;
   void merge(const Map &map);
   static Map init(const llvm::Function &f);
@@ -28,25 +30,15 @@ class Map : private std::unordered_multimap<Symbol, Symbol> {
   static Domain keys(const Map &map);
   friend llvm::hash_code hash_value(const Map &map);
 };
-llvm::hash_code hash_value(const Map &map);
 
 class MapRef {
   const Map *ptr_;
 
  public:
-  const std::size_t hash;
   explicit MapRef(const Map &map);
   const Map &get() const;
 };
-bool operator==(const MapRef &lhs, const MapRef &rhs);
 
 }  // namespace stacksafe
-
-namespace std {
-template <>
-struct hash<stacksafe::MapRef> {
-  size_t operator()(const stacksafe::MapRef &f) const;
-};
-}  // namespace std
 
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
