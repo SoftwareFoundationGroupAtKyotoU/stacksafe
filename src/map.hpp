@@ -21,6 +21,7 @@ class Map : private std::unordered_multimap<Value, Value> {
   Map();
   void insert(const Value &key, const Domain &val);
   Domain lookup(const Value &key) const;
+  bool element(const Value &key, const Value &val) const;
   bool includes(const Map &map) const;
   void merge(const Map &map);
   static Map init(const llvm::Function &f);

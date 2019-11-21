@@ -1,5 +1,6 @@
 #include "map.hpp"
 #include <llvm/IR/Function.h>
+#include <algorithm>
 #include "domain.hpp"
 #include "utility.hpp"
 
@@ -28,6 +29,11 @@ Domain Map::lookup(const Value &key) const {
     dom.insert(it->second);
   }
   return dom;
+}
+bool Map::element(const Value &key, const Value &val) const {
+  const auto pred = [&val](const auto &pair) { return pair.second == val; };
+  auto [lb, ub] = Super::equal_range(key);
+  return std::any_of(lb, ub, pred);
 }
 bool Map::includes(const Map &map) const {
   auto pred = [&self = *this](const auto &pair) {
