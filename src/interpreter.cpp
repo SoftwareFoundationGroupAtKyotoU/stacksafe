@@ -23,19 +23,19 @@ class Params::ParamsIterator : private Super::const_iterator {
   friend class Params;
   using Base = Super::const_iterator;
   explicit ParamsIterator(Base it) : Base{it} {}
-  Base &super() { return *this; }
-  const Base &super() const { return *this; }
+  Base &base() { return *this; }
+  const Base &base() const { return *this; }
 
  public:
   using Base::iterator_category, Base::value_type, Base::difference_type,
       Base::pointer, Base::reference;
-  const llvm::Value &operator*() const { return **super(); }
+  const llvm::Value &operator*() const { return **base(); }
   ParamsIterator &operator++() {
-    ++super();
+    ++base();
     return *this;
   }
-  bool operator==(ParamsIterator it) const { return super() == it.super(); }
-  bool operator!=(ParamsIterator it) const { return super() != it.super(); }
+  bool operator==(ParamsIterator it) const { return base() == it.base(); }
+  bool operator!=(ParamsIterator it) const { return base() != it.base(); }
 };
 
 auto Params::begin() const -> ParamsIterator {
