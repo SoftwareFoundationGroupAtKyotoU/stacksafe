@@ -37,7 +37,7 @@ class Log {
   void print(const llvm::BasicBlock &b) const;
   void print_heap(const Symbol &key, const Domain &val,
                   const Domain &add) const;
-  void print_stack(const Value &key, const Domain &val,
+  void print_stack(const llvm::Instruction &key, const Domain &val,
                    const Domain &add) const;
   void print(const Error &err) const;
 };
