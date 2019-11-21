@@ -274,7 +274,7 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
   }
   log_.print_heap(key, heap_lookup(key), val);
   heap_.insert(key, val);
-  heap_diff_.insert(key.value(), val);
+  heap_diff_.insert(key, val);
   if (val.has_local()) {
     if (key.is_global()) {
       error_.error_global();
