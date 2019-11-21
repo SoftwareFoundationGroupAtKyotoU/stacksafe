@@ -1,5 +1,4 @@
 #include "utility.hpp"
-#include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
 #include <algorithm>
@@ -42,12 +41,6 @@ bool is_register(const llvm::Instruction& i) {
 }
 bool is_return(const llvm::CallInst& i) {
   return !i.getFunctionType()->getReturnType()->isVoidTy();
-}
-std::size_t hash_value(const void* ptr) {
-  return llvm::hash_value(ptr);
-}
-std::size_t hash_combine(std::size_t lhs, std::size_t rhs) {
-  return llvm::hash_combine(lhs, rhs);
 }
 
 namespace debug {
