@@ -21,7 +21,7 @@ class Symbol : private Value {
   explicit Symbol(const llvm::Instruction &val);
 
  public:
-  const Value &value() const;
+  Value value() const;
   bool is_global() const;
   bool is_local() const;
   bool is_argument() const;

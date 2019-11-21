@@ -8,8 +8,9 @@ Symbol::Symbol() : Value{}, key_{} {}
 Symbol::Symbol(const llvm::AllocaInst &val) : Value{val}, key_{val} {}
 Symbol::Symbol(const llvm::Argument &val) : Value{val}, key_{val} {}
 Symbol::Symbol(const llvm::Instruction &val) : Value{val}, key_{val} {}
-const Value &Symbol::value() const {
-  return *this;
+Value Symbol::value() const {
+  const auto ptr = key_.value();
+  return ptr ? Value{*ptr} : Value{};
 }
 bool Symbol::is_global() const {
   return key_.is_global();
