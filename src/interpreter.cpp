@@ -274,7 +274,9 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
   }
   log_.print_heap(key, heap_lookup(key), val);
   heap_.insert(key, val);
+  stack_.insert(key, val);
   heap_diff_.insert(key, val);
+  stack_diff_.insert(key, val);
   if (val.has_local()) {
     if (key.is_global()) {
       error_.error_global();
@@ -290,8 +292,11 @@ void Interpreter::stack_insert(const llvm::Instruction &key,
     return;
   }
   log_.print_stack(key, stack_lookup(key), val);
-  stack_.insert(Symbol::get_register(key), val);
-  stack_diff_.insert(Symbol::get_register(key), val);
+  const auto reg = Symbol::get_register(key);
+  heap_.insert(reg, val);
+  stack_.insert(reg, val);
+  heap_diff_.insert(reg, val);
+  stack_diff_.insert(reg, val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
