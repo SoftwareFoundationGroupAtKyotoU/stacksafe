@@ -3,11 +3,9 @@
 
 #include <memory>
 #include <vector>
+#include "map.hpp"
 
 namespace stacksafe {
-class Env;
-class Map;
-class MapRef;
 
 class MapPtr : private std::unique_ptr<Map> {
   friend class MapPool;
@@ -26,6 +24,20 @@ class MapPool : private std::vector<MapPtr> {
 
  public:
   MapRef add(const Map& map);
+};
+
+class Env : private std::vector<MapRef> {
+  using Super = std::vector<MapRef>;
+
+ public:
+  Env() = default;
+  Env(MapRef ref);
+  Map concat() const;
+  void merge(const Env& env);
+  void insert(MapRef ref);
+  bool element(MapRef ref) const;
+  bool element(const Value& key, const Value& val) const;
+  bool includes(const Env& env) const;
 };
 
 }  // namespace stacksafe
