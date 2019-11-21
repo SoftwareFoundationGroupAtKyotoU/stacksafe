@@ -10,9 +10,10 @@ class Value;
 namespace stacksafe {
 
 class Key {
+  using Ptr = const void*;
   using Base = std::uintptr_t;
   union {
-    const llvm::Value* val_;
+    Ptr val_;
     Base sym_;
   };
   static const Base symbol_flag, global_flag;
