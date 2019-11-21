@@ -159,8 +159,8 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     }
   }
 }
-void Interpreter::binop(const llvm::Instruction &dst, const Value &lhs,
-                        const Value &rhs) {
+void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
+                        const llvm::Value &rhs) {
   Domain dom;
   dom.merge(stack_lookup(lhs));
   dom.merge(stack_lookup(rhs));
@@ -173,25 +173,25 @@ void Interpreter::alloc(const llvm::AllocaInst &dst) {
   dom.insert(sym);
   stack_insert(dst, dom);
 }
-void Interpreter::load(const llvm::Instruction &dst, const Value &src) {
+void Interpreter::load(const llvm::Instruction &dst, const llvm::Value &src) {
   Domain dom;
   for (const auto &sym : stack_lookup(src)) {
     dom.merge(heap_lookup(sym));
   }
   stack_insert(dst, dom);
 }
-void Interpreter::store(const Value &src, const Value &dst) {
+void Interpreter::store(const llvm::Value &src, const llvm::Value &dst) {
   const auto val = stack_lookup(src);
   for (const auto &ptr : stack_lookup(dst)) {
     heap_insert(ptr, val);
   }
 }
-void Interpreter::cmpxchg(const llvm::Instruction &dst, const Value &ptr,
-                          const Value &val) {
+void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
+                          const llvm::Value &val) {
   load(dst, ptr);
   store(val, ptr);
 }
-void Interpreter::cast(const llvm::Instruction &dst, const Value &src) {
+void Interpreter::cast(const llvm::Instruction &dst, const llvm::Value &src) {
   stack_insert(dst, stack_lookup(src));
 }
 void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
