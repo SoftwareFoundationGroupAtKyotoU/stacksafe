@@ -11,14 +11,13 @@ namespace stacksafe {
 
 class Error {
   using Base = std::size_t;
-  enum class Kind : Base { RETURN, CALL, GLOBAL, ARGUMENT };
+  enum class Kind : Base { RETURN, GLOBAL, ARGUMENT };
   Base flags_;
 
  public:
   Error();
   bool is_error() const;
   void error_return();
-  void error_call();
   void error_global();
   void error_argument();
   void print(llvm::raw_ostream& os) const;
