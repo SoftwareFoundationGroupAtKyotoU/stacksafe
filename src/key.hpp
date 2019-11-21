@@ -4,7 +4,6 @@
 #include <cstdint>
 
 namespace llvm {
-class AllocaInst;
 class Argument;
 class Instruction;
 class Value;
@@ -25,10 +24,8 @@ class Key {
 
  public:
   Key();
-  explicit Key(const llvm::AllocaInst& val);
   explicit Key(const llvm::Argument& val);
   explicit Key(const llvm::Instruction& val);
-  explicit Key(const llvm::Value& val);
   Key(Ptr val, bool is_arg);
   const llvm::Value* value() const;
   bool is_symbol() const;

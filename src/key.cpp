@@ -10,10 +10,8 @@ Key::Key(Ptr ptr, Base flag) : sym_{reinterpret_cast<Base>(ptr) | flag} {}
 Key::Key() : sym_{global_flag} {
   static_assert(sizeof(Ptr) == sizeof(Base));
 }
-Key::Key(const llvm::AllocaInst& val) : Key{&val, symbol_flag} {}
 Key::Key(const llvm::Argument& val) : Key{&val, global_flag} {}
 Key::Key(const llvm::Instruction& val) : val_{&val} {}
-Key::Key(const llvm::Value& val) : val_{&val} {}
 Key::Key(Ptr val, bool is_arg) : Key{val, is_arg ? global_flag : symbol_flag} {}
 const llvm::Value* Key::value() const {
   if (is_register()) {
