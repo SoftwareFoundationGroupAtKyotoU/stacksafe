@@ -269,11 +269,10 @@ void Interpreter::insert(const Symbol &key, const Domain &val) {
   log_.print_heap(key, lookup(key), val);
   map_.insert(key, val);
   diff_.insert(key, val);
-  if (val.has_local()) {
+  if (val.has_local() && !key.is_local()) {
     if (key.is_global()) {
       error_.error_global();
-    }
-    if (key.is_argument()) {
+    } else {
       error_.error_argument();
     }
   }
