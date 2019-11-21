@@ -290,8 +290,8 @@ void Interpreter::stack_insert(const llvm::Instruction &key,
     return;
   }
   log_.print_stack(key, stack_lookup(key), val);
-  stack_.insert(key, val);
-  stack_diff_.insert(key, val);
+  stack_.insert(Symbol::get_register(key), val);
+  stack_diff_.insert(Symbol::get_register(key), val);
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {

@@ -20,7 +20,6 @@ class Map : private std::unordered_multimap<Symbol, Symbol> {
   void insert(const Symbol &key, const Symbol &val);
 
  public:
-  void insert(const llvm::Instruction &key, const Domain &val);
   void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Symbol &key) const;
   bool includes(const Map &map) const;

@@ -15,11 +15,6 @@ void Map::insert(const Symbol &key, const Symbol &val) {
   }
   Super::emplace_hint(lb, key, val);
 }
-void Map::insert(const llvm::Instruction &key, const Domain &val) {
-  for (const auto &sym : val) {
-    insert(Symbol::get_register(key), sym);
-  }
-}
 void Map::insert(const Symbol &key, const Domain &val) {
   for (const auto &sym : val) {
     insert(key, sym);
