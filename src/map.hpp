@@ -1,7 +1,6 @@
 #ifndef INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
-#include <functional>
 #include <unordered_map>
 #include "hash.hpp"
 #include "symbol.hpp"
@@ -40,12 +39,5 @@ class MapRef {
 bool operator==(const MapRef &lhs, const MapRef &rhs);
 
 }  // namespace stacksafe
-
-namespace std {
-template <>
-struct hash<stacksafe::MapRef> {
-  size_t operator()(const stacksafe::MapRef &r) const;
-};
-}  // namespace std
 
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855

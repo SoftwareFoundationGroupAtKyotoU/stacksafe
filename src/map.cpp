@@ -71,9 +71,3 @@ bool operator==(const MapRef &lhs, const MapRef &rhs) {
 }
 
 }  // namespace stacksafe
-
-namespace std {
-size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef &r) const {
-  return hash_value(r.get());
-}
-}  // namespace std
