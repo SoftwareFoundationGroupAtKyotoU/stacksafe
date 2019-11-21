@@ -17,7 +17,6 @@ class Key {
     Ptr val_;
     Base sym_;
   };
-  static const Base symbol_flag, global_flag;
 
  public:
   explicit Key(const llvm::Value& val);

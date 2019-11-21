@@ -2,9 +2,11 @@
 #include <cassert>
 
 namespace stacksafe {
+namespace {
+const std::uintptr_t symbol_flag{0x1};
+const std::uintptr_t global_flag{0x3};
+}  // namespace
 
-const Key::Base Key::symbol_flag{0x1};
-const Key::Base Key::global_flag{0x3};
 Key::Key(const llvm::Value& val) : val_{&val} {}
 Key::Key(Ptr val, bool is_arg)
     : sym_{(val ? reinterpret_cast<Base>(val) : global_flag) |
