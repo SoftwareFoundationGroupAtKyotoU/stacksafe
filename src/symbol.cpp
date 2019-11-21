@@ -12,14 +12,10 @@ const Value &Symbol::value() const {
   return *this;
 }
 bool Symbol::is_global() const {
-  auto v = value().get();
-  return !v || llvm::isa<llvm::Constant>(v);
+  return key_.is_global();
 }
 bool Symbol::is_local() const {
-  if (auto i = llvm::dyn_cast_or_null<llvm::Instruction>(value().get())) {
-    return is_register(*i);
-  }
-  return false;
+  return key_.is_local();
 }
 bool Symbol::is_argument() const {
   return key_.is_argument();
