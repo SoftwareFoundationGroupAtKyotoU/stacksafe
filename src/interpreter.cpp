@@ -247,17 +247,18 @@ Domain Interpreter::lookup(const Symbol &key) const {
   return map_.lookup(key);
 }
 Domain Interpreter::lookup(const llvm::Value &key) const {
-  Domain dom;
   if (auto c = llvm::dyn_cast<llvm::Constant>(&key)) {
+    Domain dom;
     if (is_global(*c)) {
       dom.insert(Symbol::get_global());
     }
     return dom;
-  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
-    assert(is_register(*i) && "invalid register lookup");
-    return map_.lookup(Symbol::get_register(key));
   } else {
-    assert(llvm::isa<llvm::Argument>(key) && "invalid value lookup");
+    if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
+      assert(is_register(*i) && "invalid register lookup");
+    } else {
+      assert(llvm::isa<llvm::Argument>(key) && "invalid value lookup");
+    }
     return map_.lookup(Symbol::get_register(key));
   }
 }
