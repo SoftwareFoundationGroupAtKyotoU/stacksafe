@@ -52,8 +52,8 @@ void Log::print(const llvm::BasicBlock &b) const {
 void Log::print_heap(const Symbol &key, const Domain &val,
                      const Domain &add) const {
   if (os) {
-    endline(*os << "&" << cache_.to_str(key.value()) << ": "
-                << cache_.to_str(val) << " += " << cache_.to_str(add));
+    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
+                << " += " << cache_.to_str(add));
   }
 }
 void Log::print_stack(const llvm::Instruction &key, const Domain &val,

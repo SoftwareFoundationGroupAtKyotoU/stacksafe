@@ -21,8 +21,9 @@ Cache::Cache(const llvm::Function& f) {
     }
   }
 }
-std::string Cache::to_str(const Value& val) const {
-  return to_str(lookup(val));
+std::string Cache::to_str(const Symbol& sym) const {
+  static const std::string prefix{"&"};
+  return prefix + to_str(lookup(sym.value()));
 }
 std::string Cache::to_str(const llvm::Instruction& reg) const {
   static const std::string prefix{"%"};
