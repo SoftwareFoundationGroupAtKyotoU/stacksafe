@@ -21,6 +21,9 @@ bool has_local(const Domain &dom) {
 
 class Params : private std::unordered_set<const llvm::Value *> {
   using Super = std::unordered_set<const llvm::Value *>;
+
+ public:
+  void emplace(const llvm::Value &v) { Super::emplace(&v); }
 };
 }  // namespace
 
