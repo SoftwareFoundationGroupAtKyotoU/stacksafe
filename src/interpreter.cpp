@@ -127,7 +127,7 @@ auto Interpreter::visitCmpInst(llvm::CmpInst &i) -> RetTy {
   constant(i);
 }
 auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
-  Params params;
+  ParamsOld params;
   for (const auto &use : i.incoming_values()) {
     auto arg = use.get();
     assert(arg && "unknown phi node");
@@ -136,7 +136,7 @@ auto Interpreter::visitPHINode(llvm::PHINode &i) -> RetTy {
   phi(i, params);
 }
 auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
-  Params params;
+  ParamsOld params;
   for (const auto arg : {i.getTrueValue(), i.getFalseValue()}) {
     assert(arg && "unknown select node");
     params.emplace(*arg);
@@ -144,7 +144,7 @@ auto Interpreter::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   phi(i, params);
 }
 auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
-  Params params;
+  ParamsOld params;
   for (const auto &use : i.args()) {
     auto arg = use.get();
     assert(arg && "unknown parameter");
@@ -194,14 +194,14 @@ void Interpreter::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
 void Interpreter::cast(const llvm::Instruction &dst, const llvm::Value &src) {
   stack_insert(dst, stack_lookup(src));
 }
-void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
+void Interpreter::phi(const llvm::Instruction &dst, const ParamsOld &params) {
   Domain dom;
   for (const auto &arg : params) {
     dom.merge(stack_lookup(arg));
   }
   stack_insert(dst, dom);
 }
-void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
+void Interpreter::call(const llvm::CallInst &dst, const ParamsOld &params) {
   Domain dom;
   dom.insert(Symbol::get_global());
   for (const auto &arg : params) {
