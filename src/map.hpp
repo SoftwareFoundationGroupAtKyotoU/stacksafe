@@ -18,6 +18,7 @@ class Map : private std::unordered_multimap<Value, Value> {
   void insert(const Value &key, const Value &val);
 
  public:
+  using Super::begin, Super::end;
   Map();
   void insert(const Value &key, const Domain &val);
   Domain lookup(const Value &key) const;
