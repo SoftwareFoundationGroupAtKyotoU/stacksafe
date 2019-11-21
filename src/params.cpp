@@ -2,11 +2,11 @@
 
 namespace stacksafe {
 
-Params::ParamsIterator::ParamsIterator(Base it) : Base{it} {}
-auto Params::ParamsIterator::base() -> Base & {
+Params::ParamsIterator::ParamsIterator(Super it) : Super{it} {}
+auto Params::ParamsIterator::base() -> Super & {
   return *this;
 }
-auto Params::ParamsIterator::base() const -> const Base & {
+auto Params::ParamsIterator::base() const -> const Super & {
   return *this;
 }
 const llvm::Value &Params::ParamsIterator::operator*() const {

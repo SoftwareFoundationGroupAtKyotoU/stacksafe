@@ -21,14 +21,14 @@ class Params : private std::unordered_set<const llvm::Value *> {
 
 class Params::ParamsIterator : private Params::Super::const_iterator {
   friend class Params;
-  using Base = Super::const_iterator;
-  explicit ParamsIterator(Base it);
-  Base &base();
-  const Base &base() const;
+  using Super = Super::const_iterator;
+  explicit ParamsIterator(Super it);
+  Super &base();
+  const Super &base() const;
 
  public:
-  using Base::iterator_category, Base::value_type, Base::difference_type,
-      Base::pointer, Base::reference;
+  using Super::iterator_category, Super::value_type, Super::difference_type,
+      Super::pointer, Super::reference;
   const llvm::Value &operator*() const;
   ParamsIterator &operator++();
   bool operator==(ParamsIterator it) const;
