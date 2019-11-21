@@ -15,7 +15,9 @@ void Env::merge(const Env &env) {
   set_.insert(env.set_.begin(), env.set_.end());
 }
 void Env::insert(MapRef ref) {
-  set_.emplace(ref);
+  if (!concat().includes(ref.get())) {
+    set_.emplace(ref);
+  }
 }
 bool Env::includes(const Env &env) {
   return concat().includes(env.concat());
