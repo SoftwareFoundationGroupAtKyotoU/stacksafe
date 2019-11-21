@@ -36,6 +36,8 @@ class Params : private std::unordered_set<const llvm::Value *> {
       ++super();
       return *this;
     }
+    bool operator==(ParamIterator it) const { return super() == it.super(); }
+    bool operator!=(ParamIterator it) const { return super() != it.super(); }
   };
 
  public:
