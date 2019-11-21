@@ -6,13 +6,15 @@
 #include "map.hpp"
 
 namespace stacksafe {
+namespace {
+class Params;
+}
 class Error;
 class Log;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
-  using ParamsOld = std::unordered_set<Value>;
   const Log &log_;
   Error &error_;
   Map heap_, stack_, heap_diff_, stack_diff_;
@@ -52,8 +54,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                const llvm::Value &val);
   void cast(const llvm::Instruction &dst, const llvm::Value &src);
-  void phi(const llvm::Instruction &dst, const ParamsOld &params);
-  void call(const llvm::CallInst &dst, const ParamsOld &params);
+  void phi(const llvm::Instruction &dst, const Params &params);
+  void call(const llvm::CallInst &dst, const Params &params);
   void constant(const llvm::Instruction &dst);
 
  private:
