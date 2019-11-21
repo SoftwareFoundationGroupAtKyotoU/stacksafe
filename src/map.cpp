@@ -14,16 +14,18 @@ void Map::insert(const Value &key, const Symbol &val) {
   }
   Super::emplace_hint(lb, key, val);
 }
+void Map::insert(const Symbol &key, const Symbol &val) {
+  insert(key.value(), val);
+}
 void Map::insert(const Value &key, const Domain &val) {
   for (const auto &sym : val) {
     insert(key, sym);
   }
 }
-void Map::insert(const Symbol &key, const Symbol &val) {
-  insert(key.value(), val);
-}
 void Map::insert(const Symbol &key, const Domain &val) {
-  insert(key.value(), val);
+  for (const auto &sym : val) {
+    insert(key.value(), sym);
+  }
 }
 Domain Map::lookup(const Value &key) const {
   Domain dom;
