@@ -28,7 +28,6 @@ class Map : private std::unordered_multimap<Symbol, Symbol> {
   static Domain keys(const Map &map);
   friend llvm::hash_code hash_value(const Map &map);
 };
-llvm::hash_code hash_value(const Map &map);
 
 class MapRef {
   const Map *ptr_;

@@ -1,7 +1,7 @@
 #include "map.hpp"
-#include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Function.h>
 #include "domain.hpp"
+#include "hash.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -61,9 +61,6 @@ Domain Map::keys(const Map &map) {
     dom.insert(pair.first);
   }
   return dom;
-}
-llvm::hash_code hash_value(const Map &map) {
-  return map.hash_;
 }
 
 MapRef::MapRef(const Map &map) : ptr_{&map}, hash{hash_value(map)} {}
