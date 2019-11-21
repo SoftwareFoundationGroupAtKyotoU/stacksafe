@@ -39,6 +39,17 @@ void Map::merge(const Map &map) {
     insert(key, val);
   }
 }
+Map Map::init(const llvm::Function &f) {
+  Map map;
+  const auto g = Symbol::get_global();
+  map.insert(g, g);
+  for (const auto &a : f.args()) {
+    const auto arg = Symbol::get_arg(a);
+    map.insert(arg, arg);
+    map.insert(Symbol::get_register(a), arg);
+  }
+  return map;
+}
 Map Map::init_heap(const llvm::Function &f) {
   Map heap;
   const auto g = Symbol::get_global();
