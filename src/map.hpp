@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "symbol.hpp"
-#include "value.hpp"
 
 namespace llvm {
 class Function;

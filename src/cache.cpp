@@ -4,7 +4,6 @@
 #include "domain.hpp"
 #include "symbol.hpp"
 #include "utility.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 std::string to_string(int num) {

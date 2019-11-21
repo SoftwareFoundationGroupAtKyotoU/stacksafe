@@ -1,6 +1,5 @@
 #include "symbol.hpp"
 #include <llvm/ADT/Hashing.h>
-#include "value.hpp"
 
 namespace stacksafe {
 

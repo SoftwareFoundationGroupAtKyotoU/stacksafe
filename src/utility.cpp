@@ -5,7 +5,6 @@
 #include <set>
 #include "domain.hpp"
 #include "map.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 
