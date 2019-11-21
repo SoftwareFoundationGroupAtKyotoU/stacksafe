@@ -2,7 +2,8 @@
 #include <llvm/ADT/Hashing.h>
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
-#include <set>
+#include <algorithm>
+#include <vector>
 #include "domain.hpp"
 #include "map.hpp"
 
@@ -86,10 +87,11 @@ std::string to_str(int num) {
 }
 std::string to_str(const Domain& dom) {
   std::string ret;
-  std::set<int> nums;
+  std::vector<int> nums;
   for (const auto& sym : dom) {
-    nums.insert(get_operand(sym.value()));
+    nums.push_back(get_operand(sym.value()));
   }
+  std::sort(nums.begin(), nums.end());
   ret.append("[");
   for (const auto& num : nums) {
     ret.append(to_str(num));
