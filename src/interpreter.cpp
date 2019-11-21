@@ -21,14 +21,14 @@ bool has_local(const Domain &dom) {
 
 class Params::ParamsIterator : private Super::const_iterator {
   friend class Params;
-  using Iter = Super::const_iterator;
-  explicit ParamsIterator(Iter it) : Iter{it} {}
-  Iter &super() { return *this; }
-  const Iter &super() const { return *this; }
+  using Base = Super::const_iterator;
+  explicit ParamsIterator(Base it) : Base{it} {}
+  Base &super() { return *this; }
+  const Base &super() const { return *this; }
 
  public:
-  using Iter::iterator_category, Iter::value_type, Iter::difference_type,
-      Iter::pointer, Iter::reference;
+  using Base::iterator_category, Base::value_type, Base::difference_type,
+      Base::pointer, Base::reference;
   const llvm::Value &operator*() const { return **super(); }
   ParamsIterator &operator++() {
     ++super();
