@@ -46,9 +46,8 @@ void Params::emplace(const llvm::Value &v) {
 }
 }  // namespace
 
-Interpreter::Interpreter(const Log &l, Error &error, const Map &heap,
-                         const Map &)
-    : log_{l}, error_{error}, map_{heap} {}
+Interpreter::Interpreter(const Log &l, Error &error, const Map &map)
+    : log_{l}, error_{error}, map_{map} {}
 const Map &Interpreter::diff() const {
   return diff_;
 }

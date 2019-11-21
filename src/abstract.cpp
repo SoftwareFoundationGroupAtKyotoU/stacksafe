@@ -57,7 +57,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
   auto prev = get(b);
-  Interpreter i{log_, error_, prev.heap(), prev.stack()};
+  Interpreter i{log_, error_, prev.heap()};
   i.visit(b);
   prev.insert(pool_.add(i.diff()));
   const auto t = b.getTerminator();
