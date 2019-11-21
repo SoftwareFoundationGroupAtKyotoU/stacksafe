@@ -7,14 +7,6 @@
 
 namespace stacksafe {
 namespace {
-bool has_local(const Domain &dom) {
-  for (const auto &sym : dom) {
-    if (sym.is_local()) {
-      return true;
-    }
-  }
-  return false;
-}
 class Params : private std::unordered_set<const llvm::Value *> {
   using Super = std::unordered_set<const llvm::Value *>;
   class ParamsIterator;
@@ -189,7 +181,7 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    if (has_local(stack_lookup(*ret))) {
+    if (stack_lookup(*ret).has_local()) {
       error_.error_return();
     }
   }
@@ -244,7 +236,7 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
       collect(sym, dom);
     }
   }
-  if (has_local(dom)) {
+  if (dom.has_local()) {
     error_.error_call();
   }
   for (const auto &sym : dom) {
@@ -284,7 +276,7 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
   log_.print_heap(key.value(), heap_lookup(key), val);
   heap_.insert(key, val);
   heap_diff_.insert(key.value(), val);
-  if (has_local(val)) {
+  if (val.has_local()) {
     if (key.is_global()) {
       error_.error_global();
     }
