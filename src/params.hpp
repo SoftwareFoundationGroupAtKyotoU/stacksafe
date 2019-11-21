@@ -23,8 +23,8 @@ class Params::ParamsIterator : private Params::Super::const_iterator {
   friend class Params;
   using Super = Super::const_iterator;
   explicit ParamsIterator(Super it);
-  Super &base();
-  const Super &base() const;
+  Super &super();
+  const Super &super() const;
 
  public:
   using Super::iterator_category, Super::value_type, Super::difference_type,

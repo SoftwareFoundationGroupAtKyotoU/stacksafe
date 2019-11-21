@@ -3,24 +3,24 @@
 namespace stacksafe {
 
 Params::ParamsIterator::ParamsIterator(Super it) : Super{it} {}
-auto Params::ParamsIterator::base() -> Super & {
+auto Params::ParamsIterator::super() -> Super & {
   return *this;
 }
-auto Params::ParamsIterator::base() const -> const Super & {
+auto Params::ParamsIterator::super() const -> const Super & {
   return *this;
 }
 const llvm::Value &Params::ParamsIterator::operator*() const {
-  return **base();
+  return **super();
 }
 auto Params::ParamsIterator::operator++() -> ParamsIterator & {
-  ++base();
+  ++super();
   return *this;
 }
 bool Params::ParamsIterator::operator==(ParamsIterator it) const {
-  return base() == it.base();
+  return super() == it.super();
 }
 bool Params::ParamsIterator::operator!=(ParamsIterator it) const {
-  return base() != it.base();
+  return super() != it.super();
 }
 
 auto Params::begin() const -> ParamsIterator {
