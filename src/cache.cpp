@@ -2,7 +2,9 @@
 #include <llvm/IR/Function.h>
 #include <vector>
 #include "domain.hpp"
+#include "symbol.hpp"
 #include "utility.hpp"
+#include "value.hpp"
 
 namespace stacksafe {
 std::string to_string(int num) {
@@ -16,30 +18,30 @@ std::string to_string(int num) {
 
 Cache::Cache(const llvm::Function& f) {
   int num = -1;
-  Super::try_emplace(Value{}, num++);
+  Super::try_emplace(nullptr, num++);
   for (const auto& a : f.args()) {
-    Super::try_emplace(a, num++);
+    Super::try_emplace(&a, num++);
   }
   for (const auto& b : f) {
     ++num;
     for (const auto& i : b) {
       if (is_register(i)) {
-        Super::try_emplace(i, num++);
+        Super::try_emplace(&i, num++);
       }
     }
   }
 }
 std::string Cache::to_str(const Symbol& sym) const {
   static const std::string prefix{"&"};
-  return prefix + to_string(lookup(sym.value()));
+  return prefix + to_string(lookup(sym.value().get()));
 }
 std::string Cache::to_str(const llvm::Instruction& reg) const {
   static const std::string prefix{"%"};
-  return prefix + to_string(lookup(reg));
+  return prefix + to_string(lookup(&reg));
 }
 std::string Cache::to_str(const Domain& dom) const {
-  const auto cmp = [& self = *this](const auto& lhs, const auto& rhs) {
-    return self.lookup(lhs.value()) < self.lookup(rhs.value());
+  const auto cmp = [& self = *this](const Symbol& lhs, const Symbol& rhs) {
+    return self.lookup(lhs.value().get()) < self.lookup(rhs.value().get());
   };
   std::vector<Symbol> symbols{dom.begin(), dom.end()};
   std::sort(symbols.begin(), symbols.end(), cmp);
@@ -54,7 +56,7 @@ std::string Cache::to_str(const Domain& dom) const {
   ret.append("]");
   return ret;
 }
-int Cache::lookup(const Value& val) const {
+int Cache::lookup(const llvm::Value* val) const {
   auto it = Super::find(val);
   assert(it != Super::end() && "unregistered value");
   return it->second;
