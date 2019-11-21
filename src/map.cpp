@@ -17,7 +17,7 @@ void Map::insert(const Value &key, const Symbol &val) {
 void Map::insert(const Symbol &key, const Symbol &val) {
   insert(key.value(), val);
 }
-void Map::insert(const Value &key, const Domain &val) {
+void Map::insert(const llvm::Instruction &key, const Domain &val) {
   for (const auto &sym : val) {
     insert(key, sym);
   }

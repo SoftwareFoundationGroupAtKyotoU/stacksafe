@@ -9,7 +9,8 @@
 
 namespace llvm {
 class Function;
-}
+class Instruction;
+}  // namespace llvm
 
 namespace stacksafe {
 class Domain;
@@ -20,7 +21,7 @@ class Map : private std::unordered_multimap<Value, Symbol> {
   void insert(const Symbol &key, const Symbol &val);
 
  public:
-  void insert(const Value &key, const Domain &val);
+  void insert(const llvm::Instruction &key, const Domain &val);
   void insert(const Symbol &key, const Domain &val);
   Domain lookup(const Value &key) const;
   Domain lookup(const Symbol &key) const;
