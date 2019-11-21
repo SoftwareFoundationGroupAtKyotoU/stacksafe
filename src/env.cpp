@@ -23,8 +23,10 @@ Map Env::concat() const {
   return ret;
 }
 void Env::merge(const Env &env) {
+  auto len = size();
   Super::insert(end(), env.begin(), env.end());
-  std::sort(begin(), end(), compare);
+  auto middle = std::next(begin(), len);
+  std::inplace_merge(begin(), middle, end(), compare);
   erase(std::unique(begin(), end(), equals), end());
 }
 void Env::insert(MapRef ref) {
