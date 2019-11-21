@@ -21,7 +21,7 @@ class Symbol {
   bool is_global() const;
   bool is_local() const;
   bool is_argument() const;
-  static Symbol get_global();
+  static Symbol get_symbol();
   static Symbol get_local(const llvm::AllocaInst &v);
   static Symbol get_arg(const llvm::Argument &v);
   static Symbol get_register(const llvm::Value &v);

@@ -226,7 +226,7 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   Domain dom;
-  dom.insert(Symbol::get_global());
+  dom.insert(Symbol::get_symbol());
   for (const auto &arg : params) {
     for (const auto &sym : lookup(arg)) {
       collect(sym, dom);
@@ -250,7 +250,7 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&key)) {
     Domain dom;
     if (is_global(*c)) {
-      dom.insert(Symbol::get_global());
+      dom.insert(Symbol::get_symbol());
     }
     return dom;
   } else {

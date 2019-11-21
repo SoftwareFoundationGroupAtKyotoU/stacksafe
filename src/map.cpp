@@ -42,7 +42,7 @@ void Map::merge(const Map &map) {
 }
 Map Map::init(const llvm::Function &f) {
   Map map;
-  const auto g = Symbol::get_global();
+  const auto g = Symbol::get_symbol();
   map.insert(g, g);
   for (const auto &a : f.args()) {
     const auto arg = Symbol::get_arg(a);

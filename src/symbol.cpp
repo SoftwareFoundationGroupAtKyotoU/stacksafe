@@ -17,7 +17,7 @@ bool Symbol::is_local() const {
 bool Symbol::is_argument() const {
   return key_.is_argument();
 }
-Symbol Symbol::get_global() {
+Symbol Symbol::get_symbol() {
   return Symbol{nullptr, false};
 }
 Symbol Symbol::get_local(const llvm::AllocaInst &v) {
