@@ -47,8 +47,8 @@ void Params::emplace(const llvm::Value &v) {
 }  // namespace
 
 Interpreter::Interpreter(const Log &l, Error &error, const Map &heap,
-                         const Map &stack)
-    : log_{l}, error_{error}, heap_{heap}, stack_{stack} {}
+                         const Map &)
+    : log_{l}, error_{error}, map_{heap} {}
 const Map &Interpreter::heap_diff() const {
   return heap_diff_;
 }
@@ -251,7 +251,7 @@ void Interpreter::constant(const llvm::Instruction &dst) {
   stack_insert(dst, Domain{});
 }
 Domain Interpreter::heap_lookup(const Symbol &key) const {
-  return heap_.lookup(key);
+  return map_.lookup(key);
 }
 Domain Interpreter::stack_lookup(const llvm::Value &key) const {
   Domain dom;
@@ -262,10 +262,10 @@ Domain Interpreter::stack_lookup(const llvm::Value &key) const {
     return dom;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
-    return stack_.lookup(Symbol::get_register(key));
+    return map_.lookup(Symbol::get_register(key));
   } else {
     assert(llvm::isa<llvm::Argument>(key) && "invalid value lookup");
-    return stack_.lookup(Symbol::get_register(key));
+    return map_.lookup(Symbol::get_register(key));
   }
 }
 void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
@@ -273,8 +273,7 @@ void Interpreter::heap_insert(const Symbol &key, const Domain &val) {
     return;
   }
   log_.print_heap(key, heap_lookup(key), val);
-  heap_.insert(key, val);
-  stack_.insert(key, val);
+  map_.insert(key, val);
   heap_diff_.insert(key, val);
   stack_diff_.insert(key, val);
   if (val.has_local()) {
@@ -293,8 +292,7 @@ void Interpreter::stack_insert(const llvm::Instruction &key,
   }
   log_.print_stack(key, stack_lookup(key), val);
   const auto reg = Symbol::get_register(key);
-  heap_.insert(reg, val);
-  stack_.insert(reg, val);
+  map_.insert(reg, val);
   heap_diff_.insert(reg, val);
   stack_diff_.insert(reg, val);
 }

@@ -16,7 +16,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Log &log_;
   Error &error_;
-  Map heap_, stack_, heap_diff_, stack_diff_;
+  Map map_, heap_diff_, stack_diff_;
 
  public:
   explicit Interpreter(const Log &l, Error &error, const Map &heap,
