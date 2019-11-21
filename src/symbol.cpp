@@ -30,6 +30,9 @@ Symbol Symbol::get_local(const llvm::AllocaInst &v) {
 Symbol Symbol::get_arg(const llvm::Argument &v) {
   return Symbol{&v, true};
 }
+Symbol Symbol::get_register(const llvm::Argument &v) {
+  return Symbol{v};
+}
 Symbol Symbol::get_register(const llvm::Instruction &v) {
   return Symbol{v};
 }

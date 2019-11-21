@@ -4,6 +4,7 @@
 #include "key.hpp"
 
 namespace llvm {
+class AllocaInst;
 class Argument;
 class Instruction;
 class hash_code;
@@ -27,6 +28,7 @@ class Symbol {
   static Symbol get_global();
   static Symbol get_local(const llvm::AllocaInst &v);
   static Symbol get_arg(const llvm::Argument &v);
+  static Symbol get_register(const llvm::Argument &v);
   static Symbol get_register(const llvm::Instruction &v);
   static std::size_t hash(const Symbol &sym);
   bool operator==(const Symbol &sym) const;
