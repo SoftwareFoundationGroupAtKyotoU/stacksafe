@@ -49,10 +49,7 @@ void Params::emplace(const llvm::Value &v) {
 Interpreter::Interpreter(const Log &l, Error &error, const Map &heap,
                          const Map &)
     : log_{l}, error_{error}, map_{heap} {}
-const Map &Interpreter::heap_diff() const {
-  return diff_;
-}
-const Map &Interpreter::stack_diff() const {
+const Map &Interpreter::diff() const {
   return diff_;
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
