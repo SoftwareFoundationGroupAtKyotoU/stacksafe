@@ -26,6 +26,8 @@ class Key {
   bool is_local() const;
   bool is_global() const;
   bool is_argument() const;
+  static bool equals(const Key& lhs, const Key& rhs);
+  static bool less(const Key& lhs, const Key& rhs);
 };
 
 }  // namespace stacksafe

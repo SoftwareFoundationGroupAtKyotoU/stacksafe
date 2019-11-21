@@ -32,5 +32,11 @@ bool Key::is_argument() const {
   assert(is_symbol());
   return !is_global() && !is_local();
 }
+bool Key::equals(const Key& lhs, const Key& rhs) {
+  return lhs.sym_ == rhs.sym_;
+}
+bool Key::less(const Key& lhs, const Key& rhs) {
+  return lhs.sym_ < rhs.sym_;
+}
 
 }  // namespace stacksafe
