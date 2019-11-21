@@ -17,7 +17,13 @@ Key::Key(const llvm::Value& val) : val_{&val} {}
 Key::Key(const llvm::Value& val, bool is_arg)
     : Key{&val, is_arg ? global_flag : symbol_flag} {}
 const llvm::Value* Key::value() const {
-  return is_symbol() ? nullptr : reinterpret_cast<const llvm::Value*>(val_);
+  if (is_global()) {
+    return nullptr;
+  } else if (is_symbol()) {
+    return reinterpret_cast<const llvm::Value*>(sym_ & ~global_flag);
+  } else {
+    return static_cast<const llvm::Value*>(val_);
+  }
 }
 bool Key::is_symbol() const {
   return sym_ & symbol_flag;
