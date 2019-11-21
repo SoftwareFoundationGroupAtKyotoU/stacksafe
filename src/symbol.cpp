@@ -1,13 +1,10 @@
 #include "symbol.hpp"
 #include <llvm/ADT/Hashing.h>
-#include <llvm/IR/Argument.h>
-#include <llvm/IR/Instruction.h>
 #include "value.hpp"
 
 namespace stacksafe {
 
-Symbol::Symbol(const llvm::Argument &val) : key_{val} {}
-Symbol::Symbol(const llvm::Instruction &val) : key_{val} {}
+Symbol::Symbol(const llvm::Value &val) : key_{val} {}
 Symbol::Symbol(const void *sym, bool is_arg) : key_{sym, is_arg} {}
 Value Symbol::value() const {
   const auto ptr = key_.value();
@@ -31,10 +28,7 @@ Symbol Symbol::get_local(const llvm::AllocaInst &v) {
 Symbol Symbol::get_arg(const llvm::Argument &v) {
   return Symbol{&v, true};
 }
-Symbol Symbol::get_register(const llvm::Argument &v) {
-  return Symbol{v};
-}
-Symbol Symbol::get_register(const llvm::Instruction &v) {
+Symbol Symbol::get_register(const llvm::Value &v) {
   return Symbol{v};
 }
 std::size_t Symbol::hash(const Symbol &sym) {

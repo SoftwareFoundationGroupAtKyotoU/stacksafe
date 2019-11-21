@@ -6,7 +6,6 @@
 namespace llvm {
 class AllocaInst;
 class Argument;
-class Instruction;
 class hash_code;
 }  // namespace llvm
 
@@ -15,8 +14,7 @@ class Value;
 
 class Symbol {
   Key key_;
-  explicit Symbol(const llvm::Argument &val);
-  explicit Symbol(const llvm::Instruction &val);
+  explicit Symbol(const llvm::Value &val);
   Symbol(const void *sym, bool is_arg);
 
  public:
@@ -27,8 +25,7 @@ class Symbol {
   static Symbol get_global();
   static Symbol get_local(const llvm::AllocaInst &v);
   static Symbol get_arg(const llvm::Argument &v);
-  static Symbol get_register(const llvm::Argument &v);
-  static Symbol get_register(const llvm::Instruction &v);
+  static Symbol get_register(const llvm::Value &v);
   static std::size_t hash(const Symbol &sym);
   bool operator==(const Symbol &sym) const;
   bool operator<(const Symbol &sym) const;
