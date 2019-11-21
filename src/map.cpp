@@ -67,7 +67,8 @@ const Map &MapRef::get() const {
   return *ptr_;
 }
 bool operator==(const MapRef &lhs, const MapRef &rhs) {
-  return Map::equals(lhs.get(), rhs.get());
+  return (hash_value(lhs.get()) == hash_value(rhs.get()) &&
+          Map::equals(lhs.get(), rhs.get()));
 }
 
 }  // namespace stacksafe
