@@ -19,6 +19,25 @@ bool has_local(const Domain &dom) {
   return false;
 }
 
+class Params::ParamIterator : private Super::const_iterator {
+  friend class Params;
+  using Iter = Super::const_iterator;
+  explicit ParamIterator(Iter it) : Iter{it} {}
+  Iter &super() { return *this; }
+  const Iter &super() const { return *this; }
+
+ public:
+  using Iter::iterator_category, Iter::value_type, Iter::difference_type,
+      Iter::pointer, Iter::reference;
+  const llvm::Value &operator*() const { return **super(); }
+  ParamIterator &operator++() {
+    ++super();
+    return *this;
+  }
+  bool operator==(ParamIterator it) const { return super() == it.super(); }
+  bool operator!=(ParamIterator it) const { return super() != it.super(); }
+};
+
 auto Params::begin() const -> ParamIterator {
   return ParamIterator{Super::begin()};
 }
