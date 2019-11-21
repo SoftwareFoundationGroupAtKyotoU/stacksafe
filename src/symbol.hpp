@@ -27,7 +27,6 @@ class Symbol {
   static Symbol get_local(const llvm::AllocaInst &v);
   static Symbol get_arg(const llvm::Argument &v);
   static Symbol get_register(const llvm::Value &v);
-  static std::size_t hash(const Symbol &sym);
   bool operator==(const Symbol &sym) const;
   bool operator<(const Symbol &sym) const;
   friend llvm::hash_code hash_value(const Symbol &sym);

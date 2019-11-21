@@ -31,9 +31,6 @@ Symbol Symbol::get_arg(const llvm::Argument &v) {
 Symbol Symbol::get_register(const llvm::Value &v) {
   return Symbol{v};
 }
-std::size_t Symbol::hash(const Symbol &sym) {
-  return Value::hash(sym.value());
-}
 bool Symbol::operator==(const Symbol &sym) const {
   return Key::equals(key_, sym.key_);
 }
