@@ -253,13 +253,13 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
       dom.insert(Symbol::get_symbol());
     }
     return dom;
+  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
+    assert(is_register(*i) && "invalid register lookup");
+    return map_.lookup(Symbol::get_register(*i));
+  } else if (auto a = llvm::dyn_cast<llvm::Argument>(&key)) {
+    return map_.lookup(Symbol::get_register(*a));
   } else {
-    if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
-      assert(is_register(*i) && "invalid register lookup");
-    } else {
-      assert(llvm::isa<llvm::Argument>(key) && "invalid value lookup");
-    }
-    return map_.lookup(Symbol::get_register(key));
+    llvm_unreachable("invalid value lookup");
   }
 }
 void Interpreter::insert(const Symbol &key, const Domain &val) {
