@@ -23,6 +23,10 @@ class Params : private std::unordered_set<const llvm::Value *> {
   using Super = std::unordered_set<const llvm::Value *>;
   class ParamIterator : private Super::const_iterator {
     using Iter = Super::const_iterator;
+
+   public:
+    using Iter::iterator_category, Iter::value_type, Iter::difference_type,
+        Iter::pointer, Iter::reference;
   };
 
  public:
