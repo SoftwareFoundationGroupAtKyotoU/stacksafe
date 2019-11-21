@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
+#include <functional>
 #include "key.hpp"
 
 namespace llvm {
@@ -34,5 +35,12 @@ class Symbol {
 llvm::hash_code hash_value(const Symbol &sym);
 
 }  // namespace stacksafe
+
+namespace std {
+template <>
+struct hash<stacksafe::Symbol> {
+  size_t operator()(const stacksafe::Symbol &sym) const;
+};
+}  // namespace std
 
 #endif  // INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
