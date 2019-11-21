@@ -6,7 +6,7 @@
 namespace stacksafe {
 
 Value::Value(const llvm::Value &val) : key_{val} {}
-Value::Value(const void *sym, bool is_arg) : key_{sym, !is_arg} {}
+Value::Value(const void *sym, bool is_local) : key_{sym, is_local} {}
 const llvm::Value *Value::value() const {
   return key_.value();
 }
@@ -23,10 +23,10 @@ Value Value::get_symbol() {
   return Value{nullptr, false};
 }
 Value Value::get_symbol(const llvm::AllocaInst &v) {
-  return Value{&v, false};
+  return Value{&v, true};
 }
 Value Value::get_symbol(const llvm::Argument &v) {
-  return Value{&v, true};
+  return Value{&v, false};
 }
 Value Value::get_register(const llvm::Argument &v) {
   return Value{v};

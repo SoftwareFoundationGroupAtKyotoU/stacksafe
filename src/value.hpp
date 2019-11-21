@@ -15,7 +15,7 @@ namespace stacksafe {
 class Value {
   Base key_;
   explicit Value(const llvm::Value &val);
-  Value(const void *sym, bool is_arg);
+  Value(const void *sym, bool is_local);
 
  public:
   const llvm::Value *value() const;
