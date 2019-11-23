@@ -19,7 +19,7 @@ class Abstract {
   const Log log_;
   Error error_;
   MapPool pool_;
-  std::unordered_map<const llvm::BasicBlock *, Env> blocks_;
+  std::unordered_map<const llvm::BasicBlock *, EnvOld> blocks_;
   std::string name_;
   double elapsed_;
 
@@ -30,7 +30,7 @@ class Abstract {
 
  private:
   void interpret(const llvm::BasicBlock &b);
-  Env &get(const llvm::BasicBlock &b);
+  EnvOld &get(const llvm::BasicBlock &b);
 };
 
 }  // namespace stacksafe

@@ -26,18 +26,18 @@ class MapPool : private std::vector<MapPtr> {
   MapRef add(const Map& map);
 };
 
-class Env : private std::vector<MapRef> {
+class EnvOld : private std::vector<MapRef> {
   using Super = std::vector<MapRef>;
 
  public:
-  Env() = default;
-  Env(MapRef ref);
+  EnvOld() = default;
+  EnvOld(MapRef ref);
   Map concat() const;
-  void merge(const Env& env);
+  void merge(const EnvOld& env);
   void insert(MapRef ref);
   bool element(MapRef ref) const;
   bool element(const Value& key, const Value& val) const;
-  bool includes(const Env& env) const;
+  bool includes(const EnvOld& env) const;
 };
 
 }  // namespace stacksafe

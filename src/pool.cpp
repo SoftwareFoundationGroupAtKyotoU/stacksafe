@@ -39,38 +39,38 @@ MapRef MapPool::add(const Map &map) {
   return ref;
 }
 
-Env::Env(MapRef ref) : Super{ref} {}
-Map Env::concat() const {
+EnvOld::EnvOld(MapRef ref) : Super{ref} {}
+Map EnvOld::concat() const {
   Map ret;
   for (const auto &r : *this) {
     ret.merge(r.get());
   }
   return ret;
 }
-void Env::merge(const Env &env) {
+void EnvOld::merge(const EnvOld &env) {
   auto len = size();
   Super::insert(end(), env.begin(), env.end());
   auto middle = std::next(begin(), len);
   std::inplace_merge(begin(), middle, end(), compare);
   erase(std::unique(begin(), end(), equals), end());
 }
-void Env::insert(MapRef ref) {
+void EnvOld::insert(MapRef ref) {
   const auto [lb, ub] = std::equal_range(begin(), end(), ref, compare);
   if (lb == ub) {
     Super::insert(lb, ref);
   }
 }
-bool Env::element(MapRef ref) const {
+bool EnvOld::element(MapRef ref) const {
   const auto pred = [ref](const auto &map) { return equals(map, ref); };
   return std::find_if(begin(), end(), pred) != end();
 }
-bool Env::element(const Value &key, const Value &val) const {
+bool EnvOld::element(const Value &key, const Value &val) const {
   const auto pred = [&key, &val](const auto &ref) {
     return ref.get().element(key, val);
   };
   return std::any_of(begin(), end(), pred);
 }
-bool Env::includes(const Env &env) const {
+bool EnvOld::includes(const EnvOld &env) const {
   const auto pred = [&self = *this](const auto &pair) {
     return self.element(pair.first, pair.second);
   };

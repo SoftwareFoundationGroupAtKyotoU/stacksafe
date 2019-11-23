@@ -56,7 +56,7 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
     }
   }
 }
-Env &Abstract::get(const llvm::BasicBlock &b) {
+EnvOld &Abstract::get(const llvm::BasicBlock &b) {
   auto it = blocks_.find(&b);
   assert(it != blocks_.end() && "unknown basicblock");
   return it->second;
