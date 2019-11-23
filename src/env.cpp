@@ -12,6 +12,10 @@ Domain Env::lookup(const Value& key) const {
   }
   return dom;
 }
+bool Env::contains(const Value& key, const Value& val) const {
+  const auto [lb, ub] = Super::equal_range(key);
+  return range_contains(lb, ub, val);
+}
 bool Env::range_contains(const_iterator lb, const_iterator ub,
                          const Value& val) {
   const auto pred = [&val](const auto& pair) {
