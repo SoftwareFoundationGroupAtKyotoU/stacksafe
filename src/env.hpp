@@ -38,7 +38,6 @@ class MutableEnv : private Env {
   explicit MutableEnv(const Env& env);
   explicit MutableEnv(const llvm::Function& f);
   const Env& finish(MapPool& pool);
-  void insert(const MapRef& ref);
   void insert(const Value& key, const Domain& dom);
   Domain lookup(const Value& key) const;
   const Env& env() const;

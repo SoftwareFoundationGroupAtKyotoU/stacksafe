@@ -64,13 +64,6 @@ const Env& MutableEnv::finish(MapPool& pool) {
   }
   return *this;
 }
-void MutableEnv::insert(const MapRef& ref) {
-  for (const auto& [key, val] : ref.get()) {
-    Domain dom;
-    dom.insert(val);
-    insert(key, dom);
-  }
-}
 void MutableEnv::insert(const Value& key, const Domain& dom) {
   const auto [lb, ub] = Env::equal_range(key);
   for (const auto& val : dom) {
