@@ -4,14 +4,6 @@
 
 namespace stacksafe {
 
-Domain Env::lookup(const Value& key) const {
-  Domain dom;
-  const auto [lb, ub] = Super::equal_range(key);
-  for (auto it = lb; it != ub; ++it) {
-    dom.merge(it->second.get().lookup(key));
-  }
-  return dom;
-}
 bool Env::contains(const Value& key, const Value& val) const {
   const auto [lb, ub] = Super::equal_range(key);
   return range_contains(lb, ub, val);
@@ -60,6 +52,14 @@ void MutableEnv::insert(const Value& key, const Domain& dom) {
       Env::emplace_hint(lb, key, ref_);
     }
   }
+}
+Domain MutableEnv::lookup(const Value& key) const {
+  Domain dom;
+  const auto [lb, ub] = Env::equal_range(key);
+  for (auto it = lb; it != ub; ++it) {
+    dom.merge(it->second.get().lookup(key));
+  }
+  return dom;
 }
 const Env& MutableEnv::env() const {
   return *this;
