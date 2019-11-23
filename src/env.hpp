@@ -9,6 +9,9 @@ namespace stacksafe {
 
 class Env : private std::unordered_multimap<Value, MapRef> {
   using Super = std::unordered_multimap<Value, MapRef>;
+
+ public:
+  Domain lookup(const Value& key) const;
 };
 
 }  // namespace stacksafe
