@@ -43,7 +43,8 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
   return std::any_of(lb, ub, pred);
 }
 
-MutableEnv::MutableEnv(const MapRef& ref) : ref_{ref} {}
+MutableEnv::MutableEnv(const Env& env, const MapRef& ref)
+    : Env{env}, ref_{ref} {}
 void MutableEnv::insert(const Value& key, const Domain& dom) {
   const auto [lb, ub] = Env::equal_range(key);
   for (const auto& val : dom) {

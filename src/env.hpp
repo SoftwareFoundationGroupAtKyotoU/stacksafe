@@ -29,7 +29,7 @@ class MutableEnv : private Env {
   MapRef ref_;
 
  public:
-  explicit MutableEnv(const MapRef& ref);
+  MutableEnv(const Env& env, const MapRef& ref);
   void insert(const Value& key, const Domain& dom);
   Domain lookup(const Value& key) const;
   const Env& env() const;
