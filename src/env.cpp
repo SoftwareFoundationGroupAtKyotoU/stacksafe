@@ -1,6 +1,7 @@
 #include "env.hpp"
 #include <algorithm>
 #include "domain.hpp"
+#include "pool.hpp"
 
 namespace stacksafe {
 
@@ -45,6 +46,14 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
 
 MutableEnv::MutableEnv(const Env& env, const MapRef& ref)
     : Env{env}, ref_{ref} {}
+void MutableEnv::finish(MapPool& pool) {
+  for (const auto& [key, ref] : *this) {
+    if (&ref.get() == &ref_.get()) {
+      return;
+    }
+  }
+  pool.remove(ref_);
+}
 void MutableEnv::insert(const MapRef& ref) {
   for (const auto& [key, val] : ref.get()) {
     Domain dom;

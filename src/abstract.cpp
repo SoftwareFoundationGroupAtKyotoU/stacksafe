@@ -49,6 +49,7 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   MutableEnv env{get(b), pool_.add(Map{})};
   Interpreter i{log_, error_, Map{}, env};
   i.visit(b);
+  env.finish(pool_);
   const auto &prev = env.env();
   const auto t = b.getTerminator();
   assert(t && "no terminator");
