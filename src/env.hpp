@@ -40,7 +40,6 @@ class MutableEnv : private Env {
   const Env& finish(MapPool& pool);
   void insert(const Value& key, const Domain& dom);
   Domain lookup(const Value& key) const;
-  const Env& env() const;
 };
 
 }  // namespace stacksafe

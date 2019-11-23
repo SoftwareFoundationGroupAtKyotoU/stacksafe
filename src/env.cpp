@@ -81,8 +81,5 @@ Domain MutableEnv::lookup(const Value& key) const {
   dom.merge(diff_.lookup(key));
   return dom;
 }
-const Env& MutableEnv::env() const {
-  return *this;
-}
 
 }  // namespace stacksafe
