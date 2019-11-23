@@ -3,14 +3,14 @@
 #include "env.hpp"
 #include "error.hpp"
 #include "log.hpp"
+#include "map.hpp"
 #include "params.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Error &error, const Map &map,
-                         MutableEnv &env)
-    : log_{l}, error_{error}, map_{map}, env_{env} {}
+Interpreter::Interpreter(const Log &l, Error &error, MutableEnv &env)
+    : log_{l}, error_{error}, env_{env} {}
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {

@@ -47,7 +47,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
   MutableEnv env{get(b), pool_.add(Map{})};
-  Interpreter i{log_, error_, Map{}, env};
+  Interpreter i{log_, error_, env};
   i.visit(b);
   env.finish(pool_);
   const auto &prev = env.env();

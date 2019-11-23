@@ -2,25 +2,24 @@
 #define INCLUDE_GUARD_B3D1167F_2A1F_4D42_BE6F_DF2090D8F177
 
 #include <llvm/IR/InstVisitor.h>
-#include "map.hpp"
 
 namespace stacksafe {
+class Domain;
 class Error;
 class Log;
 class MutableEnv;
 class Params;
+class Value;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Log &log_;
   Error &error_;
-  Map map_, diff_;
   MutableEnv &env_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, const Map &map,
-                       MutableEnv &env);
+  explicit Interpreter(const Log &l, Error &error, MutableEnv &env);
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
