@@ -11,9 +11,6 @@ namespace stacksafe {
 Interpreter::Interpreter(const Log &l, Error &error, const Map &map,
                          MutableEnv &env)
     : log_{l}, error_{error}, map_{map}, env_{env} {}
-const Map &Interpreter::diff() const {
-  return diff_;
-}
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {

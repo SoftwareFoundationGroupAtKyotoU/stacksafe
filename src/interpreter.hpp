@@ -21,7 +21,6 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
  public:
   explicit Interpreter(const Log &l, Error &error, const Map &map,
                        MutableEnv &env);
-  const Map &diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
