@@ -28,6 +28,14 @@ bool Env::includes(const Env& env) const {
   };
   return std::all_of(env.begin(), env.end(), pred);
 }
+void Env::merge(const Env& env) {
+  for (const auto& [key, ref] : env) {
+    const auto [lb, ub] = Super::equal_range(key);
+    if (!range_contains(lb, ub, ref)) {
+      Super::emplace_hint(lb, key, ref);
+    }
+  }
+}
 bool Env::range_contains(const_iterator lb, const_iterator ub,
                          const Value& val) {
   const auto pred = [&val](const auto& pair) {

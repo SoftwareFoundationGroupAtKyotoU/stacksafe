@@ -16,6 +16,7 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   bool contains(const Value& key, const Value& val) const;
   bool includes(const MapRef& ref) const;
   bool includes(const Env& env) const;
+  void merge(const Env& env);
   static bool range_contains(const_iterator lb, const_iterator ub,
                              const Value& val);
   static bool range_contains(const_iterator lb, const_iterator ub,
