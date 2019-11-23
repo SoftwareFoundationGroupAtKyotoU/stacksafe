@@ -52,11 +52,6 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
 }
 
 MutableEnv::MutableEnv(const MapRef& ref) : ref_{ref} {}
-void MutableEnv::insert(const Value& key, const Value& val) {
-  Domain dom;
-  dom.insert(val);
-  insert(key, dom);
-}
 void MutableEnv::insert(const Value& key, const Domain& dom) {
   const auto [lb, ub] = Env::equal_range(key);
   for (const auto& val : dom) {
@@ -65,6 +60,9 @@ void MutableEnv::insert(const Value& key, const Domain& dom) {
       Env::emplace_hint(lb, key, ref_);
     }
   }
+}
+const Env& MutableEnv::env() const {
+  return *this;
 }
 
 }  // namespace stacksafe

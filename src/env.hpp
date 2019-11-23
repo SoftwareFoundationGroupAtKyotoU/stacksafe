@@ -31,8 +31,8 @@ class MutableEnv : private Env {
 
  public:
   explicit MutableEnv(const MapRef& ref);
-  void insert(const Value& key, const Value& val);
   void insert(const Value& key, const Domain& dom);
+  const Env& env() const;
 };
 
 }  // namespace stacksafe
