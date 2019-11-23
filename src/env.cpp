@@ -51,4 +51,6 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
   return std::any_of(lb, ub, pred);
 }
 
+MutableEnv::MutableEnv(const MapRef& ref) : ref_{ref} {}
+
 }  // namespace stacksafe
