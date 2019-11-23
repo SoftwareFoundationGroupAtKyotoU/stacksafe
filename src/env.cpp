@@ -66,6 +66,7 @@ void MutableEnv::insert(const Value& key, const Domain& dom) {
   for (const auto& val : dom) {
     if (!Env::range_contains(lb, ub, val)) {
       ref_.get().insert(key, val);
+      diff_.insert(key, val);
       Env::emplace_hint(lb, key, ref_);
     }
   }
@@ -76,6 +77,7 @@ Domain MutableEnv::lookup(const Value& key) const {
   for (auto it = lb; it != ub; ++it) {
     dom.merge(it->second.get().lookup(key));
   }
+  dom.merge(diff_.lookup(key));
   return dom;
 }
 const Env& MutableEnv::env() const {
