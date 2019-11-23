@@ -18,6 +18,8 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   bool includes(const Env& env) const;
   static bool range_contains(const_iterator lb, const_iterator ub,
                              const Value& val);
+  static bool range_contains(const_iterator lb, const_iterator ub,
+                             const MapRef& ref);
 };
 
 }  // namespace stacksafe

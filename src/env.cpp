@@ -35,5 +35,12 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
   };
   return std::any_of(lb, ub, pred);
 }
+bool Env::range_contains(const_iterator lb, const_iterator ub,
+                         const MapRef& ref) {
+  const auto pred = [&ref](const auto& pair) {
+    return &pair.second.get() == &ref.get();
+  };
+  return std::any_of(lb, ub, pred);
+}
 
 }  // namespace stacksafe
