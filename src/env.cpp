@@ -46,9 +46,11 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
 
 MutableEnv::MutableEnv(const Env& env, const MapRef& ref) : Env{env} {}
 void MutableEnv::finish(MapPool& pool) {
-  auto ref = pool.add(diff_);
-  for (const auto& [key, val] : diff_) {
-    Env::emplace(key, ref);
+  if (!diff_.empty()) {
+    auto ref = pool.add(diff_);
+    for (const auto& [key, val] : diff_) {
+      Env::emplace(key, ref);
+    }
   }
 }
 void MutableEnv::insert(const MapRef& ref) {

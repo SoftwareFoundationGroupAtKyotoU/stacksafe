@@ -17,7 +17,7 @@ class Map : private std::unordered_multimap<Value, Value> {
   std::size_t hash_;
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::empty;
   Map();
   explicit Map(const llvm::Function &f);
   void insert(const Value &key, const Value &val);
