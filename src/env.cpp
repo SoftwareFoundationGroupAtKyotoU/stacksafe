@@ -22,6 +22,12 @@ bool Env::includes(const MapRef& ref) const {
   };
   return std::all_of(ref.get().begin(), ref.get().end(), pred);
 }
+bool Env::includes(const Env& env) const {
+  const auto pred = [& self = *this](const auto& pair) {
+    return self.includes(pair.second);
+  };
+  return std::all_of(env.begin(), env.end(), pred);
+}
 bool Env::range_contains(const_iterator lb, const_iterator ub,
                          const Value& val) {
   const auto pred = [&val](const auto& pair) {

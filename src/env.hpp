@@ -15,6 +15,7 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   Domain lookup(const Value& key) const;
   bool contains(const Value& key, const Value& val) const;
   bool includes(const MapRef& ref) const;
+  bool includes(const Env& env) const;
   static bool range_contains(const_iterator lb, const_iterator ub,
                              const Value& val);
 };
