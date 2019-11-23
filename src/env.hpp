@@ -5,6 +5,10 @@
 #include "map.hpp"
 #include "value.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 class MapPool;
 
@@ -32,6 +36,7 @@ class MutableEnv : private Env {
 
  public:
   explicit MutableEnv(const Env& env);
+  explicit MutableEnv(const llvm::Function& f);
   void finish(MapPool& pool);
   void insert(const MapRef& ref);
   void insert(const Value& key, const Domain& dom);

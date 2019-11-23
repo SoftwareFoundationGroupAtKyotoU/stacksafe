@@ -21,12 +21,8 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    MutableEnv env{get(entry)};
-    for (const auto &[key, val] : Map{f}) {
-      Domain dom;
-      dom.insert(val);
-      env.insert(key, dom);
-    }
+    MutableEnv env{f};
+    env.finish(pool_);
     get(entry).merge(env.env());
     interpret(entry);
   }

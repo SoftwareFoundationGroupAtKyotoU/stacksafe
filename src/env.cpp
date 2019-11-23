@@ -1,4 +1,5 @@
 #include "env.hpp"
+#include <llvm/IR/Function.h>
 #include <algorithm>
 #include "domain.hpp"
 #include "pool.hpp"
@@ -45,6 +46,15 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
 }
 
 MutableEnv::MutableEnv(const Env& env) : Env{env} {}
+MutableEnv::MutableEnv(const llvm::Function& f) {
+  const auto g = Value::get_symbol();
+  diff_.insert(g, g);
+  for (const auto& a : f.args()) {
+    const auto arg = Value::get_symbol(a);
+    diff_.insert(arg, arg);
+    diff_.insert(Value::get_register(a), arg);
+  }
+}
 void MutableEnv::finish(MapPool& pool) {
   if (!diff_.empty()) {
     auto ref = pool.add(diff_);
