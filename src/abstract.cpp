@@ -21,7 +21,7 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    MutableEnv env{get(entry), pool_.add(Map{})};
+    MutableEnv env{get(entry)};
     for (const auto &[key, val] : Map{f}) {
       Domain dom;
       dom.insert(val);
@@ -46,7 +46,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  MutableEnv env{get(b), pool_.add(Map{})};
+  MutableEnv env{get(b)};
   Interpreter i{log_, error_, env};
   i.visit(b);
   env.finish(pool_);

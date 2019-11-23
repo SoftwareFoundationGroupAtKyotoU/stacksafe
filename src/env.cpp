@@ -44,7 +44,7 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
   return std::any_of(lb, ub, pred);
 }
 
-MutableEnv::MutableEnv(const Env& env, const MapRef& ref) : Env{env} {}
+MutableEnv::MutableEnv(const Env& env) : Env{env} {}
 void MutableEnv::finish(MapPool& pool) {
   if (!diff_.empty()) {
     auto ref = pool.add(diff_);

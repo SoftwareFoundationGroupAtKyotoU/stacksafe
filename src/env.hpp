@@ -31,7 +31,7 @@ class MutableEnv : private Env {
   Map diff_;
 
  public:
-  MutableEnv(const Env& env, const MapRef& ref);
+  explicit MutableEnv(const Env& env);
   void finish(MapPool& pool);
   void insert(const MapRef& ref);
   void insert(const Value& key, const Domain& dom);
