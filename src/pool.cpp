@@ -21,6 +21,9 @@ MapPtr &MapPtr::operator=(MapPtr &&) = default;
 const Map &MapPtr::get() const {
   return *Super::get();
 }
+Map &MapPtr::get() {
+  return *Super::get();
+}
 
 MapRef MapPool::add(const Map &map) {
   MapPtr ptr{map};

@@ -17,6 +17,7 @@ class MapPtr : private std::unique_ptr<Map> {
   ~MapPtr();
   MapPtr& operator=(MapPtr&&);
   const Map& get() const;
+  Map& get();
 };
 
 class MapPool : private std::vector<MapPtr> {
