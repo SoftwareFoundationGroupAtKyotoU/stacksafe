@@ -55,13 +55,14 @@ MutableEnv::MutableEnv(const llvm::Function& f) {
     diff_.insert(Value::get_register(a), arg);
   }
 }
-void MutableEnv::finish(MapPool& pool) {
+const Env& MutableEnv::finish(MapPool& pool) {
   if (!diff_.empty()) {
     auto ref = pool.add(diff_);
     for (const auto& [key, val] : diff_) {
       Env::emplace(key, ref);
     }
   }
+  return *this;
 }
 void MutableEnv::insert(const MapRef& ref) {
   for (const auto& [key, val] : ref.get()) {

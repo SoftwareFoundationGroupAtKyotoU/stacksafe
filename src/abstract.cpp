@@ -22,8 +22,7 @@ void Abstract::run(const llvm::Function &f) {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
     MutableEnv env{f};
-    env.finish(pool_);
-    get(entry).merge(env.env());
+    get(entry).merge(env.finish(pool_));
     interpret(entry);
   }
 }
@@ -45,8 +44,7 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
   MutableEnv env{get(b)};
   Interpreter i{log_, error_, env};
   i.visit(b);
-  env.finish(pool_);
-  const auto &prev = env.env();
+  const auto &prev = env.finish(pool_);
   const auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
