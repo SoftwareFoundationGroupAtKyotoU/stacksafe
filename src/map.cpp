@@ -68,5 +68,8 @@ MapRef::MapRef(Map &map) : ptr_{&map} {}
 const Map &MapRef::get() const {
   return *ptr_;
 }
+Map &MapRef::get() {
+  return *ptr_;
+}
 
 }  // namespace stacksafe
