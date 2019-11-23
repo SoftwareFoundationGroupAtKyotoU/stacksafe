@@ -2,6 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
+#include "domain.hpp"
 #include "env.hpp"
 #include "interpreter.hpp"
 #include "map.hpp"
@@ -20,7 +21,13 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    get(entry).insert(pool_.add(Map{f}));
+    MutableEnv env{get(entry), pool_.add(Map{})};
+    for (const auto &[key, val] : Map{f}) {
+      Domain dom;
+      dom.insert(val);
+      env.insert(key, dom);
+    }
+    get(entry).merge(env.env());
     interpret(entry);
   }
 }
@@ -39,11 +46,10 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  auto prev = get(b);
-  MutableEnv env{Env{}, pool_.add(Map{})};
-  Interpreter i{log_, error_, prev.concat(), env};
+  MutableEnv env{get(b), pool_.add(Map{})};
+  Interpreter i{log_, error_, Map{}, env};
   i.visit(b);
-  prev.insert(pool_.add(i.diff()));
+  const auto &prev = env.env();
   const auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
@@ -58,7 +64,7 @@ void Abstract::interpret(const llvm::BasicBlock &b) {
     }
   }
 }
-EnvOld &Abstract::get(const llvm::BasicBlock &b) {
+Env &Abstract::get(const llvm::BasicBlock &b) {
   auto it = blocks_.find(&b);
   assert(it != blocks_.end() && "unknown basicblock");
   return it->second;
