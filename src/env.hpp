@@ -13,7 +13,8 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   using Super::const_iterator;
 
  protected:
-  using Super::begin, Super::end, Super::equal_range, Super::emplace_hint;
+  using Super::begin, Super::end, Super::equal_range, Super::emplace,
+      Super::emplace_hint;
 
  public:
   bool contains(const Value& key, const Value& val) const;

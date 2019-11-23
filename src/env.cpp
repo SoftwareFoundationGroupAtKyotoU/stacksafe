@@ -53,6 +53,10 @@ void MutableEnv::finish(MapPool& pool) {
     }
   }
   pool.remove(ref_);
+  auto ref = pool.add(diff_);
+  for (const auto& [key, val] : diff_) {
+    Env::emplace(key, ref);
+  }
 }
 void MutableEnv::insert(const MapRef& ref) {
   for (const auto& [key, val] : ref.get()) {
