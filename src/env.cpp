@@ -52,5 +52,12 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
 }
 
 MutableEnv::MutableEnv(const MapRef& ref) : ref_{ref} {}
+void MutableEnv::insert(const Value& key, const Value& val) {
+  const auto [lb, ub] = Env::equal_range(key);
+  if (!Env::range_contains(lb, ub, val)) {
+    ref_.get().insert(key, val);
+    Env::emplace_hint(lb, key, ref_);
+  }
+}
 
 }  // namespace stacksafe

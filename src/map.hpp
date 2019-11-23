@@ -15,12 +15,12 @@ class Domain;
 class Map : private std::unordered_multimap<Value, Value> {
   using Super = std::unordered_multimap<Value, Value>;
   std::size_t hash_;
-  void insert(const Value &key, const Value &val);
 
  public:
   using Super::begin, Super::end;
   Map();
   explicit Map(const llvm::Function &f);
+  void insert(const Value &key, const Value &val);
   void insert(const Value &key, const Domain &val);
   Domain lookup(const Value &key) const;
   bool element(const Value &key, const Value &val) const;

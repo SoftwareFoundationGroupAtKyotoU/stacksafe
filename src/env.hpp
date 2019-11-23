@@ -11,6 +11,9 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   using Super = std::unordered_multimap<Value, MapRef>;
   using Super::const_iterator;
 
+ protected:
+  using Super::equal_range, Super::emplace_hint;
+
  public:
   Domain lookup(const Value& key) const;
   bool contains(const Value& key, const Value& val) const;
@@ -28,6 +31,7 @@ class MutableEnv : private Env {
 
  public:
   explicit MutableEnv(const MapRef& ref);
+  void insert(const Value& key, const Value& val);
 };
 
 }  // namespace stacksafe
