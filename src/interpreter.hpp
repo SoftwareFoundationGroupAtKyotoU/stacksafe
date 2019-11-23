@@ -7,6 +7,7 @@
 namespace stacksafe {
 class Error;
 class Log;
+class MutableEnv;
 class Params;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
@@ -15,9 +16,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   const Log &log_;
   Error &error_;
   Map map_, diff_;
+  MutableEnv &env_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, const Map &map);
+  explicit Interpreter(const Log &l, Error &error, const Map &map,
+                       MutableEnv &env);
   const Map &diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);

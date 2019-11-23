@@ -2,6 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
+#include "env.hpp"
 #include "interpreter.hpp"
 #include "map.hpp"
 #include "stopwatch.hpp"
@@ -39,7 +40,8 @@ void Abstract::print(llvm::raw_ostream &os) const {
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
   auto prev = get(b);
-  Interpreter i{log_, error_, prev.concat()};
+  MutableEnv env{Env{}, pool_.add(Map{})};
+  Interpreter i{log_, error_, prev.concat(), env};
   i.visit(b);
   prev.insert(pool_.add(i.diff()));
   const auto t = b.getTerminator();
