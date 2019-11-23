@@ -25,6 +25,7 @@ class MapPool : private std::vector<MapPtr> {
 
  public:
   MapRef add(const Map& map);
+  void remove(const MapRef& ref);
 };
 
 class EnvOld : private std::vector<MapRef> {

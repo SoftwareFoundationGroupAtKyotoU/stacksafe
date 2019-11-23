@@ -41,6 +41,12 @@ MapRef MapPool::add(const Map &map) {
   Super::insert(it, std::move(ptr));
   return ref;
 }
+void MapPool::remove(const MapRef &ref) {
+  const auto pred = [&ref](const auto &ptr) {
+    return &ptr.get() == &ref.get();
+  };
+  Super::erase(std::remove_if(begin(), end(), pred), end());
+}
 
 EnvOld::EnvOld(MapRef ref) : Super{ref} {}
 Map EnvOld::concat() const {
