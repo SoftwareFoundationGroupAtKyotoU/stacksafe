@@ -29,7 +29,6 @@ class Env : private std::unordered_multimap<Value, MapRef> {
 
 class MutableEnv : private Env {
   Map diff_;
-  MapRef ref_;
 
  public:
   MutableEnv(const Env& env, const MapRef& ref);
