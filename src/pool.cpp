@@ -31,14 +31,14 @@ MapRef MapPool::add(const Map &map) {
   return ref;
 }
 Map MapPool::make_map() const {
-  return Map{};
+  return Map{count_};
 }
 Env MapPool::make_env() const {
   return Env{count_};
 }
 Env MapPool::init(const llvm::Function &f) {
   Env env{count_};
-  Map map{f};
+  Map map{count_, f};
   if (!map.empty()) {
     env.insert(add(map));
   }

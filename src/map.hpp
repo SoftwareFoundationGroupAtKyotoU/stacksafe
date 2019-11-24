@@ -13,14 +13,15 @@ namespace stacksafe {
 class Domain;
 
 class Map : private std::unordered_multimap<Value, Value> {
+  friend class MapPool;
   using Super = std::unordered_multimap<Value, Value>;
   std::size_t hash_;
+  explicit Map(std::size_t count);
+  Map(std::size_t count, const llvm::Function &f);
 
  public:
   using Super::begin, Super::end, Super::empty;
   using Super::value_type;
-  Map();
-  explicit Map(const llvm::Function &f);
   void insert(const Value &key, const Value &val);
   Domain lookup(const Value &key) const;
   bool contains(const Value &key, const Value &val) const;

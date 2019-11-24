@@ -5,8 +5,8 @@
 
 namespace stacksafe {
 
-Map::Map() : hash_{0} {}
-Map::Map(const llvm::Function &f) : Map{} {
+Map::Map(std::size_t count) : hash_{0} {}
+Map::Map(std::size_t count, const llvm::Function &f) : Map{count} {
   const auto g = Value::get_symbol();
   insert(g, g);
   for (const auto &a : f.args()) {
