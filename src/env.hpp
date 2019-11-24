@@ -15,15 +15,15 @@ class MapPool;
 class Env : private std::unordered_multimap<Value, MapRef> {
   using Super = std::unordered_multimap<Value, MapRef>;
 
- protected:
-  using Super::begin, Super::end, Super::equal_range, Super::emplace_hint;
-
  public:
   using Super::const_iterator, Super::value_type;
   bool contains(const Value& key, const Value& val) const;
   bool includes(const Env& env) const;
   void merge(const Env& env);
   void insert(const MapRef& ref);
+
+ protected:
+  using Super::equal_range;
 
  private:
   void insert(const Value& key, const MapRef& ref);
