@@ -3,9 +3,10 @@
 
 #include <memory>
 #include <vector>
-#include "map.hpp"
 
 namespace stacksafe {
+class Map;
+class MapRef;
 
 class MapPtr : private std::unique_ptr<Map> {
   friend class MapPool;
