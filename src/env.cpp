@@ -22,10 +22,6 @@ bool range_contains(Env::const_iterator lb, Env::const_iterator ub,
 }
 }  // namespace
 
-bool Env::contains(const Value& key, const Value& val) const {
-  const auto [lb, ub] = Super::equal_range(key);
-  return range_contains(lb, ub, val);
-}
 bool Env::includes(const Env& env) const {
   const auto pred = [& self = *this](const value_type& pair) {
     return self.includes(pair.second);
@@ -69,6 +65,10 @@ bool Env::includes(const MapRef& ref) const {
     return self.contains(pair.first, pair.second);
   };
   return std::all_of(ref.get().begin(), ref.get().end(), pred);
+}
+bool Env::contains(const Value& key, const Value& val) const {
+  const auto [lb, ub] = Super::equal_range(key);
+  return range_contains(lb, ub, val);
 }
 
 MutableEnv::MutableEnv(const Env& env) : Env{env} {}
