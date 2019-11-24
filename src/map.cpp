@@ -45,6 +45,9 @@ bool Map::equals(const Map &map) const {
   const Super &rhs = map;
   return lhs == rhs;
 }
+const BloomFilter &Map::filter() const {
+  return filter_;
+}
 Domain Map::keys(const Map &map) {
   Domain dom;
   for (const auto &pair : map) {

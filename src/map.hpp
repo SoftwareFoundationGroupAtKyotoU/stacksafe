@@ -28,6 +28,7 @@ class Map : private std::unordered_multimap<Value, Value> {
   Domain lookup(const Value &key) const;
   bool contains(const Value &key, const Value &val) const;
   bool equals(const Map &map) const;
+  const BloomFilter &filter() const;
   static Domain keys(const Map &map);
   friend llvm::hash_code hash_value(const Map &map);
 };
