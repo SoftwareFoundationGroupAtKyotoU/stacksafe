@@ -2,7 +2,6 @@
 #include <llvm/IR/Function.h>
 #include <algorithm>
 #include "domain.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -26,11 +25,6 @@ void Map::insert(const Value &key, const Value &val) {
   Super::emplace_hint(lb, key, val);
   hash_ ^= llvm::hash_combine(key, val);
 }
-void Map::insert(const Value &key, const Domain &val) {
-  for (const auto &sym : val) {
-    insert(key, sym);
-  }
-}
 Domain Map::lookup(const Value &key) const {
   Domain dom;
   auto [lb, ub] = Super::equal_range(key);
@@ -39,21 +33,14 @@ Domain Map::lookup(const Value &key) const {
   }
   return dom;
 }
-bool Map::element(const Value &key, const Value &val) const {
+bool Map::contains(const Value &key, const Value &val) const {
   const auto pred = [&val](const auto &pair) { return pair.second == val; };
   auto [lb, ub] = Super::equal_range(key);
   return std::any_of(lb, ub, pred);
 }
-bool Map::includes(const Map &map) const {
-  auto pred = [&self = *this](const auto &pair) {
-    return self.find(pair.first) != self.end();
-  };
-  return std::all_of(map.begin(), map.end(), pred);
-}
-void Map::merge(const Map &map) {
-  Super::insert(map.begin(), map.end());
-}
-bool Map::equals(const Map &lhs, const Map &rhs) {
+bool Map::equals(const Map &map) const {
+  const Super &lhs = *this;
+  const Super &rhs = map;
   return lhs == rhs;
 }
 Domain Map::keys(const Map &map) {

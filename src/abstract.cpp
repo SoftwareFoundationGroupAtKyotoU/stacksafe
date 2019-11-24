@@ -2,6 +2,8 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
+#include "domain.hpp"
+#include "env.hpp"
 #include "interpreter.hpp"
 #include "map.hpp"
 #include "stopwatch.hpp"
@@ -19,7 +21,8 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    get(entry).insert(pool_.add(Map{f}));
+    MutableEnv env{f};
+    get(entry).merge(env.finish(pool_));
     interpret(entry);
   }
 }
@@ -38,10 +41,10 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  auto prev = get(b);
-  Interpreter i{log_, error_, prev.concat()};
+  MutableEnv env{get(b)};
+  Interpreter i{log_, error_, env};
   i.visit(b);
-  prev.insert(pool_.add(i.diff()));
+  const auto &prev = env.finish(pool_);
   const auto t = b.getTerminator();
   assert(t && "no terminator");
   for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include "env.hpp"
 #include "error.hpp"
 #include "log.hpp"
 #include "pool.hpp"

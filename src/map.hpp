@@ -15,18 +15,16 @@ class Domain;
 class Map : private std::unordered_multimap<Value, Value> {
   using Super = std::unordered_multimap<Value, Value>;
   std::size_t hash_;
-  void insert(const Value &key, const Value &val);
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::empty;
+  using Super::value_type;
   Map();
   explicit Map(const llvm::Function &f);
-  void insert(const Value &key, const Domain &val);
+  void insert(const Value &key, const Value &val);
   Domain lookup(const Value &key) const;
-  bool element(const Value &key, const Value &val) const;
-  bool includes(const Map &map) const;
-  void merge(const Map &map);
-  static bool equals(const Map &lhs, const Map &rhs);
+  bool contains(const Value &key, const Value &val) const;
+  bool equals(const Map &map) const;
   static Domain keys(const Map &map);
   friend llvm::hash_code hash_value(const Map &map);
 };
