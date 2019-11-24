@@ -32,7 +32,7 @@ void Env::insert(Map& map, const Value& key, const Domain& dom) {
 }
 Domain Env::lookup(const Value& key) const {
   Domain dom;
-  const auto [lb, ub] = Env::equal_range(key);
+  const auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {
     dom.merge(it->second.get().lookup(key));
   }
