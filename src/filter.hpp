@@ -24,6 +24,7 @@ class BloomFilter {
 
  public:
   explicit BloomFilter(std::size_t count);
+  void add(std::size_t hash);
 
  private:
   void set(std::size_t once, std::size_t twice, std::size_t nth);
