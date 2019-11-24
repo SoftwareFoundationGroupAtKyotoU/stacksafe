@@ -24,7 +24,7 @@ class Map : private std::unordered_multimap<Value, Value> {
   void insert(const Value &key, const Value &val);
   Domain lookup(const Value &key) const;
   bool contains(const Value &key, const Value &val) const;
-  static bool equals(const Map &lhs, const Map &rhs);
+  bool equals(const Map &map) const;
   static Domain keys(const Map &map);
   friend llvm::hash_code hash_value(const Map &map);
 };

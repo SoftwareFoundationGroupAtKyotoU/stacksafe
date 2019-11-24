@@ -39,7 +39,9 @@ bool Map::contains(const Value &key, const Value &val) const {
   auto [lb, ub] = Super::equal_range(key);
   return std::any_of(lb, ub, pred);
 }
-bool Map::equals(const Map &lhs, const Map &rhs) {
+bool Map::equals(const Map &map) const {
+  const Super &lhs = *this;
+  const Super &rhs = map;
   return lhs == rhs;
 }
 Domain Map::keys(const Map &map) {

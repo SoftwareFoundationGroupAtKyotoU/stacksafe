@@ -20,7 +20,7 @@ MapRef MapPool::add(const Map &map) {
   MapPtr ptr{map};
   const auto [lb, ub] = Super::equal_range(ptr);
   for (auto it = lb; it != ub; ++it) {
-    if (Map::equals(it->get(), map)) {
+    if (it->get().equals(map)) {
       return MapRef{it->get()};
     }
   }
