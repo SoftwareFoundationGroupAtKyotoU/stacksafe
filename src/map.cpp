@@ -26,11 +26,6 @@ void Map::insert(const Value &key, const Value &val) {
   Super::emplace_hint(lb, key, val);
   hash_ ^= llvm::hash_combine(key, val);
 }
-void Map::insert(const Value &key, const Domain &val) {
-  for (const auto &sym : val) {
-    insert(key, sym);
-  }
-}
 Domain Map::lookup(const Value &key) const {
   Domain dom;
   auto [lb, ub] = Super::equal_range(key);
