@@ -9,7 +9,8 @@ bool Env::includes(const Env& env) const {
   const auto pred = [& self = *this](const value_type& pair) {
     return self.includes(pair.second);
   };
-  return std::all_of(env.begin(), env.end(), pred);
+  return (filter_.includes(env.filter_) &&
+          std::all_of(env.begin(), env.end(), pred));
 }
 void Env::merge(const Env& env) {
   for (const auto& [key, ref] : env) {
