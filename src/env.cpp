@@ -23,6 +23,7 @@ void Env::insert(const MapRef& ref) {
   for (const auto& key : Map::keys(ref.get())) {
     insert(key, ref);
   }
+  filter_.add(ref.get());
 }
 Domain Env::lookup(const Value& key) const {
   Domain dom;
