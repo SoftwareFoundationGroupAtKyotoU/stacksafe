@@ -23,7 +23,7 @@ class Map : private std::unordered_multimap<Value, Value> {
   explicit Map(const llvm::Function &f);
   void insert(const Value &key, const Value &val);
   Domain lookup(const Value &key) const;
-  bool element(const Value &key, const Value &val) const;
+  bool contains(const Value &key, const Value &val) const;
   bool includes(const Map &map) const;
   void merge(const Map &map);
   static bool equals(const Map &lhs, const Map &rhs);

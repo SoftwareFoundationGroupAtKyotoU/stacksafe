@@ -56,7 +56,7 @@ bool Env::contains(const Value& key, const Value& val) const {
 bool Env::range_contains(const_iterator lb, const_iterator ub,
                          const Value& val) {
   const auto pred = [&val](const value_type& pair) {
-    return pair.second.get().element(pair.first, val);
+    return pair.second.get().contains(pair.first, val);
   };
   return std::any_of(lb, ub, pred);
 }
