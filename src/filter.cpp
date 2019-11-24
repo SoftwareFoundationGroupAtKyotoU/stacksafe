@@ -31,6 +31,11 @@ bool BloomFilter::includes(const BloomFilter& filter) const {
   }
   return true;
 }
+void BloomFilter::merge(const BloomFilter& filter) {
+  for (std::size_t i = 0; i < buf_.size(); ++i) {
+    buf_[i] |= filter.buf_[i];
+  }
+}
 void BloomFilter::set(std::size_t once, std::size_t twice, std::size_t nth) {
   const auto index = once + twice * nth;
   const auto i = (index / width) % buf_.size();

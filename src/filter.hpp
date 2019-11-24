@@ -27,6 +27,7 @@ class BloomFilter {
   void add(std::size_t hash);
   bool check(std::size_t hash) const;
   bool includes(const BloomFilter& filter) const;
+  void merge(const BloomFilter& filter);
 
  private:
   void set(std::size_t once, std::size_t twice, std::size_t nth);
