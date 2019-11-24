@@ -39,15 +39,6 @@ bool Map::contains(const Value &key, const Value &val) const {
   auto [lb, ub] = Super::equal_range(key);
   return std::any_of(lb, ub, pred);
 }
-bool Map::includes(const Map &map) const {
-  auto pred = [&self = *this](const auto &pair) {
-    return self.find(pair.first) != self.end();
-  };
-  return std::all_of(map.begin(), map.end(), pred);
-}
-void Map::merge(const Map &map) {
-  Super::insert(map.begin(), map.end());
-}
 bool Map::equals(const Map &lhs, const Map &rhs) {
   return lhs == rhs;
 }
