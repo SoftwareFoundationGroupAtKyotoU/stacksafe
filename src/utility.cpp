@@ -64,6 +64,9 @@ int get_operand(const llvm::Value* v) {
   }
   return -4;
 }
+void stderr(const std::string& str) {
+  (llvm::errs() << str << "\n").flush();
+}
 std::string to_str(int num) {
   switch (num) {
     case -1:
