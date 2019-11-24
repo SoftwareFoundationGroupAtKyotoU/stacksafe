@@ -20,9 +20,9 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   bool contains(const Value& key, const Value& val) const;
   bool includes(const Env& env) const;
   void merge(const Env& env);
-  void insert(const MapRef& ref);
 
  protected:
+  void insert(const MapRef& ref);
   void insert(Map& map, const Value& key, const Domain& dom);
   Domain lookup(const Value& key) const;
 
