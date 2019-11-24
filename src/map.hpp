@@ -38,7 +38,6 @@ class MapRef {
  public:
   explicit MapRef(Map &map);
   const Map &get() const;
-  Map &get();
 };
 
 }  // namespace stacksafe
