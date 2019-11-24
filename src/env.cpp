@@ -22,11 +22,6 @@ bool range_contains(Env::const_iterator lb, Env::const_iterator ub,
 }
 }  // namespace
 
-void Env::insert(const MapRef& ref) {
-  for (const auto& [key, val] : ref.get()) {
-    Super::emplace(key, ref);
-  }
-}
 bool Env::contains(const Value& key, const Value& val) const {
   const auto [lb, ub] = Super::equal_range(key);
   return range_contains(lb, ub, val);
@@ -45,10 +40,18 @@ bool Env::includes(const Env& env) const {
 }
 void Env::merge(const Env& env) {
   for (const auto& [key, ref] : env) {
-    const auto [lb, ub] = Super::equal_range(key);
-    if (!range_contains(lb, ub, ref)) {
-      Super::emplace_hint(lb, key, ref);
-    }
+    insert(key, ref);
+  }
+}
+void Env::insert(const MapRef& ref) {
+  for (const auto& key : Map::keys(ref.get())) {
+    insert(key, ref);
+  }
+}
+void Env::insert(const Value& key, const MapRef& ref) {
+  const auto [lb, ub] = Super::equal_range(key);
+  if (!range_contains(lb, ub, ref)) {
+    Super::emplace_hint(lb, key, ref);
   }
 }
 
