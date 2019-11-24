@@ -9,7 +9,6 @@ namespace stacksafe {
 MapPtr::MapPtr(const Map &map) : Super{std::make_unique<Map>(map)} {}
 MapPtr::MapPtr(MapPtr &&) = default;
 MapPtr::~MapPtr() = default;
-MapPtr &MapPtr::operator=(MapPtr &&) = default;
 const Map &MapPtr::get() const {
   return *Super::get();
 }
