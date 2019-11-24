@@ -2,7 +2,8 @@
 #define INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
 
 #include <memory>
-#include <vector>
+#include <unordered_set>
+#include "hash.hpp"
 
 namespace stacksafe {
 class Map;
@@ -22,8 +23,8 @@ class MapPtr : private std::unique_ptr<Map> {
 };
 bool operator==(const MapPtr& lhs, const MapPtr& rhs);
 
-class MapPool : private std::vector<MapPtr> {
-  using Super = std::vector<MapPtr>;
+class MapPool : private std::unordered_multiset<MapPtr> {
+  using Super = std::unordered_multiset<MapPtr>;
 
  public:
   MapRef add(const Map& map);
