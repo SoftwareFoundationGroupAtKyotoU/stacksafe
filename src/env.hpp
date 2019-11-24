@@ -14,21 +14,17 @@ class MapPool;
 
 class Env : private std::unordered_multimap<Value, MapRef> {
   using Super = std::unordered_multimap<Value, MapRef>;
-  using Super::const_iterator;
 
  protected:
   using Super::begin, Super::end, Super::equal_range, Super::emplace_hint;
 
  public:
+  using Super::const_iterator, Super::value_type;
   void insert(const MapRef& ref);
   bool contains(const Value& key, const Value& val) const;
   bool includes(const MapRef& ref) const;
   bool includes(const Env& env) const;
   void merge(const Env& env);
-  static bool range_contains(const_iterator lb, const_iterator ub,
-                             const Value& val);
-  static bool range_contains(const_iterator lb, const_iterator ub,
-                             const MapRef& ref);
 };
 
 class MutableEnv : private Env {

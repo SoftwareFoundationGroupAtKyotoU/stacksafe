@@ -5,6 +5,22 @@
 #include "pool.hpp"
 
 namespace stacksafe {
+namespace {
+bool range_contains(Env::const_iterator lb, Env::const_iterator ub,
+                    const Value& val) {
+  const auto pred = [&val](const Env::value_type& pair) {
+    return pair.second.get().element(pair.first, val);
+  };
+  return std::any_of(lb, ub, pred);
+}
+bool range_contains(Env::const_iterator lb, Env::const_iterator ub,
+                    const MapRef& ref) {
+  const auto pred = [&ref](const Env::value_type& pair) {
+    return &pair.second.get() == &ref.get();
+  };
+  return std::any_of(lb, ub, pred);
+}
+}  // namespace
 
 void Env::insert(const MapRef& ref) {
   for (const auto& [key, val] : ref.get()) {
@@ -35,20 +51,6 @@ void Env::merge(const Env& env) {
     }
   }
 }
-bool Env::range_contains(const_iterator lb, const_iterator ub,
-                         const Value& val) {
-  const auto pred = [&val](const auto& pair) {
-    return pair.second.get().element(pair.first, val);
-  };
-  return std::any_of(lb, ub, pred);
-}
-bool Env::range_contains(const_iterator lb, const_iterator ub,
-                         const MapRef& ref) {
-  const auto pred = [&ref](const auto& pair) {
-    return &pair.second.get() == &ref.get();
-  };
-  return std::any_of(lb, ub, pred);
-}
 
 MutableEnv::MutableEnv(const Env& env) : Env{env} {}
 MutableEnv::MutableEnv(const llvm::Function& f) {
@@ -69,7 +71,7 @@ const Env& MutableEnv::finish(MapPool& pool) {
 void MutableEnv::insert(const Value& key, const Domain& dom) {
   const auto [lb, ub] = Env::equal_range(key);
   for (const auto& val : dom) {
-    if (!Env::range_contains(lb, ub, val)) {
+    if (!range_contains(lb, ub, val)) {
       diff_.insert(key, val);
     }
   }
