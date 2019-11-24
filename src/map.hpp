@@ -33,10 +33,10 @@ class Map : private std::unordered_multimap<Value, Value> {
 };
 
 class MapRef {
-  Map *ptr_;
+  const Map *ptr_;
 
  public:
-  explicit MapRef(Map &map);
+  explicit MapRef(const Map &map);
   const Map &get() const;
 };
 
