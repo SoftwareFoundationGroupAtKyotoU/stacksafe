@@ -42,7 +42,7 @@ class MutableEnv : private Env {
   Map diff_;
 
  public:
-  explicit MutableEnv(const Env& env);
+  MutableEnv(const Env& env, const MapPool& pool);
   const Env& finish(MapPool& pool);
   void insert(const Value& key, const Domain& dom);
   Domain lookup(const Value& key) const;

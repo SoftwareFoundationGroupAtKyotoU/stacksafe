@@ -72,7 +72,8 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
   return std::any_of(lb, ub, pred);
 }
 
-MutableEnv::MutableEnv(const Env& env) : Env{env} {}
+MutableEnv::MutableEnv(const Env& env, const MapPool& pool)
+    : Env{env}, diff_{pool.make_map()} {}
 const Env& MutableEnv::finish(MapPool& pool) {
   if (!diff_.empty()) {
     Env::insert(pool.add(diff_));
