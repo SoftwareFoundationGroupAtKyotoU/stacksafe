@@ -21,6 +21,16 @@ bool BloomFilter::check(std::size_t hash) const {
   }
   return true;
 }
+bool BloomFilter::includes(const BloomFilter& filter) const {
+  for (std::size_t i = 0; i < buf_.size(); ++i) {
+    const auto& lhs = buf_[i];
+    const auto& rhs = filter.buf_[i];
+    if ((~lhs & rhs).any()) {
+      return false;
+    }
+  }
+  return true;
+}
 void BloomFilter::set(std::size_t once, std::size_t twice, std::size_t nth) {
   const auto index = once + twice * nth;
   const auto i = (index / width) % buf_.size();
