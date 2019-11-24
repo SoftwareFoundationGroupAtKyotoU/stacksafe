@@ -27,7 +27,7 @@ bool Env::contains(const Value& key, const Value& val) const {
   return range_contains(lb, ub, val);
 }
 bool Env::includes(const Env& env) const {
-  const auto pred = [& self = *this](const auto& pair) {
+  const auto pred = [& self = *this](const value_type& pair) {
     return self.includes(pair.second);
   };
   return std::all_of(env.begin(), env.end(), pred);
@@ -49,7 +49,7 @@ void Env::insert(const Value& key, const MapRef& ref) {
   }
 }
 bool Env::includes(const MapRef& ref) const {
-  const auto pred = [& self = *this](const auto& pair) {
+  const auto pred = [& self = *this](const Map::value_type& pair) {
     return self.contains(pair.first, pair.second);
   };
   return std::all_of(ref.get().begin(), ref.get().end(), pred);

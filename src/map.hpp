@@ -18,6 +18,7 @@ class Map : private std::unordered_multimap<Value, Value> {
 
  public:
   using Super::begin, Super::end, Super::empty;
+  using Super::value_type;
   Map();
   explicit Map(const llvm::Function &f);
   void insert(const Value &key, const Value &val);
