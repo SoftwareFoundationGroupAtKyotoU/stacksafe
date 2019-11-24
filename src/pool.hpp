@@ -5,6 +5,10 @@
 #include <unordered_set>
 #include "hash.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 class Env;
 class Map;
@@ -30,6 +34,7 @@ class MapPool : private std::unordered_multiset<MapPtr> {
   explicit MapPool(std::size_t count);
   MapRef add(const Map& map);
   Env make_env() const;
+  Env init(const llvm::Function& f);
 };
 
 }  // namespace stacksafe

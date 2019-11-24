@@ -30,8 +30,7 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    MutableEnv env{f};
-    get(entry).merge(env.finish(pool_));
+    get(entry).merge(pool_.init(f));
     interpret(entry);
   }
 }

@@ -33,5 +33,13 @@ MapRef MapPool::add(const Map &map) {
 Env MapPool::make_env() const {
   return Env{};
 }
+Env MapPool::init(const llvm::Function &f) {
+  Env env;
+  Map map{f};
+  if (map.empty()) {
+    env.insert(add(map));
+  }
+  return env;
+}
 
 }  // namespace stacksafe
