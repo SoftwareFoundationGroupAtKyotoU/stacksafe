@@ -23,8 +23,8 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   void insert(const MapRef& ref);
 
  protected:
-  using Super::equal_range;
   void insert(Map& map, const Value& key, const Domain& dom);
+  Domain lookup(const Value& key) const;
 
  private:
   void insert(const Value& key, const MapRef& ref);

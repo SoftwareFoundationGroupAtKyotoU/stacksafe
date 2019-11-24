@@ -50,6 +50,14 @@ void Env::insert(Map& map, const Value& key, const Domain& dom) {
     }
   }
 }
+Domain Env::lookup(const Value& key) const {
+  Domain dom;
+  const auto [lb, ub] = Env::equal_range(key);
+  for (auto it = lb; it != ub; ++it) {
+    dom.merge(it->second.get().lookup(key));
+  }
+  return dom;
+}
 void Env::insert(const Value& key, const MapRef& ref) {
   const auto [lb, ub] = Super::equal_range(key);
   if (!range_contains(lb, ub, ref)) {
@@ -83,11 +91,7 @@ void MutableEnv::insert(const Value& key, const Domain& dom) {
   Env::insert(diff_, key, dom);
 }
 Domain MutableEnv::lookup(const Value& key) const {
-  Domain dom;
-  const auto [lb, ub] = Env::equal_range(key);
-  for (auto it = lb; it != ub; ++it) {
-    dom.merge(it->second.get().lookup(key));
-  }
+  Domain dom = Env::lookup(key);
   dom.merge(diff_.lookup(key));
   return dom;
 }
