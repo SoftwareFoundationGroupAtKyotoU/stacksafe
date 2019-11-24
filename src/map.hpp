@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
 #include <unordered_map>
+#include "filter.hpp"
 #include "hash.hpp"
 #include "value.hpp"
 
@@ -15,6 +16,7 @@ class Domain;
 class Map : private std::unordered_multimap<Value, Value> {
   friend class MapPool;
   using Super = std::unordered_multimap<Value, Value>;
+  BloomFilter filter_;
   std::size_t hash_;
   explicit Map(std::size_t count);
   Map(std::size_t count, const llvm::Function &f);
