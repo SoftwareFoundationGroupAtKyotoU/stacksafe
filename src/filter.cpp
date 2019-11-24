@@ -15,7 +15,7 @@ void BloomFilter::add(std::size_t hash) {
 bool BloomFilter::check(std::size_t hash) const {
   std::size_t twice = llvm::hash_value(hash);
   for (std::size_t i = 0; i < num_of_hash; ++i) {
-    if (!test(hash, twice, i)) {
+    if (!test(hash + twice * i)) {
       return false;
     }
   }
@@ -40,11 +40,8 @@ void BloomFilter::set(std::size_t index) {
   const auto [i, j] = calc_indices(index);
   buf_[i].set(j);
 }
-bool BloomFilter::test(std::size_t once, std::size_t twice,
-                       std::size_t nth) const {
-  const auto index = once + twice * nth;
-  const auto i = (index / width) % buf_.size();
-  const auto j = index % width;
+bool BloomFilter::test(std::size_t index) const {
+  const auto [i, j] = calc_indices(index);
   return buf_[i][j];
 }
 auto BloomFilter::calc_indices(std::size_t index) const -> Indices {

@@ -32,7 +32,7 @@ class BloomFilter {
 
  private:
   void set(std::size_t index);
-  bool test(std::size_t once, std::size_t twice, std::size_t nth) const;
+  bool test(std::size_t index) const;
   Indices calc_indices(std::size_t index) const;
 };
 
