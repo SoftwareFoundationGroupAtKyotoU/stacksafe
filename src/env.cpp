@@ -69,7 +69,6 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
 }
 
 MutableEnv::MutableEnv(const Env& env) : Env{env} {}
-MutableEnv::MutableEnv(const llvm::Function& f) : diff_{f} {}
 const Env& MutableEnv::finish(MapPool& pool) {
   if (!diff_.empty()) {
     Env::insert(pool.add(diff_));
