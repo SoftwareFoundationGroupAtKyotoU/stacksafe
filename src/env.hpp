@@ -25,8 +25,8 @@ class Env : private std::unordered_multimap<Value, MapRef> {
  protected:
   explicit Env(std::size_t count);
   void insert(const MapRef& ref);
-  void insert(Map& map, const Value& key, const Domain& dom);
   Domain lookup(const Value& key) const;
+  void update(Map& map, const Value& key, const Domain& dom) const;
 
  private:
   void insert(const Value& key, const MapRef& ref);
