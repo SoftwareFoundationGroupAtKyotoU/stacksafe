@@ -18,6 +18,7 @@ target_sources(${target} PRIVATE
   domain.cpp
   env.cpp
   error.cpp
+  filter.cpp
   hash.cpp
   interpreter.cpp
   json.cpp

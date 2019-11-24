@@ -5,7 +5,12 @@
 #include <unordered_set>
 #include "hash.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
+class Env;
 class Map;
 class MapRef;
 
@@ -23,9 +28,14 @@ bool operator==(const MapPtr& lhs, const MapPtr& rhs);
 
 class MapPool : private std::unordered_multiset<MapPtr> {
   using Super = std::unordered_multiset<MapPtr>;
+  std::size_t count_;
 
  public:
+  explicit MapPool(std::size_t count);
   MapRef add(const Map& map);
+  Map make_map() const;
+  Env make_env() const;
+  Env init(const llvm::Function& f);
 };
 
 }  // namespace stacksafe

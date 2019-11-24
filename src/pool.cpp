@@ -1,6 +1,7 @@
 #include "pool.hpp"
 #include <algorithm>
 #include <iterator>
+#include "env.hpp"
 #include "hash.hpp"
 #include "map.hpp"
 
@@ -16,6 +17,7 @@ bool operator==(const MapPtr &lhs, const MapPtr &rhs) {
   return hash_value(lhs.get()) == hash_value(rhs.get());
 }
 
+MapPool::MapPool(std::size_t count) : count_{count} {}
 MapRef MapPool::add(const Map &map) {
   MapPtr ptr{map};
   const auto [lb, ub] = Super::equal_range(ptr);
@@ -27,6 +29,20 @@ MapRef MapPool::add(const Map &map) {
   MapRef ref{ptr.get()};
   Super::emplace_hint(ub, std::move(ptr));
   return ref;
+}
+Map MapPool::make_map() const {
+  return Map{count_};
+}
+Env MapPool::make_env() const {
+  return Env{count_};
+}
+Env MapPool::init(const llvm::Function &f) {
+  Env env{count_};
+  Map map{count_, f};
+  if (!map.empty()) {
+    env.insert(add(map));
+  }
+  return env;
 }
 
 }  // namespace stacksafe

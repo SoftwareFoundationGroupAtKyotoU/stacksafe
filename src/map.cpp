@@ -5,8 +5,8 @@
 
 namespace stacksafe {
 
-Map::Map() : hash_{0} {}
-Map::Map(const llvm::Function &f) : Map{} {
+Map::Map(std::size_t count) : filter_{count}, hash_{0} {}
+Map::Map(std::size_t count, const llvm::Function &f) : Map{count} {
   const auto g = Value::get_symbol();
   insert(g, g);
   for (const auto &a : f.args()) {
@@ -23,7 +23,9 @@ void Map::insert(const Value &key, const Value &val) {
     }
   }
   Super::emplace_hint(lb, key, val);
-  hash_ ^= llvm::hash_combine(key, val);
+  const auto hash = llvm::hash_combine(key, val);
+  hash_ ^= hash;
+  filter_.add(hash);
 }
 Domain Map::lookup(const Value &key) const {
   Domain dom;
@@ -34,14 +36,20 @@ Domain Map::lookup(const Value &key) const {
   return dom;
 }
 bool Map::contains(const Value &key, const Value &val) const {
-  const auto pred = [&val](const auto &pair) { return pair.second == val; };
-  auto [lb, ub] = Super::equal_range(key);
-  return std::any_of(lb, ub, pred);
+  if (filter_.check(llvm::hash_combine(key, val))) {
+    const auto pred = [&val](const auto &pair) { return pair.second == val; };
+    auto [lb, ub] = Super::equal_range(key);
+    return std::any_of(lb, ub, pred);
+  }
+  return false;
 }
 bool Map::equals(const Map &map) const {
   const Super &lhs = *this;
   const Super &rhs = map;
   return lhs == rhs;
+}
+const BloomFilter &Map::filter() const {
+  return filter_;
 }
 Domain Map::keys(const Map &map) {
   Domain dom;

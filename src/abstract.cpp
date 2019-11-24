@@ -9,11 +9,20 @@
 #include "stopwatch.hpp"
 
 namespace stacksafe {
+namespace {
+std::size_t estimate(const llvm::Function &f) {
+  std::size_t count = 0;
+  for (const auto &b : f) {
+    count += b.size();
+  }
+  return count;
+}
+}  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
-    : log_{f}, name_{f.getName().str()}, elapsed_{0.0} {
+    : log_{f}, pool_{estimate(f)}, name_{f.getName().str()}, elapsed_{0.0} {
   for (const auto &b : f) {
-    blocks_.try_emplace(&b);
+    blocks_.try_emplace(&b, pool_.make_env());
   }
 }
 void Abstract::run(const llvm::Function &f) {
@@ -21,8 +30,7 @@ void Abstract::run(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
     const auto &entry = f.getEntryBlock();
-    MutableEnv env{f};
-    get(entry).merge(env.finish(pool_));
+    get(entry).merge(pool_.init(f));
     interpret(entry);
   }
 }
@@ -41,7 +49,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::interpret(const llvm::BasicBlock &b) {
-  MutableEnv env{get(b)};
+  MutableEnv env{get(b), pool_};
   Interpreter i{log_, error_, env};
   i.visit(b);
   const auto &prev = env.finish(pool_);
