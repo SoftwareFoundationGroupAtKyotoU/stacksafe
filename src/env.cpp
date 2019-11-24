@@ -16,6 +16,7 @@ void Env::merge(const Env& env) {
   for (const auto& [key, ref] : env) {
     insert(key, ref);
   }
+  filter_.merge(env.filter_);
 }
 Env::Env(std::size_t count) : filter_{count} {}
 void Env::insert(const MapRef& ref) {
