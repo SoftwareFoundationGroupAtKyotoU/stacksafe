@@ -7,12 +7,6 @@ namespace stacksafe {
 BloomFilter::BloomFilter(std::size_t count) : buf_{count, 0} {
   buf_.shrink_to_fit();
 }
-void BloomFilter::add(std::size_t hash) {
-  const auto twice = llvm::hash_value(hash);
-  for (std::size_t i = 0; i < num_of_hash; ++i) {
-    set(hash + twice * i);
-  }
-}
 void BloomFilter::add(const Map& map) {
   for (const auto& [key, val] : map) {
     add(llvm::hash_combine(key, val));
@@ -42,6 +36,12 @@ void BloomFilter::merge(const BloomFilter& filter) {
   assert(buf_.size() == filter.buf_.size() && "incompatible filters");
   for (std::size_t i = 0; i < buf_.size(); ++i) {
     buf_[i] |= filter.buf_[i];
+  }
+}
+void BloomFilter::add(std::size_t hash) {
+  const auto twice = llvm::hash_value(hash);
+  for (std::size_t i = 0; i < num_of_hash; ++i) {
+    set(hash + twice * i);
   }
 }
 void BloomFilter::set(std::size_t index) {

@@ -26,13 +26,13 @@ class BloomFilter {
 
  public:
   explicit BloomFilter(std::size_t count);
-  void add(std::size_t hash);
   void add(const Map& map);
   bool check(std::size_t hash) const;
   bool includes(const BloomFilter& filter) const;
   void merge(const BloomFilter& filter);
 
  private:
+  void add(std::size_t hash);
   void set(std::size_t index);
   bool test(std::size_t index) const;
   Indices calc_indices(std::size_t index) const;
