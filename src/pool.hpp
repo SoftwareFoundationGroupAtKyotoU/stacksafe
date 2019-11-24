@@ -23,8 +23,10 @@ bool operator==(const MapPtr& lhs, const MapPtr& rhs);
 
 class MapPool : private std::unordered_multiset<MapPtr> {
   using Super = std::unordered_multiset<MapPtr>;
+  std::size_t count_;
 
  public:
+  explicit MapPool(std::size_t count);
   MapRef add(const Map& map);
 };
 

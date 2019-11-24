@@ -16,6 +16,7 @@ bool operator==(const MapPtr &lhs, const MapPtr &rhs) {
   return hash_value(lhs.get()) == hash_value(rhs.get());
 }
 
+MapPool::MapPool(std::size_t count) : count_{count} {}
 MapRef MapPool::add(const Map &map) {
   MapPtr ptr{map};
   const auto [lb, ub] = Super::equal_range(ptr);
