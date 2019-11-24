@@ -22,6 +22,7 @@ bool BloomFilter::check(std::size_t hash) const {
   return true;
 }
 bool BloomFilter::includes(const BloomFilter& filter) const {
+  assert(buf_.size() == filter.buf_.size() && "incompatible filters");
   for (std::size_t i = 0; i < buf_.size(); ++i) {
     const auto& lhs = buf_[i];
     const auto& rhs = filter.buf_[i];
@@ -32,6 +33,7 @@ bool BloomFilter::includes(const BloomFilter& filter) const {
   return true;
 }
 void BloomFilter::merge(const BloomFilter& filter) {
+  assert(buf_.size() == filter.buf_.size() && "incompatible filters");
   for (std::size_t i = 0; i < buf_.size(); ++i) {
     buf_[i] |= filter.buf_[i];
   }
