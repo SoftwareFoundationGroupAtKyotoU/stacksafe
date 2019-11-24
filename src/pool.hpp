@@ -18,7 +18,6 @@ class MapPtr : private std::unique_ptr<Map> {
   MapPtr(MapPtr&&);
   ~MapPtr();
   const Map& get() const;
-  Map& get();
 };
 bool operator==(const MapPtr& lhs, const MapPtr& rhs);
 

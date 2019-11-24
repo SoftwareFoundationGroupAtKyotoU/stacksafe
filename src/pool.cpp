@@ -12,9 +12,6 @@ MapPtr::~MapPtr() = default;
 const Map &MapPtr::get() const {
   return *Super::get();
 }
-Map &MapPtr::get() {
-  return *Super::get();
-}
 bool operator==(const MapPtr &lhs, const MapPtr &rhs) {
   return hash_value(lhs.get()) == hash_value(rhs.get());
 }
