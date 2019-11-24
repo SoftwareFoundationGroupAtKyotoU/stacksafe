@@ -5,14 +5,6 @@
 #include "map.hpp"
 
 namespace stacksafe {
-namespace {
-bool equals(MapRef lhs, MapRef rhs) {
-  return &lhs.get() == &rhs.get();
-}
-bool compare(MapRef lhs, MapRef rhs) {
-  return hash_value(lhs.get()) < hash_value(rhs.get());
-}
-}  // namespace
 
 MapPtr::MapPtr(const Map &map) : Super{std::make_unique<Map>(map)} {}
 MapPtr::MapPtr(MapPtr &&) = default;
