@@ -19,6 +19,9 @@ constexpr std::size_t block_length(std::size_t num_of_hash) {
 class BloomFilter {
   using Block = std::bitset<block_length(10)>;
   std::vector<Block> buf_;
+
+ public:
+  explicit BloomFilter(std::size_t count);
 };
 
 }  // namespace stacksafe
