@@ -26,12 +26,6 @@ bool Env::contains(const Value& key, const Value& val) const {
   const auto [lb, ub] = Super::equal_range(key);
   return range_contains(lb, ub, val);
 }
-bool Env::includes(const MapRef& ref) const {
-  const auto pred = [& self = *this](const auto& pair) {
-    return self.contains(pair.first, pair.second);
-  };
-  return std::all_of(ref.get().begin(), ref.get().end(), pred);
-}
 bool Env::includes(const Env& env) const {
   const auto pred = [& self = *this](const auto& pair) {
     return self.includes(pair.second);
@@ -53,6 +47,12 @@ void Env::insert(const Value& key, const MapRef& ref) {
   if (!range_contains(lb, ub, ref)) {
     Super::emplace_hint(lb, key, ref);
   }
+}
+bool Env::includes(const MapRef& ref) const {
+  const auto pred = [& self = *this](const auto& pair) {
+    return self.contains(pair.first, pair.second);
+  };
+  return std::all_of(ref.get().begin(), ref.get().end(), pred);
 }
 
 MutableEnv::MutableEnv(const Env& env) : Env{env} {}
