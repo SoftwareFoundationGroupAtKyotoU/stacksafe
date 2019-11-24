@@ -49,5 +49,10 @@ bool BloomFilter::test(std::size_t once, std::size_t twice,
   const auto j = index % width;
   return buf_[i][j];
 }
+auto BloomFilter::calc_indices(std::size_t index) const -> Indices {
+  const auto i = (index / width) % buf_.size();
+  const auto j = index % width;
+  return {i, j};
+}
 
 }  // namespace stacksafe

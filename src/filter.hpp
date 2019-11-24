@@ -20,6 +20,7 @@ class BloomFilter {
   static constexpr auto num_of_hash = 10;
   static constexpr auto width = block_width(num_of_hash);
   using Block = std::bitset<width>;
+  using Indices = std::tuple<std::size_t, std::size_t>;
   std::vector<Block> buf_;
 
  public:
@@ -32,6 +33,7 @@ class BloomFilter {
  private:
   void set(std::size_t once, std::size_t twice, std::size_t nth);
   bool test(std::size_t once, std::size_t twice, std::size_t nth) const;
+  Indices calc_indices(std::size_t index) const;
 };
 
 }  // namespace stacksafe
