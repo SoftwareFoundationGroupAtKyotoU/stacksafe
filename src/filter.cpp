@@ -9,7 +9,7 @@ BloomFilter::BloomFilter(std::size_t count) : buf_{count, 0} {
 void BloomFilter::add(std::size_t hash) {
   const auto twice = llvm::hash_value(hash);
   for (std::size_t i = 0; i < num_of_hash; ++i) {
-    set(hash, twice, i);
+    set(hash + twice * i);
   }
 }
 bool BloomFilter::check(std::size_t hash) const {
@@ -36,10 +36,8 @@ void BloomFilter::merge(const BloomFilter& filter) {
     buf_[i] |= filter.buf_[i];
   }
 }
-void BloomFilter::set(std::size_t once, std::size_t twice, std::size_t nth) {
-  const auto index = once + twice * nth;
-  const auto i = (index / width) % buf_.size();
-  const auto j = index % width;
+void BloomFilter::set(std::size_t index) {
+  const auto [i, j] = calc_indices(index);
   buf_[i].set(j);
 }
 bool BloomFilter::test(std::size_t once, std::size_t twice,
