@@ -17,10 +17,10 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   using Super::const_iterator;
 
  protected:
-  using Super::begin, Super::end, Super::equal_range, Super::emplace,
-      Super::emplace_hint;
+  using Super::begin, Super::end, Super::equal_range, Super::emplace_hint;
 
  public:
+  void insert(const MapRef& ref);
   bool contains(const Value& key, const Value& val) const;
   bool includes(const MapRef& ref) const;
   bool includes(const Env& env) const;

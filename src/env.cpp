@@ -6,6 +6,11 @@
 
 namespace stacksafe {
 
+void Env::insert(const MapRef& ref) {
+  for (const auto& [key, val] : ref.get()) {
+    Super::emplace(key, ref);
+  }
+}
 bool Env::contains(const Value& key, const Value& val) const {
   const auto [lb, ub] = Super::equal_range(key);
   return range_contains(lb, ub, val);
@@ -57,10 +62,7 @@ MutableEnv::MutableEnv(const llvm::Function& f) {
 }
 const Env& MutableEnv::finish(MapPool& pool) {
   if (!diff_.empty()) {
-    auto ref = pool.add(diff_);
-    for (const auto& [key, val] : diff_) {
-      Env::emplace(key, ref);
-    }
+    Env::insert(pool.add(diff_));
   }
   return *this;
 }
