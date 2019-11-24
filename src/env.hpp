@@ -16,7 +16,6 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   using Super = std::unordered_multimap<Value, MapRef>;
 
  public:
-  using Super::const_iterator, Super::value_type;
   bool includes(const Env& env) const;
   void merge(const Env& env);
 
@@ -29,6 +28,10 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   void insert(const Value& key, const MapRef& ref);
   bool includes(const MapRef& ref) const;
   bool contains(const Value& key, const Value& val) const;
+  static bool range_contains(const_iterator lb, const_iterator ub,
+                             const Value& val);
+  static bool range_contains(const_iterator lb, const_iterator ub,
+                             const MapRef& ref);
 };
 
 class MutableEnv : private Env {

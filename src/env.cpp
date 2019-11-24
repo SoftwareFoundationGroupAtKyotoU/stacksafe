@@ -5,22 +5,6 @@
 #include "pool.hpp"
 
 namespace stacksafe {
-namespace {
-bool range_contains(Env::const_iterator lb, Env::const_iterator ub,
-                    const Value& val) {
-  const auto pred = [&val](const Env::value_type& pair) {
-    return pair.second.get().element(pair.first, val);
-  };
-  return std::any_of(lb, ub, pred);
-}
-bool range_contains(Env::const_iterator lb, Env::const_iterator ub,
-                    const MapRef& ref) {
-  const auto pred = [&ref](const Env::value_type& pair) {
-    return &pair.second.get() == &ref.get();
-  };
-  return std::any_of(lb, ub, pred);
-}
-}  // namespace
 
 bool Env::includes(const Env& env) const {
   const auto pred = [& self = *this](const value_type& pair) {
@@ -69,6 +53,20 @@ bool Env::includes(const MapRef& ref) const {
 bool Env::contains(const Value& key, const Value& val) const {
   const auto [lb, ub] = Super::equal_range(key);
   return range_contains(lb, ub, val);
+}
+bool Env::range_contains(const_iterator lb, const_iterator ub,
+                         const Value& val) {
+  const auto pred = [&val](const value_type& pair) {
+    return pair.second.get().element(pair.first, val);
+  };
+  return std::any_of(lb, ub, pred);
+}
+bool Env::range_contains(const_iterator lb, const_iterator ub,
+                         const MapRef& ref) {
+  const auto pred = [&ref](const value_type& pair) {
+    return &pair.second.get() == &ref.get();
+  };
+  return std::any_of(lb, ub, pred);
 }
 
 MutableEnv::MutableEnv(const Env& env) : Env{env} {}
