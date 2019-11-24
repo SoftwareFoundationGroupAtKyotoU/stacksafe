@@ -33,6 +33,7 @@ class MapPool : private std::unordered_multiset<MapPtr> {
  public:
   explicit MapPool(std::size_t count);
   MapRef add(const Map& map);
+  Map make_map() const;
   Env make_env() const;
   Env init(const llvm::Function& f);
 };

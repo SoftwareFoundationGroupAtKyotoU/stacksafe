@@ -30,6 +30,9 @@ MapRef MapPool::add(const Map &map) {
   Super::emplace_hint(ub, std::move(ptr));
   return ref;
 }
+Map MapPool::make_map() const {
+  return Map{};
+}
 Env MapPool::make_env() const {
   return Env{count_};
 }
