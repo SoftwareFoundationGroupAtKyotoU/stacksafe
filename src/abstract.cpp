@@ -22,7 +22,7 @@ std::size_t estimate(const llvm::Function &f) {
 Abstract::Abstract(const llvm::Function &f)
     : log_{f}, pool_{estimate(f)}, name_{f.getName().str()}, elapsed_{0.0} {
   for (const auto &b : f) {
-    blocks_.try_emplace(&b);
+    blocks_.try_emplace(&b, pool_.make_env());
   }
 }
 void Abstract::run(const llvm::Function &f) {

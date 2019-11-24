@@ -13,6 +13,7 @@ namespace stacksafe {
 class MapPool;
 
 class Env : private std::unordered_multimap<Value, MapRef> {
+  friend class MapPool;
   using Super = std::unordered_multimap<Value, MapRef>;
 
  public:
@@ -20,6 +21,7 @@ class Env : private std::unordered_multimap<Value, MapRef> {
   void merge(const Env& env);
 
  protected:
+  Env() = default;
   void insert(const MapRef& ref);
   void insert(Map& map, const Value& key, const Domain& dom);
   Domain lookup(const Value& key) const;

@@ -1,6 +1,7 @@
 #include "pool.hpp"
 #include <algorithm>
 #include <iterator>
+#include "env.hpp"
 #include "hash.hpp"
 #include "map.hpp"
 
@@ -28,6 +29,9 @@ MapRef MapPool::add(const Map &map) {
   MapRef ref{ptr.get()};
   Super::emplace_hint(ub, std::move(ptr));
   return ref;
+}
+Env MapPool::make_env() const {
+  return Env{};
 }
 
 }  // namespace stacksafe

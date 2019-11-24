@@ -6,6 +6,7 @@
 #include "hash.hpp"
 
 namespace stacksafe {
+class Env;
 class Map;
 class MapRef;
 
@@ -28,6 +29,7 @@ class MapPool : private std::unordered_multiset<MapPtr> {
  public:
   explicit MapPool(std::size_t count);
   MapRef add(const Map& map);
+  Env make_env() const;
 };
 
 }  // namespace stacksafe
