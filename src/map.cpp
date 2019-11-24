@@ -2,7 +2,6 @@
 #include <llvm/IR/Function.h>
 #include <algorithm>
 #include "domain.hpp"
-#include "utility.hpp"
 
 namespace stacksafe {
 
