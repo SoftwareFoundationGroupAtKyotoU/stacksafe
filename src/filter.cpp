@@ -1,5 +1,6 @@
 #include "filter.hpp"
 #include "hash.hpp"
+#include "map.hpp"
 
 namespace stacksafe {
 
@@ -10,6 +11,11 @@ void BloomFilter::add(std::size_t hash) {
   const auto twice = llvm::hash_value(hash);
   for (std::size_t i = 0; i < num_of_hash; ++i) {
     set(hash + twice * i);
+  }
+}
+void BloomFilter::add(const Map& map) {
+  for (const auto& [key, val] : map) {
+    add(llvm::hash_combine(key, val));
   }
 }
 bool BloomFilter::check(std::size_t hash) const {

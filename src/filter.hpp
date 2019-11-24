@@ -10,6 +10,7 @@
 #undef _USE_MATH_DEFINES
 
 namespace stacksafe {
+class Map;
 
 constexpr std::size_t block_width(std::size_t k) {
   const auto factor = static_cast<double>(k) / M_LN2 / CHAR_BIT;
@@ -26,6 +27,7 @@ class BloomFilter {
  public:
   explicit BloomFilter(std::size_t count);
   void add(std::size_t hash);
+  void add(const Map& map);
   bool check(std::size_t hash) const;
   bool includes(const BloomFilter& filter) const;
   void merge(const BloomFilter& filter);
