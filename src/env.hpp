@@ -24,6 +24,7 @@ class Env : private std::unordered_multimap<Value, MapRef> {
 
  protected:
   using Super::equal_range;
+  void insert(Map& map, const Value& key, const Domain& dom);
 
  private:
   void insert(const Value& key, const MapRef& ref);
