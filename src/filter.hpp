@@ -24,6 +24,9 @@ class BloomFilter {
 
  public:
   explicit BloomFilter(std::size_t count);
+
+ private:
+  void set(std::size_t once, std::size_t twice, std::size_t nth);
 };
 
 }  // namespace stacksafe
