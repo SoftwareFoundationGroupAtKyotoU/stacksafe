@@ -36,7 +36,7 @@ Env MapPool::make_env() const {
 Env MapPool::init(const llvm::Function &f) {
   Env env;
   Map map{f};
-  if (map.empty()) {
+  if (!map.empty()) {
     env.insert(add(map));
   }
   return env;
