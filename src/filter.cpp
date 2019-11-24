@@ -11,5 +11,12 @@ void BloomFilter::set(std::size_t once, std::size_t twice, std::size_t nth) {
   const auto j = index % width;
   buf_[i].set(j);
 }
+bool BloomFilter::test(std::size_t once, std::size_t twice,
+                       std::size_t nth) const {
+  const auto index = once + twice * nth;
+  const auto i = (index / width) % buf_.size();
+  const auto j = index % width;
+  return buf_[i][j];
+}
 
 }  // namespace stacksafe
