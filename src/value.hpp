@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
+#include <tuple>
 #include "base.hpp"
 
 namespace llvm {
@@ -30,6 +31,10 @@ class Value : private Base {
   bool operator==(const Value &sym) const;
   bool operator<(const Value &sym) const;
   friend llvm::hash_code hash_value(const Value &sym);
+};
+
+class Pair : private std::tuple<Value, Value> {
+  using Super = std::tuple<Value, Value>;
 };
 
 }  // namespace stacksafe
