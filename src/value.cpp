@@ -47,5 +47,15 @@ const Value &Pair::key() const {
 const Value &Pair::val() const {
   return std::get<1>(*this);
 }
+bool Pair::operator==(const Pair &pair) const {
+  const Super &lhs = *this;
+  const Super &rhs = pair;
+  return lhs == rhs;
+}
+bool Pair::operator<(const Pair &pair) const {
+  const Super &lhs = *this;
+  const Super &rhs = pair;
+  return lhs < rhs;
+}
 
 }  // namespace stacksafe

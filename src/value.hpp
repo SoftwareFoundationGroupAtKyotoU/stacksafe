@@ -40,6 +40,8 @@ class Pair : private std::tuple<Value, Value> {
   using Super::Super;
   const Value &key() const;
   const Value &val() const;
+  bool operator==(const Pair &pair) const;
+  bool operator<(const Pair &pair) const;
 };
 
 }  // namespace stacksafe
