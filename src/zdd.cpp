@@ -38,6 +38,7 @@ ZddPtr Zdd::make(Pairs pairs) {
   static const auto bot = nullptr;
   auto root = top;
   std::sort(pairs.begin(), pairs.end());
+  pairs.erase(std::unique(pairs.begin(), pairs.end()), pairs.end());
   for (const auto& pair : pairs) {
     root = make(pair, bot, root);
   }
