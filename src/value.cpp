@@ -51,6 +51,10 @@ const Value &Pair::key() const {
 const Value &Pair::val() const {
   return std::get<1>(*this);
 }
+Pair Pair::get_zero() {
+  const auto zero = Value::get_zero();
+  return Pair{zero, zero};
+}
 bool Pair::operator==(const Pair &pair) const {
   const Super &lhs = *this;
   const Super &rhs = pair;
