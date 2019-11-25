@@ -10,5 +10,11 @@ NodePtr Node::make(Pair top, NodePtr lo, NodePtr hi) {
 NodePtr Node::zero() {
   return Node::make(Pair::get_zero(), nullptr, nullptr);
 }
+NodePtr Node::get_top() {
+  return Node::make(Pair::get_negative(), nullptr, nullptr);
+}
+NodePtr Node::get_bot() {
+  return Node::make(Pair::get_zero(), nullptr, nullptr);
+}
 
 }  // namespace stacksafe
