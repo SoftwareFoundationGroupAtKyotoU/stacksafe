@@ -23,7 +23,6 @@ class Zdd {
 
  private:
   static bool equals(const ZddPtr& lhs, const ZddPtr& rhs);
-  static bool is_terminal(const ZddPtr& ptr);
   static bool is_top(const ZddPtr& ptr);
   static bool is_bot(const ZddPtr& ptr);
   static bool includes(const Ptrs& lhs, const ZddPtr& rhs);

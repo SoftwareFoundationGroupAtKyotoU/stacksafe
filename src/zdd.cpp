@@ -41,9 +41,6 @@ ZddPtr Zdd::make(const std::set<Pair>& pairs) {
   }
   return root;
 }
-bool Zdd::is_terminal(const ZddPtr& ptr) {
-  return is_top(ptr) || is_bot(ptr);
-}
 bool Zdd::is_top(const ZddPtr& ptr) {
   return ptr && ptr->label_ == Pair::get_zero();
 }
@@ -59,7 +56,7 @@ bool Zdd::equals(const ZddPtr& lhs, const ZddPtr& rhs) {
   }
 }
 bool Zdd::includes(const Ptrs& lhs, const ZddPtr& rhs) {
-  if (is_terminal(rhs)) {
+  if (is_top(rhs) || is_bot(rhs)) {
     return true;
   }
   Ptrs next;
@@ -76,7 +73,7 @@ bool Zdd::includes(const Ptrs& lhs, const ZddPtr& rhs) {
   }
 }
 bool Zdd::cut(Ptrs& out, const ZddPtr& ptr, const Pair& pair) {
-  if (is_terminal(ptr)) {
+  if (is_top(ptr) || is_bot(ptr)) {
     return false;
   }
   if (ptr->label_ < pair) {
