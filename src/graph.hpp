@@ -11,6 +11,9 @@ namespace stacksafe {
 
 class Scc : private std::vector<const llvm::BasicBlock*> {
   using Super = std::vector<const llvm::BasicBlock*>;
+
+ public:
+  using Super::emplace_back;
 };
 
 }  // namespace stacksafe

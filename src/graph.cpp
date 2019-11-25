@@ -1,5 +1,7 @@
 #include "graph.hpp"
 #include <llvm/IR/Function.h>
+#include <map>
+#include <stack>
 
 namespace stacksafe {
 namespace {
@@ -31,6 +33,74 @@ void Frame::update(int n) {
 }
 void Frame::pop() {
   on = false;
+}
+
+class Tarjan {
+  using BB = const llvm::BasicBlock*;
+  std::vector<Frame> frames_;
+  std::map<BB, Frame*> map_;
+  std::stack<BB> stack_;
+  std::vector<Scc> scc_;
+  int index_;
+
+ public:
+  Tarjan(const llvm::Function& f);
+  void visit(BB b);
+  Frame& push(BB b);
+  void update(Frame& frame, BB succ);
+  BB pop();
+  Scc collect(BB b);
+};
+Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
+  std::size_t i = 0;
+  for (const auto& b : f) {
+    map_.try_emplace(&b, &frames_[i]);
+    ++i;
+  }
+}
+void Tarjan::visit(BB b) {
+  Frame& frame = push(b);
+  const auto t = b->getTerminator();
+  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+    const auto succ = t->getSuccessor(i);
+    update(frame, succ);
+  }
+  if (frame.is_root()) {
+    scc_.emplace_back(collect(b));
+  }
+}
+Frame& Tarjan::push(BB b) {
+  Frame& frame = *map_[b];
+  frame.push(index_);
+  ++index_;
+  stack_.push(b);
+  return frame;
+}
+void Tarjan::update(Frame& frame, BB succ) {
+  const Frame& f = *map_[succ];
+  if (f.undefined()) {
+    visit(succ);
+    frame.update(f.low);
+  } else if (f.on) {
+    frame.update(f.index);
+  }
+}
+auto Tarjan::pop() -> BB {
+  const auto b = stack_.top();
+  stack_.pop();
+  map_[b]->pop();
+  return b;
+}
+Scc Tarjan::collect(BB b) {
+  Scc scc;
+  while (true) {
+    const auto p = pop();
+    scc.emplace_back(p);
+    if (b == p) {
+      break;
+    }
+  }
+  return scc;
 }
 }  // namespace
 
