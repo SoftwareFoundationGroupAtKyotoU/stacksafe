@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_6F13AE33_4EC4_4948_AE33_FF20C0E66402
 
 #include <memory>
+#include <set>
 #include "value.hpp"
 
 namespace stacksafe {
@@ -21,6 +22,10 @@ class Node {
 
 class Zdd {
   NodePtr root_;
+
+ public:
+  Zdd();
+  explicit Zdd(const std::set<Pair>& pairs);
 };
 
 }  // namespace stacksafe

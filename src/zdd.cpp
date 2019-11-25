@@ -14,4 +14,12 @@ NodePtr Node::get_bot() {
   return Node::make(Pair::get_zero(), nullptr, nullptr);
 }
 
+Zdd::Zdd() : root_{Node::get_bot()} {}
+Zdd::Zdd(const std::set<Pair>& pairs) : root_{Node::get_top()} {
+  auto bot = Node::get_bot();
+  for (const auto& pair : pairs) {
+    root_ = Node::make(pair, bot, root_);
+  }
+}
+
 }  // namespace stacksafe
