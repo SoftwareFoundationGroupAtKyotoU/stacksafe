@@ -26,16 +26,6 @@ class Node {
   static NodePtr get_bot();
 };
 
-class Zdd {
-  NodePtr root_;
-
- public:
-  Zdd();
-  explicit Zdd(const std::set<Pair>& pairs);
-  Pair label() const;
-  bool empty() const;
-};
-
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_6F13AE33_4EC4_4948_AE33_FF20C0E66402
