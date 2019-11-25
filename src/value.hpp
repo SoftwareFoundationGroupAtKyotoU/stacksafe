@@ -15,6 +15,7 @@ class hash_code;
 namespace stacksafe {
 
 class Value : private Base {
+  explicit Value(const Base &base);
   explicit Value(const llvm::Value &val);
   Value(const void *sym, bool is_local);
 
@@ -23,6 +24,7 @@ class Value : private Base {
   bool is_global() const;
   bool is_local() const;
   bool is_argument() const;
+  static Value get_zero();
   static Value get_symbol();
   static Value get_symbol(const llvm::AllocaInst &v);
   static Value get_symbol(const llvm::Argument &v);
