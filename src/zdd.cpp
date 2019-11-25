@@ -82,8 +82,9 @@ ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
   return is_bot(lhs) ? rhs : lhs;
 }
 ZddPtr Zdd::make(const std::set<Pair>& pairs) {
-  auto bot = get_bot();
-  auto root = get_top();
+  static const auto top = Zdd::make(Pair::get_zero(), nullptr, nullptr);
+  static const auto bot = nullptr;
+  auto root = top;
   for (const auto& pair : pairs) {
     root = make(pair, bot, root);
   }
@@ -91,12 +92,6 @@ ZddPtr Zdd::make(const std::set<Pair>& pairs) {
 }
 ZddPtr Zdd::make(const Pair& pair, ZddPtr lo, ZddPtr hi) {
   return std::shared_ptr<Zdd>{new Zdd{pair, std::move(lo), std::move(hi)}};
-}
-ZddPtr Zdd::get_top() {
-  return Zdd::make(Pair::get_zero(), nullptr, nullptr);
-}
-ZddPtr Zdd::get_bot() {
-  return nullptr;
 }
 
 }  // namespace stacksafe

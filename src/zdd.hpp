@@ -28,8 +28,6 @@ class Zdd {
   static ZddPtr merge(const ZddPtr& lhs, const ZddPtr& rhs);
   static ZddPtr make(const std::set<Pair>& pairs);
   static ZddPtr make(const Pair& pair, ZddPtr lo, ZddPtr hi);
-  static ZddPtr get_top();
-  static ZddPtr get_bot();
 };
 
 }  // namespace stacksafe
