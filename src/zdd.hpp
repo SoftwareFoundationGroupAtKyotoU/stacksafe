@@ -18,6 +18,7 @@ class Zdd {
   Pair label() const;
   bool is_top() const;
   bool is_bot() const;
+  static int compare(const Zdd& lhs, const Zdd& rhs);
   static bool equals(const ZddPtr& lhs, const ZddPtr& rhs);
   static ZddPtr merge(const ZddPtr& lhs, const ZddPtr& rhs);
   static ZddPtr make(const std::set<Pair>& pairs);

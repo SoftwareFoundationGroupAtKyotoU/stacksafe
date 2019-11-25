@@ -14,6 +14,15 @@ bool Zdd::is_top() const {
 bool Zdd::is_bot() const {
   return label_ == Pair::get_zero() && !lo_ && !hi_;
 }
+int Zdd::compare(const Zdd& lhs, const Zdd& rhs) {
+  if (lhs.label_ < rhs.label_) {
+    return -1;
+  } else if (rhs.label_ < lhs.label_) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 bool Zdd::equals(const ZddPtr& lhs, const ZddPtr& rhs) {
   if (lhs && rhs) {
     return lhs->label_ == rhs->label_ && equals(lhs->lo_, rhs->lo_) &&
@@ -28,18 +37,19 @@ ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
       return rhs;
     } else if (rhs->is_bot()) {
       return lhs;
-    } else if (lhs->label() < rhs->label()) {
-      return make(rhs->label(), merge(lhs, rhs->lo_), rhs->hi_);
-    } else if (rhs->label() < lhs->label()) {
-      return make(lhs->label(), merge(lhs->lo_, rhs), lhs->hi_);
-    } else {
-      return make(lhs->label(), merge(lhs->lo_, rhs->lo_),
-                  merge(lhs->hi_, rhs->hi_));
     }
-  } else {
-    assert(!lhs && !rhs);
-    return lhs;
+    switch (compare(*lhs, *rhs)) {
+      case -1:
+        return make(rhs->label(), merge(lhs, rhs->lo_), rhs->hi_);
+      case 1:
+        return make(lhs->label(), merge(lhs->lo_, rhs), lhs->hi_);
+      case 0:
+        return make(lhs->label(), merge(lhs->lo_, rhs->lo_),
+                    merge(lhs->hi_, rhs->hi_));
+    }
   }
+  assert(!lhs && !rhs);
+  return lhs;
 }
 ZddPtr Zdd::make(const std::set<Pair>& pairs) {
   auto bot = get_bot();
