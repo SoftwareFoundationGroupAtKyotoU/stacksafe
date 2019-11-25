@@ -7,5 +7,8 @@ Node::Node(Pair top, NodePtr lo, NodePtr hi)
 NodePtr Node::make(Pair top, NodePtr lo, NodePtr hi) {
   return std::unique_ptr<Node>{new Node{top, std::move(lo), std::move(hi)}};
 }
+NodePtr Node::zero() {
+  return Node::make(Pair::get_zero(), nullptr, nullptr);
+}
 
 }  // namespace stacksafe

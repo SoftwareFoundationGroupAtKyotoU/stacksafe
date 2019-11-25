@@ -15,6 +15,7 @@ class Node {
 
  public:
   static NodePtr make(Pair top, NodePtr lo, NodePtr hi);
+  static NodePtr zero();
 };
 
 class Zdd {
