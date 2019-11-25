@@ -5,6 +5,7 @@
 #include "filter.hpp"
 #include "map.hpp"
 #include "value.hpp"
+#include "zdd.hpp"
 
 namespace llvm {
 class Function;
@@ -16,6 +17,7 @@ class MapPool;
 class Env : private std::unordered_multimap<Value, MapRef> {
   friend class MapPool;
   using Super = std::unordered_multimap<Value, MapRef>;
+  ZddPtr zdd_;
   BloomFilter filter_;
 
  public:
