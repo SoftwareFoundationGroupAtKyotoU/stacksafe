@@ -3,18 +3,18 @@
 
 namespace stacksafe {
 
-Node::Node(const Pair& pair, NodePtr lo, NodePtr hi)
+Zdd::Zdd(const Pair& pair, ZddPtr lo, ZddPtr hi)
     : label_{pair}, lo_{std::move(lo)}, hi_{std::move(hi)} {}
-Pair Node::label() const {
+Pair Zdd::label() const {
   return label_;
 }
-bool Node::is_top() const {
+bool Zdd::is_top() const {
   return label_ == Pair::get_negative() && !lo_ && !hi_;
 }
-bool Node::is_bot() const {
+bool Zdd::is_bot() const {
   return label_ == Pair::get_zero() && !lo_ && !hi_;
 }
-bool Node::equals(const NodePtr& lhs, const NodePtr& rhs) {
+bool Zdd::equals(const ZddPtr& lhs, const ZddPtr& rhs) {
   if (lhs && rhs) {
     return lhs->label_ == rhs->label_ && equals(lhs->lo_, rhs->lo_) &&
            equals(lhs->hi_, rhs->hi_);
@@ -22,7 +22,7 @@ bool Node::equals(const NodePtr& lhs, const NodePtr& rhs) {
     return !lhs && !rhs;
   }
 }
-NodePtr Node::merge(const NodePtr& lhs, const NodePtr& rhs) {
+ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
   if (lhs && rhs) {
     if (lhs->is_bot()) {
       return rhs;
@@ -41,7 +41,7 @@ NodePtr Node::merge(const NodePtr& lhs, const NodePtr& rhs) {
     return lhs;
   }
 }
-NodePtr Node::make(const std::set<Pair>& pairs) {
+ZddPtr Zdd::make(const std::set<Pair>& pairs) {
   auto bot = get_bot();
   auto root = get_top();
   for (const auto& pair : pairs) {
@@ -49,14 +49,14 @@ NodePtr Node::make(const std::set<Pair>& pairs) {
   }
   return root;
 }
-NodePtr Node::make(const Pair& pair, NodePtr lo, NodePtr hi) {
-  return std::shared_ptr<Node>{new Node{pair, std::move(lo), std::move(hi)}};
+ZddPtr Zdd::make(const Pair& pair, ZddPtr lo, ZddPtr hi) {
+  return std::shared_ptr<Zdd>{new Zdd{pair, std::move(lo), std::move(hi)}};
 }
-NodePtr Node::get_top() {
-  return Node::make(Pair::get_negative(), nullptr, nullptr);
+ZddPtr Zdd::get_top() {
+  return Zdd::make(Pair::get_negative(), nullptr, nullptr);
 }
-NodePtr Node::get_bot() {
-  return Node::make(Pair::get_zero(), nullptr, nullptr);
+ZddPtr Zdd::get_bot() {
+  return Zdd::make(Pair::get_zero(), nullptr, nullptr);
 }
 
 }  // namespace stacksafe

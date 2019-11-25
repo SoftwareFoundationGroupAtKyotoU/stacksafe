@@ -6,24 +6,24 @@
 #include "value.hpp"
 
 namespace stacksafe {
-class Node;
-using NodePtr = std::shared_ptr<Node>;
+class Zdd;
+using ZddPtr = std::shared_ptr<Zdd>;
 
-class Node {
+class Zdd {
   const Pair label_;
-  NodePtr lo_, hi_;
-  Node(const Pair& pair, NodePtr lo, NodePtr hi);
+  ZddPtr lo_, hi_;
+  Zdd(const Pair& pair, ZddPtr lo, ZddPtr hi);
 
  public:
   Pair label() const;
   bool is_top() const;
   bool is_bot() const;
-  static bool equals(const NodePtr& lhs, const NodePtr& rhs);
-  static NodePtr merge(const NodePtr& lhs, const NodePtr& rhs);
-  static NodePtr make(const std::set<Pair>& pairs);
-  static NodePtr make(const Pair& pair, NodePtr lo, NodePtr hi);
-  static NodePtr get_top();
-  static NodePtr get_bot();
+  static bool equals(const ZddPtr& lhs, const ZddPtr& rhs);
+  static ZddPtr merge(const ZddPtr& lhs, const ZddPtr& rhs);
+  static ZddPtr make(const std::set<Pair>& pairs);
+  static ZddPtr make(const Pair& pair, ZddPtr lo, ZddPtr hi);
+  static ZddPtr get_top();
+  static ZddPtr get_bot();
 };
 
 }  // namespace stacksafe
