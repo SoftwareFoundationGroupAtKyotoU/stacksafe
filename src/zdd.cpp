@@ -2,16 +2,19 @@
 
 namespace stacksafe {
 
-Node::Node(Pair top, NodePtr lo, NodePtr hi)
-    : top_{top}, lo_{std::move(lo)}, hi_{std::move(hi)} {}
+Node::Node(const Pair& pair, NodePtr lo, NodePtr hi)
+    : label_{pair}, lo_{std::move(lo)}, hi_{std::move(hi)} {}
+const Pair& Node::label() const {
+  return label_;
+}
 bool Node::is_top() const {
-  return top_ == Pair::get_negative() && !lo_ && !hi_;
+  return label_ == Pair::get_negative() && !lo_ && !hi_;
 }
 bool Node::is_bot() const {
-  return top_ == Pair::get_zero() && !lo_ && !hi_;
+  return label_ == Pair::get_zero() && !lo_ && !hi_;
 }
-NodePtr Node::make(Pair top, NodePtr lo, NodePtr hi) {
-  return std::shared_ptr<Node>{new Node{top, std::move(lo), std::move(hi)}};
+NodePtr Node::make(const Pair& pair, NodePtr lo, NodePtr hi) {
+  return std::shared_ptr<Node>{new Node{pair, std::move(lo), std::move(hi)}};
 }
 NodePtr Node::get_top() {
   return Node::make(Pair::get_negative(), nullptr, nullptr);

@@ -10,14 +10,15 @@ class Node;
 using NodePtr = std::shared_ptr<Node>;
 
 class Node {
-  Pair top_;
+  const Pair label_;
   NodePtr lo_, hi_;
-  Node(Pair top, NodePtr lo, NodePtr hi);
+  Node(const Pair& pair, NodePtr lo, NodePtr hi);
 
  public:
+  const Pair& label() const;
   bool is_top() const;
   bool is_bot() const;
-  static NodePtr make(Pair top, NodePtr lo, NodePtr hi);
+  static NodePtr make(const Pair& pair, NodePtr lo, NodePtr hi);
   static NodePtr get_top();
   static NodePtr get_bot();
 };
