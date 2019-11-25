@@ -13,6 +13,14 @@ bool Node::is_top() const {
 bool Node::is_bot() const {
   return label_ == Pair::get_zero() && !lo_ && !hi_;
 }
+bool Node::equals(const NodePtr& lhs, const NodePtr& rhs) {
+  if (lhs && rhs) {
+    return lhs->label_ == rhs->label_ && equals(lhs->lo_, rhs->lo_) &&
+           equals(lhs->hi_, rhs->hi_);
+  } else {
+    return !lhs && !rhs;
+  }
+}
 NodePtr Node::make(const Pair& pair, NodePtr lo, NodePtr hi) {
   return std::shared_ptr<Node>{new Node{pair, std::move(lo), std::move(hi)}};
 }
