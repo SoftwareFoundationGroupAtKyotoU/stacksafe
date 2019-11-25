@@ -1,4 +1,5 @@
 #include "zdd.hpp"
+#include <cassert>
 
 namespace stacksafe {
 
@@ -19,6 +20,25 @@ bool Node::equals(const NodePtr& lhs, const NodePtr& rhs) {
            equals(lhs->hi_, rhs->hi_);
   } else {
     return !lhs && !rhs;
+  }
+}
+NodePtr Node::merge(const NodePtr& lhs, const NodePtr& rhs) {
+  if (lhs && rhs) {
+    if (lhs->is_bot()) {
+      return rhs;
+    } else if (rhs->is_bot()) {
+      return lhs;
+    } else if (lhs->label() < rhs->label()) {
+      return make(rhs->label(), merge(lhs, rhs->lo_), rhs->hi_);
+    } else if (rhs->label() < lhs->label()) {
+      return make(lhs->label(), merge(lhs->lo_, rhs), lhs->hi_);
+    } else {
+      return make(lhs->label(), merge(lhs->lo_, rhs->lo_),
+                  merge(lhs->hi_, rhs->hi_));
+    }
+  } else {
+    assert(!lhs && !rhs);
+    return lhs;
   }
 }
 NodePtr Node::make(const Pair& pair, NodePtr lo, NodePtr hi) {
