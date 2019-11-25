@@ -1,4 +1,5 @@
 #include "zdd.hpp"
+#include <algorithm>
 #include <cassert>
 
 namespace stacksafe {
@@ -32,10 +33,11 @@ ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
   }
   return is_bot(lhs) ? rhs : lhs;
 }
-ZddPtr Zdd::make(const Pairs& pairs) {
+ZddPtr Zdd::make(Pairs pairs) {
   static const auto top = Zdd::make(Pair::get_zero(), nullptr, nullptr);
   static const auto bot = nullptr;
   auto root = top;
+  std::sort(pairs.begin(), pairs.end());
   for (const auto& pair : pairs) {
     root = make(pair, bot, root);
   }
@@ -69,7 +71,7 @@ bool Zdd::cut(Ptrs& out, const ZddPtr& ptr, const Pair& pair) {
     return false;
   }
   if (ptr->label_ < pair) {
-    out.insert(ptr);
+    out.push_back(ptr);
     return false;
   } else {
     auto lo = cut(out, ptr->lo_, pair);

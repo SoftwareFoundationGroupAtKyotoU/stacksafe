@@ -18,10 +18,10 @@ void Env::merge(const Env& env) {
   for (const auto& [key, ref] : env) {
     insert(key, ref);
     for (const auto& [k, val] : ref.get()) {
-      pairs.emplace(k, val);
+      pairs.emplace_back(k, val);
     }
   }
-  zdd_ = Zdd::merge(zdd_, Zdd::make(pairs));
+  zdd_ = Zdd::merge(zdd_, Zdd::make(std::move(pairs)));
   filter_.merge(env.filter_);
 }
 Env::Env(std::size_t count) : filter_{count} {}
