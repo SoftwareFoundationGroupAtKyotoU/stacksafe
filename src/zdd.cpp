@@ -27,5 +27,8 @@ Zdd::Zdd(const std::set<Pair>& pairs) : root_{Node::get_top()} {
     root_ = Node::make(pair, bot, root_);
   }
 }
+bool Zdd::empty() const {
+  return root_->is_bot();
+}
 
 }  // namespace stacksafe

@@ -28,6 +28,7 @@ class Zdd {
  public:
   Zdd();
   explicit Zdd(const std::set<Pair>& pairs);
+  bool empty() const;
 };
 
 }  // namespace stacksafe
