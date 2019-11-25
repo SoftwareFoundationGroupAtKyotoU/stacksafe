@@ -13,6 +13,10 @@ class Node {
   NodePtr lo_, hi_;
 };
 
+class Zdd {
+  NodePtr root_;
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_6F13AE33_4EC4_4948_AE33_FF20C0E66402
