@@ -47,14 +47,6 @@ bool Zdd::is_top(const ZddPtr& ptr) {
 bool Zdd::is_bot(const ZddPtr& ptr) {
   return !ptr;
 }
-bool Zdd::equals(const ZddPtr& lhs, const ZddPtr& rhs) {
-  if (is_bot(lhs) || is_bot(rhs)) {
-    return is_bot(lhs) && is_bot(rhs);
-  } else {
-    return lhs->label_ == rhs->label_ && equals(lhs->lo_, rhs->lo_) &&
-           equals(lhs->hi_, rhs->hi_);
-  }
-}
 bool Zdd::includes(const Ptrs& lhs, const ZddPtr& rhs) {
   if (is_top(rhs) || is_bot(rhs)) {
     return true;
