@@ -9,8 +9,12 @@ class Node;
 using NodePtr = std::unique_ptr<Node>;
 
 class Node {
-  Pair level_;
+  Pair top_;
   NodePtr lo_, hi_;
+  Node(Pair top, NodePtr lo, NodePtr hi);
+
+ public:
+  static NodePtr make(Pair top, NodePtr lo, NodePtr hi);
 };
 
 class Zdd {
