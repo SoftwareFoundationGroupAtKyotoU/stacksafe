@@ -13,15 +13,22 @@ bool Zdd::includes(const ZddPtr& lhs, const ZddPtr& rhs) {
 }
 ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
   if (!is_bot(lhs) && !is_bot(rhs)) {
-    switch (compare(*lhs, *rhs)) {
-      case -1:
-        return make(rhs->label(), merge(lhs, rhs->lo_), rhs->hi_);
-      case 1:
-        return make(lhs->label(), merge(lhs->lo_, rhs), lhs->hi_);
-      case 0:
-        return make(lhs->label(), merge(lhs->lo_, rhs->lo_),
-                    merge(lhs->hi_, rhs->hi_));
+    Pair label = Pair::get_zero();
+    ZddPtr lo, hi;
+    if (lhs->label_ < rhs->label_) {
+      label = rhs->label_;
+      lo = merge(lhs, rhs->lo_);
+      hi = rhs->hi_;
+    } else if (rhs->label_ < lhs->label_) {
+      label = lhs->label_;
+      lo = merge(lhs->lo_, rhs);
+      hi = lhs->hi_;
+    } else if (lhs->label_ == rhs->label_) {
+      label = lhs->label_;
+      lo = merge(lhs->lo_, rhs->lo_);
+      hi = merge(lhs->hi_, rhs->hi_);
     }
+    return make(label, lo, hi);
   }
   return is_bot(lhs) ? rhs : lhs;
 }
@@ -42,15 +49,6 @@ bool Zdd::is_top(const ZddPtr& ptr) {
 }
 bool Zdd::is_bot(const ZddPtr& ptr) {
   return !ptr;
-}
-int Zdd::compare(const Zdd& lhs, const Zdd& rhs) {
-  if (lhs.label_ < rhs.label_) {
-    return -1;
-  } else if (rhs.label_ < lhs.label_) {
-    return 1;
-  } else {
-    return 0;
-  }
 }
 bool Zdd::equals(const ZddPtr& lhs, const ZddPtr& rhs) {
   if (is_bot(lhs) || is_bot(rhs)) {

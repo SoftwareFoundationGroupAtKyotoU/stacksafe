@@ -26,7 +26,6 @@ class Zdd {
   static bool is_terminal(const ZddPtr& ptr);
   static bool is_top(const ZddPtr& ptr);
   static bool is_bot(const ZddPtr& ptr);
-  static int compare(const Zdd& lhs, const Zdd& rhs);
   static bool includes(const Ptrs& lhs, const ZddPtr& rhs);
   static bool cut(Ptrs& out, const ZddPtr& ptr, const Pair& pair);
   static ZddPtr make(const Pair& pair, ZddPtr lo, ZddPtr hi);
