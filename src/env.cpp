@@ -13,9 +13,14 @@ bool Env::includes(const Env& env) const {
           std::all_of(env.begin(), env.end(), pred));
 }
 void Env::merge(const Env& env) {
+  Zdd::Pairs pairs;
   for (const auto& [key, ref] : env) {
     insert(key, ref);
+    for (const auto& [k, val] : ref.get()) {
+      pairs.emplace(k, val);
+    }
   }
+  zdd_ = Zdd::merge(zdd_, Zdd::make(pairs));
   filter_.merge(env.filter_);
 }
 Env::Env(std::size_t count) : filter_{count} {}
