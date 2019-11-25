@@ -9,7 +9,7 @@ Pair Zdd::label() const {
   return label_;
 }
 bool Zdd::is_terminal() const {
-  return !lo_ && !hi_;
+  return !lo_ || !hi_;
 }
 bool Zdd::is_top() const {
   return label_ == Pair::get_negative() && is_terminal();
@@ -26,12 +26,12 @@ int Zdd::compare(const Zdd& lhs, const Zdd& rhs) {
     return 0;
   }
 }
-bool Zdd::equals(const ZddPtr& lhs, const ZddPtr& rhs) {
-  if (lhs && rhs) {
-    return lhs->label_ == rhs->label_ && equals(lhs->lo_, rhs->lo_) &&
-           equals(lhs->hi_, rhs->hi_);
+bool Zdd::equals(const Zdd& lhs, const Zdd& rhs) {
+  if (lhs.is_terminal() || rhs.is_terminal()) {
+    return lhs.label_ == rhs.label_;
   } else {
-    return !lhs && !rhs;
+    return lhs.label_ == rhs.label_ && equals(*lhs.lo_, *rhs.lo_) &&
+           equals(*lhs.hi_, *rhs.hi_);
   }
 }
 ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
