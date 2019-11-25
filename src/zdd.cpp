@@ -41,6 +41,14 @@ NodePtr Node::merge(const NodePtr& lhs, const NodePtr& rhs) {
     return lhs;
   }
 }
+NodePtr Node::make(const std::set<Pair>& pairs) {
+  auto bot = get_bot();
+  auto root = get_top();
+  for (const auto& pair : pairs) {
+    root = make(pair, bot, root);
+  }
+  return root;
+}
 NodePtr Node::make(const Pair& pair, NodePtr lo, NodePtr hi) {
   return std::shared_ptr<Node>{new Node{pair, std::move(lo), std::move(hi)}};
 }

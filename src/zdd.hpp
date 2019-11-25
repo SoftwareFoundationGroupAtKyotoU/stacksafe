@@ -20,6 +20,7 @@ class Node {
   bool is_bot() const;
   static bool equals(const NodePtr& lhs, const NodePtr& rhs);
   static NodePtr merge(const NodePtr& lhs, const NodePtr& rhs);
+  static NodePtr make(const std::set<Pair>& pairs);
   static NodePtr make(const Pair& pair, NodePtr lo, NodePtr hi);
   static NodePtr get_top();
   static NodePtr get_bot();
