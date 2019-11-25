@@ -48,7 +48,8 @@ bool Value::operator<(const Value &sym) const {
   return Base::less(*this, sym);
 }
 
-Pair::Pair(const Value &key, const Value &val) : Super{key, val} {}
+Pair::Pair(const Value &key, const Value &val)
+    : Super{key, val}, hash_{llvm::hash_combine(key, val)} {}
 const Value &Pair::key() const {
   return std::get<0>(*this);
 }
@@ -64,13 +65,17 @@ Pair Pair::get_negative() {
   return Pair{negative, negative};
 }
 bool Pair::operator==(const Pair &pair) const {
-  return key() == pair.key() && val() == pair.val();
+  return hash_ == pair.hash_ && key() == pair.key() && val() == pair.val();
 }
 bool Pair::operator<(const Pair &pair) const {
-  if (key() == pair.key()) {
-    return val() < pair.val();
+  if (hash_ == pair.hash_) {
+    if (key() == pair.key()) {
+      return val() < pair.val();
+    } else {
+      return key() < pair.key();
+    }
   } else {
-    return key() < pair.key();
+    return hash_ < pair.hash_;
   }
 }
 

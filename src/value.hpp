@@ -37,6 +37,7 @@ class Value : private Base {
 };
 
 class Pair : private std::tuple<Value, Value> {
+  std::size_t hash_;
   using Super = std::tuple<Value, Value>;
 
  public:
