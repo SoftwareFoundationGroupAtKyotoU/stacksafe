@@ -5,7 +5,8 @@
 
 namespace llvm {
 class BasicBlock;
-}
+class Function;
+}  // namespace llvm
 
 namespace stacksafe {
 
@@ -15,6 +16,8 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
  public:
   using Super::emplace_back;
 };
+
+std::vector<Scc> strongly_connected(const llvm::Function& f);
 
 }  // namespace stacksafe
 

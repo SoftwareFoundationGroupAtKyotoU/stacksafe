@@ -45,6 +45,7 @@ class Tarjan {
 
  public:
   Tarjan(const llvm::Function& f);
+  const std::vector<Scc> scc() const;
   void visit(BB b);
   Frame& push(BB b);
   void update(Frame& frame, BB succ);
@@ -57,6 +58,9 @@ Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
     map_.try_emplace(&b, &frames_[i]);
     ++i;
   }
+}
+const std::vector<Scc> Tarjan::scc() const {
+  return scc_;
 }
 void Tarjan::visit(BB b) {
   Frame& frame = push(b);
@@ -103,5 +107,12 @@ Scc Tarjan::collect(BB b) {
   return scc;
 }
 }  // namespace
+
+std::vector<Scc> strongly_connected(const llvm::Function& f) {
+  Tarjan tarjan{f};
+  tarjan.visit(&f.getEntryBlock());
+  auto scc = tarjan.scc();
+  return scc;
+}
 
 }  // namespace stacksafe
