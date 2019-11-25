@@ -27,8 +27,8 @@ void Frame::push(int i) {
   on = true;
 }
 void Frame::update(int n) {
-  if (n < index) {
-    index = n;
+  if (n < low) {
+    low = n;
   }
 }
 void Frame::pop() {
