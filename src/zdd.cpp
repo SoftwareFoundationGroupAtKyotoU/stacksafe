@@ -8,11 +8,14 @@ Zdd::Zdd(const Pair& pair, ZddPtr lo, ZddPtr hi)
 Pair Zdd::label() const {
   return label_;
 }
+bool Zdd::is_terminal() const {
+  return !lo_ && !hi_;
+}
 bool Zdd::is_top() const {
-  return label_ == Pair::get_negative() && !lo_ && !hi_;
+  return label_ == Pair::get_negative() && is_terminal();
 }
 bool Zdd::is_bot() const {
-  return label_ == Pair::get_zero() && !lo_ && !hi_;
+  return label_ == Pair::get_zero() && is_terminal();
 }
 int Zdd::compare(const Zdd& lhs, const Zdd& rhs) {
   if (lhs.label_ < rhs.label_) {
