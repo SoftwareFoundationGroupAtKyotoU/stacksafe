@@ -6,6 +6,7 @@
 namespace stacksafe {
 
 bool Env::includes(const Env& env) const {
+  return Zdd::includes(zdd_, env.zdd_);
   const auto pred = [& self = *this](const value_type& pair) {
     return self.includes(pair.second);
   };
