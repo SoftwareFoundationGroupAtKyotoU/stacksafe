@@ -23,6 +23,9 @@ bool Value::is_argument() const {
 Value Value::get_zero() {
   return Value{Base::get_zero()};
 }
+Value Value::get_negative() {
+  return Value{Base::get_negative()};
+}
 Value Value::get_symbol() {
   return Value{nullptr, false};
 }
@@ -54,6 +57,10 @@ const Value &Pair::val() const {
 Pair Pair::get_zero() {
   const auto zero = Value::get_zero();
   return Pair{zero, zero};
+}
+Pair Pair::get_negative() {
+  const auto negative = Value::get_negative();
+  return Pair{negative, negative};
 }
 bool Pair::operator==(const Pair &pair) const {
   const Super &lhs = *this;

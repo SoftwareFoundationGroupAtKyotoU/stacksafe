@@ -25,6 +25,7 @@ class Value : private Base {
   bool is_local() const;
   bool is_argument() const;
   static Value get_zero();
+  static Value get_negative();
   static Value get_symbol();
   static Value get_symbol(const llvm::AllocaInst &v);
   static Value get_symbol(const llvm::Argument &v);
@@ -43,6 +44,7 @@ class Pair : private std::tuple<Value, Value> {
   const Value &key() const;
   const Value &val() const;
   static Pair get_zero();
+  static Pair get_negative();
   bool operator==(const Pair &pair) const;
   bool operator<(const Pair &pair) const;
 };
