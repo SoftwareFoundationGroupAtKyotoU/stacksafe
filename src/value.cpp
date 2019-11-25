@@ -41,4 +41,11 @@ bool Value::operator<(const Value &sym) const {
   return Base::less(*this, sym);
 }
 
+const Value &Pair::key() const {
+  return std::get<0>(*this);
+}
+const Value &Pair::val() const {
+  return std::get<1>(*this);
+}
+
 }  // namespace stacksafe

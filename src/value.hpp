@@ -35,6 +35,11 @@ class Value : private Base {
 
 class Pair : private std::tuple<Value, Value> {
   using Super = std::tuple<Value, Value>;
+
+ public:
+  using Super::Super;
+  const Value &key() const;
+  const Value &val() const;
 };
 
 }  // namespace stacksafe
