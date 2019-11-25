@@ -1,5 +1,6 @@
 #include "base.hpp"
 #include <cassert>
+#include <limits>
 
 namespace stacksafe {
 namespace {
@@ -7,7 +8,7 @@ const std::uintptr_t symbol_flag{0x1};
 const std::uintptr_t global_flag{0x3};
 }  // namespace
 
-Base::Base() : sym_{0} {}
+Base::Base(Int x) : sym_{x} {}
 Base::Base(const llvm::Value& val) : val_{&val} {}
 Base::Base(Ptr val, bool is_local)
     : sym_{(val ? reinterpret_cast<Int>(val) : global_flag) |
@@ -39,7 +40,10 @@ bool Base::is_global() const {
   return sym_ == global_flag;
 }
 Base Base::get_zero() {
-  return Base{};
+  return Base{0};
+}
+Base Base::get_negative() {
+  return Base{std::numeric_limits<Int>::max()};
 }
 bool Base::equals(const Base& lhs, const Base& rhs) {
   return lhs.sym_ == rhs.sym_;
