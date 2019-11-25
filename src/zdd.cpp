@@ -32,7 +32,7 @@ ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
   }
   return is_bot(lhs) ? rhs : lhs;
 }
-ZddPtr Zdd::make(const std::set<Pair>& pairs) {
+ZddPtr Zdd::make(const Pairs& pairs) {
   static const auto top = Zdd::make(Pair::get_zero(), nullptr, nullptr);
   static const auto bot = nullptr;
   auto root = top;

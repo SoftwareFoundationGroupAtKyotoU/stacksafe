@@ -16,10 +16,11 @@ class Zdd {
   Zdd(const Pair& pair, ZddPtr lo, ZddPtr hi);
 
  public:
+  using Pairs = std::set<Pair>;
   Pair label() const;
   static bool includes(const ZddPtr& lhs, const ZddPtr& rhs);
   static ZddPtr merge(const ZddPtr& lhs, const ZddPtr& rhs);
-  static ZddPtr make(const std::set<Pair>& pairs);
+  static ZddPtr make(const Pairs& pairs);
 
  private:
   static bool is_top(const ZddPtr& ptr);
