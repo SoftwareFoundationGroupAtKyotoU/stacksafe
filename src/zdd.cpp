@@ -34,6 +34,39 @@ bool Zdd::equals(const Zdd& lhs, const Zdd& rhs) {
            equals(*lhs.hi_, *rhs.hi_);
   }
 }
+bool Zdd::includes(const ZddPtr& lhs, const ZddPtr& rhs) {
+  return !rhs || includes(Ptrs{lhs}, *rhs);
+}
+bool Zdd::includes(const Ptrs& lhs, const Zdd& rhs) {
+  if (rhs.is_terminal()) {
+    return true;
+  }
+  Ptrs next;
+  bool ok = false;
+  for (const auto& ptr : lhs) {
+    if (cut(next, ptr, rhs.label_)) {
+      ok = true;
+    }
+  }
+  if (ok) {
+    return includes(next, *rhs.lo_) && includes(next, *rhs.hi_);
+  } else {
+    return false;
+  }
+}
+bool Zdd::cut(Ptrs& out, const ZddPtr& ptr, const Pair& pair) {
+  if (!ptr || ptr->is_terminal()) {
+    return false;
+  }
+  if (ptr->label_ < pair) {
+    out.insert(ptr);
+    return false;
+  } else {
+    auto lo = cut(out, ptr->lo_, pair);
+    auto hi = cut(out, ptr->hi_, pair);
+    return (lo || hi || ptr->label_ == pair);
+  }
+}
 ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
   if (lhs && rhs) {
     if (lhs->is_bot()) {
