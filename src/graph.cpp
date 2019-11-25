@@ -58,6 +58,11 @@ Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
     map_.try_emplace(&b, &frames_[i]);
     ++i;
   }
+  for (const auto& b : f) {
+    if (map_[&b]->undefined()) {
+      visit(&b);
+    }
+  }
 }
 const std::vector<Scc> Tarjan::scc() const {
   return scc_;
@@ -111,7 +116,6 @@ Scc Tarjan::collect(BB b) {
 
 std::vector<Scc> strongly_connected(const llvm::Function& f) {
   Tarjan tarjan{f};
-  tarjan.visit(&f.getEntryBlock());
   auto scc = tarjan.scc();
   std::reverse(scc.begin(), scc.end());
   return scc;
