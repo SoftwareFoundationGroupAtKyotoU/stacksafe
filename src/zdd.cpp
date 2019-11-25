@@ -4,6 +4,12 @@ namespace stacksafe {
 
 Node::Node(Pair top, NodePtr lo, NodePtr hi)
     : top_{top}, lo_{std::move(lo)}, hi_{std::move(hi)} {}
+bool Node::is_top() const {
+  return top_ == Pair::get_negative() && !lo_ && !hi_;
+}
+bool Node::is_bot() const {
+  return top_ == Pair::get_zero() && !lo_ && !hi_;
+}
 NodePtr Node::make(Pair top, NodePtr lo, NodePtr hi) {
   return std::shared_ptr<Node>{new Node{top, std::move(lo), std::move(hi)}};
 }

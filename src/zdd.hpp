@@ -15,6 +15,8 @@ class Node {
   Node(Pair top, NodePtr lo, NodePtr hi);
 
  public:
+  bool is_top() const;
+  bool is_bot() const;
   static NodePtr make(Pair top, NodePtr lo, NodePtr hi);
   static NodePtr get_top();
   static NodePtr get_bot();
