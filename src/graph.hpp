@@ -14,7 +14,7 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
   using Super = std::vector<const llvm::BasicBlock*>;
 
  public:
-  using Super::emplace_back;
+  using Super::begin, Super::end, Super::emplace_back;
 };
 
 std::vector<Scc> strongly_connected(const llvm::Function& f);

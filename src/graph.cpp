@@ -104,6 +104,7 @@ Scc Tarjan::collect(BB b) {
       break;
     }
   }
+  std::reverse(scc.begin(), scc.end());
   return scc;
 }
 }  // namespace
@@ -112,6 +113,7 @@ std::vector<Scc> strongly_connected(const llvm::Function& f) {
   Tarjan tarjan{f};
   tarjan.visit(&f.getEntryBlock());
   auto scc = tarjan.scc();
+  std::reverse(scc.begin(), scc.end());
   return scc;
 }
 
