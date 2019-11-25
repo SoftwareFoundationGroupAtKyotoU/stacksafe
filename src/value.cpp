@@ -48,6 +48,7 @@ bool Value::operator<(const Value &sym) const {
   return Base::less(*this, sym);
 }
 
+Pair::Pair(const Value &key, const Value &val) : Super{key, val} {}
 const Value &Pair::key() const {
   return std::get<0>(*this);
 }

@@ -40,7 +40,7 @@ class Pair : private std::tuple<Value, Value> {
   using Super = std::tuple<Value, Value>;
 
  public:
-  using Super::Super;
+  Pair(const Value &key, const Value &val);
   const Value &key() const;
   const Value &val() const;
   static Pair get_zero();
