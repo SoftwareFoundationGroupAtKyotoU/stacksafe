@@ -15,7 +15,7 @@ class Node {
   Node(const Pair& pair, NodePtr lo, NodePtr hi);
 
  public:
-  const Pair& label() const;
+  Pair label() const;
   bool is_top() const;
   bool is_bot() const;
   static bool equals(const NodePtr& lhs, const NodePtr& rhs);
@@ -30,6 +30,7 @@ class Zdd {
  public:
   Zdd();
   explicit Zdd(const std::set<Pair>& pairs);
+  Pair label() const;
   bool empty() const;
 };
 

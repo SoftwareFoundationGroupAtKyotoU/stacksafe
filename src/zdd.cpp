@@ -4,7 +4,7 @@ namespace stacksafe {
 
 Node::Node(const Pair& pair, NodePtr lo, NodePtr hi)
     : label_{pair}, lo_{std::move(lo)}, hi_{std::move(hi)} {}
-const Pair& Node::label() const {
+Pair Node::label() const {
   return label_;
 }
 bool Node::is_top() const {
@@ -37,6 +37,9 @@ Zdd::Zdd(const std::set<Pair>& pairs) : root_{Node::get_top()} {
   for (const auto& pair : pairs) {
     root_ = Node::make(pair, bot, root_);
   }
+}
+Pair Zdd::label() const {
+  return root_->label();
 }
 bool Zdd::empty() const {
   return root_->is_bot();
