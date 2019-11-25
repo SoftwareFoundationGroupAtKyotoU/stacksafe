@@ -17,13 +17,13 @@ class Zdd {
 
  public:
   Pair label() const;
-  bool is_terminal() const;
-  bool is_top() const;
-  bool is_bot() const;
+  static bool is_terminal(const ZddPtr& ptr);
+  static bool is_top(const ZddPtr& ptr);
+  static bool is_bot(const ZddPtr& ptr);
   static int compare(const Zdd& lhs, const Zdd& rhs);
-  static bool equals(const Zdd& lhs, const Zdd& rhs);
+  static bool equals(const ZddPtr& lhs, const ZddPtr& rhs);
   static bool includes(const ZddPtr& lhs, const ZddPtr& rhs);
-  static bool includes(const Ptrs& lhs, const Zdd& rhs);
+  static bool includes(const Ptrs& lhs, const ZddPtr& rhs);
   static bool cut(Ptrs& out, const ZddPtr& ptr, const Pair& pair);
   static ZddPtr merge(const ZddPtr& lhs, const ZddPtr& rhs);
   static ZddPtr make(const std::set<Pair>& pairs);

@@ -8,14 +8,14 @@ Zdd::Zdd(const Pair& pair, ZddPtr lo, ZddPtr hi)
 Pair Zdd::label() const {
   return label_;
 }
-bool Zdd::is_terminal() const {
-  return !lo_ || !hi_;
+bool Zdd::is_terminal(const ZddPtr& ptr) {
+  return is_top(ptr) || is_bot(ptr);
 }
-bool Zdd::is_top() const {
-  return label_ == Pair::get_negative() && is_terminal();
+bool Zdd::is_top(const ZddPtr& ptr) {
+  return ptr && ptr->label_ == Pair::get_zero();
 }
-bool Zdd::is_bot() const {
-  return label_ == Pair::get_zero() && is_terminal();
+bool Zdd::is_bot(const ZddPtr& ptr) {
+  return !ptr;
 }
 int Zdd::compare(const Zdd& lhs, const Zdd& rhs) {
   if (lhs.label_ < rhs.label_) {
@@ -26,36 +26,36 @@ int Zdd::compare(const Zdd& lhs, const Zdd& rhs) {
     return 0;
   }
 }
-bool Zdd::equals(const Zdd& lhs, const Zdd& rhs) {
-  if (lhs.is_terminal() || rhs.is_terminal()) {
-    return lhs.label_ == rhs.label_;
+bool Zdd::equals(const ZddPtr& lhs, const ZddPtr& rhs) {
+  if (is_bot(lhs) || is_bot(rhs)) {
+    return is_bot(lhs) && is_bot(rhs);
   } else {
-    return lhs.label_ == rhs.label_ && equals(*lhs.lo_, *rhs.lo_) &&
-           equals(*lhs.hi_, *rhs.hi_);
+    return lhs->label_ == rhs->label_ && equals(lhs->lo_, rhs->lo_) &&
+           equals(lhs->hi_, rhs->hi_);
   }
 }
 bool Zdd::includes(const ZddPtr& lhs, const ZddPtr& rhs) {
-  return !rhs || includes(Ptrs{lhs}, *rhs);
+  return includes(Ptrs{lhs}, rhs);
 }
-bool Zdd::includes(const Ptrs& lhs, const Zdd& rhs) {
-  if (rhs.is_terminal()) {
+bool Zdd::includes(const Ptrs& lhs, const ZddPtr& rhs) {
+  if (is_terminal(rhs)) {
     return true;
   }
   Ptrs next;
   bool ok = false;
   for (const auto& ptr : lhs) {
-    if (cut(next, ptr, rhs.label_)) {
+    if (cut(next, ptr, rhs->label_)) {
       ok = true;
     }
   }
   if (ok) {
-    return includes(next, *rhs.lo_) && includes(next, *rhs.hi_);
+    return includes(next, rhs->lo_) && includes(next, rhs->hi_);
   } else {
     return false;
   }
 }
 bool Zdd::cut(Ptrs& out, const ZddPtr& ptr, const Pair& pair) {
-  if (!ptr || ptr->is_terminal()) {
+  if (is_terminal(ptr)) {
     return false;
   }
   if (ptr->label_ < pair) {
@@ -68,12 +68,7 @@ bool Zdd::cut(Ptrs& out, const ZddPtr& ptr, const Pair& pair) {
   }
 }
 ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
-  if (lhs && rhs) {
-    if (lhs->is_bot()) {
-      return rhs;
-    } else if (rhs->is_bot()) {
-      return lhs;
-    }
+  if (!is_bot(lhs) && !is_bot(rhs)) {
     switch (compare(*lhs, *rhs)) {
       case -1:
         return make(rhs->label(), merge(lhs, rhs->lo_), rhs->hi_);
@@ -84,8 +79,7 @@ ZddPtr Zdd::merge(const ZddPtr& lhs, const ZddPtr& rhs) {
                     merge(lhs->hi_, rhs->hi_));
     }
   }
-  assert(!lhs && !rhs);
-  return lhs;
+  return is_bot(lhs) ? rhs : lhs;
 }
 ZddPtr Zdd::make(const std::set<Pair>& pairs) {
   auto bot = get_bot();
@@ -99,10 +93,10 @@ ZddPtr Zdd::make(const Pair& pair, ZddPtr lo, ZddPtr hi) {
   return std::shared_ptr<Zdd>{new Zdd{pair, std::move(lo), std::move(hi)}};
 }
 ZddPtr Zdd::get_top() {
-  return Zdd::make(Pair::get_negative(), nullptr, nullptr);
+  return Zdd::make(Pair::get_zero(), nullptr, nullptr);
 }
 ZddPtr Zdd::get_bot() {
-  return Zdd::make(Pair::get_zero(), nullptr, nullptr);
+  return nullptr;
 }
 
 }  // namespace stacksafe
