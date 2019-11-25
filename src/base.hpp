@@ -17,6 +17,7 @@ class Base {
     Ptr val_;
     Int sym_;
   };
+  Base(Int x);
 
  public:
   explicit Base(const llvm::Value& val);
@@ -26,6 +27,8 @@ class Base {
   bool is_register() const;
   bool is_local() const;
   bool is_global() const;
+  static Base get_zero();
+  static Base get_negative();
   static bool equals(const Base& lhs, const Base& rhs);
   static bool less(const Base& lhs, const Base& rhs);
   friend llvm::hash_code hash_value(const Base& key);

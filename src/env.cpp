@@ -6,6 +6,7 @@
 namespace stacksafe {
 
 bool Env::includes(const Env& env) const {
+  return Zdd::includes(zdd_, env.zdd_);
   const auto pred = [& self = *this](const value_type& pair) {
     return self.includes(pair.second);
   };
@@ -13,9 +14,14 @@ bool Env::includes(const Env& env) const {
           std::all_of(env.begin(), env.end(), pred));
 }
 void Env::merge(const Env& env) {
+  Zdd::Pairs pairs;
   for (const auto& [key, ref] : env) {
     insert(key, ref);
+    for (const auto& [k, val] : ref.get()) {
+      pairs.emplace_back(k, val);
+    }
   }
+  zdd_ = Zdd::merge(zdd_, Zdd::make(std::move(pairs)));
   filter_.merge(env.filter_);
 }
 Env::Env(std::size_t count) : filter_{count} {}
