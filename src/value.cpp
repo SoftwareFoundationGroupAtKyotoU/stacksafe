@@ -64,14 +64,14 @@ Pair Pair::get_negative() {
   return Pair{negative, negative};
 }
 bool Pair::operator==(const Pair &pair) const {
-  const Super &lhs = *this;
-  const Super &rhs = pair;
-  return lhs == rhs;
+  return key() == pair.key() && val() == pair.val();
 }
 bool Pair::operator<(const Pair &pair) const {
-  const Super &lhs = *this;
-  const Super &rhs = pair;
-  return lhs < rhs;
+  if (key() == pair.key()) {
+    return val() < pair.val();
+  } else {
+    return key() < pair.key();
+  }
 }
 
 }  // namespace stacksafe
