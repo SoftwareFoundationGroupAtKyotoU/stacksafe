@@ -19,6 +19,7 @@ target_sources(${target} PRIVATE
   env.cpp
   error.cpp
   filter.cpp
+  graph.cpp
   hash.cpp
   interpreter.cpp
   json.cpp
