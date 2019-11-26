@@ -17,7 +17,6 @@ target_sources(${target} PRIVATE
   cache.cpp
   domain.cpp
   error.cpp
-  filter.cpp
   graph.cpp
   hash.cpp
   interpreter.cpp
