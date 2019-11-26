@@ -117,6 +117,19 @@ Scc Tarjan::collect(BB b) {
 bool Scc::contains(const llvm::BasicBlock* b) const {
   return std::find(begin(), end(), b) != end();
 }
+auto Scc::out_degree() const -> Set {
+  Set out;
+  for (const auto& b : *this) {
+    const auto t = b->getTerminator();
+    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+      const auto succ = t->getSuccessor(i);
+      if (!contains(succ)) {
+        out.emplace(succ);
+      }
+    }
+  }
+  return out;
+}
 
 std::vector<Scc> strongly_connected(const llvm::Function& f) {
   Tarjan tarjan{f};
