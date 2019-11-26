@@ -27,7 +27,6 @@ target_sources(${target} PRIVATE
   stopwatch.cpp
   utility.cpp
   value.cpp
-  zdd.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
