@@ -23,9 +23,9 @@ struct Analyzer : public llvm::FunctionPass {
 char Analyzer::ID = 0;
 Analyzer::Analyzer() : llvm::FunctionPass{ID} {}
 bool Analyzer::runOnFunction(llvm::Function &f) {
-  const auto name = f.getName().str().c_str();
+  const auto name = f.getName().str();
   const auto msg =
-      llvm::format("Analysis '%s' for function '%s'", stacksafe, name);
+      llvm::format("Analysis '%s' for function '%s'", stacksafe, name.c_str());
   endline(llvm::outs() << msg);
   abst = std::make_unique<Abstract>(f);
   if (abst) {
