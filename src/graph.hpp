@@ -53,7 +53,7 @@ class Component : private std::vector<Block> {
   bool is_loop() const;
   std::vector<Block> out_degree() const;
   void init(const llvm::Function& f);
-  void merge(const Map& m);
+  void merge(const Component& c);
 };
 
 class SCC : private std::vector<Component> {

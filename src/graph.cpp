@@ -77,8 +77,8 @@ std::vector<Block> Component::out_degree() const {
 void Component::init(const llvm::Function& f) {
   map_ = Map{f};
 }
-void Component::merge(const Map& m) {
-  map_.merge(m);
+void Component::merge(const Component& c) {
+  map_.merge(c.map_);
 }
 
 SCC::SCC(const llvm::Function& f) {
