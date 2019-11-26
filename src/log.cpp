@@ -41,21 +41,17 @@ Log::operator bool() const {
   return os;
 }
 bool Log::print(const llvm::Instruction &i) const {
-  if (os) {
-    endline(*os << i);
-  }
+  endline(*os << i);
   return os;
 }
 bool Log::print(const llvm::BasicBlock &b) const {
   static const auto hr2 = "================================";
   static const auto hr = "--------------------------------";
-  if (os) {
-    endline(*os << hr2 << b << hr);
-  }
+  endline(*os << hr2 << b << hr);
   return os;
 }
 bool Log::print(const Value &key, const Domain &val, const Domain &add) const {
-  if (os && !add.empty()) {
+  if (!add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
@@ -63,16 +59,14 @@ bool Log::print(const Value &key, const Domain &val, const Domain &add) const {
 }
 bool Log::print(const llvm::Instruction &key, const Domain &val,
                 const Domain &add) const {
-  if (os && !add.empty()) {
+  if (!add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
   return os;
 }
 bool Log::print(const Error &err) const {
-  if (os) {
-    err.print(*os);
-  }
+  err.print(*os);
   return os;
 }
 
