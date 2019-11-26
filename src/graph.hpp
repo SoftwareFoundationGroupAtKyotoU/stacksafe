@@ -2,8 +2,6 @@
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
 #include <map>
-#include <memory>
-#include <set>
 #include <stack>
 #include <vector>
 #include "map.hpp"
@@ -14,8 +12,6 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Scc;
-using SccPtr = std::shared_ptr<Scc>;
 
 class Frame {
   int index_, low_;
