@@ -17,7 +17,6 @@ target_sources(${target} PRIVATE
   cache.cpp
   domain.cpp
   error.cpp
-  filter.cpp
   graph.cpp
   hash.cpp
   interpreter.cpp
@@ -28,7 +27,6 @@ target_sources(${target} PRIVATE
   stopwatch.cpp
   utility.cpp
   value.cpp
-  zdd.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})

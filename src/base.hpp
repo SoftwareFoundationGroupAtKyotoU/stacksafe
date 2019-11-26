@@ -5,7 +5,6 @@
 
 namespace llvm {
 class Value;
-class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -14,24 +13,21 @@ class Base {
   using Ptr = const void*;
   using Int = std::uintptr_t;
   union {
-    Ptr val_;
+    Ptr reg_;
     Int sym_;
   };
-  Base(Int x);
 
  public:
   explicit Base(const llvm::Value& val);
   Base(Ptr val, bool is_local);
-  const llvm::Value* value() const;
+  Ptr reg() const;
+  Int sym() const;
   bool is_symbol() const;
   bool is_register() const;
   bool is_local() const;
   bool is_global() const;
-  static Base get_zero();
-  static Base get_negative();
   static bool equals(const Base& lhs, const Base& rhs);
   static bool less(const Base& lhs, const Base& rhs);
-  friend llvm::hash_code hash_value(const Base& key);
 };
 
 }  // namespace stacksafe

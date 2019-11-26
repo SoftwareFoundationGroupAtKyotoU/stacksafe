@@ -25,7 +25,6 @@ void Error::print(llvm::raw_ostream& os) const {
       os << "ERROR: " << names[i] << "\n";
     }
   }
-  os.flush();
 }
 auto Error::shift(Kind k) -> Base {
   return 1 << static_cast<Base>(k);

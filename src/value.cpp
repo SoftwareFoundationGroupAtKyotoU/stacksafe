@@ -9,7 +9,7 @@ Value::Value(const Base &base) : Base{base} {}
 Value::Value(const llvm::Value &val) : Base{val} {}
 Value::Value(const void *sym, bool is_local) : Base{sym, is_local} {}
 const llvm::Value *Value::value() const {
-  return Base::value();
+  return static_cast<const llvm::Value *>(Base::reg());
 }
 bool Value::is_global() const {
   return Base::is_global();
@@ -19,12 +19,6 @@ bool Value::is_local() const {
 }
 bool Value::is_argument() const {
   return !is_local() && !is_global();
-}
-Value Value::get_zero() {
-  return Value{Base::get_zero()};
-}
-Value Value::get_negative() {
-  return Value{Base::get_negative()};
 }
 Value Value::get_symbol() {
   return Value{nullptr, false};
@@ -56,26 +50,14 @@ const Value &Pair::key() const {
 const Value &Pair::val() const {
   return std::get<1>(*this);
 }
-Pair Pair::get_zero() {
-  const auto zero = Value::get_zero();
-  return Pair{zero, zero};
-}
-Pair Pair::get_negative() {
-  const auto negative = Value::get_negative();
-  return Pair{negative, negative};
-}
 bool Pair::operator==(const Pair &pair) const {
-  return hash_ == pair.hash_ && key() == pair.key() && val() == pair.val();
+  return key() == pair.key() && val() == pair.val();
 }
 bool Pair::operator<(const Pair &pair) const {
-  if (hash_ == pair.hash_) {
-    if (key() == pair.key()) {
-      return val() < pair.val();
-    } else {
-      return key() < pair.key();
-    }
+  if (key() == pair.key()) {
+    return val() < pair.val();
   } else {
-    return hash_ < pair.hash_;
+    return key() < pair.key();
   }
 }
 

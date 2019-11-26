@@ -1,126 +1,60 @@
 #include "graph.hpp"
 #include <llvm/IR/Function.h>
-#include <map>
 
 namespace stacksafe {
-namespace {
-struct Frame {
-  int index, low;
-  bool on;
-  Frame();
-  bool undefined() const;
-  bool is_root() const;
-  void push(int i);
-  void update(int n);
-  void pop();
-};
-Frame::Frame() : index{-1}, low{-1}, on{false} {}
-bool Frame::undefined() const {
-  return index < 0;
+
+Frame::Frame() : index_{-1}, low_{-1}, on_stack_{false} {}
+bool Frame::on_stack() const {
+  return on_stack_;
+}
+int Frame::index() const {
+  return index_;
+}
+int Frame::low() const {
+  return low_;
+}
+bool Frame::is_undef() const {
+  return index_ < 0;
 }
 bool Frame::is_root() const {
-  return index == low;
+  return index_ == low_;
 }
-void Frame::push(int i) {
-  index = low = i;
-  on = true;
+void Frame::push(int n) {
+  index_ = low_ = n;
+  on_stack_ = true;
 }
 void Frame::update(int n) {
-  if (n < low) {
-    low = n;
+  if (n < low_) {
+    low_ = n;
   }
 }
 void Frame::pop() {
-  on = false;
+  on_stack_ = false;
 }
 
-class Tarjan {
-  using BB = const llvm::BasicBlock*;
-  std::vector<Frame> frames_;
-  std::map<BB, Frame*> map_;
-  std::stack<BB> stack_;
-  std::vector<Scc> scc_;
-  int index_;
-
- public:
-  Tarjan(const llvm::Function& f);
-  const std::vector<Scc> scc() const;
-  void visit(BB b);
-  Frame& push(BB b);
-  void update(Frame& frame, BB succ);
-  BB pop();
-  Scc collect(BB b);
-};
-Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
-  std::size_t i = 0;
-  for (const auto& b : f) {
-    map_.try_emplace(&b, &frames_[i]);
-    ++i;
-  }
-  for (const auto& b : f) {
-    if (map_[&b]->undefined()) {
-      visit(&b);
-    }
-  }
-}
-const std::vector<Scc> Tarjan::scc() const {
-  return scc_;
-}
-void Tarjan::visit(BB b) {
-  Frame& frame = push(b);
-  const auto t = b->getTerminator();
+Block::Block(const llvm::BasicBlock& b) : block_{&b} {}
+std::vector<Block> Block::successors() const {
+  std::vector<Block> vec;
+  const auto t = block_->getTerminator();
   for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-    const auto succ = t->getSuccessor(i);
-    update(frame, succ);
+    vec.emplace_back(*t->getSuccessor(i));
   }
-  if (frame.is_root()) {
-    scc_.emplace_back(collect(b));
-  }
+  return vec;
 }
-Frame& Tarjan::push(BB b) {
-  Frame& frame = *map_[b];
-  frame.push(index_);
-  ++index_;
-  stack_.push(b);
-  return frame;
+const llvm::BasicBlock& Block::get() const {
+  return *block_;
 }
-void Tarjan::update(Frame& frame, BB succ) {
-  const Frame& f = *map_[succ];
-  if (f.undefined()) {
-    visit(succ);
-    frame.update(f.low);
-  } else if (f.on) {
-    frame.update(f.index);
-  }
+bool Block::operator==(const Block& block) const {
+  return block_ == block.block_;
 }
-auto Tarjan::pop() -> BB {
-  const auto b = stack_.top();
-  stack_.pop();
-  map_[b]->pop();
-  return b;
-}
-Scc Tarjan::collect(BB b) {
-  Scc scc;
-  while (true) {
-    const auto p = pop();
-    scc.emplace_back(p);
-    if (b == p) {
-      break;
-    }
-  }
-  std::reverse(scc.begin(), scc.end());
-  return scc;
-}
-}  // namespace
 
-bool Scc::contains(const llvm::BasicBlock* b) const {
+Component::Component(const std::vector<Block>& vec) : Super{vec} {}
+bool Component::contains(const Block& b) const {
   return std::find(begin(), end(), b) != end();
 }
-bool Scc::is_loop() const {
+bool Component::is_loop() const {
   for (const auto& b : *this) {
-    const auto t = b->getTerminator();
-    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-      const auto succ = t->getSuccessor(i);
+    for (const auto& succ : b.successors()) {
       if (contains(succ)) {
         return true;
       }
@@ -128,51 +62,108 @@ bool Scc::is_loop() const {
   }
   return false;
 }
-auto Scc::out_degree() const -> Set {
-  Set out;
+std::vector<Block> Component::successors() const {
+  std::vector<Block> out;
   for (const auto& b : *this) {
-    const auto t = b->getTerminator();
-    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-      const auto succ = t->getSuccessor(i);
-      if (!contains(succ)) {
-        out.emplace(succ);
+    for (const auto& succ : b.successors()) {
+      if (!contains(succ) &&
+          std::find(out.begin(), out.end(), succ) == out.end()) {
+        out.Super::emplace_back(succ);
       }
     }
   }
   return out;
 }
-void Scc::add_successor(const SccPtr& ptr) {
-  succ_.emplace(ptr);
+void Component::merge(const Component& c) {
+  map_.merge(c.map_);
 }
-void Scc::merge(const Map& map) {
-  map_.merge(map);
-}
-void Scc::convey() {
-  for (const auto ptr : succ_) {
-    ptr->merge(map_);
-  }
-}
-Map& Scc::map() {
+Map& Component::map() {
   return map_;
 }
-auto Scc::decompose(const llvm::Function& f) -> Stack {
-  Tarjan tarjan{f};
-  std::vector<SccPtr> ret;
-  for (auto scc : tarjan.scc()) {
-    for (const auto& b : scc.out_degree()) {
-      const auto pred = [b](const SccPtr& ptr) { return ptr->contains(b); };
-      if (auto it = std::find_if(ret.begin(), ret.end(), pred);
-          it != ret.end()) {
-        scc.add_successor(*it);
-        assert(std::find_if(std::next(it), ret.end(), pred) == ret.end() &&
-               "multiple successor SCCs");
-      } else {
-        llvm_unreachable("ERROR: broken SCC");
-      }
-    }
-    ret.emplace_back(std::make_shared<Scc>(std::move(scc)));
+
+Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
+  back().map().init(f);
+}
+Component Scc::pop() {
+  auto ret = std::move(back());
+  pop_back();
+  return ret;
+}
+Component& Scc::find(const Block& b) {
+  const auto pred = [&b](const Component& c) { return c.contains(b); };
+  auto it = std::find_if(begin(), end(), pred);
+  assert(it != end() && std::find_if(std::next(it), end(), pred) == end() &&
+         "SCC must be a partition");
+  return *it;
+}
+void Scc::distribute(const Component& prev) {
+  for (const auto& succ : prev.successors()) {
+    auto& next = find(succ);
+    next.merge(prev);
   }
-  return Scc::Stack{ret};
+}
+
+Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
+  std::size_t i = 0;
+  for (const auto& b : f) {
+    map_.try_emplace(&b, &frames_[i]);
+    ++i;
+  }
+  for (const auto& b : f) {
+    const Block block{b};
+    if (map(block).is_undef()) {
+      visit(block);
+    }
+  }
+}
+const std::vector<Component>& Tarjan::scc() const {
+  return scc_;
+}
+void Tarjan::visit(const Block& b) {
+  Frame& frame = push(b);
+  for (const auto& succ : b.successors()) {
+    update(frame, succ);
+  }
+  if (frame.is_root()) {
+    scc_.emplace_back(collect(b));
+  }
+}
+Frame& Tarjan::push(const Block& b) {
+  Frame& frame = map(b);
+  frame.push(index_);
+  ++index_;
+  stack_.push(b);
+  return frame;
+}
+void Tarjan::update(Frame& frame, const Block& succ) {
+  const Frame& f = map(succ);
+  if (f.is_undef()) {
+    visit(succ);
+    frame.update(f.low());
+  } else if (f.on_stack()) {
+    frame.update(f.index());
+  }
+}
+Block Tarjan::pop() {
+  const auto b = stack_.top();
+  stack_.pop();
+  map(b).pop();
+  return b;
+}
+Component Tarjan::collect(const Block& b) {
+  std::vector<Block> comp;
+  while (true) {
+    const auto p = pop();
+    comp.emplace_back(p);
+    if (b == p) {
+      break;
+    }
+  }
+  std::reverse(comp.begin(), comp.end());
+  return Component{comp};
+}
+Frame& Tarjan::map(const Block& b) {
+  return *map_[&b.get()];
 }
 
 }  // namespace stacksafe

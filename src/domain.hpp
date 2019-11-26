@@ -12,9 +12,10 @@ class Domain : private std::vector<Value> {
  public:
   using Super::begin, Super::end, Super::empty;
   Domain() = default;
-  void insert(const Value &sym);
-  void merge(const Domain &that);
-  bool element(const Value &sym) const;
+  explicit Domain(const Value &val);
+  bool insert(const Value &val);
+  bool merge(const Domain &dom);
+  bool element(const Value &val) const;
   bool has_local() const;
 };
 

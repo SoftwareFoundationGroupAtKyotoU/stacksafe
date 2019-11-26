@@ -1,49 +1,31 @@
 #include "map.hpp"
 #include <llvm/IR/Function.h>
 #include <algorithm>
-#include "domain.hpp"
 
 namespace stacksafe {
 
-Map::Map(const llvm::Function &f) {
+void Map::init(const llvm::Function &f) {
   const auto g = Value::get_symbol();
-  insert(g, g);
+  get(g).insert(g);
   for (const auto &a : f.args()) {
     const auto arg = Value::get_symbol(a);
-    insert(arg, arg);
-    insert(Value::get_register(a), arg);
+    get(arg).insert(arg);
+    get(Value::get_register(a)).insert(arg);
   }
-}
-bool Map::insert(const Value &key, const Value &val) {
-  auto [lb, ub] = Super::equal_range(key);
-  for (auto it = lb; it != ub; ++it) {
-    if (it->second == val) {
-      return false;
-    }
-  }
-  Super::emplace_hint(lb, key, val);
-  return true;
 }
 bool Map::insert(const Value &key, const Domain &dom) {
-  bool diff = false;
-  for (const auto &val : dom) {
-    if (insert(key, val)) {
-      diff = true;
-    }
-  }
-  return diff;
+  return get(key).merge(dom);
 }
 Domain Map::lookup(const Value &key) const {
-  Domain dom;
-  auto [lb, ub] = Super::equal_range(key);
-  for (auto it = lb; it != ub; ++it) {
-    dom.insert(it->second);
+  if (auto it = Super::find(key); it != end()) {
+    return it->second;
+  } else {
+    return Domain{};
   }
-  return dom;
 }
 void Map::merge(const Map &map) {
   for (const auto &[key, val] : map) {
-    insert(key, val);
+    get(key).merge(val);
   }
 }
 Domain Map::keys(const Map &map) {
@@ -52,6 +34,9 @@ Domain Map::keys(const Map &map) {
     dom.insert(pair.first);
   }
   return dom;
+}
+Domain &Map::get(const Value &key) {
+  return Super::try_emplace(key).first->second;
 }
 
 }  // namespace stacksafe
