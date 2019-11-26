@@ -52,6 +52,7 @@ class Component : private std::vector<Block> {
   bool contains(const Block& b) const;
   bool is_loop() const;
   std::vector<Block> out_degree() const;
+  void init(const llvm::Function& f);
   void merge(const Map& m);
 };
 

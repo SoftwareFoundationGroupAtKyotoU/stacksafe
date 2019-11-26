@@ -74,6 +74,9 @@ std::vector<Block> Component::out_degree() const {
   }
   return out;
 }
+void Component::init(const llvm::Function& f) {
+  map_ = Map{f};
+}
 void Component::merge(const Map& m) {
   map_.merge(m);
 }
@@ -88,7 +91,7 @@ SCC::SCC(const llvm::Function& f) {
     }
     Super::emplace_back(bs);
   }
-  back().merge(Map{f});
+  back().init(f);
 }
 Component SCC::pop() {
   auto ret = std::move(back());
