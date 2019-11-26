@@ -1,10 +1,14 @@
 #include "interpreter.hpp"
+#include <llvm/Support/Debug.h>
 #include "domain.hpp"
 #include "error.hpp"
 #include "log.hpp"
 #include "map.hpp"
 #include "params.hpp"
 #include "utility.hpp"
+
+#define STACKSAFE_DEBUG_LOG(...) \
+  DEBUG_WITH_TYPE("log", (log_ && log_.print(__VA_ARGS__)))
 
 namespace stacksafe {
 
@@ -17,12 +21,12 @@ bool Interpreter::diff() const {
   return diff_;
 }
 void Interpreter::visit(const llvm::BasicBlock &b) {
-  log_.print(b);
+  STACKSAFE_DEBUG_LOG(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
-    log_.print(i);
+    STACKSAFE_DEBUG_LOG(i);
     Super::visit(i);
     if (error_.is_error()) {
-      log_.print(error_);
+      STACKSAFE_DEBUG_LOG(error_);
       return;
     }
   }
@@ -227,7 +231,7 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
   }
 }
 void Interpreter::insert(const Value &key, const Domain &dom) {
-  log_.print(key, lookup(key), dom);
+  STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
   if (map_.insert(key, dom)) {
     diff_ = true;
   }
@@ -240,7 +244,7 @@ void Interpreter::insert(const Value &key, const Domain &dom) {
   }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
-  log_.print(key, lookup(key), dom);
+  STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
   const auto reg = Value::get_register(key);
   if (map_.insert(reg, dom)) {
     diff_ = true;
