@@ -1,6 +1,5 @@
 #include "graph.hpp"
 #include <llvm/IR/Function.h>
-#include <map>
 
 namespace stacksafe {
 
@@ -33,25 +32,6 @@ void Frame::pop() {
   on_stack_ = false;
 }
 
-namespace {
-
-class Tarjan {
-  using BB = const llvm::BasicBlock*;
-  std::vector<Frame> frames_;
-  std::map<BB, Frame*> map_;
-  std::stack<BB> stack_;
-  std::vector<Scc> scc_;
-  int index_;
-
- public:
-  Tarjan(const llvm::Function& f);
-  const std::vector<Scc> scc() const;
-  void visit(BB b);
-  Frame& push(BB b);
-  void update(Frame& frame, BB succ);
-  BB pop();
-  Scc collect(BB b);
-};
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
   for (const auto& b : f) {
@@ -64,7 +44,7 @@ Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
     }
   }
 }
-const std::vector<Scc> Tarjan::scc() const {
+const std::vector<Scc>& Tarjan::scc() const {
   return scc_;
 }
 void Tarjan::visit(BB b) {
@@ -112,7 +92,6 @@ Scc Tarjan::collect(BB b) {
   std::reverse(scc.begin(), scc.end());
   return scc;
 }
-}  // namespace
 
 bool Scc::contains(const llvm::BasicBlock* b) const {
   return std::find(begin(), end(), b) != end();

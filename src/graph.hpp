@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
+#include <map>
 #include <memory>
 #include <set>
 #include <stack>
@@ -30,6 +31,24 @@ class Frame {
   void push(int n);
   void update(int n);
   void pop();
+};
+
+class Tarjan {
+  using BB = const llvm::BasicBlock*;
+  std::vector<Frame> frames_;
+  std::map<BB, Frame*> map_;
+  std::stack<BB> stack_;
+  std::vector<Scc> scc_;
+  int index_;
+
+ public:
+  Tarjan(const llvm::Function& f);
+  const std::vector<Scc>& scc() const;
+  void visit(BB b);
+  Frame& push(BB b);
+  void update(Frame& frame, BB succ);
+  BB pop();
+  Scc collect(BB b);
 };
 
 class Scc : private std::vector<const llvm::BasicBlock*> {
