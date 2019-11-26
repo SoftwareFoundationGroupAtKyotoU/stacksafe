@@ -45,6 +45,9 @@ class Block {
 
 class Component : private std::vector<Block> {
   using Super = std::vector<Block>;
+
+ public:
+  explicit Component(const std::vector<Block>& vec);
 };
 
 class Tarjan {

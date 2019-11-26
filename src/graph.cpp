@@ -48,6 +48,8 @@ bool Block::equals(const Block& block) const {
   return block_ == block.block_;
 }
 
+Component::Component(const std::vector<Block>& vec) : Super{vec} {}
+
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
   for (const auto& b : f) {
