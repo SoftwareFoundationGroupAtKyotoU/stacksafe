@@ -43,6 +43,10 @@ class Block {
   bool equals(const Block& block) const;
 };
 
+class Component : private std::vector<Block> {
+  using Super = std::vector<Block>;
+};
+
 class Tarjan {
   std::vector<Frame> frames_;
   std::map<const llvm::BasicBlock*, Frame*> map_;
