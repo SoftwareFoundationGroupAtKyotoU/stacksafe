@@ -80,6 +80,9 @@ void Component::init(const llvm::Function& f) {
 void Component::merge(const Component& c) {
   map_.merge(c.map_);
 }
+Map& Component::map() {
+  return map_;
+}
 
 SCC::SCC(const llvm::Function& f) {
   Tarjan tarjan{f};
@@ -91,7 +94,7 @@ SCC::SCC(const llvm::Function& f) {
     }
     Super::emplace_back(bs);
   }
-  back().init(f);
+  back().map().init(f);
 }
 Component SCC::pop() {
   auto ret = std::move(back());

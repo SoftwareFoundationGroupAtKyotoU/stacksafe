@@ -54,6 +54,7 @@ class Component : private std::vector<Block> {
   std::vector<Block> successors() const;
   void init(const llvm::Function& f);
   void merge(const Component& c);
+  Map& map();
 };
 
 class SCC : private std::vector<Component> {
