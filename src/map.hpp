@@ -11,7 +11,6 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Domain;
 
 class Map : private std::unordered_map<Value, Domain> {
   using Super = std::unordered_map<Value, Domain>;
