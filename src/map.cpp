@@ -13,9 +13,6 @@ Map::Map(const llvm::Function &f) {
     get(Value::get_register(a)).insert(arg);
   }
 }
-bool Map::insert(const Value &key, const Value &val) {
-  return get(key).insert(val);
-}
 bool Map::insert(const Value &key, const Domain &dom) {
   return get(key).merge(dom);
 }
