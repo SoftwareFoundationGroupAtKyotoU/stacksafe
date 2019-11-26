@@ -40,35 +40,40 @@ Log::Log(const llvm::Function &func)
 Log::operator bool() const {
   return os;
 }
-void Log::print(const llvm::Instruction &i) const {
+bool Log::print(const llvm::Instruction &i) const {
   if (os) {
     endline(*os << i);
   }
+  return os;
 }
-void Log::print(const llvm::BasicBlock &b) const {
+bool Log::print(const llvm::BasicBlock &b) const {
   static const auto hr2 = "================================";
   static const auto hr = "--------------------------------";
   if (os) {
     endline(*os << hr2 << b << hr);
   }
+  return os;
 }
-void Log::print(const Value &key, const Domain &val, const Domain &add) const {
+bool Log::print(const Value &key, const Domain &val, const Domain &add) const {
   if (os && !add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
+  return os;
 }
-void Log::print(const llvm::Instruction &key, const Domain &val,
+bool Log::print(const llvm::Instruction &key, const Domain &val,
                 const Domain &add) const {
   if (os && !add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
+  return os;
 }
-void Log::print(const Error &err) const {
+bool Log::print(const Error &err) const {
   if (os) {
     err.print(*os);
   }
+  return os;
 }
 
 }  // namespace stacksafe
