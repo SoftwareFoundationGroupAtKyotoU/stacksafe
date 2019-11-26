@@ -22,6 +22,7 @@ class Map : private std::unordered_multimap<Value, Value> {
   Map(std::size_t count, const llvm::Function &f);
 
  public:
+  Map();
   using Super::begin, Super::end, Super::empty;
   using Super::value_type;
   void insert(const Value &key, const Value &val);

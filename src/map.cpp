@@ -5,6 +5,7 @@
 
 namespace stacksafe {
 
+Map::Map() : filter_{10}, hash_{0} {}
 Map::Map(std::size_t count) : filter_{count}, hash_{0} {}
 Map::Map(std::size_t count, const llvm::Function &f) : Map{count} {
   const auto g = Value::get_symbol();

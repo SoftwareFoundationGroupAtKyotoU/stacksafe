@@ -144,6 +144,9 @@ auto Scc::out_degree() const -> Set {
 void Scc::add_successor(const SccPtr& ptr) {
   succ_.emplace(ptr);
 }
+Map& Scc::map() {
+  return map_;
+}
 auto Scc::decompose(const llvm::Function& f) -> Stack {
   Tarjan tarjan{f};
   std::vector<SccPtr> ret;

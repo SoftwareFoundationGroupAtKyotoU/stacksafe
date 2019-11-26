@@ -5,6 +5,7 @@
 #include <set>
 #include <stack>
 #include <vector>
+#include "map.hpp"
 
 namespace llvm {
 class BasicBlock;
@@ -19,6 +20,7 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
   using Super = std::vector<const llvm::BasicBlock*>;
   using Set = std::set<const llvm::BasicBlock*>;
   std::set<SccPtr> succ_;
+  Map map_;
 
  public:
   using Stack = std::stack<SccPtr, std::vector<SccPtr>>;
@@ -27,6 +29,7 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
   bool is_loop() const;
   Set out_degree() const;
   void add_successor(const SccPtr& ptr);
+  Map& map();
   static Stack decompose(const llvm::Function& f);
 };
 
