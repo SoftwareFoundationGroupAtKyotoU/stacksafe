@@ -20,7 +20,6 @@ class Abstract {
   const llvm::Function &func_;
   const Log log_;
   Error error_;
-  std::string name_;
   double elapsed_;
 
  public:
