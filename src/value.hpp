@@ -44,8 +44,6 @@ class Pair : private std::tuple<Value, Value> {
   Pair(const Value &key, const Value &val);
   const Value &key() const;
   const Value &val() const;
-  static Pair get_zero();
-  static Pair get_negative();
   bool operator==(const Pair &pair) const;
   bool operator<(const Pair &pair) const;
 };

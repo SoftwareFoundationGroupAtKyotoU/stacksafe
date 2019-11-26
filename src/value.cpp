@@ -56,14 +56,6 @@ const Value &Pair::key() const {
 const Value &Pair::val() const {
   return std::get<1>(*this);
 }
-Pair Pair::get_zero() {
-  const auto zero = Value::get_zero();
-  return Pair{zero, zero};
-}
-Pair Pair::get_negative() {
-  const auto negative = Value::get_negative();
-  return Pair{negative, negative};
-}
 bool Pair::operator==(const Pair &pair) const {
   return hash_ == pair.hash_ && key() == pair.key() && val() == pair.val();
 }
