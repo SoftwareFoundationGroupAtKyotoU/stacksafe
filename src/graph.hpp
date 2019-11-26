@@ -48,6 +48,7 @@ class Component : private std::vector<Block> {
 
  public:
   explicit Component(const std::vector<Block>& vec);
+  bool contains(const Block& b) const;
 };
 
 class Tarjan {

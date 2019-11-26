@@ -49,6 +49,9 @@ bool Block::operator==(const Block& block) const {
 }
 
 Component::Component(const std::vector<Block>& vec) : Super{vec} {}
+bool Component::contains(const Block& b) const {
+  return std::find(begin(), end(), b) != end();
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
