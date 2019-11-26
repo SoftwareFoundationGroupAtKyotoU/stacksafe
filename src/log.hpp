@@ -33,6 +33,7 @@ class Log {
 
  public:
   explicit Log(const llvm::Function &func);
+  explicit operator bool() const;
   void print(const llvm::Instruction &i) const;
   void print(const llvm::BasicBlock &b) const;
   void print(const Value &key, const Domain &val, const Domain &add) const;

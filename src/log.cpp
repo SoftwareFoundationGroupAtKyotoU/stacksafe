@@ -37,6 +37,9 @@ Log::Log(const llvm::Function &func)
     *os << func;
   }
 }
+Log::operator bool() const {
+  return os;
+}
 void Log::print(const llvm::Instruction &i) const {
   if (os) {
     endline(*os << i);
