@@ -3,36 +3,37 @@
 #include <map>
 
 namespace stacksafe {
-namespace {
-struct Frame {
-  int index, low;
-  bool on;
-  Frame();
-  bool undefined() const;
-  bool is_root() const;
-  void push(int i);
-  void update(int n);
-  void pop();
-};
-Frame::Frame() : index{-1}, low{-1}, on{false} {}
-bool Frame::undefined() const {
-  return index < 0;
+
+Frame::Frame() : index_{-1}, low_{-1}, on_stack_{false} {}
+bool Frame::on_stack() const {
+  return on_stack_;
+}
+int Frame::index() const {
+  return index_;
+}
+int Frame::low() const {
+  return low_;
+}
+bool Frame::is_undef() const {
+  return index_ < 0;
 }
 bool Frame::is_root() const {
-  return index == low;
+  return index_ == low_;
 }
-void Frame::push(int i) {
-  index = low = i;
-  on = true;
+void Frame::push(int n) {
+  index_ = low_ = n;
+  on_stack_ = true;
 }
 void Frame::update(int n) {
-  if (n < low) {
-    low = n;
+  if (n < low_) {
+    low_ = n;
   }
 }
 void Frame::pop() {
-  on = false;
+  on_stack_ = false;
 }
+
+namespace {
 
 class Tarjan {
   using BB = const llvm::BasicBlock*;
@@ -58,7 +59,7 @@ Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
     ++i;
   }
   for (const auto& b : f) {
-    if (map_[&b]->undefined()) {
+    if (map_[&b]->is_undef()) {
       visit(&b);
     }
   }
@@ -86,11 +87,11 @@ Frame& Tarjan::push(BB b) {
 }
 void Tarjan::update(Frame& frame, BB succ) {
   const Frame& f = *map_[succ];
-  if (f.undefined()) {
+  if (f.is_undef()) {
     visit(succ);
-    frame.update(f.low);
-  } else if (f.on) {
-    frame.update(f.index);
+    frame.update(f.low());
+  } else if (f.on_stack()) {
+    frame.update(f.index());
   }
 }
 auto Tarjan::pop() -> BB {

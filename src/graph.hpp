@@ -16,6 +16,22 @@ namespace stacksafe {
 class Scc;
 using SccPtr = std::shared_ptr<Scc>;
 
+class Frame {
+  int index_, low_;
+  bool on_stack_;
+
+ public:
+  Frame();
+  bool on_stack() const;
+  int index() const;
+  int low() const;
+  bool is_undef() const;
+  bool is_root() const;
+  void push(int n);
+  void update(int n);
+  void pop();
+};
+
 class Scc : private std::vector<const llvm::BasicBlock*> {
   using Super = std::vector<const llvm::BasicBlock*>;
   using Set = std::set<const llvm::BasicBlock*>;
