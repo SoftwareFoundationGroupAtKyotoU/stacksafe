@@ -1,7 +1,6 @@
 #include "pool.hpp"
 #include <algorithm>
 #include <iterator>
-#include "env.hpp"
 #include "hash.hpp"
 #include "map.hpp"
 
