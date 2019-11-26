@@ -20,16 +20,17 @@ void Interpreter::reset() {
 bool Interpreter::diff() const {
   return diff_;
 }
-void Interpreter::visit(const llvm::BasicBlock &b) {
+bool Interpreter::visit(const llvm::BasicBlock &b) {
   STACKSAFE_DEBUG_LOG(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     STACKSAFE_DEBUG_LOG(i);
     Super::visit(i);
     if (error_.is_error()) {
       STACKSAFE_DEBUG_LOG(error_);
-      return;
+      break;
     }
   }
+  return diff_;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
