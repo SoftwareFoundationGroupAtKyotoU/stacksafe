@@ -26,15 +26,6 @@ Abstract::Abstract(const llvm::Function &f)
     blocks_.try_emplace(&b, pool_.make_env());
   }
 }
-void Abstract::run(const llvm::Function &f) {
-  using namespace std::chrono;
-  {
-    Stopwatch<std::milli> watch{elapsed_};
-    const auto &entry = f.getEntryBlock();
-    get(entry).merge(pool_.init(f));
-    interpret(entry);
-  }
-}
 void Abstract::run_scc(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
