@@ -5,8 +5,8 @@
 
 namespace stacksafe {
 
-Map::Map() : hash_{0} {}
-Map::Map(std::size_t count) : hash_{0} {}
+Map::Map() {}
+Map::Map(std::size_t count) {}
 Map::Map(std::size_t count, const llvm::Function &f) : Map{count} {
   const auto g = Value::get_symbol();
   insert(g, g);
@@ -24,8 +24,6 @@ bool Map::insert(const Value &key, const Value &val) {
     }
   }
   Super::emplace_hint(lb, key, val);
-  const auto hash = llvm::hash_combine(key, val);
-  hash_ ^= hash;
   return true;
 }
 bool Map::insert(const Value &key, const Domain &dom) {

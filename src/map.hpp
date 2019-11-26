@@ -15,7 +15,6 @@ class Domain;
 class Map : private std::unordered_multimap<Value, Value> {
   friend class MapPool;
   using Super = std::unordered_multimap<Value, Value>;
-  std::size_t hash_;
   explicit Map(std::size_t count);
   Map(std::size_t count, const llvm::Function &f);
 
