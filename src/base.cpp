@@ -15,15 +15,6 @@ Base::Base(Ptr val, bool is_local)
   static_assert(sizeof(Ptr) == sizeof(Int));
   assert((reinterpret_cast<Int>(val) & global_flag) == 0);
 }
-const llvm::Value* Base::value() const {
-  if (is_register()) {
-    return static_cast<const llvm::Value*>(reg_);
-  } else if (is_global()) {
-    return nullptr;
-  } else {
-    return reinterpret_cast<const llvm::Value*>(sym_ & ~global_flag);
-  }
-}
 auto Base::ptr() const -> Ptr {
   if (!is_symbol()) {
     return reg_;

@@ -21,7 +21,6 @@ class Base {
  public:
   explicit Base(const llvm::Value& val);
   Base(Ptr val, bool is_local);
-  const llvm::Value* value() const;
   Ptr ptr() const;
   Int val() const;
   bool is_symbol() const;
