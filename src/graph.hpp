@@ -72,17 +72,17 @@ class Tarjan {
   std::vector<Frame> frames_;
   std::map<const llvm::BasicBlock*, Frame*> map_;
   std::stack<Block> stack_;
-  std::vector<Scc> scc_;
+  std::vector<Component> scc_;
   int index_;
 
  public:
   Tarjan(const llvm::Function& f);
-  const std::vector<Scc>& scc() const;
+  const std::vector<Component>& scc() const;
   void visit(const Block& b);
   Frame& push(const Block& b);
   void update(Frame& frame, const Block& succ);
   Block pop();
-  Scc collect(const Block& b);
+  Component collect(const Block& b);
   Frame& map(const Block& b);
 };
 

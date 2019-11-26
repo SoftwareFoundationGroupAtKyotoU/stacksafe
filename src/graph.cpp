@@ -81,16 +81,7 @@ Map& Component::map() {
   return map_;
 }
 
-SCC::SCC(const llvm::Function& f) {
-  Tarjan tarjan{f};
-  auto scc = tarjan.scc();
-  for (const auto& c : scc) {
-    std::vector<Block> bs;
-    for (const auto& b : c) {
-      bs.emplace_back(*b);
-    }
-    Super::emplace_back(bs);
-  }
+SCC::SCC(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
   back().map().init(f);
 }
 Component SCC::pop() {
@@ -125,7 +116,7 @@ Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
     }
   }
 }
-const std::vector<Scc>& Tarjan::scc() const {
+const std::vector<Component>& Tarjan::scc() const {
   return scc_;
 }
 void Tarjan::visit(const Block& b) {
@@ -159,17 +150,17 @@ Block Tarjan::pop() {
   map(b).pop();
   return b;
 }
-Scc Tarjan::collect(const Block& b) {
-  Scc scc;
+Component Tarjan::collect(const Block& b) {
+  std::vector<Block> comp;
   while (true) {
     const auto p = pop();
-    scc.emplace_back(&p.get());
+    comp.emplace_back(p);
     if (b == p) {
       break;
     }
   }
-  std::reverse(scc.begin(), scc.end());
-  return scc;
+  std::reverse(comp.begin(), comp.end());
+  return Component{comp};
 }
 Frame& Tarjan::map(const Block& b) {
   return *map_[&b.get()];
