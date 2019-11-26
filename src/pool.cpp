@@ -16,18 +16,4 @@ bool operator==(const MapPtr &lhs, const MapPtr &rhs) {
   return hash_value(lhs.get()) == hash_value(rhs.get());
 }
 
-MapPool::MapPool(std::size_t count) : count_{count} {}
-MapRef MapPool::add(const Map &map) {
-  MapPtr ptr{map};
-  const auto [lb, ub] = Super::equal_range(ptr);
-  for (auto it = lb; it != ub; ++it) {
-    if (it->get().equals(map)) {
-      return MapRef{it->get()};
-    }
-  }
-  MapRef ref{ptr.get()};
-  Super::emplace_hint(ub, std::move(ptr));
-  return ref;
-}
-
 }  // namespace stacksafe

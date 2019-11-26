@@ -26,15 +26,6 @@ class MapPtr : private std::unique_ptr<Map> {
 };
 bool operator==(const MapPtr& lhs, const MapPtr& rhs);
 
-class MapPool : private std::unordered_multiset<MapPtr> {
-  using Super = std::unordered_multiset<MapPtr>;
-  std::size_t count_;
-
- public:
-  explicit MapPool(std::size_t count);
-  MapRef add(const Map& map);
-};
-
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_721DAB69_1C96_4A4D_BE1C_1C8B66A7065E
