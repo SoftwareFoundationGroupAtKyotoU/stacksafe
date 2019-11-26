@@ -14,9 +14,6 @@ namespace stacksafe {
 
 Interpreter::Interpreter(const Log &l, Error &e, Map &m)
     : log_{l}, error_{e}, map_{m} {}
-bool Interpreter::diff() const {
-  return diff_;
-}
 bool Interpreter::visit(const llvm::BasicBlock &b) {
   diff_ = false;
   STACKSAFE_DEBUG_LOG(b);
