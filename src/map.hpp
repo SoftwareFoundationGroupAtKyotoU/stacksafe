@@ -1,8 +1,7 @@
 #ifndef INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
-#include <unordered_map>
-#include "hash.hpp"
+#include <set>
 #include "value.hpp"
 
 namespace llvm {
@@ -12,8 +11,8 @@ class Function;
 namespace stacksafe {
 class Domain;
 
-class Map : private std::unordered_multimap<Value, Value> {
-  using Super = std::unordered_multimap<Value, Value>;
+class Map : private std::set<Pair> {
+  using Super = std::set<Pair>;
 
  public:
   Map() = default;
