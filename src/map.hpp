@@ -29,7 +29,6 @@ class Map : private std::unordered_multimap<Value, Value> {
   bool contains(const Value &key, const Value &val) const;
   bool equals(const Map &map) const;
   static Domain keys(const Map &map);
-  friend llvm::hash_code hash_value(const Map &map);
 };
 
 }  // namespace stacksafe

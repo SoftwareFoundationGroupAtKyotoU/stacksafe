@@ -6,11 +6,9 @@
 
 namespace stacksafe {
 class Base;
-class Map;
 class Value;
 
 llvm::hash_code hash_value(const Base& key);
-llvm::hash_code hash_value(const Map& map);
 llvm::hash_code hash_value(const Value& sym);
 
 }  // namespace stacksafe
