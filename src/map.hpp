@@ -25,6 +25,9 @@ class Map : private std::unordered_map<Value, Domain> {
   Domain lookup(const Value &key) const;
   void merge(const Map &map);
   static Domain keys(const Map &map);
+
+ private:
+  Domain &get(const Value &key);
 };
 
 }  // namespace stacksafe
