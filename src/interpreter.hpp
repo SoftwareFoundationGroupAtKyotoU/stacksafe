@@ -7,7 +7,7 @@ namespace stacksafe {
 class Domain;
 class Error;
 class Log;
-class MutableEnv;
+class Map;
 class Params;
 class Value;
 
@@ -16,10 +16,13 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Log &log_;
   Error &error_;
-  MutableEnv &env_;
+  Map &map_;
+  bool diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, MutableEnv &env);
+  explicit Interpreter(const Log &l, Error &error, Map &map);
+  void reset();
+  bool diff() const;
   void visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);

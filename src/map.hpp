@@ -22,9 +22,11 @@ class Map : private std::unordered_multimap<Value, Value> {
   Map(std::size_t count, const llvm::Function &f);
 
  public:
+  Map();
   using Super::begin, Super::end, Super::empty;
   using Super::value_type;
-  void insert(const Value &key, const Value &val);
+  bool insert(const Value &key, const Value &val);
+  bool insert(const Value &key, const Domain &dom);
   Domain lookup(const Value &key) const;
   bool contains(const Value &key, const Value &val) const;
   bool equals(const Map &map) const;
