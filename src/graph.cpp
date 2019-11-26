@@ -44,7 +44,7 @@ std::vector<Block> Block::successors() const {
 const llvm::BasicBlock& Block::get() const {
   return *block_;
 }
-bool Block::equals(const Block& block) const {
+bool Block::operator==(const Block& block) const {
   return block_ == block.block_;
 }
 
@@ -102,7 +102,7 @@ Scc Tarjan::collect(const Block& b) {
   while (true) {
     const auto p = pop();
     scc.emplace_back(&p.get());
-    if (b.equals(p)) {
+    if (b == p) {
       break;
     }
   }

@@ -40,7 +40,7 @@ class Block {
   explicit Block(const llvm::BasicBlock& b);
   std::vector<Block> successors() const;
   const llvm::BasicBlock& get() const;
-  bool equals(const Block& block) const;
+  bool operator==(const Block& block) const;
 };
 
 class Component : private std::vector<Block> {
