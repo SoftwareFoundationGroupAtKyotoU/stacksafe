@@ -50,14 +50,14 @@ void Log::print(const llvm::BasicBlock &b) const {
   }
 }
 void Log::print(const Value &key, const Domain &val, const Domain &add) const {
-  if (os) {
+  if (os && !add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
 }
 void Log::print(const llvm::Instruction &key, const Domain &val,
                 const Domain &add) const {
-  if (os) {
+  if (os && !add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }

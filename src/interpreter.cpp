@@ -227,9 +227,6 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
   }
 }
 void Interpreter::insert(const Value &key, const Domain &dom) {
-  if (dom.empty()) {
-    return;
-  }
   log_.print(key, lookup(key), dom);
   if (map_.insert(key, dom)) {
     diff_ = true;
@@ -243,9 +240,6 @@ void Interpreter::insert(const Value &key, const Domain &dom) {
   }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
-  if (dom.empty()) {
-    return;
-  }
   log_.print(key, lookup(key), dom);
   const auto reg = Value::get_register(key);
   if (map_.insert(reg, dom)) {
