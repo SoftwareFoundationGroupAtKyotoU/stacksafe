@@ -25,7 +25,7 @@ Domain Map::lookup(const Value &key) const {
 }
 void Map::merge(const Map &map) {
   for (const auto &[key, val] : map) {
-    insert(key, val);
+    get(key).merge(val);
   }
 }
 Domain Map::keys(const Map &map) {
