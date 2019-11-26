@@ -19,7 +19,6 @@ namespace stacksafe {
 class Abstract {
   const Log log_;
   Error error_;
-  MapPool pool_;
   std::string name_;
   double elapsed_;
 

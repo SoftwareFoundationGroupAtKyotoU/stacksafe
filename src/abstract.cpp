@@ -10,18 +10,9 @@
 #include "stopwatch.hpp"
 
 namespace stacksafe {
-namespace {
-std::size_t estimate(const llvm::Function &f) {
-  std::size_t count = 0;
-  for (const auto &b : f) {
-    count += b.size();
-  }
-  return count;
-}
-}  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
-    : log_{f}, pool_{estimate(f)}, name_{f.getName().str()}, elapsed_{0.0} {}
+    : log_{f}, name_{f.getName().str()}, elapsed_{0.0} {}
 void Abstract::run_scc(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
