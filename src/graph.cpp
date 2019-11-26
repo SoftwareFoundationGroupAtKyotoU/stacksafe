@@ -74,6 +74,9 @@ std::vector<Block> Component::out_degree() const {
   }
   return out;
 }
+void Component::merge(const Map& m) {
+  map_.merge(m);
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;

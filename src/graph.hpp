@@ -45,12 +45,14 @@ class Block {
 
 class Component : private std::vector<Block> {
   using Super = std::vector<Block>;
+  Map map_;
 
  public:
   explicit Component(const std::vector<Block>& vec);
   bool contains(const Block& b) const;
   bool is_loop() const;
   std::vector<Block> out_degree() const;
+  void merge(const Map& m);
 };
 
 class SCC : private std::vector<Component> {
