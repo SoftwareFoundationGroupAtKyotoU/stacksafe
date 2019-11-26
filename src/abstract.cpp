@@ -71,26 +71,6 @@ void Abstract::print(llvm::raw_ostream &os) const {
   }
   (os << msg).flush();
 }
-void Abstract::interpret(const llvm::BasicBlock &b) {
-  Map m = pool_.make_map();
-  MutableEnv env{get(b), pool_};
-  Interpreter i{log_, error_, m};
-  i.visit(b);
-  const auto &prev = env.finish(pool_);
-  const auto t = b.getTerminator();
-  assert(t && "no terminator");
-  for (unsigned j = 0; j < t->getNumSuccessors(); ++j) {
-    if (error_.is_error()) {
-      return;
-    }
-    const auto &succ = *t->getSuccessor(j);
-    auto &next = get(succ);
-    if (!next.includes(prev)) {
-      next.merge(prev);
-      interpret(succ);
-    }
-  }
-}
 Env &Abstract::get(const llvm::BasicBlock &b) {
   auto it = blocks_.find(&b);
   assert(it != blocks_.end() && "unknown basicblock");
