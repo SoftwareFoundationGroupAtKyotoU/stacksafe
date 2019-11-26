@@ -25,7 +25,6 @@ target_sources(${target} PRIVATE
   log.cpp
   map.cpp
   params.cpp
-  pool.cpp
   stopwatch.cpp
   utility.cpp
   value.cpp

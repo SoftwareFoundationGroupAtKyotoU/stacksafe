@@ -1,7 +1,6 @@
 #include "hash.hpp"
 #include "base.hpp"
 #include "map.hpp"
-#include "pool.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
