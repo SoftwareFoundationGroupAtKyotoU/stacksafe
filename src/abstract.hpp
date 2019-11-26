@@ -17,6 +17,7 @@ class raw_ostream;
 namespace stacksafe {
 
 class Abstract {
+  const llvm::Function &func_;
   const Log log_;
   Error error_;
   std::string name_;
