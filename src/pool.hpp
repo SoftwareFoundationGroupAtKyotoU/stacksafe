@@ -33,7 +33,6 @@ class MapPool : private std::unordered_multiset<MapPtr> {
  public:
   explicit MapPool(std::size_t count);
   MapRef add(const Map& map);
-  Env init(const llvm::Function& f);
 };
 
 }  // namespace stacksafe

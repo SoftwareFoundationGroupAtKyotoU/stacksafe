@@ -30,13 +30,5 @@ MapRef MapPool::add(const Map &map) {
   Super::emplace_hint(ub, std::move(ptr));
   return ref;
 }
-Env MapPool::init(const llvm::Function &f) {
-  Env env{count_};
-  Map map{count_, f};
-  if (!map.empty()) {
-    env.insert(add(map));
-  }
-  return env;
-}
 
 }  // namespace stacksafe
