@@ -13,7 +13,7 @@ std::string logfilename(const llvm::Function &f) {
   return "log/" + f.getName().str() + ".log";
 }
 void endline(llvm::raw_ostream &os) {
-  (os << "\n").flush();
+  os << "\n";
 }
 }  // namespace
 
