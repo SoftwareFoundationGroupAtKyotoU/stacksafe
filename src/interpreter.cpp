@@ -8,8 +8,8 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Error &error, Map &map)
-    : log_{l}, error_{error}, map_{map} {}
+Interpreter::Interpreter(const Log &l, Error &e, Map &m)
+    : log_{l}, error_{e}, map_{m} {}
 void Interpreter::reset() {
   diff_ = false;
 }
@@ -226,15 +226,15 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
     llvm_unreachable("invalid value lookup");
   }
 }
-void Interpreter::insert(const Value &key, const Domain &val) {
-  if (val.empty()) {
+void Interpreter::insert(const Value &key, const Domain &dom) {
+  if (dom.empty()) {
     return;
   }
-  log_.print(key, lookup(key), val);
-  if (map_.insert(key, val)) {
+  log_.print(key, lookup(key), dom);
+  if (map_.insert(key, dom)) {
     diff_ = true;
   }
-  if (val.has_local() && !key.is_local()) {
+  if (dom.has_local() && !key.is_local()) {
     if (key.is_global()) {
       error_.error_global();
     } else {
@@ -242,13 +242,13 @@ void Interpreter::insert(const Value &key, const Domain &val) {
     }
   }
 }
-void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
-  if (val.empty()) {
+void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
+  if (dom.empty()) {
     return;
   }
-  log_.print(key, lookup(key), val);
+  log_.print(key, lookup(key), dom);
   const auto reg = Value::get_register(key);
-  if (map_.insert(reg, val)) {
+  if (map_.insert(reg, dom)) {
     diff_ = true;
   }
 }

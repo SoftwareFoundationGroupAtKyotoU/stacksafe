@@ -20,7 +20,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   bool diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, Map &map);
+  explicit Interpreter(const Log &l, Error &e, Map &m);
   void reset();
   bool diff() const;
   void visit(const llvm::BasicBlock &b);
@@ -60,8 +60,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
  private:
   Domain lookup(const Value &key) const;
   Domain lookup(const llvm::Value &key) const;
-  void insert(const Value &key, const Domain &val);
-  void insert(const llvm::Instruction &key, const Domain &val);
+  void insert(const Value &key, const Domain &dom);
+  void insert(const llvm::Instruction &key, const Domain &dom);
   void collect(const Value &sym, Domain &done) const;
 };
 
