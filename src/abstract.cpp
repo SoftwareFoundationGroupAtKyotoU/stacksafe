@@ -13,7 +13,7 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f) : func_{f}, elapsed_{0.0} {}
-void Abstract::run_scc(const llvm::Function &f) {
+void Abstract::interpret(const llvm::Function &f) {
   Log log{func_};
   {
     Stopwatch<std::milli> watch{elapsed_};
