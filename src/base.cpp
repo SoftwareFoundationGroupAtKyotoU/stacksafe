@@ -24,6 +24,15 @@ const llvm::Value* Base::value() const {
     return reinterpret_cast<const llvm::Value*>(sym_ & ~global_flag);
   }
 }
+auto Base::ptr() const -> Ptr {
+  if (!is_symbol()) {
+    return val_;
+  } else if (is_global()) {
+    return nullptr;
+  } else {
+    return reinterpret_cast<Ptr>(sym_ & ~global_flag);
+  }
+}
 bool Base::is_symbol() const {
   return sym_ & symbol_flag;
 }
