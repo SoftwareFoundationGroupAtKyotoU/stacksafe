@@ -5,6 +5,7 @@
 #include "graph.hpp"
 #include "interpreter.hpp"
 #include "log.hpp"
+#include "map.hpp"
 #include "stopwatch.hpp"
 
 namespace stacksafe {
@@ -15,6 +16,7 @@ void Abstract::interpret() {
   {
     Stopwatch<std::milli> watch{elapsed_};
     auto scc = Scc::decompose(func_);
+    scc.top()->merge(Map{func_});
     while (!scc.empty()) {
       auto ptr = scc.top();
       scc.pop();

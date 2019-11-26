@@ -15,11 +15,10 @@ class Domain;
 class Map : private std::unordered_multimap<Value, Value> {
   friend class MapPool;
   using Super = std::unordered_multimap<Value, Value>;
-  explicit Map(std::size_t count);
-  Map(std::size_t count, const llvm::Function &f);
 
  public:
-  Map();
+  Map() = default;
+  explicit Map(const llvm::Function &f);
   using Super::begin, Super::end, Super::empty;
   using Super::value_type;
   bool insert(const Value &key, const Value &val);
