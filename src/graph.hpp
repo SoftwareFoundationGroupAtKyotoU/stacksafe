@@ -24,6 +24,7 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
   using Stack = std::stack<SccPtr, std::vector<SccPtr>>;
   using Super::begin, Super::end, Super::emplace_back;
   bool contains(const llvm::BasicBlock* b) const;
+  bool is_loop() const;
   Set out_degree() const;
   void add_successor(const SccPtr& ptr);
   static Stack decompose(const llvm::Function& f);

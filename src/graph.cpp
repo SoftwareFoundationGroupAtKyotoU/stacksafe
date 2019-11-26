@@ -116,6 +116,18 @@ Scc Tarjan::collect(BB b) {
 bool Scc::contains(const llvm::BasicBlock* b) const {
   return std::find(begin(), end(), b) != end();
 }
+bool Scc::is_loop() const {
+  for (const auto& b : *this) {
+    const auto t = b->getTerminator();
+    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+      const auto succ = t->getSuccessor(i);
+      if (contains(succ)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 auto Scc::out_degree() const -> Set {
   Set out;
   for (const auto& b : *this) {
