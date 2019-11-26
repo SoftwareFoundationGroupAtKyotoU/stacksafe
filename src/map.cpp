@@ -3,11 +3,6 @@
 #include <algorithm>
 
 namespace stacksafe {
-namespace {
-bool compare(const Pair &lhs, const Pair &rhs) {
-  return lhs.key() < rhs.key();
-}
-}  // namespace
 
 Map::Map(const llvm::Function &f) {
   const auto g = Value::get_symbol();
