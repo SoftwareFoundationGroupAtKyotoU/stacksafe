@@ -144,6 +144,11 @@ auto Scc::out_degree() const -> Set {
 void Scc::add_successor(const SccPtr& ptr) {
   succ_.emplace(ptr);
 }
+void Scc::merge(const Map& map) {
+  for (const auto& [key, val] : map) {
+    map_.insert(key, val);
+  }
+}
 Map& Scc::map() {
   return map_;
 }
