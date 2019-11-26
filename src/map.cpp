@@ -41,16 +41,6 @@ Domain Map::lookup(const Value &key) const {
   }
   return dom;
 }
-bool Map::contains(const Value &key, const Value &val) const {
-  const auto pred = [&val](const auto &pair) { return pair.second == val; };
-  auto [lb, ub] = Super::equal_range(key);
-  return std::any_of(lb, ub, pred);
-}
-bool Map::equals(const Map &map) const {
-  const Super &lhs = *this;
-  const Super &rhs = map;
-  return lhs == rhs;
-}
 Domain Map::keys(const Map &map) {
   Domain dom;
   for (const auto &pair : map) {
