@@ -57,6 +57,9 @@ class Component : private std::vector<Block> {
 
 class SCC : private std::vector<Component> {
   using Super = std::vector<Component>;
+
+ public:
+  explicit SCC(const llvm::Function& f);
 };
 
 class Tarjan {

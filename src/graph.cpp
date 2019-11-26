@@ -78,6 +78,19 @@ void Component::merge(const Map& m) {
   map_.merge(m);
 }
 
+SCC::SCC(const llvm::Function& f) {
+  Tarjan tarjan{f};
+  auto scc = tarjan.scc();
+  for (const auto& c : scc) {
+    std::vector<Block> bs;
+    for (const auto& b : c) {
+      bs.emplace_back(*b);
+    }
+    Super::emplace_back(bs);
+  }
+  back().merge(Map{f});
+}
+
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
   for (const auto& b : f) {
