@@ -114,6 +114,10 @@ Scc Tarjan::collect(BB b) {
 }
 }  // namespace
 
+bool Scc::contains(const llvm::BasicBlock* b) const {
+  return std::find(begin(), end(), b) != end();
+}
+
 std::vector<Scc> strongly_connected(const llvm::Function& f) {
   Tarjan tarjan{f};
   auto scc = tarjan.scc();

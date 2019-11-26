@@ -15,6 +15,7 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
 
  public:
   using Super::begin, Super::end, Super::emplace_back;
+  bool contains(const llvm::BasicBlock* b) const;
 };
 
 std::vector<Scc> strongly_connected(const llvm::Function& f);
