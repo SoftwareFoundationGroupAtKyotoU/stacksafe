@@ -9,7 +9,7 @@ Value::Value(const Base &base) : Base{base} {}
 Value::Value(const llvm::Value &val) : Base{val} {}
 Value::Value(const void *sym, bool is_local) : Base{sym, is_local} {}
 const llvm::Value *Value::value() const {
-  return static_cast<const llvm::Value *>(Base::ptr());
+  return static_cast<const llvm::Value *>(Base::reg());
 }
 bool Value::is_global() const {
   return Base::is_global();

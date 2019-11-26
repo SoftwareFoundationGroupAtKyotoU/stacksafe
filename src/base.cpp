@@ -15,7 +15,7 @@ Base::Base(Ptr val, bool is_local)
   static_assert(sizeof(Ptr) == sizeof(Int));
   assert((reinterpret_cast<Int>(val) & global_flag) == 0);
 }
-auto Base::ptr() const -> Ptr {
+auto Base::reg() const -> Ptr {
   if (!is_symbol()) {
     return reg_;
   } else if (is_global()) {
@@ -24,7 +24,7 @@ auto Base::ptr() const -> Ptr {
     return reinterpret_cast<Ptr>(sym_ & ~global_flag);
   }
 }
-auto Base::val() const -> Int {
+auto Base::sym() const -> Int {
   return sym_;
 }
 bool Base::is_symbol() const {
