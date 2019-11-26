@@ -40,15 +40,5 @@ class Env : private std::unordered_multimap<Value, MapRef> {
                              const MapRef& ref);
 };
 
-class MutableEnv : private Env {
-  Map diff_;
-
- public:
-  MutableEnv(const Env& env, const MapPool& pool);
-  const Env& finish(MapPool& pool);
-  void insert(const Value& key, const Domain& dom);
-  Domain lookup(const Value& key) const;
-};
-
 }  // namespace stacksafe
 #endif  // INCLUDE_GUARD_DA7CDD8A_EA48_45CA_B057_F470D4F72F4E

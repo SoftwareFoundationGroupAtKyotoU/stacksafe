@@ -78,21 +78,4 @@ bool Env::range_contains(const_iterator lb, const_iterator ub,
   return std::any_of(lb, ub, pred);
 }
 
-MutableEnv::MutableEnv(const Env& env, const MapPool& pool)
-    : Env{env}, diff_{pool.make_map()} {}
-const Env& MutableEnv::finish(MapPool& pool) {
-  if (!diff_.empty()) {
-    Env::insert(pool.add(diff_));
-  }
-  return *this;
-}
-void MutableEnv::insert(const Value& key, const Domain& dom) {
-  Env::update(diff_, key, dom);
-}
-Domain MutableEnv::lookup(const Value& key) const {
-  Domain dom = Env::lookup(key);
-  dom.merge(diff_.lookup(key));
-  return dom;
-}
-
 }  // namespace stacksafe
