@@ -6,14 +6,15 @@
 #include "env.hpp"
 #include "graph.hpp"
 #include "interpreter.hpp"
+#include "log.hpp"
 #include "map.hpp"
 #include "stopwatch.hpp"
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function &f)
-    : func_{f}, log_{f}, elapsed_{0.0} {}
+Abstract::Abstract(const llvm::Function &f) : func_{f}, elapsed_{0.0} {}
 void Abstract::run_scc(const llvm::Function &f) {
+  Log log{func_};
   {
     Stopwatch<std::milli> watch{elapsed_};
     auto scc = Scc::decompose(f);
@@ -21,7 +22,7 @@ void Abstract::run_scc(const llvm::Function &f) {
       auto ptr = scc.top();
       scc.pop();
       if (ptr->is_loop()) {
-        Interpreter i{log_, error_, ptr->map()};
+        Interpreter i{log, error_, ptr->map()};
         bool repeat = true;
         while (repeat) {
           repeat = false;
@@ -35,7 +36,7 @@ void Abstract::run_scc(const llvm::Function &f) {
         }
         ptr->convey();
       } else {
-        Interpreter i{log_, error_, ptr->map()};
+        Interpreter i{log, error_, ptr->map()};
         for (const auto &b : *ptr) {
           i.visit(*b);
         }

@@ -5,7 +5,6 @@
 #include <unordered_map>
 #include "env.hpp"
 #include "error.hpp"
-#include "log.hpp"
 #include "pool.hpp"
 
 namespace llvm {
@@ -18,7 +17,6 @@ namespace stacksafe {
 
 class Abstract {
   const llvm::Function &func_;
-  const Log log_;
   Error error_;
   double elapsed_;
 
