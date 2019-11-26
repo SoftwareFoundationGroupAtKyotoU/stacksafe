@@ -33,12 +33,13 @@ class Log {
 
  public:
   explicit Log(const llvm::Function &func);
-  void print(const llvm::Instruction &i) const;
-  void print(const llvm::BasicBlock &b) const;
-  void print(const Value &key, const Domain &val, const Domain &add) const;
-  void print(const llvm::Instruction &key, const Domain &val,
+  explicit operator bool() const;
+  bool print(const llvm::Instruction &i) const;
+  bool print(const llvm::BasicBlock &b) const;
+  bool print(const Value &key, const Domain &val, const Domain &add) const;
+  bool print(const llvm::Instruction &key, const Domain &val,
              const Domain &add) const;
-  void print(const Error &err) const;
+  bool print(const Error &err) const;
 };
 
 }  // namespace stacksafe

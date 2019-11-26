@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include <llvm/Support/Debug.h>
 #include "domain.hpp"
 #include "error.hpp"
 #include "log.hpp"
@@ -6,26 +7,25 @@
 #include "params.hpp"
 #include "utility.hpp"
 
+#define STACKSAFE_DEBUG_LOG(...) \
+  DEBUG_WITH_TYPE("log", (log_ && log_.print(__VA_ARGS__)))
+
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Error &error, Map &map)
-    : log_{l}, error_{error}, map_{map} {}
-void Interpreter::reset() {
+Interpreter::Interpreter(const Log &l, Error &e, Map &m)
+    : log_{l}, error_{e}, map_{m} {}
+bool Interpreter::visit(const llvm::BasicBlock &b) {
   diff_ = false;
-}
-bool Interpreter::diff() const {
-  return diff_;
-}
-void Interpreter::visit(const llvm::BasicBlock &b) {
-  log_.print(b);
+  STACKSAFE_DEBUG_LOG(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
-    log_.print(i);
+    STACKSAFE_DEBUG_LOG(i);
     Super::visit(i);
     if (error_.is_error()) {
-      log_.print(error_);
-      return;
+      STACKSAFE_DEBUG_LOG(error_);
+      break;
     }
   }
+  return diff_;
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
@@ -192,12 +192,12 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   Domain dom;
   dom.insert(Value::get_symbol());
   for (const auto &arg : params) {
-    for (const auto &sym : lookup(arg)) {
-      collect(sym, dom);
+    for (const auto &val : lookup(arg)) {
+      collect(val, dom);
     }
   }
-  for (const auto &sym : dom) {
-    insert(sym, dom);
+  for (const auto &val : dom) {
+    insert(val, dom);
   }
   if (is_return(dst)) {
     insert(dst, dom);
@@ -226,15 +226,10 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
     llvm_unreachable("invalid value lookup");
   }
 }
-void Interpreter::insert(const Value &key, const Domain &val) {
-  if (val.empty()) {
-    return;
-  }
-  log_.print(key, lookup(key), val);
-  if (map_.insert(key, val)) {
-    diff_ = true;
-  }
-  if (val.has_local() && !key.is_local()) {
+void Interpreter::insert(const Value &key, const Domain &dom) {
+  STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
+  update(map_.insert(key, dom));
+  if (dom.has_local() && !key.is_local()) {
     if (key.is_global()) {
       error_.error_global();
     } else {
@@ -242,22 +237,22 @@ void Interpreter::insert(const Value &key, const Domain &val) {
     }
   }
 }
-void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
-  if (val.empty()) {
-    return;
-  }
-  log_.print(key, lookup(key), val);
+void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
+  STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
   const auto reg = Value::get_register(key);
-  if (map_.insert(reg, val)) {
-    diff_ = true;
-  }
+  update(map_.insert(reg, dom));
 }
-void Interpreter::collect(const Value &sym, Domain &done) const {
-  if (!done.element(sym)) {
-    done.insert(sym);
-    for (const auto &next : lookup(sym)) {
+void Interpreter::collect(const Value &val, Domain &done) const {
+  if (!done.element(val)) {
+    done.insert(val);
+    for (const auto &next : lookup(val)) {
       collect(next, done);
     }
+  }
+}
+void Interpreter::update(bool updated) {
+  if (updated) {
+    diff_ = true;
   }
 }
 

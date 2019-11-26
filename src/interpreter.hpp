@@ -20,10 +20,8 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   bool diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, Map &map);
-  void reset();
-  bool diff() const;
-  void visit(const llvm::BasicBlock &b);
+  explicit Interpreter(const Log &l, Error &e, Map &m);
+  bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
@@ -60,9 +58,10 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
  private:
   Domain lookup(const Value &key) const;
   Domain lookup(const llvm::Value &key) const;
-  void insert(const Value &key, const Domain &val);
-  void insert(const llvm::Instruction &key, const Domain &val);
-  void collect(const Value &sym, Domain &done) const;
+  void insert(const Value &key, const Domain &dom);
+  void insert(const llvm::Instruction &key, const Domain &dom);
+  void collect(const Value &val, Domain &done) const;
+  void update(bool updated);
 };
 
 }  // namespace stacksafe

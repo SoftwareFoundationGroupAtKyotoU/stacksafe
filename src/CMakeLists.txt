@@ -16,7 +16,6 @@ target_sources(${target} PRIVATE
   base.cpp
   cache.cpp
   domain.cpp
-  env.cpp
   error.cpp
   filter.cpp
   graph.cpp
@@ -26,7 +25,6 @@ target_sources(${target} PRIVATE
   log.cpp
   map.cpp
   params.cpp
-  pool.cpp
   stopwatch.cpp
   utility.cpp
   value.cpp
