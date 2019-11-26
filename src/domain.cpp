@@ -4,16 +4,22 @@
 namespace stacksafe {
 
 Domain::Domain(const Value &val) : Super{val} {}
-void Domain::insert(const Value &sym) {
+bool Domain::insert(const Value &sym) {
   const auto [lb, ub] = std::equal_range(begin(), end(), sym);
   if (lb == ub) {
     Super::insert(lb, sym);
+    return true;
   }
+  return false;
 }
-void Domain::merge(const Domain &that) {
+bool Domain::merge(const Domain &that) {
+  bool update = false;
   for (const auto &sym : that) {
-    insert(sym);
+    if (insert(sym)) {
+      update = true;
+    }
   }
+  return update;
 }
 bool Domain::element(const Value &sym) const {
   return std::binary_search(begin(), end(), sym);

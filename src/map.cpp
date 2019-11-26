@@ -1,7 +1,6 @@
 #include "map.hpp"
 #include <llvm/IR/Function.h>
 #include <algorithm>
-#include "domain.hpp"
 
 namespace stacksafe {
 namespace {
@@ -20,33 +19,29 @@ Map::Map(const llvm::Function &f) {
   }
 }
 bool Map::insert(const Value &key, const Value &val) {
-  return Super::emplace(key, val).second;
+  auto it = Super::try_emplace(key, Domain{}).first;
+  return it->second.insert(val);
 }
 bool Map::insert(const Value &key, const Domain &dom) {
-  bool diff = false;
-  for (const auto &val : dom) {
-    if (insert(key, val)) {
-      diff = true;
-    }
-  }
-  return diff;
+  auto it = Super::try_emplace(key, Domain{}).first;
+  return it->second.merge(dom);
 }
 Domain Map::lookup(const Value &key) const {
-  const auto [lb, ub] =
-      std::equal_range(begin(), end(), Pair{key, key}, compare);
-  Domain dom;
-  for (auto it = lb; it != ub; ++it) {
-    dom.insert(it->val());
+  if (auto it = Super::find(key); it != end()) {
+    return it->second;
+  } else {
+    return Domain{};
   }
-  return dom;
 }
 void Map::merge(const Map &map) {
-  Super::insert(map.begin(), map.end());
+  for (const auto &[key, val] : map) {
+    insert(key, val);
+  }
 }
 Domain Map::keys(const Map &map) {
   Domain dom;
-  for (const auto &pair : map) {
-    dom.insert(pair.key());
+  for (const auto &[key, val] : map) {
+    dom.insert(key);
   }
   return dom;
 }
