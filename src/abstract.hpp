@@ -1,14 +1,9 @@
 #ifndef INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
-#include <string>
-#include <unordered_map>
-#include "env.hpp"
 #include "error.hpp"
-#include "pool.hpp"
 
 namespace llvm {
-class BasicBlock;
 class Function;
 class raw_ostream;
 }  // namespace llvm
