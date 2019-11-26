@@ -5,7 +5,6 @@
 
 namespace llvm {
 class Value;
-class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -29,7 +28,6 @@ class Base {
   bool is_global() const;
   static bool equals(const Base& lhs, const Base& rhs);
   static bool less(const Base& lhs, const Base& rhs);
-  friend llvm::hash_code hash_value(const Base& key);
 };
 
 }  // namespace stacksafe
