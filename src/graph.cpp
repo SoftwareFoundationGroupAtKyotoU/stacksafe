@@ -52,6 +52,16 @@ Component::Component(const std::vector<Block>& vec) : Super{vec} {}
 bool Component::contains(const Block& b) const {
   return std::find(begin(), end(), b) != end();
 }
+bool Component::is_loop() const {
+  for (const auto& b : *this) {
+    for (const auto& succ : b.successors()) {
+      if (contains(succ)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
