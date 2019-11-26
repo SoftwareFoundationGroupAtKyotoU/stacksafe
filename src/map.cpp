@@ -30,8 +30,8 @@ void Map::merge(const Map &map) {
 }
 Domain Map::keys(const Map &map) {
   Domain dom;
-  for (const auto &[key, val] : map) {
-    dom.insert(key);
+  for (const auto &pair : map) {
+    dom.insert(pair.first);
   }
   return dom;
 }
