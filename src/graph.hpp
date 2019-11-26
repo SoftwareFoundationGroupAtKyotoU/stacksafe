@@ -60,6 +60,7 @@ class SCC : private std::vector<Component> {
 
  public:
   explicit SCC(const llvm::Function& f);
+  Component pop();
 };
 
 class Tarjan {

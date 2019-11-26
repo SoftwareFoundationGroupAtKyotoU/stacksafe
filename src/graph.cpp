@@ -90,6 +90,11 @@ SCC::SCC(const llvm::Function& f) {
   }
   back().merge(Map{f});
 }
+Component SCC::pop() {
+  auto ret = std::move(back());
+  pop_back();
+  return ret;
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
