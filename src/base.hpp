@@ -14,7 +14,7 @@ class Base {
   using Ptr = const void*;
   using Int = std::uintptr_t;
   union {
-    Ptr val_;
+    Ptr reg_;
     Int sym_;
   };
 

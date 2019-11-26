@@ -8,7 +8,7 @@ const std::uintptr_t symbol_flag{0x1};
 const std::uintptr_t global_flag{0x3};
 }  // namespace
 
-Base::Base(const llvm::Value& val) : val_{&val} {}
+Base::Base(const llvm::Value& val) : reg_{&val} {}
 Base::Base(Ptr val, bool is_local)
     : sym_{(val ? reinterpret_cast<Int>(val) : global_flag) |
            (is_local ? symbol_flag : global_flag)} {
@@ -17,7 +17,7 @@ Base::Base(Ptr val, bool is_local)
 }
 const llvm::Value* Base::value() const {
   if (is_register()) {
-    return static_cast<const llvm::Value*>(val_);
+    return static_cast<const llvm::Value*>(reg_);
   } else if (is_global()) {
     return nullptr;
   } else {
@@ -26,7 +26,7 @@ const llvm::Value* Base::value() const {
 }
 auto Base::ptr() const -> Ptr {
   if (!is_symbol()) {
-    return val_;
+    return reg_;
   } else if (is_global()) {
     return nullptr;
   } else {
