@@ -7,7 +7,6 @@
 namespace stacksafe {
 class Base;
 class Map;
-class MapRef;
 class Value;
 
 llvm::hash_code hash_value(const Base& key);
@@ -17,10 +16,6 @@ llvm::hash_code hash_value(const Value& sym);
 }  // namespace stacksafe
 
 namespace std {
-template <>
-struct hash<stacksafe::MapRef> {
-  size_t operator()(const stacksafe::MapRef& r) const;
-};
 template <>
 struct hash<stacksafe::Value> {
   size_t operator()(const stacksafe::Value& sym) const;

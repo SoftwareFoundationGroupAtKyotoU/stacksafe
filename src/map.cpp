@@ -70,9 +70,4 @@ Domain Map::keys(const Map &map) {
   return dom;
 }
 
-MapRef::MapRef(const Map &map) : ptr_{&map} {}
-const Map &MapRef::get() const {
-  return *ptr_;
-}
-
 }  // namespace stacksafe

@@ -18,9 +18,6 @@ llvm::hash_code hash_value(const Value& sym) {
 }  // namespace stacksafe
 
 namespace std {
-size_t hash<stacksafe::MapRef>::operator()(const stacksafe::MapRef& r) const {
-  return hash_value(r.get());
-}
 size_t hash<stacksafe::Value>::operator()(const stacksafe::Value& sym) const {
   return hash_value(sym);
 }

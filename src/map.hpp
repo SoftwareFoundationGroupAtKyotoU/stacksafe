@@ -35,14 +35,6 @@ class Map : private std::unordered_multimap<Value, Value> {
   friend llvm::hash_code hash_value(const Map &map);
 };
 
-class MapRef {
-  const Map *ptr_;
-
- public:
-  explicit MapRef(const Map &map);
-  const Map &get() const;
-};
-
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
