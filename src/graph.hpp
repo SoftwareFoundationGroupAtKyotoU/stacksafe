@@ -26,9 +26,8 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
   bool contains(const llvm::BasicBlock* b) const;
   Set out_degree() const;
   void add_successor(const SccPtr& ptr);
+  static Stack decompose(const llvm::Function& f);
 };
-
-Scc::Stack strongly_connected(const llvm::Function& f);
 
 }  // namespace stacksafe
 
