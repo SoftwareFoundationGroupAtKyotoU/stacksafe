@@ -15,30 +15,22 @@ void Abstract::interpret() {
   Log log{func_};
   {
     Stopwatch<std::milli> watch{elapsed_};
-    auto scc = Scc::decompose(func_);
-    scc.top()->merge(Map{func_});
+    SCC scc{func_};
     while (!scc.empty()) {
-      auto ptr = scc.top();
-      scc.pop();
-      if (ptr->is_loop()) {
-        Interpreter i{log, error_, ptr->map()};
-        bool repeat = true;
-        while (repeat) {
-          repeat = false;
-          for (const auto &b : *ptr) {
-            if (i.visit(*b)) {
-              repeat = true;
-            }
+      auto c = scc.pop();
+      Interpreter i{log, error_, c.map()};
+      do {
+        bool repeat = false;
+        for (const auto &b : c) {
+          if (i.visit(b.get())) {
+            repeat = true;
           }
         }
-        ptr->convey();
-      } else {
-        Interpreter i{log, error_, ptr->map()};
-        for (const auto &b : *ptr) {
-          i.visit(*b);
+        if (c.is_loop() && repeat) {
+          continue;
         }
-        ptr->convey();
-      }
+      } while (false);
+      scc.distribute(c);
     }
   }
 }

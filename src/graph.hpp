@@ -48,6 +48,7 @@ class Component : private std::vector<Block> {
   Map map_;
 
  public:
+  using Super::begin, Super::end;
   explicit Component(const std::vector<Block>& vec);
   bool contains(const Block& b) const;
   bool is_loop() const;
@@ -61,6 +62,7 @@ class SCC : private std::vector<Component> {
   using Super = std::vector<Component>;
 
  public:
+  using Super::empty;
   explicit SCC(const llvm::Function& f);
   Component pop();
   Component& find(const Block& b);
