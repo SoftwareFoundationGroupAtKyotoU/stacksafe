@@ -39,6 +39,7 @@ class Block {
  public:
   explicit Block(const llvm::BasicBlock& b);
   std::vector<Block> successors() const;
+  const llvm::BasicBlock& get() const;
 };
 
 class Tarjan {
