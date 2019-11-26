@@ -9,8 +9,8 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Error &error, MutableEnv &env)
-    : log_{l}, error_{error}, env_{env} {}
+Interpreter::Interpreter(const Log &l, Error &error, MutableEnv &env, Map &map)
+    : log_{l}, error_{error}, env_{env}, map_{map} {}
 void Interpreter::visit(const llvm::BasicBlock &b) {
   log_.print(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
@@ -227,6 +227,7 @@ void Interpreter::insert(const Value &key, const Domain &val) {
   }
   log_.print(key, lookup(key), val);
   env_.insert(key, val);
+  map_.insert(key, val);
   if (val.has_local() && !key.is_local()) {
     if (key.is_global()) {
       error_.error_global();
@@ -242,6 +243,7 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   log_.print(key, lookup(key), val);
   const auto reg = Value::get_register(key);
   env_.insert(reg, val);
+  map_.insert(reg, val);
 }
 void Interpreter::collect(const Value &sym, Domain &done) const {
   if (!done.element(sym)) {

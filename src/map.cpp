@@ -27,6 +27,11 @@ void Map::insert(const Value &key, const Value &val) {
   hash_ ^= hash;
   filter_.add(hash);
 }
+void Map::insert(const Value &key, const Domain &dom) {
+  for (const auto &val : dom) {
+    insert(key, val);
+  }
+}
 Domain Map::lookup(const Value &key) const {
   Domain dom;
   auto [lb, ub] = Super::equal_range(key);
