@@ -24,7 +24,6 @@ void Abstract::interpret() {
         while (repeat) {
           repeat = false;
           for (const auto &b : *ptr) {
-            i.reset();
             if (i.visit(*b)) {
               repeat = true;
             }

@@ -21,7 +21,6 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
 
  public:
   explicit Interpreter(const Log &l, Error &e, Map &m);
-  void reset();
   bool diff() const;
   bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);

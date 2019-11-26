@@ -14,13 +14,11 @@ namespace stacksafe {
 
 Interpreter::Interpreter(const Log &l, Error &e, Map &m)
     : log_{l}, error_{e}, map_{m} {}
-void Interpreter::reset() {
-  diff_ = false;
-}
 bool Interpreter::diff() const {
   return diff_;
 }
 bool Interpreter::visit(const llvm::BasicBlock &b) {
+  diff_ = false;
   STACKSAFE_DEBUG_LOG(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     STACKSAFE_DEBUG_LOG(i);
