@@ -232,9 +232,7 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
 }
 void Interpreter::insert(const Value &key, const Domain &dom) {
   STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
-  if (map_.insert(key, dom)) {
-    diff_ = true;
-  }
+  update(map_.insert(key, dom));
   if (dom.has_local() && !key.is_local()) {
     if (key.is_global()) {
       error_.error_global();
@@ -246,9 +244,7 @@ void Interpreter::insert(const Value &key, const Domain &dom) {
 void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
   STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
   const auto reg = Value::get_register(key);
-  if (map_.insert(reg, dom)) {
-    diff_ = true;
-  }
+  update(map_.insert(reg, dom));
 }
 void Interpreter::collect(const Value &val, Domain &done) const {
   if (!done.element(val)) {
@@ -256,6 +252,11 @@ void Interpreter::collect(const Value &val, Domain &done) const {
     for (const auto &next : lookup(val)) {
       collect(next, done);
     }
+  }
+}
+void Interpreter::update(bool updated) {
+  if (updated) {
+    diff_ = true;
   }
 }
 
