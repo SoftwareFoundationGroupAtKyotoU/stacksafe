@@ -3,6 +3,7 @@
 
 namespace stacksafe {
 
+Domain::Domain(const Value &val) : Super{val} {}
 void Domain::insert(const Value &sym) {
   const auto [lb, ub] = std::equal_range(begin(), end(), sym);
   if (lb == ub) {

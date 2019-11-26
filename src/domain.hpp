@@ -12,6 +12,7 @@ class Domain : private std::vector<Value> {
  public:
   using Super::begin, Super::end, Super::empty;
   Domain() = default;
+  explicit Domain(const Value &val);
   void insert(const Value &sym);
   void merge(const Domain &that);
   bool element(const Value &sym) const;
