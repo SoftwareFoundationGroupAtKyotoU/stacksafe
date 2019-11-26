@@ -22,7 +22,7 @@ class Abstract {
 
  public:
   explicit Abstract(const llvm::Function &f);
-  void interpret(const llvm::Function &f);
+  void interpret();
   void print(llvm::raw_ostream &os) const;
 };
 
