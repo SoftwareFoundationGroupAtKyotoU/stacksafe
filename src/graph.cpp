@@ -130,6 +130,9 @@ auto Scc::out_degree() const -> Set {
   }
   return out;
 }
+void Scc::add_successor(const SccPtr& ptr) {
+  succ_.emplace(ptr);
+}
 
 std::vector<Scc> strongly_connected(const llvm::Function& f) {
   Tarjan tarjan{f};
