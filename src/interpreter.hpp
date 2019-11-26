@@ -62,7 +62,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   Domain lookup(const llvm::Value &key) const;
   void insert(const Value &key, const Domain &dom);
   void insert(const llvm::Instruction &key, const Domain &dom);
-  void collect(const Value &sym, Domain &done) const;
+  void collect(const Value &val, Domain &done) const;
 };
 
 }  // namespace stacksafe

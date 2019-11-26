@@ -196,12 +196,12 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
   Domain dom;
   dom.insert(Value::get_symbol());
   for (const auto &arg : params) {
-    for (const auto &sym : lookup(arg)) {
-      collect(sym, dom);
+    for (const auto &val : lookup(arg)) {
+      collect(val, dom);
     }
   }
-  for (const auto &sym : dom) {
-    insert(sym, dom);
+  for (const auto &val : dom) {
+    insert(val, dom);
   }
   if (is_return(dst)) {
     insert(dst, dom);
@@ -250,10 +250,10 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
     diff_ = true;
   }
 }
-void Interpreter::collect(const Value &sym, Domain &done) const {
-  if (!done.element(sym)) {
-    done.insert(sym);
-    for (const auto &next : lookup(sym)) {
+void Interpreter::collect(const Value &val, Domain &done) const {
+  if (!done.element(val)) {
+    done.insert(val);
+    for (const auto &next : lookup(val)) {
       collect(next, done);
     }
   }
