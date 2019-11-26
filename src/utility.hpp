@@ -21,7 +21,7 @@ bool is_return(const llvm::CallInst& i);
 
 namespace debug {
 int get_operand(const llvm::Value* v);
-void stderr(const std::string& str);
+void print(const std::string& str);
 std::string to_str(int num);
 std::string to_str(const Domain& dom);
 std::string to_str(const Map& map);
