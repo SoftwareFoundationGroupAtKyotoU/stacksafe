@@ -57,12 +57,12 @@ class Component : private std::vector<Block> {
   Map& map();
 };
 
-class SCC : private std::vector<Component> {
+class Scc : private std::vector<Component> {
   using Super = std::vector<Component>;
 
  public:
   using Super::empty;
-  explicit SCC(const llvm::Function& f);
+  explicit Scc(const llvm::Function& f);
   Component pop();
   Component& find(const Block& b);
   void distribute(const Component& c);

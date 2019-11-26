@@ -81,22 +81,22 @@ Map& Component::map() {
   return map_;
 }
 
-SCC::SCC(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
+Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
   back().map().init(f);
 }
-Component SCC::pop() {
+Component Scc::pop() {
   auto ret = std::move(back());
   pop_back();
   return ret;
 }
-Component& SCC::find(const Block& b) {
+Component& Scc::find(const Block& b) {
   const auto pred = [&b](const Component& c) { return c.contains(b); };
   auto it = std::find_if(begin(), end(), pred);
   assert(it != end() && std::find_if(std::next(it), end(), pred) == end() &&
          "SCC must be a partition");
   return *it;
 }
-void SCC::distribute(const Component& prev) {
+void Scc::distribute(const Component& prev) {
   for (const auto& succ : prev.successors()) {
     auto& next = find(succ);
     next.merge(prev);

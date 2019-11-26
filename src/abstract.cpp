@@ -15,7 +15,7 @@ void Abstract::interpret() {
   Log log{func_};
   {
     Stopwatch<std::milli> watch{elapsed_};
-    SCC scc{func_};
+    Scc scc{func_};
     while (!scc.empty()) {
       auto c = scc.pop();
       Interpreter i{log, error_, c.map()};
