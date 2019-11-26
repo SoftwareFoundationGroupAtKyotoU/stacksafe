@@ -4,6 +4,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include "domain.hpp"
 #include "env.hpp"
+#include "graph.hpp"
 #include "interpreter.hpp"
 #include "map.hpp"
 #include "stopwatch.hpp"
@@ -32,6 +33,39 @@ void Abstract::run(const llvm::Function &f) {
     const auto &entry = f.getEntryBlock();
     get(entry).merge(pool_.init(f));
     interpret(entry);
+  }
+}
+void Abstract::run_scc(const llvm::Function &f) {
+  const auto &entry = f.getEntryBlock();
+  MutableEnv env{get(entry), pool_};
+  {
+    Stopwatch<std::milli> watch{elapsed_};
+    auto scc = Scc::decompose(f);
+    while (!scc.empty()) {
+      auto ptr = scc.top();
+      scc.pop();
+      if (ptr->is_loop()) {
+        Interpreter i{log_, error_, env, ptr->map()};
+        bool repeat = true;
+        while (repeat) {
+          repeat = false;
+          for (const auto &b : *ptr) {
+            i.reset();
+            i.visit(*b);
+            if (i.diff()) {
+              repeat = true;
+            }
+          }
+        }
+        ptr->convey();
+      } else {
+        Interpreter i{log_, error_, env, ptr->map()};
+        for (const auto &b : *ptr) {
+          i.visit(*b);
+        }
+        ptr->convey();
+      }
+    }
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
