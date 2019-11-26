@@ -16,22 +16,27 @@ Map::Map(std::size_t count, const llvm::Function &f) : Map{count} {
     insert(Value::get_register(a), arg);
   }
 }
-void Map::insert(const Value &key, const Value &val) {
+bool Map::insert(const Value &key, const Value &val) {
   auto [lb, ub] = Super::equal_range(key);
   for (auto it = lb; it != ub; ++it) {
     if (it->second == val) {
-      return;
+      return false;
     }
   }
   Super::emplace_hint(lb, key, val);
   const auto hash = llvm::hash_combine(key, val);
   hash_ ^= hash;
   filter_.add(hash);
+  return true;
 }
-void Map::insert(const Value &key, const Domain &dom) {
+bool Map::insert(const Value &key, const Domain &dom) {
+  bool diff = false;
   for (const auto &val : dom) {
-    insert(key, val);
+    if (insert(key, val)) {
+      diff = true;
+    }
   }
+  return diff;
 }
 Domain Map::lookup(const Value &key) const {
   Domain dom;
