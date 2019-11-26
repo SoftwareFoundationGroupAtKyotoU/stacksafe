@@ -33,6 +33,14 @@ void Frame::pop() {
 }
 
 Block::Block(const llvm::BasicBlock& b) : block_{&b} {}
+std::vector<Block> Block::successors() const {
+  std::vector<Block> vec;
+  const auto t = block_->getTerminator();
+  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+    vec.emplace_back(*t->getSuccessor(i));
+  }
+  return vec;
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
