@@ -1,7 +1,6 @@
 #include "graph.hpp"
 #include <llvm/IR/Function.h>
 #include <map>
-#include <stack>
 
 namespace stacksafe {
 namespace {
@@ -134,11 +133,24 @@ void Scc::add_successor(const SccPtr& ptr) {
   succ_.emplace(ptr);
 }
 
-std::vector<Scc> strongly_connected(const llvm::Function& f) {
+Scc::Stack strongly_connected(const llvm::Function& f) {
   Tarjan tarjan{f};
-  auto scc = tarjan.scc();
-  std::reverse(scc.begin(), scc.end());
-  return scc;
+  std::vector<SccPtr> ret;
+  for (auto scc : tarjan.scc()) {
+    for (const auto& b : scc.out_degree()) {
+      const auto pred = [b](const SccPtr& ptr) { return ptr->contains(b); };
+      if (auto it = std::find_if(ret.begin(), ret.end(), pred);
+          it != ret.end()) {
+        scc.add_successor(*it);
+        assert(std::find_if(std::next(it), ret.end(), pred) == ret.end() &&
+               "multiple successor SCCs");
+      } else {
+        llvm_unreachable("ERROR: broken SCC");
+      }
+    }
+    ret.emplace_back(std::make_shared<Scc>(std::move(scc)));
+  }
+  return Scc::Stack{ret};
 }
 
 }  // namespace stacksafe

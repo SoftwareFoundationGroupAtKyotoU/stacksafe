@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <set>
+#include <stack>
 #include <vector>
 
 namespace llvm {
@@ -20,13 +21,14 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
   std::set<SccPtr> succ_;
 
  public:
+  using Stack = std::stack<SccPtr, std::vector<SccPtr>>;
   using Super::begin, Super::end, Super::emplace_back;
   bool contains(const llvm::BasicBlock* b) const;
   Set out_degree() const;
   void add_successor(const SccPtr& ptr);
 };
 
-std::vector<Scc> strongly_connected(const llvm::Function& f);
+Scc::Stack strongly_connected(const llvm::Function& f);
 
 }  // namespace stacksafe
 
