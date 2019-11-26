@@ -62,7 +62,7 @@ bool Component::is_loop() const {
   }
   return false;
 }
-std::vector<Block> Component::out_degree() const {
+std::vector<Block> Component::successors() const {
   std::vector<Block> out;
   for (const auto& b : *this) {
     for (const auto& succ : b.successors()) {
@@ -106,7 +106,7 @@ Component& SCC::find(const Block& b) {
   return *it;
 }
 void SCC::distribute(const Component& prev) {
-  for (const auto& succ : prev.out_degree()) {
+  for (const auto& succ : prev.successors()) {
     auto& next = find(succ);
     next.merge(prev);
   }
