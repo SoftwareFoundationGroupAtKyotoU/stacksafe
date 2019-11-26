@@ -55,33 +55,32 @@ Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
     ++i;
   }
   for (const auto& b : f) {
-    if (map(&b).is_undef()) {
-      visit(&b);
+    const Block block{b};
+    if (map(block).is_undef()) {
+      visit(block);
     }
   }
 }
 const std::vector<Scc>& Tarjan::scc() const {
   return scc_;
 }
-void Tarjan::visit(BB b) {
+void Tarjan::visit(const Block& b) {
   Frame& frame = push(b);
-  const auto t = b->getTerminator();
-  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-    const auto succ = t->getSuccessor(i);
+  for (const auto& succ : b.successors()) {
     update(frame, succ);
   }
   if (frame.is_root()) {
     scc_.emplace_back(collect(b));
   }
 }
-Frame& Tarjan::push(BB b) {
+Frame& Tarjan::push(const Block& b) {
   Frame& frame = map(b);
   frame.push(index_);
   ++index_;
   stack_.push(b);
   return frame;
 }
-void Tarjan::update(Frame& frame, BB succ) {
+void Tarjan::update(Frame& frame, const Block& succ) {
   const Frame& f = map(succ);
   if (f.is_undef()) {
     visit(succ);
@@ -90,26 +89,26 @@ void Tarjan::update(Frame& frame, BB succ) {
     frame.update(f.index());
   }
 }
-auto Tarjan::pop() -> BB {
+Block Tarjan::pop() {
   const auto b = stack_.top();
   stack_.pop();
   map(b).pop();
   return b;
 }
-Scc Tarjan::collect(BB b) {
+Scc Tarjan::collect(const Block& b) {
   Scc scc;
   while (true) {
     const auto p = pop();
-    scc.emplace_back(p);
-    if (b == p) {
+    scc.emplace_back(&p.get());
+    if (b.equals(p)) {
       break;
     }
   }
   std::reverse(scc.begin(), scc.end());
   return scc;
 }
-Frame& Tarjan::map(BB b) {
-  return *map_[b];
+Frame& Tarjan::map(const Block& b) {
+  return *map_[&b.get()];
 }
 
 bool Scc::contains(const llvm::BasicBlock* b) const {
