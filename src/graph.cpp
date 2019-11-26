@@ -105,6 +105,12 @@ Component& SCC::find(const Block& b) {
          "SCC must be a partition");
   return *it;
 }
+void SCC::distribute(const Component& prev) {
+  for (const auto& succ : prev.out_degree()) {
+    auto& next = find(succ);
+    next.merge(prev);
+  }
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
