@@ -13,13 +13,11 @@ bool Domain::insert(const Value &sym) {
   return false;
 }
 bool Domain::merge(const Domain &that) {
-  bool update = false;
+  const auto size = Super::size();
   for (const auto &sym : that) {
-    if (insert(sym)) {
-      update = true;
-    }
+    insert(sym);
   }
-  return update;
+  return size != Super::size();
 }
 bool Domain::element(const Value &sym) const {
   return std::binary_search(begin(), end(), sym);
