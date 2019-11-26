@@ -51,17 +51,13 @@ const Value &Pair::val() const {
   return std::get<1>(*this);
 }
 bool Pair::operator==(const Pair &pair) const {
-  return hash_ == pair.hash_ && key() == pair.key() && val() == pair.val();
+  return key() == pair.key() && val() == pair.val();
 }
 bool Pair::operator<(const Pair &pair) const {
-  if (hash_ == pair.hash_) {
-    if (key() == pair.key()) {
-      return val() < pair.val();
-    } else {
-      return key() < pair.key();
-    }
+  if (key() == pair.key()) {
+    return val() < pair.val();
   } else {
-    return hash_ < pair.hash_;
+    return key() < pair.key();
   }
 }
 
