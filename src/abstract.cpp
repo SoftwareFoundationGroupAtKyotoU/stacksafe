@@ -71,10 +71,5 @@ void Abstract::print(llvm::raw_ostream &os) const {
   }
   (os << msg).flush();
 }
-Env &Abstract::get(const llvm::BasicBlock &b) {
-  auto it = blocks_.find(&b);
-  assert(it != blocks_.end() && "unknown basicblock");
-  return it->second;
-}
 
 }  // namespace stacksafe
