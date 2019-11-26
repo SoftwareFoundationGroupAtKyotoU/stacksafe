@@ -50,6 +50,7 @@ class Component : private std::vector<Block> {
   explicit Component(const std::vector<Block>& vec);
   bool contains(const Block& b) const;
   bool is_loop() const;
+  std::vector<Block> out_degree() const;
 };
 
 class Tarjan {
