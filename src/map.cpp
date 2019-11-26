@@ -13,6 +13,15 @@ Map::Map(const llvm::Function &f) {
     get(Value::get_register(a)).insert(arg);
   }
 }
+void Map::init(const llvm::Function &f) {
+  const auto g = Value::get_symbol();
+  get(g).insert(g);
+  for (const auto &a : f.args()) {
+    const auto arg = Value::get_symbol(a);
+    get(arg).insert(arg);
+    get(Value::get_register(a)).insert(arg);
+  }
+}
 bool Map::insert(const Value &key, const Domain &dom) {
   return get(key).merge(dom);
 }

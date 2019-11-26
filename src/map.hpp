@@ -16,9 +16,10 @@ class Map : private std::unordered_map<Value, Domain> {
   using Super = std::unordered_map<Value, Domain>;
 
  public:
+  using Super::begin, Super::end;
   Map() = default;
   explicit Map(const llvm::Function &f);
-  using Super::begin, Super::end;
+  void init(const llvm::Function &f);
   bool insert(const Value &key, const Domain &dom);
   Domain lookup(const Value &key) const;
   void merge(const Map &map);
