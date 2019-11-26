@@ -52,7 +52,7 @@ Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
     ++i;
   }
   for (const auto& b : f) {
-    if (map_[&b]->is_undef()) {
+    if (map(&b).is_undef()) {
       visit(&b);
     }
   }
@@ -72,14 +72,14 @@ void Tarjan::visit(BB b) {
   }
 }
 Frame& Tarjan::push(BB b) {
-  Frame& frame = *map_[b];
+  Frame& frame = map(b);
   frame.push(index_);
   ++index_;
   stack_.push(b);
   return frame;
 }
 void Tarjan::update(Frame& frame, BB succ) {
-  const Frame& f = *map_[succ];
+  const Frame& f = map(succ);
   if (f.is_undef()) {
     visit(succ);
     frame.update(f.low());
@@ -90,7 +90,7 @@ void Tarjan::update(Frame& frame, BB succ) {
 auto Tarjan::pop() -> BB {
   const auto b = stack_.top();
   stack_.pop();
-  map_[b]->pop();
+  map(b).pop();
   return b;
 }
 Scc Tarjan::collect(BB b) {
@@ -104,6 +104,9 @@ Scc Tarjan::collect(BB b) {
   }
   std::reverse(scc.begin(), scc.end());
   return scc;
+}
+Frame& Tarjan::map(BB b) {
+  return *map_[b];
 }
 
 bool Scc::contains(const llvm::BasicBlock* b) const {

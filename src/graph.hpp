@@ -58,6 +58,7 @@ class Tarjan {
   void update(Frame& frame, BB succ);
   BB pop();
   Scc collect(BB b);
+  Frame& map(BB b);
 };
 
 class Scc : private std::vector<const llvm::BasicBlock*> {
