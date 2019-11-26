@@ -33,6 +33,13 @@ class Frame {
   void pop();
 };
 
+class Block {
+  const llvm::BasicBlock* block_;
+
+ public:
+  explicit Block(const llvm::BasicBlock& b);
+};
+
 class Tarjan {
   using BB = const llvm::BasicBlock*;
   std::vector<Frame> frames_;

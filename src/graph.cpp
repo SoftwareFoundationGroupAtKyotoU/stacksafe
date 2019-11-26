@@ -32,6 +32,8 @@ void Frame::pop() {
   on_stack_ = false;
 }
 
+Block::Block(const llvm::BasicBlock& b) : block_{&b} {}
+
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
   for (const auto& b : f) {
