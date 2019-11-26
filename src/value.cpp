@@ -20,12 +20,6 @@ bool Value::is_local() const {
 bool Value::is_argument() const {
   return !is_local() && !is_global();
 }
-Value Value::get_zero() {
-  return Value{Base::get_zero()};
-}
-Value Value::get_negative() {
-  return Value{Base::get_negative()};
-}
 Value Value::get_symbol() {
   return Value{nullptr, false};
 }
