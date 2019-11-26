@@ -8,7 +8,6 @@ class Domain;
 class Error;
 class Log;
 class Map;
-class MutableEnv;
 class Params;
 class Value;
 
@@ -17,12 +16,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Log &log_;
   Error &error_;
-  MutableEnv &env_;
   Map &map_;
   bool diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &error, MutableEnv &env, Map &map);
+  explicit Interpreter(const Log &l, Error &error, Map &map);
   void reset();
   bool diff() const;
   void visit(const llvm::BasicBlock &b);

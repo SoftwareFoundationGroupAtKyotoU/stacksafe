@@ -36,8 +36,6 @@ void Abstract::run(const llvm::Function &f) {
   }
 }
 void Abstract::run_scc(const llvm::Function &f) {
-  const auto &entry = f.getEntryBlock();
-  MutableEnv env{get(entry), pool_};
   {
     Stopwatch<std::milli> watch{elapsed_};
     auto scc = Scc::decompose(f);
@@ -45,7 +43,7 @@ void Abstract::run_scc(const llvm::Function &f) {
       auto ptr = scc.top();
       scc.pop();
       if (ptr->is_loop()) {
-        Interpreter i{log_, error_, env, ptr->map()};
+        Interpreter i{log_, error_, ptr->map()};
         bool repeat = true;
         while (repeat) {
           repeat = false;
@@ -59,7 +57,7 @@ void Abstract::run_scc(const llvm::Function &f) {
         }
         ptr->convey();
       } else {
-        Interpreter i{log_, error_, env, ptr->map()};
+        Interpreter i{log_, error_, ptr->map()};
         for (const auto &b : *ptr) {
           i.visit(*b);
         }
@@ -85,7 +83,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
 void Abstract::interpret(const llvm::BasicBlock &b) {
   Map m = pool_.make_map();
   MutableEnv env{get(b), pool_};
-  Interpreter i{log_, error_, env, m};
+  Interpreter i{log_, error_, m};
   i.visit(b);
   const auto &prev = env.finish(pool_);
   const auto t = b.getTerminator();

@@ -1,6 +1,5 @@
 #include "interpreter.hpp"
 #include "domain.hpp"
-#include "env.hpp"
 #include "error.hpp"
 #include "log.hpp"
 #include "map.hpp"
@@ -9,8 +8,8 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Error &error, MutableEnv &env, Map &map)
-    : log_{l}, error_{error}, env_{env}, map_{map} {}
+Interpreter::Interpreter(const Log &l, Error &error, Map &map)
+    : log_{l}, error_{error}, map_{map} {}
 void Interpreter::reset() {
   diff_ = false;
 }
@@ -209,7 +208,7 @@ void Interpreter::constant(const llvm::Instruction &dst) {
   insert(dst, dom);
 }
 Domain Interpreter::lookup(const Value &key) const {
-  return env_.lookup(key);
+  return map_.lookup(key);
 }
 Domain Interpreter::lookup(const llvm::Value &key) const {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&key)) {
@@ -220,9 +219,9 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
     return dom;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
-    return env_.lookup(Value::get_register(*i));
+    return map_.lookup(Value::get_register(*i));
   } else if (auto a = llvm::dyn_cast<llvm::Argument>(&key)) {
-    return env_.lookup(Value::get_register(*a));
+    return map_.lookup(Value::get_register(*a));
   } else {
     llvm_unreachable("invalid value lookup");
   }
@@ -232,7 +231,6 @@ void Interpreter::insert(const Value &key, const Domain &val) {
     return;
   }
   log_.print(key, lookup(key), val);
-  env_.insert(key, val);
   if (map_.insert(key, val)) {
     diff_ = true;
   }
@@ -250,7 +248,6 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &val) {
   }
   log_.print(key, lookup(key), val);
   const auto reg = Value::get_register(key);
-  env_.insert(reg, val);
   if (map_.insert(reg, val)) {
     diff_ = true;
   }
