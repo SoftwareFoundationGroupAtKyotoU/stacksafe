@@ -74,9 +74,6 @@ std::vector<Block> Component::successors() const {
   }
   return out;
 }
-void Component::init(const llvm::Function& f) {
-  map_.init(f);
-}
 void Component::merge(const Component& c) {
   map_.merge(c.map_);
 }

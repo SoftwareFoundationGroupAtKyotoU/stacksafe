@@ -53,7 +53,6 @@ class Component : private std::vector<Block> {
   bool contains(const Block& b) const;
   bool is_loop() const;
   std::vector<Block> successors() const;
-  void init(const llvm::Function& f);
   void merge(const Component& c);
   Map& map();
 };
