@@ -53,6 +53,10 @@ class Component : private std::vector<Block> {
   std::vector<Block> out_degree() const;
 };
 
+class SCC : private std::vector<Component> {
+  using Super = std::vector<Component>;
+};
+
 class Tarjan {
   std::vector<Frame> frames_;
   std::map<const llvm::BasicBlock*, Frame*> map_;
