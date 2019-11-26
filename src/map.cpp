@@ -41,6 +41,11 @@ Domain Map::lookup(const Value &key) const {
   }
   return dom;
 }
+void Map::merge(const Map &map) {
+  for (const auto &[key, val] : map) {
+    insert(key, val);
+  }
+}
 Domain Map::keys(const Map &map) {
   Domain dom;
   for (const auto &pair : map) {

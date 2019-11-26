@@ -145,9 +145,7 @@ void Scc::add_successor(const SccPtr& ptr) {
   succ_.emplace(ptr);
 }
 void Scc::merge(const Map& map) {
-  for (const auto& [key, val] : map) {
-    map_.insert(key, val);
-  }
+  map_.merge(map);
 }
 void Scc::convey() {
   for (const auto ptr : succ_) {
