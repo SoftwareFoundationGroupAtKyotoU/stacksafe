@@ -20,7 +20,6 @@ class Abstract {
   const Log log_;
   Error error_;
   MapPool pool_;
-  std::unordered_map<const llvm::BasicBlock *, Env> blocks_;
   std::string name_;
   double elapsed_;
 

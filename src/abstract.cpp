@@ -21,11 +21,7 @@ std::size_t estimate(const llvm::Function &f) {
 }  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
-    : log_{f}, pool_{estimate(f)}, name_{f.getName().str()}, elapsed_{0.0} {
-  for (const auto &b : f) {
-    blocks_.try_emplace(&b, pool_.make_env());
-  }
-}
+    : log_{f}, pool_{estimate(f)}, name_{f.getName().str()}, elapsed_{0.0} {}
 void Abstract::run_scc(const llvm::Function &f) {
   {
     Stopwatch<std::milli> watch{elapsed_};
