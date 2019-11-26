@@ -149,6 +149,11 @@ void Scc::merge(const Map& map) {
     map_.insert(key, val);
   }
 }
+void Scc::convey() {
+  for (const auto ptr : succ_) {
+    ptr->merge(map_);
+  }
+}
 Map& Scc::map() {
   return map_;
 }

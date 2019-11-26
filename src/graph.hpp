@@ -30,6 +30,7 @@ class Scc : private std::vector<const llvm::BasicBlock*> {
   Set out_degree() const;
   void add_successor(const SccPtr& ptr);
   void merge(const Map& map);
+  void convey();
   Map& map();
   static Stack decompose(const llvm::Function& f);
 };
