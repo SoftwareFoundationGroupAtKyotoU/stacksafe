@@ -40,6 +40,7 @@ class Block {
   explicit Block(const llvm::BasicBlock& b);
   std::vector<Block> successors() const;
   const llvm::BasicBlock& get() const;
+  bool equals(const Block& block) const;
 };
 
 class Tarjan {

@@ -44,6 +44,9 @@ std::vector<Block> Block::successors() const {
 const llvm::BasicBlock& Block::get() const {
   return *block_;
 }
+bool Block::equals(const Block& block) const {
+  return block_ == block.block_;
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
