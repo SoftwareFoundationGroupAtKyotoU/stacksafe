@@ -61,6 +61,7 @@ class SCC : private std::vector<Component> {
  public:
   explicit SCC(const llvm::Function& f);
   Component pop();
+  Component& find(const Block& b);
 };
 
 class Tarjan {

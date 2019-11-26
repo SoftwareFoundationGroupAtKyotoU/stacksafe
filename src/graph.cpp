@@ -95,6 +95,13 @@ Component SCC::pop() {
   pop_back();
   return ret;
 }
+Component& SCC::find(const Block& b) {
+  const auto pred = [&b](const Component& c) { return c.contains(b); };
+  auto it = std::find_if(begin(), end(), pred);
+  assert(it != end() && std::find_if(std::next(it), end(), pred) == end() &&
+         "SCC must be a partition");
+  return *it;
+}
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
   std::size_t i = 0;
