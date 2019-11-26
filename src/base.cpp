@@ -33,6 +33,9 @@ auto Base::ptr() const -> Ptr {
     return reinterpret_cast<Ptr>(sym_ & ~global_flag);
   }
 }
+auto Base::val() const -> Int {
+  return sym_;
+}
 bool Base::is_symbol() const {
   return sym_ & symbol_flag;
 }

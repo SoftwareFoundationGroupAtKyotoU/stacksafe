@@ -23,6 +23,7 @@ class Base {
   Base(Ptr val, bool is_local);
   const llvm::Value* value() const;
   Ptr ptr() const;
+  Int val() const;
   bool is_symbol() const;
   bool is_register() const;
   bool is_local() const;
