@@ -51,9 +51,11 @@ void Abstract::print(llvm::raw_ostream &os) const {
   (os << msg).flush();
 }
 void Abstract::print_depend(llvm::raw_ostream &os) const {
-  os << func_.getName() << "/" << func_.arg_size();
-  depend_.print(os);
-  (os << "\n").flush();
+  if (!depend_.is_empty()) {
+    os << func_.getName() << "/" << func_.arg_size();
+    depend_.print(os);
+    (os << "\n").flush();
+  }
 }
 
 }  // namespace stacksafe
