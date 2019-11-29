@@ -17,7 +17,7 @@ std::optional<unsigned> to_number(const Symbol& sym, unsigned size) {
 }
 }  // namespace
 
-Depend::Depend(unsigned n) : Super((n + 2) * (n + 1)), size_{n} {
+Depend::Depend(std::size_t n) : Super((n + 2) * (n + 1)), size_{n} {
   for (unsigned i = 0; i < n; ++i) {
     set(i, i);
   }

@@ -9,10 +9,10 @@ class Symbol;
 
 class Depend : private std::vector<std::uint8_t> {
   using Super = std::vector<std::uint8_t>;
-  unsigned size_;
+  std::size_t size_;
 
  public:
-  explicit Depend(unsigned n);
+  explicit Depend(std::size_t n);
   bool set(const Symbol& from, const Symbol& to);
 
  private:
