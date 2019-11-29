@@ -10,7 +10,8 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function &f) : func_{f}, elapsed_{0.0} {}
+Abstract::Abstract(const llvm::Function &f)
+    : func_{f}, depend_{f.arg_size()}, elapsed_{0.0} {}
 void Abstract::interpret() {
   Log log{func_};
   {
