@@ -3,6 +3,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <algorithm>
 #include <cstdlib>
+#include <map>
 #include <vector>
 #include "domain.hpp"
 #include "map.hpp"
@@ -108,10 +109,14 @@ std::string to_str(const Domain& dom) {
 }
 std::string to_str(const Map& map) {
   std::string ret;
+  std::map<int, Domain> nums;
   for (const auto& key : Map::keys(map)) {
-    ret.append(to_str(get_operand(key.value())));
+    nums.emplace(get_operand(key.value()), map.lookup(key));
+  }
+  for (const auto& [key, dom] : nums) {
+    ret.append(to_str(key));
     ret.append(": ");
-    ret.append(to_str(map.lookup(key)));
+    ret.append(to_str(dom));
     ret.append(", ");
   }
   return ret;
