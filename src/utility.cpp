@@ -2,15 +2,26 @@
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
 #include <algorithm>
+#include <cstdlib>
+#include <map>
 #include <vector>
 #include "domain.hpp"
 #include "map.hpp"
 
 namespace stacksafe {
 
-void unsupported_instruction(const llvm::Instruction& i) {
-  static const auto msg = "FATAL ERROR: unsupported instruction: ";
-  (llvm::errs() << msg << i << "\n").flush();
+std::string to_str(const llvm::Value& v) {
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  stream << v;
+  return stream.str();
+}
+void fatal_error(const std::string& msg) {
+  debug::print("FATAL: " + msg);
+  std::exit(EXIT_FAILURE);
+}
+bool least_significant_bit(const void* ptr) {
+  return reinterpret_cast<std::uintptr_t>(ptr) & 0x1;
 }
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
@@ -98,10 +109,18 @@ std::string to_str(const Domain& dom) {
 }
 std::string to_str(const Map& map) {
   std::string ret;
+  std::map<int, Domain> nums;
   for (const auto& key : Map::keys(map)) {
-    ret.append(to_str(get_operand(key.value())));
+    if (auto sym = key.as_symbol()) {
+      nums.emplace(get_operand(key.value()), map.lookup(*sym));
+    } else if (auto reg = key.as_register()) {
+      nums.emplace(get_operand(key.value()), map.lookup(*reg));
+    }
+  }
+  for (const auto& [key, dom] : nums) {
+    ret.append(to_str(key));
     ret.append(": ");
-    ret.append(to_str(map.lookup(key)));
+    ret.append(to_str(dom));
     ret.append(", ");
   }
   return ret;

@@ -1,64 +1,42 @@
 #include "value.hpp"
-#include <llvm/IR/Argument.h>
-#include <llvm/IR/Instruction.h>
-#include "hash.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
-Value::Value(const Base &base) : Base{base} {}
-Value::Value(const llvm::Value &val) : Base{val} {}
-Value::Value(const void *sym, bool is_local) : Base{sym, is_local} {}
+Value::Value(const Symbol &sym) : sym_{sym} {}
+Value::Value(const Register &reg) : reg_{reg} {}
 const llvm::Value *Value::value() const {
-  return static_cast<const llvm::Value *>(Base::reg());
-}
-bool Value::is_global() const {
-  return Base::is_global();
-}
-bool Value::is_local() const {
-  return Base::is_local();
-}
-bool Value::is_argument() const {
-  return !is_local() && !is_global();
-}
-Value Value::get_symbol() {
-  return Value{nullptr, false};
-}
-Value Value::get_symbol(const llvm::AllocaInst &v) {
-  return Value{&v, true};
-}
-Value Value::get_symbol(const llvm::Argument &v) {
-  return Value{&v, false};
-}
-Value Value::get_register(const llvm::Argument &v) {
-  return Value{v};
-}
-Value Value::get_register(const llvm::Instruction &v) {
-  return Value{v};
-}
-bool Value::operator==(const Value &sym) const {
-  return Base::equals(*this, sym);
-}
-bool Value::operator<(const Value &sym) const {
-  return Base::less(*this, sym);
-}
-
-Pair::Pair(const Value &key, const Value &val)
-    : Super{key, val}, hash_{llvm::hash_combine(key, val)} {}
-const Value &Pair::key() const {
-  return std::get<0>(*this);
-}
-const Value &Pair::val() const {
-  return std::get<1>(*this);
-}
-bool Pair::operator==(const Pair &pair) const {
-  return key() == pair.key() && val() == pair.val();
-}
-bool Pair::operator<(const Pair &pair) const {
-  if (key() == pair.key()) {
-    return val() < pair.val();
+  if (is_symbol()) {
+    return as_symbol()->value();
   } else {
-    return key() < pair.key();
+    return &as_register()->value();
   }
+}
+const void *Value::ptr() const {
+  return ptr_;
+}
+bool Value::is_symbol() const {
+  return least_significant_bit(ptr_);
+}
+const Symbol *Value::as_symbol() const {
+  if (is_symbol()) {
+    return &sym_;
+  } else {
+    return nullptr;
+  }
+}
+const Register *Value::as_register() const {
+  if (is_symbol()) {
+    return nullptr;
+  } else {
+    return &reg_;
+  }
+}
+bool operator==(const Value &lhs, const Value &rhs) {
+  return lhs.ptr() == rhs.ptr();
+}
+bool operator<(const Value &lhs, const Value &rhs) {
+  return lhs.ptr() < rhs.ptr();
 }
 
 }  // namespace stacksafe

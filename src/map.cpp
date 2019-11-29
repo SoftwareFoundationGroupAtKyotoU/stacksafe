@@ -1,39 +1,48 @@
 #include "map.hpp"
 #include <llvm/IR/Function.h>
-#include <algorithm>
 
 namespace stacksafe {
 
 void Map::init(const llvm::Function &f) {
-  const auto g = Value::get_symbol();
-  get(g).insert(g);
+  const auto g = Symbol::get_global();
+  get(Value{g}).insert(g);
   for (const auto &a : f.args()) {
-    const auto arg = Value::get_symbol(a);
-    get(arg).insert(arg);
-    get(Value::get_register(a)).insert(arg);
+    const Symbol sym{a};
+    const Register reg{a};
+    get(Value{sym}).insert(sym);
+    get(Value{reg}).insert(sym);
   }
 }
-bool Map::insert(const Value &key, const Domain &dom) {
-  return get(key).merge(dom);
+bool Map::insert(const Symbol &key, const Domain &dom) {
+  return get(Value{key}).merge(dom);
 }
-Domain Map::lookup(const Value &key) const {
-  if (auto it = Super::find(key); it != end()) {
-    return it->second;
-  } else {
-    return Domain{};
-  }
+bool Map::insert(const Register &key, const Domain &dom) {
+  return get(Value{key}).merge(dom);
+}
+Domain Map::lookup(const Symbol &key) const {
+  return find(Value{key});
+}
+Domain Map::lookup(const Register &key) const {
+  return find(Value{key});
 }
 void Map::merge(const Map &map) {
   for (const auto &[key, val] : map) {
     get(key).merge(val);
   }
 }
-Domain Map::keys(const Map &map) {
-  Domain dom;
+std::set<Value> Map::keys(const Map &map) {
+  std::set<Value> dom;
   for (const auto &pair : map) {
-    dom.insert(pair.first);
+    dom.emplace(pair.first);
   }
   return dom;
+}
+Domain Map::find(const Value &key) const {
+  if (auto it = Super::find(key); it != end()) {
+    return it->second;
+  } else {
+    return Domain{};
+  }
 }
 Domain &Map::get(const Value &key) {
   return Super::try_emplace(key).first->second;
