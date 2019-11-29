@@ -29,7 +29,7 @@ bool Interpreter::visit(const llvm::BasicBlock &b) {
 }
 auto Interpreter::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
-    unsupported_instruction(i);
+    fatal_error("unsupported instruction: " + to_str(i));
   }
 }
 auto Interpreter::visitBinaryOperator(llvm::BinaryOperator &i) -> RetTy {

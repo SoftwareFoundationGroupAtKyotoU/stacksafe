@@ -19,10 +19,6 @@ void fatal_error(const std::string& msg) {
   debug::print("FATAL: " + msg);
   std::exit(EXIT_FAILURE);
 }
-void unsupported_instruction(const llvm::Instruction& i) {
-  static const auto msg = "FATAL ERROR: unsupported instruction: ";
-  (llvm::errs() << msg << i << "\n").flush();
-}
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
     return true;
