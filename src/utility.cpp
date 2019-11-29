@@ -19,6 +19,9 @@ void fatal_error(const std::string& msg) {
   debug::print("FATAL: " + msg);
   std::exit(EXIT_FAILURE);
 }
+bool least_significant_bit(const void* ptr) {
+  return reinterpret_cast<std::uintptr_t>(ptr) & 0x1;
+}
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
     return true;

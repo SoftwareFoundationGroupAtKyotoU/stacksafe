@@ -7,7 +7,7 @@
 namespace stacksafe {
 
 Register::Register(const llvm::Value* v) : reg_{v} {
-  if (reinterpret_cast<std::uintptr_t>(reg_) & 0x1) {
+  if (least_significant_bit(reg_)) {
     debug::print("ERROR: Value representation may conflict");
     std::exit(EXIT_FAILURE);
   }
