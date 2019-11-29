@@ -2,7 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
-#include "error.hpp"
+#include "depend.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
 
@@ -60,8 +60,8 @@ bool Log::print(const Register &key, const Domain &val,
               << " += " << cache_.to_str(add));
   return os;
 }
-bool Log::print(const Error &err) const {
-  err.print(*os);
+bool Log::print(const Depend &dep) const {
+  dep.print_error(*os);
   return os;
 }
 

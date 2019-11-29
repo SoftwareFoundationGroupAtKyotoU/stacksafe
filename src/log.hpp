@@ -13,8 +13,8 @@ class raw_ostream;
 }  // namespace llvm
 
 namespace stacksafe {
+class Depend;
 class Domain;
-class Error;
 class Register;
 class Symbol;
 
@@ -39,7 +39,7 @@ class Log {
   bool print(const llvm::BasicBlock &b) const;
   bool print(const Symbol &key, const Domain &val, const Domain &add) const;
   bool print(const Register &key, const Domain &val, const Domain &add) const;
-  bool print(const Error &err) const;
+  bool print(const Depend &dep) const;
 };
 
 }  // namespace stacksafe

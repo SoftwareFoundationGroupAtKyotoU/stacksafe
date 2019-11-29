@@ -4,8 +4,8 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
+class Depend;
 class Domain;
-class Error;
 class Log;
 class Map;
 class Params;
@@ -15,12 +15,12 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Log &log_;
-  Error &error_;
+  Depend &depend_;
   Map &map_;
   bool diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &e, Map &m);
+  explicit Interpreter(const Log &l, Depend &d, Map &m);
   bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);

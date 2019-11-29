@@ -38,6 +38,7 @@ bool Analyzer::runOnFunction(llvm::Function &f) {
 void Analyzer::print(llvm::raw_ostream &os, const llvm::Module *) const {
   if (abst) {
     abst->print(os);
+    abst->print_depend(os);
   }
 }
 

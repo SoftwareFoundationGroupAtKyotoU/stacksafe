@@ -10,7 +10,8 @@
 
 namespace stacksafe {
 
-Abstract::Abstract(const llvm::Function &f) : func_{f}, elapsed_{0.0} {}
+Abstract::Abstract(const llvm::Function &f)
+    : func_{f}, depend_{f.arg_size()}, elapsed_{0.0} {}
 void Abstract::interpret() {
   Log log{func_};
   {
@@ -18,7 +19,7 @@ void Abstract::interpret() {
     Scc scc{func_};
     while (!scc.empty()) {
       auto c = scc.pop();
-      Interpreter i{log, error_, c.map()};
+      Interpreter i{log, depend_, c.map()};
       do {
         bool repeat = false;
         for (const auto &b : c) {
@@ -35,7 +36,7 @@ void Abstract::interpret() {
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
-  const auto safe = !error_.is_error();
+  const auto safe = !depend_.is_error();
   const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe ? "SAFE" : "UNSAFE";
   const auto name = func_.getName().str();
@@ -48,6 +49,13 @@ void Abstract::print(llvm::raw_ostream &os) const {
     os << prefix;
   }
   (os << msg).flush();
+}
+void Abstract::print_depend(llvm::raw_ostream &os) const {
+  if (!depend_.is_error()) {
+    os << "DEPEND: " << func_.getName() << "/" << func_.arg_size();
+    depend_.print(os);
+    (os << "\n").flush();
+  }
 }
 
 }  // namespace stacksafe

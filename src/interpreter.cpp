@@ -1,7 +1,7 @@
 #include "interpreter.hpp"
 #include <llvm/Support/Debug.h>
+#include "depend.hpp"
 #include "domain.hpp"
-#include "error.hpp"
 #include "log.hpp"
 #include "map.hpp"
 #include "params.hpp"
@@ -12,16 +12,16 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Error &e, Map &m)
-    : log_{l}, error_{e}, map_{m} {}
+Interpreter::Interpreter(const Log &l, Depend &d, Map &m)
+    : log_{l}, depend_{d}, map_{m} {}
 bool Interpreter::visit(const llvm::BasicBlock &b) {
   diff_ = false;
   STACKSAFE_DEBUG_LOG(b);
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     STACKSAFE_DEBUG_LOG(i);
     Super::visit(i);
-    if (error_.is_error()) {
-      STACKSAFE_DEBUG_LOG(error_);
+    if (depend_.is_error()) {
+      STACKSAFE_DEBUG_LOG(depend_);
       break;
     }
   }
@@ -141,8 +141,8 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
-    if (lookup(*ret).has_local()) {
-      error_.error_return();
+    for (const auto &sym : lookup(*ret)) {
+      depend_.set_return(sym);
     }
   }
 }
@@ -227,12 +227,8 @@ void Interpreter::insert(const Symbol &key, const Domain &dom) {
   if (!dom.empty()) {
     STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
     update(map_.insert(key, dom));
-    if (dom.has_local()) {
-      if (key.is_global()) {
-        error_.error_global();
-      } else if (key.as_argument()) {
-        error_.error_argument();
-      }
+    for (const auto &sym : dom) {
+      depend_.set(key, sym);
     }
   }
 }

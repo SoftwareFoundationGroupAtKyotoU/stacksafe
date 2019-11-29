@@ -1,7 +1,7 @@
 #ifndef INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
-#include "error.hpp"
+#include "depend.hpp"
 
 namespace llvm {
 class Function;
@@ -12,13 +12,14 @@ namespace stacksafe {
 
 class Abstract {
   const llvm::Function &func_;
-  Error error_;
+  Depend depend_;
   double elapsed_;
 
  public:
   explicit Abstract(const llvm::Function &f);
   void interpret();
   void print(llvm::raw_ostream &os) const;
+  void print_depend(llvm::raw_ostream &os) const;
 };
 
 }  // namespace stacksafe
