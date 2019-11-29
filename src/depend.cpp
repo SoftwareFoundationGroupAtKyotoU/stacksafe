@@ -38,9 +38,9 @@ void Depend::print(llvm::raw_ostream& os) const {
   static const auto comma = ",";
   static const auto colon = ":";
   for (std::size_t from = 0; from < local_index(); ++from) {
-    for (std::size_t to = 0; to < local_index(); ++to) {
-      if (get(from, to) && from != to) {
-        os << comma << from << colon << to;
+    for (std::size_t to = 0; to < width(); ++to) {
+      if (get(from, to)) {
+        os << comma << to_str(from) << colon << to_str(to);
       }
     }
   }
