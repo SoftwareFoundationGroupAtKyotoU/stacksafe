@@ -8,6 +8,7 @@ namespace stacksafe {
 
 class Depend : private std::vector<std::uint8_t> {
   using Super = std::vector<std::uint8_t>;
+  unsigned size_;
 
  public:
   explicit Depend(unsigned n);
