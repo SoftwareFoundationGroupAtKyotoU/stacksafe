@@ -52,7 +52,7 @@ void Abstract::print(llvm::raw_ostream &os) const {
 }
 void Abstract::print_depend(llvm::raw_ostream &os) const {
   if (!depend_.is_error() && !depend_.is_empty()) {
-    os << func_.getName() << "/" << func_.arg_size();
+    os << "DEPEND: " << func_.getName() << "/" << func_.arg_size();
     depend_.print(os);
     (os << "\n").flush();
   }
