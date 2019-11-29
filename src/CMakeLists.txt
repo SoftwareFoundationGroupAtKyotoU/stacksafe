@@ -26,6 +26,7 @@ target_sources(${target} PRIVATE
   params.cpp
   register.cpp
   stopwatch.cpp
+  symbol.cpp
   utility.cpp
   value.cpp
   )
