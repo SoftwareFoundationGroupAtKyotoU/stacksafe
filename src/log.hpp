@@ -15,7 +15,8 @@ class raw_ostream;
 namespace stacksafe {
 class Domain;
 class Error;
-class Value;
+class Register;
+class Symbol;
 
 class LogFile {
   std::unique_ptr<llvm::raw_fd_ostream> file;
@@ -36,9 +37,8 @@ class Log {
   explicit operator bool() const;
   bool print(const llvm::Instruction &i) const;
   bool print(const llvm::BasicBlock &b) const;
-  bool print(const Value &key, const Domain &val, const Domain &add) const;
-  bool print(const llvm::Instruction &key, const Domain &val,
-             const Domain &add) const;
+  bool print(const Symbol &key, const Domain &val, const Domain &add) const;
+  bool print(const Register &key, const Domain &val, const Domain &add) const;
   bool print(const Error &err) const;
 };
 

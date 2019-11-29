@@ -50,14 +50,14 @@ bool Log::print(const llvm::BasicBlock &b) const {
   endline(*os << hr2 << b << hr);
   return os;
 }
-bool Log::print(const Value &key, const Domain &val, const Domain &add) const {
+bool Log::print(const Symbol &key, const Domain &val, const Domain &add) const {
   if (!add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
                 << " += " << cache_.to_str(add));
   }
   return os;
 }
-bool Log::print(const llvm::Instruction &key, const Domain &val,
+bool Log::print(const Register &key, const Domain &val,
                 const Domain &add) const {
   if (!add.empty()) {
     endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)

@@ -231,8 +231,8 @@ void Interpreter::insert(const Symbol &key, const Domain &dom) {
   }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
-  STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
   const Register reg{key};
+  STACKSAFE_DEBUG_LOG(reg, lookup(key), dom);
   update(map_.insert(reg, dom));
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
