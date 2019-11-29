@@ -29,6 +29,7 @@ class Map : private std::unordered_map<Value, Domain> {
   static std::set<Value> keys(const Map &map);
 
  private:
+  Domain find(const Value &key) const;
   Domain &get(const Value &key);
   Domain &get(const Symbol &key);
   Domain &get(const Register &key);

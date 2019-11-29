@@ -21,18 +21,10 @@ bool Map::insert(const Register &key, const Domain &dom) {
   return get(key).merge(dom);
 }
 Domain Map::lookup(const Symbol &key) const {
-  if (auto it = Super::find(Value{key}); it != end()) {
-    return it->second;
-  } else {
-    return Domain{};
-  }
+  return find(Value{key});
 }
 Domain Map::lookup(const Register &key) const {
-  if (auto it = Super::find(Value{key}); it != end()) {
-    return it->second;
-  } else {
-    return Domain{};
-  }
+  return find(Value{key});
 }
 void Map::merge(const Map &map) {
   for (const auto &[key, val] : map) {
@@ -45,6 +37,13 @@ std::set<Value> Map::keys(const Map &map) {
     dom.emplace(pair.first);
   }
   return dom;
+}
+Domain Map::find(const Value &key) const {
+  if (auto it = Super::find(key); it != end()) {
+    return it->second;
+  } else {
+    return Domain{};
+  }
 }
 Domain &Map::get(const Value &key) {
   return Super::try_emplace(key).first->second;
