@@ -4,6 +4,8 @@
 #include "register.hpp"
 #include "symbol.hpp"
 
+#define IMPLICIT /* explicitly mark as implicit */
+
 namespace llvm {
 class AllocaInst;
 class Argument;
@@ -19,10 +21,10 @@ class Value {
     Register reg_;
     const void *ptr_;
   };
-  explicit Value(const Symbol &sym);
-  explicit Value(const Register &sym);
 
  public:
+  IMPLICIT Value(const Symbol &sym);
+  IMPLICIT Value(const Register &sym);
   const llvm::Value *value() const;
   const void *ptr() const;
   bool is_symbol() const;
