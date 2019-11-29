@@ -2,6 +2,7 @@
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
 #include <algorithm>
+#include <cstdlib>
 #include <vector>
 #include "domain.hpp"
 #include "map.hpp"
@@ -13,6 +14,10 @@ std::string to_str(const llvm::Value& v) {
   llvm::raw_string_ostream stream{buf};
   stream << v;
   return stream.str();
+}
+void fatal_error(const std::string& msg) {
+  debug::print("FATAL: " + msg);
+  std::exit(EXIT_FAILURE);
 }
 void unsupported_instruction(const llvm::Instruction& i) {
   static const auto msg = "FATAL ERROR: unsupported instruction: ";
