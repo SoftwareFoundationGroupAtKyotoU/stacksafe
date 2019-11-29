@@ -53,7 +53,7 @@ std::size_t Depend::global_index() const {
 }
 bool Depend::is_error_argument() const {
   auto from = local_index();
-  for (std::size_t to = 0; 0 < global_index(); ++to) {
+  for (std::size_t to = 0; to < global_index(); ++to) {
     if (get(from, to)) {
       return true;
     }
