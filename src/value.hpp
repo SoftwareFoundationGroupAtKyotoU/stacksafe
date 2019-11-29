@@ -38,9 +38,9 @@ class Value : private Base {
   static Value get_symbol(const llvm::Argument &v);
   static Value get_register(const llvm::Argument &v);
   static Value get_register(const llvm::Instruction &v);
-  bool operator==(const Value &sym) const;
-  bool operator<(const Value &sym) const;
 };
+bool operator==(const Value &lhs, const Value &rhs);
+bool operator<(const Value &lhs, const Value &rhs);
 
 }  // namespace stacksafe
 

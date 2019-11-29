@@ -47,11 +47,11 @@ Value Value::get_register(const llvm::Argument &v) {
 Value Value::get_register(const llvm::Instruction &v) {
   return Value{Register{v}};
 }
-bool Value::operator==(const Value &sym) const {
-  return Base::equals(*this, sym);
+bool operator==(const Value &lhs, const Value &rhs) {
+  return lhs.ptr() == rhs.ptr();
 }
-bool Value::operator<(const Value &sym) const {
-  return Base::less(*this, sym);
+bool operator<(const Value &lhs, const Value &rhs) {
+  return lhs.ptr() < rhs.ptr();
 }
 
 }  // namespace stacksafe
