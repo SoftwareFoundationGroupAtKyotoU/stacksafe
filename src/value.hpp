@@ -33,6 +33,7 @@ class Value : private Base {
   const void *ptr() const;
   bool is_symbol() const;
   const Symbol *as_symbol() const;
+  const Register *as_register() const;
   static Value get_symbol();
   static Value get_symbol(const llvm::AllocaInst &v);
   static Value get_symbol(const llvm::Argument &v);

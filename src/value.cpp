@@ -32,6 +32,13 @@ const Symbol *Value::as_symbol() const {
     return nullptr;
   }
 }
+const Register *Value::as_register() const {
+  if (is_symbol()) {
+    return nullptr;
+  } else {
+    return &reg_;
+  }
+}
 Value Value::get_symbol() {
   return Value{Symbol{}};
 }
