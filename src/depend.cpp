@@ -7,25 +7,24 @@ namespace stacksafe {
 
 Depend::Depend(std::size_t n) : size_{n} {
   Super::resize(width() * height());
-  for (std::size_t i = 0; i < n; ++i) {
+  for (std::size_t i = 0; i < local_index(); ++i) {
     set(i, i);
   }
-  set(n, n);
 }
 void Depend::set(const Symbol& key, const Symbol& val) {
   auto to = index(key);
   auto from = index(val);
-  if (to < size_ + 1) {
+  if (to < local_index()) {
     set(from, to);
   }
 }
 void Depend::set_return(const Symbol& sym) {
   auto from = index(sym);
-  auto to = size_ + 1;
+  auto to = local_index();
   set(from, to);
 }
 bool Depend::is_error() const {
-  std::size_t from = size_ + 1;
+  auto from = local_index();
   for (std::size_t to = 0; 0 < width(); ++to) {
     if (get(from, to)) {
       return true;
@@ -39,6 +38,9 @@ std::size_t Depend::width() const {
 std::size_t Depend::height() const {
   return size_ + 2;
 }
+std::size_t Depend::local_index() const {
+  return size_ + 1;
+}
 void Depend::set(std::size_t from, std::size_t to) {
   assert(from < height() && to < width());
   Super::at(width() * from + to) = 1;
@@ -49,7 +51,7 @@ bool Depend::get(std::size_t from, std::size_t to) const {
 }
 std::size_t Depend::index(const Symbol& sym) const {
   if (sym.is_local()) {
-    return size_ + 1;
+    return local_index();
   } else if (sym.is_global()) {
     return size_;
   } else {
