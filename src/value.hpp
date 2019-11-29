@@ -30,6 +30,7 @@ class Value : private Base {
 
  public:
   const llvm::Value *value() const;
+  bool is_symbol() const;
   bool is_global() const;
   bool is_local() const;
   bool is_argument() const;

@@ -2,6 +2,7 @@
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/Instruction.h>
 #include "hash.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -13,6 +14,9 @@ Value::Value(const void *sym, bool is_local)
     : Base{sym, is_local}, ptr_{nullptr} {}
 const llvm::Value *Value::value() const {
   return static_cast<const llvm::Value *>(Base::reg());
+}
+bool Value::is_symbol() const {
+  return least_significant_bit(ptr_);
 }
 bool Value::is_global() const {
   return Base::is_global();
