@@ -13,7 +13,7 @@ namespace stacksafe {
 
 class Symbol {
   std::uintptr_t sym_;
-  explicit Symbol(const void* p);
+  explicit Symbol(const llvm::Value* p);
 
  public:
   Symbol();
@@ -21,6 +21,7 @@ class Symbol {
   explicit Symbol(const llvm::Argument& a);
   const llvm::Value* value() const;
   bool is_global() const;
+  bool is_local() const;
   const llvm::Argument* as_argument() const;
 };
 

@@ -1,5 +1,6 @@
 #include "symbol.hpp"
 #include <llvm/IR/Argument.h>
+#include <llvm/IR/Instructions.h>
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -26,7 +27,7 @@ const void* to_pointer(std::uintptr_t u) {
 }
 }  // namespace
 
-Symbol::Symbol(const void* p) : sym_{to_symbol(p)} {
+Symbol::Symbol(const llvm::Value* p) : sym_{to_symbol(p)} {
   if (least_significant_bit(p)) {
     fatal_error("Value representation may conflict");
   }
@@ -39,6 +40,9 @@ const llvm::Value* Symbol::value() const {
 }
 bool Symbol::is_global() const {
   return !value();
+}
+bool Symbol::is_local() const {
+  return llvm::isa_and_nonnull<llvm::AllocaInst>(value());
 }
 const llvm::Argument* Symbol::as_argument() const {
   return llvm::dyn_cast_or_null<llvm::Argument>(value());
