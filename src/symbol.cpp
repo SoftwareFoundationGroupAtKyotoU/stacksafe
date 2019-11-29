@@ -37,6 +37,9 @@ Symbol::Symbol(const llvm::Argument& a) : Symbol{&a} {}
 const llvm::Value* Symbol::value() const {
   return static_cast<const llvm::Value*>(to_pointer(sym_));
 }
+std::uintptr_t Symbol::sym() const {
+  return sym_;
+}
 bool Symbol::is_global() const {
   return !value();
 }
