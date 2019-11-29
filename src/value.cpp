@@ -23,7 +23,7 @@ bool Value::is_symbol() const {
   return least_significant_bit(ptr_);
 }
 bool Value::is_global() const {
-  return Base::is_global();
+  return is_symbol() && sym_.is_global();
 }
 bool Value::is_local() const {
   return Base::is_local();
