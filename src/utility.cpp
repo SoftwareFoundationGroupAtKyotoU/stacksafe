@@ -8,6 +8,12 @@
 
 namespace stacksafe {
 
+std::string to_str(const llvm::Value& v) {
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  stream << v;
+  return stream.str();
+}
 void unsupported_instruction(const llvm::Instruction& i) {
   static const auto msg = "FATAL ERROR: unsupported instruction: ";
   (llvm::errs() << msg << i << "\n").flush();

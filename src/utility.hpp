@@ -14,6 +14,7 @@ namespace stacksafe {
 class Domain;
 class Map;
 
+std::string to_str(const llvm::Value& v);
 void unsupported_instruction(const llvm::Instruction& i);
 bool is_global(const llvm::Constant& c);
 bool is_register(const llvm::Instruction& i);
