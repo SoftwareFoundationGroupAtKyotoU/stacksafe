@@ -18,11 +18,11 @@ class Depend : private std::vector<std::uint8_t> {
   bool is_error() const;
 
  private:
-  unsigned width() const;
-  unsigned height() const;
-  void set(unsigned from, unsigned to);
-  bool get(unsigned from, unsigned to) const;
-  unsigned index(const Symbol& sym) const;
+  std::size_t width() const;
+  std::size_t height() const;
+  void set(std::size_t from, std::size_t to);
+  bool get(std::size_t from, std::size_t to) const;
+  std::size_t index(const Symbol& sym) const;
 };
 
 }  // namespace stacksafe
