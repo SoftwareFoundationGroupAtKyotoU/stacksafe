@@ -14,9 +14,9 @@ Value::Value(const void *sym, bool is_local)
     : Base{sym, is_local}, ptr_{nullptr} {}
 const llvm::Value *Value::value() const {
   if (is_symbol()) {
-    return sym_.value();
+    return as_symbol()->value();
   } else {
-    return &reg_.value();
+    return &as_register()->value();
   }
 }
 const void *Value::ptr() const {
