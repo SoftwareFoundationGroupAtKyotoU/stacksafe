@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_E89E0FBA_AE75_4472_9027_FDC32CA21954
 
 namespace llvm {
+class Argument;
 class Instruction;
 class Value;
 }  // namespace llvm
@@ -13,6 +14,7 @@ class Register {
 
  public:
   explicit Register(const llvm::Instruction& i);
+  explicit Register(const llvm::Argument& a);
 };
 
 }  // namespace stacksafe

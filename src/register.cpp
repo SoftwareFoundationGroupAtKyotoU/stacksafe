@@ -1,4 +1,5 @@
 #include "register.hpp"
+#include <llvm/IR/Argument.h>
 #include <llvm/IR/Instruction.h>
 #include <cstdlib>
 #include "utility.hpp"
@@ -14,5 +15,6 @@ Register::Register(const llvm::Instruction& i) : reg_{&i} {
     std::exit(EXIT_FAILURE);
   }
 }
+Register::Register(const llvm::Argument& a) : reg_{&a} {}
 
 }  // namespace stacksafe
