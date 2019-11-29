@@ -24,13 +24,13 @@ bool Value::is_argument() const {
   return !is_local() && !is_global();
 }
 Value Value::get_symbol() {
-  return Value{nullptr, false};
+  return Value{Symbol{}};
 }
 Value Value::get_symbol(const llvm::AllocaInst &v) {
-  return Value{&v, true};
+  return Value{Symbol{v}};
 }
 Value Value::get_symbol(const llvm::Argument &v) {
-  return Value{&v, false};
+  return Value{Symbol{v}};
 }
 Value Value::get_register(const llvm::Argument &v) {
   return Value{v};
