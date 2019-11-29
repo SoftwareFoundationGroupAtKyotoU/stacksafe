@@ -1,5 +1,6 @@
 #include "depend.hpp"
 #include <llvm/IR/Argument.h>
+#include <llvm/Support/raw_ostream.h>
 #include <cassert>
 #include "symbol.hpp"
 
@@ -25,6 +26,18 @@ void Depend::set_return(const Symbol& sym) {
 }
 bool Depend::is_error() const {
   return is_error_argument() || is_error_global() || is_error_return();
+}
+void Depend::print_error(llvm::raw_ostream& os) const {
+  if (is_error_argument()) {
+    os << "ERROR: ARGUMENT\n";
+  }
+  if (is_error_global()) {
+    os << "ERROR: GLOBAL\n";
+  }
+  if (is_error_return()) {
+    os << "ERROR: RETURN\n";
+  }
+  os.flush();
 }
 std::size_t Depend::width() const {
   return size_ + 2;
