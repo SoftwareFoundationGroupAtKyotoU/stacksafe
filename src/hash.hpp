@@ -5,10 +5,8 @@
 #include <functional>
 
 namespace stacksafe {
-class Base;
 class Value;
 
-llvm::hash_code hash_value(const Base& key);
 llvm::hash_code hash_value(const Value& val);
 
 }  // namespace stacksafe

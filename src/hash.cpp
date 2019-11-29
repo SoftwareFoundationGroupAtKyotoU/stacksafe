@@ -1,13 +1,9 @@
 #include "hash.hpp"
-#include "base.hpp"
 #include "map.hpp"
 #include "value.hpp"
 
 namespace stacksafe {
 
-llvm::hash_code hash_value(const Base& key) {
-  return llvm::hash_value(key.sym());
-}
 llvm::hash_code hash_value(const Value& val) {
   return llvm::hash_value(val.ptr());
 }
