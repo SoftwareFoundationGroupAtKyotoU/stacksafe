@@ -26,7 +26,7 @@ bool Value::is_global() const {
   return is_symbol() && sym_.is_global();
 }
 bool Value::is_local() const {
-  return Base::is_local();
+  return is_symbol() && sym_.is_local();
 }
 bool Value::is_argument() const {
   return !is_local() && !is_global();
