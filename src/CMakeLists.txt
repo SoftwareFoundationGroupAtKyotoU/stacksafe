@@ -14,6 +14,7 @@ add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
   cache.cpp
+  depend.cpp
   domain.cpp
   error.cpp
   graph.cpp
