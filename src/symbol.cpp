@@ -28,7 +28,7 @@ const void* to_pointer(std::uintptr_t u) {
 }  // namespace
 
 Symbol::Symbol(const llvm::Value* p) : sym_{to_symbol(p)} {
-  if (least_significant_bit(p)) {
+  if (p && least_significant_bit(p)) {
     fatal_error("Value representation may conflict");
   }
 }
@@ -46,6 +46,9 @@ bool Symbol::is_local() const {
 }
 const llvm::Argument* Symbol::as_argument() const {
   return llvm::dyn_cast_or_null<llvm::Argument>(value());
+}
+Symbol Symbol::get_global() {
+  return Symbol{nullptr};
 }
 
 }  // namespace stacksafe

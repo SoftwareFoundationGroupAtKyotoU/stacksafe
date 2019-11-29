@@ -23,6 +23,7 @@ class Symbol {
   bool is_global() const;
   bool is_local() const;
   const llvm::Argument* as_argument() const;
+  static Symbol get_global();
 };
 
 }  // namespace stacksafe
