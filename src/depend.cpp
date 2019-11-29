@@ -18,6 +18,11 @@ void Depend::set(const Symbol& key, const Symbol& val) {
     set(from, to);
   }
 }
+void Depend::set_return(const Symbol& sym) {
+  auto from = index(sym);
+  auto to = size_ + 1;
+  set(from, to);
+}
 void Depend::set(unsigned from, unsigned to) {
   assert(from < size_ + 2 && to < size_ + 2);
   Super::at((size_ + 2) * from + to) = 1;

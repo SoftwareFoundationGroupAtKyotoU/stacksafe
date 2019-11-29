@@ -14,6 +14,7 @@ class Depend : private std::vector<std::uint8_t> {
  public:
   explicit Depend(std::size_t n);
   void set(const Symbol& key, const Symbol& val);
+  void set_return(const Symbol& sym);
 
  private:
   void set(unsigned from, unsigned to);
