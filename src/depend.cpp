@@ -1,7 +1,21 @@
 #include "depend.hpp"
+#include <llvm/IR/Argument.h>
 #include <cassert>
+#include <optional>
+#include "symbol.hpp"
 
 namespace stacksafe {
+namespace {
+std::optional<unsigned> to_number(const Symbol& sym, unsigned size) {
+  if (sym.is_global()) {
+    return size;
+  } else if (auto arg = sym.as_argument()) {
+    return arg->getArgNo();
+  } else {
+    return std::nullopt;
+  }
+}
+}  // namespace
 
 Depend::Depend(unsigned n) : Super((n + 2) * (n + 1)), size_{n} {
   for (unsigned i = 0; i < n; ++i) {
