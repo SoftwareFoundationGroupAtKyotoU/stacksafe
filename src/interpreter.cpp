@@ -212,9 +212,9 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
     return is_global(*c) ? Domain{Symbol::get_global()} : Domain{};
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
-    return map_.lookup(Value::get_register(*i));
+    return map_.lookup(Register{*i});
   } else if (auto a = llvm::dyn_cast<llvm::Argument>(&key)) {
-    return map_.lookup(Value::get_register(*a));
+    return map_.lookup(Register{*a});
   } else {
     llvm_unreachable("invalid value lookup");
   }
@@ -234,7 +234,7 @@ void Interpreter::insert(const Value &key, const Domain &dom) {
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
   STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
-  const auto reg = Value::get_register(key);
+  const Register reg{key};
   update(map_.insert(reg, dom));
 }
 void Interpreter::collect(const Value &val, Domain &done) const {

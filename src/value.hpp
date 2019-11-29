@@ -30,8 +30,6 @@ class Value {
   bool is_symbol() const;
   const Symbol *as_symbol() const;
   const Register *as_register() const;
-  static Value get_register(const llvm::Argument &v);
-  static Value get_register(const llvm::Instruction &v);
 };
 bool operator==(const Value &lhs, const Value &rhs);
 bool operator<(const Value &lhs, const Value &rhs);

@@ -32,12 +32,6 @@ const Register *Value::as_register() const {
     return &reg_;
   }
 }
-Value Value::get_register(const llvm::Argument &v) {
-  return Value{Register{v}};
-}
-Value Value::get_register(const llvm::Instruction &v) {
-  return Value{Register{v}};
-}
 bool operator==(const Value &lhs, const Value &rhs) {
   return lhs.ptr() == rhs.ptr();
 }
