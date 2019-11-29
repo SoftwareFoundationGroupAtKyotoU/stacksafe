@@ -33,10 +33,10 @@ Value Value::get_symbol(const llvm::Argument &v) {
   return Value{Symbol{v}};
 }
 Value Value::get_register(const llvm::Argument &v) {
-  return Value{v};
+  return Value{Register{v}};
 }
 Value Value::get_register(const llvm::Instruction &v) {
-  return Value{v};
+  return Value{Register{v}};
 }
 bool Value::operator==(const Value &sym) const {
   return Base::equals(*this, sym);
