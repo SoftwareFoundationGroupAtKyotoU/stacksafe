@@ -1,7 +1,6 @@
 #ifndef INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
-#include <tuple>
 #include "register.hpp"
 #include "symbol.hpp"
 
@@ -10,7 +9,6 @@ class AllocaInst;
 class Argument;
 class Instruction;
 class Value;
-class hash_code;
 }  // namespace llvm
 
 namespace stacksafe {
