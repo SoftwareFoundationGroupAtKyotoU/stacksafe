@@ -87,6 +87,9 @@ bool Depend::is_error_global() const {
 bool Depend::is_error_return() const {
   return get(local_index(), local_index());
 }
+bool Depend::diagonal(std::size_t from, std::size_t to) const {
+  return from == to && from < local_index();
+}
 void Depend::set(std::size_t from, std::size_t to) {
   assert(from < height() && to < width());
   Super::at(width() * from + to) = 1;

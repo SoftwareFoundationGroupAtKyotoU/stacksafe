@@ -32,6 +32,7 @@ class Depend : private std::vector<std::uint8_t> {
   bool is_error_argument() const;
   bool is_error_global() const;
   bool is_error_return() const;
+  bool diagonal(std::size_t from, std::size_t to) const;
   void set(std::size_t from, std::size_t to);
   bool get(std::size_t from, std::size_t to) const;
   std::size_t index(const Symbol& sym) const;
