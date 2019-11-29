@@ -238,10 +238,12 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
   update(map_.insert(reg, dom));
 }
 void Interpreter::collect(const Value &val, Domain &done) const {
-  if (!done.element(val)) {
-    done.insert(val);
-    for (const auto &next : lookup(val)) {
-      collect(next, done);
+  if (auto sym = val.as_symbol()) {
+    if (!done.element(*sym)) {
+      done.insert(*sym);
+      for (const auto &next : lookup(*sym)) {
+        collect(next, done);
+      }
     }
   }
 }

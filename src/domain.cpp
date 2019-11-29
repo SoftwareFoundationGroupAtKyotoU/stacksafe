@@ -32,11 +32,8 @@ bool Domain::merge(const Domain &dom) {
   }
   return size != Super::size();
 }
-bool Domain::element(const Value &val) const {
-  if (auto sym = val.as_symbol()) {
-    return std::binary_search(begin(), end(), *sym, compare);
-  }
-  return false;
+bool Domain::element(const Symbol &sym) const {
+  return std::binary_search(begin(), end(), sym, compare);
 }
 bool Domain::has_local() const {
   return std::any_of(begin(), end(), is_local);

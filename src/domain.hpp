@@ -16,7 +16,7 @@ class Domain : private std::vector<Symbol> {
   explicit Domain(const Value &val);
   bool insert(const Value &val);
   bool merge(const Domain &dom);
-  bool element(const Value &val) const;
+  bool element(const Symbol &val) const;
   bool has_local() const;
 };
 
