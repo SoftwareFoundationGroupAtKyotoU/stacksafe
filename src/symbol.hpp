@@ -16,7 +16,6 @@ class Symbol {
   explicit Symbol(const llvm::Value* p);
 
  public:
-  Symbol();
   explicit Symbol(const llvm::AllocaInst& i);
   explicit Symbol(const llvm::Argument& a);
   const llvm::Value* value() const;

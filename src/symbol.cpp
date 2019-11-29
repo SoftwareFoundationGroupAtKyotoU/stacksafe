@@ -32,7 +32,6 @@ Symbol::Symbol(const llvm::Value* p) : sym_{to_symbol(p)} {
     fatal_error("Value representation may conflict");
   }
 }
-Symbol::Symbol() : sym_{to_symbol(nullptr)} {}
 Symbol::Symbol(const llvm::AllocaInst& i) : Symbol{&i} {}
 Symbol::Symbol(const llvm::Argument& a) : Symbol{&a} {}
 const llvm::Value* Symbol::value() const {

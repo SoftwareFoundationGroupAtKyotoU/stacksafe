@@ -33,7 +33,7 @@ const Register *Value::as_register() const {
   }
 }
 Value Value::get_symbol() {
-  return Value{Symbol{}};
+  return Value{Symbol::get_global()};
 }
 Value Value::get_symbol(const llvm::AllocaInst &v) {
   return Value{Symbol{v}};
