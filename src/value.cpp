@@ -13,7 +13,11 @@ Value::Value(const llvm::Value &val) : Base{val}, ptr_{nullptr} {}
 Value::Value(const void *sym, bool is_local)
     : Base{sym, is_local}, ptr_{nullptr} {}
 const llvm::Value *Value::value() const {
-  return static_cast<const llvm::Value *>(Base::reg());
+  if (is_symbol()) {
+    return sym_.value();
+  } else {
+    return &reg_.value();
+  }
 }
 bool Value::is_symbol() const {
   return least_significant_bit(ptr_);
