@@ -16,6 +16,7 @@ class Register {
  public:
   explicit Register(const llvm::Instruction& i);
   explicit Register(const llvm::Argument& a);
+  const llvm::Value& value() const;
 };
 
 }  // namespace stacksafe

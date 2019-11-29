@@ -19,5 +19,8 @@ Register::Register(const llvm::Instruction& i) : Register{&i} {
   }
 }
 Register::Register(const llvm::Argument& a) : Register{&a} {}
+const llvm::Value& Register::value() const {
+  return *reg_;
+}
 
 }  // namespace stacksafe
