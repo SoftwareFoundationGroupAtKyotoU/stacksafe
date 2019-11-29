@@ -5,7 +5,8 @@
 
 namespace llvm {
 class AllocaInst;
-}
+class Argument;
+}  // namespace llvm
 
 namespace stacksafe {
 
@@ -14,6 +15,7 @@ class Symbol {
 
  public:
   explicit Symbol(const llvm::AllocaInst& i);
+  explicit Symbol(const llvm::Argument& a);
 };
 
 }  // namespace stacksafe
