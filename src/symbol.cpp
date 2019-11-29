@@ -11,7 +11,7 @@ std::uintptr_t to_symbol(const void* p) {
   if (val == 0) {
     fatal_error("nullptr representation may conflict");
   }
-  return val & symbol_flag;
+  return val | symbol_flag;
 }
 }  // namespace
 
