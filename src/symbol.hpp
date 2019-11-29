@@ -6,6 +6,7 @@
 namespace llvm {
 class AllocaInst;
 class Argument;
+class Value;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -18,6 +19,7 @@ class Symbol {
   Symbol();
   explicit Symbol(const llvm::AllocaInst& i);
   explicit Symbol(const llvm::Argument& a);
+  const llvm::Value* value() const;
   bool is_global() const;
   const llvm::Argument* as_argument() const;
 };

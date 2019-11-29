@@ -16,10 +16,10 @@ std::uintptr_t to_symbol(const void* p) {
     return symbol_flag;
   }
 }
-const llvm::Value* to_pointer(std::uintptr_t u) {
+const void* to_pointer(std::uintptr_t u) {
   const auto p = u & ~symbol_flag;
   if (p) {
-    return reinterpret_cast<const llvm::Value*>(p);
+    return reinterpret_cast<const void*>(p);
   } else {
     return nullptr;
   }
@@ -34,11 +34,14 @@ Symbol::Symbol(const void* p) : sym_{to_symbol(p)} {
 Symbol::Symbol() : sym_{to_symbol(nullptr)} {}
 Symbol::Symbol(const llvm::AllocaInst& i) : Symbol{&i} {}
 Symbol::Symbol(const llvm::Argument& a) : Symbol{&a} {}
+const llvm::Value* Symbol::value() const {
+  return static_cast<const llvm::Value*>(to_pointer(sym_));
+}
 bool Symbol::is_global() const {
-  return to_pointer(sym_) == nullptr;
+  return !value();
 }
 const llvm::Argument* Symbol::as_argument() const {
-  return llvm::dyn_cast_or_null<llvm::Argument>(to_pointer(sym_));
+  return llvm::dyn_cast_or_null<llvm::Argument>(value());
 }
 
 }  // namespace stacksafe
