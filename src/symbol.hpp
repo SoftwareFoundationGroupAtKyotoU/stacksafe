@@ -15,6 +15,7 @@ class Symbol {
   explicit Symbol(const void* p);
 
  public:
+  Symbol();
   explicit Symbol(const llvm::AllocaInst& i);
   explicit Symbol(const llvm::Argument& a);
 };

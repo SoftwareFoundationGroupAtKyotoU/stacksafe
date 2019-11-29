@@ -4,8 +4,8 @@
 
 namespace stacksafe {
 namespace {
+constexpr std::uintptr_t symbol_flag = 0x1;
 std::uintptr_t to_symbol(const void* p) {
-  static constexpr auto symbol_flag = 0x1;
   assert(p);
   const auto val = reinterpret_cast<std::uintptr_t>(p);
   if (val == 0) {
@@ -20,6 +20,7 @@ Symbol::Symbol(const void* p) : sym_{to_symbol(p)} {
     fatal_error("Value representation may conflict");
   }
 }
+Symbol::Symbol() : sym_{symbol_flag} {}
 Symbol::Symbol(const llvm::AllocaInst& i) : Symbol{&i} {}
 Symbol::Symbol(const llvm::Argument& a) : Symbol{&a} {}
 
