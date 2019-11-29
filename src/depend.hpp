@@ -12,6 +12,9 @@ class Depend : private std::vector<std::uint8_t> {
 
  public:
   explicit Depend(unsigned n);
+
+ private:
+  void set(unsigned from, unsigned to);
 };
 
 }  // namespace stacksafe
