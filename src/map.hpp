@@ -12,6 +12,8 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
+class Register;
+class Symbol;
 
 class Map : private std::unordered_map<Value, Domain> {
   using Super = std::unordered_map<Value, Domain>;
@@ -19,13 +21,17 @@ class Map : private std::unordered_map<Value, Domain> {
  public:
   using Super::begin, Super::end;
   void init(const llvm::Function &f);
-  bool insert(const Value &key, const Domain &dom);
-  Domain lookup(const Value &key) const;
+  bool insert(const Symbol &key, const Domain &dom);
+  bool insert(const Register &key, const Domain &dom);
+  Domain lookup(const Symbol &key) const;
+  Domain lookup(const Register &key) const;
   void merge(const Map &map);
   static std::set<Value> keys(const Map &map);
 
  private:
   Domain &get(const Value &key);
+  Domain &get(const Symbol &key);
+  Domain &get(const Register &key);
 };
 
 }  // namespace stacksafe

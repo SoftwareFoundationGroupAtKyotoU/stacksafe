@@ -6,19 +6,29 @@ namespace stacksafe {
 
 void Map::init(const llvm::Function &f) {
   const auto g = Symbol::get_global();
-  get(Value{g}).insert(g);
+  get(g).insert(g);
   for (const auto &a : f.args()) {
     const Symbol sym{a};
     const Register reg{a};
-    get(Value{sym}).insert(sym);
-    get(Value{reg}).insert(sym);
+    get(sym).insert(sym);
+    get(reg).insert(sym);
   }
 }
-bool Map::insert(const Value &key, const Domain &dom) {
+bool Map::insert(const Symbol &key, const Domain &dom) {
   return get(key).merge(dom);
 }
-Domain Map::lookup(const Value &key) const {
-  if (auto it = Super::find(key); it != end()) {
+bool Map::insert(const Register &key, const Domain &dom) {
+  return get(key).merge(dom);
+}
+Domain Map::lookup(const Symbol &key) const {
+  if (auto it = Super::find(Value{key}); it != end()) {
+    return it->second;
+  } else {
+    return Domain{};
+  }
+}
+Domain Map::lookup(const Register &key) const {
+  if (auto it = Super::find(Value{key}); it != end()) {
     return it->second;
   } else {
     return Domain{};
@@ -38,6 +48,12 @@ std::set<Value> Map::keys(const Map &map) {
 }
 Domain &Map::get(const Value &key) {
   return Super::try_emplace(key).first->second;
+}
+Domain &Map::get(const Symbol &key) {
+  return get(Value{key});
+}
+Domain &Map::get(const Register &key) {
+  return get(Value{key});
 }
 
 }  // namespace stacksafe
