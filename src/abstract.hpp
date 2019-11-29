@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
 #include "depend.hpp"
-#include "error.hpp"
 
 namespace llvm {
 class Function;
@@ -13,7 +12,6 @@ namespace stacksafe {
 
 class Abstract {
   const llvm::Function &func_;
-  Error error_;
   Depend depend_;
   double elapsed_;
 
