@@ -2,7 +2,6 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
-#include "domain.hpp"
 #include "error.hpp"
 
 #define STACKSAFE_DEBUG_LOG(x) DEBUG_WITH_TYPE("log", x)
@@ -51,18 +50,14 @@ bool Log::print(const llvm::BasicBlock &b) const {
   return os;
 }
 bool Log::print(const Symbol &key, const Domain &val, const Domain &add) const {
-  if (!add.empty()) {
-    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
-                << " += " << cache_.to_str(add));
-  }
+  endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
+              << " += " << cache_.to_str(add));
   return os;
 }
 bool Log::print(const Register &key, const Domain &val,
                 const Domain &add) const {
-  if (!add.empty()) {
-    endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
-                << " += " << cache_.to_str(add));
-  }
+  endline(*os << cache_.to_str(key) << ": " << cache_.to_str(val)
+              << " += " << cache_.to_str(add));
   return os;
 }
 bool Log::print(const Error &err) const {
