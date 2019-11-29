@@ -1,4 +1,5 @@
 #include "symbol.hpp"
+#include <llvm/IR/Argument.h>
 #include <cassert>
 #include "utility.hpp"
 
@@ -13,6 +14,14 @@ std::uintptr_t to_symbol(const void* p) {
   }
   return val | symbol_flag;
 }
+const llvm::Value* to_pointer(std::uintptr_t u) {
+  const auto p = u & ~symbol_flag;
+  if (p) {
+    return reinterpret_cast<const llvm::Value*>(p);
+  } else {
+    return nullptr;
+  }
+}
 }  // namespace
 
 Symbol::Symbol(const void* p) : sym_{to_symbol(p)} {
@@ -25,6 +34,9 @@ Symbol::Symbol(const llvm::AllocaInst& i) : Symbol{&i} {}
 Symbol::Symbol(const llvm::Argument& a) : Symbol{&a} {}
 bool Symbol::is_global() const {
   return sym_ == symbol_flag;
+}
+const llvm::Argument* Symbol::as_argument() const {
+  return llvm::dyn_cast_or_null<llvm::Argument>(to_pointer(sym_));
 }
 
 }  // namespace stacksafe
