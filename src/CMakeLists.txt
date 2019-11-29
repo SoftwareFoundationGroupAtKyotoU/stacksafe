@@ -13,7 +13,6 @@ set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
-  base.cpp
   cache.cpp
   domain.cpp
   error.cpp
