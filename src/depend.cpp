@@ -25,7 +25,7 @@ bool Depend::is_error() const {
   return is_error_argument() || is_error_global() || is_error_return();
 }
 bool Depend::is_empty() const {
-  for (std::size_t from = 0; from < height(); ++from) {
+  for (std::size_t from = 0; from < local_index(); ++from) {
     for (std::size_t to = 0; to < width(); ++to) {
       if (get(from, to)) {
         return false;
