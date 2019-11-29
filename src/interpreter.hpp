@@ -9,7 +9,7 @@ class Error;
 class Log;
 class Map;
 class Params;
-class Value;
+class Symbol;
 
 class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
@@ -56,11 +56,11 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void constant(const llvm::Instruction &dst);
 
  private:
-  Domain lookup(const Value &key) const;
+  Domain lookup(const Symbol &key) const;
   Domain lookup(const llvm::Value &key) const;
-  void insert(const Value &key, const Domain &dom);
+  void insert(const Symbol &key, const Domain &dom);
   void insert(const llvm::Instruction &key, const Domain &dom);
-  void collect(const Value &val, Domain &done) const;
+  void collect(const Symbol &sym, Domain &done) const;
   void update(bool updated);
 };
 

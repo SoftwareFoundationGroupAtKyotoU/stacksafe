@@ -204,7 +204,7 @@ void Interpreter::constant(const llvm::Instruction &dst) {
   Domain dom;
   insert(dst, dom);
 }
-Domain Interpreter::lookup(const Value &key) const {
+Domain Interpreter::lookup(const Symbol &key) const {
   return map_.lookup(key);
 }
 Domain Interpreter::lookup(const llvm::Value &key) const {
@@ -219,16 +219,14 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
     llvm_unreachable("invalid value lookup");
   }
 }
-void Interpreter::insert(const Value &key, const Domain &dom) {
+void Interpreter::insert(const Symbol &key, const Domain &dom) {
   STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
   update(map_.insert(key, dom));
-  if (auto sym = key.as_symbol()) {
-    if (dom.has_local()) {
-      if (sym->is_global()) {
-        error_.error_global();
-      } else if (sym->as_argument()) {
-        error_.error_argument();
-      }
+  if (dom.has_local()) {
+    if (key.is_global()) {
+      error_.error_global();
+    } else if (key.as_argument()) {
+      error_.error_argument();
     }
   }
 }
@@ -237,13 +235,11 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
   const Register reg{key};
   update(map_.insert(reg, dom));
 }
-void Interpreter::collect(const Value &val, Domain &done) const {
-  if (auto sym = val.as_symbol()) {
-    if (!done.element(*sym)) {
-      done.insert(*sym);
-      for (const auto &next : lookup(*sym)) {
-        collect(next, done);
-      }
+void Interpreter::collect(const Symbol &sym, Domain &done) const {
+  if (!done.element(sym)) {
+    done.insert(sym);
+    for (const auto &next : lookup(sym)) {
+      collect(next, done);
     }
   }
 }
