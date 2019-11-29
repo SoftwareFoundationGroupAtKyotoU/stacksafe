@@ -222,11 +222,13 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
 void Interpreter::insert(const Value &key, const Domain &dom) {
   STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
   update(map_.insert(key, dom));
-  if (dom.has_local()) {
-    if (key.is_global()) {
-      error_.error_global();
-    } else {
-      error_.error_argument();
+  if (auto sym = key.as_symbol()) {
+    if (dom.has_local()) {
+      if (sym->is_global()) {
+        error_.error_global();
+      } else if (sym->as_argument()) {
+        error_.error_argument();
+      }
     }
   }
 }
