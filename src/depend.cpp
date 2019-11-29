@@ -35,9 +35,12 @@ std::size_t Depend::height() const {
 std::size_t Depend::local_index() const {
   return size_ + 1;
 }
+std::size_t Depend::global_index() const {
+  return size_;
+}
 bool Depend::is_error_argument() const {
   auto from = local_index();
-  for (std::size_t to = 0; 0 < size_; ++to) {
+  for (std::size_t to = 0; 0 < global_index(); ++to) {
     if (get(from, to)) {
       return true;
     }
@@ -45,7 +48,7 @@ bool Depend::is_error_argument() const {
   return false;
 }
 bool Depend::is_error_global() const {
-  return get(local_index(), size_);
+  return get(local_index(), global_index());
 }
 bool Depend::is_error_return() const {
   return get(local_index(), local_index());
@@ -62,7 +65,7 @@ std::size_t Depend::index(const Symbol& sym) const {
   if (sym.is_local()) {
     return local_index();
   } else if (sym.is_global()) {
-    return size_;
+    return global_index();
   } else {
     auto arg = sym.as_argument();
     assert(arg && "invalid symbol");
