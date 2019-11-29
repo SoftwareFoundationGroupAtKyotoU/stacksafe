@@ -13,15 +13,15 @@ bool is_local(const Symbol &sym) {
 }  // namespace
 
 Domain::Domain(const Value &val) {
-  insert(val);
-}
-bool Domain::insert(const Value &val) {
   if (auto sym = val.as_symbol()) {
-    const auto [lb, ub] = std::equal_range(begin(), end(), *sym, compare);
-    if (lb == ub) {
-      Super::insert(lb, *sym);
-      return true;
-    }
+    insert(*sym);
+  }
+}
+bool Domain::insert(const Symbol &sym) {
+  const auto [lb, ub] = std::equal_range(begin(), end(), sym, compare);
+  if (lb == ub) {
+    Super::insert(lb, sym);
+    return true;
   }
   return false;
 }
