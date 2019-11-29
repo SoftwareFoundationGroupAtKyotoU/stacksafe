@@ -6,12 +6,12 @@ namespace stacksafe {
 
 void Map::init(const llvm::Function &f) {
   const auto g = Symbol::get_global();
-  get(g).insert(g);
+  get(Value{g}).insert(g);
   for (const auto &a : f.args()) {
     const Symbol sym{a};
     const Register reg{a};
-    get(sym).insert(sym);
-    get(reg).insert(sym);
+    get(Value{sym}).insert(sym);
+    get(Value{reg}).insert(sym);
   }
 }
 bool Map::insert(const Value &key, const Domain &dom) {
