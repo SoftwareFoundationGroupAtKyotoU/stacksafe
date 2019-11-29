@@ -17,6 +17,7 @@ class Depend : private std::vector<std::uint8_t> {
 
  private:
   void set(unsigned from, unsigned to);
+  unsigned index(const Symbol& sym) const;
 };
 
 }  // namespace stacksafe
