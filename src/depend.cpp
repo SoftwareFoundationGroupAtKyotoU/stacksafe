@@ -1,18 +1,17 @@
 #include "depend.hpp"
 #include <llvm/IR/Argument.h>
 #include <cassert>
-#include <optional>
 #include "symbol.hpp"
 
 namespace stacksafe {
 namespace {
-std::optional<unsigned> to_number(const Symbol& sym, unsigned size) {
+unsigned to_number(const Symbol& sym, unsigned size) {
   if (sym.is_global()) {
     return size;
   } else if (auto arg = sym.as_argument()) {
     return arg->getArgNo();
   } else {
-    return std::nullopt;
+    return size + 1;
   }
 }
 }  // namespace
@@ -23,15 +22,12 @@ Depend::Depend(std::size_t n) : Super((n + 2) * (n + 2)), size_{n} {
   }
   set(n, n);
 }
-bool Depend::set(const Symbol& from, const Symbol& to) {
-  if (auto col = to_number(to, size_)) {
-    if (auto row = to_number(from, size_)) {
-      set(*row, *col);
-    } else {
-      return false;
-    }
+void Depend::set(const Symbol& key, const Symbol& val) {
+  auto to = to_number(key, size_);
+  auto from = to_number(val, size_);
+  if (to < size_ + 1) {
+    set(from, to);
   }
-  return true;
 }
 void Depend::set(unsigned from, unsigned to) {
   assert(from < size_ + 2 && to < size_ + 2);

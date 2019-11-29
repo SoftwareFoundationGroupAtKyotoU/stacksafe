@@ -13,7 +13,7 @@ class Depend : private std::vector<std::uint8_t> {
 
  public:
   explicit Depend(std::size_t n);
-  bool set(const Symbol& from, const Symbol& to);
+  void set(const Symbol& key, const Symbol& val);
 
  private:
   void set(unsigned from, unsigned to);
