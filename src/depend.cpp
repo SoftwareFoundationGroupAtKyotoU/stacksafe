@@ -8,9 +8,6 @@ namespace stacksafe {
 
 Depend::Depend(std::size_t n) : size_{n} {
   Super::resize(width() * height());
-  for (std::size_t i = 0; i < local_index(); ++i) {
-    set(i, i);
-  }
 }
 void Depend::set(const Symbol& key, const Symbol& val) {
   auto to = index(key);
@@ -92,11 +89,11 @@ bool Depend::diagonal(std::size_t from, std::size_t to) const {
 }
 void Depend::set(std::size_t from, std::size_t to) {
   assert(from < height() && to < width());
-  Super::at(width() * from + to) = 1;
+  Super::at(width() * from + to) = (diagonal(from, to) ? 0 : 1);
 }
 bool Depend::get(std::size_t from, std::size_t to) const {
   assert(from < height() && to < width());
-  return Super::at(width() * from + to);
+  return !diagonal(from, to) && Super::at(width() * from + to);
 }
 std::size_t Depend::index(const Symbol& sym) const {
   if (sym.is_local()) {
@@ -107,6 +104,15 @@ std::size_t Depend::index(const Symbol& sym) const {
     auto arg = sym.as_argument();
     assert(arg && "invalid symbol");
     return arg->getArgNo();
+  }
+}
+std::string Depend::to_str(std::size_t i) const {
+  if (local_index() == i) {
+    return "r";
+  } else if (global_index() == i) {
+    return "g";
+  } else {
+    return std::to_string(i);
   }
 }
 }  // namespace stacksafe

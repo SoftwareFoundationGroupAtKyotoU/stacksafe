@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_DA5A1318_1109_4382_9A1C_7278AB44F4FA
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 namespace llvm {
@@ -36,6 +37,7 @@ class Depend : private std::vector<std::uint8_t> {
   void set(std::size_t from, std::size_t to);
   bool get(std::size_t from, std::size_t to) const;
   std::size_t index(const Symbol& sym) const;
+  std::string to_str(std::size_t i) const;
 };
 
 }  // namespace stacksafe
