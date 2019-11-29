@@ -29,15 +29,6 @@ const Symbol *Value::as_symbol() const {
     return nullptr;
   }
 }
-bool Value::is_global() const {
-  return is_symbol() && sym_.is_global();
-}
-bool Value::is_local() const {
-  return is_symbol() && sym_.is_local();
-}
-bool Value::is_argument() const {
-  return !is_local() && !is_global();
-}
 Value Value::get_symbol() {
   return Value{Symbol{}};
 }

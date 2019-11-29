@@ -32,9 +32,6 @@ class Value : private Base {
   const llvm::Value *value() const;
   bool is_symbol() const;
   const Symbol *as_symbol() const;
-  bool is_global() const;
-  bool is_local() const;
-  bool is_argument() const;
   static Value get_symbol();
   static Value get_symbol(const llvm::AllocaInst &v);
   static Value get_symbol(const llvm::Argument &v);
