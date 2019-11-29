@@ -2,7 +2,6 @@
 #define INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707
 
 #include <tuple>
-#include "base.hpp"
 #include "register.hpp"
 #include "symbol.hpp"
 
@@ -16,7 +15,7 @@ class hash_code;
 
 namespace stacksafe {
 
-class Value : private Base {
+class Value {
   union {
     Symbol sym_;
     Register reg_;
