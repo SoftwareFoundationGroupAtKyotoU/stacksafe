@@ -20,7 +20,10 @@ void fatal_error(const std::string& msg) {
   std::exit(EXIT_FAILURE);
 }
 bool least_significant_bit(const void* ptr) {
-  return reinterpret_cast<std::uintptr_t>(ptr) & 0x1;
+  return least_significant_bit(reinterpret_cast<std::uintptr_t>(ptr));
+}
+bool least_significant_bit(std::uintptr_t ptr) {
+  return ptr & 0x1;
 }
 bool is_global(const llvm::Constant& c) {
   if (llvm::isa<llvm::GlobalValue>(&c)) {
