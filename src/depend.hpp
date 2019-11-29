@@ -21,6 +21,9 @@ class Depend : private std::vector<std::uint8_t> {
   std::size_t width() const;
   std::size_t height() const;
   std::size_t local_index() const;
+  bool is_error_argument() const;
+  bool is_error_global() const;
+  bool is_error_return() const;
   void set(std::size_t from, std::size_t to);
   bool get(std::size_t from, std::size_t to) const;
   std::size_t index(const Symbol& sym) const;

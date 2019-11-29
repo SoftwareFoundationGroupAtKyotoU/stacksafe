@@ -24,13 +24,7 @@ void Depend::set_return(const Symbol& sym) {
   set(from, to);
 }
 bool Depend::is_error() const {
-  auto from = local_index();
-  for (std::size_t to = 0; 0 < width(); ++to) {
-    if (get(from, to)) {
-      return true;
-    }
-  }
-  return false;
+  return is_error_argument() || is_error_global() || is_error_return();
 }
 std::size_t Depend::width() const {
   return size_ + 2;
@@ -40,6 +34,21 @@ std::size_t Depend::height() const {
 }
 std::size_t Depend::local_index() const {
   return size_ + 1;
+}
+bool Depend::is_error_argument() const {
+  auto from = local_index();
+  for (std::size_t to = 0; 0 < size_; ++to) {
+    if (get(from, to)) {
+      return true;
+    }
+  }
+  return false;
+}
+bool Depend::is_error_global() const {
+  return get(local_index(), size_);
+}
+bool Depend::is_error_return() const {
+  return get(local_index(), local_index());
 }
 void Depend::set(std::size_t from, std::size_t to) {
   assert(from < height() && to < width());
