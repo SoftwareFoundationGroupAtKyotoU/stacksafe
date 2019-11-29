@@ -22,6 +22,8 @@ class Value : private Base {
     Register reg_;
     const void *ptr_;
   };
+  explicit Value(const Symbol &sym);
+  explicit Value(const Register &sym);
   explicit Value(const Base &base);
   explicit Value(const llvm::Value &val);
   Value(const void *sym, bool is_local);
