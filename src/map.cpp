@@ -1,6 +1,5 @@
 #include "map.hpp"
 #include <llvm/IR/Function.h>
-#include <algorithm>
 
 namespace stacksafe {
 
