@@ -12,6 +12,7 @@ namespace stacksafe {
 
 class Symbol {
   std::uintptr_t sym_;
+  explicit Symbol(const void* p);
 
  public:
   explicit Symbol(const llvm::AllocaInst& i);
