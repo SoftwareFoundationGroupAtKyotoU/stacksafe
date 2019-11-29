@@ -14,7 +14,7 @@
 namespace stacksafe {
 
 Interpreter::Interpreter(const Log &l, Error &e, Depend &d, Map &m)
-    : log_{l}, error_{e}, depend_{d}, map_{m} {}
+    : log_{l}, depend_{d}, map_{m} {}
 bool Interpreter::visit(const llvm::BasicBlock &b) {
   diff_ = false;
   STACKSAFE_DEBUG_LOG(b);
@@ -23,10 +23,6 @@ bool Interpreter::visit(const llvm::BasicBlock &b) {
     Super::visit(i);
     if (depend_.is_error()) {
       STACKSAFE_DEBUG_LOG(depend_);
-      break;
-    }
-    if (error_.is_error()) {
-      STACKSAFE_DEBUG_LOG(error_);
       break;
     }
   }
@@ -149,9 +145,6 @@ auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
     for (const auto &sym : lookup(*ret)) {
       depend_.set_return(sym);
     }
-    if (lookup(*ret).has_local()) {
-      error_.error_return();
-    }
   }
 }
 void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
@@ -237,13 +230,6 @@ void Interpreter::insert(const Symbol &key, const Domain &dom) {
     update(map_.insert(key, dom));
     for (const auto &sym : dom) {
       depend_.set(key, sym);
-    }
-    if (dom.has_local()) {
-      if (key.is_global()) {
-        error_.error_global();
-      } else if (key.as_argument()) {
-        error_.error_argument();
-      }
     }
   }
 }

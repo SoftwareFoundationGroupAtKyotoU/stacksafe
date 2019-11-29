@@ -16,7 +16,6 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Log &log_;
-  Error &error_;
   Depend &depend_;
   Map &map_;
   bool diff_;
