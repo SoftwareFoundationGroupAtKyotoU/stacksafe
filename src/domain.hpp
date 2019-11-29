@@ -5,7 +5,6 @@
 #include "symbol.hpp"
 
 namespace stacksafe {
-class Value;
 
 class Domain : private std::vector<Symbol> {
   using Super = std::vector<Symbol>;
@@ -13,7 +12,7 @@ class Domain : private std::vector<Symbol> {
  public:
   using Super::begin, Super::end, Super::empty;
   Domain() = default;
-  explicit Domain(const Value &val);
+  explicit Domain(const Symbol &val);
   bool insert(const Symbol &val);
   bool merge(const Domain &dom);
   bool element(const Symbol &val) const;

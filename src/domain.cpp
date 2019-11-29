@@ -1,6 +1,5 @@
 #include "domain.hpp"
 #include <algorithm>
-#include "value.hpp"
 
 namespace stacksafe {
 namespace {
@@ -12,11 +11,7 @@ bool is_local(const Symbol &sym) {
 }
 }  // namespace
 
-Domain::Domain(const Value &val) {
-  if (auto sym = val.as_symbol()) {
-    insert(*sym);
-  }
-}
+Domain::Domain(const Symbol &sym) : Super{sym} {}
 bool Domain::insert(const Symbol &sym) {
   const auto [lb, ub] = std::equal_range(begin(), end(), sym, compare);
   if (lb == ub) {
