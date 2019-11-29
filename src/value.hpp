@@ -40,7 +40,6 @@ class Value : private Base {
   static Value get_register(const llvm::Instruction &v);
   bool operator==(const Value &sym) const;
   bool operator<(const Value &sym) const;
-  friend llvm::hash_code hash_value(const Value &sym);
 };
 
 }  // namespace stacksafe

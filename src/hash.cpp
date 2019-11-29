@@ -8,8 +8,8 @@ namespace stacksafe {
 llvm::hash_code hash_value(const Base& key) {
   return llvm::hash_value(key.sym());
 }
-llvm::hash_code hash_value(const Value& sym) {
-  return hash_value(static_cast<const Base&>(sym));
+llvm::hash_code hash_value(const Value& val) {
+  return llvm::hash_value(val.ptr());
 }
 
 }  // namespace stacksafe
