@@ -21,6 +21,10 @@ bool Interpreter::visit(const llvm::BasicBlock &b) {
   for (auto &&i : const_cast<llvm::BasicBlock &>(b)) {
     STACKSAFE_DEBUG_LOG(i);
     Super::visit(i);
+    if (depend_.is_error()) {
+      STACKSAFE_DEBUG_LOG(depend_);
+      break;
+    }
     if (error_.is_error()) {
       STACKSAFE_DEBUG_LOG(error_);
       break;
