@@ -4,7 +4,11 @@
 namespace stacksafe {
 namespace {
 bool is_local(const Value &val) {
-  return val.is_local();
+  if (auto sym = val.as_symbol()) {
+    return sym->is_local();
+  } else {
+    return false;
+  }
 }
 }  // namespace
 
