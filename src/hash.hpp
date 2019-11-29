@@ -14,7 +14,7 @@ llvm::hash_code hash_value(const Value& val);
 namespace std {
 template <>
 struct hash<stacksafe::Value> {
-  size_t operator()(const stacksafe::Value& sym) const;
+  size_t operator()(const stacksafe::Value& val) const;
 };
 }  // namespace std
 
