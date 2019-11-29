@@ -19,6 +19,9 @@ const llvm::Value *Value::value() const {
     return &reg_.value();
   }
 }
+const void *Value::ptr() const {
+  return ptr_;
+}
 bool Value::is_symbol() const {
   return least_significant_bit(ptr_);
 }
