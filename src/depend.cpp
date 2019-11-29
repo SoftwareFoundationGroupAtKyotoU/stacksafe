@@ -27,6 +27,10 @@ void Depend::set(unsigned from, unsigned to) {
   assert(from < size_ + 2 && to < size_ + 2);
   Super::at((size_ + 2) * from + to) = 1;
 }
+bool Depend::get(unsigned from, unsigned to) const {
+  assert(from < size_ + 2 && to < size_ + 2);
+  return Super::at((size_ + 2) * from + to);
+}
 unsigned Depend::index(const Symbol& sym) const {
   if (sym.is_local()) {
     return size_ + 1;
