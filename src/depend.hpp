@@ -18,6 +18,8 @@ class Depend : private std::vector<std::uint8_t> {
   bool is_error() const;
 
  private:
+  unsigned width() const;
+  unsigned height() const;
   void set(unsigned from, unsigned to);
   bool get(unsigned from, unsigned to) const;
   unsigned index(const Symbol& sym) const;

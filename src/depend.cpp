@@ -5,7 +5,8 @@
 
 namespace stacksafe {
 
-Depend::Depend(std::size_t n) : Super((n + 2) * (n + 2)), size_{n} {
+Depend::Depend(std::size_t n) : size_{n} {
+  Super::resize(width() * height());
   for (unsigned i = 0; i < n; ++i) {
     set(i, i);
   }
@@ -25,20 +26,26 @@ void Depend::set_return(const Symbol& sym) {
 }
 bool Depend::is_error() const {
   unsigned from = size_ + 1;
-  for (unsigned to = 0; 0 < size_ + 2; ++to) {
+  for (unsigned to = 0; 0 < width(); ++to) {
     if (get(from, to)) {
       return true;
     }
   }
   return false;
 }
+unsigned Depend::width() const {
+  return size_ + 2;
+}
+unsigned Depend::height() const {
+  return size_ + 2;
+}
 void Depend::set(unsigned from, unsigned to) {
-  assert(from < size_ + 2 && to < size_ + 2);
-  Super::at((size_ + 2) * from + to) = 1;
+  assert(from < height() && to < width());
+  Super::at(width() * from + to) = 1;
 }
 bool Depend::get(unsigned from, unsigned to) const {
-  assert(from < size_ + 2 && to < size_ + 2);
-  return Super::at((size_ + 2) * from + to);
+  assert(from < height() && to < width());
+  return Super::at(width() * from + to);
 }
 unsigned Depend::index(const Symbol& sym) const {
   if (sym.is_local()) {
