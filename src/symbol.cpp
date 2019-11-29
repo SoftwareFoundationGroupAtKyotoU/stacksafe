@@ -23,5 +23,8 @@ Symbol::Symbol(const void* p) : sym_{to_symbol(p)} {
 Symbol::Symbol() : sym_{symbol_flag} {}
 Symbol::Symbol(const llvm::AllocaInst& i) : Symbol{&i} {}
 Symbol::Symbol(const llvm::Argument& a) : Symbol{&a} {}
+bool Symbol::is_global() const {
+  return sym_ == symbol_flag;
+}
 
 }  // namespace stacksafe

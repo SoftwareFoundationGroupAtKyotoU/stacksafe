@@ -18,6 +18,7 @@ class Symbol {
   Symbol();
   explicit Symbol(const llvm::AllocaInst& i);
   explicit Symbol(const llvm::Argument& a);
+  bool is_global() const;
 };
 
 }  // namespace stacksafe
