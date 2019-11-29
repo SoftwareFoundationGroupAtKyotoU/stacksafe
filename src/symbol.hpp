@@ -3,10 +3,17 @@
 
 #include <cstdint>
 
+namespace llvm {
+class AllocaInst;
+}
+
 namespace stacksafe {
 
 class Symbol {
   std::uintptr_t sym_;
+
+ public:
+  explicit Symbol(const llvm::AllocaInst& i);
 };
 
 }  // namespace stacksafe
