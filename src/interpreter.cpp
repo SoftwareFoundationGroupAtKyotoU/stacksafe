@@ -231,6 +231,9 @@ void Interpreter::insert(const Symbol &key, const Domain &dom) {
   if (!dom.empty()) {
     STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
     update(map_.insert(key, dom));
+    for (const auto &sym : dom) {
+      depend_.set(key, sym);
+    }
     if (dom.has_local()) {
       if (key.is_global()) {
         error_.error_global();
