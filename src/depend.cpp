@@ -27,6 +27,17 @@ void Depend::set_return(const Symbol& sym) {
 bool Depend::is_error() const {
   return is_error_argument() || is_error_global() || is_error_return();
 }
+void Depend::print(llvm::raw_ostream& os) const {
+  static const auto comma = ",";
+  static const auto colon = ":";
+  for (std::size_t from = 0; from < local_index(); ++from) {
+    for (std::size_t to = 0; to < local_index(); ++to) {
+      if (get(from, to) && from != to) {
+        os << comma << from << colon << to;
+      }
+    }
+  }
+}
 void Depend::print_error(llvm::raw_ostream& os) const {
   if (is_error_argument()) {
     os << "ERROR: ARGUMENT\n";
