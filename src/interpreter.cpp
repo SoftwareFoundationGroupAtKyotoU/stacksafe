@@ -2,7 +2,6 @@
 #include <llvm/Support/Debug.h>
 #include "depend.hpp"
 #include "domain.hpp"
-#include "error.hpp"
 #include "log.hpp"
 #include "map.hpp"
 #include "params.hpp"
@@ -13,7 +12,7 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Error &e, Depend &d, Map &m)
+Interpreter::Interpreter(const Log &l, Depend &d, Map &m)
     : log_{l}, depend_{d}, map_{m} {}
 bool Interpreter::visit(const llvm::BasicBlock &b) {
   diff_ = false;

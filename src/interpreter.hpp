@@ -6,7 +6,6 @@
 namespace stacksafe {
 class Depend;
 class Domain;
-class Error;
 class Log;
 class Map;
 class Params;
@@ -21,7 +20,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   bool diff_;
 
  public:
-  explicit Interpreter(const Log &l, Error &e, Depend &d, Map &m);
+  explicit Interpreter(const Log &l, Depend &d, Map &m);
   bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);

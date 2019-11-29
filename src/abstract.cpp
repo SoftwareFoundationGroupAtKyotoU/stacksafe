@@ -19,7 +19,7 @@ void Abstract::interpret() {
     Scc scc{func_};
     while (!scc.empty()) {
       auto c = scc.pop();
-      Interpreter i{log, error_, depend_, c.map()};
+      Interpreter i{log, depend_, c.map()};
       do {
         bool repeat = false;
         for (const auto &b : c) {
@@ -36,7 +36,7 @@ void Abstract::interpret() {
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
-  const auto safe = !error_.is_error();
+  const auto safe = !depend_.is_error();
   const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe ? "SAFE" : "UNSAFE";
   const auto name = func_.getName().str();
