@@ -23,6 +23,15 @@ void Depend::set_return(const Symbol& sym) {
   auto to = size_ + 1;
   set(from, to);
 }
+bool Depend::is_error() const {
+  unsigned from = size_ + 1;
+  for (unsigned to = 0; 0 < size_ + 2; ++to) {
+    if (get(from, to)) {
+      return true;
+    }
+  }
+  return false;
+}
 void Depend::set(unsigned from, unsigned to) {
   assert(from < size_ + 2 && to < size_ + 2);
   Super::at((size_ + 2) * from + to) = 1;
