@@ -19,6 +19,7 @@ class Abstract {
   explicit Abstract(const llvm::Function &f);
   void interpret();
   void print(llvm::raw_ostream &os) const;
+  void print_depend(llvm::raw_ostream &os) const;
 };
 
 }  // namespace stacksafe
