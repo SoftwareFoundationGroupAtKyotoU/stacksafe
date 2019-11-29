@@ -20,6 +20,7 @@ class Depend : private std::vector<std::uint8_t> {
   void set(const Symbol& key, const Symbol& val);
   void set_return(const Symbol& sym);
   bool is_error() const;
+  bool is_empty() const;
   void print(llvm::raw_ostream& os) const;
   void print_error(llvm::raw_ostream& os) const;
 
