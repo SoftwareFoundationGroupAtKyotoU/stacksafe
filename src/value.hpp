@@ -24,9 +24,6 @@ class Value : private Base {
   };
   explicit Value(const Symbol &sym);
   explicit Value(const Register &sym);
-  explicit Value(const Base &base);
-  explicit Value(const llvm::Value &val);
-  Value(const void *sym, bool is_local);
 
  public:
   const llvm::Value *value() const;

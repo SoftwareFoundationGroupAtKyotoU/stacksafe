@@ -8,10 +8,6 @@ namespace stacksafe {
 
 Value::Value(const Symbol &sym) : Base{sym.value(), true}, sym_{sym} {}
 Value::Value(const Register &reg) : Base{reg.value()}, reg_{reg} {}
-Value::Value(const Base &base) : Base{base}, ptr_{nullptr} {}
-Value::Value(const llvm::Value &val) : Base{val}, ptr_{nullptr} {}
-Value::Value(const void *sym, bool is_local)
-    : Base{sym, is_local}, ptr_{nullptr} {}
 const llvm::Value *Value::value() const {
   if (is_symbol()) {
     return as_symbol()->value();
