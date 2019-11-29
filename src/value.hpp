@@ -3,6 +3,8 @@
 
 #include <tuple>
 #include "base.hpp"
+#include "register.hpp"
+#include "symbol.hpp"
 
 namespace llvm {
 class AllocaInst;
@@ -15,6 +17,11 @@ class hash_code;
 namespace stacksafe {
 
 class Value : private Base {
+  union {
+    Symbol sym_;
+    Register reg_;
+    const void *ptr_;
+  };
   explicit Value(const Base &base);
   explicit Value(const llvm::Value &val);
   Value(const void *sym, bool is_local);

@@ -5,9 +5,10 @@
 
 namespace stacksafe {
 
-Value::Value(const Base &base) : Base{base} {}
-Value::Value(const llvm::Value &val) : Base{val} {}
-Value::Value(const void *sym, bool is_local) : Base{sym, is_local} {}
+Value::Value(const Base &base) : Base{base}, ptr_{nullptr} {}
+Value::Value(const llvm::Value &val) : Base{val}, ptr_{nullptr} {}
+Value::Value(const void *sym, bool is_local)
+    : Base{sym, is_local}, ptr_{nullptr} {}
 const llvm::Value *Value::value() const {
   return static_cast<const llvm::Value *>(Base::reg());
 }
