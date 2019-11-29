@@ -6,15 +6,18 @@
 
 namespace stacksafe {
 
-Register::Register(const llvm::Instruction& i) : reg_{&i} {
+Register::Register(const llvm::Value* v) : reg_{v} {
   if (reinterpret_cast<std::uintptr_t>(reg_) & 0x1) {
     debug::print("ERROR: Value representation may conflict");
     std::exit(EXIT_FAILURE);
-  } else if (!is_register(i)) {
+  }
+}
+Register::Register(const llvm::Instruction& i) : Register{&i} {
+  if (!is_register(i)) {
     debug::print("ERROR: invalid register");
     std::exit(EXIT_FAILURE);
   }
 }
-Register::Register(const llvm::Argument& a) : reg_{&a} {}
+Register::Register(const llvm::Argument& a) : Register{&a} {}
 
 }  // namespace stacksafe
