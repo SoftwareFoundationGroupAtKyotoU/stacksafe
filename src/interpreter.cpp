@@ -155,8 +155,12 @@ void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
   const Symbol sym{dst};
-  insert(sym, Domain{});
-  insert(dst, Domain{sym});
+  if (lookup(dst).empty()) {
+    insert(sym, Domain{});
+    insert(dst, Domain{sym});
+  } else {
+    fatal_error("dynamic alloca instruction is not supported");
+  }
 }
 void Interpreter::load(const llvm::Instruction &dst, const llvm::Value &src) {
   Domain dom;
