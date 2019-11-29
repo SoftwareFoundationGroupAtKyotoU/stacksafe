@@ -220,20 +220,24 @@ Domain Interpreter::lookup(const llvm::Value &key) const {
   }
 }
 void Interpreter::insert(const Symbol &key, const Domain &dom) {
-  STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
-  update(map_.insert(key, dom));
-  if (dom.has_local()) {
-    if (key.is_global()) {
-      error_.error_global();
-    } else if (key.as_argument()) {
-      error_.error_argument();
+  if (!dom.empty()) {
+    STACKSAFE_DEBUG_LOG(key, lookup(key), dom);
+    update(map_.insert(key, dom));
+    if (dom.has_local()) {
+      if (key.is_global()) {
+        error_.error_global();
+      } else if (key.as_argument()) {
+        error_.error_argument();
+      }
     }
   }
 }
 void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
-  const Register reg{key};
-  STACKSAFE_DEBUG_LOG(reg, lookup(key), dom);
-  update(map_.insert(reg, dom));
+  if (!dom.empty()) {
+    const Register reg{key};
+    STACKSAFE_DEBUG_LOG(reg, lookup(key), dom);
+    update(map_.insert(reg, dom));
+  }
 }
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
