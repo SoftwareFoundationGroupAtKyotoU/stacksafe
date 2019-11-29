@@ -34,18 +34,6 @@ class Value : private Base {
   friend llvm::hash_code hash_value(const Value &sym);
 };
 
-class Pair : private std::tuple<Value, Value> {
-  std::size_t hash_;
-  using Super = std::tuple<Value, Value>;
-
- public:
-  Pair(const Value &key, const Value &val);
-  const Value &key() const;
-  const Value &val() const;
-  bool operator==(const Pair &pair) const;
-  bool operator<(const Pair &pair) const;
-};
-
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_339D16F3_498E_420D_A302_BE9C21A36707

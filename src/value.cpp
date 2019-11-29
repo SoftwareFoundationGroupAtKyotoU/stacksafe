@@ -42,23 +42,4 @@ bool Value::operator<(const Value &sym) const {
   return Base::less(*this, sym);
 }
 
-Pair::Pair(const Value &key, const Value &val)
-    : Super{key, val}, hash_{llvm::hash_combine(key, val)} {}
-const Value &Pair::key() const {
-  return std::get<0>(*this);
-}
-const Value &Pair::val() const {
-  return std::get<1>(*this);
-}
-bool Pair::operator==(const Pair &pair) const {
-  return key() == pair.key() && val() == pair.val();
-}
-bool Pair::operator<(const Pair &pair) const {
-  if (key() == pair.key()) {
-    return val() < pair.val();
-  } else {
-    return key() < pair.key();
-  }
-}
-
 }  // namespace stacksafe
