@@ -22,6 +22,13 @@ const llvm::Value *Value::value() const {
 bool Value::is_symbol() const {
   return least_significant_bit(ptr_);
 }
+const Symbol *Value::as_symbol() const {
+  if (is_symbol()) {
+    return &sym_;
+  } else {
+    return nullptr;
+  }
+}
 bool Value::is_global() const {
   return is_symbol() && sym_.is_global();
 }
