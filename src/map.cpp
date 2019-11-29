@@ -29,10 +29,10 @@ void Map::merge(const Map &map) {
     get(key).merge(val);
   }
 }
-Domain Map::keys(const Map &map) {
-  Domain dom;
+std::set<Value> Map::keys(const Map &map) {
+  std::set<Value> dom;
   for (const auto &pair : map) {
-    dom.insert(pair.first);
+    dom.emplace(pair.first);
   }
   return dom;
 }

@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 #define INCLUDE_GUARD_A0BA2711_AA71_4105_83AF_E6AF119E4855
 
+#include <set>
 #include <unordered_map>
 #include "domain.hpp"
 #include "hash.hpp"
@@ -21,7 +22,7 @@ class Map : private std::unordered_map<Value, Domain> {
   bool insert(const Value &key, const Domain &dom);
   Domain lookup(const Value &key) const;
   void merge(const Map &map);
-  static Domain keys(const Map &map);
+  static std::set<Value> keys(const Map &map);
 
  private:
   Domain &get(const Value &key);
