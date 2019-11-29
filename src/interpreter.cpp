@@ -1,5 +1,6 @@
 #include "interpreter.hpp"
 #include <llvm/Support/Debug.h>
+#include "depend.hpp"
 #include "domain.hpp"
 #include "error.hpp"
 #include "log.hpp"
@@ -141,6 +142,9 @@ auto Interpreter::visitCallInst(llvm::CallInst &i) -> RetTy {
 }
 auto Interpreter::visitReturnInst(llvm::ReturnInst &i) -> RetTy {
   if (auto ret = i.getReturnValue()) {
+    for (const auto &sym : lookup(*ret)) {
+      depend_.set_return(sym);
+    }
     if (lookup(*ret).has_local()) {
       error_.error_return();
     }
