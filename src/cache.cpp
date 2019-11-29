@@ -30,6 +30,14 @@ Cache::Cache(const llvm::Function& f) {
     }
   }
 }
+std::string Cache::to_str(const Symbol& sym) const {
+  static const std::string prefix{"&"};
+  return prefix + to_string(lookup(sym.value()));
+}
+std::string Cache::to_str(const Register& reg) const {
+  static const std::string prefix{"%"};
+  return prefix + to_string(lookup(&reg.value()));
+}
 std::string Cache::to_str(const Value& sym) const {
   static const std::string prefix{"&"};
   return prefix + to_string(lookup(sym.value()));
