@@ -32,15 +32,6 @@ const Register *Value::as_register() const {
     return &reg_;
   }
 }
-Value Value::get_symbol() {
-  return Value{Symbol::get_global()};
-}
-Value Value::get_symbol(const llvm::AllocaInst &v) {
-  return Value{Symbol{v}};
-}
-Value Value::get_symbol(const llvm::Argument &v) {
-  return Value{Symbol{v}};
-}
 Value Value::get_register(const llvm::Argument &v) {
   return Value{Register{v}};
 }

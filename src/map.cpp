@@ -5,10 +5,10 @@
 namespace stacksafe {
 
 void Map::init(const llvm::Function &f) {
-  const auto g = Value::get_symbol();
+  const auto g = Symbol::get_global();
   get(g).insert(g);
   for (const auto &a : f.args()) {
-    const auto arg = Value::get_symbol(a);
+    const Symbol arg{a};
     get(arg).insert(arg);
     get(Value::get_register(a)).insert(arg);
   }

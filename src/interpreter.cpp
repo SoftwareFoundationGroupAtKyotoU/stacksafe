@@ -154,7 +154,7 @@ void Interpreter::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
   insert(dst, dom);
 }
 void Interpreter::alloc(const llvm::AllocaInst &dst) {
-  const auto sym = Value::get_symbol(dst);
+  const Symbol sym{dst};
   insert(sym, Domain{});
   insert(dst, Domain{sym});
 }
@@ -187,7 +187,7 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
-  Domain dom{Value::get_symbol()};
+  Domain dom{Symbol::get_global()};
   for (const auto &arg : params) {
     for (const auto &val : lookup(arg)) {
       collect(val, dom);
@@ -209,7 +209,7 @@ Domain Interpreter::lookup(const Value &key) const {
 }
 Domain Interpreter::lookup(const llvm::Value &key) const {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&key)) {
-    return is_global(*c) ? Domain{Value::get_symbol()} : Domain{};
+    return is_global(*c) ? Domain{Symbol::get_global()} : Domain{};
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&key)) {
     assert(is_register(*i) && "invalid register lookup");
     return map_.lookup(Value::get_register(*i));
