@@ -91,11 +91,6 @@ void Depend::set_global(std::size_t from, std::size_t to) {
     Matrix::set(from, to);
   }
 }
-void Depend::set(std::size_t from, std::size_t to) {
-  if (!diagonal(from, to)) {
-    Matrix::set(from, to);
-  }
-}
 bool Depend::get(std::size_t from, std::size_t to) const {
   return !diagonal(from, to) && Matrix::get(from, to);
 }
