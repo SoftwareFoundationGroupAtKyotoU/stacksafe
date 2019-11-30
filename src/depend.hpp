@@ -49,6 +49,9 @@ class Depend : private Matrix {
 class DependMap : private std::map<std::string, Depend> {
   using Super = std::map<std::string, Depend>;
 
+ public:
+  DependMap();
+
  private:
   Depend* init(std::string_view header);
   void load(std::string_view line);

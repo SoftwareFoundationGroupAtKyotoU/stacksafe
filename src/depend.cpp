@@ -3,6 +3,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <cassert>
 #include <cstdlib>
+#include <fstream>
 #include <optional>
 #include "symbol.hpp"
 #include "utility.hpp"
@@ -159,6 +160,15 @@ std::string Depend::to_str(std::size_t i) const {
   }
 }
 
+DependMap::DependMap() {
+  static const auto name = "depend.txt";
+  std::ifstream input{name};
+  std::string buf;
+  while (input.good()) {
+    std::getline(input, buf);
+    load(buf);
+  }
+}
 Depend* DependMap::init(std::string_view header) {
   if (auto pair = split(header, "/"); pair.size() == 2) {
     const auto key = pair[0];
