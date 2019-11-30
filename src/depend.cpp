@@ -2,10 +2,23 @@
 #include <llvm/IR/Argument.h>
 #include <llvm/Support/raw_ostream.h>
 #include <cassert>
+#include <cstdlib>
+#include <optional>
 #include "symbol.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
+namespace {
+std::optional<std::size_t> to_size_t(std::string_view v) {
+  std::string buf{v};
+  char* ptr = nullptr;
+  const auto val = std::strtol(buf.c_str(), &ptr, 10);
+  if (ptr != buf.c_str() && 0 <= val && val != LONG_MAX) {
+    return val;
+  }
+  return std::nullopt;
+}
+}  // namespace
 
 Matrix::Matrix(std::size_t n) : Super(n * n, 0), size_{n} {}
 std::size_t Matrix::size() const {
@@ -98,6 +111,16 @@ std::size_t Depend::to_index(const Symbol& sym) const {
     assert(arg && "invalid symbol");
     return arg->getArgNo();
   }
+}
+std::size_t Depend::to_index(std::string_view v) const {
+  if (v == "r") {
+    return local_index();
+  } else if (v == "g") {
+    return global_index();
+  } else if (auto val = to_size_t(v)) {
+    return *val < global_index() ? *val : Matrix::size();
+  }
+  return Matrix::size();
 }
 std::string Depend::to_str(std::size_t i) const {
   if (local_index() == i) {
