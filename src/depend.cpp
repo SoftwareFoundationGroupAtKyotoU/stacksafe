@@ -42,7 +42,9 @@ std::optional<std::size_t> to_size_t(std::string_view v) {
 }
 }  // namespace
 
-Matrix::Matrix(std::size_t n) : Super(n * n, 0), size_{n} {}
+Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
+Matrix::Matrix(std::size_t n, bool init)
+    : Super(n * n, init ? 1 : 0), size_{n} {}
 std::size_t Matrix::size() const {
   return size_;
 }
