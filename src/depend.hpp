@@ -20,6 +20,7 @@ class Matrix : private std::vector<std::uint8_t> {
   explicit Matrix(std::size_t n);
   std::size_t size() const;
   void set(std::size_t row, std::size_t col);
+  bool get(std::size_t row, std::size_t col) const;
 };
 
 class Depend : private std::vector<std::uint8_t> {

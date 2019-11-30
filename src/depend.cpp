@@ -14,6 +14,10 @@ void Matrix::set(std::size_t row, std::size_t col) {
   assert(row < size_ && col < size_);
   Super::at(row * size_ + col) = 1;
 }
+bool Matrix::get(std::size_t row, std::size_t col) const {
+  assert(row < size_ && col < size_);
+  return Super::at(row * size_ + col) != 0;
+}
 
 Depend::Depend(std::size_t n) : size_{n} {
   Super::resize(width() * height());
