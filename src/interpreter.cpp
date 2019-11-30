@@ -191,17 +191,19 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
-  Domain dom{Symbol::get_global()};
+  const auto arity = dst.arg_size();
+  std::vector<Domain> dom;
   for (const auto &arg : params) {
-    for (const auto &val : lookup(arg)) {
-      collect(val, dom);
+    dom.emplace_back(collect(arg));
+  }
+  dom.emplace_back(lookup(Symbol::get_global()));
+  for (auto from = 0_z; from <= arity; ++from) {
+    for (auto to = 0_z; to <= arity; ++to) {
+      insert(dom[from], dom[to]);
     }
-  }
-  for (const auto &val : dom) {
-    insert(val, dom);
-  }
-  if (is_return(dst)) {
-    insert(dst, dom);
+    if (is_return(dst)) {
+      insert(dst, dom[from]);
+    }
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
