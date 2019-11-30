@@ -197,11 +197,14 @@ void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
     dom.emplace_back(collect(arg));
   }
   dom.emplace_back(lookup(Symbol::get_global()));
+  const auto table = depmap_.at(dst);
   for (auto from = 0_z; from <= arity; ++from) {
     for (auto to = 0_z; to <= arity; ++to) {
-      insert(dom[from], dom[to]);
+      if (table.get(from, to)) {
+        insert(dom[from], dom[to]);
+      }
     }
-    if (is_return(dst)) {
+    if (is_return(dst) && table.get(from, arity + 1)) {
       insert(dst, dom[from]);
     }
   }
