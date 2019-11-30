@@ -41,7 +41,6 @@ class Depend : private Matrix {
   bool is_error_global() const;
   bool is_error_return() const;
   bool diagonal(std::size_t from, std::size_t to) const;
-  void set_global(std::size_t from, std::size_t to);
   bool get(std::size_t from, std::size_t to) const;
   std::size_t index(const Symbol& sym) const;
   std::string to_str(std::size_t i) const;
