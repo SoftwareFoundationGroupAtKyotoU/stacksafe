@@ -10,11 +10,7 @@
 
 namespace stacksafe {
 namespace {
-struct StringViewPair {
-  std::string_view head, tail;
-  explicit operator bool() const { return !head.empty() && !tail.empty(); }
-};
-
+using StringViewPair = std::tuple<std::string_view, std::string_view>;
 StringViewPair split(std::string_view v, const char* delim) {
   if (const auto pos = v.find_first_of(delim); pos != v.npos) {
     return {v.substr(0, pos), v.substr(pos + 1)};
