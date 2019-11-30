@@ -40,6 +40,7 @@ class Depend : private Matrix {
   bool is_error_return() const;
   bool diagonal(std::size_t from, std::size_t to) const;
   bool get(std::size_t from, std::size_t to) const;
+  bool get_error(std::size_t to) const;
   std::size_t to_index(const Symbol& sym) const;
   std::string to_str(std::size_t i) const;
 };

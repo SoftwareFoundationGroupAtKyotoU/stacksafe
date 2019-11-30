@@ -90,6 +90,9 @@ bool Depend::diagonal(std::size_t from, std::size_t to) const {
 bool Depend::get(std::size_t from, std::size_t to) const {
   return !diagonal(from, to) && Matrix::get(from, to);
 }
+bool Depend::get_error(std::size_t to) const {
+  return Matrix::get(local_index(), to);
+}
 std::size_t Depend::to_index(const Symbol& sym) const {
   if (sym.is_local()) {
     return local_index();
