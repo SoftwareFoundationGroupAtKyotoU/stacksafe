@@ -40,6 +40,7 @@ class Depend : private Matrix {
   void print_error(llvm::raw_ostream& os) const;
 
  private:
+  std::size_t arity() const;
   std::size_t local_index() const;
   std::size_t global_index() const;
   void set(std::size_t from, std::size_t to);

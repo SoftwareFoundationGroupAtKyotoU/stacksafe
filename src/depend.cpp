@@ -114,11 +114,14 @@ void Depend::print_error(llvm::raw_ostream& os) const {
   }
   os.flush();
 }
+std::size_t Depend::arity() const {
+  return size() - 2;
+}
 std::size_t Depend::local_index() const {
-  return size() - 1;
+  return arity() + 1;
 }
 std::size_t Depend::global_index() const {
-  return size() - 2;
+  return arity();
 }
 void Depend::set(std::size_t from, std::size_t to) {
   if (from != to && to < local_index()) {
