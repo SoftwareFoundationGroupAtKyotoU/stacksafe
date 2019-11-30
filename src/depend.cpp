@@ -176,17 +176,15 @@ DependMap::DependMap() {
   }
 }
 Depend* DependMap::init(std::string_view header) {
-  if (auto pair = split_vec(header, "/"); pair.size() == 2) {
-    const auto key = pair[0];
-    if (auto arity = to_size_t(pair[1])) {
-      const auto [it, update] = Super::try_emplace(std::string{key}, *arity);
-      if (update) {
-        return &it->second;
-      } else {
-        std::string msg{"WARNING: depend entry exists: "};
-        msg.append(key);
-        debug::print(msg);
-      }
+  const auto [key, arity] = split(header, "/");
+  if (const auto num = to_size_t(arity)) {
+    const auto [it, update] = Super::try_emplace(std::string{key}, *num);
+    if (update) {
+      return &it->second;
+    } else {
+      std::string msg{"WARNING: depend entry exists: "};
+      msg.append(key);
+      debug::print(msg);
     }
   }
   return nullptr;
