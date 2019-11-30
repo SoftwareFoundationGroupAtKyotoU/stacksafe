@@ -33,6 +33,7 @@ class Depend : private Matrix {
  public:
   Depend(std::size_t arity, const std::string& name);
   explicit Depend(const llvm::Function& f);
+  const Matrix& matrix() const;
   void set(std::string_view pair);
   void set(const Symbol& key, const Symbol& val);
   void set_return(const Symbol& sym);

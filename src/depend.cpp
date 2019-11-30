@@ -61,6 +61,9 @@ Depend::Depend(std::size_t arity, const std::string& name)
     : Matrix{arity + 2}, name_{name} {}
 Depend::Depend(const llvm::Function& f)
     : Depend{f.arg_size(), f.getName().str()} {}
+const Matrix& Depend::matrix() const {
+  return *this;
+}
 void Depend::set(std::string_view pair) {
   const auto [head, tail] = split(pair, ":");
   if (const auto from = to_index(head)) {
