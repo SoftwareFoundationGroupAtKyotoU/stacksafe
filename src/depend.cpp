@@ -10,6 +10,10 @@ Matrix::Matrix(std::size_t n) : Super(n * n, 0), size_{n} {}
 std::size_t Matrix::size() const {
   return size_;
 }
+void Matrix::set(std::size_t row, std::size_t col) {
+  assert(row < size_ && col < size_);
+  Super::at(row * size_ + col) = 1;
+}
 
 Depend::Depend(std::size_t n) : size_{n} {
   Super::resize(width() * height());
