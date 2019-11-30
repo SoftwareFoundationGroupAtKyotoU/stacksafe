@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_DA5A1318_1109_4382_9A1C_7278AB44F4FA
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -42,6 +43,10 @@ class Depend : private Matrix {
   std::size_t to_index(const Symbol& sym) const;
   std::size_t to_index(std::string_view v) const;
   std::string to_str(std::size_t i) const;
+};
+
+class DependMap : private std::map<std::string, Depend> {
+  using Super = std::map<std::string, Depend>;
 };
 
 }  // namespace stacksafe
