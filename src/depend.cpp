@@ -19,9 +19,7 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
   return Super::at(row * size_ + col) != 0;
 }
 
-Depend::Depend(std::size_t n) : size_{n} {
-  Super::resize(width() * height());
-}
+Depend::Depend(std::size_t n) : Matrix{n + 2} {}
 void Depend::set(const Symbol& key, const Symbol& val) {
   auto to = index(key);
   auto from = index(val);
@@ -71,16 +69,16 @@ void Depend::print_error(llvm::raw_ostream& os) const {
   os.flush();
 }
 std::size_t Depend::width() const {
-  return size_ + 2;
+  return Matrix::size();
 }
 std::size_t Depend::height() const {
-  return size_ + 2;
+  return Matrix::size();
 }
 std::size_t Depend::local_index() const {
-  return size_ + 1;
+  return Matrix::size() - 1;
 }
 std::size_t Depend::global_index() const {
-  return size_;
+  return Matrix::size() - 2;
 }
 bool Depend::is_error_argument() const {
   auto from = local_index();
@@ -101,12 +99,12 @@ bool Depend::diagonal(std::size_t from, std::size_t to) const {
   return from == to && from < local_index();
 }
 void Depend::set(std::size_t from, std::size_t to) {
-  assert(from < height() && to < width());
-  Super::at(width() * from + to) = (diagonal(from, to) ? 0 : 1);
+  if (!diagonal(from, to)) {
+    Matrix::set(from, to);
+  }
 }
 bool Depend::get(std::size_t from, std::size_t to) const {
-  assert(from < height() && to < width());
-  return !diagonal(from, to) && Super::at(width() * from + to);
+  return !diagonal(from, to) && Matrix::get(from, to);
 }
 std::size_t Depend::index(const Symbol& sym) const {
   if (sym.is_local()) {

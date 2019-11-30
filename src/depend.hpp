@@ -23,10 +23,7 @@ class Matrix : private std::vector<std::uint8_t> {
   bool get(std::size_t row, std::size_t col) const;
 };
 
-class Depend : private std::vector<std::uint8_t> {
-  using Super = std::vector<std::uint8_t>;
-  std::size_t size_;
-
+class Depend : private Matrix {
  public:
   explicit Depend(std::size_t n);
   void set(const Symbol& key, const Symbol& val);
