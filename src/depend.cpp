@@ -50,7 +50,6 @@ void Depend::print(llvm::raw_ostream& os) const {
   for (auto from = 0_z; from < Matrix::size(); ++from) {
     for (auto to = 0_z; to < Matrix::size(); ++to) {
       if (get(from, to)) {
-        assert(from != local_index());
         os << comma << to_str(from) << colon << to_str(to);
       }
     }
@@ -81,7 +80,10 @@ bool Depend::diagonal(std::size_t from, std::size_t to) const {
   return from == to && from < local_index();
 }
 bool Depend::get(std::size_t from, std::size_t to) const {
-  return !diagonal(from, to) && Matrix::get(from, to);
+  if (from != to && from < local_index()) {
+    return Matrix::get(from, to);
+  }
+  return false;
 }
 bool Depend::get_error(std::size_t to) const {
   return Matrix::get(local_index(), to);
