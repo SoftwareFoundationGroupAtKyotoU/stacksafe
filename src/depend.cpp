@@ -24,9 +24,7 @@ Depend::Depend(std::size_t n) : Matrix{n + 2} {}
 void Depend::set(const Symbol& key, const Symbol& val) {
   const auto to = to_index(key);
   const auto from = to_index(val);
-  if (from != to && to < local_index()) {
-    Matrix::set(from, to);
-  }
+  set(from, to);
 }
 void Depend::set_return(const Symbol& sym) {
   const auto from = to_index(sym);
@@ -78,6 +76,11 @@ std::size_t Depend::global_index() const {
 }
 bool Depend::diagonal(std::size_t from, std::size_t to) const {
   return from == to && from < local_index();
+}
+void Depend::set(std::size_t from, std::size_t to) {
+  if (from != to && to < local_index()) {
+    Matrix::set(from, to);
+  }
 }
 bool Depend::get(std::size_t from, std::size_t to) const {
   if (from != to && from < local_index()) {
