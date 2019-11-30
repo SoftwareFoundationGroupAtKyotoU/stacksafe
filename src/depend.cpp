@@ -77,21 +77,6 @@ std::size_t Depend::local_index() const {
 std::size_t Depend::global_index() const {
   return Matrix::size() - 2;
 }
-bool Depend::is_error_argument() const {
-  auto from = local_index();
-  for (std::size_t to = 0; to < global_index(); ++to) {
-    if (get(from, to)) {
-      return true;
-    }
-  }
-  return false;
-}
-bool Depend::is_error_global() const {
-  return get(local_index(), global_index());
-}
-bool Depend::is_error_return() const {
-  return get(local_index(), local_index());
-}
 bool Depend::diagonal(std::size_t from, std::size_t to) const {
   return from == to && from < local_index();
 }
