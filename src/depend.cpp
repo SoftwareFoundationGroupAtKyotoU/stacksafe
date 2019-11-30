@@ -11,10 +11,17 @@
 namespace stacksafe {
 namespace {
 struct StringViewPair {
-  std::string_view first, second;
-  explicit operator bool() const { return !first.empty() && !second.empty(); }
+  std::string_view head, tail;
+  explicit operator bool() const { return !head.empty() && !tail.empty(); }
 };
 
+StringViewPair split(std::string_view v, const char* delim) {
+  if (const auto pos = v.find_first_of(delim); pos != v.npos) {
+    return {v.substr(0, pos), v.substr(pos + 1)};
+  } else {
+    return {v, v.substr(v.size())};
+  }
+}
 std::vector<std::string_view> split_vec(std::string_view v, const char* delim) {
   std::vector<std::string_view> ret;
   while (true) {
