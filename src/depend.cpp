@@ -61,7 +61,8 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
 }
 
 Depend::Depend(std::size_t n) : Matrix{n + 2} {}
-Depend::Depend(const llvm::Function& f) : Matrix{f.arg_size() + 2} {}
+Depend::Depend(const llvm::Function& f)
+    : Matrix{f.arg_size() + 2}, name_{f.getName().str()} {}
 void Depend::set(std::string_view pair) {
   const auto [head, tail] = split(pair, ":");
   if (const auto from = to_index(head); from < Matrix::size()) {

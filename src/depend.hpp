@@ -26,6 +26,8 @@ class Matrix : private std::vector<std::uint8_t> {
 };
 
 class Depend : private Matrix {
+  std::string name_;
+
  public:
   explicit Depend(std::size_t n);
   explicit Depend(const llvm::Function& f);
