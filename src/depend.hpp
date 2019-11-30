@@ -51,6 +51,7 @@ class DependMap : private std::map<std::string, Depend> {
 
  private:
   Depend* init(std::string_view header);
+  void load(std::string_view line);
 };
 
 }  // namespace stacksafe

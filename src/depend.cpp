@@ -175,5 +175,15 @@ Depend* DependMap::init(std::string_view header) {
   }
   return nullptr;
 }
+void DependMap::load(std::string_view line) {
+  if (auto csv = split(line, ","); !csv.empty()) {
+    if (auto ptr = init(csv[0])) {
+      csv.erase(csv.begin());
+      for (const auto& pair : csv) {
+        ptr->set(pair);
+      }
+    }
+  }
+}
 
 }  // namespace stacksafe
