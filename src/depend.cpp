@@ -70,7 +70,9 @@ void Depend::set(std::string_view pair) {
 void Depend::set(const Symbol& key, const Symbol& val) {
   const auto to = to_index(key);
   const auto from = to_index(val);
-  set(from, to);
+  if (to < local_index()) {
+    Matrix::set(from, to);
+  }
 }
 void Depend::set_return(const Symbol& sym) {
   const auto from = to_index(sym);
@@ -125,11 +127,6 @@ std::size_t Depend::local_index() const {
 }
 std::size_t Depend::global_index() const {
   return arity();
-}
-void Depend::set(std::size_t from, std::size_t to) {
-  if (from != to && to < local_index()) {
-    Matrix::set(from, to);
-  }
 }
 bool Depend::get_error(std::size_t to) const {
   return Matrix::get(local_index(), to);
