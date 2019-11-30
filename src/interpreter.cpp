@@ -239,6 +239,11 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
     update(map_.insert(reg, dom));
   }
 }
+void Interpreter::insert(const Domain &from, const Domain &to) {
+  for (const auto &sym : to) {
+    insert(sym, from);
+  }
+}
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
     done.insert(sym);
