@@ -26,9 +26,9 @@ void Depend::set(const Symbol& key, const Symbol& val) {
   set_global(from, to);
 }
 void Depend::set_return(const Symbol& sym) {
-  auto from = index(sym);
-  auto to = local_index();
-  set(from, to);
+  const auto from = index(sym);
+  const auto to = local_index();
+  Matrix::set(from, to);
 }
 bool Depend::is_error() const {
   return is_error_argument() || is_error_global() || is_error_return();
