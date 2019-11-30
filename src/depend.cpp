@@ -131,12 +131,6 @@ void Depend::set(std::size_t from, std::size_t to) {
     Matrix::set(from, to);
   }
 }
-bool Depend::get(std::size_t from, std::size_t to) const {
-  if (from != to && from < local_index()) {
-    return Matrix::get(from, to);
-  }
-  return false;
-}
 bool Depend::get_error(std::size_t to) const {
   return Matrix::get(local_index(), to);
 }
