@@ -158,4 +158,22 @@ std::string Depend::to_str(std::size_t i) const {
     return std::to_string(i);
   }
 }
+
+Depend* DependMap::init(std::string_view header) {
+  if (auto pair = split(header, "/"); pair.size() == 2) {
+    const auto key = pair[0];
+    if (auto arity = to_size_t(pair[1])) {
+      const auto [it, update] = Super::try_emplace(std::string{key}, *arity);
+      if (update) {
+        return &it->second;
+      } else {
+        std::string msg{"WARNING: depend entry exists: "};
+        msg.append(key);
+        debug::print(msg);
+      }
+    }
+  }
+  return nullptr;
+}
+
 }  // namespace stacksafe

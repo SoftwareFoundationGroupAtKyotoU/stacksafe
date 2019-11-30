@@ -48,6 +48,9 @@ class Depend : private Matrix {
 
 class DependMap : private std::map<std::string, Depend> {
   using Super = std::map<std::string, Depend>;
+
+ private:
+  Depend* init(std::string_view header);
 };
 
 }  // namespace stacksafe
