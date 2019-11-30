@@ -57,13 +57,16 @@ void Depend::print(llvm::raw_ostream& os) const {
   }
 }
 void Depend::print_error(llvm::raw_ostream& os) const {
-  if (is_error_argument()) {
-    os << "ERROR: ARGUMENT\n";
+  for (auto to = 0_z; to < global_index(); ++to) {
+    if (get_error(to)) {
+      os << "ERROR: ARGUMENT\n";
+      break;
+    }
   }
-  if (is_error_global()) {
+  if (get_error(global_index())) {
     os << "ERROR: GLOBAL\n";
   }
-  if (is_error_return()) {
+  if (get_error(local_index())) {
     os << "ERROR: RETURN\n";
   }
   os.flush();
