@@ -60,9 +60,10 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
   return Super::at(row * size_ + col) != 0;
 }
 
-Depend::Depend(std::size_t n) : Matrix{n + 2} {}
+Depend::Depend(std::size_t arity, const std::string& name)
+    : Matrix{arity + 2}, name_{name} {}
 Depend::Depend(const llvm::Function& f)
-    : Matrix{f.arg_size() + 2}, name_{f.getName().str()} {}
+    : Depend{f.arg_size(), f.getName().str()} {}
 void Depend::set(std::string_view pair) {
   const auto [head, tail] = split(pair, ":");
   if (const auto from = to_index(head); from < Matrix::size()) {
@@ -181,7 +182,8 @@ DependMap::DependMap() {
 Depend* DependMap::init(std::string_view header) {
   const auto [key, arity] = split(header, "/");
   if (const auto num = to_size_t(arity)) {
-    const auto [it, update] = Super::try_emplace(std::string{key}, *num);
+    std::string name{key};
+    const auto [it, update] = Super::try_emplace(name, *num, name);
     if (update) {
       return &it->second;
     } else {
