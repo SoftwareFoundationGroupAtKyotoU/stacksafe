@@ -9,6 +9,19 @@
 
 namespace stacksafe {
 namespace {
+std::vector<std::string_view> split(std::string_view v, const char* delim) {
+  std::vector<std::string_view> ret;
+  while (true) {
+    if (const auto pos = v.find_first_of(delim); pos != v.npos) {
+      ret.emplace_back(v.substr(0, pos));
+      v.remove_prefix(pos + 1);
+    } else {
+      ret.emplace_back(v);
+      break;
+    }
+  }
+  return ret;
+}
 std::optional<std::size_t> to_size_t(std::string_view v) {
   std::string buf{v};
   char* ptr = nullptr;
@@ -34,6 +47,18 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
 }
 
 Depend::Depend(std::size_t n) : Matrix{n + 2} {}
+void Depend::init(std::string_view v) {
+  for (const auto& elem : split(v, ",")) {
+    auto pair = split(elem, ":");
+    if (pair.size() == 2) {
+      const auto from = to_index(pair[0]);
+      const auto to = to_index(pair[1]);
+      if (from < Matrix::size() && to < Matrix::size()) {
+        Matrix::set(from, to);
+      }
+    }
+  }
+}
 void Depend::set(const Symbol& key, const Symbol& val) {
   const auto to = to_index(key);
   const auto from = to_index(val);
