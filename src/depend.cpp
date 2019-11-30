@@ -78,7 +78,7 @@ void Depend::set_return(const Symbol& sym) {
   Matrix::set(from, to);
 }
 bool Depend::is_error() const {
-  for (auto to = 0_z; to < Matrix::size(); ++to) {
+  for (auto to = 0_z; to < size(); ++to) {
     if (get_error(to)) {
       return true;
     }
@@ -91,8 +91,8 @@ void Depend::print(llvm::raw_ostream& os) const {
   if (is_error()) {
     return;
   }
-  for (auto from = 0_z; from < Matrix::size(); ++from) {
-    for (auto to = 0_z; to < Matrix::size(); ++to) {
+  for (auto from = 0_z; from < size(); ++from) {
+    for (auto to = 0_z; to < size(); ++to) {
       if (get(from, to)) {
         os << comma << to_str(from) << colon << to_str(to);
       }
@@ -115,10 +115,10 @@ void Depend::print_error(llvm::raw_ostream& os) const {
   os.flush();
 }
 std::size_t Depend::local_index() const {
-  return Matrix::size() - 1;
+  return size() - 1;
 }
 std::size_t Depend::global_index() const {
-  return Matrix::size() - 2;
+  return size() - 2;
 }
 void Depend::set(std::size_t from, std::size_t to) {
   if (from != to && to < local_index()) {
