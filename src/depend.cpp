@@ -97,7 +97,7 @@ void Depend::print(llvm::raw_ostream& os) const {
   os << name_ << slash << std::to_string(arity());
   for (auto from = 0_z; from < size(); ++from) {
     for (auto to = 0_z; to < size(); ++to) {
-      if (from != to && from < local_index() && Matrix::get(from, to)) {
+      if (from < local_index() && Matrix::get(from, to)) {
         os << comma << to_str(from) << colon << to_str(to);
       }
     }
