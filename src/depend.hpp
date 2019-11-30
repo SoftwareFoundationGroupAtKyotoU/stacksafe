@@ -27,7 +27,6 @@ class Matrix : private std::vector<std::uint8_t> {
 class Depend : private Matrix {
  public:
   explicit Depend(std::size_t n);
-  void init(std::string_view v);
   void set(std::string_view pair);
   void set(const Symbol& key, const Symbol& val);
   void set_return(const Symbol& sym);

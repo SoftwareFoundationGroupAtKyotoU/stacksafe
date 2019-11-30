@@ -48,11 +48,6 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
 }
 
 Depend::Depend(std::size_t n) : Matrix{n + 2} {}
-void Depend::init(std::string_view v) {
-  for (const auto& pair : split(v, ",")) {
-    set(pair);
-  }
-}
 void Depend::set(std::string_view pair) {
   if (auto dep = split(pair, ":"); dep.size() == 2) {
     const auto from = to_index(dep[0]);
