@@ -14,6 +14,9 @@ class Symbol;
 
 class Matrix : private std::vector<std::uint8_t> {
   using Super = std::vector<std::uint8_t>;
+
+ public:
+  explicit Matrix(std::size_t n);
 };
 
 class Depend : private std::vector<std::uint8_t> {

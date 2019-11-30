@@ -6,6 +6,8 @@
 
 namespace stacksafe {
 
+Matrix::Matrix(std::size_t n) : Super(n * n, 0) {}
+
 Depend::Depend(std::size_t n) : size_{n} {
   Super::resize(width() * height());
 }
