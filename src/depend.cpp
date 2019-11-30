@@ -86,11 +86,13 @@ bool Depend::is_error() const {
   return false;
 }
 void Depend::print(llvm::raw_ostream& os) const {
+  static const auto slash = "/";
   static const auto comma = ",";
   static const auto colon = ":";
   if (is_error()) {
     return;
   }
+  os << name_ << slash << std::to_string(arity());
   for (auto from = 0_z; from < size(); ++from) {
     for (auto to = 0_z; to < size(); ++to) {
       if (get(from, to)) {
@@ -98,6 +100,7 @@ void Depend::print(llvm::raw_ostream& os) const {
       }
     }
   }
+  (os << "\n").flush();
 }
 void Depend::print_error(llvm::raw_ostream& os) const {
   for (auto to = 0_z; to < arity(); ++to) {
