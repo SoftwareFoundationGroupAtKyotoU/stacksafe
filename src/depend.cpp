@@ -39,7 +39,7 @@ void Depend::print(llvm::raw_ostream& os) const {
   static const auto comma = ",";
   static const auto colon = ":";
   for (std::size_t from = 0; from < local_index(); ++from) {
-    for (std::size_t to = 0; to < width(); ++to) {
+    for (std::size_t to = 0; to < Matrix::size(); ++to) {
       if (get(from, to)) {
         os << comma << to_str(from) << colon << to_str(to);
       }
@@ -57,12 +57,6 @@ void Depend::print_error(llvm::raw_ostream& os) const {
     os << "ERROR: RETURN\n";
   }
   os.flush();
-}
-std::size_t Depend::width() const {
-  return Matrix::size();
-}
-std::size_t Depend::height() const {
-  return Matrix::size();
 }
 std::size_t Depend::local_index() const {
   return Matrix::size() - 1;

@@ -33,8 +33,6 @@ class Depend : private Matrix {
   void print_error(llvm::raw_ostream& os) const;
 
  private:
-  std::size_t width() const;
-  std::size_t height() const;
   std::size_t local_index() const;
   std::size_t global_index() const;
   bool is_error_argument() const;
