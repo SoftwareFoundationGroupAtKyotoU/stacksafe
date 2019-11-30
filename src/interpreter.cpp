@@ -12,8 +12,8 @@
 
 namespace stacksafe {
 
-Interpreter::Interpreter(const Log &l, Depend &d, Map &m)
-    : log_{l}, depend_{d}, map_{m} {}
+Interpreter::Interpreter(const Log &l, Depend &d, const DependMap &dm, Map &m)
+    : log_{l}, depend_{d}, depmap_{dm}, map_{m} {}
 bool Interpreter::visit(const llvm::BasicBlock &b) {
   diff_ = false;
   STACKSAFE_DEBUG_LOG(b);
@@ -191,17 +191,22 @@ void Interpreter::phi(const llvm::Instruction &dst, const Params &params) {
   insert(dst, dom);
 }
 void Interpreter::call(const llvm::CallInst &dst, const Params &params) {
-  Domain dom{Symbol::get_global()};
+  const auto arity = dst.arg_size();
+  std::vector<Domain> dom;
   for (const auto &arg : params) {
-    for (const auto &val : lookup(arg)) {
-      collect(val, dom);
+    dom.emplace_back(collect(arg));
+  }
+  dom.emplace_back(lookup(Symbol::get_global()));
+  const auto table = depmap_.at(dst);
+  for (auto from = 0_z; from <= arity; ++from) {
+    for (auto to = 0_z; to <= arity; ++to) {
+      if (table.get(from, to)) {
+        insert(dom[from], dom[to]);
+      }
     }
-  }
-  for (const auto &val : dom) {
-    insert(val, dom);
-  }
-  if (is_return(dst)) {
-    insert(dst, dom);
+    if (is_return(dst) && table.get(from, arity + 1)) {
+      insert(dst, dom[from]);
+    }
   }
 }
 void Interpreter::constant(const llvm::Instruction &dst) {
@@ -239,6 +244,11 @@ void Interpreter::insert(const llvm::Instruction &key, const Domain &dom) {
     update(map_.insert(reg, dom));
   }
 }
+void Interpreter::insert(const Domain &from, const Domain &to) {
+  for (const auto &sym : to) {
+    insert(sym, from);
+  }
+}
 void Interpreter::collect(const Symbol &sym, Domain &done) const {
   if (!done.element(sym)) {
     done.insert(sym);
@@ -246,6 +256,13 @@ void Interpreter::collect(const Symbol &sym, Domain &done) const {
       collect(next, done);
     }
   }
+}
+Domain Interpreter::collect(const llvm::Value &arg) const {
+  Domain dom;
+  for (const auto &sym : lookup(arg)) {
+    collect(sym, dom);
+  }
+  return dom;
 }
 void Interpreter::update(bool updated) {
   if (updated) {

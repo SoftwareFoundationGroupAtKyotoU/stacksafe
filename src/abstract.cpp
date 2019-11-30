@@ -11,7 +11,7 @@
 namespace stacksafe {
 
 Abstract::Abstract(const llvm::Function &f)
-    : func_{f}, depend_{f.arg_size()}, elapsed_{0.0} {}
+    : func_{f}, depend_{f}, elapsed_{0.0} {}
 void Abstract::interpret() {
   Log log{func_};
   {
@@ -19,7 +19,7 @@ void Abstract::interpret() {
     Scc scc{func_};
     while (!scc.empty()) {
       auto c = scc.pop();
-      Interpreter i{log, depend_, c.map()};
+      Interpreter i{log, depend_, depmap_, c.map()};
       do {
         bool repeat = false;
         for (const auto &b : c) {
@@ -52,9 +52,8 @@ void Abstract::print(llvm::raw_ostream &os) const {
 }
 void Abstract::print_depend(llvm::raw_ostream &os) const {
   if (!depend_.is_error()) {
-    os << "DEPEND: " << func_.getName() << "/" << func_.arg_size();
+    os << "DEPEND: ";
     depend_.print(os);
-    (os << "\n").flush();
   }
 }
 

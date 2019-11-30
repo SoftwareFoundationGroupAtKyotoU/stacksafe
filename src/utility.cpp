@@ -10,6 +10,9 @@
 
 namespace stacksafe {
 
+std::size_t operator"" _z(unsigned long long n) {
+  return n;
+}
 std::string to_str(const llvm::Value& v) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};

@@ -14,6 +14,7 @@ namespace stacksafe {
 class Domain;
 class Map;
 
+std::size_t operator"" _z(unsigned long long n);
 std::string to_str(const llvm::Value& v);
 [[noreturn]] void fatal_error(const std::string& msg);
 bool least_significant_bit(const void* ptr);

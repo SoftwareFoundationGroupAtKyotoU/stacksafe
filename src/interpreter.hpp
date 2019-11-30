@@ -5,6 +5,7 @@
 
 namespace stacksafe {
 class Depend;
+class DependMap;
 class Domain;
 class Log;
 class Map;
@@ -16,11 +17,12 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   using Super = llvm::InstVisitor<Interpreter, RetTy>;
   const Log &log_;
   Depend &depend_;
+  const DependMap &depmap_;
   Map &map_;
   bool diff_;
 
  public:
-  explicit Interpreter(const Log &l, Depend &d, Map &m);
+  explicit Interpreter(const Log &l, Depend &d, const DependMap &dm, Map &m);
   bool visit(const llvm::BasicBlock &b);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
@@ -60,7 +62,9 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   Domain lookup(const llvm::Value &key) const;
   void insert(const Symbol &key, const Domain &dom);
   void insert(const llvm::Instruction &key, const Domain &dom);
+  void insert(const Domain &from, const Domain &to);
   void collect(const Symbol &sym, Domain &done) const;
+  Domain collect(const llvm::Value &arg) const;
   void update(bool updated);
 };
 

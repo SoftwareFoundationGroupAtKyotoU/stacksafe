@@ -13,6 +13,7 @@ namespace stacksafe {
 class Abstract {
   const llvm::Function &func_;
   Depend depend_;
+  DependMap depmap_;
   double elapsed_;
 
  public:
