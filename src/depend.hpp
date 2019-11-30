@@ -35,7 +35,6 @@ class Depend : private Matrix {
  private:
   std::size_t local_index() const;
   std::size_t global_index() const;
-  bool diagonal(std::size_t from, std::size_t to) const;
   void set(std::size_t from, std::size_t to);
   bool get(std::size_t from, std::size_t to) const;
   bool get_error(std::size_t to) const;

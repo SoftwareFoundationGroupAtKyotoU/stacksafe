@@ -74,9 +74,6 @@ std::size_t Depend::local_index() const {
 std::size_t Depend::global_index() const {
   return Matrix::size() - 2;
 }
-bool Depend::diagonal(std::size_t from, std::size_t to) const {
-  return from == to && from < local_index();
-}
 void Depend::set(std::size_t from, std::size_t to) {
   if (from != to && to < local_index()) {
     Matrix::set(from, to);
