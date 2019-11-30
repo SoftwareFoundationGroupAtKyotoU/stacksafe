@@ -7,8 +7,9 @@
 #include <vector>
 
 namespace llvm {
+class Function;
 class raw_ostream;
-}
+}  // namespace llvm
 
 namespace stacksafe {
 class Symbol;
@@ -27,6 +28,7 @@ class Matrix : private std::vector<std::uint8_t> {
 class Depend : private Matrix {
  public:
   explicit Depend(std::size_t n);
+  explicit Depend(const llvm::Function& f);
   void set(std::string_view pair);
   void set(const Symbol& key, const Symbol& val);
   void set_return(const Symbol& sym);
