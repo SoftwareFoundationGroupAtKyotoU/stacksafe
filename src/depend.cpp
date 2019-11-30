@@ -10,6 +10,11 @@
 
 namespace stacksafe {
 namespace {
+struct StringViewPair {
+  std::string_view first, second;
+  explicit operator bool() const { return !first.empty() && !second.empty(); }
+};
+
 std::vector<std::string_view> split(std::string_view v, const char* delim) {
   std::vector<std::string_view> ret;
   while (true) {
