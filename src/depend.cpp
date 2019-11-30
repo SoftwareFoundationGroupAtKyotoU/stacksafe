@@ -15,7 +15,7 @@ struct StringViewPair {
   explicit operator bool() const { return !first.empty() && !second.empty(); }
 };
 
-std::vector<std::string_view> split(std::string_view v, const char* delim) {
+std::vector<std::string_view> split_vec(std::string_view v, const char* delim) {
   std::vector<std::string_view> ret;
   while (true) {
     if (const auto pos = v.find_first_of(delim); pos != v.npos) {
@@ -54,7 +54,7 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
 
 Depend::Depend(std::size_t n) : Matrix{n + 2} {}
 void Depend::set(std::string_view pair) {
-  if (auto dep = split(pair, ":"); dep.size() == 2) {
+  if (auto dep = split_vec(pair, ":"); dep.size() == 2) {
     const auto from = to_index(dep[0]);
     const auto to = to_index(dep[1]);
     if (from < Matrix::size() && to < Matrix::size()) {
@@ -170,7 +170,7 @@ DependMap::DependMap() {
   }
 }
 Depend* DependMap::init(std::string_view header) {
-  if (auto pair = split(header, "/"); pair.size() == 2) {
+  if (auto pair = split_vec(header, "/"); pair.size() == 2) {
     const auto key = pair[0];
     if (auto arity = to_size_t(pair[1])) {
       const auto [it, update] = Super::try_emplace(std::string{key}, *arity);
@@ -186,7 +186,7 @@ Depend* DependMap::init(std::string_view header) {
   return nullptr;
 }
 void DependMap::load(std::string_view line) {
-  if (auto csv = split(line, ","); !csv.empty()) {
+  if (auto csv = split_vec(line, ","); !csv.empty()) {
     if (auto ptr = init(csv[0])) {
       csv.erase(csv.begin());
       for (const auto& pair : csv) {
