@@ -100,7 +100,7 @@ void Depend::print(llvm::raw_ostream& os) const {
   }
 }
 void Depend::print_error(llvm::raw_ostream& os) const {
-  for (auto to = 0_z; to < global_index(); ++to) {
+  for (auto to = 0_z; to < arity(); ++to) {
     if (get_error(to)) {
       os << "ERROR: ARGUMENT\n";
       break;
@@ -153,7 +153,7 @@ std::optional<std::size_t> Depend::to_index(std::string_view v) const {
     return local_index();
   } else if (v == "g") {
     return global_index();
-  } else if (auto val = to_size_t(v); *val && *val < global_index()) {
+  } else if (auto val = to_size_t(v); *val && *val < arity()) {
     return *val;
   }
   return std::nullopt;
