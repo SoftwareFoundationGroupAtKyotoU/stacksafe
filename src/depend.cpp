@@ -178,12 +178,16 @@ DependMap::DependMap() {
   }
 }
 Matrix DependMap::at(const llvm::CallBase& call) const {
+  const auto arity = call.arg_size();
   if (auto f = call.getCalledFunction()) {
     if (auto it = Super::find(f->getName().str()); it != Super::end()) {
-      return it->second.matrix();
+      const auto& dep = it->second;
+      if (dep.arity() == arity) {
+        return dep.matrix();
+      }
     }
   }
-  return Matrix{call.arg_size() + 2, true};
+  return Matrix{arity + 2, true};
 }
 Depend* DependMap::init(std::string_view header) {
   const auto [key, arity] = split(header, "/");

@@ -35,6 +35,7 @@ class Depend : private Matrix {
   Depend(std::size_t arity, const std::string& name);
   explicit Depend(const llvm::Function& f);
   const Matrix& matrix() const;
+  std::size_t arity() const;
   void set(std::string_view pair);
   void set(const Symbol& key, const Symbol& val);
   void set_return(const Symbol& sym);
@@ -43,7 +44,6 @@ class Depend : private Matrix {
   void print_error(llvm::raw_ostream& os) const;
 
  private:
-  std::size_t arity() const;
   std::size_t local_index() const;
   std::size_t global_index() const;
   bool get_error(std::size_t to) const;
