@@ -154,7 +154,7 @@ std::optional<std::size_t> Depend::to_index(std::string_view v) const {
   } else if (v == "g") {
     return global_index();
   } else if (auto val = to_size_t(v); *val && *val < global_index()) {
-    return *val < global_index();
+    return *val;
   }
   return std::nullopt;
 }
