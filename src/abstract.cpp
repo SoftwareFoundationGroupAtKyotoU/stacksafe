@@ -26,6 +26,9 @@ void Abstract::interpret() {
           if (i.visit(b.get())) {
             repeat = true;
           }
+          if (depend_.is_error()) {
+            return;
+          }
         }
         if (c.is_loop() && repeat) {
           continue;
