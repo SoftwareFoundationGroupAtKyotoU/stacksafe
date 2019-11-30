@@ -19,7 +19,7 @@ void Abstract::interpret() {
     Scc scc{func_};
     while (!scc.empty()) {
       auto c = scc.pop();
-      Interpreter i{log, depend_, c.map()};
+      Interpreter i{log, depend_, depmap_, c.map()};
       do {
         bool repeat = false;
         for (const auto &b : c) {
