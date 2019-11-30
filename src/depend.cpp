@@ -3,6 +3,7 @@
 #include <llvm/Support/raw_ostream.h>
 #include <cassert>
 #include "symbol.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -41,8 +42,8 @@ void Depend::print(llvm::raw_ostream& os) const {
   if (is_error()) {
     return;
   }
-  for (std::size_t from = 0; from < Matrix::size(); ++from) {
-    for (std::size_t to = 0; to < Matrix::size(); ++to) {
+  for (auto from = 0_z; from < Matrix::size(); ++from) {
+    for (auto to = 0_z; to < Matrix::size(); ++to) {
       if (get(from, to)) {
         assert(from != local_index());
         os << comma << to_str(from) << colon << to_str(to);
