@@ -1,6 +1,7 @@
 #include "depend.hpp"
 #include <llvm/IR/Argument.h>
 #include <llvm/IR/Function.h>
+#include <llvm/IR/InstrTypes.h>
 #include <llvm/Support/raw_ostream.h>
 #include <cassert>
 #include <cstdlib>
@@ -176,11 +177,13 @@ DependMap::DependMap() {
     load(buf);
   }
 }
-const Depend* DependMap::at(const std::string& key) const {
-  if (auto it = Super::find(key); it != Super::end()) {
-    return &it->second;
+Matrix DependMap::at(const llvm::CallBase& call) const {
+  if (auto f = call.getCalledFunction()) {
+    if (auto it = Super::find(f->getName().str()); it != Super::end()) {
+      return it->second.matrix();
+    }
   }
-  return nullptr;
+  return Matrix{call.arg_size() + 2, true};
 }
 Depend* DependMap::init(std::string_view header) {
   const auto [key, arity] = split(header, "/");

@@ -8,6 +8,7 @@
 #include <vector>
 
 namespace llvm {
+class CallBase;
 class Function;
 class raw_ostream;
 }  // namespace llvm
@@ -56,7 +57,7 @@ class DependMap : private std::map<std::string, Depend> {
 
  public:
   DependMap();
-  const Depend* at(const std::string& key) const;
+  Matrix at(const llvm::CallBase& call) const;
 
  private:
   Depend* init(std::string_view header);
