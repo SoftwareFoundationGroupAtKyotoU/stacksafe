@@ -252,6 +252,13 @@ void Interpreter::collect(const Symbol &sym, Domain &done) const {
     }
   }
 }
+Domain Interpreter::collect(const llvm::Value &arg) const {
+  Domain dom;
+  for (const auto &sym : lookup(arg)) {
+    collect(sym, dom);
+  }
+  return dom;
+}
 void Interpreter::update(bool updated) {
   if (updated) {
     diff_ = true;

@@ -64,6 +64,7 @@ class Interpreter : public llvm::InstVisitor<Interpreter, void> {
   void insert(const llvm::Instruction &key, const Domain &dom);
   void insert(const Domain &from, const Domain &to);
   void collect(const Symbol &sym, Domain &done) const;
+  Domain collect(const llvm::Value &arg) const;
   void update(bool updated);
 };
 
