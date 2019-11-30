@@ -12,6 +12,10 @@ class raw_ostream;
 namespace stacksafe {
 class Symbol;
 
+class Matrix : private std::vector<std::uint8_t> {
+  using Super = std::vector<std::uint8_t>;
+};
+
 class Depend : private std::vector<std::uint8_t> {
   using Super = std::vector<std::uint8_t>;
   std::size_t size_;
