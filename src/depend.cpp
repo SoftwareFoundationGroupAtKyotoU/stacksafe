@@ -180,6 +180,12 @@ DependMap::DependMap() {
     load(buf);
   }
 }
+const Depend* DependMap::at(const std::string& key) const {
+  if (auto it = Super::find(key); it != Super::end()) {
+    return &it->second;
+  }
+  return nullptr;
+}
 Depend* DependMap::init(std::string_view header) {
   const auto [key, arity] = split(header, "/");
   if (const auto num = to_size_t(arity)) {

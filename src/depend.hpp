@@ -56,6 +56,7 @@ class DependMap : private std::map<std::string, Depend> {
 
  public:
   DependMap();
+  const Depend* at(const std::string& key) const;
 
  private:
   Depend* init(std::string_view header);
