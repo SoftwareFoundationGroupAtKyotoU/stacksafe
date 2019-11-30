@@ -34,7 +34,12 @@ void Depend::set_return(const Symbol& sym) {
   Matrix::set(from, to);
 }
 bool Depend::is_error() const {
-  return is_error_argument() || is_error_global() || is_error_return();
+  for (auto to = 0_z; to < Matrix::size(); ++to) {
+    if (get_error(to)) {
+      return true;
+    }
+  }
+  return false;
 }
 void Depend::print(llvm::raw_ostream& os) const {
   static const auto comma = ",";
