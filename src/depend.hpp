@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -45,7 +46,7 @@ class Depend : private Matrix {
   bool get(std::size_t from, std::size_t to) const;
   bool get_error(std::size_t to) const;
   std::size_t to_index(const Symbol& sym) const;
-  std::size_t to_index(std::string_view v) const;
+  std::optional<std::size_t> to_index(std::string_view v) const;
   std::string to_str(std::size_t i) const;
 };
 

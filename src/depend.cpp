@@ -5,7 +5,6 @@
 #include <cassert>
 #include <cstdlib>
 #include <fstream>
-#include <optional>
 #include "symbol.hpp"
 #include "utility.hpp"
 
@@ -66,9 +65,9 @@ Depend::Depend(const llvm::Function& f)
     : Depend{f.arg_size(), f.getName().str()} {}
 void Depend::set(std::string_view pair) {
   const auto [head, tail] = split(pair, ":");
-  if (const auto from = to_index(head); from < Matrix::size()) {
-    if (const auto to = to_index(tail); to < Matrix::size()) {
-      Matrix::set(from, to);
+  if (const auto from = to_index(head)) {
+    if (const auto to = to_index(tail)) {
+      Matrix::set(*from, *to);
     }
   }
 }
@@ -150,15 +149,15 @@ std::size_t Depend::to_index(const Symbol& sym) const {
     return arg->getArgNo();
   }
 }
-std::size_t Depend::to_index(std::string_view v) const {
+std::optional<std::size_t> Depend::to_index(std::string_view v) const {
   if (v == "r") {
     return local_index();
   } else if (v == "g") {
     return global_index();
-  } else if (auto val = to_size_t(v)) {
-    return *val < global_index() ? *val : Matrix::size();
+  } else if (auto val = to_size_t(v); *val && *val < global_index()) {
+    return *val < global_index();
   }
-  return Matrix::size();
+  return std::nullopt;
 }
 std::string Depend::to_str(std::size_t i) const {
   if (local_index() == i) {
