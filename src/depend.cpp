@@ -111,19 +111,20 @@ void Depend::print(llvm::raw_ostream& os) const {
   (os << "\n").flush();
 }
 void Depend::print_error(llvm::raw_ostream& os) const {
-  for (auto to = 0_z; to < arity(); ++to) {
+  for (auto to = 0_z; to < size(); ++to) {
     if (get_error(to)) {
-      os << "ERROR: ARGUMENT\n";
-      break;
+      os << "Error: ";
+      if (to < arity()) {
+        os << "ARGUMENT";
+      } else if (to == global_index()) {
+        os << "GLOBAL";
+      } else if (to == local_index()) {
+        os << "RETURN";
+      }
+      (os << "\n").flush();
+      return;
     }
   }
-  if (get_error(global_index())) {
-    os << "ERROR: GLOBAL\n";
-  }
-  if (get_error(local_index())) {
-    os << "ERROR: RETURN\n";
-  }
-  os.flush();
 }
 std::size_t Depend::arity() const {
   return size() - 2;
