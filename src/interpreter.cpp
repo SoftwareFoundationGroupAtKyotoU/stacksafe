@@ -22,7 +22,6 @@ bool Interpreter::visit(const llvm::BasicBlock &b) {
     Super::visit(i);
     if (depend_.is_error()) {
       STACKSAFE_DEBUG_LOG(depend_);
-      break;
     }
   }
   return diff_;
