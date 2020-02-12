@@ -19,7 +19,6 @@ target_sources(${target} PRIVATE
   graph.cpp
   hash.cpp
   interpreter.cpp
-  json.cpp
   log.cpp
   map.cpp
   params.cpp
@@ -33,5 +32,4 @@ include(EnsureSources)
 ensure_sources(${target})
 target_link_libraries(${target}
   llvm
-  nlohmann-json
   options)

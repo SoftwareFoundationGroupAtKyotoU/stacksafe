@@ -6,7 +6,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(BuildType)
 include(CompileCommands)
 include(DevelopFlag)
-include(GitSubmodule)
 
 # develop mode
 add_custom_target(develop)
@@ -18,14 +17,6 @@ if(DEVELOP_FLAG)
 else()
   set_build_type(Release Debug)
 endif()
-
-# submodules
-update_submodule()
-## json
-set(target nlohmann-json)
-add_library(${target} INTERFACE)
-target_include_directories(${target} INTERFACE
-  "${CMAKE_CURRENT_SOURCE_DIR}/json/include")
 
 # llvm
 find_package(LLVM REQUIRED CONFIG)
