@@ -1,14 +1,18 @@
 #!/bin/bash
 
-TARGET_DIR=coreutils
+test "$1" || exit $?
+TARGET_DIR="$1"
 
-mkdir -p build
-pushd build
-cmake .. -DCMAKE_BUILD_TYPE=Release
-make
-popd
+setup() {
+    mkdir -p build
+    pushd build
+    cmake .. -DCMAKE_BUILD_TYPE=Release
+    make
+    popd
+}
+
+setup >&2
 for ll in $(find "$TARGET_DIR" -name '*.ll' | sort); do
-    log=experiments/$(basename "${ll%.ll}").log
-    echo "$ll"
-    opt -analyze -load build/stacksafe.so -stacksafe "$ll" >"$log"
+    echo "$ll" >&2
+    opt -analyze -load build/stacksafe.so -stacksafe "$ll"
 done
