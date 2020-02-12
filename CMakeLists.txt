@@ -13,7 +13,6 @@ add_custom_target(develop)
 develop_flag_option(".develop")
 if(DEVELOP_FLAG)
   set_build_type(Debug Release)
-  enable_testing()
   export_compile_commands()
   add_dependencies(develop export-compile-commands)
 else()
@@ -22,11 +21,6 @@ endif()
 
 # submodules
 update_submodule()
-## googletest
-option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
-option(INSTALL_GTEST "Enable installation of googletest." OFF)
-mark_as_advanced(FORCE BUILD_GMOCK INSTALL_GTEST)
-add_subdirectory(googletest EXCLUDE_FROM_ALL)
 ## json
 set(target nlohmann-json)
 add_library(${target} INTERFACE)
@@ -55,6 +49,3 @@ target_link_libraries(${target} INTERFACE
 ## pass
 add_subdirectory(src)
 add_subdirectory(pass)
-## test
-add_subdirectory(unittest EXCLUDE_FROM_ALL)
-add_dependencies(develop unittest)
