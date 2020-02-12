@@ -1,0 +1,87 @@
+#!/bin/bash
+
+readonly clang=/usr/bin/clang
+readonly llvm_link=/usr/local/bin/llvm-link
+readonly logprefix=/tmp/fakeclang-
+
+if test "$DEBUG"; then
+    exec {BASH_XTRACEFD}>>${logprefix}xtrace.log
+    set -x
+fi
+
+is_compile() {
+    while test "${1+defined}"; do
+        [[ "$1" == -c ]] && return 0
+        shift
+    done
+    return 1
+}
+translate_compile() {
+    local prefix=("$clang" -S -emit-llvm)
+    local args=()
+    while test "${1+defined}"; do
+        case "$1" in
+            -o) args+=(-o)
+                shift
+	              if [[ "$1" =~ ^/ ]]; then
+                    args+=("$1")
+	              else
+                    args+=("$1.ll")
+	              fi;;
+            -* | *\.c | *\.h) args+=("$1");;
+            *) if test -f "$1.ll"; then
+                   args+=("$1.ll")
+               else
+                   args+=("$1")
+	             fi;;
+        esac
+        shift
+    done
+    echo -n "${prefix[*]}"
+    local arg
+    for arg in "${args[@]}"; do
+        echo -n " ${arg@Q}"
+    done
+    echo
+}
+translate_link() {
+    local prefix=("$llvm_link" -S)
+    local args=()
+    while test "${1+defined}"; do
+        case "$1" in
+            -o) shift
+                prefix+=(-o "$1.ll");;
+            -*) :;;
+            *) test -f "$1.ll" && args+=("$1.ll");;
+        esac
+        shift
+    done
+    local arg
+    for arg in "${prefix[@]}"; do
+        echo -n "${arg@Q} "
+    done
+    for arg in "${args[@]}"; do
+        echo "${arg@Q}"
+    done | sort -u | paste -s -d ' ' -
+}
+translate() {
+    local args log logfile logargs
+    if is_compile "$@"; then
+        args=$(translate_compile "$@")
+        logfile=${logprefix}compile.log
+    else
+        args=$(translate_link "$@")
+        logfile=${logprefix}link.log
+    fi
+    log=$(eval "$args" 2>&1 || :)
+    if test "$log"; then
+        echo "$args"
+        echo "$log"
+    fi >&2
+    if test "$DEBUG"; then
+        echo "$args" >>$logfile
+    fi
+}
+
+eval "$clang $@" || exit $?
+translate "$@"

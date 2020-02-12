@@ -1,0 +1,40 @@
+#!/bin/bash
+
+readonly ar=/usr/bin/ar
+readonly llvm_link=/usr/local/bin/llvm-link
+readonly logprefix=/tmp/fakear-
+
+if test "$DEBUG"; then
+    exec {BASH_XTRACEFD}>>${logprefix}xtrace.log
+    set -x
+fi
+
+translate_ar() {
+    local arg
+    while test "${1+defined}"; do
+        arg=$1.ll
+        test -f "$arg" || arg=$1
+        shift
+        echo "${arg@Q}"
+    done | sort -u | tr '\n' ' '
+}
+translate() {
+    case "$1" in
+        cr | rc) :;;
+        *) echo "unsupported: $ar $@" >&2
+           exit 1;;
+    esac
+    shift
+    local target="$1.ll"
+    shift
+    local args=$(translate_ar "$@")
+    local cmd="$llvm_link -S -o $target $args"
+    local log=$(eval "$cmd" 2>&1 || :)
+    if test "$log"; then
+        echo "$cmd"
+        echo "$log"
+    fi >&2
+}
+
+eval "$ar $@" || exit $?
+translate "$@"
