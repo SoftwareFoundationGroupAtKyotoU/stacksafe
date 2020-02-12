@@ -9,6 +9,19 @@
 #include "stopwatch.hpp"
 
 namespace stacksafe {
+namespace {
+unsigned count_call(const llvm::Function &f) {
+  unsigned count = 0;
+  for (const auto &b : f) {
+    for (const auto &i : b) {
+      if (llvm::isa<llvm::CallBase>(i)) {
+        ++count;
+      }
+    }
+  }
+  return count;
+}
+}  // namespace
 
 Abstract::Abstract(const llvm::Function &f)
     : func_{f}, depend_{f}, elapsed_{0.0} {}
@@ -43,7 +56,10 @@ void Abstract::print(llvm::raw_ostream &os) const {
   const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe ? "SAFE" : "UNSAFE";
   const auto name = func_.getName().str();
-  const auto msg = llvm::format(": %s %u %fms\n", name.c_str(), func_.getInstructionCount(), elapsed_);
+  const auto insts = func_.getInstructionCount();
+  const auto calls = count_call(func_);
+  const auto msg =
+      llvm::format(": %s %u %u %fms\n", name.c_str(), insts, calls, elapsed_);
   if (os.is_displayed()) {
     os.changeColor(color, true);
     os << prefix;
