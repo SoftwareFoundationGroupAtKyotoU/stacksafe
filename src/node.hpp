@@ -13,6 +13,7 @@ class Node : std::variant<Symbol, Register> {
  public:
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
+  std::uintptr_t value() const;
 };
 
 }  // namespace stacksafe
