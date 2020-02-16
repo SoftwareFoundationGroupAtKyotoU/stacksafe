@@ -46,6 +46,7 @@ class Component : private std::vector<Block> {
  public:
   using Super::begin, Super::end;
   explicit Component(const std::vector<Block>& vec);
+  explicit Component(const std::vector<const llvm::BasicBlock*>& vec);
   bool contains(const Block& b) const;
   bool is_loop() const;
   std::vector<Block> successors() const;

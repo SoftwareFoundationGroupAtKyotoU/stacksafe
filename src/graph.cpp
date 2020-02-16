@@ -49,6 +49,11 @@ bool Block::operator==(const Block& block) const {
 }
 
 Component::Component(const std::vector<Block>& vec) : Super{vec} {}
+Component::Component(const std::vector<const llvm::BasicBlock*>& vec) {
+  for (const auto b : vec) {
+    Super::emplace_back(*b);
+  }
+}
 bool Component::contains(const Block& b) const {
   return std::find(begin(), end(), b) != end();
 }
