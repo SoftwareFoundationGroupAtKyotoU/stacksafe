@@ -9,6 +9,10 @@ namespace stacksafe {
 
 class Node : std::variant<Symbol, Register> {
   using Super = std::variant<Symbol, Register>;
+
+ public:
+  explicit Node(const Symbol &sym);
+  explicit Node(const Register &reg);
 };
 
 }  // namespace stacksafe
