@@ -17,17 +17,9 @@ std::uintptr_t to_symbol(const void* p) {
     return symbol_flag;
   }
 }
-const void* to_pointer(std::uintptr_t u) {
-  const auto p = u & ~symbol_flag;
-  if (p) {
-    return reinterpret_cast<const void*>(p);
-  } else {
-    return nullptr;
-  }
-}
 }  // namespace
 
-Symbol::Symbol(const llvm::Value* p) : sym_{to_symbol(p)} {
+Symbol::Symbol(const llvm::Value* p) : sym_{to_symbol(p)}, ptr_{p} {
   if (p && least_significant_bit(p)) {
     fatal_error("Value representation may conflict");
   }
@@ -35,7 +27,7 @@ Symbol::Symbol(const llvm::Value* p) : sym_{to_symbol(p)} {
 Symbol::Symbol(const llvm::AllocaInst& i) : Symbol{&i} {}
 Symbol::Symbol(const llvm::Argument& a) : Symbol{&a} {}
 const llvm::Value* Symbol::value() const {
-  return static_cast<const llvm::Value*>(to_pointer(sym_));
+  return ptr_;
 }
 std::uintptr_t Symbol::sym() const {
   return sym_;

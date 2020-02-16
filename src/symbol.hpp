@@ -13,6 +13,7 @@ namespace stacksafe {
 
 class Symbol {
   std::uintptr_t sym_;
+  const llvm::Value* ptr_;
   explicit Symbol(const llvm::Value* p);
 
  public:
