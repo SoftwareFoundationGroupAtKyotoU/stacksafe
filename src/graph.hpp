@@ -75,7 +75,7 @@ class Tarjan {
   Tarjan(const llvm::Function& f);
   const std::vector<Component>& scc() const;
   void visit(BB b);
-  void update(Frame& frame, const Block& succ);
+  void update(Frame& prev, BB succ);
   Block pop();
   Component collect(const Block& b);
   static std::vector<BB> successors(BB b);

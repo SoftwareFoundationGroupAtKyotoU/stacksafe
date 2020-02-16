@@ -121,19 +121,19 @@ void Tarjan::visit(BB b) {
   auto& frame = map_[b];
   frame.push(index_++);
   for (const auto& succ : successors(b)) {
-    update(frame, Block{*succ});
+    update(frame, succ);
   }
   if (frame.is_root()) {
     scc_.emplace_back(collect(Block{*b}));
   }
 }
-void Tarjan::update(Frame& frame, const Block& succ) {
-  const Frame& f = map_[&succ.get()];
-  if (f.is_undef()) {
-    visit(&succ.get());
-    frame.update(f.low());
-  } else if (f.on_stack()) {
-    frame.update(f.index());
+void Tarjan::update(Frame& prev, BB succ) {
+  const auto& next = map_[succ];
+  if (next.is_undef()) {
+    visit(succ);
+    prev.update(next.low());
+  } else if (next.on_stack()) {
+    prev.update(next.index());
   }
 }
 Block Tarjan::pop() {
