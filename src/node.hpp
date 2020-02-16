@@ -11,6 +11,7 @@ class Node : std::variant<Symbol, Register> {
   using Super = std::variant<Symbol, Register>;
 
  public:
+  using Super::index;
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
   std::uintptr_t value() const;
