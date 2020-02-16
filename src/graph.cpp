@@ -104,10 +104,8 @@ void Scc::distribute(const Component& prev) {
 }
 
 Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
-  std::size_t i = 0;
   for (const auto& b : f) {
-    map_.try_emplace(&b, &frames_[i]);
-    ++i;
+    map_.try_emplace(&b);
   }
   for (const auto& b : f) {
     const Block block{b};
@@ -163,7 +161,7 @@ Component Tarjan::collect(const Block& b) {
   return Component{comp};
 }
 Frame& Tarjan::map(const Block& b) {
-  return *map_[&b.get()];
+  return map_[&b.get()];
 }
 
 }  // namespace stacksafe
