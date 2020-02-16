@@ -20,7 +20,6 @@ class Symbol {
   explicit Symbol(const llvm::AllocaInst& i);
   explicit Symbol(const llvm::Argument& a);
   const llvm::Value* value() const;
-  std::uintptr_t sym() const;
   bool is_global() const;
   bool is_local() const;
   const llvm::Argument* as_argument() const;

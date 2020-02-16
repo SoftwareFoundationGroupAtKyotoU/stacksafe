@@ -4,7 +4,7 @@
 namespace stacksafe {
 namespace {
 bool compare(const Symbol &lhs, const Symbol &rhs) {
-  return lhs.sym() < rhs.sym();
+  return lhs.value() < rhs.value();
 }
 bool is_local(const Symbol &sym) {
   return sym.is_local();
