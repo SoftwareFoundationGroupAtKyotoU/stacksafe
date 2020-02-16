@@ -109,7 +109,7 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   }
   for (const auto& b : f) {
     const Block block{b};
-    if (map(block).is_undef()) {
+    if (map_[&b].is_undef()) {
       visit(block);
     }
   }
@@ -127,14 +127,14 @@ void Tarjan::visit(const Block& b) {
   }
 }
 Frame& Tarjan::push(const Block& b) {
-  Frame& frame = map(b);
+  Frame& frame = map_[&b.get()];
   frame.push(index_);
   ++index_;
   stack_.push(b);
   return frame;
 }
 void Tarjan::update(Frame& frame, const Block& succ) {
-  const Frame& f = map(succ);
+  const Frame& f = map_[&succ.get()];
   if (f.is_undef()) {
     visit(succ);
     frame.update(f.low());
@@ -145,7 +145,7 @@ void Tarjan::update(Frame& frame, const Block& succ) {
 Block Tarjan::pop() {
   const auto b = stack_.top();
   stack_.pop();
-  map(b).pop();
+  map_[&b.get()].pop();
   return b;
 }
 Component Tarjan::collect(const Block& b) {
@@ -159,9 +159,6 @@ Component Tarjan::collect(const Block& b) {
   }
   std::reverse(comp.begin(), comp.end());
   return Component{comp};
-}
-Frame& Tarjan::map(const Block& b) {
-  return map_[&b.get()];
 }
 
 }  // namespace stacksafe

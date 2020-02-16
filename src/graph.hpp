@@ -79,7 +79,6 @@ class Tarjan {
   void update(Frame& frame, const Block& succ);
   Block pop();
   Component collect(const Block& b);
-  Frame& map(const Block& b);
 };
 
 }  // namespace stacksafe
