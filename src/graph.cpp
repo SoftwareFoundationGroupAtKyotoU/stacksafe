@@ -136,18 +136,14 @@ void Tarjan::update(Frame& prev, BB succ) {
     prev.update(next.index());
   }
 }
-Block Tarjan::pop() {
-  const auto b = stack_.top();
-  stack_.pop();
-  map_[b].pop();
-  return Block{*b};
-}
 Component Tarjan::collect(const Block& b) {
   std::vector<Block> comp;
   while (true) {
-    const auto p = pop();
-    comp.emplace_back(p);
-    if (b == p) {
+    const auto p = stack_.top();
+    stack_.pop();
+    map_[p].pop();
+    comp.emplace_back(*p);
+    if (&b.get() == p) {
       break;
     }
   }

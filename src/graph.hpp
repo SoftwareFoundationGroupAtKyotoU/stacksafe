@@ -76,7 +76,6 @@ class Tarjan {
   const std::vector<Component>& scc() const;
   void visit(BB b);
   void update(Frame& prev, BB succ);
-  Block pop();
   Component collect(const Block& b);
   static std::vector<BB> successors(BB b);
 };
