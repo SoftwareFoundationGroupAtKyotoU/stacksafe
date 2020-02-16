@@ -16,6 +16,8 @@ class Node : std::variant<Symbol, Register> {
   explicit Node(const Register &reg);
   std::uintptr_t value() const;
 };
+bool operator==(const Node &lhs, const Node &rhs);
+bool operator<(const Node &lhs, const Node &rhs);
 
 }  // namespace stacksafe
 

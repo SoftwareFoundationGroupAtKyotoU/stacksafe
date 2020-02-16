@@ -14,5 +14,15 @@ std::uintptr_t Node::value() const {
     llvm_unreachable("Node is either symbol or register");
   }
 }
+bool operator==(const Node &lhs, const Node &rhs) {
+  return lhs.index() == rhs.index() && lhs.value() == rhs.value();
+}
+bool operator<(const Node &lhs, const Node &rhs) {
+  if (lhs.index() == rhs.index()) {
+    return lhs.value() < rhs.value();
+  } else {
+    return lhs.index() < rhs.index();
+  }
+}
 
 }  // namespace stacksafe
