@@ -119,8 +119,8 @@ const std::vector<Component>& Tarjan::scc() const {
 }
 void Tarjan::visit(const Block& b) {
   Frame& frame = push(b);
-  for (const auto& succ : b.successors()) {
-    update(frame, succ);
+  for (const auto& succ : successors(&b.get())) {
+    update(frame, Block{*succ});
   }
   if (frame.is_root()) {
     scc_.emplace_back(collect(b));
@@ -159,6 +159,14 @@ Component Tarjan::collect(const Block& b) {
   }
   std::reverse(comp.begin(), comp.end());
   return Component{comp};
+}
+auto Tarjan::successors(BB b) -> std::vector<BB> {
+  std::vector<BB> succs;
+  const auto t = b->getTerminator();
+  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+    succs.push_back(t->getSuccessor(i));
+  }
+  return succs;
 }
 
 }  // namespace stacksafe
