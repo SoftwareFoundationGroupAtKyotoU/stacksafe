@@ -129,7 +129,7 @@ void Tarjan::visit(BB b) {
     update(frame, succ);
   }
   if (frame.is_root()) {
-    scc_.emplace_back(collect(Block{*b}));
+    scc_.emplace_back(collect(b));
   }
 }
 void Tarjan::update(Frame& prev, BB succ) {
@@ -141,14 +141,14 @@ void Tarjan::update(Frame& prev, BB succ) {
     prev.update(next.index());
   }
 }
-Component Tarjan::collect(const Block& b) {
-  std::vector<Block> comp;
+Component Tarjan::collect(BB b) {
+  std::vector<BB> comp;
   while (true) {
     const auto p = stack_.top();
     stack_.pop();
     map_[p].pop();
-    comp.emplace_back(*p);
-    if (&b.get() == p) {
+    comp.emplace_back(p);
+    if (b == p) {
       break;
     }
   }
