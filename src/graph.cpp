@@ -108,22 +108,21 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
     map_.try_emplace(&b);
   }
   for (const auto& b : f) {
-    const Block block{b};
     if (map_[&b].is_undef()) {
-      visit(block);
+      visit(&b);
     }
   }
 }
 const std::vector<Component>& Tarjan::scc() const {
   return scc_;
 }
-void Tarjan::visit(const Block& b) {
-  Frame& frame = push(b);
-  for (const auto& succ : successors(&b.get())) {
+void Tarjan::visit(BB b) {
+  Frame& frame = push(Block{*b});
+  for (const auto& succ : successors(b)) {
     update(frame, Block{*succ});
   }
   if (frame.is_root()) {
-    scc_.emplace_back(collect(b));
+    scc_.emplace_back(collect(Block{*b}));
   }
 }
 Frame& Tarjan::push(const Block& b) {
@@ -136,7 +135,7 @@ Frame& Tarjan::push(const Block& b) {
 void Tarjan::update(Frame& frame, const Block& succ) {
   const Frame& f = map_[&succ.get()];
   if (f.is_undef()) {
-    visit(succ);
+    visit(&succ.get());
     frame.update(f.low());
   } else if (f.on_stack()) {
     frame.update(f.index());
