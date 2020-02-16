@@ -103,7 +103,7 @@ void Scc::distribute(const Component& prev) {
   }
 }
 
-Tarjan::Tarjan(const llvm::Function& f) : frames_{f.size()}, index_{0} {
+Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   for (const auto& b : f) {
     map_.try_emplace(&b);
   }
