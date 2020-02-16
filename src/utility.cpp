@@ -115,9 +115,9 @@ std::string to_str(const Map& map) {
   std::map<int, Domain> nums;
   for (const auto& key : Map::keys(map)) {
     if (auto sym = key.as_symbol()) {
-      nums.emplace(get_operand(key.value()), map.lookup(*sym));
+      nums.emplace(get_operand(key.ptr()), map.lookup(*sym));
     } else if (auto reg = key.as_register()) {
-      nums.emplace(get_operand(key.value()), map.lookup(*reg));
+      nums.emplace(get_operand(key.ptr()), map.lookup(*reg));
     }
   }
   for (const auto& [key, dom] : nums) {

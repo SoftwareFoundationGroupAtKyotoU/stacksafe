@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include "domain.hpp"
 #include "hash.hpp"
-#include "value.hpp"
+#include "node.hpp"
 
 namespace llvm {
 class Function;
@@ -15,8 +15,8 @@ namespace stacksafe {
 class Register;
 class Symbol;
 
-class Map : private std::unordered_map<Value, Domain> {
-  using Super = std::unordered_map<Value, Domain>;
+class Map : private std::unordered_map<Node, Domain> {
+  using Super = std::unordered_map<Node, Domain>;
 
  public:
   using Super::begin, Super::end;
@@ -26,11 +26,11 @@ class Map : private std::unordered_map<Value, Domain> {
   Domain lookup(const Symbol &key) const;
   Domain lookup(const Register &key) const;
   void merge(const Map &map);
-  static std::set<Value> keys(const Map &map);
+  static std::set<Node> keys(const Map &map);
 
  private:
-  Domain find(const Value &key) const;
-  Domain &get(const Value &key);
+  Domain find(const Node &key) const;
+  Domain &get(const Node &key);
 };
 
 }  // namespace stacksafe
