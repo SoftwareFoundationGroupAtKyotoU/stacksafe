@@ -130,7 +130,7 @@ Frame& Tarjan::push(const Block& b) {
   Frame& frame = map_[&b.get()];
   frame.push(index_);
   ++index_;
-  stack_.push(b);
+  stack_.push(&b.get());
   return frame;
 }
 void Tarjan::update(Frame& frame, const Block& succ) {
@@ -145,8 +145,8 @@ void Tarjan::update(Frame& frame, const Block& succ) {
 Block Tarjan::pop() {
   const auto b = stack_.top();
   stack_.pop();
-  map_[&b.get()].pop();
-  return b;
+  map_[b].pop();
+  return Block{*b};
 }
 Component Tarjan::collect(const Block& b) {
   std::vector<Block> comp;

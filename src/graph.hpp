@@ -67,7 +67,7 @@ class Scc : private std::vector<Component> {
 class Tarjan {
   using BB = const llvm::BasicBlock*;
   std::map<BB, Frame> map_;
-  std::stack<Block> stack_;
+  std::stack<BB> stack_;
   std::vector<Component> scc_;
   int index_;
 
