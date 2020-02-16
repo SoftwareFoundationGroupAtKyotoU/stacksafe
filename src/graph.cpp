@@ -110,10 +110,10 @@ void Scc::distribute(const Component& prev) {
 
 Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   for (const auto& b : f) {
-    map_.try_emplace(&b);
+    frames_.try_emplace(&b);
   }
   for (const auto& b : f) {
-    if (map_[&b].is_undef()) {
+    if (frames_[&b].is_undef()) {
       visit(&b);
     }
   }
@@ -123,7 +123,7 @@ const std::vector<Component>& Tarjan::scc() const {
 }
 void Tarjan::visit(BB b) {
   stack_.push(b);
-  auto& frame = map_[b];
+  auto& frame = frames_[b];
   frame.push(index_++);
   for (const auto& succ : successors(b)) {
     update(frame, succ);
@@ -133,7 +133,7 @@ void Tarjan::visit(BB b) {
   }
 }
 void Tarjan::update(Frame& prev, BB succ) {
-  const auto& next = map_[succ];
+  const auto& next = frames_[succ];
   if (next.is_undef()) {
     visit(succ);
     prev.update(next.low());
@@ -146,7 +146,7 @@ Component Tarjan::collect(BB b) {
   while (true) {
     const auto p = stack_.top();
     stack_.pop();
-    map_[p].pop();
+    frames_[p].pop();
     comp.emplace_back(p);
     if (b == p) {
       break;
