@@ -21,6 +21,7 @@ target_sources(${target} PRIVATE
   interpreter.cpp
   log.cpp
   map.cpp
+  node.cpp
   params.cpp
   register.cpp
   stopwatch.cpp
