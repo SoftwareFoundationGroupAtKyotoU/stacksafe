@@ -54,6 +54,11 @@ class Component : private std::vector<Block> {
   Map& map();
 };
 
+class Blocks : private std::vector<const llvm::BasicBlock*> {
+  using BB = const llvm::BasicBlock*;
+  using Super = std::vector<const llvm::BasicBlock*>;
+};
+
 class Scc : private std::vector<Component> {
   using Super = std::vector<Component>;
 
