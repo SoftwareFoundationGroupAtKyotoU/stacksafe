@@ -14,6 +14,15 @@ std::uintptr_t Node::value() const {
     llvm_unreachable("Node is either symbol or register");
   }
 }
+const llvm::Value *Node::ptr() const {
+  if (auto sym = as_symbol()) {
+    return sym->value();
+  } else if (auto reg = as_register()) {
+    return &reg->value();
+  } else {
+    return nullptr;
+  }
+}
 const Symbol *Node::as_symbol() const {
   return std::get_if<Symbol>(this);
 }

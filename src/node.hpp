@@ -15,6 +15,7 @@ class Node : std::variant<Symbol, Register> {
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
   std::uintptr_t value() const;
+  const llvm::Value *ptr() const;
   const Symbol *as_symbol() const;
   const Register *as_register() const;
 };
