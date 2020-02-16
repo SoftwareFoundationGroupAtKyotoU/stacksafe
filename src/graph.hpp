@@ -75,7 +75,6 @@ class Tarjan {
   Tarjan(const llvm::Function& f);
   const std::vector<Component>& scc() const;
   void visit(BB b);
-  Frame& push(const Block& b);
   void update(Frame& frame, const Block& succ);
   Block pop();
   Component collect(const Block& b);

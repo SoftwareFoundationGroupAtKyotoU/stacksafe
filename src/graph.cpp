@@ -117,20 +117,15 @@ const std::vector<Component>& Tarjan::scc() const {
   return scc_;
 }
 void Tarjan::visit(BB b) {
-  Frame& frame = push(Block{*b});
+  stack_.push(b);
+  auto& frame = map_[b];
+  frame.push(index_++);
   for (const auto& succ : successors(b)) {
     update(frame, Block{*succ});
   }
   if (frame.is_root()) {
     scc_.emplace_back(collect(Block{*b}));
   }
-}
-Frame& Tarjan::push(const Block& b) {
-  Frame& frame = map_[&b.get()];
-  frame.push(index_);
-  ++index_;
-  stack_.push(&b.get());
-  return frame;
 }
 void Tarjan::update(Frame& frame, const Block& succ) {
   const Frame& f = map_[&succ.get()];
