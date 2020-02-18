@@ -60,6 +60,7 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
 
  public:
   static Blocks successors(BB b);
+  bool contains(BB b) const;
 };
 
 class Scc : private std::vector<Component> {

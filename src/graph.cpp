@@ -94,6 +94,9 @@ Blocks Blocks::successors(BB b) {
   }
   return succs;
 }
+bool Blocks::contains(BB b) const {
+  return std::find(begin(), end(), b) != end();
+}
 
 Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
   back().map().init(f);
