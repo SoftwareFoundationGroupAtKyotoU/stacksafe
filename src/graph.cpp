@@ -86,6 +86,15 @@ Map& Component::map() {
   return map_;
 }
 
+Blocks Blocks::successors(BB b) {
+  Blocks succs;
+  const auto t = b->getTerminator();
+  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+    succs.push_back(t->getSuccessor(i));
+  }
+  return succs;
+}
+
 Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
   back().map().init(f);
 }

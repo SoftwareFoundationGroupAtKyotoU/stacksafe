@@ -57,6 +57,9 @@ class Component : private std::vector<Block> {
 class Blocks : private std::vector<const llvm::BasicBlock*> {
   using BB = const llvm::BasicBlock*;
   using Super = std::vector<const llvm::BasicBlock*>;
+
+ public:
+  static Blocks successors(BB b);
 };
 
 class Scc : private std::vector<Component> {
