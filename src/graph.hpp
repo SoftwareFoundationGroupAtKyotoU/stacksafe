@@ -90,7 +90,6 @@ class Tarjan {
   void visit(BB b);
   void update(Frame& prev, BB succ);
   Component collect(BB b);
-  static std::vector<BB> successors(BB b);
 };
 
 }  // namespace stacksafe
