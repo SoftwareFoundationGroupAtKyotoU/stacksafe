@@ -39,13 +39,14 @@ class Block {
   bool operator==(const Block& block) const;
 };
 
+class Blocks;
 class Component : private std::vector<Block> {
   using Super = std::vector<Block>;
   Map map_;
 
  public:
   using Super::begin, Super::end;
-  explicit Component(const std::vector<Block>& vec);
+  explicit Component(const Blocks& vec);
   explicit Component(const std::vector<const llvm::BasicBlock*>& vec);
   bool contains(const Block& b) const;
   bool is_loop() const;

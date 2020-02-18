@@ -48,7 +48,11 @@ bool Block::operator==(const Block& block) const {
   return block_ == block.block_;
 }
 
-Component::Component(const std::vector<Block>& vec) : Super{vec} {}
+Component::Component(const Blocks& vec) {
+  for (const auto b : vec) {
+    Super::emplace_back(*b);
+  }
+}
 Component::Component(const std::vector<const llvm::BasicBlock*>& vec) {
   for (const auto b : vec) {
     Super::emplace_back(*b);
