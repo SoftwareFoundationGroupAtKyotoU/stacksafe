@@ -94,6 +94,17 @@ Blocks Blocks::successors(BB b) {
   }
   return succs;
 }
+Blocks Blocks::successors() const {
+  Blocks succs;
+  for (const auto& b : *this) {
+    for (const auto& succ : successors(b)) {
+      if (!contains(succ) && !succs.contains(succ)) {
+        succs.push_back(succ);
+      }
+    }
+  }
+  return succs;
+}
 bool Blocks::contains(BB b) const {
   return std::find(begin(), end(), b) != end();
 }
