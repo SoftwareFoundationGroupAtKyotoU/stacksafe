@@ -60,7 +60,7 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
   using Super = std::vector<const llvm::BasicBlock*>;
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::push_back;
   static Blocks successors(BB b);
   Blocks successors() const;
   bool contains(BB b) const;
