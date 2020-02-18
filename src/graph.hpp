@@ -89,7 +89,7 @@ class Tarjan {
   const std::vector<Component>& scc() const;
   void visit(BB b);
   void update(Frame& prev, BB succ);
-  Component collect(BB b);
+  Blocks collect(BB b);
 };
 
 }  // namespace stacksafe
