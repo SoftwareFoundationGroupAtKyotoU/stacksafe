@@ -48,48 +48,6 @@ bool Block::operator==(const Block& block) const {
   return block_ == block.block_;
 }
 
-Component::Component(const Blocks& vec) {
-  for (const auto b : vec) {
-    Super::emplace_back(*b);
-  }
-}
-Component::Component(const std::vector<const llvm::BasicBlock*>& vec) {
-  for (const auto b : vec) {
-    Super::emplace_back(*b);
-  }
-}
-bool Component::contains(const Block& b) const {
-  return std::find(begin(), end(), b) != end();
-}
-bool Component::is_loop() const {
-  for (const auto& b : *this) {
-    for (const auto& succ : b.successors()) {
-      if (contains(succ)) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-std::vector<Block> Component::successors() const {
-  std::vector<Block> out;
-  for (const auto& b : *this) {
-    for (const auto& succ : b.successors()) {
-      if (!contains(succ) &&
-          std::find(out.begin(), out.end(), succ) == out.end()) {
-        out.Super::emplace_back(succ);
-      }
-    }
-  }
-  return out;
-}
-void Component::merge(const Component& c) {
-  map_.merge(c.map_);
-}
-Map& Component::map() {
-  return map_;
-}
-
 Blocks Blocks::successors(BB b) {
   Blocks succs;
   const auto t = b->getTerminator();

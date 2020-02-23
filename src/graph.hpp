@@ -39,22 +39,6 @@ class Block {
   bool operator==(const Block& block) const;
 };
 
-class Blocks;
-class Component : private std::vector<Block> {
-  using Super = std::vector<Block>;
-  Map map_;
-
- public:
-  using Super::begin, Super::end;
-  explicit Component(const Blocks& vec);
-  explicit Component(const std::vector<const llvm::BasicBlock*>& vec);
-  bool contains(const Block& b) const;
-  bool is_loop() const;
-  std::vector<Block> successors() const;
-  void merge(const Component& c);
-  Map& map();
-};
-
 class Blocks : private std::vector<const llvm::BasicBlock*> {
   using Super = std::vector<const llvm::BasicBlock*>;
   using BB = Super::value_type;
