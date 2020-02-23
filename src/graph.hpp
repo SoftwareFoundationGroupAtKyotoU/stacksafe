@@ -86,6 +86,7 @@ class Tarjan {
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
   std::vector<Component> scc_;
+  Components comps_;
   int index_;
 
  public:
