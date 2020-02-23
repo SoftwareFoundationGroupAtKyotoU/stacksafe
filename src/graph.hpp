@@ -85,13 +85,11 @@ class Tarjan {
   using BB = Blocks::value_type;
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
-  std::vector<Component> scc_;
   Components comps_;
   int index_;
 
  public:
   Tarjan(const llvm::Function& f);
-  const std::vector<Component>& scc() const;
   void visit(BB b);
   void update(Frame& prev, BB succ);
   Blocks collect(BB b);

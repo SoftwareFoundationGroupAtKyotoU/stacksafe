@@ -155,9 +155,6 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   }
   std::reverse(comps_.begin(), comps_.end());
 }
-const std::vector<Component>& Tarjan::scc() const {
-  return scc_;
-}
 void Tarjan::visit(BB b) {
   stack_.push(b);
   auto& frame = frames_[b];
@@ -166,9 +163,7 @@ void Tarjan::visit(BB b) {
     update(frame, succ);
   }
   if (frame.is_root()) {
-    const auto comp = collect(b);
-    scc_.emplace_back(comp);
-    comps_.push(comp);
+    comps_.push(collect(b));
   }
 }
 void Tarjan::update(Frame& prev, BB succ) {
