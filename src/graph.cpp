@@ -116,8 +116,12 @@ bool Tarjan::visit(BB b) {
     }
     if (frame.is_root()) {
       comps_.reload();
-      while (b != pop()) {
-        // noop
+      while (true) {
+        const auto p = pop();
+        comps_.append(p);
+        if (b == p) {
+          break;
+        }
       }
     }
   }
@@ -132,7 +136,6 @@ auto Tarjan::pop() -> BB {
   const auto b = stack_.top();
   stack_.pop();
   frames_[b].pop();
-  comps_.append(b);
   return b;
 }
 Components Tarjan::run(const llvm::Function& f) {
