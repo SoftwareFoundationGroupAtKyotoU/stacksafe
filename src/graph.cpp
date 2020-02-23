@@ -127,6 +127,13 @@ void Components::push(const Blocks& b) {
   Super::push_back(b);
   state_.emplace_back();
 }
+void Components::init(const llvm::Function& f) {
+  const auto b = &f.getEntryBlock();
+  const auto pred = [b](const Blocks& c) { return c.contains(b); };
+  const auto it = std::find_if(begin(), end(), pred);
+  const auto index = std::distance(begin(), it);
+  state_[index].init(f);
+}
 const Blocks& Components::find(BB b) const {
   const auto pred = [b](const Blocks& c) { return c.contains(b); };
   const auto it = std::find_if(begin(), end(), pred);
@@ -211,6 +218,7 @@ Blocks Tarjan::collect(BB b) {
 }
 Components Tarjan::run(const llvm::Function& f) {
   Tarjan tarjan{f};
+  tarjan.comps_.init(f);
   return tarjan.comps_;
 }
 

@@ -76,6 +76,7 @@ class Components : private std::vector<Blocks> {
  public:
   using Super::begin, Super::end;
   void push(const Blocks& b);
+  void init(const llvm::Function& f);
   const Blocks& find(BB b) const;
 };
 
