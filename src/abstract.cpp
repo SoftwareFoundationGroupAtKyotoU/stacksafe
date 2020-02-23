@@ -30,9 +30,8 @@ void Abstract::interpret() {
   {
     Stopwatch<std::milli> watch{elapsed_};
     auto scc = Tarjan::run(func_);
-    for (const auto &pair : scc) {
-      const auto &c = std::get<0>(pair);
-      Interpreter i{log, depend_, depmap_, scc.find(c)};
+    for (auto &[c, m] : scc) {
+      Interpreter i{log, depend_, depmap_, m};
       do {
         bool repeat = false;
         for (const auto &b : c) {
@@ -47,7 +46,7 @@ void Abstract::interpret() {
           continue;
         }
       } while (false);
-      scc.transfer(c);
+      scc.transfer(c, m);
     }
   }
 }

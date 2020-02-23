@@ -144,9 +144,9 @@ Map& Components::find(const Blocks& b) {
   assert(it != end() && "argument must be a component");
   return std::get<1>(*it);
 }
-void Components::transfer(const Blocks& pred) {
-  for (const auto& succ : pred.successors()) {
-    find(succ).merge(find(pred));
+void Components::transfer(const Blocks& b, const Map& pred) {
+  for (const auto& succ : b.successors()) {
+    find(succ).merge(pred);
   }
 }
 
