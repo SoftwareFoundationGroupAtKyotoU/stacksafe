@@ -119,9 +119,7 @@ void Tarjan::update(Frame& prev, BB succ) {
 Blocks Tarjan::collect(BB b) {
   Blocks comp;
   while (true) {
-    const auto p = stack_.top();
-    stack_.pop();
-    frames_[p].pop();
+    const auto p = pop();
     comp.push_back(p);
     if (b == p) {
       break;
@@ -134,6 +132,12 @@ Frame& Tarjan::push(BB b) {
   stack_.push(b);
   frames_[b].push(index_++);
   return frames_[b];
+}
+auto Tarjan::pop() -> BB {
+  const auto b = stack_.top();
+  stack_.pop();
+  frames_[b].pop();
+  return b;
 }
 Components Tarjan::run(const llvm::Function& f) {
   Tarjan tarjan{f};
