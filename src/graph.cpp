@@ -123,6 +123,9 @@ bool Blocks::is_loop() const {
   return false;
 }
 
+void Components::push(const Blocks& b) {
+  Super::push_back(b);
+}
 const Blocks& Components::find(BB b) const {
   const auto pred = [b](const Blocks& c) { return c.contains(b); };
   const auto it = std::find_if(begin(), end(), pred);
@@ -179,7 +182,7 @@ void Tarjan::visit(BB b) {
   if (frame.is_root()) {
     const auto comp = collect(b);
     scc_.emplace_back(comp);
-    comps_.push_back(comp);
+    comps_.push(comp);
   }
 }
 void Tarjan::update(Frame& prev, BB succ) {

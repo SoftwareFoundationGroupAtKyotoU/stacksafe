@@ -73,7 +73,8 @@ class Components : private std::vector<Blocks> {
   using BB = Blocks::value_type;
 
  public:
-  using Super::begin, Super::end, Super::push_back;
+  using Super::begin, Super::end;
+  void push(const Blocks& b);
   const Blocks& find(BB b) const;
 };
 
