@@ -3,11 +3,11 @@
 
 #include <map>
 #include <stack>
-#include "graph.hpp"
 
 namespace llvm {
+class BasicBlock;
 class Function;
-}
+}  // namespace llvm
 
 namespace stacksafe {
 class Components;
@@ -29,7 +29,7 @@ class Frame {
 };
 
 class Tarjan {
-  using BB = Blocks::value_type;
+  using BB = const llvm::BasicBlock*;
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
   int index_;

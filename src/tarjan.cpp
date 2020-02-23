@@ -1,5 +1,6 @@
 #include "tarjan.hpp"
 #include <llvm/IR/Function.h>
+#include "block.hpp"
 
 namespace stacksafe {
 
