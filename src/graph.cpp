@@ -99,10 +99,15 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
     frames_.try_emplace(&b);
   }
   for (const auto& b : f) {
-    if (frames_[&b].is_undef()) {
-      visit(&b);
-    }
+    try_visit(&b);
   }
+}
+bool Tarjan::try_visit(BB b) {
+  const auto ok = frames_[b].is_undef();
+  if (ok) {
+    visit(b);
+  }
+  return ok;
 }
 void Tarjan::visit(BB b) {
   auto& frame = push(b);
@@ -118,10 +123,9 @@ void Tarjan::visit(BB b) {
 }
 void Tarjan::update(Frame& prev, BB succ) {
   const auto& next = frames_[succ];
-  if (next.is_undef()) {
-    visit(succ);
+  if (try_visit(succ)) {
     prev.update(next.low());
-  } else if (next.on_stack()) {
+  } else if (frames_[succ].on_stack()) {
     prev.update(next.index());
   }
 }
