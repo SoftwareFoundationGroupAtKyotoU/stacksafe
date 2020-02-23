@@ -79,6 +79,7 @@ class Scc : private std::vector<Component> {
   Super::reverse_iterator current_;
 
  public:
+  using Super::begin, Super::end, Super::back;
   explicit Scc(const llvm::Function& f);
   Component& pop();
   bool empty() const;

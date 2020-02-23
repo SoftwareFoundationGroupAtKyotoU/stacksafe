@@ -30,9 +30,14 @@ void Abstract::interpret() {
   {
     Stopwatch<std::milli> watch{elapsed_};
     Scc scc{func_};
+    std::map<const Component *, Map> state;
+    for (const auto &c : scc) {
+      state.try_emplace(&c);
+    }
+    state[&scc.back()].init(func_);
     while (!scc.empty()) {
-      auto c = scc.pop();
-      Interpreter i{log, depend_, depmap_, c.map()};
+      auto &c = scc.pop();
+      Interpreter i{log, depend_, depmap_, state[&c]};
       do {
         bool repeat = false;
         for (const auto &b : c) {
@@ -47,7 +52,10 @@ void Abstract::interpret() {
           continue;
         }
       } while (false);
-      scc.distribute(c);
+      for (const auto &succ : c.successors()) {
+        const auto &next = scc.find(succ);
+        state[&next].merge(state[&c]);
+      }
     }
   }
 }
