@@ -68,8 +68,10 @@ bool Blocks::is_loop() const {
 void Components::push(const Blocks& b) {
   Super::emplace_back(b, Map{});
 }
-void Components::init(const llvm::Function& f) {
+Components& Components::init(const llvm::Function& f) {
+  std::reverse(begin(), end());
   find(&f.getEntryBlock()).init(f);
+  return *this;
 }
 void Components::transfer(const Blocks& b, const Map& pred) {
   for (const auto& succ : b.successors()) {
@@ -95,7 +97,6 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
       visit(&b);
     }
   }
-  std::reverse(comps_.begin(), comps_.end());
 }
 void Tarjan::visit(BB b) {
   stack_.push(b);
