@@ -65,12 +65,6 @@ bool Blocks::is_loop() const {
   return false;
 }
 
-void Components::reload() {
-  Super::emplace_back();
-}
-void Components::append(BB b) {
-  std::get<0>(Super::back()).push_back(b);
-}
 Components& Components::init(const llvm::Function& f) {
   for (auto& [c, m] : *this) {
     std::reverse(c.begin(), c.end());
