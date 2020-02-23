@@ -78,6 +78,7 @@ class Components : private std::vector<Blocks> {
   void push(const Blocks& b);
   void init(const llvm::Function& f);
   const Blocks& find(BB b) const;
+  Map& find(const Blocks& b);
   void transfer(const Blocks& b);
 };
 

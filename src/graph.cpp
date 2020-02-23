@@ -141,6 +141,12 @@ const Blocks& Components::find(BB b) const {
          "components must be a partition");
   return *it;
 }
+Map& Components::find(const Blocks& b) {
+  const auto pred = [&b](const Blocks& c) { return &b == &c; };
+  const auto it = std::find_if(begin(), end(), pred);
+  const auto index = std::distance(begin(), it);
+  return state_[index];
+}
 void Components::transfer(const Blocks& b) {
   const auto pred = [b](const Blocks& c) { return &b == &c; };
   const auto it = std::find_if(begin(), end(), pred);
