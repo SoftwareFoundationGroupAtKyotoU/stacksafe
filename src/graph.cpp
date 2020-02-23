@@ -99,9 +99,7 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   }
 }
 void Tarjan::visit(BB b) {
-  stack_.push(b);
-  auto& frame = frames_[b];
-  frame.push(index_++);
+  auto& frame = push(b);
   for (const auto& succ : Blocks::successors(b)) {
     update(frame, succ);
   }
@@ -131,6 +129,11 @@ Blocks Tarjan::collect(BB b) {
   }
   std::reverse(comp.begin(), comp.end());
   return comp;
+}
+Frame& Tarjan::push(BB b) {
+  stack_.push(b);
+  frames_[b].push(index_++);
+  return frames_[b];
 }
 Components Tarjan::run(const llvm::Function& f) {
   Tarjan tarjan{f};
