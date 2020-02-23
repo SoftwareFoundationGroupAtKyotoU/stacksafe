@@ -3,35 +3,6 @@
 
 namespace stacksafe {
 
-Frame::Frame() : index_{-1}, low_{-1}, on_stack_{false} {}
-bool Frame::on_stack() const {
-  return on_stack_;
-}
-int Frame::index() const {
-  return index_;
-}
-int Frame::low() const {
-  return low_;
-}
-bool Frame::is_undef() const {
-  return index_ < 0;
-}
-bool Frame::is_root() const {
-  return index_ == low_;
-}
-void Frame::push(int n) {
-  index_ = low_ = n;
-  on_stack_ = true;
-}
-void Frame::update(int n) {
-  if (n < low_) {
-    low_ = n;
-  }
-}
-void Frame::pop() {
-  on_stack_ = false;
-}
-
 Blocks Blocks::successors(BB b) {
   Blocks succs;
   const auto t = b->getTerminator();
