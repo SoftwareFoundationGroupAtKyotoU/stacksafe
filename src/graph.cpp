@@ -125,6 +125,7 @@ bool Blocks::is_loop() const {
 
 Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
   back().map().init(f);
+  current_ = rbegin();
 }
 Component Scc::pop() {
   auto ret = std::move(back());
