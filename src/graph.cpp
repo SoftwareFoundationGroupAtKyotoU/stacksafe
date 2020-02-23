@@ -65,14 +65,6 @@ bool Blocks::is_loop() const {
   return false;
 }
 
-Components& Components::init(const llvm::Function& f) {
-  for (auto& [c, m] : *this) {
-    std::reverse(c.begin(), c.end());
-  }
-  std::reverse(begin(), end());
-  find(&f.getEntryBlock()).init(f);
-  return *this;
-}
 void Components::transfer(const Blocks& b, const Map& pred) {
   for (const auto& succ : b.successors()) {
     find(succ).merge(pred);
