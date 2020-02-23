@@ -79,9 +79,9 @@ class Scc : private std::vector<Component> {
   Super::reverse_iterator current_;
 
  public:
-  using Super::empty;
   explicit Scc(const llvm::Function& f);
   Component& pop();
+  bool empty() const;
   Component& find(const Block& b);
   void distribute(const Component& c);
 };

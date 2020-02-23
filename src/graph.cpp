@@ -130,6 +130,9 @@ Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
 Component& Scc::pop() {
   return *current_++;
 }
+bool Scc::empty() const {
+  return current_ == rend();
+}
 Component& Scc::find(const Block& b) {
   const auto pred = [&b](const Component& c) { return c.contains(b); };
   auto it = std::find_if(begin(), end(), pred);
