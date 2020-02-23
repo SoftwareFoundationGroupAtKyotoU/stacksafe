@@ -81,7 +81,7 @@ class Scc : private std::vector<Component> {
  public:
   using Super::empty;
   explicit Scc(const llvm::Function& f);
-  Component pop();
+  Component& pop();
   Component& find(const Block& b);
   void distribute(const Component& c);
 };
