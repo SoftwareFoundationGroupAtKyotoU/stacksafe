@@ -68,7 +68,6 @@ class Tarjan {
  public:
   Tarjan(const llvm::Function& f);
   bool visit(BB b);
-  void update(Frame& prev, BB succ);
   Frame& push(BB b);
   BB pop();
   static Components run(const llvm::Function& f);

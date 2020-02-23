@@ -107,7 +107,12 @@ bool Tarjan::visit(BB b) {
   if (ok) {
     auto& frame = push(b);
     for (const auto& succ : Blocks::successors(b)) {
-      update(frame, succ);
+      const auto& next = frames_[succ];
+      if (visit(succ)) {
+        frame.update(next.low());
+      } else if (next.on_stack()) {
+        frame.update(next.index());
+      }
     }
     if (frame.is_root()) {
       comps_.reload();
@@ -117,14 +122,6 @@ bool Tarjan::visit(BB b) {
     }
   }
   return ok;
-}
-void Tarjan::update(Frame& prev, BB succ) {
-  const auto& next = frames_[succ];
-  if (visit(succ)) {
-    prev.update(next.low());
-  } else if (frames_[succ].on_stack()) {
-    prev.update(next.index());
-  }
 }
 Frame& Tarjan::push(BB b) {
   stack_.push(b);
