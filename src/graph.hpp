@@ -46,6 +46,7 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
   using Pair = std::tuple<Blocks, Map>;
   using Super = std::vector<Pair>;
   using BB = Blocks::value_type;
+  friend class Tarjan;
 
  public:
   using Super::begin, Super::end, Super::emplace_back;

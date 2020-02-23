@@ -94,7 +94,12 @@ Components Tarjan::run(const llvm::Function& f) {
   for (const auto& b : f) {
     tarjan.visit(&b, comps);
   }
-  return comps.init(f);
+  for (auto& [c, m] : comps) {
+    std::reverse(c.begin(), c.end());
+  }
+  std::reverse(comps.begin(), comps.end());
+  comps.find(&f.getEntryBlock()).init(f);
+  return comps;
 }
 Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   for (const auto& b : f) {
