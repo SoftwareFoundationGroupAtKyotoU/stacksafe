@@ -144,30 +144,6 @@ void Components::transfer(const Blocks& b, const Map& pred) {
   }
 }
 
-Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
-  back().map().init(f);
-  current_ = rbegin();
-}
-Component& Scc::pop() {
-  return *current_++;
-}
-bool Scc::empty() const {
-  return current_ == rend();
-}
-Component& Scc::find(const Block& b) {
-  const auto pred = [&b](const Component& c) { return c.contains(b); };
-  auto it = std::find_if(begin(), end(), pred);
-  assert(it != end() && std::find_if(std::next(it), end(), pred) == end() &&
-         "SCC must be a partition");
-  return *it;
-}
-void Scc::distribute(const Component& prev) {
-  for (const auto& succ : prev.successors()) {
-    auto& next = find(succ);
-    next.merge(prev);
-  }
-}
-
 Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   for (const auto& b : f) {
     frames_.try_emplace(&b);

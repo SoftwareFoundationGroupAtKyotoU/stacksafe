@@ -81,19 +81,6 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
   void transfer(const Blocks& b, const Map& pred);
 };
 
-class Scc : private std::vector<Component> {
-  using Super = std::vector<Component>;
-  Super::reverse_iterator current_;
-
- public:
-  using Super::begin, Super::end, Super::back;
-  explicit Scc(const llvm::Function& f);
-  Component& pop();
-  bool empty() const;
-  Component& find(const Block& b);
-  void distribute(const Component& c);
-};
-
 class Tarjan {
   using BB = Blocks::value_type;
   std::map<BB, Frame> frames_;
