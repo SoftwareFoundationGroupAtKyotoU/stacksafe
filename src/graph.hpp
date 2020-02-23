@@ -68,6 +68,9 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
 
 class Components : private std::vector<Blocks> {
   using Super = std::vector<Blocks>;
+
+ public:
+  using Super::push_back;
 };
 
 class Scc : private std::vector<Component> {
