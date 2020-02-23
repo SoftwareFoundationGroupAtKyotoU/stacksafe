@@ -66,6 +66,10 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
   bool contains(BB b) const;
 };
 
+class Components : private std::vector<Blocks> {
+  using Super = std::vector<Blocks>;
+};
+
 class Scc : private std::vector<Component> {
   using Super = std::vector<Component>;
 
