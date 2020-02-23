@@ -49,7 +49,7 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
   friend class Tarjan;
 
  public:
-  using Super::begin, Super::end, Super::emplace_back;
+  using Super::begin, Super::end;
   void transfer(const Blocks& b, const Map& pred);
 
  private:
