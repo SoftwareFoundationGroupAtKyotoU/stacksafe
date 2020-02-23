@@ -49,7 +49,7 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
 
  public:
   using Super::begin, Super::end;
-  void push(const Blocks& b);
+  void reload();
   void append(BB b);
   Components& init(const llvm::Function& f);
   void transfer(const Blocks& b, const Map& pred);

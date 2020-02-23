@@ -65,8 +65,8 @@ bool Blocks::is_loop() const {
   return false;
 }
 
-void Components::push(const Blocks& b) {
-  Super::emplace_back(b, Map{});
+void Components::reload() {
+  Super::emplace_back();
 }
 void Components::append(BB b) {
   std::get<0>(Super::back()).push_back(b);
@@ -123,7 +123,7 @@ void Tarjan::update(Frame& prev, BB succ) {
   }
 }
 void Tarjan::collect(BB b) {
-  comps_.push(Blocks{});
+  comps_.reload();
   while (true) {
     const auto p = pop();
     comps_.append(p);
