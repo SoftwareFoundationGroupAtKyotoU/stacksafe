@@ -51,8 +51,10 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
   using Super::begin, Super::end;
   void push(const Blocks& b);
   void init(const llvm::Function& f);
-  Map& find(BB b);
   void transfer(const Blocks& b, const Map& pred);
+
+ private:
+  Map& find(BB b);
 };
 
 class Tarjan {
