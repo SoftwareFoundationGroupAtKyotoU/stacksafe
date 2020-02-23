@@ -64,6 +64,7 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
   static Blocks successors(BB b);
   Blocks successors() const;
   bool contains(BB b) const;
+  bool is_loop() const;
 };
 
 class Components : private std::vector<Blocks> {

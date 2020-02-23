@@ -112,6 +112,16 @@ Blocks Blocks::successors() const {
 bool Blocks::contains(BB b) const {
   return std::find(begin(), end(), b) != end();
 }
+bool Blocks::is_loop() const {
+  for (const auto& b : *this) {
+    for (const auto& succ : successors(b)) {
+      if (contains(succ)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
   back().map().init(f);
