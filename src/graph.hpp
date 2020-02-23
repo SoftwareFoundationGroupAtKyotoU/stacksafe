@@ -48,7 +48,7 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
   using BB = Blocks::value_type;
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::emplace_back;
   void reload();
   void append(BB b);
   Components& init(const llvm::Function& f);
@@ -67,7 +67,7 @@ class Tarjan {
 
  public:
   Tarjan(const llvm::Function& f);
-  bool visit(BB b);
+  bool visit(BB b, Components& comps);
   Frame& push(BB b);
   BB pop();
   static Components run(const llvm::Function& f);

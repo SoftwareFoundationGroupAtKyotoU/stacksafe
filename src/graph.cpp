@@ -99,30 +99,31 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
     frames_.try_emplace(&b);
   }
   for (const auto& b : f) {
-    visit(&b);
+    visit(&b, comps_);
   }
 }
-bool Tarjan::visit(BB b) {
+bool Tarjan::visit(BB b, Components& comps) {
   const auto ok = frames_[b].is_undef();
   if (ok) {
     auto& frame = push(b);
     for (const auto& succ : Blocks::successors(b)) {
       const auto& next = frames_[succ];
-      if (visit(succ)) {
+      if (visit(succ, comps)) {
         frame.update(next.low());
       } else if (next.on_stack()) {
         frame.update(next.index());
       }
     }
     if (frame.is_root()) {
-      comps_.reload();
+      Blocks comp;
       while (true) {
         const auto p = pop();
-        comps_.append(p);
+        comp.push_back(p);
         if (b == p) {
           break;
         }
       }
+      comps.emplace_back(comp, Map{});
     }
   }
   return ok;
