@@ -110,7 +110,10 @@ void Tarjan::visit(BB b) {
     update(frame, succ);
   }
   if (frame.is_root()) {
-    collect(b);
+    comps_.reload();
+    while (b != pop()) {
+      // noop
+    }
   }
 }
 void Tarjan::update(Frame& prev, BB succ) {
@@ -122,16 +125,6 @@ void Tarjan::update(Frame& prev, BB succ) {
     prev.update(next.index());
   }
 }
-void Tarjan::collect(BB b) {
-  comps_.reload();
-  while (true) {
-    const auto p = pop();
-    comps_.append(p);
-    if (b == p) {
-      break;
-    }
-  }
-}
 Frame& Tarjan::push(BB b) {
   stack_.push(b);
   frames_[b].push(index_++);
@@ -141,6 +134,7 @@ auto Tarjan::pop() -> BB {
   const auto b = stack_.top();
   stack_.pop();
   frames_[b].pop();
+  comps_.append(b);
   return b;
 }
 Components Tarjan::run(const llvm::Function& f) {
