@@ -32,22 +32,6 @@ void Frame::pop() {
   on_stack_ = false;
 }
 
-Block::Block(const llvm::BasicBlock& b) : block_{&b} {}
-std::vector<Block> Block::successors() const {
-  std::vector<Block> vec;
-  const auto t = block_->getTerminator();
-  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-    vec.emplace_back(*t->getSuccessor(i));
-  }
-  return vec;
-}
-const llvm::BasicBlock& Block::get() const {
-  return *block_;
-}
-bool Block::operator==(const Block& block) const {
-  return block_ == block.block_;
-}
-
 Blocks Blocks::successors(BB b) {
   Blocks succs;
   const auto t = b->getTerminator();

@@ -29,16 +29,6 @@ class Frame {
   void pop();
 };
 
-class Block {
-  const llvm::BasicBlock* block_;
-
- public:
-  explicit Block(const llvm::BasicBlock& b);
-  std::vector<Block> successors() const;
-  const llvm::BasicBlock& get() const;
-  bool operator==(const Block& block) const;
-};
-
 class Blocks : private std::vector<const llvm::BasicBlock*> {
   using Super = std::vector<const llvm::BasicBlock*>;
   using BB = Super::value_type;
