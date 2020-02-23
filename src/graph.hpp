@@ -68,16 +68,16 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
   bool is_loop() const;
 };
 
-class Components : private std::vector<Blocks> {
-  using Super = std::vector<Blocks>;
+class Components : private std::vector<std::tuple<Blocks, Map>> {
+  using Pair = std::tuple<Blocks, Map>;
+  using Super = std::vector<Pair>;
   using BB = Blocks::value_type;
-  std::vector<Map> state_;
 
  public:
   using Super::begin, Super::end;
   void push(const Blocks& b);
   void init(const llvm::Function& f);
-  const Blocks& find(BB b) const;
+  Map& find(BB b);
   Map& find(const Blocks& b);
   void transfer(const Blocks& b);
 };

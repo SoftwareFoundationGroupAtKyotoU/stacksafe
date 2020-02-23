@@ -124,38 +124,29 @@ bool Blocks::is_loop() const {
 }
 
 void Components::push(const Blocks& b) {
-  Super::push_back(b);
-  state_.emplace_back();
+  Super::emplace_back(b, Map{});
 }
 void Components::init(const llvm::Function& f) {
-  const auto b = &f.getEntryBlock();
-  const auto pred = [b](const Blocks& c) { return c.contains(b); };
-  const auto it = std::find_if(begin(), end(), pred);
-  const auto index = std::distance(begin(), it);
-  state_[index].init(f);
+  find(&f.getEntryBlock()).init(f);
 }
-const Blocks& Components::find(BB b) const {
-  const auto pred = [b](const Blocks& c) { return c.contains(b); };
+Map& Components::find(BB b) {
+  const auto pred = [b](const Pair& pair) {
+    return std::get<0>(pair).contains(b);
+  };
   const auto it = std::find_if(begin(), end(), pred);
   assert(it != end() && std::find_if(std::next(it), end(), pred) == end() &&
          "components must be a partition");
-  return *it;
+  return std::get<1>(*it);
 }
 Map& Components::find(const Blocks& b) {
-  const auto pred = [&b](const Blocks& c) { return &b == &c; };
+  const auto pred = [&b](const Pair& pair) { return &b == &std::get<0>(pair); };
   const auto it = std::find_if(begin(), end(), pred);
-  const auto index = std::distance(begin(), it);
-  return state_[index];
+  assert(it != end() && "argument must be a component");
+  return std::get<1>(*it);
 }
-void Components::transfer(const Blocks& b) {
-  const auto pred = [b](const Blocks& c) { return &b == &c; };
-  const auto it = std::find_if(begin(), end(), pred);
-  const auto prev = std::distance(begin(), it);
-  for (const auto& succ : b.successors()) {
-    const auto pred = [succ](const Blocks& c) { return c.contains(succ); };
-    const auto it = std::find_if(begin(), end(), pred);
-    const auto next = std::distance(begin(), it);
-    state_[next].merge(state_[prev]);
+void Components::transfer(const Blocks& pred) {
+  for (const auto& succ : pred.successors()) {
+    find(succ).merge(find(pred));
   }
 }
 

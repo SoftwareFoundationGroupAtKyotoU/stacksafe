@@ -29,14 +29,10 @@ void Abstract::interpret() {
   Log log{func_};
   {
     Stopwatch<std::milli> watch{elapsed_};
-    const auto scc = Tarjan::run(func_);
-    std::map<const Blocks *, Map> state;
-    for (const auto &c : scc) {
-      state.try_emplace(&c);
-    }
-    state[&*scc.begin()].init(func_);
-    for (const auto &c : scc) {
-      Interpreter i{log, depend_, depmap_, state[&c]};
+    auto scc = Tarjan::run(func_);
+    for (const auto &pair : scc) {
+      const auto &c = std::get<0>(pair);
+      Interpreter i{log, depend_, depmap_, scc.find(c)};
       do {
         bool repeat = false;
         for (const auto &b : c) {
@@ -51,10 +47,7 @@ void Abstract::interpret() {
           continue;
         }
       } while (false);
-      for (const auto &succ : c.successors()) {
-        const auto &next = scc.find(succ);
-        state[&next].merge(state[&c]);
-      }
+      scc.transfer(c);
     }
   }
 }
