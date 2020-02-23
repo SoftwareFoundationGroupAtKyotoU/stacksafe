@@ -123,6 +123,14 @@ bool Blocks::is_loop() const {
   return false;
 }
 
+const Blocks& Components::find(BB b) const {
+  const auto pred = [b](const Blocks& c) { return c.contains(b); };
+  const auto it = std::find_if(begin(), end(), pred);
+  assert(it != end() && std::find_if(std::next(it), end(), pred) == end() &&
+         "components must be a partition");
+  return *it;
+}
+
 Scc::Scc(const llvm::Function& f) : Super{Tarjan{f}.scc()} {
   back().map().init(f);
   current_ = rbegin();

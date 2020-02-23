@@ -70,9 +70,11 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
 
 class Components : private std::vector<Blocks> {
   using Super = std::vector<Blocks>;
+  using BB = Blocks::value_type;
 
  public:
   using Super::begin, Super::end, Super::push_back;
+  const Blocks& find(BB b) const;
 };
 
 class Scc : private std::vector<Component> {
