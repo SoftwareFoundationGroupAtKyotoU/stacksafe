@@ -2,11 +2,11 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
-#include "graph.hpp"
 #include "interpreter.hpp"
 #include "log.hpp"
 #include "map.hpp"
 #include "stopwatch.hpp"
+#include "tarjan.hpp"
 
 namespace stacksafe {
 namespace {

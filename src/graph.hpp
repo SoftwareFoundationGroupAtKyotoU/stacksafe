@@ -1,14 +1,11 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
-#include <map>
-#include <stack>
 #include <vector>
 #include "map.hpp"
 
 namespace llvm {
 class BasicBlock;
-class Function;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -54,22 +51,6 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
 
  private:
   Map& find(BB b);
-};
-
-class Tarjan {
-  using BB = Blocks::value_type;
-  std::map<BB, Frame> frames_;
-  std::stack<BB> stack_;
-  int index_;
-
- public:
-  static Components run(const llvm::Function& f);
-
- private:
-  Tarjan(const llvm::Function& f);
-  bool visit(BB b, Components& comps);
-  Frame& push(BB b);
-  BB pop();
 };
 
 }  // namespace stacksafe
