@@ -56,11 +56,12 @@ class Component : private std::vector<Block> {
 };
 
 class Blocks : private std::vector<const llvm::BasicBlock*> {
-  using BB = const llvm::BasicBlock*;
   using Super = std::vector<const llvm::BasicBlock*>;
+  using BB = Super::value_type;
 
  public:
   using Super::begin, Super::end, Super::push_back;
+  using Super::value_type;
   static Blocks successors(BB b);
   Blocks successors() const;
   bool contains(BB b) const;
@@ -88,7 +89,7 @@ class Scc : private std::vector<Component> {
 };
 
 class Tarjan {
-  using BB = const llvm::BasicBlock*;
+  using BB = Blocks::value_type;
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
   std::vector<Component> scc_;
