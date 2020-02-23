@@ -154,6 +154,7 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
       visit(&b);
     }
   }
+  std::reverse(comps_.begin(), comps_.end());
 }
 const std::vector<Component>& Tarjan::scc() const {
   return scc_;
