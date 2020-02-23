@@ -138,12 +138,6 @@ Map& Components::find(BB b) {
          "components must be a partition");
   return std::get<1>(*it);
 }
-Map& Components::find(const Blocks& b) {
-  const auto pred = [&b](const Pair& pair) { return &b == &std::get<0>(pair); };
-  const auto it = std::find_if(begin(), end(), pred);
-  assert(it != end() && "argument must be a component");
-  return std::get<1>(*it);
-}
 void Components::transfer(const Blocks& b, const Map& pred) {
   for (const auto& succ : b.successors()) {
     find(succ).merge(pred);

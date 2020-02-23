@@ -78,7 +78,6 @@ class Components : private std::vector<std::tuple<Blocks, Map>> {
   void push(const Blocks& b);
   void init(const llvm::Function& f);
   Map& find(BB b);
-  Map& find(const Blocks& b);
   void transfer(const Blocks& b, const Map& pred);
 };
 
