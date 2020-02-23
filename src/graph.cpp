@@ -68,6 +68,9 @@ bool Blocks::is_loop() const {
 void Components::push(const Blocks& b) {
   Super::emplace_back(b, Map{});
 }
+void Components::append(BB b) {
+  std::get<0>(Super::back()).push_back(b);
+}
 Components& Components::init(const llvm::Function& f) {
   std::reverse(begin(), end());
   find(&f.getEntryBlock()).init(f);
