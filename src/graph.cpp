@@ -94,6 +94,14 @@ Map& Components::find(BB b) {
   return std::get<1>(*it);
 }
 
+Components Tarjan::run(const llvm::Function& f) {
+  Components comps;
+  Tarjan tarjan{f};
+  for (const auto& b : f) {
+    tarjan.visit(&b, comps);
+  }
+  return comps.init(f);
+}
 Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   for (const auto& b : f) {
     frames_.try_emplace(&b);
@@ -135,14 +143,6 @@ auto Tarjan::pop() -> BB {
   stack_.pop();
   frames_[b].pop();
   return b;
-}
-Components Tarjan::run(const llvm::Function& f) {
-  Components comps;
-  Tarjan tarjan{f};
-  for (const auto& b : f) {
-    tarjan.visit(&b, comps);
-  }
-  return comps.init(f);
 }
 
 }  // namespace stacksafe

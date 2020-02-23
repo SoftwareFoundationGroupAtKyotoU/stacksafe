@@ -65,11 +65,13 @@ class Tarjan {
   int index_;
 
  public:
+  static Components run(const llvm::Function& f);
+
+ private:
   Tarjan(const llvm::Function& f);
   bool visit(BB b, Components& comps);
   Frame& push(BB b);
   BB pop();
-  static Components run(const llvm::Function& f);
 };
 
 }  // namespace stacksafe
