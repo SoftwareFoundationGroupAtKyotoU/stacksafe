@@ -98,9 +98,6 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   for (const auto& b : f) {
     frames_.try_emplace(&b);
   }
-  for (const auto& b : f) {
-    visit(&b, comps_);
-  }
 }
 bool Tarjan::visit(BB b, Components& comps) {
   const auto ok = frames_[b].is_undef();
@@ -140,9 +137,12 @@ auto Tarjan::pop() -> BB {
   return b;
 }
 Components Tarjan::run(const llvm::Function& f) {
+  Components comps;
   Tarjan tarjan{f};
-  tarjan.comps_.init(f);
-  return tarjan.comps_;
+  for (const auto& b : f) {
+    tarjan.visit(&b, comps);
+  }
+  return comps.init(f);
 }
 
 }  // namespace stacksafe

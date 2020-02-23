@@ -62,7 +62,6 @@ class Tarjan {
   using BB = Blocks::value_type;
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
-  Components comps_;
   int index_;
 
  public:
