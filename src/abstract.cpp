@@ -33,20 +33,26 @@ void Abstract::interpret() {
     auto scc = Tarjan::run(func_);
     for (auto &[c, m] : scc) {
       Interpreter i{log, depend_, depmap_, m};
-      do {
-        bool repeat = false;
-        for (const auto &b : c) {
-          if (i.visit(*b)) {
-            repeat = true;
+      if (c.is_loop()) {
+        bool repeat = true;
+        while (std::exchange(repeat, false)) {
+          for (const auto &b : c) {
+            if (i.visit(*b)) {
+              repeat = true;
+            }
+            if (depend_.is_error()) {
+              return;
+            }
           }
+        }
+      } else {
+        for (const auto &b : c) {
+          i.visit(*b);
           if (depend_.is_error()) {
             return;
           }
         }
-        if (c.is_loop() && repeat) {
-          continue;
-        }
-      } while (false);
+      }
       scc.transfer(c, m);
     }
   }
