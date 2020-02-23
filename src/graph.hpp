@@ -98,10 +98,10 @@ class Tarjan {
  public:
   Tarjan(const llvm::Function& f);
   const std::vector<Component>& scc() const;
-  Components strongly_connected() const;
   void visit(BB b);
   void update(Frame& prev, BB succ);
   Blocks collect(BB b);
+  static Components run(const llvm::Function& f);
 };
 
 }  // namespace stacksafe

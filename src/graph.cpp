@@ -161,9 +161,6 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
 const std::vector<Component>& Tarjan::scc() const {
   return scc_;
 }
-Components Tarjan::strongly_connected() const {
-  return comps_;
-}
 void Tarjan::visit(BB b) {
   stack_.push(b);
   auto& frame = frames_[b];
@@ -199,6 +196,10 @@ Blocks Tarjan::collect(BB b) {
   }
   std::reverse(comp.begin(), comp.end());
   return comp;
+}
+Components Tarjan::run(const llvm::Function& f) {
+  Tarjan tarjan{f};
+  return tarjan.comps_;
 }
 
 }  // namespace stacksafe
