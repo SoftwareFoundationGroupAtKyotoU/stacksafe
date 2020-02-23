@@ -29,19 +29,18 @@ void Abstract::interpret() {
   Log log{func_};
   {
     Stopwatch<std::milli> watch{elapsed_};
-    Scc scc{func_};
-    std::map<const Component *, Map> state;
+    const auto scc = Tarjan::run(func_);
+    std::map<const Blocks *, Map> state;
     for (const auto &c : scc) {
       state.try_emplace(&c);
     }
-    state[&scc.back()].init(func_);
-    while (!scc.empty()) {
-      auto &c = scc.pop();
+    state[&*scc.begin()].init(func_);
+    for (const auto &c : scc) {
       Interpreter i{log, depend_, depmap_, state[&c]};
       do {
         bool repeat = false;
         for (const auto &b : c) {
-          if (i.visit(b.get())) {
+          if (i.visit(*b)) {
             repeat = true;
           }
           if (depend_.is_error()) {
