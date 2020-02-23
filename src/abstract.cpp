@@ -2,11 +2,12 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
-#include "graph.hpp"
+#include "block.hpp"
 #include "interpreter.hpp"
 #include "log.hpp"
 #include "map.hpp"
 #include "stopwatch.hpp"
+#include "tarjan.hpp"
 
 namespace stacksafe {
 namespace {
@@ -29,25 +30,30 @@ void Abstract::interpret() {
   Log log{func_};
   {
     Stopwatch<std::milli> watch{elapsed_};
-    Scc scc{func_};
-    while (!scc.empty()) {
-      auto c = scc.pop();
-      Interpreter i{log, depend_, depmap_, c.map()};
-      do {
-        bool repeat = false;
-        for (const auto &b : c) {
-          if (i.visit(b.get())) {
-            repeat = true;
+    auto scc = Tarjan::run(func_);
+    for (auto &[c, m] : scc) {
+      Interpreter i{log, depend_, depmap_, m};
+      if (c.is_loop()) {
+        bool repeat = true;
+        while (std::exchange(repeat, false)) {
+          for (const auto &b : c) {
+            if (i.visit(*b)) {
+              repeat = true;
+            }
+            if (depend_.is_error()) {
+              return;
+            }
           }
+        }
+      } else {
+        for (const auto &b : c) {
+          i.visit(*b);
           if (depend_.is_error()) {
             return;
           }
         }
-        if (c.is_loop() && repeat) {
-          continue;
-        }
-      } while (false);
-      scc.distribute(c);
+      }
+      scc.transfer(c, m);
     }
   }
 }

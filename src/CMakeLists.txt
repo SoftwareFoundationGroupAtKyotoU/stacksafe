@@ -13,6 +13,7 @@ set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
+  block.cpp
   cache.cpp
   depend.cpp
   domain.cpp
@@ -26,6 +27,7 @@ target_sources(${target} PRIVATE
   register.cpp
   stopwatch.cpp
   symbol.cpp
+  tarjan.cpp
   utility.cpp
   value.cpp
   )
