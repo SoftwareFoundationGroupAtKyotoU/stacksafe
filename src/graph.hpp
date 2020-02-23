@@ -71,6 +71,7 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
 class Components : private std::vector<Blocks> {
   using Super = std::vector<Blocks>;
   using BB = Blocks::value_type;
+  std::vector<Map> state_;
 
  public:
   using Super::begin, Super::end;

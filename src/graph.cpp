@@ -125,6 +125,7 @@ bool Blocks::is_loop() const {
 
 void Components::push(const Blocks& b) {
   Super::push_back(b);
+  state_.emplace_back();
 }
 const Blocks& Components::find(BB b) const {
   const auto pred = [b](const Blocks& c) { return c.contains(b); };
