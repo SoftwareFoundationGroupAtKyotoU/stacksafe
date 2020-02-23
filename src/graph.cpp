@@ -72,6 +72,9 @@ void Components::append(BB b) {
   std::get<0>(Super::back()).push_back(b);
 }
 Components& Components::init(const llvm::Function& f) {
+  for (auto& [c, m] : *this) {
+    std::reverse(c.begin(), c.end());
+  }
   std::reverse(begin(), end());
   find(&f.getEntryBlock()).init(f);
   return *this;
@@ -107,7 +110,7 @@ void Tarjan::visit(BB b) {
     update(frame, succ);
   }
   if (frame.is_root()) {
-    comps_.push(collect(b));
+    collect(b);
   }
 }
 void Tarjan::update(Frame& prev, BB succ) {
@@ -119,17 +122,15 @@ void Tarjan::update(Frame& prev, BB succ) {
     prev.update(next.index());
   }
 }
-Blocks Tarjan::collect(BB b) {
-  Blocks comp;
+void Tarjan::collect(BB b) {
+  comps_.push(Blocks{});
   while (true) {
     const auto p = pop();
-    comp.push_back(p);
+    comps_.append(p);
     if (b == p) {
       break;
     }
   }
-  std::reverse(comp.begin(), comp.end());
-  return comp;
 }
 Frame& Tarjan::push(BB b) {
   stack_.push(b);
