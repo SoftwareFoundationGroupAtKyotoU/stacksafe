@@ -11,17 +11,17 @@ class Symbol;
 class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<PointsTo, RetTy>;
-  Graph& graph_;
+  Graph &graph_;
   bool updated_;
 
  public:
-  explicit PointsTo(Graph& g);
+  explicit PointsTo(Graph &g);
 
  private:
-  NodeSet lookup(const Symbol& tail) const;
-  NodeSet lookup(const llvm::Value& tail) const;
-  void append(const Symbol& tail, const NodeSet& heads);
-  void append(const llvm::Instruction& tail, const NodeSet& heads);
+  NodeSet lookup(const Symbol &tail) const;
+  NodeSet lookup(const llvm::Value &tail) const;
+  void append(const Symbol &tail, const NodeSet &heads);
+  void append(const llvm::Instruction &tail, const NodeSet &heads);
   void update(bool updated);
 };
 

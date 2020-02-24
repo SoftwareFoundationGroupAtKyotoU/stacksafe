@@ -5,16 +5,16 @@
 
 namespace stacksafe {
 
-PointsTo::PointsTo(Graph& g) : graph_{g}, updated_{false} {}
-NodeSet PointsTo::lookup(const Symbol& tail) const {
+PointsTo::PointsTo(Graph &g) : graph_{g}, updated_{false} {}
+NodeSet PointsTo::lookup(const Symbol &tail) const {
   return graph_.heads(Node{tail});
 }
-NodeSet PointsTo::lookup(const llvm::Value& tail) const {
+NodeSet PointsTo::lookup(const llvm::Value &tail) const {
   const auto v = &tail;
   if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
     NodeSet nodes;
     if (is_global(*c)) {
-      nodes.push_back(Node{Symbol::get_global()});
+      nodes.insert(Node{Symbol::get_global()});
     }
     return nodes;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
@@ -26,13 +26,13 @@ NodeSet PointsTo::lookup(const llvm::Value& tail) const {
     llvm_unreachable("invalid value lookup");
   };
 }
-void PointsTo::append(const Symbol& tail, const NodeSet& heads) {
-  for (const auto& h : heads) {
+void PointsTo::append(const Symbol &tail, const NodeSet &heads) {
+  for (const auto &h : heads) {
     update(graph_.append(Node{tail}, h));
   }
 }
-void PointsTo::append(const llvm::Instruction& tail, const NodeSet& heads) {
-  for (const auto& h : heads) {
+void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
+  for (const auto &h : heads) {
     update(graph_.append(Node{Register{tail}}, h));
   }
 }
