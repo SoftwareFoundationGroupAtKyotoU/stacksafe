@@ -9,19 +9,29 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 }
 }  // namespace
 
-void NodeSet::merge(const NodeSet& nodes) {
-  Super::insert(nodes.begin(), nodes.end());
+Edge::Edge(const Node& n) : Super{n, Node{}} {}
+const Node& Edge::tail() const {
+  return std::get<0>(*this);
 }
-bool NodeSet::element(const Node& n) const {
-  return 0 != Super::count(n);
+const Node& Edge::head() const {
+  return std::get<1>(*this);
+}
+auto Edge::pair() const -> const Super& {
+  return *this;
+}
+bool operator==(const Edge& lhs, const Edge& rhs) {
+  return lhs.pair() == rhs.pair();
+}
+bool operator<(const Edge& lhs, const Edge& rhs) {
+  return lhs.pair() < rhs.pair();
 }
 
 void Graph::init(const llvm::Function& f) {
-  const Node g{Symbol::get_global()};
+  const auto g = Node::get_global();
   append(g, g);
   for (const auto& a : f.args()) {
-    const Node sym{Symbol{a}};
-    const Node reg{Register{a}};
+    const auto sym = Node::get_symbol(a);
+    const auto reg = Node::get_register(a);
     append(sym, sym);
     append(reg, sym);
   }
