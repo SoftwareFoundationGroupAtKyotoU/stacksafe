@@ -6,7 +6,11 @@
 
 namespace stacksafe {
 
-using NodeSet = std::vector<Node>;
+class NodeSet : private std::vector<Node> {
+  using Super = std::vector<Node>;
+  friend class Graph;
+};
+
 class Graph : private std::vector<Edge> {
   using Super = std::vector<Edge>;
   using iterator = Super::iterator;
