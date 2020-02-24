@@ -8,7 +8,7 @@
 
 namespace stacksafe {
 
-class Node : std::variant<Symbol, Register> {
+class Node : private std::variant<Symbol, Register> {
   using Super = std::variant<Symbol, Register>;
 
  public:
