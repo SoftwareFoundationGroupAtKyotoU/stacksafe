@@ -29,6 +29,9 @@ class Edge : private std::tuple<Node, Node> {
 
  public:
   using Super::Super;
+  const Node &key() const;
+  const Node &val() const;
+  const Super &pair() const;
   bool operator==(const Edge &that) const;
   bool operator<(const Edge &that) const;
 };
