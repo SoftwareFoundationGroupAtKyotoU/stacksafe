@@ -17,6 +17,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
 
  public:
   explicit PointsTo(Graph &g);
+  void analyze(const llvm::Instruction &i);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
