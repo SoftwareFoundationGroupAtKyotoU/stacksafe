@@ -12,6 +12,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<PointsTo, RetTy>;
   Graph& graph_;
+  bool updated_;
 
  public:
   explicit PointsTo(Graph& g);
@@ -19,6 +20,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
  private:
   NodeSet lookup(const Symbol& tail) const;
   NodeSet lookup(const llvm::Value& tail) const;
+  void update(bool updated);
 };
 
 }  // namespace stacksafe

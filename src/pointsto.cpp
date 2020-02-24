@@ -5,7 +5,7 @@
 
 namespace stacksafe {
 
-PointsTo::PointsTo(Graph& g) : graph_{g} {}
+PointsTo::PointsTo(Graph& g) : graph_{g}, updated_{false} {}
 NodeSet PointsTo::lookup(const Symbol& tail) const {
   return graph_.heads(Node{tail});
 }
@@ -25,6 +25,11 @@ NodeSet PointsTo::lookup(const llvm::Value& tail) const {
   } else {
     llvm_unreachable("invalid value lookup");
   };
+}
+void PointsTo::update(bool updated) {
+  if (updated) {
+    updated_ = true;
+  }
 }
 
 }  // namespace stacksafe
