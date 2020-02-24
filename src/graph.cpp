@@ -20,7 +20,7 @@ void Graph::init(const llvm::Function& f) {
   const Node g{Symbol::get_global()};
   append(g, g);
   for (const auto& a : f.args()) {
-    const Node sym{Symbol{a}};
+    const auto sym = Node::get_symbol(a);
     const Node reg{Register{a}};
     append(sym, sym);
     append(reg, sym);

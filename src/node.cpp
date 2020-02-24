@@ -5,6 +5,12 @@ namespace stacksafe {
 
 Node::Node(const Symbol &sym) : Super{sym} {}
 Node::Node(const Register &reg) : Super{reg} {}
+Node Node::get_symbol(const llvm::AllocaInst &a) {
+  return Node{Symbol{a}};
+}
+Node Node::get_symbol(const llvm::Argument &a) {
+  return Node{Symbol{a}};
+}
 std::uintptr_t Node::value() const {
   if (auto sym = as_symbol()) {
     return reinterpret_cast<std::uintptr_t>(sym->value());

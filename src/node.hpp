@@ -7,12 +7,19 @@
 #include "register.hpp"
 #include "symbol.hpp"
 
+namespace llvm {
+class AllocaInst;
+class Argument;
+}  // namespace llvm
+
 namespace stacksafe {
 
 class Node : private std::variant<std::monostate, Symbol, Register> {
   using Super = std::variant<std::monostate, Symbol, Register>;
 
  public:
+  static Node get_symbol(const llvm::AllocaInst &a);
+  static Node get_symbol(const llvm::Argument &a);
   Node() = default;
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
