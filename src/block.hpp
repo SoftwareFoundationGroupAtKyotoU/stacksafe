@@ -3,7 +3,7 @@
 
 #include <tuple>
 #include <vector>
-#include "graph.hpp"
+#include "map.hpp"
 
 namespace llvm {
 class BasicBlock;
