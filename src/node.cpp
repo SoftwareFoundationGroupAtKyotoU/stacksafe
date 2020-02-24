@@ -11,6 +11,9 @@ Node Node::get_symbol(const llvm::AllocaInst &a) {
 Node Node::get_symbol(const llvm::Argument &a) {
   return Node{Symbol{a}};
 }
+Node Node::get_global() {
+  return Node{Symbol::get_global()};
+}
 std::uintptr_t Node::value() const {
   if (auto sym = as_symbol()) {
     return reinterpret_cast<std::uintptr_t>(sym->value());

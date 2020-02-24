@@ -17,7 +17,7 @@ bool NodeSet::element(const Node& n) const {
 }
 
 void Graph::init(const llvm::Function& f) {
-  const Node g{Symbol::get_global()};
+  const auto g = Node::get_global();
   append(g, g);
   for (const auto& a : f.args()) {
     const auto sym = Node::get_symbol(a);

@@ -176,7 +176,7 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
       graph_.reachables(tail, nodes);
     }
   }
-  graph_.reachables(Node{Symbol::get_global()}, nodes);
+  graph_.reachables(Node::get_global(), nodes);
   for (const auto &tail : nodes) {
     for (const auto &head : nodes) {
       update(graph_.append(tail, head));
@@ -195,7 +195,7 @@ NodeSet PointsTo::lookup(const llvm::Value &tail) const {
   if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
     NodeSet nodes;
     if (is_global(*c)) {
-      nodes.insert(Node{Symbol::get_global()});
+      nodes.insert(Node::get_global());
     }
     return nodes;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
