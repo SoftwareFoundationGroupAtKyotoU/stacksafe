@@ -15,7 +15,7 @@ class NodeSet : private std::vector<Node> {
   friend class Graph;
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::push_back;
 };
 
 class Graph : private std::vector<Edge> {

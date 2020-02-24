@@ -5,6 +5,8 @@
 
 namespace stacksafe {
 class Graph;
+class NodeSet;
+class Symbol;
 
 class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   using RetTy = void;
@@ -13,6 +15,10 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
 
  public:
   explicit PointsTo(Graph& g);
+
+ private:
+  NodeSet lookup(const Symbol& tail) const;
+  NodeSet lookup(const llvm::Value& tail) const;
 };
 
 }  // namespace stacksafe
