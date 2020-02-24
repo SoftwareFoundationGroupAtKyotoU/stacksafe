@@ -9,6 +9,9 @@ namespace stacksafe {
 class NodeSet : private std::vector<Node> {
   using Super = std::vector<Node>;
   friend class Graph;
+
+ public:
+  using Super::begin, Super::end;
 };
 
 class Graph : private std::vector<Edge> {
