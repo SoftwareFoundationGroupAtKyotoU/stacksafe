@@ -8,8 +8,8 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 }
 }  // namespace
 
-bool Graph::append(const Node& from, const Node& to) {
-  return std::get<1>(insert(begin(), Edge{from, to}));
+bool Graph::append(const Node& tail, const Node& head) {
+  return std::get<1>(insert(begin(), Edge{tail, head}));
 }
 NodeSet Graph::outedges(const Node& tail) const {
   NodeSet nodes;

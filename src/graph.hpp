@@ -13,7 +13,7 @@ class Graph : private std::vector<Edge> {
   using Result = std::tuple<iterator, bool>;
 
  public:
-  bool append(const Node& from, const Node& to);
+  bool append(const Node& tail, const Node& head);
   NodeSet outedges(const Node& tail) const;
   bool merge(const Graph& g);
 
