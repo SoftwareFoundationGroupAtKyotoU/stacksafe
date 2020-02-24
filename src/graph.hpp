@@ -11,6 +11,9 @@ class Graph : private std::vector<Edge> {
   using iterator = Super::iterator;
   using Result = std::tuple<iterator, bool>;
 
+ public:
+  bool append(const Node& from, const Node& to);
+
  private:
   Result insert(iterator hint, const Edge& e);
 };
