@@ -200,9 +200,9 @@ NodeSet PointsTo::lookup(const llvm::Value &tail) const {
     return nodes;
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
     assert(is_register(*i) && "invalid register lookup");
-    return graph_.heads(Node{Register{*i}});
+    return graph_.heads(Node::get_register(*i));
   } else if (auto a = llvm::dyn_cast<llvm::Argument>(v)) {
-    return graph_.heads(Node{Register{*a}});
+    return graph_.heads(Node::get_register(*a));
   } else {
     llvm_unreachable("invalid value lookup");
   };
@@ -214,7 +214,7 @@ void PointsTo::append(const Symbol &tail, const NodeSet &heads) {
 }
 void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
   for (const auto &h : heads) {
-    update(graph_.append(Node{Register{tail}}, h));
+    update(graph_.append(Node::get_register(tail), h));
   }
 }
 void PointsTo::update(bool updated) {

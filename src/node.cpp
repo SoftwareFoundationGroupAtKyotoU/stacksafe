@@ -14,6 +14,12 @@ Node Node::get_symbol(const llvm::Argument &a) {
 Node Node::get_global() {
   return Node{Symbol::get_global()};
 }
+Node Node::get_register(const llvm::Argument &a) {
+  return Node{Register{a}};
+}
+Node Node::get_register(const llvm::Instruction &i) {
+  return Node{Register{i}};
+}
 std::uintptr_t Node::value() const {
   if (auto sym = as_symbol()) {
     return reinterpret_cast<std::uintptr_t>(sym->value());

@@ -10,6 +10,7 @@
 namespace llvm {
 class AllocaInst;
 class Argument;
+class Instruction;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -21,6 +22,8 @@ class Node : private std::variant<std::monostate, Symbol, Register> {
   static Node get_symbol(const llvm::AllocaInst &a);
   static Node get_symbol(const llvm::Argument &a);
   static Node get_global();
+  static Node get_register(const llvm::Argument &a);
+  static Node get_register(const llvm::Instruction &i);
   Node() = default;
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);

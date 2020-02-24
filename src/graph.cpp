@@ -21,7 +21,7 @@ void Graph::init(const llvm::Function& f) {
   append(g, g);
   for (const auto& a : f.args()) {
     const auto sym = Node::get_symbol(a);
-    const Node reg{Register{a}};
+    const auto reg = Node::get_register(a);
     append(sym, sym);
     append(reg, sym);
   }
