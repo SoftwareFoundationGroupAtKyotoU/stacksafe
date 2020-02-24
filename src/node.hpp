@@ -30,6 +30,7 @@ class Edge : private std::tuple<Node, Node> {
 
  public:
   using Super::Super;
+  explicit Edge(const Node &n);
   const Node &tail() const;
   const Node &head() const;
   const Super &pair() const;

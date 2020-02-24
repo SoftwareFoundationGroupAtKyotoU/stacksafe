@@ -39,6 +39,7 @@ bool operator<(const Node &lhs, const Node &rhs) {
   return lhs.pair() < rhs.pair();
 }
 
+Edge::Edge(const Node &n) : Super{n, Node{}} {}
 const Node &Edge::tail() const {
   return std::get<0>(*this);
 }
