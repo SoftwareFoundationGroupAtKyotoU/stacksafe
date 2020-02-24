@@ -21,7 +21,7 @@ class Graph : private std::vector<Edge> {
 
  public:
   bool append(const Node& tail, const Node& head);
-  NodeSet outedges(const Node& tail) const;
+  NodeSet heads(const Node& tail) const;
   NodeSet tails() const;
   bool merge(const Graph& g);
 

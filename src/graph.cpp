@@ -11,7 +11,7 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 bool Graph::append(const Node& tail, const Node& head) {
   return std::get<1>(insert(begin(), Edge{tail, head}));
 }
-NodeSet Graph::outedges(const Node& tail) const {
+NodeSet Graph::heads(const Node& tail) const {
   NodeSet nodes;
   const auto [lb, ub] = std::equal_range(begin(), end(), Edge{tail}, tail_cmp);
   nodes.reserve(std::distance(lb, ub));
