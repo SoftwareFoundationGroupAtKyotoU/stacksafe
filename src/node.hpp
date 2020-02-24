@@ -32,9 +32,9 @@ class Edge : private std::tuple<Node, Node> {
   const Node &key() const;
   const Node &val() const;
   const Super &pair() const;
-  bool operator==(const Edge &that) const;
-  bool operator<(const Edge &that) const;
 };
+bool operator==(const Edge &lhs, const Edge &rhs);
+bool operator<(const Edge &lhs, const Edge &rhs);
 
 }  // namespace stacksafe
 

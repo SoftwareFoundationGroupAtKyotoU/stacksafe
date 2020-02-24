@@ -48,15 +48,11 @@ const Node &Edge::val() const {
 auto Edge::pair() const -> const Super & {
   return *this;
 }
-bool Edge::operator==(const Edge &that) const {
-  const Super &lhs = *this;
-  const Super &rhs = that;
-  return lhs == rhs;
+bool operator==(const Edge &lhs, const Edge &rhs) {
+  return lhs.pair() == rhs.pair();
 }
-bool Edge::operator<(const Edge &that) const {
-  const Super &lhs = *this;
-  const Super &rhs = that;
-  return lhs < rhs;
+bool operator<(const Edge &lhs, const Edge &rhs) {
+  return lhs.pair() < rhs.pair();
 }
 
 }  // namespace stacksafe
