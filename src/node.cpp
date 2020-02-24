@@ -1,5 +1,7 @@
 #include "node.hpp"
+#include <llvm/IR/Instructions.h>
 #include <llvm/Support/ErrorHandling.h>
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -19,6 +21,18 @@ Node Node::get_register(const llvm::Argument &a) {
 }
 Node Node::get_register(const llvm::Instruction &i) {
   return Node{Register{i}};
+}
+Node Node::from_value(const llvm::Value &v) {
+  if (auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
+    return is_global(*c) ? Node::get_global() : Node{};
+  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
+    assert(is_register(*i) && "invalid register lookup");
+    return Node::get_register(*i);
+  } else if (auto a = llvm::dyn_cast<llvm::Argument>(&v)) {
+    return Node::get_register(*a);
+  } else {
+    llvm_unreachable("invalid value lookup");
+  };
 }
 std::uintptr_t Node::value() const {
   if (auto sym = as_symbol()) {
