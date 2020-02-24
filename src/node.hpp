@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 
 #include <cstdint>
+#include <set>
 #include <tuple>
 #include <variant>
 #include "register.hpp"
@@ -37,6 +38,15 @@ class Node : private std::variant<std::monostate, Symbol, Register> {
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);
+
+class NodeSet : private std::set<Node> {
+  using Super = std::set<Node>;
+
+ public:
+  using Super::begin, Super::end, Super::insert;
+  void merge(const NodeSet &nodes);
+  bool element(const Node &n) const;
+};
 
 class Edge : private std::tuple<Node, Node> {
   using Super = std::tuple<Node, Node>;
