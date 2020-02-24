@@ -147,12 +147,7 @@ void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   append(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
-  const auto heads = lookup(src);
-  for (const auto &tail : lookup(dst)) {
-    for (const auto &head : heads) {
-      update(graph_.append(tail, head));
-    }
-  }
+  append(lookup(dst), lookup(src));
 }
 void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                        const llvm::Value &val) {
@@ -177,11 +172,7 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
     }
   }
   graph_.reachables(Node::get_global(), nodes);
-  for (const auto &tail : nodes) {
-    for (const auto &head : nodes) {
-      update(graph_.append(tail, head));
-    }
-  }
+  append(nodes, nodes);
   if (is_return(dst)) {
     append(dst, nodes);
   }
@@ -207,6 +198,13 @@ NodeSet PointsTo::lookup(const llvm::Value &tail) const {
 void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
   for (const auto &h : heads) {
     update(graph_.append(Node::get_register(tail), h));
+  }
+}
+void PointsTo::append(const NodeSet &tails, const NodeSet &heads) {
+  for (const auto &t : tails) {
+    for (const auto &h : heads) {
+      update(graph_.append(t, h));
+    }
   }
 }
 void PointsTo::update(bool updated) {
