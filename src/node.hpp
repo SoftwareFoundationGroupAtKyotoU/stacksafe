@@ -26,6 +26,10 @@ bool operator<(const Node &lhs, const Node &rhs);
 
 class Edge : private std::tuple<Node, Node> {
   using Super = std::tuple<Node, Node>;
+
+ public:
+  bool operator==(const Edge &that) const;
+  bool operator<(const Edge &that) const;
 };
 
 }  // namespace stacksafe

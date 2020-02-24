@@ -39,4 +39,15 @@ bool operator<(const Node &lhs, const Node &rhs) {
   return lhs.pair() < rhs.pair();
 }
 
+bool Edge::operator==(const Edge &that) const {
+  const Super &lhs = *this;
+  const Super &rhs = that;
+  return lhs == rhs;
+}
+bool Edge::operator<(const Edge &that) const {
+  const Super &lhs = *this;
+  const Super &rhs = that;
+  return lhs < rhs;
+}
+
 }  // namespace stacksafe
