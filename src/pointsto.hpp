@@ -17,6 +17,23 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
 
  public:
   explicit PointsTo(Graph &g);
+  RetTy visitInstruction(llvm::Instruction &i);
+  RetTy visitBinaryOperator(llvm::BinaryOperator &i);
+  RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
+  RetTy visitInsertElementInst(llvm::InsertElementInst &i);
+  RetTy visitShuffleVectorInst(llvm::ShuffleVectorInst &i);
+  RetTy visitExtractValue(llvm::ExtractValueInst &i);
+  RetTy visitInsertValue(llvm::InsertValueInst &i);
+  RetTy visitAllocaInst(llvm::AllocaInst &i);
+  RetTy visitLoadInst(llvm::LoadInst &i);
+  RetTy visitStoreInst(llvm::StoreInst &i);
+  RetTy visitAtomicCmpXchgInst(llvm::AtomicCmpXchgInst &i);
+  RetTy visitAtomicRMWInst(llvm::AtomicRMWInst &i);
+  RetTy visitGetElementPtrInst(llvm::GetElementPtrInst &i);
+  RetTy visitCastInst(llvm::CastInst &i);
+  RetTy visitCmpInst(llvm::CmpInst &i);
+  RetTy visitPHINode(llvm::PHINode &i);
+  RetTy visitSelectInst(llvm::SelectInst &i);
 
  private:
   void binop(const llvm::Instruction &dst, const llvm::Value &lhs,
