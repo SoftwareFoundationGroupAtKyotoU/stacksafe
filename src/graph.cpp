@@ -1,4 +1,5 @@
 #include "graph.hpp"
+#include <llvm/IR/Function.h>
 #include <algorithm>
 
 namespace stacksafe {
@@ -8,6 +9,16 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 }
 }  // namespace
 
+void Graph::init(const llvm::Function& f) {
+  const Node g{Symbol::get_global()};
+  append(g, g);
+  for (const auto& a : f.args()) {
+    const Node sym{Symbol{a}};
+    const Node reg{Register{a}};
+    append(sym, sym);
+    append(reg, sym);
+  }
+}
 bool Graph::append(const Node& tail, const Node& head) {
   return std::get<1>(insert(begin(), Edge{tail, head}));
 }

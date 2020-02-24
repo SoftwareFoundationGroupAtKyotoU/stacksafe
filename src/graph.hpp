@@ -4,6 +4,10 @@
 #include <vector>
 #include "node.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 
 class NodeSet : private std::vector<Node> {
@@ -20,6 +24,7 @@ class Graph : private std::vector<Edge> {
   using Result = std::tuple<iterator, bool>;
 
  public:
+  void init(const llvm::Function& f);
   bool append(const Node& tail, const Node& head);
   NodeSet heads(const Node& tail) const;
   NodeSet tails() const;
