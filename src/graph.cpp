@@ -9,6 +9,23 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 }
 }  // namespace
 
+Edge::Edge(const Node& n) : Super{n, Node{}} {}
+const Node& Edge::tail() const {
+  return std::get<0>(*this);
+}
+const Node& Edge::head() const {
+  return std::get<1>(*this);
+}
+auto Edge::pair() const -> const Super& {
+  return *this;
+}
+bool operator==(const Edge& lhs, const Edge& rhs) {
+  return lhs.pair() == rhs.pair();
+}
+bool operator<(const Edge& lhs, const Edge& rhs) {
+  return lhs.pair() < rhs.pair();
+}
+
 void Graph::init(const llvm::Function& f) {
   const auto g = Node::get_global();
   append(g, g);

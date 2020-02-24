@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
+#include <tuple>
 #include <vector>
 #include "node.hpp"
 
@@ -9,6 +10,19 @@ class Function;
 }
 
 namespace stacksafe {
+
+class Edge : private std::tuple<Node, Node> {
+  using Super = std::tuple<Node, Node>;
+
+ public:
+  using Super::Super;
+  explicit Edge(const Node& n);
+  const Node& tail() const;
+  const Node& head() const;
+  const Super& pair() const;
+};
+bool operator==(const Edge& lhs, const Edge& rhs);
+bool operator<(const Edge& lhs, const Edge& rhs);
 
 class Graph : private std::vector<Edge> {
   using Super = std::vector<Edge>;

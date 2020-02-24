@@ -3,7 +3,6 @@
 
 #include <cstdint>
 #include <set>
-#include <tuple>
 #include <variant>
 #include "register.hpp"
 #include "symbol.hpp"
@@ -47,19 +46,6 @@ class NodeSet : private std::set<Node> {
   void merge(const NodeSet &nodes);
   bool element(const Node &n) const;
 };
-
-class Edge : private std::tuple<Node, Node> {
-  using Super = std::tuple<Node, Node>;
-
- public:
-  using Super::Super;
-  explicit Edge(const Node &n);
-  const Node &tail() const;
-  const Node &head() const;
-  const Super &pair() const;
-};
-bool operator==(const Edge &lhs, const Edge &rhs);
-bool operator<(const Edge &lhs, const Edge &rhs);
 
 }  // namespace stacksafe
 
