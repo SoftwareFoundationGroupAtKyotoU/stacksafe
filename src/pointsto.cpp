@@ -1,5 +1,4 @@
 #include "pointsto.hpp"
-#include <llvm/Support/Debug.h>
 #include "graph.hpp"
 #include "params.hpp"
 #include "utility.hpp"
@@ -179,21 +178,7 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
 }
 void PointsTo::constant(const llvm::Instruction &) {}
 NodeSet PointsTo::lookup(const llvm::Value &tail) const {
-  const auto v = &tail;
-  if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
-    NodeSet nodes;
-    if (is_global(*c)) {
-      nodes.insert(Node::get_global());
-    }
-    return nodes;
-  } else if (auto i = llvm::dyn_cast<llvm::Instruction>(v)) {
-    assert(is_register(*i) && "invalid register lookup");
-    return graph_.heads(Node::get_register(*i));
-  } else if (auto a = llvm::dyn_cast<llvm::Argument>(v)) {
-    return graph_.heads(Node::get_register(*a));
-  } else {
-    llvm_unreachable("invalid value lookup");
-  };
+  return graph_.heads(Node::from_value(tail));
 }
 void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
   for (const auto &h : heads) {
