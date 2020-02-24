@@ -24,6 +24,7 @@ target_sources(${target} PRIVATE
   map.cpp
   node.cpp
   params.cpp
+  pointsto.cpp
   register.cpp
   stopwatch.cpp
   symbol.cpp

@@ -9,6 +9,13 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 }
 }  // namespace
 
+void NodeSet::merge(const NodeSet& nodes) {
+  Super::insert(nodes.begin(), nodes.end());
+}
+bool NodeSet::element(const Node& n) const {
+  return 0 != Super::count(n);
+}
+
 void Graph::init(const llvm::Function& f) {
   const Node g{Symbol::get_global()};
   append(g, g);
@@ -25,16 +32,15 @@ bool Graph::append(const Node& tail, const Node& head) {
 NodeSet Graph::heads(const Node& tail) const {
   NodeSet nodes;
   const auto [lb, ub] = std::equal_range(begin(), end(), Edge{tail}, tail_cmp);
-  nodes.reserve(std::distance(lb, ub));
   for (auto it = lb; it != ub; ++it) {
-    nodes.push_back(it->head());
+    nodes.insert(it->head());
   }
   return nodes;
 }
 NodeSet Graph::tails() const {
   NodeSet nodes;
   for (const auto& e : *this) {
-    nodes.push_back(e.tail());
+    nodes.insert(e.tail());
   }
   return nodes;
 }
@@ -49,6 +55,14 @@ bool Graph::merge(const Graph& g) {
     }
   }
   return updated;
+}
+void Graph::reachables(const Node& n, NodeSet& nodes) const {
+  if (!nodes.element(n)) {
+    nodes.insert(n);
+    for (const auto& head : heads(n)) {
+      reachables(head, nodes);
+    }
+  }
 }
 auto Graph::insert(iterator hint, const Edge& e) -> Result {
   const auto [lb, ub] = std::equal_range(hint, end(), e);
