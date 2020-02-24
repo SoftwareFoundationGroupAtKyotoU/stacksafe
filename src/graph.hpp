@@ -13,6 +13,7 @@ class Graph : private std::vector<Edge> {
 
  public:
   bool append(const Node& from, const Node& to);
+  bool merge(const Graph& g);
 
  private:
   Result insert(iterator hint, const Edge& e);
