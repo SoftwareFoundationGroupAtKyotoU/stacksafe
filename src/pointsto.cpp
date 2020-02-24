@@ -118,6 +118,15 @@ auto PointsTo::visitSelectInst(llvm::SelectInst &i) -> RetTy {
   }
   phi(i, params);
 }
+auto PointsTo::visitCallInst(llvm::CallInst &i) -> RetTy {
+  Params params;
+  for (const auto &use : i.args()) {
+    auto arg = use.get();
+    assert(arg && "unknown parameter");
+    params.push_back(*arg);
+  }
+  call(i, params);
+}
 void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
                      const llvm::Value &rhs) {
   NodeSet heads;
@@ -159,6 +168,23 @@ void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
     heads.merge(lookup(arg));
   }
   append(dst, heads);
+}
+void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
+  NodeSet nodes;
+  for (const auto &arg : params) {
+    for (const auto &tail : lookup(arg)) {
+      graph_.reachables(tail, nodes);
+    }
+  }
+  graph_.reachables(Node{Symbol::get_global()}, nodes);
+  for (const auto &tail : nodes) {
+    for (const auto &head : nodes) {
+      update(graph_.append(tail, head));
+    }
+  }
+  if (is_return(dst)) {
+    append(dst, nodes);
+  }
 }
 void PointsTo::constant(const llvm::Instruction &) {}
 NodeSet PointsTo::lookup(const Symbol &tail) const {

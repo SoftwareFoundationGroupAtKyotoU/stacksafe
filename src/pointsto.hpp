@@ -37,6 +37,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   RetTy visitCmpInst(llvm::CmpInst &i);
   RetTy visitPHINode(llvm::PHINode &i);
   RetTy visitSelectInst(llvm::SelectInst &i);
+  RetTy visitCallInst(llvm::CallInst &i);
 
  private:
   void binop(const llvm::Instruction &dst, const llvm::Value &lhs,
@@ -48,6 +49,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
                const llvm::Value &val);
   void cast(const llvm::Instruction &dst, const llvm::Value &src);
   void phi(const llvm::Instruction &dst, const Params &params);
+  void call(const llvm::CallInst &dst, const Params &params);
   void constant(const llvm::Instruction &dst);
 
  private:
