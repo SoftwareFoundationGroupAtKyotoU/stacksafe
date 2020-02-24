@@ -26,6 +26,16 @@ NodeSet PointsTo::lookup(const llvm::Value& tail) const {
     llvm_unreachable("invalid value lookup");
   };
 }
+void PointsTo::append(const Symbol& tail, const NodeSet& heads) {
+  for (const auto& h : heads) {
+    update(graph_.append(Node{tail}, h));
+  }
+}
+void PointsTo::append(const llvm::Instruction& tail, const NodeSet& heads) {
+  for (const auto& h : heads) {
+    update(graph_.append(Node{Register{tail}}, h));
+  }
+}
 void PointsTo::update(bool updated) {
   if (updated) {
     updated_ = true;
