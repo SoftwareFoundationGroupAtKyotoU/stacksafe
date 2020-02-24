@@ -23,6 +23,9 @@ const llvm::Value *Node::ptr() const {
     return nullptr;
   }
 }
+std::pair<std::size_t, std::uintptr_t> Node::pair() const {
+  return {index(), value()};
+}
 const Symbol *Node::as_symbol() const {
   return std::get_if<Symbol>(this);
 }
