@@ -20,6 +20,13 @@ NodeSet Graph::outedges(const Node& tail) const {
   }
   return nodes;
 }
+NodeSet Graph::tails() const {
+  NodeSet nodes;
+  for (const auto& e : *this) {
+    nodes.push_back(e.tail());
+  }
+  return nodes;
+}
 bool Graph::merge(const Graph& g) {
   iterator hint = begin();
   bool updated = false;
