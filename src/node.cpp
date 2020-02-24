@@ -39,10 +39,10 @@ bool operator<(const Node &lhs, const Node &rhs) {
   return lhs.pair() < rhs.pair();
 }
 
-const Node &Edge::key() const {
+const Node &Edge::tail() const {
   return std::get<0>(*this);
 }
-const Node &Edge::val() const {
+const Node &Edge::head() const {
   return std::get<1>(*this);
 }
 auto Edge::pair() const -> const Super & {
