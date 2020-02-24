@@ -4,7 +4,7 @@
 namespace stacksafe {
 
 llvm::hash_code hash_value(const Node& node) {
-  return llvm::hash_combine(node.index(), node.value());
+  return llvm::hash_value(node.pair());
 }
 
 }  // namespace stacksafe

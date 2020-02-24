@@ -23,6 +23,9 @@ const llvm::Value *Node::ptr() const {
     return nullptr;
   }
 }
+std::pair<std::size_t, std::uintptr_t> Node::pair() const {
+  return {index(), value()};
+}
 const Symbol *Node::as_symbol() const {
   return std::get_if<Symbol>(this);
 }
@@ -30,14 +33,27 @@ const Register *Node::as_register() const {
   return std::get_if<Register>(this);
 }
 bool operator==(const Node &lhs, const Node &rhs) {
-  return lhs.index() == rhs.index() && lhs.value() == rhs.value();
+  return lhs.pair() == rhs.pair();
 }
 bool operator<(const Node &lhs, const Node &rhs) {
-  if (lhs.index() == rhs.index()) {
-    return lhs.value() < rhs.value();
-  } else {
-    return lhs.index() < rhs.index();
-  }
+  return lhs.pair() < rhs.pair();
+}
+
+Edge::Edge(const Node &n) : Super{n, Node{}} {}
+const Node &Edge::tail() const {
+  return std::get<0>(*this);
+}
+const Node &Edge::head() const {
+  return std::get<1>(*this);
+}
+auto Edge::pair() const -> const Super & {
+  return *this;
+}
+bool operator==(const Edge &lhs, const Edge &rhs) {
+  return lhs.pair() == rhs.pair();
+}
+bool operator<(const Edge &lhs, const Edge &rhs) {
+  return lhs.pair() < rhs.pair();
 }
 
 }  // namespace stacksafe
