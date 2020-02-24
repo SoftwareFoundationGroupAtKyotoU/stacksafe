@@ -25,16 +25,15 @@ bool Graph::append(const Node& tail, const Node& head) {
 NodeSet Graph::heads(const Node& tail) const {
   NodeSet nodes;
   const auto [lb, ub] = std::equal_range(begin(), end(), Edge{tail}, tail_cmp);
-  nodes.reserve(std::distance(lb, ub));
   for (auto it = lb; it != ub; ++it) {
-    nodes.push_back(it->head());
+    nodes.insert(it->head());
   }
   return nodes;
 }
 NodeSet Graph::tails() const {
   NodeSet nodes;
   for (const auto& e : *this) {
-    nodes.push_back(e.tail());
+    nodes.insert(e.tail());
   }
   return nodes;
 }
