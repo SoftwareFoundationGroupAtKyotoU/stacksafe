@@ -187,9 +187,6 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   }
 }
 void PointsTo::constant(const llvm::Instruction &) {}
-NodeSet PointsTo::lookup(const Symbol &tail) const {
-  return graph_.heads(Node{tail});
-}
 NodeSet PointsTo::lookup(const llvm::Value &tail) const {
   const auto v = &tail;
   if (auto c = llvm::dyn_cast<llvm::Constant>(v)) {
@@ -206,11 +203,6 @@ NodeSet PointsTo::lookup(const llvm::Value &tail) const {
   } else {
     llvm_unreachable("invalid value lookup");
   };
-}
-void PointsTo::append(const Symbol &tail, const NodeSet &heads) {
-  for (const auto &h : heads) {
-    update(graph_.append(Node{tail}, h));
-  }
 }
 void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
   for (const auto &h : heads) {
