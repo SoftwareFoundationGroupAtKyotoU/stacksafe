@@ -56,6 +56,14 @@ bool Graph::merge(const Graph& g) {
   }
   return updated;
 }
+void Graph::reachables(const Node& n, NodeSet& nodes) const {
+  if (!nodes.element(n)) {
+    nodes.insert(n);
+    for (const auto& head : heads(n)) {
+      reachables(head, nodes);
+    }
+  }
+}
 auto Graph::insert(iterator hint, const Edge& e) -> Result {
   const auto [lb, ub] = std::equal_range(hint, end(), e);
   if (lb == ub) {

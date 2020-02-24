@@ -31,6 +31,7 @@ class Graph : private std::vector<Edge> {
   NodeSet heads(const Node& tail) const;
   NodeSet tails() const;
   bool merge(const Graph& g);
+  void reachables(const Node& n, NodeSet& nodes) const;
 
  private:
   Result insert(iterator hint, const Edge& e);
