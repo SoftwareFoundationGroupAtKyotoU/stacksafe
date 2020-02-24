@@ -9,10 +9,11 @@
 
 namespace stacksafe {
 
-class Node : private std::variant<Symbol, Register> {
-  using Super = std::variant<Symbol, Register>;
+class Node : private std::variant<std::monostate, Symbol, Register> {
+  using Super = std::variant<std::monostate, Symbol, Register>;
 
  public:
+  Node() = default;
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
   std::uintptr_t value() const;
