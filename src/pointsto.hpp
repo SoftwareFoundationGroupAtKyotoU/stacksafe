@@ -4,10 +4,15 @@
 #include <llvm/IR/InstVisitor.h>
 
 namespace stacksafe {
+class Graph;
 
 class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<PointsTo, RetTy>;
+  Graph& graph_;
+
+ public:
+  explicit PointsTo(Graph& g);
 };
 
 }  // namespace stacksafe
