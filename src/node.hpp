@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 
 #include <cstdint>
+#include <tuple>
 #include <variant>
 #include "register.hpp"
 #include "symbol.hpp"
@@ -22,6 +23,10 @@ class Node : private std::variant<Symbol, Register> {
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);
+
+class Edge : private std::tuple<Node, Node> {
+  using Super = std::tuple<Node, Node>;
+};
 
 }  // namespace stacksafe
 
