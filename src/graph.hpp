@@ -6,6 +6,7 @@
 
 namespace stacksafe {
 
+using NodeSet = std::vector<Node>;
 class Graph : private std::vector<Edge> {
   using Super = std::vector<Edge>;
   using iterator = Super::iterator;
@@ -13,6 +14,7 @@ class Graph : private std::vector<Edge> {
 
  public:
   bool append(const Node& from, const Node& to);
+  NodeSet outedges(const Node& tail) const;
   bool merge(const Graph& g);
 
  private:
