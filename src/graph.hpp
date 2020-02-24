@@ -17,6 +17,7 @@ class NodeSet : private std::set<Node> {
  public:
   using Super::begin, Super::end, Super::insert;
   void merge(const NodeSet& nodes);
+  bool element(const Node& n) const;
 };
 
 class Graph : private std::vector<Edge> {

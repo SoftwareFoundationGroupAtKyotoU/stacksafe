@@ -12,6 +12,9 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 void NodeSet::merge(const NodeSet& nodes) {
   Super::insert(nodes.begin(), nodes.end());
 }
+bool NodeSet::element(const Node& n) const {
+  return 0 != Super::count(n);
+}
 
 void Graph::init(const llvm::Function& f) {
   const Node g{Symbol::get_global()};
