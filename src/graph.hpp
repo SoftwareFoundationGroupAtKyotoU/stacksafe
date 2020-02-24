@@ -8,6 +8,11 @@ namespace stacksafe {
 
 class Graph : private std::vector<Edge> {
   using Super = std::vector<Edge>;
+  using iterator = Super::iterator;
+  using Result = std::tuple<iterator, bool>;
+
+ private:
+  Result insert(iterator hint, const Edge& e);
 };
 
 }  // namespace stacksafe
