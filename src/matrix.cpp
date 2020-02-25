@@ -30,9 +30,6 @@ Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
 Index::Index(int index) : index_{index} {
   assert(0 <= index);
 }
-bool Index::is_valid(Index arity) const {
-  return OTHERS.index_ < index_ && index_ < arity.index_;
-}
 Index::operator bool() const {
   return index_ != OTHERS.index_;
 }

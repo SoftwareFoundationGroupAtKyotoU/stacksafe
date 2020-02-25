@@ -18,7 +18,6 @@ class Index {
   static const Index GLOBAL, RETURN, OTHERS;
   explicit Index(IndexInit init);
   explicit Index(int index);
-  bool is_valid(Index arity) const;
   explicit operator bool() const;
 };
 class Arity : private Index {
