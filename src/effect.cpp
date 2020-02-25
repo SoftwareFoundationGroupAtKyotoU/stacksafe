@@ -126,9 +126,8 @@ const Arity& Effect::arity() const {
 }
 bool Effect::depends(Index from, Index to) const {
   if (!name_.empty()) {
-    if (arity().is_valid(from) && arity().is_valid(to)) {
-      return matrix_.get(from, to);
-    }
+    assert(arity().is_valid(from) && arity().is_valid(to));
+    return matrix_.get(from, to);
   }
   return true;
 }
