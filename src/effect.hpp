@@ -9,6 +9,16 @@
 namespace stacksafe {
 class EffectLine;
 
+struct Index {
+  static const Index GLOBAL, RETURN, OTHERS;
+  explicit Index(int index);
+  bool is_valid(Index arity) const;
+  explicit operator int() const;
+
+ private:
+  int index_;
+};
+
 class Effect {
   Matrix mat_;
   std::string name_;

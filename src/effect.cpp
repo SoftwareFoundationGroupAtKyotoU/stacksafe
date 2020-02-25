@@ -119,6 +119,15 @@ Effect::Index EffectLine::to_index(std::string_view v) {
   }
 }
 
+const Index Index::GLOBAL{-1}, Index::RETURN{-2}, Index::OTHERS{-3};
+Index::Index(int index) : index_{index} {}
+bool Index::is_valid(Index arity) const {
+  return OTHERS.index_ < index_ && index_ < arity.index_;
+}
+Index::operator int() const {
+  return index_;
+}
+
 Effect::Effect(const EffectLine& line)
     : mat_{line.arity() + 2}, name_{line.name()}, arity_{line.arity()} {
   for (const auto& [lhs, rhs] : line.map()) {
