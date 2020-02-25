@@ -130,11 +130,11 @@ Index::operator int() const {
   return index_;
 }
 Arity::Arity(int arity) : Index{arity} {}
-std::optional<Index> Arity::make(int index) const {
-  if (OTHERS.index_ < index && index < this->index_) {
-    return Index{index};
+Index Arity::index(int i) const {
+  if (OTHERS.index_ < i && i < this->index_) {
+    return Index{i};
   }
-  return std::nullopt;
+  return Index::OTHERS;
 }
 
 Effect::Effect(const EffectLine& line)

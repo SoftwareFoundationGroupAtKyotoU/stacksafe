@@ -22,7 +22,7 @@ class Index {
 class Arity : private Index {
  public:
   explicit Arity(int arity);
-  std::optional<Index> make(int index) const;
+  Index index(int i) const;
 };
 
 class Effect {
