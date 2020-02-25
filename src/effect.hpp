@@ -10,7 +10,7 @@ namespace stacksafe {
 class EffectLine;
 
 class Effect {
-  Matrix mat_;
+  Matrix matrix_;
   std::string name_;
   explicit Effect(const EffectLine& line);
 
