@@ -50,8 +50,7 @@ Index Arity::to_index(std::string_view v) const {
     return GLOBAL;
   } else if (v == "r") {
     return RETURN;
-  } else if (const auto i = to_int(v);
-             i && OTHERS.index_ < *i && *i < this->index_) {
+  } else if (const auto i = to_int(v); i && *i < index_) {
     return Index{*i};
   } else {
     return OTHERS;
