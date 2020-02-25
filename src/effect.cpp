@@ -35,7 +35,7 @@ class EffectLine {
  public:
   explicit EffectLine(std::string_view line);
   std::string_view name() const;
-  std::size_t arity() const;
+  Arity arity() const;
   const std::vector<Mapsto>& map() const;
   bool parse();
 
@@ -49,8 +49,8 @@ EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
 std::string_view EffectLine::name() const {
   return name_;
 }
-std::size_t EffectLine::arity() const {
-  return arity_.value();
+Arity EffectLine::arity() const {
+  return arity_;
 }
 auto EffectLine::map() const -> const std::vector<Mapsto>& {
   return map_;
@@ -107,7 +107,7 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
 }
 
 Effect::Effect(const EffectLine& line)
-    : mat_{line.arity() + 2}, name_{line.name()}, arity_{line.arity()} {
+    : mat_{line.arity()}, name_{line.name()}, arity_{line.arity().value()} {
   for (const auto& [lhs, rhs] : line.map()) {
     mat_.set(convert(lhs), convert(rhs));
   }
