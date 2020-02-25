@@ -10,12 +10,14 @@ class EffectLine {
   using Mapsto = std::tuple<std::size_t, std::size_t>;
   using Head = std::optional<std::tuple<std::string_view, std::size_t>>;
   using Tail = std::optional<std::vector<Mapsto>>;
-  std::string name_;
+  std::string_view line_;
+  std::string_view name_;
   std::size_t arity_;
   std::vector<Mapsto> map_;
 
  public:
-  const std::string& name() const;
+  explicit EffectLine(std::string_view line);
+  std::string_view name() const;
   std::size_t arity() const;
   const std::vector<Mapsto>& map() const;
   bool parse(std::string_view line);
@@ -27,7 +29,8 @@ class EffectLine {
   static std::optional<std::size_t> to_size_t(std::string_view v);
 };
 
-const std::string& EffectLine::name() const {
+EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
+std::string_view EffectLine::name() const {
   return name_;
 }
 std::size_t EffectLine::arity() const {
@@ -106,7 +109,7 @@ Effect::Effect(const EffectLine& line)
   }
 }
 std::optional<Effect> Effect::make(std::string_view v) {
-  EffectLine line;
+  EffectLine line{v};
   if (line.parse(v)) {
     return Effect{line};
   }
