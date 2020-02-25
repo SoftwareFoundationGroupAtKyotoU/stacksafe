@@ -23,6 +23,7 @@ class Arity : private Index {
  public:
   explicit Arity(int arity);
   Index index(int i) const;
+  Index to_index(std::string_view v) const;
 };
 
 class Effect {
