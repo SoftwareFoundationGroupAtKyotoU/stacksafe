@@ -4,19 +4,51 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <tuple>
 #include <vector>
 
 namespace stacksafe {
 namespace {
 class EffectLine {
   using Views = std::vector<std::string_view>;
+  using Mapsto = std::tuple<std::size_t, std::size_t>;
+  using Head = std::optional<std::tuple<std::string_view, std::size_t>>;
+  using Tail = std::optional<std::vector<Mapsto>>;
   std::string name_;
   std::size_t arity_;
 
  private:
+  static Head init_head(std::string_view head);
+  static Tail init_tail(const Views& tail);
   static Views split(std::string_view v, const char* delim);
   static std::optional<std::size_t> to_size_t(std::string_view v);
 };
+auto EffectLine::init_head(std::string_view head) -> Head {
+  const auto pair = split(head, "/");
+  if (pair.size() == 2) {
+    if (const auto arity = to_size_t(pair[1])) {
+      return std::make_tuple(pair[0], *arity);
+    }
+  }
+  return std::nullopt;
+}
+auto EffectLine::init_tail(const Views& tail) -> Tail {
+  std::vector<Mapsto> map;
+  for (const auto& e : tail) {
+    const auto pair = split(e, ":");
+    if (pair.size() != 2) {
+      return std::nullopt;
+    }
+    const auto lhs = to_size_t(pair[0]);
+    const auto rhs = to_size_t(pair[1]);
+    if (lhs && rhs) {
+      map.emplace_back(*lhs, *rhs);
+    } else {
+      return std::nullopt;
+    }
+  }
+  return map;
+}
 auto EffectLine::split(std::string_view v, const char* delim) -> Views {
   Views views;
   const auto next = [&v, delim]() { return v.find_first_of(delim); };
