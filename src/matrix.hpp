@@ -13,11 +13,11 @@ enum class IndexInit;
 class Index {
   friend class Arity;
   int index_;
+  explicit Index(int index);
 
  public:
   static const Index GLOBAL, RETURN, OTHERS;
   explicit Index(IndexInit init);
-  explicit Index(int index);
   explicit operator bool() const;
 };
 class Arity : private Index {

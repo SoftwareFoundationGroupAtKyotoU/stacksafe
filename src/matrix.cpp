@@ -26,10 +26,10 @@ constexpr std::size_t extra_space = 2;
 const Index Index::GLOBAL{IndexInit::GLOBAL};
 const Index Index::RETURN{IndexInit::RETURN};
 const Index Index::OTHERS{IndexInit::OTHERS};
-Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
 Index::Index(int index) : index_{index} {
   assert(0 <= index);
 }
+Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
 Index::operator bool() const {
   return index_ != OTHERS.index_;
 }
