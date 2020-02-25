@@ -34,7 +34,6 @@ class EffectLine {
   static Head parse_head(std::string_view head);
   static Tail parse_tail(const Views& tail);
   static Views split(std::string_view v, const char* delim);
-  static std::optional<std::size_t> to_size_t(std::string_view v);
   static std::optional<int> to_int(std::string_view v);
   static Index to_index(std::string_view v);
 };
@@ -98,19 +97,6 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
   views.emplace_back(v);
   return views;
   ;
-}
-std::optional<std::size_t> EffectLine::to_size_t(std::string_view v) {
-  std::string buf{v};
-  const auto b = buf.c_str();
-  const auto e = b + buf.size();
-  if (b != e) {
-    char* p = nullptr;
-    const auto val = std::strtol(b, &p, 10);
-    if (p == e && 0 <= val && val != LONG_MAX) {
-      return val;
-    }
-  }
-  return std::nullopt;
 }
 std::optional<int> EffectLine::to_int(std::string_view v) {
   std::string buf{v};
