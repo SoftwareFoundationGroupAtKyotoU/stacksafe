@@ -26,11 +26,6 @@ class Effect {
   explicit Effect(const EffectLine& line);
 
  public:
-  enum class Index : int {
-    GLOBAL = -1,
-    RETURN = -2,
-    OTHERS = -3,
-  };
   static std::optional<Effect> make(std::string_view v);
   bool depends(Index from, Index to) const;
 

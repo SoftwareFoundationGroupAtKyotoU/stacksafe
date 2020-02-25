@@ -9,7 +9,7 @@ namespace stacksafe {
 
 class EffectLine {
   using Views = std::vector<std::string_view>;
-  using Mapsto = std::tuple<Effect::Index, Effect::Index>;
+  using Mapsto = std::tuple<Index, Index>;
   using Head = std::optional<std::tuple<std::string_view, std::size_t>>;
   using Tail = std::optional<std::vector<Mapsto>>;
   std::string_view line_;
@@ -26,10 +26,10 @@ class EffectLine {
 
  private:
   static Head parse_head(std::string_view head);
-  static Tail parse_tail(Effect::Index arity, const Views& tail);
+  static Tail parse_tail(Index arity, const Views& tail);
   static Views split(std::string_view v, const char* delim);
   static std::optional<int> to_int(std::string_view v);
-  static Effect::Index to_index(std::string_view v);
+  static Index to_index(std::string_view v);
 };
 
 EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
@@ -45,7 +45,7 @@ auto EffectLine::map() const -> const std::vector<Mapsto>& {
 bool EffectLine::parse() {
   const auto vec = split(line_, ",");
   if (const auto head = parse_head(vec.front())) {
-    const auto arity = static_cast<Effect::Index>(std::get<1>(*head));
+    const auto arity = static_cast<Index>(std::get<1>(*head));
     const Views views{std::next(vec.begin()), vec.end()};
     if (const auto tail = parse_tail(arity, views)) {
       std::tie(name_, arity_) = *std::move(head);
@@ -74,9 +74,11 @@ auto EffectLine::parse_tail(Index arity, const Views& tail) -> Tail {
       return std::nullopt;
     }
     const auto lhs = to_index(pair[0]);
+    if (!lhs.is_valid(arity)) {
+      return std::nullopt;
+    }
     const auto rhs = to_index(pair[1]);
-    if (lhs == Effect::Index::OTHERS || arity <= lhs ||
-        rhs == Effect::Index::OTHERS || arity <= rhs) {
+    if (!rhs.is_valid(arity)) {
       return std::nullopt;
     }
     map.emplace_back(lhs, rhs);
@@ -107,15 +109,15 @@ std::optional<int> EffectLine::to_int(std::string_view v) {
   }
   return std::nullopt;
 }
-Effect::Index EffectLine::to_index(std::string_view v) {
+Index EffectLine::to_index(std::string_view v) {
   if (v == "g") {
-    return Effect::Index::GLOBAL;
+    return Index::GLOBAL;
   } else if (v == "r") {
-    return Effect::Index::RETURN;
+    return Index::RETURN;
   } else if (const auto i = to_int(v)) {
-    return static_cast<Effect::Index>(*i);
+    return static_cast<Index>(*i);
   } else {
-    return Effect::Index::OTHERS;
+    return Index::OTHERS;
   }
 }
 
@@ -144,14 +146,14 @@ std::optional<Effect> Effect::make(std::string_view v) {
 bool Effect::depends(Index from, Index to) const {
   if (!name_.empty()) {
     const auto n = static_cast<Index>(arity_);
-    if (from < n && to < n) {
+    if (from.is_valid(n) && to.is_valid(n)) {
       return mat_.get(convert(from), convert(to));
     }
   }
   return true;
 }
 std::size_t Effect::convert(Index index) const {
-  assert(index < static_cast<Index>(arity_));
+  assert(index.is_valid(static_cast<Index>(arity_)));
   const auto n = static_cast<int>(arity_);
   const auto i = static_cast<int>(index);
   return n - i - 1;
