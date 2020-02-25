@@ -17,6 +17,7 @@ target_sources(${target} PRIVATE
   cache.cpp
   depend.cpp
   domain.cpp
+  effect.cpp
   graph.cpp
   hash.cpp
   interpreter.cpp
