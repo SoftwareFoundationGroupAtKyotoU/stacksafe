@@ -15,7 +15,7 @@ enum class Index : int {
 
 class EffectLine {
   using Views = std::vector<std::string_view>;
-  using Mapsto = std::tuple<std::size_t, std::size_t>;
+  using Mapsto = std::tuple<Index, Index>;
   using Head = std::optional<std::tuple<std::string_view, std::size_t>>;
   using Tail = std::optional<std::vector<Mapsto>>;
   std::string_view line_;
@@ -77,13 +77,12 @@ auto EffectLine::parse_tail(const Views& tail) -> Tail {
     if (pair.size() != 2) {
       return std::nullopt;
     }
-    const auto lhs = to_size_t(pair[0]);
-    const auto rhs = to_size_t(pair[1]);
-    if (lhs && rhs) {
-      map.emplace_back(*lhs, *rhs);
-    } else {
+    const auto lhs = to_index(pair[0]);
+    const auto rhs = to_index(pair[1]);
+    if (lhs == Index::OTHERS || rhs == Index::OTHERS) {
       return std::nullopt;
     }
+    map.emplace_back(lhs, rhs);
   }
   return map;
 }
@@ -139,7 +138,10 @@ Index EffectLine::to_index(std::string_view v) {
 Effect::Effect(const EffectLine& line)
     : mat_{line.arity() + 2}, name_{line.name()}, arity_{line.arity()} {
   for (const auto& [lhs, rhs] : line.map()) {
-    mat_.set(lhs, rhs);
+    const int n = arity_;
+    const auto row = n - static_cast<int>(lhs);
+    const auto col = n - static_cast<int>(rhs);
+    mat_.set(row, col);
   }
 }
 std::optional<Effect> Effect::make(std::string_view v) {
