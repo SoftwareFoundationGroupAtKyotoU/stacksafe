@@ -20,6 +20,7 @@ class Index {
   explicit Index(IndexInit init);
   explicit operator bool() const;
   bool operator==(const Index& that) const;
+  bool operator<(const Index& that) const;
 };
 
 class Arity : private Index {

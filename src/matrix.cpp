@@ -27,7 +27,7 @@ const Index Index::GLOBAL{IndexInit::GLOBAL};
 const Index Index::RETURN{IndexInit::RETURN};
 const Index Index::OTHERS{IndexInit::OTHERS};
 Index::Index(int index) : index_{index} {
-  assert(0 <= index);
+  assert(GLOBAL < *this);
 }
 Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
 Index::operator bool() const {
@@ -35,6 +35,9 @@ Index::operator bool() const {
 }
 bool Index::operator==(const Index& that) const {
   return this->index_ == that.index_;
+}
+bool Index::operator<(const Index& that) const {
+  return this->index_ < that.index_;
 }
 
 Arity::Arity(int arity) : Index{arity} {
@@ -48,7 +51,7 @@ std::size_t Arity::convert(Index index) const {
   return this->index_ - index.index_ - 1;
 }
 bool Arity::is_valid(Index index) const {
-  return OTHERS.index_ < index.index_ && index_ < this->index_;
+  return OTHERS < index && index < *this;
 }
 Index Arity::to_index(std::string_view v) const {
   if (v == "g") {
