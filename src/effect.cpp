@@ -5,6 +5,14 @@
 #include <vector>
 
 namespace stacksafe {
+namespace {
+enum class Index : int {
+  GLOBAL = -1,
+  RETURN = -2,
+  OTHERS = -3,
+};
+}  // namespace
+
 class EffectLine {
   using Views = std::vector<std::string_view>;
   using Mapsto = std::tuple<std::size_t, std::size_t>;
@@ -28,6 +36,7 @@ class EffectLine {
   static Views split(std::string_view v, const char* delim);
   static std::optional<std::size_t> to_size_t(std::string_view v);
   static std::optional<int> to_int(std::string_view v);
+  static Index to_index(std::string_view v);
 };
 
 EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
@@ -114,6 +123,17 @@ std::optional<int> EffectLine::to_int(std::string_view v) {
     }
   }
   return std::nullopt;
+}
+Index EffectLine::to_index(std::string_view v) {
+  if (v == "g") {
+    return Index::GLOBAL;
+  } else if (v == "r") {
+    return Index::RETURN;
+  } else if (const auto i = to_int(v)) {
+    return static_cast<Index>(*i);
+  } else {
+    return Index::OTHERS;
+  }
 }
 
 Effect::Effect(const EffectLine& line)
