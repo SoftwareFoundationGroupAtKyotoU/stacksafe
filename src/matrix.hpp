@@ -26,7 +26,6 @@ class Arity : private Index {
  public:
   explicit Arity(int arity);
   std::size_t value() const;
-  Index index(int i) const;
   Index to_index(std::string_view v) const;
 };
 
