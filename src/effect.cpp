@@ -19,6 +19,9 @@ class EffectLine {
   std::vector<Mapsto> map_;
 
  public:
+  const std::string& name() const;
+  std::size_t arity() const;
+  const std::vector<Mapsto>& map() const;
   bool init(std::string_view line);
 
  private:
@@ -28,6 +31,15 @@ class EffectLine {
   static std::optional<std::size_t> to_size_t(std::string_view v);
 };
 
+const std::string& EffectLine::name() const {
+  return name_;
+}
+std::size_t EffectLine::arity() const {
+  return arity_;
+}
+auto EffectLine::map() const -> const std::vector<Mapsto>& {
+  return map_;
+}
 bool EffectLine::init(std::string_view line) {
   const auto vec = split(line, ",");
   if (const auto head = init_head(vec.front())) {
