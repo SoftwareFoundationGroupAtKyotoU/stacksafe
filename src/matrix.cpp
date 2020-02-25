@@ -19,9 +19,13 @@ std::optional<int> to_int(std::string_view v) {
   }
   return std::nullopt;
 }
+enum class IndexInit : int { GLOBAL = -1, RETURN = -2, OTHERS = -3 };
 }  // namespace
 
-const Index Index::GLOBAL{-1}, Index::RETURN{-2}, Index::OTHERS{-3};
+const Index Index::GLOBAL{IndexInit::GLOBAL};
+const Index Index::RETURN{IndexInit::RETURN};
+const Index Index::OTHERS{IndexInit::OTHERS};
+Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
 Index::Index(int index) : index_{index} {
   assert(0 <= index);
 }

@@ -6,6 +6,9 @@
 #include <vector>
 
 namespace stacksafe {
+namespace {
+enum class IndexInit;
+}
 
 class Index {
   friend class Arity;
@@ -13,6 +16,7 @@ class Index {
 
  public:
   static const Index GLOBAL, RETURN, OTHERS;
+  explicit Index(IndexInit init);
   explicit Index(int index);
   bool is_valid(Index arity) const;
   explicit operator int() const;
