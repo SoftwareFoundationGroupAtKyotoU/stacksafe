@@ -45,6 +45,10 @@ Arity::Arity(int arity) : Index{arity} {
 std::size_t Arity::value() const {
   return index_;
 }
+std::size_t Arity::convert(Index index) const {
+  assert(is_valid(index));
+  return this->index_ - index.index_ - 1;
+}
 bool Arity::is_valid(Index index) const {
   return OTHERS.index_ < index.index_ && index_ < this->index_;
 }

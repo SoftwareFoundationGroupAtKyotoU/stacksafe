@@ -26,6 +26,7 @@ class Arity : private Index {
  public:
   explicit Arity(int arity);
   std::size_t value() const;
+  std::size_t convert(Index index) const;
   bool is_valid(Index index) const;
   Index to_index(std::string_view v) const;
 };
