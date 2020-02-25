@@ -18,6 +18,7 @@ class Index {
   explicit Index(int index);
   bool is_valid(Index arity) const;
   explicit operator int() const;
+  explicit operator bool() const;
 };
 class Arity : private Index {
  public:

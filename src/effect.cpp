@@ -137,12 +137,17 @@ Index EffectLine::to_index(std::string_view v) {
 }
 
 const Index Index::GLOBAL{-1}, Index::RETURN{-2}, Index::OTHERS{-3};
-Index::Index(int index) : index_{index} {}
+Index::Index(int index) : index_{index} {
+  assert(0 <= index);
+}
 bool Index::is_valid(Index arity) const {
   return OTHERS.index_ < index_ && index_ < arity.index_;
 }
 Index::operator int() const {
   return index_;
+}
+Index::operator bool() const {
+  return index_ != OTHERS.index_;
 }
 Arity::Arity(int arity) : Index{arity} {}
 Index Arity::index(int i) const {
