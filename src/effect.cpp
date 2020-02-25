@@ -6,13 +6,6 @@
 #include <vector>
 
 namespace stacksafe {
-namespace {
-std::size_t convert(std::size_t arity, Effect::Index index) {
-  const auto val = static_cast<int>(arity) - static_cast<int>(index);
-  assert(0 <= val);
-  return val;
-}
-}  // namespace
 
 class EffectLine {
   using Views = std::vector<std::string_view>;
@@ -127,7 +120,7 @@ Effect::Index EffectLine::to_index(std::string_view v) {
 Effect::Effect(const EffectLine& line)
     : mat_{line.arity() + 2}, name_{line.name()}, arity_{line.arity()} {
   for (const auto& [lhs, rhs] : line.map()) {
-    mat_.set(convert(arity_, lhs), convert(arity_, rhs));
+    mat_.set(convert(lhs), convert(rhs));
   }
 }
 std::optional<Effect> Effect::make(std::string_view v) {
@@ -136,6 +129,12 @@ std::optional<Effect> Effect::make(std::string_view v) {
     return Effect{line};
   }
   return std::nullopt;
+}
+std::size_t Effect::convert(Index index) const {
+  assert(index < static_cast<Index>(arity_));
+  const auto n = static_cast<int>(arity_);
+  const auto i = static_cast<int>(index);
+  return n - i - 1;
 }
 
 }  // namespace stacksafe
