@@ -9,24 +9,6 @@
 namespace stacksafe {
 class EffectLine;
 
-class Index {
-  friend class Arity;
-  int index_;
-
- public:
-  static const Index GLOBAL, RETURN, OTHERS;
-  explicit Index(int index);
-  bool is_valid(Index arity) const;
-  explicit operator int() const;
-  explicit operator bool() const;
-};
-class Arity : private Index {
- public:
-  explicit Arity(int arity);
-  Index index(int i) const;
-  Index to_index(std::string_view v) const;
-};
-
 class Effect {
   Matrix mat_;
   std::string name_;

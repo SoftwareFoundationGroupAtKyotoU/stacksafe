@@ -2,9 +2,28 @@
 #define INCLUDE_GUARD_C0D10252_121F_463F_A84C_5DBD93E2DC5F
 
 #include <cstdint>
+#include <string_view>
 #include <vector>
 
 namespace stacksafe {
+
+class Index {
+  friend class Arity;
+  int index_;
+
+ public:
+  static const Index GLOBAL, RETURN, OTHERS;
+  explicit Index(int index);
+  bool is_valid(Index arity) const;
+  explicit operator int() const;
+  explicit operator bool() const;
+};
+class Arity : private Index {
+ public:
+  explicit Arity(int arity);
+  Index index(int i) const;
+  Index to_index(std::string_view v) const;
+};
 
 class Matrix : private std::vector<std::uint8_t> {
   using Super = std::vector<std::uint8_t>;

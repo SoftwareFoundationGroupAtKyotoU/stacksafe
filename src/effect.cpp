@@ -6,21 +6,6 @@
 #include <vector>
 
 namespace stacksafe {
-namespace {
-std::optional<int> to_int(std::string_view v) {
-  const std::string buf{v};
-  const auto b = buf.c_str();
-  const auto e = b + buf.size();
-  if (b != e) {
-    char* p = nullptr;
-    const auto val = std::strtol(b, &p, 10);
-    if (p == e && 0 <= val && val != LONG_MAX && val <= INT_MAX) {
-      return static_cast<int>(val);
-    }
-  }
-  return std::nullopt;
-}
-}  // namespace
 
 class EffectLine {
   using Views = std::vector<std::string_view>;
@@ -131,39 +116,6 @@ Index EffectLine::to_index(std::string_view v) {
     return static_cast<Index>(*i);
   } else {
     return Index::OTHERS;
-  }
-}
-
-const Index Index::GLOBAL{-1}, Index::RETURN{-2}, Index::OTHERS{-3};
-Index::Index(int index) : index_{index} {
-  assert(0 <= index);
-}
-bool Index::is_valid(Index arity) const {
-  return OTHERS.index_ < index_ && index_ < arity.index_;
-}
-Index::operator int() const {
-  return index_;
-}
-Index::operator bool() const {
-  return index_ != OTHERS.index_;
-}
-Arity::Arity(int arity) : Index{arity} {}
-Index Arity::index(int i) const {
-  if (OTHERS.index_ < i && i < this->index_) {
-    return Index{i};
-  }
-  return Index::OTHERS;
-}
-Index Arity::to_index(std::string_view v) const {
-  if (v == "g") {
-    return GLOBAL;
-  } else if (v == "r") {
-    return RETURN;
-  } else if (const auto i = to_int(v);
-             i && OTHERS.index_ < *i && *i < this->index_) {
-    return Index{*i};
-  } else {
-    return OTHERS;
   }
 }
 
