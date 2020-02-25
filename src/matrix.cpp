@@ -60,7 +60,9 @@ Index Arity::to_index(std::string_view v) const {
 Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
 Matrix::Matrix(Arity arity) : Matrix{arity.value() + extra_space, false} {}
 Matrix::Matrix(std::size_t n, bool init)
-    : Super(n * n, init ? 1 : 0), size_{n} {}
+    : Super(n * n, init ? 1 : 0),
+      size_{n},
+      arity_{static_cast<int>(n) - static_cast<int>(extra_space)} {}
 void Matrix::init(std::size_t n, bool init) {
   size_ = n;
   Super::assign(n * n, init ? 1 : 0);
@@ -83,8 +85,8 @@ bool Matrix::get(Index row, Index col) const {
   return get(convert(row), convert(col));
 }
 std::size_t Matrix::convert(Index index) const {
-  const int n = size_;
-  return n - static_cast<int>(index) - 3;
+  const int n = arity_.value();
+  return n - static_cast<int>(index) - 1;
 }
 
 }  // namespace stacksafe

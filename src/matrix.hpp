@@ -32,6 +32,7 @@ class Arity : private Index {
 class Matrix : private std::vector<std::uint8_t> {
   using Super = std::vector<std::uint8_t>;
   std::size_t size_;
+  Arity arity_;
 
  public:
   explicit Matrix(std::size_t n);
