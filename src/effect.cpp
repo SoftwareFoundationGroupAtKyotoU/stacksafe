@@ -6,6 +6,21 @@
 #include <vector>
 
 namespace stacksafe {
+namespace {
+std::optional<int> to_int(std::string_view v) {
+  const std::string buf{v};
+  const auto b = buf.c_str();
+  const auto e = b + buf.size();
+  if (b != e) {
+    char* p = nullptr;
+    const auto val = std::strtol(b, &p, 10);
+    if (p == e && 0 <= val && val != LONG_MAX && val <= INT_MAX) {
+      return static_cast<int>(val);
+    }
+  }
+  return std::nullopt;
+}
+}  // namespace
 
 class EffectLine {
   using Views = std::vector<std::string_view>;
@@ -29,7 +44,6 @@ class EffectLine {
   static Tail parse_tail(Arity arity, const Views& tail);
   static std::optional<Mapsto> parse_mapsto(Arity arity, std::string_view v);
   static Views split(std::string_view v, const char* delim);
-  static std::optional<int> to_int(std::string_view v);
   static Index to_index(std::string_view v);
 };
 
@@ -100,19 +114,6 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
   views.emplace_back(v);
   return views;
   ;
-}
-std::optional<int> EffectLine::to_int(std::string_view v) {
-  std::string buf{v};
-  const auto b = buf.c_str();
-  const auto e = b + buf.size();
-  if (b != e) {
-    char* p = nullptr;
-    const auto val = std::strtol(b, &p, 10);
-    if (p == e && 0 <= val && val != LONG_MAX && val <= INT_MAX) {
-      return static_cast<int>(val);
-    }
-  }
-  return std::nullopt;
 }
 Index EffectLine::to_index(std::string_view v) {
   if (v == "g") {
