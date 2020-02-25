@@ -61,12 +61,17 @@ bool EffectLine::parse() {
   const auto vec = split(line_, ",");
   if (const auto head = parse_head(vec.front())) {
     const auto arity = std::get<1>(*head);
-    const Views views{std::next(vec.begin()), vec.end()};
-    if (const auto tail = parse_tail(arity, views)) {
-      std::tie(name_, arity_) = *std::move(head);
-      map_ = *std::move(tail);
-      return true;
+    std::vector<Mapsto> map;
+    for (const auto& tail : Views{std::next(vec.begin()), vec.end()}) {
+      if (const auto pair = parse_mapsto(arity, tail)) {
+        map.push_back(*std::move(pair));
+      } else {
+        return false;
+      }
     }
+    std::tie(name_, arity_) = *std::move(head);
+    map_ = std::move(map);
+    return true;
   }
   return false;
 }
