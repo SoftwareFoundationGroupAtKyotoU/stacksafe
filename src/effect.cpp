@@ -118,6 +118,9 @@ std::optional<Effect> Effect::make(std::string_view v) {
   }
   return std::nullopt;
 }
+const std::string& Effect::name() const {
+  return name_;
+}
 const Arity& Effect::arity() const {
   return mat_.arity();
 }
