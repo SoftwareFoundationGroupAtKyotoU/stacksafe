@@ -9,17 +9,17 @@
 namespace stacksafe {
 class EffectLine;
 
-struct Index {
-  friend struct Arity;
+class Index {
+  friend class Arity;
+  int index_;
+
+ public:
   static const Index GLOBAL, RETURN, OTHERS;
   explicit Index(int index);
   bool is_valid(Index arity) const;
   explicit operator int() const;
-
- private:
-  int index_;
 };
-struct Arity : private Index {
+class Arity : private Index {
  public:
   explicit Arity(int arity);
   std::optional<Index> make(int index) const;
