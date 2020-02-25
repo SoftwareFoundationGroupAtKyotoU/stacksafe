@@ -43,7 +43,6 @@ class EffectLine {
   static Head parse_head(std::string_view head);
   static Tail parse_tail(Arity arity, std::string_view v);
   static Views split(std::string_view v, const char* delim);
-  static Index to_index(std::string_view v);
 };
 
 EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
@@ -105,17 +104,6 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
   views.emplace_back(v);
   return views;
   ;
-}
-Index EffectLine::to_index(std::string_view v) {
-  if (v == "g") {
-    return Index::GLOBAL;
-  } else if (v == "r") {
-    return Index::RETURN;
-  } else if (const auto i = to_int(v)) {
-    return static_cast<Index>(*i);
-  } else {
-    return Index::OTHERS;
-  }
 }
 
 Effect::Effect(const EffectLine& line)
