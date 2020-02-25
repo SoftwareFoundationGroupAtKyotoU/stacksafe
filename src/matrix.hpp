@@ -30,6 +30,7 @@ class Arity : private Index {
   std::size_t convert(Index index) const;
   bool is_valid(Index index) const;
   Index to_index(std::string_view v) const;
+  Index to_index(std::size_t i) const;
 };
 
 class Matrix : private std::vector<std::uint8_t> {
