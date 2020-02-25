@@ -31,8 +31,12 @@ Index::Index(int index) : index_{index} {
 }
 Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
 Index::operator bool() const {
-  return index_ != OTHERS.index_;
+  return !(*this == OTHERS);
 }
+bool Index::operator==(const Index& that) const {
+  return this->index_ == that.index_;
+}
+
 Arity::Arity(int arity) : Index{arity} {
   assert(0 <= arity);
 }

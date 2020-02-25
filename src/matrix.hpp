@@ -19,7 +19,9 @@ class Index {
   static const Index GLOBAL, RETURN, OTHERS;
   explicit Index(IndexInit init);
   explicit operator bool() const;
+  bool operator==(const Index& that) const;
 };
+
 class Arity : private Index {
  public:
   explicit Arity(int arity);
