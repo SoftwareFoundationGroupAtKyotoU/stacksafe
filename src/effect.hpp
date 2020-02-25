@@ -10,6 +10,7 @@ namespace stacksafe {
 class EffectLine;
 
 struct Index {
+  friend struct Arity;
   static const Index GLOBAL, RETURN, OTHERS;
   explicit Index(int index);
   bool is_valid(Index arity) const;
@@ -21,6 +22,7 @@ struct Index {
 struct Arity : private Index {
  public:
   explicit Arity(int arity);
+  std::optional<Index> make(int index) const;
 };
 
 class Effect {
