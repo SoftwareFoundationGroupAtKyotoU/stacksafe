@@ -6,6 +6,10 @@ namespace stacksafe {
 Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
 Matrix::Matrix(std::size_t n, bool init)
     : Super(n * n, init ? 1 : 0), size_{n} {}
+void Matrix::init(std::size_t n, bool init) {
+  size_ = n;
+  Super::assign(n * n, init ? 1 : 0);
+}
 std::size_t Matrix::size() const {
   return size_;
 }
