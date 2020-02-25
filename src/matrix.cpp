@@ -83,6 +83,12 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
   assert(row < size_ && col < size_);
   return Super::at(row * size_ + col) != 0;
 }
+void Matrix::set(Index row, Index col) {
+  set(convert(row), convert(col));
+}
+bool Matrix::get(Index row, Index col) const {
+  return get(convert(row), convert(col));
+}
 std::size_t Matrix::convert(Index index) const {
   const int n = size_;
   return n - static_cast<int>(index) - 3;
