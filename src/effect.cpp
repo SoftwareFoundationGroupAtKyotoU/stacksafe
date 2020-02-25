@@ -1,8 +1,6 @@
 #include "effect.hpp"
 #include <climits>
 #include <cstdlib>
-#include <optional>
-#include <string_view>
 #include <tuple>
 #include <vector>
 
@@ -106,6 +104,13 @@ Effect::Effect(const EffectLine& line)
   for (const auto& [lhs, rhs] : line.map()) {
     mat_.set(lhs, rhs);
   }
+}
+std::optional<Effect> Effect::make(std::string_view v) {
+  EffectLine line;
+  if (line.init(v)) {
+    return Effect{line};
+  }
+  return std::nullopt;
 }
 
 }  // namespace stacksafe
