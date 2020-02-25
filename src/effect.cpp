@@ -1,4 +1,5 @@
 #include "effect.hpp"
+#include <cassert>
 #include <climits>
 #include <cstdlib>
 #include <tuple>
@@ -11,6 +12,11 @@ enum class Index : int {
   RETURN = -2,
   OTHERS = -3,
 };
+std::size_t convert(std::size_t arity, Index index) {
+  const auto val = static_cast<int>(arity) - static_cast<int>(index);
+  assert(0 <= val);
+  return val;
+}
 }  // namespace
 
 class EffectLine {
@@ -126,10 +132,7 @@ Index EffectLine::to_index(std::string_view v) {
 Effect::Effect(const EffectLine& line)
     : mat_{line.arity() + 2}, name_{line.name()}, arity_{line.arity()} {
   for (const auto& [lhs, rhs] : line.map()) {
-    const int n = arity_;
-    const auto row = n - static_cast<int>(lhs);
-    const auto col = n - static_cast<int>(rhs);
-    mat_.set(row, col);
+    mat_.set(convert(arity_, lhs), convert(arity_, rhs));
   }
 }
 std::optional<Effect> Effect::make(std::string_view v) {
