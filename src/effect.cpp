@@ -2,13 +2,11 @@
 #include <climits>
 #include <cstdlib>
 #include <optional>
-#include <string>
 #include <string_view>
 #include <tuple>
 #include <vector>
 
 namespace stacksafe {
-namespace {
 class EffectLine {
   using Views = std::vector<std::string_view>;
   using Mapsto = std::tuple<std::size_t, std::size_t>;
@@ -102,5 +100,12 @@ std::optional<std::size_t> EffectLine::to_size_t(std::string_view v) {
   }
   return std::nullopt;
 }
-}  // namespace
+
+Effect::Effect(const EffectLine& line)
+    : mat_{line.arity()}, name_{line.name()} {
+  for (const auto& [lhs, rhs] : line.map()) {
+    mat_.set(lhs, rhs);
+  }
+}
+
 }  // namespace stacksafe
