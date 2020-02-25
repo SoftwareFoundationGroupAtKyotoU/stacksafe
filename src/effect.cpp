@@ -1,4 +1,5 @@
 #include "effect.hpp"
+#include <string>
 #include <string_view>
 #include <vector>
 
@@ -14,5 +15,9 @@ std::vector<std::string_view> split(std::string_view v, const char* delim) {
   vec.emplace_back(v);
   return vec;
 }
+class EffectLine {
+  std::string name_;
+  std::size_t arity_;
+};
 }  // namespace
 }  // namespace stacksafe
