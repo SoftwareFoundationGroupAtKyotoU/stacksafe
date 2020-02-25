@@ -18,6 +18,10 @@ struct Index {
  private:
   int index_;
 };
+struct Arity : private Index {
+ public:
+  explicit Arity(int arity);
+};
 
 class Effect {
   Matrix mat_;

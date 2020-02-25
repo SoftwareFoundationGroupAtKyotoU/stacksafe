@@ -129,6 +129,7 @@ bool Index::is_valid(Index arity) const {
 Index::operator int() const {
   return index_;
 }
+Arity::Arity(int arity) : Index{arity} {}
 
 Effect::Effect(const EffectLine& line)
     : mat_{line.arity() + 2}, name_{line.name()}, arity_{line.arity()} {
