@@ -18,11 +18,11 @@ class EffectLine {
   const std::string& name() const;
   std::size_t arity() const;
   const std::vector<Mapsto>& map() const;
-  bool init(std::string_view line);
+  bool parse(std::string_view line);
 
  private:
-  static Head init_head(std::string_view head);
-  static Tail init_tail(const Views& tail);
+  static Head parse_head(std::string_view head);
+  static Tail parse_tail(const Views& tail);
   static Views split(std::string_view v, const char* delim);
   static std::optional<std::size_t> to_size_t(std::string_view v);
 };
@@ -36,11 +36,11 @@ std::size_t EffectLine::arity() const {
 auto EffectLine::map() const -> const std::vector<Mapsto>& {
   return map_;
 }
-bool EffectLine::init(std::string_view line) {
+bool EffectLine::parse(std::string_view line) {
   const auto vec = split(line, ",");
-  if (const auto head = init_head(vec.front())) {
+  if (const auto head = parse_head(vec.front())) {
     const Views views{std::next(vec.begin()), vec.end()};
-    if (const auto tail = init_tail(views)) {
+    if (const auto tail = parse_tail(views)) {
       std::tie(name_, arity_) = *std::move(head);
       map_ = *std::move(tail);
       return true;
@@ -48,7 +48,7 @@ bool EffectLine::init(std::string_view line) {
   }
   return false;
 }
-auto EffectLine::init_head(std::string_view head) -> Head {
+auto EffectLine::parse_head(std::string_view head) -> Head {
   const auto pair = split(head, "/");
   if (pair.size() == 2) {
     if (const auto arity = to_size_t(pair[1])) {
@@ -57,7 +57,7 @@ auto EffectLine::init_head(std::string_view head) -> Head {
   }
   return std::nullopt;
 }
-auto EffectLine::init_tail(const Views& tail) -> Tail {
+auto EffectLine::parse_tail(const Views& tail) -> Tail {
   std::vector<Mapsto> map;
   for (const auto& e : tail) {
     const auto pair = split(e, ":");
@@ -107,7 +107,7 @@ Effect::Effect(const EffectLine& line)
 }
 std::optional<Effect> Effect::make(std::string_view v) {
   EffectLine line;
-  if (line.init(v)) {
+  if (line.parse(v)) {
     return Effect{line};
   }
   return std::nullopt;
