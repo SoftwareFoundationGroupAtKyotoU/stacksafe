@@ -23,6 +23,7 @@ target_sources(${target} PRIVATE
   interpreter.cpp
   log.cpp
   map.cpp
+  matrix.cpp
   node.cpp
   params.cpp
   pointsto.cpp
