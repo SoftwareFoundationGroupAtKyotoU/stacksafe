@@ -38,7 +38,12 @@ Index::operator int() const {
 Index::operator bool() const {
   return index_ != OTHERS.index_;
 }
-Arity::Arity(int arity) : Index{arity} {}
+Arity::Arity(int arity) : Index{arity} {
+  assert(0 <= arity);
+}
+std::size_t Arity::value() const {
+  return index_;
+}
 Index Arity::index(int i) const {
   if (OTHERS.index_ < i && i < this->index_) {
     return Index{i};
