@@ -33,9 +33,6 @@ Index::Index(int index) : index_{index} {
 bool Index::is_valid(Index arity) const {
   return OTHERS.index_ < index_ && index_ < arity.index_;
 }
-Index::operator int() const {
-  return index_;
-}
 Index::operator bool() const {
   return index_ != OTHERS.index_;
 }
