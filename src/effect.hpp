@@ -22,6 +22,7 @@ class Effect {
     OTHERS = -3,
   };
   static std::optional<Effect> make(std::string_view v);
+  bool depends(Index from, Index to) const;
 
  private:
   std::size_t convert(Index index) const;

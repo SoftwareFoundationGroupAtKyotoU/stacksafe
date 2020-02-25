@@ -132,6 +132,15 @@ std::optional<Effect> Effect::make(std::string_view v) {
   }
   return std::nullopt;
 }
+bool Effect::depends(Index from, Index to) const {
+  if (!name_.empty()) {
+    const auto n = static_cast<Index>(arity_);
+    if (from < n && to < n) {
+      return mat_.get(convert(from), convert(to));
+    }
+  }
+  return true;
+}
 std::size_t Effect::convert(Index index) const {
   assert(index < static_cast<Index>(arity_));
   const auto n = static_cast<int>(arity_);
