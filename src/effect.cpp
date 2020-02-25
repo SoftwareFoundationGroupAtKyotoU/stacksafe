@@ -26,7 +26,7 @@ class EffectLine {
   using Views = std::vector<std::string_view>;
   using Mapsto = std::tuple<Index, Index>;
   using Head = std::optional<std::tuple<std::string_view, Arity>>;
-  using Tail = std::optional<std::vector<Mapsto>>;
+  using Tail = std::optional<Mapsto>;
   std::string_view line_;
   std::string_view name_;
   Arity arity_;
@@ -41,7 +41,7 @@ class EffectLine {
 
  private:
   static Head parse_head(std::string_view head);
-  static std::optional<Mapsto> parse_mapsto(Arity arity, std::string_view v);
+  static Tail parse_tail(Arity arity, std::string_view v);
   static Views split(std::string_view v, const char* delim);
   static Index to_index(std::string_view v);
 };
@@ -62,7 +62,7 @@ bool EffectLine::parse() {
     const auto arity = std::get<1>(*head);
     std::vector<Mapsto> map;
     for (const auto& tail : Views{std::next(vec.begin()), vec.end()}) {
-      if (const auto pair = parse_mapsto(arity, tail)) {
+      if (const auto pair = parse_tail(arity, tail)) {
         map.push_back(*std::move(pair));
       } else {
         return false;
@@ -85,8 +85,7 @@ auto EffectLine::parse_head(std::string_view head) -> Head {
   }
   return std::nullopt;
 }
-auto EffectLine::parse_mapsto(Arity arity, std::string_view v)
-    -> std::optional<Mapsto> {
+auto EffectLine::parse_tail(Arity arity, std::string_view v) -> Tail {
   const auto pair = split(v, ":");
   if (pair.size() == 2) {
     if (const auto lhs = arity.to_index(pair[0])) {
