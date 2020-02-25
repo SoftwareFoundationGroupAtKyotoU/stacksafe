@@ -20,7 +20,7 @@ class EffectLine {
   std::string_view name() const;
   std::size_t arity() const;
   const std::vector<Mapsto>& map() const;
-  bool parse(std::string_view line);
+  bool parse();
 
  private:
   static Head parse_head(std::string_view head);
@@ -39,8 +39,8 @@ std::size_t EffectLine::arity() const {
 auto EffectLine::map() const -> const std::vector<Mapsto>& {
   return map_;
 }
-bool EffectLine::parse(std::string_view line) {
-  const auto vec = split(line, ",");
+bool EffectLine::parse() {
+  const auto vec = split(line_, ",");
   if (const auto head = parse_head(vec.front())) {
     const Views views{std::next(vec.begin()), vec.end()};
     if (const auto tail = parse_tail(views)) {
@@ -110,7 +110,7 @@ Effect::Effect(const EffectLine& line)
 }
 std::optional<Effect> Effect::make(std::string_view v) {
   EffectLine line{v};
-  if (line.parse(v)) {
+  if (line.parse()) {
     return Effect{line};
   }
   return std::nullopt;
