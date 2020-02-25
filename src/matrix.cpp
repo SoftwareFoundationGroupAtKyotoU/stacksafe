@@ -20,6 +20,7 @@ std::optional<int> to_int(std::string_view v) {
   return std::nullopt;
 }
 enum class IndexInit : int { GLOBAL = -1, RETURN = -2, OTHERS = -3 };
+constexpr std::size_t extra_space = 2;
 }  // namespace
 
 const Index Index::GLOBAL{IndexInit::GLOBAL};
@@ -64,6 +65,7 @@ Index Arity::to_index(std::string_view v) const {
 }
 
 Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
+Matrix::Matrix(Arity arity) : Matrix{arity.value() + extra_space, false} {}
 Matrix::Matrix(std::size_t n, bool init)
     : Super(n * n, init ? 1 : 0), size_{n} {}
 void Matrix::init(std::size_t n, bool init) {
