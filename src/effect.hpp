@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_EB0B0AEA_791C_48A0_BE6F_8E63AC0A1D93
 #define INCLUDE_GUARD_EB0B0AEA_791C_48A0_BE6F_8E63AC0A1D93
 
+#include <map>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -20,6 +21,10 @@ class Effect {
   const Arity& arity() const;
   std::vector<Index> indices() const;
   bool depends(Index from, Index to) const;
+};
+
+class EffectMap : private std::map<std::string, Effect> {
+  using Super = std::map<std::string, Effect>;
 };
 
 }  // namespace stacksafe
