@@ -7,12 +7,7 @@
 
 namespace stacksafe {
 namespace {
-enum class Index : int {
-  GLOBAL = -1,
-  RETURN = -2,
-  OTHERS = -3,
-};
-std::size_t convert(std::size_t arity, Index index) {
+std::size_t convert(std::size_t arity, Effect::Index index) {
   const auto val = static_cast<int>(arity) - static_cast<int>(index);
   assert(0 <= val);
   return val;
@@ -21,7 +16,7 @@ std::size_t convert(std::size_t arity, Index index) {
 
 class EffectLine {
   using Views = std::vector<std::string_view>;
-  using Mapsto = std::tuple<Index, Index>;
+  using Mapsto = std::tuple<Effect::Index, Effect::Index>;
   using Head = std::optional<std::tuple<std::string_view, std::size_t>>;
   using Tail = std::optional<std::vector<Mapsto>>;
   std::string_view line_;
@@ -41,7 +36,7 @@ class EffectLine {
   static Tail parse_tail(const Views& tail);
   static Views split(std::string_view v, const char* delim);
   static std::optional<int> to_int(std::string_view v);
-  static Index to_index(std::string_view v);
+  static Effect::Index to_index(std::string_view v);
 };
 
 EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
@@ -86,7 +81,7 @@ auto EffectLine::parse_tail(const Views& tail) -> Tail {
     }
     const auto lhs = to_index(pair[0]);
     const auto rhs = to_index(pair[1]);
-    if (lhs == Index::OTHERS || rhs == Index::OTHERS) {
+    if (lhs == Effect::Index::OTHERS || rhs == Effect::Index::OTHERS) {
       return std::nullopt;
     }
     map.emplace_back(lhs, rhs);
@@ -117,15 +112,15 @@ std::optional<int> EffectLine::to_int(std::string_view v) {
   }
   return std::nullopt;
 }
-Index EffectLine::to_index(std::string_view v) {
+Effect::Index EffectLine::to_index(std::string_view v) {
   if (v == "g") {
-    return Index::GLOBAL;
+    return Effect::Index::GLOBAL;
   } else if (v == "r") {
-    return Index::RETURN;
+    return Effect::Index::RETURN;
   } else if (const auto i = to_int(v)) {
-    return static_cast<Index>(*i);
+    return static_cast<Effect::Index>(*i);
   } else {
-    return Index::OTHERS;
+    return Effect::Index::OTHERS;
   }
 }
 
