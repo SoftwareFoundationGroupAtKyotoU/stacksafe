@@ -67,6 +67,9 @@ void Matrix::init(std::size_t n, bool init) {
   size_ = n;
   Super::assign(n * n, init ? 1 : 0);
 }
+Arity Matrix::arity() const {
+  return arity_;
+}
 std::size_t Matrix::size() const {
   return size_;
 }

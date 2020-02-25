@@ -119,6 +119,9 @@ std::optional<Effect> Effect::make(std::string_view v) {
   }
   return std::nullopt;
 }
+Arity Effect::arity() const {
+  return mat_.arity();
+}
 bool Effect::depends(Index from, Index to) const {
   if (!name_.empty()) {
     const auto n = static_cast<Index>(arity_);

@@ -39,6 +39,7 @@ class Matrix : private std::vector<std::uint8_t> {
   explicit Matrix(Arity arity);
   Matrix(std::size_t n, bool init);
   void init(std::size_t n, bool init);
+  Arity arity() const;
   std::size_t size() const;
   void set(std::size_t row, std::size_t col);
   bool get(std::size_t row, std::size_t col) const;
