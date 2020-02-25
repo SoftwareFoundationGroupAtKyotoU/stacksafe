@@ -64,8 +64,10 @@ bool EffectLine::parse() {
 auto EffectLine::parse_head(std::string_view head) -> Head {
   const auto pair = split(head, "/");
   if (pair.size() == 2) {
-    if (const auto arity = to_size_t(pair[1])) {
-      return std::make_tuple(pair[0], *arity);
+    const auto name = pair[0];
+    const auto arity = to_int(pair[1]);
+    if (arity) {
+      return std::make_tuple(name, *arity);
     }
   }
   return std::nullopt;
