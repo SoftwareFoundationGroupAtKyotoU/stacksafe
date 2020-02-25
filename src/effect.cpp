@@ -103,7 +103,7 @@ std::optional<std::size_t> EffectLine::to_size_t(std::string_view v) {
 }
 
 Effect::Effect(const EffectLine& line)
-    : mat_{line.arity()}, name_{line.name()} {
+    : mat_{line.arity() + 2}, name_{line.name()}, arity_{line.arity()} {
   for (const auto& [lhs, rhs] : line.map()) {
     mat_.set(lhs, rhs);
   }
