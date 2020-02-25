@@ -45,6 +45,9 @@ Arity::Arity(int arity) : Index{arity} {
 std::size_t Arity::value() const {
   return index_;
 }
+bool Arity::is_valid(Index index) const {
+  return OTHERS.index_ < index.index_ && index_ < this->index_;
+}
 Index Arity::to_index(std::string_view v) const {
   if (v == "g") {
     return GLOBAL;
