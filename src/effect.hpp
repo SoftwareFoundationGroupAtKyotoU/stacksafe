@@ -12,7 +12,6 @@ class EffectLine;
 class Effect {
   Matrix mat_;
   std::string name_;
-  std::size_t arity_;
   explicit Effect(const EffectLine& line);
 
  public:

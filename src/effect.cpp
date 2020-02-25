@@ -103,11 +103,10 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
   }
   views.emplace_back(v);
   return views;
-  ;
 }
 
 Effect::Effect(const EffectLine& line)
-    : mat_{line.arity()}, name_{line.name()}, arity_{line.arity().value()} {
+    : mat_{line.arity()}, name_{line.name()} {
   for (const auto& [lhs, rhs] : line.map()) {
     mat_.set(convert(lhs), convert(rhs));
   }
@@ -124,16 +123,15 @@ Arity Effect::arity() const {
 }
 bool Effect::depends(Index from, Index to) const {
   if (!name_.empty()) {
-    const auto n = static_cast<Index>(arity_);
-    if (from.is_valid(n) && to.is_valid(n)) {
+    if (arity().is_valid(from) && arity().is_valid(to)) {
       return mat_.get(convert(from), convert(to));
     }
   }
   return true;
 }
 std::size_t Effect::convert(Index index) const {
-  assert(index.is_valid(static_cast<Index>(arity_)));
-  const auto n = static_cast<int>(arity_);
+  assert(arity().is_valid(index));
+  const auto n = static_cast<int>(arity().value());
   const auto i = static_cast<int>(index);
   return n - i - 1;
 }
