@@ -16,7 +16,7 @@ class Effect {
 
  public:
   static std::optional<Effect> make(std::string_view v);
-  Arity arity() const;
+  const Arity& arity() const;
   bool depends(Index from, Index to) const;
 };
 

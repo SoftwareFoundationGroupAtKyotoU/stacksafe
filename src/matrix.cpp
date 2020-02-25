@@ -65,7 +65,8 @@ Index Arity::to_index(std::string_view v) const {
 }
 
 Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
-Matrix::Matrix(Arity arity) : Matrix{arity.value() + extra_space, false} {}
+Matrix::Matrix(const Arity& arity)
+    : Matrix{arity.value() + extra_space, false} {}
 Matrix::Matrix(std::size_t n, bool init)
     : Super(n * n, init ? 1 : 0),
       size_{n},
@@ -74,7 +75,7 @@ void Matrix::init(std::size_t n, bool init) {
   size_ = n;
   Super::assign(n * n, init ? 1 : 0);
 }
-Arity Matrix::arity() const {
+const Arity& Matrix::arity() const {
   return arity_;
 }
 std::size_t Matrix::size() const {

@@ -35,13 +35,13 @@ class EffectLine {
  public:
   explicit EffectLine(std::string_view line);
   std::string_view name() const;
-  Arity arity() const;
+  const Arity& arity() const;
   const std::vector<Mapsto>& map() const;
   bool parse();
 
  private:
   static Head parse_head(std::string_view head);
-  static Tail parse_tail(Arity arity, std::string_view v);
+  static Tail parse_tail(const Arity& arity, std::string_view v);
   static Views split(std::string_view v, const char* delim);
 };
 
@@ -49,7 +49,7 @@ EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
 std::string_view EffectLine::name() const {
   return name_;
 }
-Arity EffectLine::arity() const {
+const Arity& EffectLine::arity() const {
   return arity_;
 }
 auto EffectLine::map() const -> const std::vector<Mapsto>& {
@@ -58,7 +58,7 @@ auto EffectLine::map() const -> const std::vector<Mapsto>& {
 bool EffectLine::parse() {
   const auto vec = split(line_, ",");
   if (const auto head = parse_head(vec.front())) {
-    const auto arity = std::get<1>(*head);
+    const auto& arity = std::get<1>(*head);
     std::vector<Mapsto> map;
     for (const auto& tail : Views{std::next(vec.begin()), vec.end()}) {
       if (const auto pair = parse_tail(arity, tail)) {
@@ -83,7 +83,7 @@ auto EffectLine::parse_head(std::string_view head) -> Head {
   }
   return std::nullopt;
 }
-auto EffectLine::parse_tail(Arity arity, std::string_view v) -> Tail {
+auto EffectLine::parse_tail(const Arity& arity, std::string_view v) -> Tail {
   const auto pair = split(v, ":");
   if (pair.size() == 2) {
     if (const auto lhs = arity.to_index(pair[0])) {
@@ -118,7 +118,7 @@ std::optional<Effect> Effect::make(std::string_view v) {
   }
   return std::nullopt;
 }
-Arity Effect::arity() const {
+const Arity& Effect::arity() const {
   return mat_.arity();
 }
 bool Effect::depends(Index from, Index to) const {
