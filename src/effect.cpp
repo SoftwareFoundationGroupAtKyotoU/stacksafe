@@ -16,6 +16,10 @@ class EffectLine {
   using Tail = std::optional<std::vector<Mapsto>>;
   std::string name_;
   std::size_t arity_;
+  std::vector<Mapsto> map_;
+
+ public:
+  bool init(std::string_view line);
 
  private:
   static Head init_head(std::string_view head);
@@ -23,6 +27,19 @@ class EffectLine {
   static Views split(std::string_view v, const char* delim);
   static std::optional<std::size_t> to_size_t(std::string_view v);
 };
+
+bool EffectLine::init(std::string_view line) {
+  const auto vec = split(line, ",");
+  if (const auto head = init_head(vec.front())) {
+    const Views views{std::next(vec.begin()), vec.end()};
+    if (const auto tail = init_tail(views)) {
+      std::tie(name_, arity_) = *std::move(head);
+      map_ = *std::move(tail);
+      return true;
+    }
+  }
+  return false;
+}
 auto EffectLine::init_head(std::string_view head) -> Head {
   const auto pair = split(head, "/");
   if (pair.size() == 2) {
