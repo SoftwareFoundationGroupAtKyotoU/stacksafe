@@ -6,6 +6,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+#include "matrix.hpp"
 
 namespace llvm {
 class CallBase;
@@ -15,18 +16,6 @@ class raw_ostream;
 
 namespace stacksafe {
 class Symbol;
-
-class Matrix : private std::vector<std::uint8_t> {
-  using Super = std::vector<std::uint8_t>;
-  std::size_t size_;
-
- public:
-  explicit Matrix(std::size_t n);
-  Matrix(std::size_t n, bool init);
-  std::size_t size() const;
-  void set(std::size_t row, std::size_t col);
-  bool get(std::size_t row, std::size_t col) const;
-};
 
 class Depend : private Matrix {
   std::string name_;
