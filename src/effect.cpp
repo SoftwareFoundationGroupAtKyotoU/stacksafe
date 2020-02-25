@@ -10,11 +10,11 @@ namespace stacksafe {
 class EffectLine {
   using Views = std::vector<std::string_view>;
   using Mapsto = std::tuple<Index, Index>;
-  using Head = std::optional<std::tuple<std::string_view, std::size_t>>;
+  using Head = std::optional<std::tuple<std::string_view, Arity>>;
   using Tail = std::optional<std::vector<Mapsto>>;
   std::string_view line_;
   std::string_view name_;
-  std::size_t arity_;
+  Arity arity_;
   std::vector<Mapsto> map_;
 
  public:
@@ -37,7 +37,7 @@ std::string_view EffectLine::name() const {
   return name_;
 }
 std::size_t EffectLine::arity() const {
-  return arity_;
+  return arity_.value();
 }
 auto EffectLine::map() const -> const std::vector<Mapsto>& {
   return map_;
@@ -45,7 +45,7 @@ auto EffectLine::map() const -> const std::vector<Mapsto>& {
 bool EffectLine::parse() {
   const auto vec = split(line_, ",");
   if (const auto head = parse_head(vec.front())) {
-    const Arity arity{static_cast<int>(std::get<1>(*head))};
+    const auto arity = std::get<1>(*head);
     const Views views{std::next(vec.begin()), vec.end()};
     if (const auto tail = parse_tail(arity, views)) {
       std::tie(name_, arity_) = *std::move(head);
@@ -61,7 +61,7 @@ auto EffectLine::parse_head(std::string_view head) -> Head {
     const auto name = pair[0];
     const auto arity = to_int(pair[1]);
     if (arity) {
-      return std::make_tuple(name, *arity);
+      return std::make_tuple(name, Arity{*arity});
     }
   }
   return std::nullopt;
