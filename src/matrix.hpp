@@ -47,9 +47,6 @@ class Matrix : private std::vector<std::uint8_t> {
   bool get(std::size_t row, std::size_t col) const;
   void set(Index row, Index col);
   bool get(Index row, Index col) const;
-
- private:
-  std::size_t convert(Index index) const;
 };
 
 }  // namespace stacksafe

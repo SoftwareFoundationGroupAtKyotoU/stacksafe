@@ -89,14 +89,10 @@ bool Matrix::get(std::size_t row, std::size_t col) const {
   return Super::at(row * size_ + col) != 0;
 }
 void Matrix::set(Index row, Index col) {
-  set(convert(row), convert(col));
+  set(arity_.convert(row), arity_.convert(col));
 }
 bool Matrix::get(Index row, Index col) const {
-  return get(convert(row), convert(col));
-}
-std::size_t Matrix::convert(Index index) const {
-  const int n = arity_.value();
-  return n - static_cast<int>(index) - 1;
+  return get(arity_.convert(row), arity_.convert(col));
 }
 
 }  // namespace stacksafe
