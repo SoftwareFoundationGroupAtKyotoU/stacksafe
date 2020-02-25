@@ -41,7 +41,7 @@ class EffectLine {
 
  private:
   static Head parse_head(std::string_view head);
-  static Tail parse_tail(Index arity, const Views& tail);
+  static Tail parse_tail(Arity arity, const Views& tail);
   static Views split(std::string_view v, const char* delim);
   static std::optional<int> to_int(std::string_view v);
   static Index to_index(std::string_view v);
@@ -60,7 +60,7 @@ auto EffectLine::map() const -> const std::vector<Mapsto>& {
 bool EffectLine::parse() {
   const auto vec = split(line_, ",");
   if (const auto head = parse_head(vec.front())) {
-    const auto arity = static_cast<Index>(std::get<1>(*head));
+    const Arity arity{static_cast<int>(std::get<1>(*head))};
     const Views views{std::next(vec.begin()), vec.end()};
     if (const auto tail = parse_tail(arity, views)) {
       std::tie(name_, arity_) = *std::move(head);
@@ -81,22 +81,20 @@ auto EffectLine::parse_head(std::string_view head) -> Head {
   }
   return std::nullopt;
 }
-auto EffectLine::parse_tail(Index arity, const Views& tail) -> Tail {
+auto EffectLine::parse_tail(Arity arity, const Views& tail) -> Tail {
   std::vector<Mapsto> map;
   for (const auto& e : tail) {
     const auto pair = split(e, ":");
     if (pair.size() != 2) {
       return std::nullopt;
     }
-    const auto lhs = to_index(pair[0]);
-    if (!lhs.is_valid(arity)) {
+    const auto lhs = arity.to_index(pair[0]);
+    const auto rhs = arity.to_index(pair[1]);
+    if (lhs && rhs) {
+      map.emplace_back(lhs, rhs);
+    } else {
       return std::nullopt;
     }
-    const auto rhs = to_index(pair[1]);
-    if (!rhs.is_valid(arity)) {
-      return std::nullopt;
-    }
-    map.emplace_back(lhs, rhs);
   }
   return map;
 }
