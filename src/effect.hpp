@@ -30,6 +30,7 @@ class EffectMap : private std::map<std::string, Effect> {
 
  public:
   Effect get(const llvm::CallBase& call) const;
+  void load(const std::string& file);
 };
 
 }  // namespace stacksafe

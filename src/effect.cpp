@@ -1,8 +1,11 @@
 #include "effect.hpp"
 #include <llvm/IR/InstrTypes.h>
+#include <llvm/Support/Format.h>
+#include <llvm/Support/raw_ostream.h>
 #include <cassert>
 #include <climits>
 #include <cstdlib>
+#include <fstream>
 #include <tuple>
 #include <vector>
 
@@ -144,6 +147,22 @@ Effect EffectMap::get(const llvm::CallBase& call) const {
     }
   }
   return Effect{};
+}
+void EffectMap::load(const std::string& file) {
+  std::ifstream input{file};
+  std::string buf;
+  Effect effect;
+  int line = 0;
+  while (input.good()) {
+    std::getline(input, buf);
+    if (effect.init(buf)) {
+      Super::try_emplace(effect.name(), effect);
+    } else {
+      const auto msg = "Failed to parse line # %d in %s\n";
+      (llvm::errs() << llvm::format(msg, line, file.c_str())).flush();
+    }
+    ++line;
+  }
 }
 
 }  // namespace stacksafe
