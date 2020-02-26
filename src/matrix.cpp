@@ -83,6 +83,11 @@ void Matrix::init(std::size_t n, bool init) {
   size_ = n;
   Super::assign(n * n, init ? 1 : 0);
 }
+void Matrix::init(const Arity& arity) {
+  arity_ = arity;
+  size_ = arity.value() + extra_space;
+  Super::assign(size_ * size_, 0);
+}
 const Arity& Matrix::arity() const {
   return arity_;
 }
