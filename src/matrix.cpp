@@ -30,6 +30,10 @@ Index::Index(int index) : index_{index} {
   assert(GLOBAL < *this);
 }
 Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
+Index& Index::operator++() {
+  ++index_;
+  return *this;
+}
 Index::operator bool() const {
   return !(*this == OTHERS);
 }

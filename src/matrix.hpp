@@ -18,6 +18,7 @@ class Index {
  public:
   static const Index GLOBAL, RETURN, OTHERS;
   explicit Index(IndexInit init);
+  Index& operator++();
   explicit operator bool() const;
   bool operator==(const Index& that) const;
   bool operator<(const Index& that) const;
