@@ -5,6 +5,10 @@
 #include <string_view>
 #include <vector>
 
+namespace llvm {
+class raw_ostream;
+}
+
 namespace stacksafe {
 namespace {
 enum class IndexInit;
@@ -18,6 +22,7 @@ class Index {
  public:
   static const Index GLOBAL, RETURN, OTHERS;
   explicit Index(IndexInit init);
+  llvm::raw_ostream& print(llvm::raw_ostream& os) const;
   Index& operator++();
   explicit operator bool() const;
   bool operator==(const Index& that) const;

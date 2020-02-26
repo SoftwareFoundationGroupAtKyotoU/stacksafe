@@ -1,4 +1,6 @@
 #include "matrix.hpp"
+#include <llvm/Support/ErrorHandling.h>
+#include <llvm/Support/raw_ostream.h>
 #include <cassert>
 #include <climits>
 #include <cstdlib>
@@ -30,6 +32,18 @@ Index::Index(int index) : index_{index} {
   assert(GLOBAL < *this);
 }
 Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
+llvm::raw_ostream& Index::print(llvm::raw_ostream& os) const {
+  switch (static_cast<IndexInit>(index_)) {
+    default:
+      return (os << index_);
+    case IndexInit::GLOBAL:
+      return (os << "g");
+    case IndexInit::RETURN:
+      return (os << "r");
+    case IndexInit::OTHERS:
+      llvm_unreachable("OTHERS index must not be printed");
+  }
+}
 Index& Index::operator++() {
   ++index_;
   return *this;
