@@ -113,13 +113,6 @@ Effect::Effect(const EffectLine& line)
     matrix_.set(lhs, rhs);
   }
 }
-std::optional<Effect> Effect::make(std::string_view v) {
-  EffectLine line{v};
-  if (line.parse()) {
-    return Effect{line};
-  }
-  return std::nullopt;
-}
 const std::string& Effect::name() const {
   return name_;
 }
