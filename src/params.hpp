@@ -18,6 +18,7 @@ class Params : private std::vector<const llvm::Value *> {
   class ParamsIterator;
 
  public:
+  using Super::size;
   ParamsIterator begin() const;
   ParamsIterator end() const;
   void push_back(const llvm::Value &v);
@@ -43,6 +44,7 @@ class NodeMap : std::map<Index, NodeSet> {
   using Super = std::map<Index, NodeSet>;
 
  public:
+  using Super::begin, Super::end;
   NodeMap(const Params &params, Graph &graph);
 };
 

@@ -164,16 +164,18 @@ void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
   append(dst, heads);
 }
 void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
-  NodeSet nodes;
-  for (const auto &arg : params) {
-    for (const auto &tail : lookup(arg)) {
-      graph_.reachables(tail, nodes);
+  assert(dst.arg_size() == params.size());
+  NodeMap nodemap{params, graph_};
+  const auto effect = effects_.get(dst);
+  for (const auto &[from, head] : nodemap) {
+    for (const auto &[to, tail] : nodemap) {
+      if (effect.depends(from, to)) {
+        append(tail, head);
+      }
     }
-  }
-  graph_.reachables(Node::get_global(), nodes);
-  append(nodes, nodes);
-  if (is_return(dst)) {
-    append(dst, nodes);
+    if (is_return(dst) && effect.depends(from, Index::RETURN)) {
+      append(dst, head);
+    }
   }
 }
 void PointsTo::constant(const llvm::Instruction &) {}
