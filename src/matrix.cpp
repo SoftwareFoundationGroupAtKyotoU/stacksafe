@@ -71,13 +71,6 @@ Index Arity::to_index(std::string_view v) const {
     return OTHERS;
   }
 }
-Index Arity::to_index(std::size_t i) const {
-  const int index = i;
-  if (index < index_) {
-    return Index{index};
-  }
-  return OTHERS;
-}
 
 Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
 Matrix::Matrix(const Arity& arity)
