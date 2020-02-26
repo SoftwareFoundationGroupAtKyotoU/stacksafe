@@ -54,13 +54,6 @@ std::size_t Arity::convert(Index index) const {
   assert(is_valid(index));
   return this->index_ - index.index_ - 1;
 }
-std::vector<Index> Arity::indices() const {
-  std::vector<Index> vec;
-  for (int i = 0; i < index_; ++i) {
-    vec.push_back(Index{i});
-  }
-  return vec;
-}
 bool Arity::is_valid(Index index) const {
   return OTHERS < index && index < *this;
 }
