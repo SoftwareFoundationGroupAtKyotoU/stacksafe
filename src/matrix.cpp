@@ -44,9 +44,7 @@ bool Index::operator<(const Index& that) const {
   return this->index_ < that.index_;
 }
 
-Arity::Arity(int arity) : Index{arity} {
-  assert(0 <= arity);
-}
+Arity::Arity(std::size_t arity) : Index{static_cast<int>(arity)} {}
 std::size_t Arity::value() const {
   return index_;
 }
@@ -73,9 +71,7 @@ Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
 Matrix::Matrix(const Arity& arity)
     : Matrix{arity.value() + extra_space, false} {}
 Matrix::Matrix(std::size_t n, bool init)
-    : Super(n * n, init ? 1 : 0),
-      size_{n},
-      arity_{static_cast<int>(n) - static_cast<int>(extra_space)} {}
+    : Super(n * n, init ? 1 : 0), size_{n}, arity_{n - extra_space} {}
 void Matrix::init(std::size_t n, bool init) {
   size_ = n;
   Super::assign(n * n, init ? 1 : 0);

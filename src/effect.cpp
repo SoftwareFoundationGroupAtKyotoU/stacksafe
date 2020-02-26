@@ -8,7 +8,7 @@
 
 namespace stacksafe {
 namespace {
-std::optional<int> to_int(std::string_view v) {
+std::optional<std::size_t> to_size_t(std::string_view v) {
   const std::string buf{v};
   const auto b = buf.c_str();
   const auto e = b + buf.size();
@@ -16,7 +16,7 @@ std::optional<int> to_int(std::string_view v) {
     char* p = nullptr;
     const auto val = std::strtol(b, &p, 10);
     if (p == e && 0 <= val && val != LONG_MAX && val <= INT_MAX) {
-      return static_cast<int>(val);
+      return static_cast<std::size_t>(val);
     }
   }
   return std::nullopt;
@@ -78,7 +78,7 @@ auto EffectLine::parse_head(std::string_view head) -> Head {
   const auto pair = split(head, "/");
   if (pair.size() == 2) {
     const auto name = pair[0];
-    if (const auto arity = to_int(pair[1])) {
+    if (const auto arity = to_size_t(pair[1])) {
       return std::make_tuple(name, Arity{*arity});
     }
   }
