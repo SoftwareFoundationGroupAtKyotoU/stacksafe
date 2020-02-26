@@ -136,6 +136,19 @@ bool Effect::depends(Index from, Index to) const {
   }
   return true;
 }
+llvm::raw_ostream& Effect::print(llvm::raw_ostream& os) const {
+  const auto a = arity();
+  os << name_ << "/" << a.value();
+  for (auto from = Index::GLOBAL; a.is_valid(from); ++from) {
+    for (auto to = Index::RETURN; a.is_valid(from); ++to) {
+      if (matrix_.get(from, to)) {
+        to.print(from.print(os << ",") << ":");
+      }
+    }
+  }
+  (os << "\n").flush();
+  return os;
+}
 
 Effect EffectMap::get(const llvm::CallBase& call) const {
   if (const auto f = call.getCalledFunction()) {

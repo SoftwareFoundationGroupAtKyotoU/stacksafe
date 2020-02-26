@@ -9,7 +9,8 @@
 
 namespace llvm {
 class CallBase;
-}
+class raw_ostream;
+}  // namespace llvm
 
 namespace stacksafe {
 
@@ -23,6 +24,7 @@ class Effect {
   const Arity& arity() const;
   bool init(std::string_view v);
   bool depends(Index from, Index to) const;
+  llvm::raw_ostream& print(llvm::raw_ostream& os) const;
 };
 
 class EffectMap : private std::map<std::string, Effect> {
