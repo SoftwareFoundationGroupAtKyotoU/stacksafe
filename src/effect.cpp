@@ -21,7 +21,6 @@ std::optional<std::size_t> to_size_t(std::string_view v) {
   }
   return std::nullopt;
 }
-}  // namespace
 
 class EffectLine {
   using Views = std::vector<std::string_view>;
@@ -105,6 +104,7 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
   views.emplace_back(v);
   return views;
 }
+}  // namespace
 
 Effect::Effect() : matrix_{0}, name_{} {}
 const std::string& Effect::name() const {
