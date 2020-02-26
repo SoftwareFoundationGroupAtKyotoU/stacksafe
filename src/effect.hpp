@@ -12,12 +12,10 @@ class CallBase;
 }
 
 namespace stacksafe {
-class EffectLine;
 
 class Effect {
   Matrix matrix_;
   std::string name_;
-  explicit Effect(const EffectLine& line);
 
  public:
   Effect();
