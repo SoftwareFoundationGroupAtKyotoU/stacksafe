@@ -7,7 +7,8 @@
 
 namespace llvm {
 class Function;
-}
+class Value;
+}  // namespace llvm
 
 namespace stacksafe {
 
@@ -36,6 +37,7 @@ class Graph : private std::vector<Edge> {
   NodeSet tails() const;
   bool merge(const Graph& g);
   void reachables(const Node& n, NodeSet& nodes) const;
+  void reachables(const llvm::Value& v, NodeSet& nodes) const;
 
  private:
   Result insert(iterator hint, const Edge& e);
