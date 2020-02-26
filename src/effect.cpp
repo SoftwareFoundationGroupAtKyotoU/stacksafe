@@ -124,16 +124,6 @@ const std::string& Effect::name() const {
 const Arity& Effect::arity() const {
   return matrix_.arity();
 }
-std::vector<Index> Effect::indices() const {
-  std::vector<Index> vec{Index::GLOBAL};
-  const auto& a = arity();
-  for (std::size_t i = 0; i < a.value(); ++i) {
-    const auto index = a.to_index(i);
-    assert(index);
-    vec.push_back(index);
-  }
-  return vec;
-}
 bool Effect::depends(Index from, Index to) const {
   if (!name_.empty()) {
     assert(arity().is_valid(from));
