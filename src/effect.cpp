@@ -1,4 +1,5 @@
 #include "effect.hpp"
+#include <llvm/IR/InstrTypes.h>
 #include <cassert>
 #include <climits>
 #include <cstdlib>
@@ -144,6 +145,18 @@ bool Effect::depends(Index from, Index to) const {
     return matrix_.get(from, to);
   }
   return true;
+}
+
+Effect EffectMap::get(const llvm::CallBase& call) const {
+  if (const auto f = call.getCalledFunction()) {
+    if (const auto it = Super::find(f->getName().str()); it != Super::end()) {
+      const auto& effect = it->second;
+      assert(effect.arity().value() == call.arg_size() &&
+             "arity of called function must be the same");
+      return effect;
+    }
+  }
+  return Effect{};
 }
 
 }  // namespace stacksafe

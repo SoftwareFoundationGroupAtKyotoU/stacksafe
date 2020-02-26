@@ -7,6 +7,10 @@
 #include <string_view>
 #include "matrix.hpp"
 
+namespace llvm {
+class CallBase;
+}
+
 namespace stacksafe {
 class EffectLine;
 
@@ -26,6 +30,9 @@ class Effect {
 
 class EffectMap : private std::map<std::string, Effect> {
   using Super = std::map<std::string, Effect>;
+
+ public:
+  Effect get(const llvm::CallBase& call) const;
 };
 
 }  // namespace stacksafe
