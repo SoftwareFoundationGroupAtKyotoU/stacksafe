@@ -177,5 +177,19 @@ void EffectMap::load(const std::string& file) {
     ++line;
   }
 }
+void EffectMap::save(const std::string& file) const {
+  std::ofstream output{file};
+  if (!output) {
+    const auto msg = "Failed to open file: %s\n";
+    (llvm::errs() << llvm::format(msg, file.c_str())).flush();
+    return;
+  }
+  for (const auto& [name, effect] : *this) {
+    std::string buf;
+    llvm::raw_string_ostream os{buf};
+    effect.print(os);
+    output << os.str();
+  }
+}
 
 }  // namespace stacksafe
