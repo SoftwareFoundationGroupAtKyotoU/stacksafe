@@ -136,7 +136,8 @@ std::vector<Index> Effect::indices() const {
 }
 bool Effect::depends(Index from, Index to) const {
   if (!name_.empty()) {
-    assert(arity().is_valid(from) && arity().is_valid(to));
+    assert(arity().is_valid(from));
+    assert(arity().is_valid(to));
     return matrix_.get(from, to);
   }
   return true;
