@@ -125,6 +125,18 @@ const std::string& Effect::name() const {
 const Arity& Effect::arity() const {
   return matrix_.arity();
 }
+bool Effect::init(std::string_view v) {
+  EffectLine line{v};
+  if (line.parse()) {
+    matrix_.init(line.arity());
+    name_ = line.name();
+    for (const auto& [lhs, rhs] : line.map()) {
+      matrix_.set(lhs, rhs);
+    }
+    return true;
+  }
+  return false;
+}
 bool Effect::depends(Index from, Index to) const {
   if (!name_.empty()) {
     assert(arity().is_valid(from));
