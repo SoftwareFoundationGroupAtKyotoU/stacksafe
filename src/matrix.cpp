@@ -51,7 +51,7 @@ std::size_t Arity::convert(Index index) const {
   return this->index_ - index.index_ - 1;
 }
 std::vector<Index> Arity::indices() const {
-  std::vector<Index> vec{GLOBAL};
+  std::vector<Index> vec;
   for (int i = 0; i < index_; ++i) {
     vec.push_back(Index{i});
   }
