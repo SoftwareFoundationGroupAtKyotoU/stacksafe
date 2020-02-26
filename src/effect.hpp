@@ -16,6 +16,7 @@ class Effect {
   explicit Effect(const EffectLine& line);
 
  public:
+  Effect();
   static std::optional<Effect> make(std::string_view v);
   const std::string& name() const;
   const Arity& arity() const;

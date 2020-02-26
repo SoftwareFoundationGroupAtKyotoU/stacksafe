@@ -105,6 +105,7 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
   return views;
 }
 
+Effect::Effect() : matrix_{0}, name_{} {}
 Effect::Effect(const EffectLine& line)
     : matrix_{line.arity()}, name_{line.name()} {
   for (const auto& [lhs, rhs] : line.map()) {
