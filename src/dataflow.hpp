@@ -15,6 +15,7 @@ class DataFlow {
 
  public:
   explicit DataFlow(const llvm::Function& f);
+  void analyze();
 };
 
 }  // namespace stacksafe
