@@ -20,7 +20,6 @@ target_sources(${target} PRIVATE
   effect.cpp
   graph.cpp
   hash.cpp
-  interpreter.cpp
   log.cpp
   map.cpp
   matrix.cpp
