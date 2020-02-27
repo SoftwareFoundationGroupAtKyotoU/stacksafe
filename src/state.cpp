@@ -36,6 +36,10 @@ void State::transfer(const Component& c) {
     find(succ).merge(c.graph_);
   }
 }
+bool State::is_safe() const {
+  const auto pred = [](const Component& c) { return c.is_safe(); };
+  return std::all_of(begin(), end(), pred);
+}
 Graph& State::find(BB b) {
   const auto pred = [b](const Component& c) { return c.blocks_.contains(b); };
   const auto it = std::find_if(begin(), end(), pred);

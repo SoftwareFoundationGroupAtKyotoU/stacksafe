@@ -30,6 +30,7 @@ class State : private std::vector<Component> {
  public:
   using Super::begin, Super::end, Super::emplace_back;
   void transfer(const Component& c);
+  bool is_safe() const;
 
  private:
   Graph& find(BB b);
