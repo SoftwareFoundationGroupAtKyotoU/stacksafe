@@ -12,7 +12,6 @@ target_compile_options(${target} INTERFACE
 set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 target_sources(${target} PRIVATE
-  abstract.cpp
   block.cpp
   cache.cpp
   dataflow.cpp
