@@ -42,11 +42,11 @@ const void *Node::ptr() const {
   } else if (auto reg = as_register()) {
     return &reg->value();
   } else if (auto g = std::get_if<GlobalSymbol>(this)) {
-    return g;
-  } else if (auto l = std::get_if<LocalSymbol>(this)) {
-    return l;
-  } else {
     return nullptr;
+  } else if (auto l = std::get_if<LocalSymbol>(this)) {
+    return *l;
+  } else {
+    return reinterpret_cast<const void *>(-1);
   }
 }
 std::pair<std::size_t, const void *> Node::pair() const {
