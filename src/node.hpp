@@ -15,10 +15,11 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
+namespace {
+using Value = std::variant<std::monostate, Symbol, Register>;
+}
 
-class Node : private std::variant<std::monostate, Symbol, Register> {
-  using Super = std::variant<std::monostate, Symbol, Register>;
-
+class Node : private Value {
  public:
   static Node get_symbol(const llvm::AllocaInst &a);
   static Node get_global();

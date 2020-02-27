@@ -5,8 +5,8 @@
 
 namespace stacksafe {
 
-Node::Node(const Symbol &sym) : Super{sym} {}
-Node::Node(const Register &reg) : Super{reg} {}
+Node::Node(const Symbol &sym) : Value{sym} {}
+Node::Node(const Register &reg) : Value{reg} {}
 Node Node::get_symbol(const llvm::AllocaInst &a) {
   return Node{Symbol{a}};
 }
