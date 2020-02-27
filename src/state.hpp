@@ -28,7 +28,7 @@ class State : private std::vector<Component> {
   using BB = Blocks::value_type;
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::emplace_back;
   void transfer(const Component& c);
 
  private:
