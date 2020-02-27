@@ -1,4 +1,5 @@
 #include "params.hpp"
+#include "graph.hpp"
 
 namespace stacksafe {
 
@@ -31,6 +32,15 @@ bool Params::ParamsIterator::operator==(ParamsIterator it) const {
 }
 bool Params::ParamsIterator::operator!=(ParamsIterator it) const {
   return super() != it.super();
+}
+
+NodeMap::NodeMap(const Params &params, Graph &graph) {
+  const auto at = [&self = *this](Index i) -> NodeSet & { return self[i]; };
+  auto index = Index::GLOBAL;
+  graph.reachables(Node::get_global(), at(index));
+  for (const auto &arg : params) {
+    graph.reachables(arg, at(++index));
+  }
 }
 
 }  // namespace stacksafe

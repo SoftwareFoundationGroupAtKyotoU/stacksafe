@@ -2,8 +2,8 @@
 #include <llvm/IR/Function.h>
 #include <vector>
 #include "domain.hpp"
+#include "node.hpp"
 #include "utility.hpp"
-#include "value.hpp"
 
 namespace stacksafe {
 std::string to_string(int num) {
@@ -38,19 +38,19 @@ std::string Cache::to_str(const Register& reg) const {
   static const std::string prefix{"%"};
   return prefix + to_string(lookup(&reg.value()));
 }
-std::string Cache::to_str(const Value& sym) const {
+std::string Cache::to_str(const Node& sym) const {
   static const std::string prefix{"&"};
-  return prefix + to_string(lookup(sym.value()));
+  return prefix + to_string(lookup(sym.ptr()));
 }
 std::string Cache::to_str(const llvm::Instruction& reg) const {
   static const std::string prefix{"%"};
   return prefix + to_string(lookup(&reg));
 }
 std::string Cache::to_str(const Domain& dom) const {
-  const auto cmp = [& self = *this](const Value& lhs, const Value& rhs) {
-    return self.lookup(lhs.value()) < self.lookup(rhs.value());
+  const auto cmp = [& self = *this](const Node& lhs, const Node& rhs) {
+    return self.lookup(lhs.ptr()) < self.lookup(rhs.ptr());
   };
-  std::vector<Value> symbols{dom.begin(), dom.end()};
+  std::vector<Node> symbols{dom.begin(), dom.end()};
   std::sort(symbols.begin(), symbols.end(), cmp);
   std::string ret{"["};
   bool first = true;

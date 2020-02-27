@@ -1,85 +1,46 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
-#include <map>
-#include <stack>
+#include <tuple>
 #include <vector>
-#include "map.hpp"
+#include "node.hpp"
 
 namespace llvm {
-class BasicBlock;
 class Function;
+class Value;
 }  // namespace llvm
 
 namespace stacksafe {
 
-class Frame {
-  int index_, low_;
-  bool on_stack_;
+class Edge : private std::tuple<Node, Node> {
+  using Super = std::tuple<Node, Node>;
 
  public:
-  Frame();
-  bool on_stack() const;
-  int index() const;
-  int low() const;
-  bool is_undef() const;
-  bool is_root() const;
-  void push(int n);
-  void update(int n);
-  void pop();
+  using Super::Super;
+  explicit Edge(const Node& n);
+  const Node& tail() const;
+  const Node& head() const;
+  const Super& pair() const;
 };
+bool operator==(const Edge& lhs, const Edge& rhs);
+bool operator<(const Edge& lhs, const Edge& rhs);
 
-class Block {
-  const llvm::BasicBlock* block_;
-
- public:
-  explicit Block(const llvm::BasicBlock& b);
-  std::vector<Block> successors() const;
-  const llvm::BasicBlock& get() const;
-  bool operator==(const Block& block) const;
-};
-
-class Component : private std::vector<Block> {
-  using Super = std::vector<Block>;
-  Map map_;
+class Graph : private std::vector<Edge> {
+  using Super = std::vector<Edge>;
+  using iterator = Super::iterator;
+  using Result = std::tuple<iterator, bool>;
 
  public:
-  using Super::begin, Super::end;
-  explicit Component(const std::vector<Block>& vec);
-  bool contains(const Block& b) const;
-  bool is_loop() const;
-  std::vector<Block> successors() const;
-  void merge(const Component& c);
-  Map& map();
-};
+  void init(const llvm::Function& f);
+  bool append(const Node& tail, const Node& head);
+  NodeSet heads(const Node& tail) const;
+  NodeSet tails() const;
+  bool merge(const Graph& g);
+  void reachables(const Node& n, NodeSet& nodes) const;
+  void reachables(const llvm::Value& v, NodeSet& nodes) const;
 
-class Scc : private std::vector<Component> {
-  using Super = std::vector<Component>;
-
- public:
-  using Super::empty;
-  explicit Scc(const llvm::Function& f);
-  Component pop();
-  Component& find(const Block& b);
-  void distribute(const Component& c);
-};
-
-class Tarjan {
-  std::vector<Frame> frames_;
-  std::map<const llvm::BasicBlock*, Frame*> map_;
-  std::stack<Block> stack_;
-  std::vector<Component> scc_;
-  int index_;
-
- public:
-  Tarjan(const llvm::Function& f);
-  const std::vector<Component>& scc() const;
-  void visit(const Block& b);
-  Frame& push(const Block& b);
-  void update(Frame& frame, const Block& succ);
-  Block pop();
-  Component collect(const Block& b);
-  Frame& map(const Block& b);
+ private:
+  Result insert(iterator hint, const Edge& e);
 };
 
 }  // namespace stacksafe

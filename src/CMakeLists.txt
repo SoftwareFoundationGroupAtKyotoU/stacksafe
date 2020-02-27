@@ -13,18 +13,26 @@ set(target ${PROJECT_NAME})
 add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   abstract.cpp
+  block.cpp
   cache.cpp
+  dataflow.cpp
   depend.cpp
   domain.cpp
+  effect.cpp
   graph.cpp
   hash.cpp
   interpreter.cpp
   log.cpp
   map.cpp
+  matrix.cpp
+  node.cpp
   params.cpp
+  pointsto.cpp
   register.cpp
+  state.cpp
   stopwatch.cpp
   symbol.cpp
+  tarjan.cpp
   utility.cpp
   value.cpp
   )

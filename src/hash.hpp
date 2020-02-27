@@ -5,16 +5,16 @@
 #include <functional>
 
 namespace stacksafe {
-class Value;
+class Node;
 
-llvm::hash_code hash_value(const Value& val);
+llvm::hash_code hash_value(const Node& node);
 
 }  // namespace stacksafe
 
 namespace std {
 template <>
-struct hash<stacksafe::Value> {
-  size_t operator()(const stacksafe::Value& val) const;
+struct hash<stacksafe::Node> {
+  size_t operator()(const stacksafe::Node& node) const;
 };
 }  // namespace std
 

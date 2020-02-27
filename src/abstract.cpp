@@ -2,11 +2,13 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/Format.h>
 #include <llvm/Support/raw_ostream.h>
-#include "graph.hpp"
+#include "block.hpp"
 #include "interpreter.hpp"
 #include "log.hpp"
 #include "map.hpp"
+#include "pointsto.hpp"
 #include "stopwatch.hpp"
+#include "tarjan.hpp"
 
 namespace stacksafe {
 namespace {
@@ -28,31 +30,45 @@ Abstract::Abstract(const llvm::Function &f)
 void Abstract::interpret() {
   Log log{func_};
   {
+    for (const auto &[b, m] : Tarjan::run(func_)) {
+      state_.emplace_back(b);
+    }
+    for (auto &&c : state_) {
+      PointsTo::analyze(c.graph(), c.blocks());
+      state_.transfer(c);
+    }
+  }
+  {
     Stopwatch<std::milli> watch{elapsed_};
-    Scc scc{func_};
-    while (!scc.empty()) {
-      auto c = scc.pop();
-      Interpreter i{log, depend_, depmap_, c.map()};
-      do {
-        bool repeat = false;
-        for (const auto &b : c) {
-          if (i.visit(b.get())) {
-            repeat = true;
+    auto scc = Tarjan::run(func_);
+    for (auto &[c, m] : scc) {
+      Interpreter i{log, depend_, depmap_, m};
+      if (c.is_loop()) {
+        bool repeat = true;
+        while (std::exchange(repeat, false)) {
+          for (const auto &b : c) {
+            if (i.visit(*b)) {
+              repeat = true;
+            }
+            if (depend_.is_error()) {
+              return;
+            }
           }
+        }
+      } else {
+        for (const auto &b : c) {
+          i.visit(*b);
           if (depend_.is_error()) {
             return;
           }
         }
-        if (c.is_loop() && repeat) {
-          continue;
-        }
-      } while (false);
-      scc.distribute(c);
+      }
+      scc.transfer(c, m);
     }
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
-  const auto safe = !depend_.is_error();
+  const auto safe = state_.is_safe();
   const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe ? "SAFE" : "UNSAFE";
   const auto name = func_.getName().str();
