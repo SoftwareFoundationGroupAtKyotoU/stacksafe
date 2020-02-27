@@ -1,5 +1,7 @@
 #include "stacksafe.hpp"
 #include <llvm/IR/Module.h>
+#include <llvm/Support/CommandLine.h>
+#include <string>
 #include "block.hpp"
 #include "pointsto.hpp"
 #include "state.hpp"
@@ -11,6 +13,8 @@ void endline(llvm::raw_ostream& os) {
   (os << "\n").flush();
 }
 constexpr auto stacksafe{"stacksafe"};
+llvm::cl::opt<std::string> logfile{"logfile", llvm::cl::desc{"Print log"},
+                                   llvm::cl::value_desc{"filename"}};
 }  // namespace
 
 char StackSafe::ID = 0;
@@ -38,7 +42,7 @@ bool StackSafe::analyze(const llvm::Function& f) const {
   return state.is_safe();
 }
 
-static llvm::RegisterPass<StackSafe> registerpass(stacksafe, stacksafe, false,
-                                                  true);
+static llvm::RegisterPass<StackSafe> registerpass{stacksafe, stacksafe, false,
+                                                  true};
 
 }  // namespace stacksafe
