@@ -6,13 +6,13 @@
 namespace stacksafe {
 
 Node::Node(GlobalSymbol g) : Variant{g} {}
-Node::Node(const llvm::AllocaInst &l) : Variant{&l} {}
+Node::Node(LocalSymbol l) : Variant{l} {}
 Node::Node(const Register &reg) : Variant{reg} {}
 Node Node::get_global() {
   return Node{GlobalSymbol{}};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
-  return Node{l};
+  return Node{LocalSymbol{&l}};
 }
 Node Node::get_register(const llvm::Argument &a) {
   return Node{Register{a}};
@@ -38,7 +38,7 @@ const void *Node::ptr() const {
   } else if (auto g = std::get_if<GlobalSymbol>(this)) {
     return nullptr;
   } else if (auto l = std::get_if<LocalSymbol>(this)) {
-    return *l;
+    return l->get();
   } else {
     return reinterpret_cast<const void *>(-1);
   }
