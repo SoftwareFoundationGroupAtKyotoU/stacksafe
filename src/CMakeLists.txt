@@ -20,7 +20,6 @@ target_sources(${target} PRIVATE
   node.cpp
   params.cpp
   pointsto.cpp
-  register.cpp
   state.cpp
   stopwatch.cpp
   tarjan.cpp
