@@ -37,6 +37,8 @@ const void *Node::ptr() const {
     return nullptr;
   } else if (auto l = std::get_if<LocalSymbol>(this)) {
     return l->get();
+  } else if (auto r = std::get_if<LocalRegister>(this)) {
+    return r->get();
   } else {
     return reinterpret_cast<const void *>(-1);
   }
