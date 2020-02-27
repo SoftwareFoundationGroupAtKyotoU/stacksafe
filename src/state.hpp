@@ -14,6 +14,10 @@ class Component {
   explicit Component(const Blocks& b);
 };
 
+class State : private std::vector<Component> {
+  using Super = std::vector<Component>;
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_F20B95D3_9559_4A85_99D6_241914BC4F14
