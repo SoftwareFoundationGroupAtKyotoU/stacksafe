@@ -34,6 +34,8 @@ class Node : private std::variant<std::monostate, Symbol, Register> {
   std::pair<std::size_t, std::uintptr_t> pair() const;
   const Symbol *as_symbol() const;
   const Register *as_register() const;
+  bool is_symbol() const;
+  bool is_local() const;
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);
@@ -45,6 +47,7 @@ class NodeSet : private std::set<Node> {
   using Super::begin, Super::end, Super::insert;
   void merge(const NodeSet &nodes);
   bool element(const Node &n) const;
+  bool has_local() const;
 };
 
 }  // namespace stacksafe

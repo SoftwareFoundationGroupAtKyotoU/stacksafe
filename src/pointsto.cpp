@@ -1,4 +1,5 @@
 #include "pointsto.hpp"
+#include "block.hpp"
 #include "graph.hpp"
 #include "params.hpp"
 #include "utility.hpp"
@@ -6,14 +7,13 @@
 namespace stacksafe {
 
 PointsTo::PointsTo(Graph &g) : graph_{g}, updated_{false} {}
-void PointsTo::analyze(const llvm::Instruction &i) {
-  Super::visit(const_cast<llvm::Instruction &>(i));
-}
-void PointsTo::reset() {
-  updated_ = false;
-}
-bool PointsTo::updated() const {
-  return updated_;
+void PointsTo::analyze(Graph &g, const Blocks &c) {
+  PointsTo p{g};
+  do {
+    for (auto &&b : c) {
+      p.visit(const_cast<llvm::BasicBlock *>(b));
+    }
+  } while (c.is_loop() && p.reset());
 }
 auto PointsTo::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
@@ -198,6 +198,9 @@ void PointsTo::update(bool updated) {
   if (updated) {
     updated_ = true;
   }
+}
+bool PointsTo::reset() {
+  return std::exchange(updated_, false);
 }
 
 }  // namespace stacksafe

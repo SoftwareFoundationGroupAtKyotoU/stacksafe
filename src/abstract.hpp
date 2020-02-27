@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_0E783D0B_1A5B_4270_A79B_0594D4E3D6CB
 
 #include "depend.hpp"
+#include "state.hpp"
 
 namespace llvm {
 class Function;
@@ -15,6 +16,7 @@ class Abstract {
   Depend depend_;
   DependMap depmap_;
   double elapsed_;
+  State state_;
 
  public:
   explicit Abstract(const llvm::Function &f);

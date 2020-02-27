@@ -6,6 +6,7 @@
 #include "interpreter.hpp"
 #include "log.hpp"
 #include "map.hpp"
+#include "pointsto.hpp"
 #include "stopwatch.hpp"
 #include "tarjan.hpp"
 
@@ -28,6 +29,15 @@ Abstract::Abstract(const llvm::Function &f)
     : func_{f}, depend_{f}, elapsed_{0.0} {}
 void Abstract::interpret() {
   Log log{func_};
+  {
+    for (const auto &[b, m] : Tarjan::run(func_)) {
+      state_.emplace_back(b);
+    }
+    for (auto &&c : state_) {
+      PointsTo::analyze(c.graph(), c.blocks());
+      state_.transfer(c);
+    }
+  }
   {
     Stopwatch<std::milli> watch{elapsed_};
     auto scc = Tarjan::run(func_);
@@ -58,7 +68,7 @@ void Abstract::interpret() {
   }
 }
 void Abstract::print(llvm::raw_ostream &os) const {
-  const auto safe = !depend_.is_error();
+  const auto safe = state_.is_safe();
   const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto prefix = safe ? "SAFE" : "UNSAFE";
   const auto name = func_.getName().str();

@@ -37,7 +37,10 @@ void Graph::init(const llvm::Function& f) {
   }
 }
 bool Graph::append(const Node& tail, const Node& head) {
-  return std::get<1>(insert(begin(), Edge{tail, head}));
+  if (head.is_symbol()) {
+    return std::get<1>(insert(begin(), Edge{tail, head}));
+  }
+  return false;
 }
 NodeSet Graph::heads(const Node& tail) const {
   NodeSet nodes;

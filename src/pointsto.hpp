@@ -5,6 +5,7 @@
 #include "effect.hpp"
 
 namespace stacksafe {
+class Blocks;
 class Graph;
 class NodeSet;
 class Params;
@@ -15,12 +16,10 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   Graph &graph_;
   EffectMap effects_;
   bool updated_;
+  explicit PointsTo(Graph &g);
 
  public:
-  explicit PointsTo(Graph &g);
-  void analyze(const llvm::Instruction &i);
-  void reset();
-  bool updated() const;
+  static void analyze(Graph &g, const Blocks &c);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
@@ -58,6 +57,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   void append(const llvm::Instruction &tail, const NodeSet &heads);
   void append(const NodeSet &tails, const NodeSet &heads);
   void update(bool updated);
+  bool reset();
 };
 
 }  // namespace stacksafe

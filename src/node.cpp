@@ -40,7 +40,8 @@ std::uintptr_t Node::value() const {
   } else if (auto reg = as_register()) {
     return reinterpret_cast<std::uintptr_t>(&reg->value());
   } else {
-    llvm_unreachable("Node is either symbol or register");
+    // llvm_unreachable("Node is either symbol or register");
+    return -1;
   }
 }
 const llvm::Value *Node::ptr() const {
@@ -61,6 +62,12 @@ const Symbol *Node::as_symbol() const {
 const Register *Node::as_register() const {
   return std::get_if<Register>(this);
 }
+bool Node::is_symbol() const {
+  return as_symbol();
+}
+bool Node::is_local() const {
+  return is_symbol() && as_symbol()->is_local();
+}
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
 }
@@ -73,6 +80,14 @@ void NodeSet::merge(const NodeSet &nodes) {
 }
 bool NodeSet::element(const Node &n) const {
   return 0 != Super::count(n);
+}
+bool NodeSet::has_local() const {
+  for (const auto &n : *this) {
+    if (n.is_local()) {
+      return true;
+    }
+  }
+  return false;
 }
 
 }  // namespace stacksafe
