@@ -21,7 +21,6 @@ class Node : private std::variant<std::monostate, Symbol, Register> {
 
  public:
   static Node get_symbol(const llvm::AllocaInst &a);
-  static Node get_symbol(const llvm::Argument &a);
   static Node get_global();
   static Node get_register(const llvm::Argument &a);
   static Node get_register(const llvm::Instruction &i);
