@@ -19,7 +19,6 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
  public:
   explicit PointsTo(Graph &g);
   void analyze(const llvm::Instruction &i);
-  void reset();
   bool updated() const;
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
@@ -58,6 +57,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   void append(const llvm::Instruction &tail, const NodeSet &heads);
   void append(const NodeSet &tails, const NodeSet &heads);
   void update(bool updated);
+  bool reset();
 };
 
 }  // namespace stacksafe

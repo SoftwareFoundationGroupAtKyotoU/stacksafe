@@ -9,9 +9,6 @@ PointsTo::PointsTo(Graph &g) : graph_{g}, updated_{false} {}
 void PointsTo::analyze(const llvm::Instruction &i) {
   Super::visit(const_cast<llvm::Instruction &>(i));
 }
-void PointsTo::reset() {
-  updated_ = false;
-}
 bool PointsTo::updated() const {
   return updated_;
 }
@@ -198,6 +195,9 @@ void PointsTo::update(bool updated) {
   if (updated) {
     updated_ = true;
   }
+}
+bool PointsTo::reset() {
+  return std::exchange(updated_, false);
 }
 
 }  // namespace stacksafe
