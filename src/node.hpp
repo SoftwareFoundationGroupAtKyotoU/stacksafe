@@ -1,10 +1,8 @@
 #ifndef INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 #define INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 
-#include <cstdint>
 #include <set>
 #include <variant>
-#include "register.hpp"
 #include "value.hpp"
 
 namespace llvm {
@@ -20,8 +18,8 @@ class GlobalSymbol {};
 using LocalSymbol = Value<llvm::AllocaInst>;
 using LocalRegister = Value<llvm::Instruction>;
 using LocalArgument = Value<llvm::Argument>;
-using Variant = std::variant<std::monostate, Register, GlobalSymbol,
-                             LocalSymbol, LocalRegister, LocalArgument>;
+using Variant = std::variant<std::monostate, GlobalSymbol, LocalSymbol,
+                             LocalRegister, LocalArgument>;
 }  // namespace
 
 class Node : private Variant {
@@ -34,7 +32,6 @@ class Node : private Variant {
   static Node get_register(const llvm::Instruction &i);
   static Node from_value(const llvm::Value &v);
   Node() = default;
-  explicit Node(const Register &reg);
   const void *ptr() const;
   std::pair<std::size_t, const void *> pair() const;
   bool is_symbol() const;

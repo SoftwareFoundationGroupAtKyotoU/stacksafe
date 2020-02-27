@@ -5,7 +5,6 @@
 
 namespace stacksafe {
 
-Node::Node(const Register &reg) : Variant{reg} {}
 Node Node::get_global() {
   return Node{GlobalSymbol{}};
 }
@@ -31,9 +30,7 @@ Node Node::from_value(const llvm::Value &v) {
   };
 }
 const void *Node::ptr() const {
-  if (auto reg = std::get_if<Register>(this)) {
-    return &reg->value();
-  } else if (auto g = std::get_if<GlobalSymbol>(this)) {
+  if (auto g = std::get_if<GlobalSymbol>(this)) {
     return nullptr;
   } else if (auto l = std::get_if<LocalSymbol>(this)) {
     return l->get();
