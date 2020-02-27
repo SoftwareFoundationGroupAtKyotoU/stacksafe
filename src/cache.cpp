@@ -1,6 +1,7 @@
 #include "cache.hpp"
 #include <llvm/IR/Function.h>
-#include "node.hpp"
+#include "register.hpp"
+#include "symbol.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {

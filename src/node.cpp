@@ -33,9 +33,7 @@ Node Node::from_value(const llvm::Value &v) {
   };
 }
 const void *Node::ptr() const {
-  if (auto sym = std::get_if<Symbol>(this)) {
-    return sym->value();
-  } else if (auto reg = as_register()) {
+  if (auto reg = as_register()) {
     return &reg->value();
   } else if (auto g = std::get_if<GlobalSymbol>(this)) {
     return nullptr;
@@ -52,15 +50,10 @@ const Register *Node::as_register() const {
   return std::get_if<Register>(this);
 }
 bool Node::is_symbol() const {
-  return std::get_if<Symbol>(this) || std::get_if<GlobalSymbol>(this) ||
-         std::get_if<LocalSymbol>(this);
+  return std::get_if<GlobalSymbol>(this) || std::get_if<LocalSymbol>(this);
 }
 bool Node::is_local() const {
-  if (const auto sym = std::get_if<Symbol>(this)) {
-    return sym->is_local();
-  } else {
-    return std::get_if<LocalSymbol>(this);
-  }
+  return std::get_if<LocalSymbol>(this);
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();

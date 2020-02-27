@@ -5,7 +5,6 @@
 #include <set>
 #include <variant>
 #include "register.hpp"
-#include "symbol.hpp"
 
 namespace llvm {
 class AllocaInst;
@@ -18,8 +17,7 @@ namespace stacksafe {
 namespace {
 class GlobalSymbol {};
 using LocalSymbol = const llvm::AllocaInst *;
-using Value =
-    std::variant<std::monostate, Symbol, Register, GlobalSymbol, LocalSymbol>;
+using Value = std::variant<std::monostate, Register, GlobalSymbol, LocalSymbol>;
 }  // namespace
 
 class Node : private Value {
