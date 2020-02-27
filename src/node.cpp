@@ -32,7 +32,7 @@ Node Node::from_value(const llvm::Value &v) {
   };
 }
 std::uintptr_t Node::value() const {
-  if (auto sym = as_symbol()) {
+  if (auto sym = std::get_if<Symbol>(this)) {
     return reinterpret_cast<std::uintptr_t>(sym->value());
   } else if (auto reg = as_register()) {
     return reinterpret_cast<std::uintptr_t>(&reg->value());
@@ -42,7 +42,7 @@ std::uintptr_t Node::value() const {
   }
 }
 const llvm::Value *Node::ptr() const {
-  if (auto sym = as_symbol()) {
+  if (auto sym = std::get_if<Symbol>(this)) {
     return sym->value();
   } else if (auto reg = as_register()) {
     return &reg->value();
@@ -53,17 +53,14 @@ const llvm::Value *Node::ptr() const {
 std::pair<std::size_t, std::uintptr_t> Node::pair() const {
   return {index(), value()};
 }
-const Symbol *Node::as_symbol() const {
-  return std::get_if<Symbol>(this);
-}
 const Register *Node::as_register() const {
   return std::get_if<Register>(this);
 }
 bool Node::is_symbol() const {
-  return as_symbol();
+  return std::get_if<Symbol>(this);
 }
 bool Node::is_local() const {
-  return is_symbol() && as_symbol()->is_local();
+  return is_symbol() && std::get_if<Symbol>(this)->is_local();
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
