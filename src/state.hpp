@@ -16,6 +16,9 @@ class Component {
 
 class State : private std::vector<Component> {
   using Super = std::vector<Component>;
+
+ public:
+  using Super::begin, Super::end;
 };
 
 }  // namespace stacksafe
