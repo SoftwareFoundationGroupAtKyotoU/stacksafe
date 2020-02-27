@@ -14,12 +14,11 @@ class Value;
 
 namespace stacksafe {
 namespace {
-using GlobalSymbol = Value<void>;
-using LocalSymbol = Value<llvm::AllocaInst>;
-using LocalRegister = Value<llvm::Instruction>;
-using LocalArgument = Value<llvm::Argument>;
-using Variant = std::variant<std::monostate, GlobalSymbol, LocalSymbol,
-                             LocalRegister, LocalArgument>;
+using Global = Value<void>;
+using Local = Value<llvm::AllocaInst>;
+using Register = Value<llvm::Instruction>;
+using Argument = Value<llvm::Argument>;
+using Variant = std::variant<std::monostate, Global, Local, Register, Argument>;
 }  // namespace
 
 class Node : private Variant {
