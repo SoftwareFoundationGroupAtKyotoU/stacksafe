@@ -12,7 +12,6 @@ class Value;
 
 namespace stacksafe {
 class Domain;
-class Map;
 
 std::size_t operator"" _z(unsigned long long n);
 std::string to_str(const llvm::Value& v);
@@ -27,7 +26,6 @@ int get_operand(const llvm::Value* v);
 void print(const std::string& str);
 std::string to_str(int num);
 std::string to_str(const Domain& dom);
-std::string to_str(const Map& map);
 }  // namespace debug
 }  // namespace stacksafe
 

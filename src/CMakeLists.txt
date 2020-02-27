@@ -19,7 +19,6 @@ target_sources(${target} PRIVATE
   effect.cpp
   graph.cpp
   hash.cpp
-  map.cpp
   matrix.cpp
   node.cpp
   params.cpp

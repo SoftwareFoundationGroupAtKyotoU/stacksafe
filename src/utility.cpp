@@ -6,7 +6,6 @@
 #include <map>
 #include <vector>
 #include "domain.hpp"
-#include "map.hpp"
 
 namespace stacksafe {
 
@@ -108,24 +107,6 @@ std::string to_str(const Domain& dom) {
     ret.append(", ");
   }
   ret.append("]");
-  return ret;
-}
-std::string to_str(const Map& map) {
-  std::string ret;
-  std::map<int, Domain> nums;
-  for (const auto& key : Map::keys(map)) {
-    if (auto sym = key.as_symbol()) {
-      nums.emplace(get_operand(key.ptr()), map.lookup(*sym));
-    } else if (auto reg = key.as_register()) {
-      nums.emplace(get_operand(key.ptr()), map.lookup(*reg));
-    }
-  }
-  for (const auto& [key, dom] : nums) {
-    ret.append(to_str(key));
-    ret.append(": ");
-    ret.append(to_str(dom));
-    ret.append(", ");
-  }
   return ret;
 }
 }  // namespace debug
