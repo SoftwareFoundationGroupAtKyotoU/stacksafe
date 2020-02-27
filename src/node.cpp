@@ -5,8 +5,6 @@
 
 namespace stacksafe {
 
-Node::Node(GlobalSymbol g) : Variant{g} {}
-Node::Node(LocalSymbol l) : Variant{l} {}
 Node::Node(const Register &reg) : Variant{reg} {}
 Node Node::get_global() {
   return Node{GlobalSymbol{}};

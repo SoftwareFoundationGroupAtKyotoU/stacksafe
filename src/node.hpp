@@ -23,8 +23,7 @@ using Variant =
 }  // namespace
 
 class Node : private Variant {
-  explicit Node(GlobalSymbol g);
-  explicit Node(LocalSymbol l);
+  using Variant::Variant;
 
  public:
   static Node get_global();
