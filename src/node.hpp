@@ -47,6 +47,7 @@ class NodeSet : private std::set<Node> {
   using Super::begin, Super::end, Super::insert;
   void merge(const NodeSet &nodes);
   bool element(const Node &n) const;
+  bool has_local() const;
 };
 
 }  // namespace stacksafe

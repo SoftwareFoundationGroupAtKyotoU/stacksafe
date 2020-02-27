@@ -80,5 +80,13 @@ void NodeSet::merge(const NodeSet &nodes) {
 bool NodeSet::element(const Node &n) const {
   return 0 != Super::count(n);
 }
+bool NodeSet::has_local() const {
+  for (const auto &n : *this) {
+    if (n.is_local()) {
+      return true;
+    }
+  }
+  return false;
+}
 
 }  // namespace stacksafe
