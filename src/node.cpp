@@ -16,7 +16,7 @@ Node Node::get_register(const llvm::Argument &a) {
   return Node{Register{a}};
 }
 Node Node::get_register(const llvm::Instruction &i) {
-  return Node{Register{i}};
+  return Node{LocalRegister{&i}};
 }
 Node Node::from_value(const llvm::Value &v) {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
