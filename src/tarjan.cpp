@@ -63,18 +63,19 @@ bool Tarjan::visit(BB b, std::vector<Blocks>& vec) {
       }
     }
     if (frame.is_root()) {
-      Blocks blocks;
-      while (true) {
-        const auto p = pop();
-        blocks.push_back(p);
-        if (b == p) {
-          break;
-        }
-      }
-      vec.emplace_back(blocks);
+      vec.push_back(collect(b));
     }
   }
   return ok;
+}
+Blocks Tarjan::collect(BB b) {
+  Blocks blocks;
+  BB p = nullptr;
+  while (b != p) {
+    p = pop();
+    blocks.push_back(p);
+  }
+  return blocks;
 }
 Frame& Tarjan::push(BB b) {
   stack_.push(b);

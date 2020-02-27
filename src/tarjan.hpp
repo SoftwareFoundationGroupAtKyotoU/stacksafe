@@ -41,6 +41,7 @@ class Tarjan {
  private:
   Tarjan(const llvm::Function& f);
   bool visit(BB b, std::vector<Blocks>& vec);
+  Blocks collect(BB b);
   Frame& push(BB b);
   BB pop();
 };
