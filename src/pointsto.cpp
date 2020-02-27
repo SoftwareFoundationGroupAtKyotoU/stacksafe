@@ -7,16 +7,16 @@
 namespace stacksafe {
 
 PointsTo::PointsTo(Graph &g) : graph_{g}, updated_{false} {}
+void PointsTo::visit(const Blocks &c) {
+  for (auto &&b : c) {
+    Super::visit(const_cast<llvm::BasicBlock *>(b));
+  }
+}
 void PointsTo::analyze(Graph &g, const Blocks &c) {
   PointsTo p{g};
   do {
     p.visit(c);
   } while (c.is_loop() && p.reset());
-}
-void PointsTo::visit(const Blocks &c) {
-  for (auto &&b : c) {
-    Super::visit(const_cast<llvm::BasicBlock *>(b));
-  }
 }
 auto PointsTo::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {

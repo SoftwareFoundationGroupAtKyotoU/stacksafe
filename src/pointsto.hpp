@@ -16,11 +16,11 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   Graph &graph_;
   EffectMap effects_;
   bool updated_;
+  explicit PointsTo(Graph &g);
+  void visit(const Blocks &c);
 
  public:
-  explicit PointsTo(Graph &g);
   static void analyze(Graph &g, const Blocks &c);
-  void visit(const Blocks &c);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);
