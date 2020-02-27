@@ -64,6 +64,9 @@ const Register *Node::as_register() const {
 bool Node::is_symbol() const {
   return as_symbol();
 }
+bool Node::is_local() const {
+  return is_symbol() && as_symbol()->is_local();
+}
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
 }

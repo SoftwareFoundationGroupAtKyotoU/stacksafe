@@ -35,6 +35,7 @@ class Node : private std::variant<std::monostate, Symbol, Register> {
   const Symbol *as_symbol() const;
   const Register *as_register() const;
   bool is_symbol() const;
+  bool is_local() const;
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);
