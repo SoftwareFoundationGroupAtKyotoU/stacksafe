@@ -4,6 +4,10 @@
 namespace stacksafe {
 
 Component::Component(const Blocks& b) : blocks_{b}, graph_{} {}
+bool Component::is_safe() const {
+  const auto pred = [& self = *this](BB b) { return self.check_return(b); };
+  return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
+}
 bool Component::check_global() const {
   NodeSet nodes;
   graph_.reachables(Node::get_global(), nodes);

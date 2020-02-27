@@ -14,6 +14,7 @@ class Component {
 
  public:
   explicit Component(const Blocks& b);
+  bool is_safe() const;
 
  private:
   bool check_global() const;
