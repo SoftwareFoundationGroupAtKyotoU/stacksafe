@@ -56,10 +56,15 @@ const Register *Node::as_register() const {
   return std::get_if<Register>(this);
 }
 bool Node::is_symbol() const {
-  return std::get_if<Symbol>(this);
+  return std::get_if<Symbol>(this) || std::get_if<GlobalSymbol>(this) ||
+         std::get_if<LocalSymbol>(this);
 }
 bool Node::is_local() const {
-  return is_symbol() && std::get_if<Symbol>(this)->is_local();
+  if (const auto sym = std::get_if<Symbol>(this)) {
+    return sym->is_local();
+  } else {
+    return std::get_if<LocalSymbol>(this);
+  }
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
