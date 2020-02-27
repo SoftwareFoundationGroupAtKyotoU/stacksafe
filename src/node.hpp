@@ -18,8 +18,9 @@ namespace stacksafe {
 namespace {
 class GlobalSymbol {};
 using LocalSymbol = Value<llvm::AllocaInst>;
-using Variant =
-    std::variant<std::monostate, Register, GlobalSymbol, LocalSymbol>;
+using LocalRegister = Value<llvm::Instruction>;
+using Variant = std::variant<std::monostate, Register, GlobalSymbol,
+                             LocalSymbol, LocalRegister>;
 }  // namespace
 
 class Node : private Variant {
