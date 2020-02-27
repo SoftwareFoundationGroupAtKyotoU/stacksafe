@@ -7,6 +7,7 @@
 namespace stacksafe {
 
 class Component {
+  friend class State;
   Blocks blocks_;
   Graph graph_;
 
@@ -16,9 +17,13 @@ class Component {
 
 class State : private std::vector<Component> {
   using Super = std::vector<Component>;
+  using BB = Blocks::value_type;
 
  public:
   using Super::begin, Super::end;
+
+ private:
+  Graph& find(BB b);
 };
 
 }  // namespace stacksafe
