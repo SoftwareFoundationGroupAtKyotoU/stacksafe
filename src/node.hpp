@@ -36,7 +36,6 @@ class Node : private Variant {
   explicit Node(const Register &reg);
   const void *ptr() const;
   std::pair<std::size_t, const void *> pair() const;
-  const Register *as_register() const;
   bool is_symbol() const;
   bool is_local() const;
 };

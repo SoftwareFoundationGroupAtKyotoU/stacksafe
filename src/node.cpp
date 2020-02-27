@@ -31,7 +31,7 @@ Node Node::from_value(const llvm::Value &v) {
   };
 }
 const void *Node::ptr() const {
-  if (auto reg = as_register()) {
+  if (auto reg = std::get_if<Register>(this)) {
     return &reg->value();
   } else if (auto g = std::get_if<GlobalSymbol>(this)) {
     return nullptr;
@@ -43,9 +43,6 @@ const void *Node::ptr() const {
 }
 std::pair<std::size_t, const void *> Node::pair() const {
   return {index(), ptr()};
-}
-const Register *Node::as_register() const {
-  return std::get_if<Register>(this);
 }
 bool Node::is_symbol() const {
   return std::get_if<GlobalSymbol>(this) || std::get_if<LocalSymbol>(this);
