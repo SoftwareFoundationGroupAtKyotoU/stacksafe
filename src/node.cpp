@@ -44,15 +44,6 @@ std::uintptr_t Node::value() const {
     return -1;
   }
 }
-const llvm::Value *Node::ptr() const {
-  if (auto sym = std::get_if<Symbol>(this)) {
-    return sym->value();
-  } else if (auto reg = as_register()) {
-    return &reg->value();
-  } else {
-    return nullptr;
-  }
-}
 std::pair<std::size_t, std::uintptr_t> Node::pair() const {
   return {index(), value()};
 }
