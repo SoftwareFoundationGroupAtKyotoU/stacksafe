@@ -3,6 +3,11 @@
 namespace stacksafe {
 
 Component::Component(const Blocks& b) : blocks_{b}, graph_{} {}
+bool Component::check_global() const {
+  NodeSet nodes;
+  graph_.reachables(Node::get_global(), nodes);
+  return !nodes.has_local();
+}
 
 void State::transfer(const Component& c) {
   for (const auto& succ : c.blocks_.successors()) {

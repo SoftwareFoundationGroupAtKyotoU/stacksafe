@@ -13,6 +13,9 @@ class Component {
 
  public:
   explicit Component(const Blocks& b);
+
+ private:
+  bool check_global() const;
 };
 
 class State : private std::vector<Component> {
