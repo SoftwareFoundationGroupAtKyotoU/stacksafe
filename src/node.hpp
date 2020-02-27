@@ -19,8 +19,7 @@ using Global = Value<void>;
 using Local = Value<llvm::AllocaInst>;
 using Register = Value<llvm::Instruction>;
 using Argument = Value<llvm::Argument>;
-using Variant =
-    std::variant<std::monostate, Constant, Global, Local, Register, Argument>;
+using Variant = std::variant<Constant, Global, Local, Register, Argument>;
 }  // namespace
 
 class Node : private Variant {
