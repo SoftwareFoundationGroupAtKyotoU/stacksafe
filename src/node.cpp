@@ -15,6 +15,9 @@ Node Node::get_symbol(const llvm::AllocaInst &a) {
 Node Node::get_global() {
   return Node{GlobalSymbol{}};
 }
+Node Node::get_local(const llvm::AllocaInst &l) {
+  return Node{l};
+}
 Node Node::get_register(const llvm::Argument &a) {
   return Node{Register{a}};
 }

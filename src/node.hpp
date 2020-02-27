@@ -29,6 +29,7 @@ class Node : private Value {
  public:
   static Node get_symbol(const llvm::AllocaInst &a);
   static Node get_global();
+  static Node get_local(const llvm::AllocaInst &l);
   static Node get_register(const llvm::Argument &a);
   static Node get_register(const llvm::Instruction &i);
   static Node from_value(const llvm::Value &v);
