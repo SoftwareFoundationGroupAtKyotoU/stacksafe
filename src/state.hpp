@@ -9,11 +9,12 @@ namespace stacksafe {
 class Component {
   friend class State;
   using BB = Blocks::value_type;
-  Blocks blocks_;
+  const Blocks blocks_;
   Graph graph_;
 
  public:
   explicit Component(const Blocks& b);
+  const Blocks& blocks() const;
   bool is_safe() const;
 
  private:
