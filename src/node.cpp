@@ -5,6 +5,7 @@
 
 namespace stacksafe {
 
+Node::Node(const llvm::AllocaInst &a) : Value{&a} {}
 Node::Node(const Symbol &sym) : Value{sym} {}
 Node::Node(const Register &reg) : Value{reg} {}
 Node Node::get_symbol(const llvm::AllocaInst &a) {
@@ -36,6 +37,8 @@ std::uintptr_t Node::value() const {
     return reinterpret_cast<std::uintptr_t>(sym->value());
   } else if (auto reg = as_register()) {
     return reinterpret_cast<std::uintptr_t>(&reg->value());
+  } else if (auto a = std::get_if<const llvm::AllocaInst *>(this)) {
+    return reinterpret_cast<std::uintptr_t>(a);
   } else {
     // llvm_unreachable("Node is either symbol or register");
     return -1;
