@@ -9,7 +9,7 @@ namespace {
 void endline(llvm::raw_ostream &os) {
   (os << "\n").flush();
 }
-constexpr auto stacksafe{"stacksafe"};
+constexpr auto stacksafe{"stacksafe-old"};
 }  // namespace
 
 struct Analyzer : public llvm::FunctionPass {

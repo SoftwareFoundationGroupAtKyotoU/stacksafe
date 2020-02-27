@@ -1,6 +1,6 @@
 project(pass CXX)
 
-set(target ${CMAKE_PROJECT_NAME})
+set(target ${CMAKE_PROJECT_NAME}-old)
 add_library(${target} MODULE)
 target_sources(${target} PRIVATE
   analyzer.cpp
