@@ -36,10 +36,6 @@ std::string Cache::to_str(const Register& reg) const {
   static const std::string prefix{"%"};
   return prefix + to_string(lookup(&reg.value()));
 }
-std::string Cache::to_str(const Node& sym) const {
-  static const std::string prefix{"&"};
-  return prefix + to_string(lookup(sym.ptr()));
-}
 std::string Cache::to_str(const llvm::Instruction& reg) const {
   static const std::string prefix{"%"};
   return prefix + to_string(lookup(&reg));
