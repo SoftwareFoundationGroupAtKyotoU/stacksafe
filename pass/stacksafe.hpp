@@ -10,6 +10,7 @@ class StackSafe : public ::llvm::ModulePass {
   static char ID;
   StackSafe();
   bool runOnModule(llvm::Module& m) override;
+  void print(llvm::raw_ostream& os, const llvm::Module*) const override;
 };
 
 }  // namespace stacksafe
