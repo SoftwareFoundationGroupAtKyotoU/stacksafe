@@ -11,6 +11,9 @@ class StackSafe : public ::llvm::ModulePass {
   StackSafe();
   bool runOnModule(llvm::Module& m) override;
   void print(llvm::raw_ostream& os, const llvm::Module*) const override;
+
+ private:
+  bool analyze(const llvm::Function& f) const;
 };
 
 }  // namespace stacksafe
