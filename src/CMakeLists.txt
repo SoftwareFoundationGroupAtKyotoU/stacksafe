@@ -25,6 +25,7 @@ target_sources(${target} PRIVATE
   stopwatch.cpp
   tarjan.cpp
   utility.cpp
+  value.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
