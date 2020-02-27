@@ -14,7 +14,7 @@ class Value;
 
 namespace stacksafe {
 namespace {
-class GlobalSymbol {};
+using GlobalSymbol = Value<void>;
 using LocalSymbol = Value<llvm::AllocaInst>;
 using LocalRegister = Value<llvm::Instruction>;
 using LocalArgument = Value<llvm::Argument>;
