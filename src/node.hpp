@@ -32,7 +32,7 @@ class Node : private Value {
   Node() = default;
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
-  const void *value() const;
+  const void *ptr() const;
   std::pair<std::size_t, const void *> pair() const;
   const Register *as_register() const;
   bool is_symbol() const;
