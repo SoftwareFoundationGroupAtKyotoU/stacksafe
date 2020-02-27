@@ -32,21 +32,6 @@ Node Node::from_value(const llvm::Value &v) {
     llvm_unreachable("invalid value lookup");
   };
 }
-const void *Node::ptr() const {
-  if (auto c = std::get_if<Constant>(this)) {
-    return c->get();
-  } else if (auto g = std::get_if<Global>(this)) {
-    return g->get();
-  } else if (auto l = std::get_if<Local>(this)) {
-    return l->get();
-  } else if (auto r = std::get_if<Register>(this)) {
-    return r->get();
-  } else if (auto a = std::get_if<Argument>(this)) {
-    return a->get();
-  } else {
-    return reinterpret_cast<const void *>(-1);
-  }
-}
 std::pair<std::size_t, const void *> Node::pair() const {
   return {index(), ptr()};
 }
@@ -55,6 +40,11 @@ bool Node::is_symbol() const {
 }
 bool Node::is_local() const {
   return std::get_if<Local>(this);
+}
+const void *Node::ptr() const {
+  const Variant &v = *this;
+  const auto f = [](auto &&v) -> const void * { return v.get(); };
+  return std::visit(f, v);
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
