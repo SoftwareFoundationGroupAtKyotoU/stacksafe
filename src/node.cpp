@@ -13,7 +13,7 @@ Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{LocalSymbol{&l}};
 }
 Node Node::get_register(const llvm::Argument &a) {
-  return Node{Register{a}};
+  return Node{LocalArgument{&a}};
 }
 Node Node::get_register(const llvm::Instruction &i) {
   return Node{LocalRegister{&i}};
