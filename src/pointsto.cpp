@@ -9,9 +9,6 @@ PointsTo::PointsTo(Graph &g) : graph_{g}, updated_{false} {}
 void PointsTo::analyze(const llvm::Instruction &i) {
   Super::visit(const_cast<llvm::Instruction &>(i));
 }
-bool PointsTo::updated() const {
-  return updated_;
-}
 auto PointsTo::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
     fatal_error("unsupported instruction: " + to_str(i));
