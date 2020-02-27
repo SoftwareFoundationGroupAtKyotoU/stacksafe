@@ -27,14 +27,12 @@ class Node : private Value {
   explicit Node(const llvm::AllocaInst &a);
 
  public:
-  static Node get_symbol(const llvm::AllocaInst &a);
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
   static Node get_register(const llvm::Argument &a);
   static Node get_register(const llvm::Instruction &i);
   static Node from_value(const llvm::Value &v);
   Node() = default;
-  explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
   const void *ptr() const;
   std::pair<std::size_t, const void *> pair() const;

@@ -135,7 +135,7 @@ void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
 }
 void PointsTo::alloc(const llvm::AllocaInst &dst) {
   NodeSet heads;
-  heads.insert(Node::get_symbol(dst));
+  heads.insert(Node::get_local(dst));
   append(dst, heads);
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
