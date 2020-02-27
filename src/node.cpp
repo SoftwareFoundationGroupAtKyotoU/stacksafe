@@ -40,7 +40,7 @@ const void *Node::ptr() const {
     return &reg->value();
   } else if (auto g = std::get_if<GlobalSymbol>(this)) {
     return g;
-  } else if (auto l = std::get_if<const llvm::AllocaInst *>(this)) {
+  } else if (auto l = std::get_if<LocalSymbol>(this)) {
     return l;
   } else {
     return nullptr;
