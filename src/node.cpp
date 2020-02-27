@@ -39,6 +39,8 @@ const void *Node::ptr() const {
     return l->get();
   } else if (auto r = std::get_if<LocalRegister>(this)) {
     return r->get();
+  } else if (auto a = std::get_if<LocalArgument>(this)) {
+    return a->get();
   } else {
     return reinterpret_cast<const void *>(-1);
   }
