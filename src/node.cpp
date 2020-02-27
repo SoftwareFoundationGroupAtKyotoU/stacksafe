@@ -40,7 +40,8 @@ std::uintptr_t Node::value() const {
   } else if (auto reg = as_register()) {
     return reinterpret_cast<std::uintptr_t>(&reg->value());
   } else {
-    llvm_unreachable("Node is either symbol or register");
+    // llvm_unreachable("Node is either symbol or register");
+    return -1;
   }
 }
 const llvm::Value *Node::ptr() const {
