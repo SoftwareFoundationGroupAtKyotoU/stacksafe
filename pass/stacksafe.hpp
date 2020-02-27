@@ -9,6 +9,7 @@ class StackSafe : public ::llvm::ModulePass {
  public:
   static char ID;
   StackSafe();
+  bool runOnModule(llvm::Module& m) override;
 };
 
 }  // namespace stacksafe
