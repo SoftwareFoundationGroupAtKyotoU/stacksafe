@@ -5,7 +5,8 @@
 
 namespace stacksafe {
 
-Node::Node(const llvm::AllocaInst &a) : Value{&a} {}
+Node::Node(GlobalSymbol g) : Value{g} {}
+Node::Node(const llvm::AllocaInst &l) : Value{&l} {}
 Node::Node(const Symbol &sym) : Value{sym} {}
 Node::Node(const Register &reg) : Value{reg} {}
 Node Node::get_symbol(const llvm::AllocaInst &a) {
@@ -37,8 +38,10 @@ const void *Node::ptr() const {
     return sym->value();
   } else if (auto reg = as_register()) {
     return &reg->value();
-  } else if (auto a = std::get_if<const llvm::AllocaInst *>(this)) {
-    return a;
+  } else if (auto g = std::get_if<GlobalSymbol>(this)) {
+    return g;
+  } else if (auto l = std::get_if<const llvm::AllocaInst *>(this)) {
+    return l;
   } else {
     return nullptr;
   }

@@ -16,11 +16,13 @@ class Value;
 
 namespace stacksafe {
 namespace {
-using Value =
-    std::variant<std::monostate, Symbol, Register, const llvm::AllocaInst *>;
-}
+class GlobalSymbol {};
+using Value = std::variant<std::monostate, Symbol, Register, GlobalSymbol,
+                           const llvm::AllocaInst *>;
+}  // namespace
 
 class Node : private Value {
+  explicit Node(GlobalSymbol g);
   explicit Node(const llvm::AllocaInst &a);
 
  public:
