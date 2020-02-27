@@ -109,7 +109,7 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
 }
 }  // namespace
 
-Effect::Effect() : matrix_{0}, name_{} {}
+Effect::Effect() : matrix_{Arity{0}}, name_{} {}
 const std::string& Effect::name() const {
   return name_;
 }
