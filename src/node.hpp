@@ -19,8 +19,9 @@ namespace {
 class GlobalSymbol {};
 using LocalSymbol = Value<llvm::AllocaInst>;
 using LocalRegister = Value<llvm::Instruction>;
+using LocalArgument = Value<llvm::Argument>;
 using Variant = std::variant<std::monostate, Register, GlobalSymbol,
-                             LocalSymbol, LocalRegister>;
+                             LocalSymbol, LocalRegister, LocalArgument>;
 }  // namespace
 
 class Node : private Variant {
