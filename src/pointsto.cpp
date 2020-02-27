@@ -7,9 +7,6 @@
 namespace stacksafe {
 
 PointsTo::PointsTo(Graph &g) : graph_{g}, updated_{false} {}
-void PointsTo::analyze(const llvm::Instruction &i) {
-  Super::visit(const_cast<llvm::Instruction &>(i));
-}
 void PointsTo::visit(const Blocks &c) {
   for (auto &&b : c) {
     Super::visit(const_cast<llvm::BasicBlock *>(b));
