@@ -5,9 +5,9 @@
 
 namespace stacksafe {
 
-Node::Node(GlobalSymbol g) : Value{g} {}
-Node::Node(const llvm::AllocaInst &l) : Value{&l} {}
-Node::Node(const Register &reg) : Value{reg} {}
+Node::Node(GlobalSymbol g) : Variant{g} {}
+Node::Node(const llvm::AllocaInst &l) : Variant{&l} {}
+Node::Node(const Register &reg) : Variant{reg} {}
 Node Node::get_global() {
   return Node{GlobalSymbol{}};
 }

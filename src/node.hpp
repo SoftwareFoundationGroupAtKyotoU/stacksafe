@@ -17,10 +17,11 @@ namespace stacksafe {
 namespace {
 class GlobalSymbol {};
 using LocalSymbol = const llvm::AllocaInst *;
-using Value = std::variant<std::monostate, Register, GlobalSymbol, LocalSymbol>;
+using Variant =
+    std::variant<std::monostate, Register, GlobalSymbol, LocalSymbol>;
 }  // namespace
 
-class Node : private Value {
+class Node : private Variant {
   explicit Node(GlobalSymbol g);
   explicit Node(const llvm::AllocaInst &a);
 
