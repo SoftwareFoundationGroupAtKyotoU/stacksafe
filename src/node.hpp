@@ -32,8 +32,8 @@ class Node : private Value {
   Node() = default;
   explicit Node(const Symbol &sym);
   explicit Node(const Register &reg);
-  std::uintptr_t value() const;
-  std::pair<std::size_t, std::uintptr_t> pair() const;
+  const void *value() const;
+  std::pair<std::size_t, const void *> pair() const;
   const Register *as_register() const;
   bool is_symbol() const;
   bool is_local() const;

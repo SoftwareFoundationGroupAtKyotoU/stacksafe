@@ -32,19 +32,19 @@ Node Node::from_value(const llvm::Value &v) {
     llvm_unreachable("invalid value lookup");
   };
 }
-std::uintptr_t Node::value() const {
+const void *Node::value() const {
   if (auto sym = std::get_if<Symbol>(this)) {
-    return reinterpret_cast<std::uintptr_t>(sym->value());
+    return sym->value();
   } else if (auto reg = as_register()) {
-    return reinterpret_cast<std::uintptr_t>(&reg->value());
+    return &reg->value();
   } else if (auto a = std::get_if<const llvm::AllocaInst *>(this)) {
-    return reinterpret_cast<std::uintptr_t>(a);
+    return a;
   } else {
     // llvm_unreachable("Node is either symbol or register");
-    return -1;
+    return nullptr;
   }
 }
-std::pair<std::size_t, std::uintptr_t> Node::pair() const {
+std::pair<std::size_t, const void *> Node::pair() const {
   return {index(), value()};
 }
 const Register *Node::as_register() const {
