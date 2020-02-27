@@ -30,10 +30,8 @@ void Graph::init(const llvm::Function& f) {
   const auto g = Node::get_global();
   append(g, g);
   for (const auto& a : f.args()) {
-    const auto sym = Node::get_symbol(a);
     const auto reg = Node::get_register(a);
-    append(sym, sym);
-    append(reg, sym);
+    append(reg, g);
   }
 }
 bool Graph::append(const Node& tail, const Node& head) {
