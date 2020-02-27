@@ -10,6 +10,7 @@ class Value {
 
  public:
   explicit Value(Ptr p) : ptr_{p} {}
+  Ptr get() const { return ptr_; }
 };
 
 }  // namespace stacksafe
