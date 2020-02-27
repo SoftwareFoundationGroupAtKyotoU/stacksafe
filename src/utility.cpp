@@ -1,11 +1,6 @@
 #include "utility.hpp"
 #include <llvm/IR/Instructions.h>
 #include <llvm/Support/raw_ostream.h>
-#include <algorithm>
-#include <cstdlib>
-#include <map>
-#include <vector>
-#include "domain.hpp"
 
 namespace stacksafe {
 
@@ -93,21 +88,6 @@ std::string to_str(int num) {
     default:
       return num < 0 ? "unknown" : std::to_string(num);
   }
-}
-std::string to_str(const Domain& dom) {
-  std::string ret;
-  std::vector<int> nums;
-  for (const auto& sym : dom) {
-    nums.push_back(get_operand(sym.value()));
-  }
-  std::sort(nums.begin(), nums.end());
-  ret.append("[");
-  for (const auto& num : nums) {
-    ret.append(to_str(num));
-    ret.append(", ");
-  }
-  ret.append("]");
-  return ret;
 }
 }  // namespace debug
 }  // namespace stacksafe

@@ -11,7 +11,6 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
-class Domain;
 
 std::size_t operator"" _z(unsigned long long n);
 std::string to_str(const llvm::Value& v);
@@ -25,7 +24,6 @@ namespace debug {
 int get_operand(const llvm::Value* v);
 void print(const std::string& str);
 std::string to_str(int num);
-std::string to_str(const Domain& dom);
 }  // namespace debug
 }  // namespace stacksafe
 

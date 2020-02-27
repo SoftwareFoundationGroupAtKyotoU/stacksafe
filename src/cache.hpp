@@ -11,7 +11,6 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
-class Domain;
 class Register;
 class Symbol;
 class Node;
@@ -25,7 +24,6 @@ class Cache : private std::unordered_map<const llvm::Value*, int> {
   std::string to_str(const Register& reg) const;
   std::string to_str(const Node& sym) const;
   std::string to_str(const llvm::Instruction& reg) const;
-  std::string to_str(const Domain& dom) const;
 
  private:
   int lookup(const llvm::Value* val) const;
