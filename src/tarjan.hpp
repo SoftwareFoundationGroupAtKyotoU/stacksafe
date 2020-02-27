@@ -3,6 +3,7 @@
 
 #include <map>
 #include <stack>
+#include <vector>
 
 namespace llvm {
 class BasicBlock;
@@ -10,7 +11,7 @@ class Function;
 }  // namespace llvm
 
 namespace stacksafe {
-class Components;
+class Blocks;
 
 class Frame {
   int index_, low_;
@@ -35,11 +36,11 @@ class Tarjan {
   int index_;
 
  public:
-  static Components run(const llvm::Function& f);
+  static std::vector<Blocks> run(const llvm::Function& f);
 
  private:
   Tarjan(const llvm::Function& f);
-  bool visit(BB b, Components& comps);
+  bool visit(BB b, std::vector<Blocks>& vec);
   Frame& push(BB b);
   BB pop();
 };

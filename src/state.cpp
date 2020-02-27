@@ -33,7 +33,7 @@ bool Component::check_return(BB b) const {
 }
 
 State::State(const llvm::Function& f) {
-  for (const auto& [c, m] : Tarjan::run(f)) {
+  for (const auto& c : Tarjan::run(f)) {
     Super::emplace_back(c);
   }
   find(&f.getEntryBlock()).init(f);

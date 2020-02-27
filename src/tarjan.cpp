@@ -33,46 +33,45 @@ void Frame::pop() {
   on_stack_ = false;
 }
 
-Components Tarjan::run(const llvm::Function& f) {
-  Components comps;
+std::vector<Blocks> Tarjan::run(const llvm::Function& f) {
+  std::vector<Blocks> vec;
   Tarjan tarjan{f};
   for (const auto& b : f) {
-    tarjan.visit(&b, comps);
+    tarjan.visit(&b, vec);
   }
-  for (auto& [c, m] : comps) {
+  for (auto& c : vec) {
     std::reverse(c.begin(), c.end());
   }
-  std::reverse(comps.begin(), comps.end());
-  comps.find(&f.getEntryBlock()).init(f);
-  return comps;
+  std::reverse(vec.begin(), vec.end());
+  return vec;
 }
 Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
   for (const auto& b : f) {
     frames_.try_emplace(&b);
   }
 }
-bool Tarjan::visit(BB b, Components& comps) {
+bool Tarjan::visit(BB b, std::vector<Blocks>& vec) {
   const auto ok = frames_[b].is_undef();
   if (ok) {
     auto& frame = push(b);
     for (const auto& succ : Blocks::successors(b)) {
       const auto& next = frames_[succ];
-      if (visit(succ, comps)) {
+      if (visit(succ, vec)) {
         frame.update(next.low());
       } else if (next.on_stack()) {
         frame.update(next.index());
       }
     }
     if (frame.is_root()) {
-      Blocks comp;
+      Blocks blocks;
       while (true) {
         const auto p = pop();
-        comp.push_back(p);
+        blocks.push_back(p);
         if (b == p) {
           break;
         }
       }
-      comps.emplace_back(comp, Map{});
+      vec.emplace_back(blocks);
     }
   }
   return ok;
