@@ -5,6 +5,9 @@
 
 namespace stacksafe {
 
+Node Node::get_constant() {
+  return Node{Constant{nullptr}};
+}
 Node Node::get_global() {
   return Node{Global{nullptr}};
 }
@@ -30,7 +33,9 @@ Node Node::from_value(const llvm::Value &v) {
   };
 }
 const void *Node::ptr() const {
-  if (auto g = std::get_if<Global>(this)) {
+  if (auto c = std::get_if<Constant>(this)) {
+    return c->get();
+  } else if (auto g = std::get_if<Global>(this)) {
     return g->get();
   } else if (auto l = std::get_if<Local>(this)) {
     return l->get();

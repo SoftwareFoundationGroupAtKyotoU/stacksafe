@@ -27,6 +27,7 @@ class Node : private Variant {
   using Variant::Variant;
 
  public:
+  static Node get_constant();
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
   static Node get_register(const llvm::Argument &a);
