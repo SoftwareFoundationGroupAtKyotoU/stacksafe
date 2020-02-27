@@ -22,14 +22,24 @@ StackSafe::StackSafe() : llvm::ModulePass{ID} {}
 bool StackSafe::runOnModule(llvm::Module& m) {
   for (const auto& f : m) {
     if (!f.isDeclaration()) {
-      const auto safe = analyze(f);
-      const auto prefix = safe ? "SAFE" : "UNSAFE";
-      endline(llvm::outs() << prefix << ": " << f.getName());
+      print_safe(llvm::outs(), analyze(f));
+      endline(llvm::outs() << ": " << f.getName());
     }
   }
   return false;
 }
 void StackSafe::print(llvm::raw_ostream&, const llvm::Module*) const {}
+void StackSafe::print_safe(llvm::raw_ostream& os, bool safe) const {
+  const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
+  const auto str = safe ? "SAFE" : "UNSAFE";
+  if (os.is_displayed()) {
+    os.changeColor(color, true);
+    os << str;
+    os.resetColor();
+  } else {
+    os << str;
+  }
+}
 bool StackSafe::analyze(const llvm::Function& f) const {
   State state;
   for (const auto& [c, m] : Tarjan::run(f)) {

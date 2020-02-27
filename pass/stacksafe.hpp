@@ -13,6 +13,7 @@ class StackSafe : public ::llvm::ModulePass {
   void print(llvm::raw_ostream& os, const llvm::Module*) const override;
 
  private:
+  void print_safe(llvm::raw_ostream& os, bool safe) const;
   bool analyze(const llvm::Function& f) const;
 };
 
