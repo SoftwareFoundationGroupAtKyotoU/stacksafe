@@ -14,7 +14,6 @@ add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   block.cpp
   cache.cpp
-  depend.cpp
   effect.cpp
   graph.cpp
   hash.cpp
