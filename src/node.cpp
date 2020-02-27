@@ -22,7 +22,7 @@ Node Node::get_register(const llvm::Instruction &i) {
 }
 Node Node::from_value(const llvm::Value &v) {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
-    return is_global(*c) ? Node::get_global() : Node{};
+    return is_global(*c) ? Node::get_global() : Node::get_constant();
   } else if (auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
     assert(is_register(*i) && "invalid register lookup");
     return Node::get_register(*i);

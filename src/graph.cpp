@@ -9,7 +9,7 @@ bool tail_cmp(const Edge& lhs, const Edge& rhs) {
 }
 }  // namespace
 
-Edge::Edge(const Node& n) : Super{n, Node{}} {}
+Edge::Edge(const Node& n) : Super{n, Node::get_constant()} {}
 const Node& Edge::tail() const {
   return std::get<0>(*this);
 }
