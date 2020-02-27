@@ -29,6 +29,7 @@ target_sources(${target} PRIVATE
   params.cpp
   pointsto.cpp
   register.cpp
+  state.cpp
   stopwatch.cpp
   symbol.cpp
   tarjan.cpp
