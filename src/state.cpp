@@ -1,4 +1,5 @@
 #include "state.hpp"
+#include <llvm/IR/Instructions.h>
 
 namespace stacksafe {
 
@@ -7,6 +8,17 @@ bool Component::check_global() const {
   NodeSet nodes;
   graph_.reachables(Node::get_global(), nodes);
   return !nodes.has_local();
+}
+bool Component::check_return(BB b) const {
+  const auto t = b->getTerminator();
+  if (const auto i = llvm::dyn_cast<llvm::ReturnInst>(t)) {
+    if (const auto v = i->getReturnValue()) {
+      NodeSet ret;
+      graph_.reachables(*v, ret);
+      return !ret.has_local();
+    }
+  }
+  return true;
 }
 
 void State::transfer(const Component& c) {

@@ -8,6 +8,7 @@ namespace stacksafe {
 
 class Component {
   friend class State;
+  using BB = Blocks::value_type;
   Blocks blocks_;
   Graph graph_;
 
@@ -16,6 +17,7 @@ class Component {
 
  private:
   bool check_global() const;
+  bool check_return(BB b) const;
 };
 
 class State : private std::vector<Component> {
