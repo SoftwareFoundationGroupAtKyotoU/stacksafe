@@ -12,14 +12,12 @@ class Value;
 
 namespace stacksafe {
 class Register;
-class Symbol;
 
 class Cache : private std::unordered_map<const llvm::Value*, int> {
   using Super = std::unordered_map<const llvm::Value*, int>;
 
  public:
   explicit Cache(const llvm::Function& f);
-  std::string to_str(const Symbol& sym) const;
   std::string to_str(const Register& reg) const;
   std::string to_str(const llvm::Instruction& reg) const;
 

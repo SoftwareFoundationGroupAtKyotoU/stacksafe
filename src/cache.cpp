@@ -1,7 +1,6 @@
 #include "cache.hpp"
 #include <llvm/IR/Function.h>
 #include "register.hpp"
-#include "symbol.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
@@ -28,10 +27,6 @@ Cache::Cache(const llvm::Function& f) {
       }
     }
   }
-}
-std::string Cache::to_str(const Symbol& sym) const {
-  static const std::string prefix{"&"};
-  return prefix + to_string(lookup(sym.value()));
 }
 std::string Cache::to_str(const Register& reg) const {
   static const std::string prefix{"%"};

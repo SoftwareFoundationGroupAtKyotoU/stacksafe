@@ -23,7 +23,6 @@ target_sources(${target} PRIVATE
   register.cpp
   state.cpp
   stopwatch.cpp
-  symbol.cpp
   tarjan.cpp
   utility.cpp
   )
