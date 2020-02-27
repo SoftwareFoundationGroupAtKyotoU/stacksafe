@@ -34,6 +34,7 @@ class Node : private std::variant<std::monostate, Symbol, Register> {
   std::pair<std::size_t, std::uintptr_t> pair() const;
   const Symbol *as_symbol() const;
   const Register *as_register() const;
+  bool is_symbol() const;
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);

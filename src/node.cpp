@@ -61,6 +61,9 @@ const Symbol *Node::as_symbol() const {
 const Register *Node::as_register() const {
   return std::get_if<Register>(this);
 }
+bool Node::is_symbol() const {
+  return as_symbol();
+}
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
 }
