@@ -15,6 +15,7 @@ class Component {
  public:
   explicit Component(const Blocks& b);
   const Blocks& blocks() const;
+  Graph& graph();
   bool is_safe() const;
 
  private:

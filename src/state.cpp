@@ -7,6 +7,9 @@ Component::Component(const Blocks& b) : blocks_{b}, graph_{} {}
 const Blocks& Component::blocks() const {
   return blocks_;
 }
+Graph& Component::graph() {
+  return graph_;
+}
 bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
