@@ -21,6 +21,7 @@ class State : private std::vector<Component> {
 
  public:
   using Super::begin, Super::end;
+  void transfer(const Component& c);
 
  private:
   Graph& find(BB b);
