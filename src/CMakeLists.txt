@@ -26,7 +26,6 @@ target_sources(${target} PRIVATE
   symbol.cpp
   tarjan.cpp
   utility.cpp
-  value.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})
