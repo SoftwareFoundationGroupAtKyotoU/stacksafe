@@ -41,10 +41,7 @@ void StackSafe::print_safe(llvm::raw_ostream& os, bool safe) const {
   }
 }
 bool StackSafe::analyze(const llvm::Function& f) const {
-  State state;
-  for (const auto& [c, m] : Tarjan::run(f)) {
-    state.emplace_back(c);
-  }
+  State state{f};
   for (auto&& c : state) {
     PointsTo::analyze(c.graph(), c.blocks());
     state.transfer(c);

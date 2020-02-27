@@ -1,5 +1,6 @@
 #include "state.hpp"
 #include <llvm/IR/Instructions.h>
+#include "tarjan.hpp"
 
 namespace stacksafe {
 
@@ -31,6 +32,12 @@ bool Component::check_return(BB b) const {
   return true;
 }
 
+State::State(const llvm::Function& f) {
+  for (const auto& [c, m] : Tarjan::run(f)) {
+    Super::emplace_back(c);
+  }
+  find(&f.getEntryBlock()).init(f);
+}
 void State::transfer(const Component& c) {
   for (const auto& succ : c.blocks_.successors()) {
     find(succ).merge(c.graph_);

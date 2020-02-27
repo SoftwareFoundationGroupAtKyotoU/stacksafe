@@ -4,6 +4,10 @@
 #include "block.hpp"
 #include "graph.hpp"
 
+namespace llvm {
+class Function;
+}
+
 namespace stacksafe {
 
 class Component {
@@ -28,7 +32,8 @@ class State : private std::vector<Component> {
   using BB = Blocks::value_type;
 
  public:
-  using Super::begin, Super::end, Super::emplace_back;
+  using Super::begin, Super::end;
+  explicit State(const llvm::Function& f);
   void transfer(const Component& c);
   bool is_safe() const;
 
