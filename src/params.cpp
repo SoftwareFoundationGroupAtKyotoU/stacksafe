@@ -13,11 +13,11 @@ void Params::push_back(const llvm::Value &v) {
   Super::push_back(&v);
 }
 
-Params::ParamsIterator::ParamsIterator(Super it) : Super{it} {}
-auto Params::ParamsIterator::super() -> Super & {
+Params::ParamsIterator::ParamsIterator(It it) : It{it} {}
+auto Params::ParamsIterator::super() -> It & {
   return *this;
 }
-auto Params::ParamsIterator::super() const -> const Super & {
+auto Params::ParamsIterator::super() const -> const It & {
   return *this;
 }
 const llvm::Value &Params::ParamsIterator::operator*() const {

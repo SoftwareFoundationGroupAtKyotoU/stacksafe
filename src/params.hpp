@@ -26,14 +26,14 @@ class Params : private std::vector<const llvm::Value *> {
 
 class Params::ParamsIterator : private Params::Super::const_iterator {
   friend class Params;
-  using Super = Super::const_iterator;
-  explicit ParamsIterator(Super it);
-  Super &super();
-  const Super &super() const;
+  using It = Super::const_iterator;
+  explicit ParamsIterator(It it);
+  It &super();
+  const It &super() const;
 
  public:
-  using Super::iterator_category, Super::value_type, Super::difference_type,
-      Super::pointer, Super::reference;
+  using It::iterator_category, It::value_type, It::difference_type, It::pointer,
+      It::reference;
   const llvm::Value &operator*() const;
   ParamsIterator &operator++();
   bool operator==(ParamsIterator it) const;
