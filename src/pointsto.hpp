@@ -56,7 +56,6 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   NodeSet lookup(const llvm::Value &tail) const;
   void append(const llvm::Instruction &tail, const NodeSet &heads);
   void append(const NodeSet &tails, const NodeSet &heads);
-  bool reset();
 };
 
 }  // namespace stacksafe

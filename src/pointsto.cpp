@@ -195,8 +195,5 @@ void PointsTo::append(const NodeSet &tails, const NodeSet &heads) {
     }
   }
 }
-bool PointsTo::reset() {
-  return std::exchange(updated_, false);
-}
 
 }  // namespace stacksafe
