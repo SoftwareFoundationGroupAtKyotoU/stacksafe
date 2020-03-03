@@ -31,6 +31,7 @@ class Graph : private std::vector<Edge> {
   using Result = std::tuple<iterator, bool>;
 
  public:
+  using Super::size;
   void init(const llvm::Function& f);
   bool append(const Node& tail, const Node& head);
   NodeSet heads(const Node& tail) const;
