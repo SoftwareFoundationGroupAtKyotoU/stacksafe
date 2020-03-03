@@ -6,7 +6,7 @@
 
 namespace stacksafe {
 
-PointsTo::PointsTo(Graph &g) : graph_{g}, updated_{false} {}
+PointsTo::PointsTo(Graph &g) : graph_{g} {}
 void PointsTo::analyze(Graph &g, const Blocks &c) {
   PointsTo p{g};
   auto prev = g.size();
