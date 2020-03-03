@@ -185,19 +185,14 @@ NodeSet PointsTo::lookup(const llvm::Value &tail) const {
 }
 void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
   for (const auto &h : heads) {
-    update(graph_.append(Node::get_register(tail), h));
+    graph_.append(Node::get_register(tail), h);
   }
 }
 void PointsTo::append(const NodeSet &tails, const NodeSet &heads) {
   for (const auto &t : tails) {
     for (const auto &h : heads) {
-      update(graph_.append(t, h));
+      graph_.append(t, h);
     }
-  }
-}
-void PointsTo::update(bool updated) {
-  if (updated) {
-    updated_ = true;
   }
 }
 bool PointsTo::reset() {
