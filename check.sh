@@ -22,5 +22,6 @@ else
         target="${1%.c}".ll
         clang -S -emit-llvm -c "$1" -o "$target"
     fi
-    opt -analyze -load=$dir/stacksafe.so -stacksafe "$target"
+    shift
+    opt -analyze -load=$dir/stacksafe.so -stacksafe "$target" "$@"
 fi
