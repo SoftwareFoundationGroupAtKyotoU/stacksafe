@@ -42,7 +42,7 @@ bool Node::is_symbol() const {
   return !is_reg();
 }
 bool Node::is_local() const {
-  return std::get_if<Local>(&var_);
+  return kind_ == Kind::Local;
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
