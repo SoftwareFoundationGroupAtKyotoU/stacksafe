@@ -48,11 +48,17 @@ bool Node::is_local() const {
 bool Node::equals(const Node &that) const {
   return kind_ == that.kind_ && ptr_ == that.ptr_;
 }
+bool Node::less(const Node &that) const {
+  if (kind_ == that.kind_) {
+    return ptr_ < that.ptr_;
+  }
+  return kind_ < that.kind_;
+}
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.equals(rhs);
 }
 bool operator<(const Node &lhs, const Node &rhs) {
-  return lhs.pair() < rhs.pair();
+  return lhs.less(rhs);
 }
 
 void NodeSet::merge(const NodeSet &nodes) {
