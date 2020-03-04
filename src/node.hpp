@@ -23,7 +23,13 @@ using Variant = std::variant<Constant, Global, Local, Register, Argument>;
 }  // namespace
 
 class Node {
-  enum class Kind { Constant, Global, Local, Register, Argument } kind_;
+  enum class Kind : std::size_t {
+    Constant,
+    Global,
+    Local,
+    Register,
+    Argument,
+  } kind_;
   Variant var_;
   const void *ptr_;
   template <typename T>
