@@ -39,7 +39,7 @@ bool Node::is_reg() const {
   return kind_ == Kind::Register || kind_ == Kind::Argument;
 }
 bool Node::is_symbol() const {
-  return std::get_if<Global>(&var_) || std::get_if<Local>(&var_);
+  return !is_reg();
 }
 bool Node::is_local() const {
   return std::get_if<Local>(&var_);
