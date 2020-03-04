@@ -30,10 +30,9 @@ class Node {
     Register,
     Argument,
   } kind_;
-  Variant var_;
   const void *ptr_;
   template <typename T>
-  Node(Kind k, const T &v) : kind_{k}, var_{v}, ptr_{v.get()} {}
+  Node(Kind k, const T &v) : kind_{k}, ptr_{v.get()} {}
 
  public:
   static Node get_constant();
