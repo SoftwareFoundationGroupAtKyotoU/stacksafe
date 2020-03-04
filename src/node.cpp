@@ -5,20 +5,21 @@
 
 namespace stacksafe {
 
+Node::Node(Kind k, const void *p) : kind_{k}, ptr_{p} {}
 Node Node::get_constant() {
-  return Node{Kind::Constant, Constant{nullptr}};
+  return Node{Kind::Constant, nullptr};
 }
 Node Node::get_global() {
-  return Node{Kind::Global, Global{nullptr}};
+  return Node{Kind::Global, nullptr};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
-  return Node{Kind::Local, Local{&l}};
+  return Node{Kind::Local, &l};
 }
 Node Node::get_register(const llvm::Argument &a) {
-  return Node{Kind::Argument, Argument{&a}};
+  return Node{Kind::Argument, &a};
 }
 Node Node::get_register(const llvm::Instruction &i) {
-  return Node{Kind::Register, Register{&i}};
+  return Node{Kind::Register, &i};
 }
 Node Node::from_value(const llvm::Value &v) {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
