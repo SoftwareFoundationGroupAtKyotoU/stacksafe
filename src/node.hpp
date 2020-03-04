@@ -38,9 +38,6 @@ class Node {
   std::pair<std::size_t, const void *> pair() const;
   bool is_symbol() const;
   bool is_local() const;
-
- private:
-  const void *ptr() const;
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);

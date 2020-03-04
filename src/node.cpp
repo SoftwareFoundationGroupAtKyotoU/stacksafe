@@ -33,17 +33,13 @@ Node Node::from_value(const llvm::Value &v) {
   };
 }
 std::pair<std::size_t, const void *> Node::pair() const {
-  return {var_.index(), ptr()};
+  return {var_.index(), ptr_};
 }
 bool Node::is_symbol() const {
   return std::get_if<Global>(&var_) || std::get_if<Local>(&var_);
 }
 bool Node::is_local() const {
   return std::get_if<Local>(&var_);
-}
-const void *Node::ptr() const {
-  const auto f = [](auto &&v) -> const void * { return v.get(); };
-  return std::visit(f, var_);
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.pair() == rhs.pair();
