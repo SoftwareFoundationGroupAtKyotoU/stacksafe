@@ -13,8 +13,10 @@ void endline(llvm::raw_ostream& os) {
   (os << "\n").flush();
 }
 constexpr auto stacksafe{"stacksafe"};
-llvm::cl::opt<std::string> logfile{"logfile", llvm::cl::desc{"Print log"},
-                                   llvm::cl::value_desc{"filename"}};
+const llvm::cl::desc logfile_desc{"Print log"};
+const llvm::cl::value_desc logfile_value{"filename"};
+const llvm::cl::opt<std::string> logfile{"logfile", logfile_desc,
+                                         logfile_value};
 }  // namespace
 
 char StackSafe::ID = 0;
