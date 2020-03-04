@@ -22,8 +22,10 @@ using Argument = Value<llvm::Argument>;
 using Variant = std::variant<Constant, Global, Local, Register, Argument>;
 }  // namespace
 
-class Node : private Variant {
-  using Variant::Variant;
+class Node {
+  Variant var_;
+  template <typename T>
+  explicit Node(const T &v) : var_{v} {}
 
  public:
   static Node get_constant();
