@@ -24,8 +24,9 @@ using Variant = std::variant<Constant, Global, Local, Register, Argument>;
 
 class Node {
   Variant var_;
+  const void *ptr_;
   template <typename T>
-  explicit Node(const T &v) : var_{v} {}
+  explicit Node(const T &v) : var_{v}, ptr_{v.get()} {}
 
  public:
   static Node get_constant();
