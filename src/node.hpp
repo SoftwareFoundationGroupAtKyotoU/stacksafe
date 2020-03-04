@@ -13,14 +13,6 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
-namespace {
-using Constant = Value<int>;
-using Global = Value<void>;
-using Local = Value<llvm::AllocaInst>;
-using Register = Value<llvm::Instruction>;
-using Argument = Value<llvm::Argument>;
-using Variant = std::variant<Constant, Global, Local, Register, Argument>;
-}  // namespace
 
 class Node {
   enum class Kind : std::size_t {
