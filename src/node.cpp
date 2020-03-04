@@ -45,8 +45,11 @@ bool Node::is_symbol() const {
 bool Node::is_local() const {
   return kind_ == Kind::Local;
 }
+bool Node::equals(const Node &that) const {
+  return kind_ == that.kind_ && ptr_ == that.ptr_;
+}
 bool operator==(const Node &lhs, const Node &rhs) {
-  return lhs.pair() == rhs.pair();
+  return lhs.equals(rhs);
 }
 bool operator<(const Node &lhs, const Node &rhs) {
   return lhs.pair() < rhs.pair();
