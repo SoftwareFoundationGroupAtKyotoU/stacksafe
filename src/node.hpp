@@ -23,10 +23,11 @@ using Variant = std::variant<Constant, Global, Local, Register, Argument>;
 }  // namespace
 
 class Node {
+  enum class Kind { Constant, Global, Local, Register, Argument } kind_;
   Variant var_;
   const void *ptr_;
   template <typename T>
-  explicit Node(const T &v) : var_{v}, ptr_{v.get()} {}
+  Node(Kind k, const T &v) : kind_{k}, var_{v}, ptr_{v.get()} {}
 
  public:
   static Node get_constant();

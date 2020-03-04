@@ -6,19 +6,19 @@
 namespace stacksafe {
 
 Node Node::get_constant() {
-  return Node{Constant{nullptr}};
+  return Node{Kind::Constant, Constant{nullptr}};
 }
 Node Node::get_global() {
-  return Node{Global{nullptr}};
+  return Node{Kind::Global, Global{nullptr}};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
-  return Node{Local{&l}};
+  return Node{Kind::Local, Local{&l}};
 }
 Node Node::get_register(const llvm::Argument &a) {
-  return Node{Argument{&a}};
+  return Node{Kind::Argument, Argument{&a}};
 }
 Node Node::get_register(const llvm::Instruction &i) {
-  return Node{Register{&i}};
+  return Node{Kind::Register, Register{&i}};
 }
 Node Node::from_value(const llvm::Value &v) {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
