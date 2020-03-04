@@ -1,6 +1,7 @@
 #include "stacksafe.hpp"
 #include <llvm/IR/Module.h>
 #include <llvm/Support/CommandLine.h>
+#include <llvm/Support/Format.h>
 #include <string>
 #include "block.hpp"
 #include "pointsto.hpp"
@@ -34,7 +35,11 @@ bool StackSafe::runOnModule(llvm::Module& m) {
         safe = analyze(f);
       }
       print_safe(llvm::outs(), safe);
-      endline(llvm::outs() << ": " << f.getName());
+      llvm::outs() << ": " << f.getName();
+      if (stopwatch) {
+        llvm::outs() << llvm::format(" %lf", elapsed);
+      }
+      endline(llvm::outs());
     }
   }
   return false;
