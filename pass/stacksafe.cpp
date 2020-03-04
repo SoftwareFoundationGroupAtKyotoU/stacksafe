@@ -5,6 +5,7 @@
 #include "block.hpp"
 #include "pointsto.hpp"
 #include "state.hpp"
+#include "stopwatch.hpp"
 #include "tarjan.hpp"
 
 namespace stacksafe {
@@ -26,7 +27,13 @@ StackSafe::StackSafe() : llvm::ModulePass{ID} {}
 bool StackSafe::runOnModule(llvm::Module& m) {
   for (const auto& f : m) {
     if (!f.isDeclaration()) {
-      print_safe(llvm::outs(), analyze(f));
+      double elapsed = 0.0;
+      bool safe = false;
+      {
+        Stopwatch<std::milli> clock{elapsed};
+        safe = analyze(f);
+      }
+      print_safe(llvm::outs(), safe);
       endline(llvm::outs() << ": " << f.getName());
     }
   }
