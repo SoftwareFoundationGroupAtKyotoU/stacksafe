@@ -35,6 +35,9 @@ Node Node::from_value(const llvm::Value &v) {
 std::pair<std::size_t, const void *> Node::pair() const {
   return {var_.index(), ptr_};
 }
+bool Node::is_reg() const {
+  return kind_ == Kind::Register || kind_ == Kind::Argument;
+}
 bool Node::is_symbol() const {
   return std::get_if<Global>(&var_) || std::get_if<Local>(&var_);
 }
