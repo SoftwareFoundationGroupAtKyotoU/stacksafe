@@ -17,6 +17,8 @@ const llvm::cl::desc logfile_desc{"Print log"};
 const llvm::cl::value_desc logfile_value{"filename"};
 const llvm::cl::opt<std::string> logfile{"logfile", logfile_desc,
                                          logfile_value};
+const llvm::cl::desc stopwatch_desc{"Measure the time of analysis"};
+const llvm::cl::opt<bool> stopwatch{"stopwatch", stopwatch_desc};
 }  // namespace
 
 char StackSafe::ID = 0;
