@@ -37,6 +37,7 @@ class Graph {
   std::size_t size() const;
   void init(const llvm::Function& f);
   void connect(const Node& tail, const Node& head);
+  void connect(const llvm::Value& tail, const NodeSet& heads);
   NodeSet followings(const Node& tail) const;
   void merge(const Graph& g);
   void reachables(const Node& n, NodeSet& nodes) const;
