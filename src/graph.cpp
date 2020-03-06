@@ -3,11 +3,6 @@
 #include <algorithm>
 
 namespace stacksafe {
-namespace {
-bool tail_cmp(const Edge& lhs, const Edge& rhs) {
-  return lhs.tail() < rhs.tail();
-}
-}  // namespace
 
 Edge::Edge(const Node& n) : Super{n, Node::get_constant()} {}
 const Node& Edge::tail() const {
@@ -66,14 +61,6 @@ void Graph::reachables(const Node& n, NodeSet& nodes) const {
 void Graph::reachables(const llvm::Value& v, NodeSet& nodes) const {
   for (const auto& tail : followings(Node::from_value(v))) {
     reachables(tail, nodes);
-  }
-}
-auto Graph::insert(iterator hint, const Edge& e) -> iterator {
-  const auto [lb, ub] = std::equal_range(hint, end(), e);
-  if (lb == ub) {
-    return Super::insert(lb, e);
-  } else {
-    return lb;
   }
 }
 

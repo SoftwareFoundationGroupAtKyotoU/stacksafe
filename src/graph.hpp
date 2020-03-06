@@ -28,7 +28,6 @@ bool operator<(const Edge& lhs, const Edge& rhs);
 
 class Graph : private std::vector<Edge> {
   using Super = std::vector<Edge>;
-  using iterator = Super::iterator;
   using Map = std::map<Node, NodeSet>;
   Map map_;
 
@@ -40,9 +39,6 @@ class Graph : private std::vector<Edge> {
   void merge(const Graph& g);
   void reachables(const Node& n, NodeSet& nodes) const;
   void reachables(const llvm::Value& v, NodeSet& nodes) const;
-
- private:
-  iterator insert(iterator hint, const Edge& e);
 };
 
 }  // namespace stacksafe
