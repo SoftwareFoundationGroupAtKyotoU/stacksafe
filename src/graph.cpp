@@ -34,8 +34,8 @@ void Graph::init(const llvm::Function& f) {
     connect(reg, g);
   }
 }
-bool Graph::connect(const Node& tail, const Node& head) {
-  return std::get<1>(insert(begin(), Edge{tail, head}));
+void Graph::connect(const Node& tail, const Node& head) {
+  insert(begin(), Edge{tail, head});
 }
 NodeSet Graph::followings(const Node& tail) const {
   NodeSet nodes;
