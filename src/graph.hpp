@@ -3,6 +3,7 @@
 
 #include <map>
 #include <tuple>
+#include <unordered_map>
 #include <vector>
 #include "node.hpp"
 
@@ -28,7 +29,9 @@ bool operator<(const Edge& lhs, const Edge& rhs);
 
 class Graph {
   using Map = std::map<Node, NodeSet>;
+  using Stack = std::unordered_map<const llvm::Value*, NodeSet>;
   Map map_;
+  Stack stack_;
 
  public:
   std::size_t size() const;
