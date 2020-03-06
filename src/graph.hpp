@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
-#include <set>
 #include <unordered_map>
+#include <unordered_set>
 #include "node.hpp"
 
 namespace llvm {
@@ -12,8 +12,8 @@ class Value;
 
 namespace stacksafe {
 
-class NodeSet : private std::set<Node> {
-  using Super = std::set<Node>;
+class NodeSet : private std::unordered_set<Node, NodeHash> {
+  using Super = std::unordered_set<Node, NodeHash>;
 
  public:
   using Super::begin, Super::end, Super::size;
