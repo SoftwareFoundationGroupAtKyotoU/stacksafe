@@ -5,23 +5,6 @@
 
 namespace stacksafe {
 
-Edge::Edge(const Node& n) : Super{n, Node::get_constant()} {}
-const Node& Edge::tail() const {
-  return std::get<0>(*this);
-}
-const Node& Edge::head() const {
-  return std::get<1>(*this);
-}
-auto Edge::pair() const -> const Super& {
-  return *this;
-}
-bool operator==(const Edge& lhs, const Edge& rhs) {
-  return lhs.pair() == rhs.pair();
-}
-bool operator<(const Edge& lhs, const Edge& rhs) {
-  return lhs.pair() < rhs.pair();
-}
-
 std::size_t Graph::size() const {
   return heap_.size() + stack_.size();
 }
