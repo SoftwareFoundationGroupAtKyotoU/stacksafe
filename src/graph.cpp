@@ -22,7 +22,7 @@ bool operator<(const Edge& lhs, const Edge& rhs) {
 }
 
 std::size_t Graph::size() const {
-  return map_.size();
+  return map_.size() + stack_.size();
 }
 void Graph::init(const llvm::Function& f) {
   const auto g = Node::get_global();
