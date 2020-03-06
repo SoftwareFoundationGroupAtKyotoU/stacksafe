@@ -142,7 +142,7 @@ void PointsTo::alloc(const llvm::AllocaInst &dst) {
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet heads;
   for (const auto &sym : lookup(src)) {
-    heads.merge(graph_.heads(sym));
+    heads.merge(graph_.followings(sym));
   }
   append(dst, heads);
 }
@@ -181,7 +181,7 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
 }
 void PointsTo::constant(const llvm::Instruction &) {}
 NodeSet PointsTo::lookup(const llvm::Value &tail) const {
-  return graph_.heads(Node::from_value(tail));
+  return graph_.followings(Node::from_value(tail));
 }
 void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
   for (const auto &h : heads) {

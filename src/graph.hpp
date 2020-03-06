@@ -34,7 +34,7 @@ class Graph : private std::vector<Edge> {
   using Super::size;
   void init(const llvm::Function& f);
   bool connect(const Node& tail, const Node& head);
-  NodeSet heads(const Node& tail) const;
+  NodeSet followings(const Node& tail) const;
   bool merge(const Graph& g);
   void reachables(const Node& n, NodeSet& nodes) const;
   void reachables(const llvm::Value& v, NodeSet& nodes) const;
