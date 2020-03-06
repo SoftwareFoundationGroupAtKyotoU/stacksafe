@@ -1,5 +1,6 @@
 #include "node.hpp"
-#include <llvm/ADT/Hashing.h>
+#include <cassert>
+#include <functional>
 
 namespace stacksafe {
 namespace {
@@ -34,7 +35,7 @@ bool Node::less(const Node &that) const {
   return val_ < that.val_;
 }
 std::size_t Node::hash() const {
-  return llvm::hash_value(val_);
+  return std::hash<std::uintptr_t>{}(val_);
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.equals(rhs);
