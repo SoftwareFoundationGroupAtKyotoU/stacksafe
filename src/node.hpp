@@ -18,8 +18,8 @@ class Node {
     Register,
     Argument,
   } kind_;
-  const void *ptr_;
-  Node(Kind k, const void *p);
+  const llvm::Value *ptr_;
+  Node(Kind k, const llvm::Value *p);
 
  public:
   static Node get_constant();
