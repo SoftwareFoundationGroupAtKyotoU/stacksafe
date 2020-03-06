@@ -132,13 +132,11 @@ void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
   NodeSet heads;
   graph_.followings(lhs, heads);
   graph_.followings(rhs, heads);
-  append(dst, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::alloc(const llvm::AllocaInst &dst) {
   NodeSet heads;
   heads.insert(Node::get_local(dst));
-  append(dst, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
@@ -147,7 +145,6 @@ void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   for (const auto &sym : tails) {
     heads.merge(graph_.followings(sym));
   }
-  append(dst, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
@@ -164,7 +161,6 @@ void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
 void PointsTo::cast(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet heads;
   graph_.followings(src, heads);
-  append(dst, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
@@ -172,7 +168,6 @@ void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
   for (const auto &arg : params) {
     graph_.followings(arg, heads);
   }
-  append(dst, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
@@ -186,17 +181,11 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
       }
     }
     if (is_return(dst) && effect.depends(from, Index::RETURN)) {
-      append(dst, head);
       graph_.connect(dst, head);
     }
   }
 }
 void PointsTo::constant(const llvm::Instruction &) {}
-void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
-  for (const auto &h : heads) {
-    graph_.connect(Node::get_register(tail), h);
-  }
-}
 void PointsTo::append(const NodeSet &tails, const NodeSet &heads) {
   for (const auto &t : tails) {
     for (const auto &h : heads) {
