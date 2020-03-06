@@ -50,9 +50,6 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   void phi(const llvm::Instruction &dst, const Params &params);
   void call(const llvm::CallInst &dst, const Params &params);
   void constant(const llvm::Instruction &dst);
-
- private:
-  void append(const NodeSet &tails, const NodeSet &heads);
 };
 
 }  // namespace stacksafe

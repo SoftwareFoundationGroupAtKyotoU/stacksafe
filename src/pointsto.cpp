@@ -147,7 +147,7 @@ void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
   NodeSet tails, heads;
   graph_.followings(dst, tails);
   graph_.followings(src, heads);
-  append(tails, heads);
+  graph_.connect(tails, heads);
 }
 void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                        const llvm::Value &val) {
@@ -170,20 +170,17 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   assert(dst.arg_size() == params.size());
   NodeMap nodemap{params, graph_};
   const auto effect = effects_.get(dst);
-  for (const auto &[from, head] : nodemap) {
+  for (const auto &[froms, heads] : nodemap) {
     for (const auto &[to, tail] : nodemap) {
-      if (effect.depends(from, to)) {
-        append(tail, head);
+      if (effect.depends(froms, to)) {
+        graph_.connect(tail, heads);
       }
     }
-    if (is_return(dst) && effect.depends(from, Index::RETURN)) {
-      graph_.connect(dst, head);
+    if (is_return(dst) && effect.depends(froms, Index::RETURN)) {
+      graph_.connect(dst, heads);
     }
   }
 }
 void PointsTo::constant(const llvm::Instruction &) {}
-void PointsTo::append(const NodeSet &tails, const NodeSet &heads) {
-  graph_.connect(tails, heads);
-}
 
 }  // namespace stacksafe
