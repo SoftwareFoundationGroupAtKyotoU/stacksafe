@@ -63,5 +63,9 @@ NodeSet& Graph::at(const Node& tail) {
   const auto [it, _] = map_.try_emplace(tail);
   return std::get<1>(*it);
 }
+NodeSet& Graph::stack_at(const llvm::Value& tail) {
+  const auto [it, _] = stack_.try_emplace(&tail);
+  return std::get<1>(*it);
+}
 
 }  // namespace stacksafe

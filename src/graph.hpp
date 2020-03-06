@@ -44,6 +44,7 @@ class Graph {
 
  private:
   NodeSet& at(const Node& tail);
+  NodeSet& stack_at(const llvm::Value& tail);
 };
 
 }  // namespace stacksafe
