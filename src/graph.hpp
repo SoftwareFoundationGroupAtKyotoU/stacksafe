@@ -33,7 +33,7 @@ class Graph : private std::vector<Edge> {
  public:
   using Super::size;
   void init(const llvm::Function& f);
-  bool append(const Node& tail, const Node& head);
+  bool connect(const Node& tail, const Node& head);
   NodeSet heads(const Node& tail) const;
   bool merge(const Graph& g);
   void reachables(const Node& n, NodeSet& nodes) const;

@@ -28,13 +28,13 @@ bool operator<(const Edge& lhs, const Edge& rhs) {
 
 void Graph::init(const llvm::Function& f) {
   const auto g = Node::get_global();
-  append(g, g);
+  connect(g, g);
   for (const auto& a : f.args()) {
     const auto reg = Node::get_register(a);
-    append(reg, g);
+    connect(reg, g);
   }
 }
-bool Graph::append(const Node& tail, const Node& head) {
+bool Graph::connect(const Node& tail, const Node& head) {
   return std::get<1>(insert(begin(), Edge{tail, head}));
 }
 NodeSet Graph::heads(const Node& tail) const {
