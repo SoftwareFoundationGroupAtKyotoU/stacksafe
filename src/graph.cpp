@@ -44,6 +44,11 @@ NodeSet Graph::followings(const Node& tail) const {
   }
   return NodeSet{};
 }
+void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
+  if (const auto it = stack_.find(&tail); it != stack_.end()) {
+    heads.merge(std::get<1>(*it));
+  }
+}
 void Graph::merge(const Graph& g) {
   for (const auto& [tail, heads] : g.map_) {
     at(tail).merge(heads);
