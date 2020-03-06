@@ -3,15 +3,14 @@
 
 #include <map>
 #include <vector>
+#include "graph.hpp"
 #include "matrix.hpp"
-#include "node.hpp"
 
 namespace llvm {
 class Value;
 }
 
 namespace stacksafe {
-class Graph;
 
 class Params : private std::vector<const llvm::Value *> {
   using Super = std::vector<const llvm::Value *>;

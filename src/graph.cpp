@@ -1,9 +1,27 @@
 #include "graph.hpp"
 #include <llvm/IR/Function.h>
-#include <algorithm>
 #include "utility.hpp"
 
 namespace stacksafe {
+
+NodeSet::NodeSet() = default;
+NodeSet::NodeSet(const Node& n) {
+  Super::insert(n);
+}
+void NodeSet::merge(const NodeSet& nodes) {
+  Super::insert(nodes.begin(), nodes.end());
+}
+bool NodeSet::element(const Node& n) const {
+  return 0 != Super::count(n);
+}
+bool NodeSet::has_local() const {
+  for (const auto& n : *this) {
+    if (n.is_local()) {
+      return true;
+    }
+  }
+  return false;
+}
 
 std::size_t Graph::size() const {
   return heap_.size() + stack_.size();

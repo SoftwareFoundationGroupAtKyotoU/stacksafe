@@ -61,23 +61,4 @@ bool operator<(const Node &lhs, const Node &rhs) {
   return lhs.less(rhs);
 }
 
-NodeSet::NodeSet() = default;
-NodeSet::NodeSet(const Node &n) {
-  Super::insert(n);
-}
-void NodeSet::merge(const NodeSet &nodes) {
-  Super::insert(nodes.begin(), nodes.end());
-}
-bool NodeSet::element(const Node &n) const {
-  return 0 != Super::count(n);
-}
-bool NodeSet::has_local() const {
-  for (const auto &n : *this) {
-    if (n.is_local()) {
-      return true;
-    }
-  }
-  return false;
-}
-
 }  // namespace stacksafe

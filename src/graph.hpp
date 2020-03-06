@@ -2,9 +2,8 @@
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
 #include <map>
-#include <tuple>
+#include <set>
 #include <unordered_map>
-#include <vector>
 #include "node.hpp"
 
 namespace llvm {
@@ -13,6 +12,18 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
+
+class NodeSet : private std::set<Node> {
+  using Super = std::set<Node>;
+
+ public:
+  using Super::begin, Super::end, Super::size;
+  NodeSet();
+  explicit NodeSet(const Node& n);
+  void merge(const NodeSet& nodes);
+  bool element(const Node& n) const;
+  bool has_local() const;
+};
 
 class Graph {
   using Heap = std::map<Node, NodeSet>;

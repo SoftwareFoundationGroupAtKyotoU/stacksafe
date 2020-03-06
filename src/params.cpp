@@ -1,5 +1,4 @@
 #include "params.hpp"
-#include "graph.hpp"
 
 namespace stacksafe {
 
