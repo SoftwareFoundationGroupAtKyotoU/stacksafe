@@ -70,10 +70,10 @@ NodeSet Graph::reachables(const NodeSet& nodes) const {
   }
   return heads;
 }
-void Graph::reachables(const llvm::Value& v, NodeSet& nodes) const {
-  NodeSet tails;
-  followings(v, tails);
-  nodes.merge(reachables(tails));
+NodeSet Graph::reachables(const llvm::Value& v) const {
+  NodeSet nodes;
+  followings(v, nodes);
+  return reachables(nodes);
 }
 NodeSet& Graph::at(const Node& tail) {
   const auto [it, _] = map_.try_emplace(tail);

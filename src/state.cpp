@@ -22,9 +22,7 @@ bool Component::check_return(BB b) const {
   const auto t = b->getTerminator();
   if (const auto i = llvm::dyn_cast<llvm::ReturnInst>(t)) {
     if (const auto v = i->getReturnValue()) {
-      NodeSet ret;
-      graph_.reachables(*v, ret);
-      return !ret.has_local();
+      return !graph_.reachables(*v).has_local();
     }
   }
   return true;

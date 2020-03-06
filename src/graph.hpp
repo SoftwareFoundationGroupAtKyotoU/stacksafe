@@ -42,7 +42,7 @@ class Graph {
   void followings(const llvm::Value& tail, NodeSet& heads) const;
   void merge(const Graph& g);
   NodeSet reachables(const NodeSet& nodes) const;
-  void reachables(const llvm::Value& v, NodeSet& nodes) const;
+  NodeSet reachables(const llvm::Value& v) const;
 
  private:
   NodeSet& at(const Node& tail);

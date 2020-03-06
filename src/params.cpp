@@ -39,7 +39,7 @@ NodeMap::NodeMap(const Params &params, Graph &graph) {
   auto index = Index::GLOBAL;
   self[index] = graph.reachables(NodeSet{Node::get_global()});
   for (const auto &arg : params) {
-    graph.reachables(arg, self[++index]);
+    self[++index] = graph.reachables(arg);
   }
 }
 
