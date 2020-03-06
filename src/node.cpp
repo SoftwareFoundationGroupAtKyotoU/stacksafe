@@ -28,16 +28,13 @@ bool Node::is_local() const {
   return !is_global();
 }
 bool Node::equals(const Node &that) const {
-  return kind_ == that.kind_ && ptr_ == that.ptr_;
+  return val_ == that.val_;
 }
 bool Node::less(const Node &that) const {
-  if (kind_ == that.kind_) {
-    return ptr_ < that.ptr_;
-  }
-  return kind_ < that.kind_;
+  return val_ < that.val_;
 }
 std::size_t Node::hash() const {
-  return llvm::hash_combine(static_cast<std::size_t>(kind_), ptr_);
+  return llvm::hash_value(val_);
 }
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.equals(rhs);
