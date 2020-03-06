@@ -36,12 +36,18 @@ void Graph::init(const llvm::Function& f) {
 }
 void Graph::connect(const Node& tail, const Node& head) {
   insert(begin(), Edge{tail, head});
+  const auto it = std::get<0>(map_.try_emplace(tail));
+  std::get<1>(*it).insert(head);
 }
 NodeSet Graph::followings(const Node& tail) const {
   NodeSet nodes;
   const auto [lb, ub] = std::equal_range(begin(), end(), Edge{tail}, tail_cmp);
   for (auto it = lb; it != ub; ++it) {
     nodes.insert(it->head());
+  }
+  if (const auto it = map_.find(tail); it != map_.end()) {
+    const auto& heads = std::get<1>(*it);
+    nodes.insert(heads.begin(), heads.end());
   }
   return nodes;
 }
@@ -50,6 +56,10 @@ void Graph::merge(const Graph& g) {
   for (const auto& e : g) {
     const auto it = insert(hint, e);
     hint = std::next(it);
+  }
+  for (const auto& [tail, heads] : g.map_) {
+    const auto it = std::get<0>(map_.try_emplace(tail));
+    std::get<1>(*it).insert(heads.begin(), heads.end());
   }
 }
 void Graph::reachables(const Node& n, NodeSet& nodes) const {
