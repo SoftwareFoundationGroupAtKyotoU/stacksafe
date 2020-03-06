@@ -35,6 +35,7 @@ class Node {
   bool is_local() const;
   bool equals(const Node &that) const;
   bool less(const Node &that) const;
+  std::size_t hash() const;
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);

@@ -51,6 +51,9 @@ bool Node::less(const Node &that) const {
   }
   return kind_ < that.kind_;
 }
+std::size_t Node::hash() const {
+  return llvm::hash_combine(static_cast<std::size_t>(kind_), ptr_);
+}
 bool operator==(const Node &lhs, const Node &rhs) {
   return lhs.equals(rhs);
 }
