@@ -36,7 +36,7 @@ class Graph {
  public:
   std::size_t size() const;
   void init(const llvm::Function& f);
-  void connect(const Node& tail, const Node& head);
+  void connect(const NodeSet& tails, const NodeSet& heads);
   void connect(const llvm::Value& tail, const NodeSet& heads);
   void followings(const NodeSet& tails, NodeSet& heads) const;
   void followings(const llvm::Value& tail, NodeSet& heads) const;

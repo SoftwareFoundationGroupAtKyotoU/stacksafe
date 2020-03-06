@@ -183,11 +183,7 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
 }
 void PointsTo::constant(const llvm::Instruction &) {}
 void PointsTo::append(const NodeSet &tails, const NodeSet &heads) {
-  for (const auto &t : tails) {
-    for (const auto &h : heads) {
-      graph_.connect(t, h);
-    }
-  }
+  graph_.connect(tails, heads);
 }
 
 }  // namespace stacksafe

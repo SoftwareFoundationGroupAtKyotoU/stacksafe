@@ -26,15 +26,16 @@ std::size_t Graph::size() const {
   return map_.size() + stack_.size();
 }
 void Graph::init(const llvm::Function& f) {
-  const auto g = Node::get_global();
+  const NodeSet g{Node::get_global()};
   connect(g, g);
   for (const auto& a : f.args()) {
-    const auto reg = Node::get_register(a);
-    connect(reg, g);
+    connect(a, g);
   }
 }
-void Graph::connect(const Node& tail, const Node& head) {
-  at(tail).merge(NodeSet{head});
+void Graph::connect(const NodeSet& tails, const NodeSet& heads) {
+  for (const auto& tail : tails) {
+    at(tail).merge(heads);
+  }
 }
 void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
   assert(is_register(tail));
