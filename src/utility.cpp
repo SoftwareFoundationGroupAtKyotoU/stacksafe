@@ -20,16 +20,15 @@ void fatal_error(const std::string& msg) {
 bool least_significant_bit(const void* ptr) {
   return reinterpret_cast<std::uintptr_t>(ptr) & 0x1;
 }
-bool is_global(const llvm::Constant& c) {
-  if (llvm::isa<llvm::GlobalValue>(&c)) {
-    return true;
-  }
-  for (unsigned i = 0; i < c.getNumOperands(); ++i) {
-    assert(llvm::isa<llvm::Constant>(c.getOperand(i)) &&
-           "constant has non-constant");
-    if (auto v = llvm::dyn_cast<llvm::Constant>(c.getOperand(i));
-        is_global(*v)) {
+bool is_global(const llvm::Value& v) {
+  if (const auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
+    if (llvm::isa<llvm::GlobalValue>(c)) {
       return true;
+    }
+    for (unsigned i = 0; i < c->getNumOperands(); ++i) {
+      if (is_global(*c->getOperand(i))) {
+        return true;
+      }
     }
   }
   return false;
