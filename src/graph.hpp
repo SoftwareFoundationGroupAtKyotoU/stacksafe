@@ -26,8 +26,7 @@ class Edge : private std::tuple<Node, Node> {
 bool operator==(const Edge& lhs, const Edge& rhs);
 bool operator<(const Edge& lhs, const Edge& rhs);
 
-class Graph : private std::vector<Edge> {
-  using Super = std::vector<Edge>;
+class Graph {
   using Map = std::map<Node, NodeSet>;
   Map map_;
 
