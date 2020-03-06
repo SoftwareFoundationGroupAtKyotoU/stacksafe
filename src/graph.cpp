@@ -33,8 +33,7 @@ void Graph::init(const llvm::Function& f) {
   }
 }
 void Graph::connect(const Node& tail, const Node& head) {
-  const auto it = std::get<0>(map_.try_emplace(tail));
-  std::get<1>(*it).insert(head);
+  at(tail).insert(head);
 }
 NodeSet Graph::followings(const Node& tail) const {
   if (const auto it = map_.find(tail); it != map_.end()) {
@@ -44,8 +43,7 @@ NodeSet Graph::followings(const Node& tail) const {
 }
 void Graph::merge(const Graph& g) {
   for (const auto& [tail, heads] : g.map_) {
-    const auto it = std::get<0>(map_.try_emplace(tail));
-    std::get<1>(*it).insert(heads.begin(), heads.end());
+    at(tail).merge(heads);
   }
 }
 void Graph::reachables(const Node& n, NodeSet& nodes) const {
@@ -60,6 +58,10 @@ void Graph::reachables(const llvm::Value& v, NodeSet& nodes) const {
   for (const auto& tail : followings(Node::from_value(v))) {
     reachables(tail, nodes);
   }
+}
+NodeSet& Graph::at(const Node& tail) {
+  const auto [it, _] = map_.try_emplace(tail);
+  return std::get<1>(*it);
 }
 
 }  // namespace stacksafe

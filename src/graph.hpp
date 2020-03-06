@@ -38,6 +38,9 @@ class Graph {
   void merge(const Graph& g);
   void reachables(const Node& n, NodeSet& nodes) const;
   void reachables(const llvm::Value& v, NodeSet& nodes) const;
+
+ private:
+  NodeSet& at(const Node& tail);
 };
 
 }  // namespace stacksafe
