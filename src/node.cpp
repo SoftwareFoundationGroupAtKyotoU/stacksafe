@@ -1,10 +1,9 @@
 #include "node.hpp"
 #include <llvm/ADT/Hashing.h>
-#include <llvm/IR/Instructions.h>
 
 namespace stacksafe {
 
-Node::Node(Kind k, const llvm::Value *p) : kind_{k}, ptr_{p} {}
+Node::Node(Kind k, const llvm::AllocaInst *p) : kind_{k}, ptr_{p} {}
 Node Node::get_global() {
   return Node{Kind::Global, nullptr};
 }

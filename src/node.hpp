@@ -1,11 +1,10 @@
 #ifndef INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 #define INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 
-#include <utility>
+#include <cstdint>
 
 namespace llvm {
 class AllocaInst;
-class Value;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -15,8 +14,8 @@ class Node {
     Local,
     Global,
   } kind_;
-  const llvm::Value *ptr_;
-  Node(Kind k, const llvm::Value *p);
+  const llvm::AllocaInst *ptr_;
+  Node(Kind k, const llvm::AllocaInst *p);
 
  public:
   static Node get_global();
