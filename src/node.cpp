@@ -20,7 +20,7 @@ std::uintptr_t Node::value() const {
   return val_ >> 1;
 }
 Node Node::get_global() {
-  return Node{embed(0)};
+  return Node{embed(-1)};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{&l};
