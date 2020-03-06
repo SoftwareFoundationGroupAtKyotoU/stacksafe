@@ -14,7 +14,10 @@ class Node {
     Local,
     Global,
   } kind_;
-  const llvm::AllocaInst *ptr_;
+  union {
+    const llvm::AllocaInst *ptr_;
+    std::uintptr_t val_;
+  };
   Node(Kind k, const llvm::AllocaInst *p);
 
  public:
