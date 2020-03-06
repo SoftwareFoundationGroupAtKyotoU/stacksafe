@@ -26,7 +26,6 @@ class Node {
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
   bool is_reg() const;
-  bool is_symbol() const;
   bool is_local() const;
   bool equals(const Node &that) const;
   bool less(const Node &that) const;
