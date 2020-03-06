@@ -10,7 +10,7 @@ Node::Node(const llvm::AllocaInst *p) : ptr_{p} {
   assert(is_local());
 }
 Node::Node(std::uintptr_t v) : val_{v} {
-  assert(is_global());
+  assert(!is_local());
 }
 std::uintptr_t Node::embed(std::uintptr_t v) {
   return (v << 1) | mask;
@@ -23,9 +23,6 @@ Node Node::get_global() {
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{&l};
-}
-bool Node::is_global() const {
-  return val_ & mask;
 }
 bool Node::is_local() const {
   return (val_ & mask) == 0;
