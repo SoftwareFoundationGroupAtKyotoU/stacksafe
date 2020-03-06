@@ -130,8 +130,6 @@ auto PointsTo::visitCallInst(llvm::CallInst &i) -> RetTy {
 void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
                      const llvm::Value &rhs) {
   NodeSet heads;
-  heads.merge(lookup(lhs));
-  heads.merge(lookup(rhs));
   graph_.followings(lhs, heads);
   graph_.followings(rhs, heads);
   append(dst, heads);
@@ -144,15 +142,19 @@ void PointsTo::alloc(const llvm::AllocaInst &dst) {
   graph_.connect(dst, heads);
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
-  NodeSet heads;
-  for (const auto &sym : lookup(src)) {
+  NodeSet tails, heads;
+  graph_.followings(src, tails);
+  for (const auto &sym : tails) {
     heads.merge(graph_.followings(sym));
   }
   append(dst, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
-  append(lookup(dst), lookup(src));
+  NodeSet tails, heads;
+  graph_.followings(dst, tails);
+  graph_.followings(src, heads);
+  append(tails, heads);
 }
 void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                        const llvm::Value &val) {
@@ -160,14 +162,15 @@ void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
   store(val, ptr);
 }
 void PointsTo::cast(const llvm::Instruction &dst, const llvm::Value &src) {
-  NodeSet heads = lookup(src);
+  NodeSet heads;
+  graph_.followings(src, heads);
   append(dst, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
   NodeSet heads;
   for (const auto &arg : params) {
-    heads.merge(lookup(arg));
+    graph_.followings(arg, heads);
   }
   append(dst, heads);
   graph_.connect(dst, heads);
@@ -189,9 +192,6 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   }
 }
 void PointsTo::constant(const llvm::Instruction &) {}
-NodeSet PointsTo::lookup(const llvm::Value &tail) const {
-  return graph_.followings(Node::from_value(tail));
-}
 void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
   for (const auto &h : heads) {
     graph_.connect(Node::get_register(tail), h);

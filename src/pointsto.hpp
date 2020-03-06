@@ -52,7 +52,6 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   void constant(const llvm::Instruction &dst);
 
  private:
-  NodeSet lookup(const llvm::Value &tail) const;
   void append(const llvm::Instruction &tail, const NodeSet &heads);
   void append(const NodeSet &tails, const NodeSet &heads);
 };
