@@ -5,20 +5,21 @@
 
 namespace stacksafe {
 
+Node::Node(Kind k, const void *p) : kind_{k}, ptr_{p} {}
 Node Node::get_constant() {
-  return Node{Constant{nullptr}};
+  return Node{Kind::Constant, nullptr};
 }
 Node Node::get_global() {
-  return Node{Global{nullptr}};
+  return Node{Kind::Global, nullptr};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
-  return Node{Local{&l}};
+  return Node{Kind::Local, &l};
 }
 Node Node::get_register(const llvm::Argument &a) {
-  return Node{Argument{&a}};
+  return Node{Kind::Argument, &a};
 }
 Node Node::get_register(const llvm::Instruction &i) {
-  return Node{Register{&i}};
+  return Node{Kind::Register, &i};
 }
 Node Node::from_value(const llvm::Value &v) {
   if (auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
@@ -33,24 +34,31 @@ Node Node::from_value(const llvm::Value &v) {
   };
 }
 std::pair<std::size_t, const void *> Node::pair() const {
-  return {index(), ptr()};
+  return {static_cast<std::size_t>(kind_), ptr_};
+}
+bool Node::is_reg() const {
+  return kind_ == Kind::Register || kind_ == Kind::Argument;
 }
 bool Node::is_symbol() const {
-  return std::get_if<Global>(this) || std::get_if<Local>(this);
+  return !is_reg();
 }
 bool Node::is_local() const {
-  return std::get_if<Local>(this);
+  return kind_ == Kind::Local;
 }
-const void *Node::ptr() const {
-  const Variant &v = *this;
-  const auto f = [](auto &&v) -> const void * { return v.get(); };
-  return std::visit(f, v);
+bool Node::equals(const Node &that) const {
+  return kind_ == that.kind_ && ptr_ == that.ptr_;
+}
+bool Node::less(const Node &that) const {
+  if (kind_ == that.kind_) {
+    return ptr_ < that.ptr_;
+  }
+  return kind_ < that.kind_;
 }
 bool operator==(const Node &lhs, const Node &rhs) {
-  return lhs.pair() == rhs.pair();
+  return lhs.equals(rhs);
 }
 bool operator<(const Node &lhs, const Node &rhs) {
-  return lhs.pair() < rhs.pair();
+  return lhs.less(rhs);
 }
 
 void NodeSet::merge(const NodeSet &nodes) {

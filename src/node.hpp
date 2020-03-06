@@ -3,7 +3,6 @@
 
 #include <set>
 #include <variant>
-#include "value.hpp"
 
 namespace llvm {
 class AllocaInst;
@@ -13,17 +12,17 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
-namespace {
-using Constant = Value<int>;
-using Global = Value<void>;
-using Local = Value<llvm::AllocaInst>;
-using Register = Value<llvm::Instruction>;
-using Argument = Value<llvm::Argument>;
-using Variant = std::variant<Constant, Global, Local, Register, Argument>;
-}  // namespace
 
-class Node : private Variant {
-  using Variant::Variant;
+class Node {
+  enum class Kind : std::size_t {
+    Constant,
+    Global,
+    Local,
+    Register,
+    Argument,
+  } kind_;
+  const void *ptr_;
+  Node(Kind k, const void *p);
 
  public:
   static Node get_constant();
@@ -33,11 +32,11 @@ class Node : private Variant {
   static Node get_register(const llvm::Instruction &i);
   static Node from_value(const llvm::Value &v);
   std::pair<std::size_t, const void *> pair() const;
+  bool is_reg() const;
   bool is_symbol() const;
   bool is_local() const;
-
- private:
-  const void *ptr() const;
+  bool equals(const Node &that) const;
+  bool less(const Node &that) const;
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);
