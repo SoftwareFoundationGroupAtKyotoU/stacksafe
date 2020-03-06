@@ -9,10 +9,10 @@ std::uintptr_t embed(std::uintptr_t v) {
 }
 }  // namespace
 
-Node::Node(Kind k, const llvm::AllocaInst *p) : kind_{k}, ptr_{p} {
+Node::Node(Kind k, const llvm::AllocaInst *p) : ptr_{p} {
   assert(is_local());
 }
-Node::Node(std::uintptr_t v) : kind_{Kind::Global}, val_{v} {
+Node::Node(std::uintptr_t v) : val_{v} {
   assert(is_global());
 }
 Node Node::get_global() {

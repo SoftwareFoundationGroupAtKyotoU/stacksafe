@@ -13,7 +13,7 @@ class Node {
   enum class Kind : std::size_t {
     Local,
     Global,
-  } kind_;
+  };
   union {
     const llvm::AllocaInst *ptr_;
     std::uintptr_t val_;
