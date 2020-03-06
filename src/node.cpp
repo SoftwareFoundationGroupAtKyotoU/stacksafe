@@ -33,9 +33,6 @@ Node Node::from_value(const llvm::Value &v) {
     llvm_unreachable("invalid value lookup");
   };
 }
-std::pair<std::size_t, const void *> Node::pair() const {
-  return {static_cast<std::size_t>(kind_), ptr_};
-}
 bool Node::is_reg() const {
   return kind_ == Kind::Register || kind_ == Kind::Argument;
 }

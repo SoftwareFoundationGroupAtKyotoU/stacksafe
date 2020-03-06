@@ -30,7 +30,6 @@ class Node {
   static Node get_register(const llvm::Argument &a);
   static Node get_register(const llvm::Instruction &i);
   static Node from_value(const llvm::Value &v);
-  std::pair<std::size_t, const void *> pair() const;
   bool is_reg() const;
   bool is_symbol() const;
   bool is_local() const;
