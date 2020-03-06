@@ -23,7 +23,7 @@ bool operator<(const Edge& lhs, const Edge& rhs) {
 }
 
 std::size_t Graph::size() const {
-  return map_.size() + stack_.size();
+  return heap_.size() + stack_.size();
 }
 void Graph::init(const llvm::Function& f) {
   const NodeSet g{Node::get_global()};
@@ -43,7 +43,7 @@ void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
 }
 void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
   for (const auto& tail : tails) {
-    if (const auto it = map_.find(tail); it != map_.end()) {
+    if (const auto it = heap_.find(tail); it != heap_.end()) {
       heads.merge(std::get<1>(*it));
     }
   }
@@ -56,7 +56,7 @@ void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
   }
 }
 void Graph::merge(const Graph& g) {
-  for (const auto& [tail, heads] : g.map_) {
+  for (const auto& [tail, heads] : g.heap_) {
     at(tail).merge(heads);
   }
   for (const auto& [tail, heads] : g.stack_) {
@@ -77,7 +77,7 @@ NodeSet Graph::reachables(const llvm::Value& v) const {
   return reachables(nodes);
 }
 NodeSet& Graph::at(const Node& tail) {
-  const auto [it, _] = map_.try_emplace(tail);
+  const auto [it, _] = heap_.try_emplace(tail);
   return std::get<1>(*it);
 }
 NodeSet& Graph::stack_at(const llvm::Value& tail) {
