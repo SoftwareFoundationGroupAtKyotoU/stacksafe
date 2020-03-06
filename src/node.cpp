@@ -28,7 +28,7 @@ bool Node::is_global() const {
   return val_ & mask;
 }
 bool Node::is_local() const {
-  return !is_global();
+  return (val_ & mask) == 0;
 }
 bool Node::equals(const Node &that) const {
   return val_ == that.val_;
