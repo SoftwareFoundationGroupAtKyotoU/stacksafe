@@ -37,12 +37,10 @@ void Graph::connect(const Node& tail, const Node& head) {
   std::get<1>(*it).insert(head);
 }
 NodeSet Graph::followings(const Node& tail) const {
-  NodeSet nodes;
   if (const auto it = map_.find(tail); it != map_.end()) {
-    const auto& heads = std::get<1>(*it);
-    nodes.insert(heads.begin(), heads.end());
+    return std::get<1>(*it);
   }
-  return nodes;
+  return NodeSet{};
 }
 void Graph::merge(const Graph& g) {
   for (const auto& [tail, heads] : g.map_) {
