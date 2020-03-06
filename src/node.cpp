@@ -4,9 +4,6 @@
 namespace stacksafe {
 namespace {
 constexpr std::uintptr_t mask{1};
-std::uintptr_t embed(std::uintptr_t v) {
-  return (v << 1) | mask;
-}
 }  // namespace
 
 Node::Node(const llvm::AllocaInst *p) : ptr_{p} {
@@ -14,6 +11,9 @@ Node::Node(const llvm::AllocaInst *p) : ptr_{p} {
 }
 Node::Node(std::uintptr_t v) : val_{v} {
   assert(is_global());
+}
+std::uintptr_t Node::embed(std::uintptr_t v) {
+  return (v << 1) | mask;
 }
 std::uintptr_t Node::value() const {
   return val_ >> 1;

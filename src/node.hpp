@@ -16,6 +16,7 @@ class Node {
   };
   explicit Node(const llvm::AllocaInst *p);
   explicit Node(std::uintptr_t v);
+  static std::uintptr_t embed(std::uintptr_t v);
   std::uintptr_t value() const;
 
  public:
