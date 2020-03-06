@@ -39,7 +39,7 @@ class Params::ParamsIterator : private Params::Super::const_iterator {
   bool operator!=(ParamsIterator it) const;
 };
 
-class NodeMap : std::map<Index, NodeSet> {
+class NodeMap : private std::map<Index, NodeSet> {
   using Super = std::map<Index, NodeSet>;
 
  public:
