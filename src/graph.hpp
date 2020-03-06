@@ -33,7 +33,7 @@ class Graph : private std::vector<Edge> {
   Map map_;
 
  public:
-  using Super::size;
+  std::size_t size() const;
   void init(const llvm::Function& f);
   void connect(const Node& tail, const Node& head);
   NodeSet followings(const Node& tail) const;

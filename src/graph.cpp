@@ -26,6 +26,9 @@ bool operator<(const Edge& lhs, const Edge& rhs) {
   return lhs.pair() < rhs.pair();
 }
 
+std::size_t Graph::size() const {
+  return map_.size();
+}
 void Graph::init(const llvm::Function& f) {
   const auto g = Node::get_global();
   connect(g, g);
