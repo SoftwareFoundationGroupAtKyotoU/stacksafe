@@ -37,7 +37,9 @@ bool Params::ParamsIterator::operator!=(ParamsIterator it) const {
 NodeMap::NodeMap(const Params &params, Graph &graph) {
   auto &self = *this;
   auto index = Index::GLOBAL;
-  graph.reachables(Node::get_global(), self[index]);
+  NodeSet g;
+  g.insert(Node::get_global());
+  self[index] = graph.reachables(g);
   for (const auto &arg : params) {
     graph.reachables(arg, self[++index]);
   }

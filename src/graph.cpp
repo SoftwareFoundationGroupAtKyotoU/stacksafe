@@ -64,23 +64,18 @@ void Graph::merge(const Graph& g) {
     stack_at(*tail).merge(heads);
   }
 }
-void Graph::reachables(const Node& n, NodeSet& nodes) const {
-  if (!nodes.element(n)) {
-    nodes.insert(n);
-    NodeSet tails, heads;
-    tails.insert(n);
+NodeSet Graph::reachables(const NodeSet& nodes) const {
+  NodeSet tails, heads{nodes};
+  while (tails.size() < heads.size()) {
+    tails = heads;
     followings(tails, heads);
-    for (const auto& head : heads) {
-      reachables(head, nodes);
-    }
   }
+  return heads;
 }
 void Graph::reachables(const llvm::Value& v, NodeSet& nodes) const {
   NodeSet tails;
   followings(v, tails);
-  for (const auto& tail : tails) {
-    reachables(tail, nodes);
-  }
+  nodes.merge(reachables(tails));
 }
 NodeSet& Graph::at(const Node& tail) {
   const auto [it, _] = map_.try_emplace(tail);

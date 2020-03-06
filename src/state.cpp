@@ -16,9 +16,9 @@ bool Component::is_safe() const {
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
 }
 bool Component::check_global() const {
-  NodeSet nodes;
-  graph_.reachables(Node::get_global(), nodes);
-  return !nodes.has_local();
+  NodeSet g;
+  g.insert(Node::get_global());
+  return !graph_.reachables(g).has_local();
 }
 bool Component::check_return(BB b) const {
   const auto t = b->getTerminator();
