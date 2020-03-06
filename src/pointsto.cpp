@@ -132,12 +132,16 @@ void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
   NodeSet heads;
   heads.merge(lookup(lhs));
   heads.merge(lookup(rhs));
+  graph_.followings(lhs, heads);
+  graph_.followings(rhs, heads);
   append(dst, heads);
+  graph_.connect(dst, heads);
 }
 void PointsTo::alloc(const llvm::AllocaInst &dst) {
   NodeSet heads;
   heads.insert(Node::get_local(dst));
   append(dst, heads);
+  graph_.connect(dst, heads);
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet heads;
@@ -145,6 +149,7 @@ void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
     heads.merge(graph_.followings(sym));
   }
   append(dst, heads);
+  graph_.connect(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
   append(lookup(dst), lookup(src));
@@ -155,7 +160,9 @@ void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
   store(val, ptr);
 }
 void PointsTo::cast(const llvm::Instruction &dst, const llvm::Value &src) {
-  append(dst, lookup(src));
+  NodeSet heads = lookup(src);
+  append(dst, heads);
+  graph_.connect(dst, heads);
 }
 void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
   NodeSet heads;
@@ -163,6 +170,7 @@ void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
     heads.merge(lookup(arg));
   }
   append(dst, heads);
+  graph_.connect(dst, heads);
 }
 void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   assert(dst.arg_size() == params.size());
@@ -176,6 +184,7 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
     }
     if (is_return(dst) && effect.depends(from, Index::RETURN)) {
       append(dst, head);
+      graph_.connect(dst, head);
     }
   }
 }
