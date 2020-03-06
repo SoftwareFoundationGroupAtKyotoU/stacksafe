@@ -12,15 +12,13 @@ namespace stacksafe {
 
 class Node {
   enum class Kind : std::size_t {
-    Constant,
-    Global,
     Local,
+    Global,
   } kind_;
   const llvm::Value *ptr_;
   Node(Kind k, const llvm::Value *p);
 
  public:
-  static Node get_constant();
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
   bool is_local() const;

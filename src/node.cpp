@@ -5,9 +5,6 @@
 namespace stacksafe {
 
 Node::Node(Kind k, const llvm::Value *p) : kind_{k}, ptr_{p} {}
-Node Node::get_constant() {
-  return Node{Kind::Constant, nullptr};
-}
 Node Node::get_global() {
   return Node{Kind::Global, nullptr};
 }
