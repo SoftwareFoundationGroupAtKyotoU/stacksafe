@@ -33,17 +33,21 @@ bool is_global(const llvm::Value& v) {
   }
   return false;
 }
-bool is_register(const llvm::Instruction& i) {
-  if (auto c = llvm::dyn_cast<llvm::CallInst>(&i)) {
-    return !c->getFunctionType()->getReturnType()->isVoidTy();
-  } else if (i.isTerminator()) {
-    return false;
-  } else if (llvm::isa<llvm::StoreInst>(i)) {
-    return false;
-  } else if (llvm::isa<llvm::FenceInst>(i)) {
-    return false;
+bool is_register(const llvm::Value& v) {
+  if (const auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
+    if (const auto c = llvm::dyn_cast<llvm::CallInst>(i)) {
+      return !c->getFunctionType()->getReturnType()->isVoidTy();
+    } else if (i->isTerminator()) {
+      return false;
+    } else if (llvm::isa<llvm::StoreInst>(i)) {
+      return false;
+    } else if (llvm::isa<llvm::FenceInst>(i)) {
+      return false;
+    } else {
+      return true;
+    }
   } else {
-    return true;
+    return false;
   }
 }
 bool is_return(const llvm::CallInst& i) {

@@ -37,6 +37,7 @@ void Graph::connect(const Node& tail, const Node& head) {
   at(tail).insert(head);
 }
 void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
+  assert(is_register(tail));
   stack_at(tail).merge(heads);
 }
 NodeSet Graph::followings(const Node& tail) const {

@@ -5,8 +5,6 @@
 
 namespace llvm {
 class CallInst;
-class Constant;
-class Instruction;
 class Value;
 }  // namespace llvm
 
@@ -17,7 +15,7 @@ std::string to_str(const llvm::Value& v);
 [[noreturn]] void fatal_error(const std::string& msg);
 bool least_significant_bit(const void* ptr);
 bool is_global(const llvm::Value& v);
-bool is_register(const llvm::Instruction& i);
+bool is_register(const llvm::Value& v);
 bool is_return(const llvm::CallInst& i);
 
 namespace debug {
