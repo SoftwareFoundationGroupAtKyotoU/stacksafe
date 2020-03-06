@@ -28,7 +28,6 @@ bool operator<(const Edge& lhs, const Edge& rhs);
 class Graph : private std::vector<Edge> {
   using Super = std::vector<Edge>;
   using iterator = Super::iterator;
-  using Result = std::tuple<iterator, bool>;
 
  public:
   using Super::size;
@@ -40,7 +39,7 @@ class Graph : private std::vector<Edge> {
   void reachables(const llvm::Value& v, NodeSet& nodes) const;
 
  private:
-  Result insert(iterator hint, const Edge& e);
+  iterator insert(iterator hint, const Edge& e);
 };
 
 }  // namespace stacksafe

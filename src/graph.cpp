@@ -48,7 +48,7 @@ NodeSet Graph::followings(const Node& tail) const {
 void Graph::merge(const Graph& g) {
   iterator hint = begin();
   for (const auto& e : g) {
-    const auto [it, ok] = insert(hint, e);
+    const auto it = insert(hint, e);
     hint = std::next(it);
   }
 }
@@ -65,12 +65,12 @@ void Graph::reachables(const llvm::Value& v, NodeSet& nodes) const {
     reachables(tail, nodes);
   }
 }
-auto Graph::insert(iterator hint, const Edge& e) -> Result {
+auto Graph::insert(iterator hint, const Edge& e) -> iterator {
   const auto [lb, ub] = std::equal_range(hint, end(), e);
   if (lb == ub) {
-    return {Super::insert(lb, e), true};
+    return Super::insert(lb, e);
   } else {
-    return {lb, false};
+    return lb;
   }
 }
 
