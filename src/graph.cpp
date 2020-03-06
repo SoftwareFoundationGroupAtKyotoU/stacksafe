@@ -45,17 +45,12 @@ NodeSet Graph::followings(const Node& tail) const {
   }
   return nodes;
 }
-bool Graph::merge(const Graph& g) {
+void Graph::merge(const Graph& g) {
   iterator hint = begin();
-  bool updated = false;
   for (const auto& e : g) {
     const auto [it, ok] = insert(hint, e);
     hint = std::next(it);
-    if (ok) {
-      updated = true;
-    }
   }
-  return updated;
 }
 void Graph::reachables(const Node& n, NodeSet& nodes) const {
   if (!nodes.element(n)) {
