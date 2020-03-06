@@ -38,7 +38,7 @@ class Graph {
   void init(const llvm::Function& f);
   void connect(const Node& tail, const Node& head);
   void connect(const llvm::Value& tail, const NodeSet& heads);
-  NodeSet followings(const Node& tail) const;
+  void followings(const NodeSet& tails, NodeSet& heads) const;
   void followings(const llvm::Value& tail, NodeSet& heads) const;
   void merge(const Graph& g);
   void reachables(const Node& n, NodeSet& nodes) const;

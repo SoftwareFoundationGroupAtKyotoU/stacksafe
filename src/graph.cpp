@@ -40,15 +40,18 @@ void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
   assert(is_register(tail));
   stack_at(tail).merge(heads);
 }
-NodeSet Graph::followings(const Node& tail) const {
-  if (const auto it = map_.find(tail); it != map_.end()) {
-    return std::get<1>(*it);
+void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
+  for (const auto& tail : tails) {
+    if (const auto it = map_.find(tail); it != map_.end()) {
+      heads.merge(std::get<1>(*it));
+    }
   }
-  return NodeSet{};
 }
 void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
-    heads.merge(followings(Node::get_global()));
+    NodeSet g;
+    g.insert(Node::get_global());
+    followings(g, heads);
   } else if (const auto it = stack_.find(&tail); it != stack_.end()) {
     heads.merge(std::get<1>(*it));
   }
@@ -64,7 +67,10 @@ void Graph::merge(const Graph& g) {
 void Graph::reachables(const Node& n, NodeSet& nodes) const {
   if (!nodes.element(n)) {
     nodes.insert(n);
-    for (const auto& head : followings(n)) {
+    NodeSet tails, heads;
+    tails.insert(n);
+    followings(tails, heads);
+    for (const auto& head : heads) {
       reachables(head, nodes);
     }
   }

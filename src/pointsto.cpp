@@ -142,9 +142,7 @@ void PointsTo::alloc(const llvm::AllocaInst &dst) {
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet tails, heads;
   graph_.followings(src, tails);
-  for (const auto &sym : tails) {
-    heads.merge(graph_.followings(sym));
-  }
+  graph_.followings(tails, heads);
   graph_.connect(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
