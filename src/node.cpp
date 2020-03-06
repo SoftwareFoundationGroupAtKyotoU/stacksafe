@@ -14,9 +14,6 @@ Node Node::get_global() {
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{Kind::Local, &l};
 }
-bool Node::is_reg() const {
-  return kind_ == Kind::Register || kind_ == Kind::Argument;
-}
 bool Node::is_local() const {
   return kind_ == Kind::Local;
 }
