@@ -19,6 +19,7 @@ class Node {
     std::uintptr_t val_;
   };
   Node(Kind k, const llvm::AllocaInst *p);
+  explicit Node(std::uintptr_t v);
 
  public:
   static Node get_global();

@@ -2,10 +2,17 @@
 #include <llvm/ADT/Hashing.h>
 
 namespace stacksafe {
+namespace {
+constexpr std::uintptr_t mask{1};
+std::uintptr_t embed(std::uintptr_t v) {
+  return (v << 1) | mask;
+}
+}  // namespace
 
 Node::Node(Kind k, const llvm::AllocaInst *p) : kind_{k}, ptr_{p} {}
+Node::Node(std::uintptr_t v) : kind_{Kind::Global}, val_{v} {}
 Node Node::get_global() {
-  return Node{Kind::Global, nullptr};
+  return Node{embed(0)};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{Kind::Local, &l};
