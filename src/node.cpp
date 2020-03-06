@@ -61,6 +61,10 @@ bool operator<(const Node &lhs, const Node &rhs) {
   return lhs.less(rhs);
 }
 
+NodeSet::NodeSet() = default;
+NodeSet::NodeSet(const Node &n) {
+  Super::insert(n);
+}
 void NodeSet::merge(const NodeSet &nodes) {
   Super::insert(nodes.begin(), nodes.end());
 }
