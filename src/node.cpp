@@ -13,12 +13,6 @@ Node Node::get_global() {
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{Kind::Local, &l};
 }
-Node Node::get_register(const llvm::Argument &a) {
-  return Node{Kind::Argument, &a};
-}
-Node Node::get_register(const llvm::Instruction &i) {
-  return Node{Kind::Register, &i};
-}
 bool Node::is_reg() const {
   return kind_ == Kind::Register || kind_ == Kind::Argument;
 }

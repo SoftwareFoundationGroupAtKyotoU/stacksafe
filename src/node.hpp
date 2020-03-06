@@ -5,8 +5,6 @@
 
 namespace llvm {
 class AllocaInst;
-class Argument;
-class Instruction;
 class Value;
 }  // namespace llvm
 
@@ -27,8 +25,6 @@ class Node {
   static Node get_constant();
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
-  static Node get_register(const llvm::Argument &a);
-  static Node get_register(const llvm::Instruction &i);
   bool is_reg() const;
   bool is_symbol() const;
   bool is_local() const;
