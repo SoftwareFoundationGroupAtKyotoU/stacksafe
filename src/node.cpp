@@ -15,6 +15,9 @@ Node::Node(const llvm::AllocaInst *p) : ptr_{p} {
 Node::Node(std::uintptr_t v) : val_{v} {
   assert(is_global());
 }
+std::uintptr_t Node::value() const {
+  return val_ >> 1;
+}
 Node Node::get_global() {
   return Node{embed(0)};
 }
