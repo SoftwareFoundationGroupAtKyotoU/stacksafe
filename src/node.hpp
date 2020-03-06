@@ -45,7 +45,7 @@ class NodeSet : private std::set<Node> {
   using Super = std::set<Node>;
 
  public:
-  using Super::begin, Super::end, Super::insert, Super::size;
+  using Super::begin, Super::end, Super::size;
   NodeSet();
   explicit NodeSet(const Node &n);
   void merge(const NodeSet &nodes);

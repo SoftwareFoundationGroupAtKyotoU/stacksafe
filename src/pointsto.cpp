@@ -135,9 +135,7 @@ void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
   graph_.connect(dst, heads);
 }
 void PointsTo::alloc(const llvm::AllocaInst &dst) {
-  NodeSet heads;
-  heads.insert(Node::get_local(dst));
-  graph_.connect(dst, heads);
+  graph_.connect(dst, NodeSet{Node::get_local(dst)});
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet tails, heads;

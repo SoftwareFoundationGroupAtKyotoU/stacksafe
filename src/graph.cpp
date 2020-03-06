@@ -34,7 +34,7 @@ void Graph::init(const llvm::Function& f) {
   }
 }
 void Graph::connect(const Node& tail, const Node& head) {
-  at(tail).insert(head);
+  at(tail).merge(NodeSet{head});
 }
 void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
   assert(is_register(tail));
@@ -49,9 +49,7 @@ void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
 }
 void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
-    NodeSet g;
-    g.insert(Node::get_global());
-    followings(g, heads);
+    followings(NodeSet{Node::get_global()}, heads);
   } else if (const auto it = stack_.find(&tail); it != stack_.end()) {
     heads.merge(std::get<1>(*it));
   }
