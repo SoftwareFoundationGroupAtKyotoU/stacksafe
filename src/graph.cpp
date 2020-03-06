@@ -34,7 +34,7 @@ void Graph::init(const llvm::Function& f) {
 }
 void Graph::connect(const NodeSet& tails, const NodeSet& heads) {
   for (const auto& tail : tails) {
-    at(tail).merge(heads);
+    heap_at(tail).merge(heads);
   }
 }
 void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
@@ -57,7 +57,7 @@ void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
 }
 void Graph::merge(const Graph& g) {
   for (const auto& [tail, heads] : g.heap_) {
-    at(tail).merge(heads);
+    heap_at(tail).merge(heads);
   }
   for (const auto& [tail, heads] : g.stack_) {
     stack_at(*tail).merge(heads);
@@ -76,7 +76,7 @@ NodeSet Graph::reachables(const llvm::Value& v) const {
   followings(v, nodes);
   return reachables(nodes);
 }
-NodeSet& Graph::at(const Node& tail) {
+NodeSet& Graph::heap_at(const Node& tail) {
   const auto [it, _] = heap_.try_emplace(tail);
   return std::get<1>(*it);
 }

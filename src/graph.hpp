@@ -45,7 +45,7 @@ class Graph {
   NodeSet reachables(const llvm::Value& v) const;
 
  private:
-  NodeSet& at(const Node& tail);
+  NodeSet& heap_at(const Node& tail);
   NodeSet& stack_at(const llvm::Value& tail);
 };
 
