@@ -9,16 +9,23 @@ std::uintptr_t embed(std::uintptr_t v) {
 }
 }  // namespace
 
-Node::Node(Kind k, const llvm::AllocaInst *p) : kind_{k}, ptr_{p} {}
-Node::Node(std::uintptr_t v) : kind_{Kind::Global}, val_{v} {}
+Node::Node(Kind k, const llvm::AllocaInst *p) : kind_{k}, ptr_{p} {
+  assert(is_local());
+}
+Node::Node(std::uintptr_t v) : kind_{Kind::Global}, val_{v} {
+  assert(is_global());
+}
 Node Node::get_global() {
   return Node{embed(0)};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{Kind::Local, &l};
 }
+bool Node::is_global() const {
+  return val_ & mask;
+}
 bool Node::is_local() const {
-  return kind_ == Kind::Local;
+  return !is_global();
 }
 bool Node::equals(const Node &that) const {
   return kind_ == that.kind_ && ptr_ == that.ptr_;
