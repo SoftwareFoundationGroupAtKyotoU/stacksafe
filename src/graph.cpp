@@ -53,6 +53,9 @@ void Graph::merge(const Graph& g) {
   for (const auto& [tail, heads] : g.map_) {
     at(tail).merge(heads);
   }
+  for (const auto& [tail, heads] : g.stack_) {
+    stack_at(*tail).merge(heads);
+  }
 }
 void Graph::reachables(const Node& n, NodeSet& nodes) const {
   if (!nodes.element(n)) {
