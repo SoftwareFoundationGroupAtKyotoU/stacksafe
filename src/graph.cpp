@@ -66,7 +66,9 @@ void Graph::reachables(const Node& n, NodeSet& nodes) const {
   }
 }
 void Graph::reachables(const llvm::Value& v, NodeSet& nodes) const {
-  for (const auto& tail : followings(Node::from_value(v))) {
+  NodeSet tails;
+  followings(v, tails);
+  for (const auto& tail : tails) {
     reachables(tail, nodes);
   }
 }
