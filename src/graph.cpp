@@ -1,6 +1,7 @@
 #include "graph.hpp"
 #include <llvm/IR/Function.h>
 #include <algorithm>
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -45,7 +46,9 @@ NodeSet Graph::followings(const Node& tail) const {
   return NodeSet{};
 }
 void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
-  if (const auto it = stack_.find(&tail); it != stack_.end()) {
+  if (is_global(tail)) {
+    heads.merge(followings(Node::get_global()));
+  } else if (const auto it = stack_.find(&tail); it != stack_.end()) {
     heads.merge(std::get<1>(*it));
   }
 }
