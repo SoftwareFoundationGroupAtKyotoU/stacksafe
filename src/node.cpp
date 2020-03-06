@@ -9,7 +9,7 @@ std::uintptr_t embed(std::uintptr_t v) {
 }
 }  // namespace
 
-Node::Node(Kind k, const llvm::AllocaInst *p) : ptr_{p} {
+Node::Node(const llvm::AllocaInst *p) : ptr_{p} {
   assert(is_local());
 }
 Node::Node(std::uintptr_t v) : val_{v} {
@@ -19,7 +19,7 @@ Node Node::get_global() {
   return Node{embed(0)};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
-  return Node{Kind::Local, &l};
+  return Node{&l};
 }
 bool Node::is_global() const {
   return val_ & mask;

@@ -10,15 +10,11 @@ class AllocaInst;
 namespace stacksafe {
 
 class Node {
-  enum class Kind : std::size_t {
-    Local,
-    Global,
-  };
   union {
     const llvm::AllocaInst *ptr_;
     std::uintptr_t val_;
   };
-  Node(Kind k, const llvm::AllocaInst *p);
+  explicit Node(const llvm::AllocaInst *p);
   explicit Node(std::uintptr_t v);
 
  public:
