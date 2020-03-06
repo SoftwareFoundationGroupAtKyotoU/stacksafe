@@ -46,6 +46,8 @@ bool is_register(const llvm::Value& v) {
     } else {
       return true;
     }
+  } else if (llvm::isa<llvm::Argument>(v)) {
+    return true;
   } else {
     return false;
   }
