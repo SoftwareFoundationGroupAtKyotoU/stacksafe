@@ -61,4 +61,8 @@ bool operator<(const Node &lhs, const Node &rhs) {
   return lhs.less(rhs);
 }
 
+std::size_t NodeHash::operator()(const Node &n) const {
+  return n.hash();
+}
+
 }  // namespace stacksafe

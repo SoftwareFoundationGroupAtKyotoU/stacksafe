@@ -40,6 +40,10 @@ class Node {
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);
 
+struct NodeHash {
+  std::size_t operator()(const Node &n) const;
+};
+
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
