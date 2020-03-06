@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
+#include <map>
 #include <tuple>
 #include <vector>
 #include "node.hpp"
@@ -28,6 +29,8 @@ bool operator<(const Edge& lhs, const Edge& rhs);
 class Graph : private std::vector<Edge> {
   using Super = std::vector<Edge>;
   using iterator = Super::iterator;
+  using Map = std::map<Node, NodeSet>;
+  Map map_;
 
  public:
   using Super::size;
