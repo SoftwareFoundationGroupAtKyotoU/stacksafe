@@ -21,6 +21,7 @@ class NodeSet : private std::unordered_set<Node, NodeHash> {
   explicit NodeSet(const Node& n);
   void merge(const NodeSet& nodes);
   bool element(const Node& n) const;
+  bool includes(const NodeSet& that) const;
   bool has_local() const;
 };
 
