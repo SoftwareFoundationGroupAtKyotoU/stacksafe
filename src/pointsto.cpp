@@ -171,8 +171,8 @@ void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
 }
 void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   assert(dst.arg_size() == params.size());
-  NodeMap nodemap{params, comp_.graph()};
   const auto effect = effects_.get(dst);
+  NodeMap nodemap{params, comp_};
   for (const auto &[from, heads] : nodemap) {
     for (const auto &[to, tails] : nodemap) {
       if (effect.depends(from, to)) {
