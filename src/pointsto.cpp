@@ -7,7 +7,7 @@
 
 namespace stacksafe {
 
-PointsTo::PointsTo(Component &c) : graph_{c.graph()} {}
+PointsTo::PointsTo(Component &c) : comp_{c} {}
 void PointsTo::analyze(Component &c) {
   auto &g = c.graph();
   const auto &b = c.blocks();
@@ -133,24 +133,24 @@ auto PointsTo::visitCallInst(llvm::CallInst &i) -> RetTy {
 void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
                      const llvm::Value &rhs) {
   NodeSet heads;
-  graph_.followings(lhs, heads);
-  graph_.followings(rhs, heads);
-  graph_.connect(dst, heads);
+  comp_.graph().followings(lhs, heads);
+  comp_.graph().followings(rhs, heads);
+  comp_.graph().connect(dst, heads);
 }
 void PointsTo::alloc(const llvm::AllocaInst &dst) {
-  graph_.connect(dst, NodeSet{Node::get_local(dst)});
+  comp_.graph().connect(dst, NodeSet{Node::get_local(dst)});
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet tails, heads;
-  graph_.followings(src, tails);
-  graph_.followings(tails, heads);
-  graph_.connect(dst, heads);
+  comp_.graph().followings(src, tails);
+  comp_.graph().followings(tails, heads);
+  comp_.graph().connect(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
   NodeSet tails, heads;
-  graph_.followings(dst, tails);
-  graph_.followings(src, heads);
-  graph_.connect(tails, heads);
+  comp_.graph().followings(dst, tails);
+  comp_.graph().followings(src, heads);
+  comp_.graph().connect(tails, heads);
 }
 void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                        const llvm::Value &val) {
@@ -159,28 +159,28 @@ void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
 }
 void PointsTo::cast(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet heads;
-  graph_.followings(src, heads);
-  graph_.connect(dst, heads);
+  comp_.graph().followings(src, heads);
+  comp_.graph().connect(dst, heads);
 }
 void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
   NodeSet heads;
   for (const auto &arg : params) {
-    graph_.followings(arg, heads);
+    comp_.graph().followings(arg, heads);
   }
-  graph_.connect(dst, heads);
+  comp_.graph().connect(dst, heads);
 }
 void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   assert(dst.arg_size() == params.size());
-  NodeMap nodemap{params, graph_};
+  NodeMap nodemap{params, comp_.graph()};
   const auto effect = effects_.get(dst);
   for (const auto &[froms, heads] : nodemap) {
     for (const auto &[to, tail] : nodemap) {
       if (effect.depends(froms, to)) {
-        graph_.connect(tail, heads);
+        comp_.graph().connect(tail, heads);
       }
     }
     if (is_return(dst) && effect.depends(froms, Index::RETURN)) {
-      graph_.connect(dst, heads);
+      comp_.graph().connect(dst, heads);
     }
   }
 }

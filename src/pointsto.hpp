@@ -7,14 +7,13 @@
 namespace stacksafe {
 class Blocks;
 class Component;
-class Graph;
 class NodeSet;
 class Params;
 
 class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<PointsTo, RetTy>;
-  Graph &graph_;
+  Component &comp_;
   EffectMap effects_;
   explicit PointsTo(Component &c);
 
