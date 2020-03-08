@@ -34,9 +34,9 @@ State::State(const llvm::Function& f) {
   }
   find(&f.getEntryBlock()).init(f);
 }
-void State::transfer(const Component& c) {
-  for (const auto& succ : c.blocks_.successors()) {
-    find(succ).merge(c.graph_);
+void State::transfer(Component& c) {
+  for (const auto& succ : c.blocks().successors()) {
+    find(succ).merge(c.graph());
   }
 }
 bool State::is_safe() const {
