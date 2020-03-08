@@ -10,7 +10,7 @@ State::State(const llvm::Function& f) {
   }
   for (auto&& c : *this) {
     for (const auto& succ : c.blocks().successors()) {
-      find(succ).add_pred(c.graph());
+      find(succ).add_pred(c);
     }
   }
   find(&f.getEntryBlock()).init(f);

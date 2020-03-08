@@ -15,8 +15,11 @@ bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
 }
-void Component::add_pred(const Graph& g) {
-  preds_.insert(&g);
+void Component::add_pred(const Component& c) {
+  preds_.insert(&c.graph_);
+  for (const auto& pred : c.preds_) {
+    preds_.insert(pred);
+  }
 }
 void Component::transfer() {
   for (auto&& pred : preds_) {
