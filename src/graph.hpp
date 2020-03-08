@@ -33,7 +33,6 @@ class Graph {
 
  public:
   std::size_t size() const;
-  void init(const llvm::Function& f);
   bool includes(const Graph& that) const;
   bool contains(const Node& tail, const Node& head) const;
   bool contains(const llvm::Value& tail, const Node& head) const;

@@ -35,13 +35,6 @@ bool NodeSet::has_local() const {
 std::size_t Graph::size() const {
   return heap_.size() + stack_.size();
 }
-void Graph::init(const llvm::Function& f) {
-  const auto g = Node::get_global();
-  connect(g, g);
-  for (const auto& a : f.args()) {
-    connect(a, g);
-  }
-}
 bool Graph::includes(const Graph& that) const {
   for (const auto& [tail, heads] : that.heap_) {
     for (const auto& head : heads) {
