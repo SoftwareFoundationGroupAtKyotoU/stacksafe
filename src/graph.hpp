@@ -44,10 +44,6 @@ class Graph {
   NodeSet reachables(const llvm::Value& v) const;
   const NodeSet* find(const Node& tail) const;
   const NodeSet* find(const llvm::Value& tail) const;
-
- private:
-  NodeSet& heap_at(const Node& tail);
-  NodeSet& stack_at(const llvm::Value& tail);
 };
 
 }  // namespace stacksafe

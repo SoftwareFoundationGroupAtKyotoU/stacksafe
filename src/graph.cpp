@@ -67,11 +67,12 @@ bool Graph::contains(const llvm::Value& tail, const Node& head) const {
   return false;
 }
 void Graph::connect(const Node& tail, const Node& head) {
-  heap_at(tail).merge(NodeSet{head});
+  const auto [it, _] = heap_.try_emplace(tail);
+  std::get<1>(*it).merge(NodeSet{head});
 }
 void Graph::connect(const llvm::Value& tail, const Node& head) {
-  assert(is_register(tail));
-  stack_at(tail).merge(NodeSet{head});
+  const auto [it, _] = stack_.try_emplace(&tail);
+  std::get<1>(*it).merge(NodeSet{head});
 }
 void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
   for (const auto& tail : tails) {
@@ -111,14 +112,6 @@ const NodeSet* Graph::find(const llvm::Value& tail) const {
     return &std::get<1>(*it);
   }
   return nullptr;
-}
-NodeSet& Graph::heap_at(const Node& tail) {
-  const auto [it, _] = heap_.try_emplace(tail);
-  return std::get<1>(*it);
-}
-NodeSet& Graph::stack_at(const llvm::Value& tail) {
-  const auto [it, _] = stack_.try_emplace(&tail);
-  return std::get<1>(*it);
 }
 
 }  // namespace stacksafe
