@@ -22,6 +22,22 @@ void Component::transfer() {
     graph_.merge(*pred);
   }
 }
+bool Component::contains(const Node& tail, const Node& head) const {
+  for (const auto& pred : preds_) {
+    if (pred->contains(tail, head)) {
+      return true;
+    }
+  }
+  return false;
+}
+bool Component::contains(const llvm::Value& tail, const Node& head) const {
+  for (const auto& pred : preds_) {
+    if (pred->contains(tail, head)) {
+      return true;
+    }
+  }
+  return false;
+}
 bool Component::check_global() const {
   return !graph_.reachables(NodeSet{Node::get_global()}).has_local();
 }

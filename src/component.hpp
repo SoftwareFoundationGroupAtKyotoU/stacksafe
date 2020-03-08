@@ -20,6 +20,8 @@ class Component {
   bool is_safe() const;
   void add_pred(const Graph& g);
   void transfer();
+  bool contains(const Node& tail, const Node& head) const;
+  bool contains(const llvm::Value& tail, const Node& head) const;
 
  private:
   bool check_global() const;
