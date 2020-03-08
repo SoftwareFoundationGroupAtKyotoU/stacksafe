@@ -22,6 +22,7 @@ class Component {
   Graph& graph();
   bool is_safe() const;
   void add_pred(const Graph& g);
+  void transfer();
 
  private:
   bool check_global() const;

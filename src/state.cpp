@@ -18,6 +18,11 @@ bool Component::is_safe() const {
 void Component::add_pred(const Graph& g) {
   preds_.push_back(&g);
 }
+void Component::transfer() {
+  for (auto&& pred : preds_) {
+    graph_.merge(*pred);
+  }
+}
 bool Component::check_global() const {
   return !graph_.reachables(NodeSet{Node::get_global()}).has_local();
 }
