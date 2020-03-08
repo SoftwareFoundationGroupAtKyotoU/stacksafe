@@ -1,4 +1,5 @@
 #include "params.hpp"
+#include "component.hpp"
 
 namespace stacksafe {
 
@@ -33,12 +34,20 @@ bool Params::ParamsIterator::operator!=(ParamsIterator it) const {
   return super() != it.super();
 }
 
-NodeMap::NodeMap(const Params &params, Graph &graph) {
+NodeMap::NodeMap(const Params &params, const Graph &graph) {
   auto &self = *this;
   auto index = Index::GLOBAL;
   self[index] = graph.reachables(NodeSet{Node::get_global()});
   for (const auto &arg : params) {
     self[++index] = graph.reachables(arg);
+  }
+}
+NodeMap::NodeMap(const Params &params, const Component &c) {
+  auto &self = *this;
+  auto index = Index::GLOBAL;
+  self[index] = c.reachables(Node::get_global());
+  for (const auto &arg : params) {
+    self[++index] = c.reachables(arg);
   }
 }
 
