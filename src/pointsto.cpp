@@ -173,13 +173,13 @@ void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   assert(dst.arg_size() == params.size());
   NodeMap nodemap{params, comp_.graph()};
   const auto effect = effects_.get(dst);
-  for (const auto &[froms, heads] : nodemap) {
-    for (const auto &[to, tail] : nodemap) {
-      if (effect.depends(froms, to)) {
-        comp_.graph().connect(tail, heads);
+  for (const auto &[from, heads] : nodemap) {
+    for (const auto &[to, tails] : nodemap) {
+      if (effect.depends(from, to)) {
+        comp_.graph().connect(tails, heads);
       }
     }
-    if (is_return(dst) && effect.depends(froms, Index::RETURN)) {
+    if (is_return(dst) && effect.depends(from, Index::RETURN)) {
       comp_.graph().connect(dst, heads);
     }
   }
