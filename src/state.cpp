@@ -15,6 +15,9 @@ bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
 }
+void Component::add_pred(const Graph& g) {
+  preds_.push_back(&g);
+}
 bool Component::check_global() const {
   return !graph_.reachables(NodeSet{Node::get_global()}).has_local();
 }

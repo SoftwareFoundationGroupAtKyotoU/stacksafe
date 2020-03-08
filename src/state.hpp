@@ -14,12 +14,14 @@ class Component {
   using BB = Blocks::value_type;
   const Blocks blocks_;
   Graph graph_;
+  std::vector<const Graph*> preds_;
 
  public:
   explicit Component(const Blocks& b);
   const Blocks& blocks() const;
   Graph& graph();
   bool is_safe() const;
+  void add_pred(const Graph& g);
 
  private:
   bool check_global() const;
