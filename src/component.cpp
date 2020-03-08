@@ -16,7 +16,7 @@ bool Component::is_safe() const {
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
 }
 void Component::add_pred(const Graph& g) {
-  preds_.push_back(&g);
+  preds_.insert(&g);
 }
 void Component::transfer() {
   for (auto&& pred : preds_) {
