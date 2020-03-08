@@ -22,10 +22,10 @@ void Component::add_pred(const Component& c) {
   }
 }
 void Component::init(const llvm::Function& f) {
-  const NodeSet g{Node::get_global()};
-  connect(g, g);
+  const auto g = Node::get_global();
+  graph_.connect(g, g);
   for (const auto& a : f.args()) {
-    connect(a, g);
+    graph_.connect(a, g);
   }
 }
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
