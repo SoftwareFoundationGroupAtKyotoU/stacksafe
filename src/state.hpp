@@ -11,7 +11,6 @@ class Function;
 namespace stacksafe {
 
 class Component {
-  friend class State;
   using BB = Blocks::value_type;
   const Blocks blocks_;
   Graph graph_;
