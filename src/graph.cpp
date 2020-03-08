@@ -101,17 +101,5 @@ NodeSet Graph::reachables(const llvm::Value& v) const {
   followings(v, nodes);
   return reachables(nodes);
 }
-const NodeSet* Graph::find(const Node& tail) const {
-  if (const auto it = heap_.find(tail); it != heap_.end()) {
-    return &std::get<1>(*it);
-  }
-  return nullptr;
-}
-const NodeSet* Graph::find(const llvm::Value& tail) const {
-  if (const auto it = stack_.find(&tail); it != stack_.end()) {
-    return &std::get<1>(*it);
-  }
-  return nullptr;
-}
 
 }  // namespace stacksafe

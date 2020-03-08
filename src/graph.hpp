@@ -42,8 +42,6 @@ class Graph {
   void followings(const llvm::Value& tail, NodeSet& heads) const;
   NodeSet reachables(const NodeSet& nodes) const;
   NodeSet reachables(const llvm::Value& v) const;
-  const NodeSet* find(const Node& tail) const;
-  const NodeSet* find(const llvm::Value& tail) const;
 };
 
 }  // namespace stacksafe
