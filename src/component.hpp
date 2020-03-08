@@ -5,6 +5,11 @@
 #include "block.hpp"
 #include "graph.hpp"
 
+namespace llvm {
+class Function;
+class Value;
+}  // namespace llvm
+
 namespace stacksafe {
 
 class Component {
@@ -20,6 +25,7 @@ class Component {
   bool is_safe() const;
   void add_pred(const Graph& g);
   void transfer();
+  void init(const llvm::Function& f);
   bool contains(const Node& tail, const Node& head) const;
   bool contains(const llvm::Value& tail, const Node& head) const;
   void connect(const NodeSet& tails, const NodeSet& heads);

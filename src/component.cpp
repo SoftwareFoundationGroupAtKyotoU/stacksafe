@@ -23,6 +23,13 @@ void Component::transfer() {
     graph_.merge(*pred);
   }
 }
+void Component::init(const llvm::Function& f) {
+  const NodeSet g{Node::get_global()};
+  connect(g, g);
+  for (const auto& a : f.args()) {
+    connect(a, g);
+  }
+}
 bool Component::contains(const Node& tail, const Node& head) const {
   for (const auto& pred : preds_) {
     if (pred->contains(tail, head)) {

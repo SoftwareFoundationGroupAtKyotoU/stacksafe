@@ -13,7 +13,7 @@ State::State(const llvm::Function& f) {
       find(succ).add_pred(c.graph());
     }
   }
-  find(&f.getEntryBlock()).graph().init(f);
+  find(&f.getEntryBlock()).init(f);
 }
 bool State::is_safe() const {
   const auto pred = [](const Component& c) { return c.is_safe(); };
