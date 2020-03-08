@@ -33,6 +33,18 @@ void Graph::init(const llvm::Function& f) {
     connect(a, g);
   }
 }
+bool Graph::contains(const Node& tail, const Node& head) const {
+  if (const auto it = heap_.find(tail); it != heap_.end()) {
+    return std::get<1>(*it).element(head);
+  }
+  return false;
+}
+bool Graph::contains(const llvm::Value& tail, const Node& head) const {
+  if (const auto it = stack_.find(&tail); it != stack_.end()) {
+    return std::get<1>(*it).element(head);
+  }
+  return false;
+}
 void Graph::connect(const NodeSet& tails, const NodeSet& heads) {
   for (const auto& tail : tails) {
     heap_at(tail).merge(heads);
