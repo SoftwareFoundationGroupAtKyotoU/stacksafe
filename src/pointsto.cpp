@@ -1,5 +1,6 @@
 #include "pointsto.hpp"
 #include "block.hpp"
+#include "component.hpp"
 #include "graph.hpp"
 #include "params.hpp"
 #include "utility.hpp"
@@ -7,14 +8,16 @@
 namespace stacksafe {
 
 PointsTo::PointsTo(Graph &g) : graph_{g} {}
-void PointsTo::analyze(Graph &g, const Blocks &c) {
+void PointsTo::analyze(Component &c) {
+  auto &g = c.graph();
+  const auto &b = c.blocks();
   PointsTo p{g};
   auto prev = g.size();
   do {
-    for (auto &&b : c) {
-      p.visit(const_cast<llvm::BasicBlock *>(b));
+    for (auto &&bb : b) {
+      p.visit(const_cast<llvm::BasicBlock *>(bb));
     }
-  } while (c.is_loop() && std::exchange(prev, g.size()) != g.size());
+  } while (b.is_loop() && std::exchange(prev, g.size()) != g.size());
 }
 auto PointsTo::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
