@@ -26,8 +26,8 @@ class Component {
   void connect(const llvm::Value& tail, const NodeSet& heads);
   void followings(const NodeSet& tails, NodeSet& heads) const;
   void followings(const llvm::Value& tail, NodeSet& heads) const;
-  void reachables(const Node& tail, NodeSet& heads) const;
-  void reachables(const llvm::Value& tail, NodeSet& heads) const;
+  NodeSet reachables(const Node& tail) const;
+  NodeSet reachables(const llvm::Value& tail) const;
 
  private:
   bool check_global() const;
