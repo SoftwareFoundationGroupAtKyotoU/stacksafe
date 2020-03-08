@@ -16,7 +16,7 @@ class NodeSet : private std::unordered_set<Node, NodeHash> {
   using Super = std::unordered_set<Node, NodeHash>;
 
  public:
-  using Super::begin, Super::end, Super::size;
+  using Super::begin, Super::end, Super::size, Super::insert;
   NodeSet();
   explicit NodeSet(const Node& n);
   void merge(const NodeSet& nodes);
@@ -26,7 +26,7 @@ class NodeSet : private std::unordered_set<Node, NodeHash> {
 };
 
 class Graph {
-  using Heap = std::unordered_map<Node, NodeSet, NodeHash>;
+  using Heap = std::unordered_multimap<Node, Node, NodeHash>;
   using Stack = std::unordered_map<const llvm::Value*, NodeSet>;
   Heap heap_;
   Stack stack_;
