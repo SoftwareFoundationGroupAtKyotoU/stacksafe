@@ -59,7 +59,6 @@ void StackSafe::print_safe(llvm::raw_ostream& os, bool safe) const {
 bool StackSafe::analyze(const llvm::Function& f) const {
   State state{f};
   for (auto&& c : state) {
-    c.transfer();
     PointsTo::analyze(c);
   }
   return state.is_safe();

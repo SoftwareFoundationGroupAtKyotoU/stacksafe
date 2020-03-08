@@ -21,11 +21,6 @@ void Component::add_pred(const Component& c) {
     preds_.insert(pred);
   }
 }
-void Component::transfer() {
-  for (auto&& pred : preds_) {
-    graph_.merge(*pred);
-  }
-}
 void Component::init(const llvm::Function& f) {
   const NodeSet g{Node::get_global()};
   connect(g, g);

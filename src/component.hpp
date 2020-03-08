@@ -24,7 +24,6 @@ class Component {
   Graph& graph();
   bool is_safe() const;
   void add_pred(const Component& c);
-  void transfer();
   void init(const llvm::Function& f);
   bool contains(const Node& tail, const Node& head) const;
   bool contains(const llvm::Value& tail, const Node& head) const;
