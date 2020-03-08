@@ -11,6 +11,9 @@ const Blocks& Component::blocks() const {
 Graph& Component::graph() {
   return graph_;
 }
+std::size_t Component::size() const {
+  return graph_.size();
+}
 bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);

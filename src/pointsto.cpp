@@ -12,12 +12,12 @@ void PointsTo::analyze(Component &c) {
   auto &g = c.graph();
   const auto &b = c.blocks();
   PointsTo p{c};
-  auto prev = g.size();
+  auto prev = c.size();
   do {
     for (auto &&bb : b) {
       p.visit(const_cast<llvm::BasicBlock *>(bb));
     }
-  } while (b.is_loop() && std::exchange(prev, g.size()) != g.size());
+  } while (b.is_loop() && std::exchange(prev, c.size()) != c.size());
 }
 auto PointsTo::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
