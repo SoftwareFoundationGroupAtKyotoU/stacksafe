@@ -1,5 +1,6 @@
 #include "component.hpp"
 #include <llvm/IR/Instructions.h>
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -52,6 +53,22 @@ void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
     if (!contains(tail, head)) {
       graph_.connect(tail, NodeSet{head});
     }
+  }
+}
+void Component::followings(const NodeSet& tails, NodeSet& heads) const {
+  for (const auto& pred : preds_) {
+    pred->followings(tails, heads);
+  }
+  graph_.followings(tails, heads);
+}
+void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
+  if (is_global(tail)) {
+    followings(NodeSet{Node::get_global()}, heads);
+  } else {
+    for (const auto& pred : preds_) {
+      pred->followings(tail, heads);
+    }
+    graph_.followings(tail, heads);
   }
 }
 bool Component::check_global() const {

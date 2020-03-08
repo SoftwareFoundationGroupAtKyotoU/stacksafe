@@ -24,6 +24,8 @@ class Component {
   bool contains(const llvm::Value& tail, const Node& head) const;
   void connect(const NodeSet& tails, const NodeSet& heads);
   void connect(const llvm::Value& tail, const NodeSet& heads);
+  void followings(const NodeSet& tails, NodeSet& heads) const;
+  void followings(const llvm::Value& tail, NodeSet& heads) const;
 
  private:
   bool check_global() const;
