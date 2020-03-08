@@ -16,7 +16,7 @@ class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   using Super = llvm::InstVisitor<PointsTo, RetTy>;
   Graph &graph_;
   EffectMap effects_;
-  explicit PointsTo(Graph &g);
+  explicit PointsTo(Component &c);
 
  public:
   static void analyze(Component &c);

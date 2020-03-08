@@ -7,11 +7,11 @@
 
 namespace stacksafe {
 
-PointsTo::PointsTo(Graph &g) : graph_{g} {}
+PointsTo::PointsTo(Component &c) : graph_{c.graph()} {}
 void PointsTo::analyze(Component &c) {
   auto &g = c.graph();
   const auto &b = c.blocks();
-  PointsTo p{g};
+  PointsTo p{c};
   auto prev = g.size();
   do {
     for (auto &&bb : b) {
