@@ -36,7 +36,7 @@ std::size_t Graph::size() const {
   return heap_.size() + stack_.size();
 }
 void Graph::init(const llvm::Function& f) {
-  const NodeSet g{Node::get_global()};
+  const auto g = Node::get_global();
   connect(g, g);
   for (const auto& a : f.args()) {
     connect(a, g);
@@ -73,14 +73,12 @@ bool Graph::contains(const llvm::Value& tail, const Node& head) const {
   }
   return false;
 }
-void Graph::connect(const NodeSet& tails, const NodeSet& heads) {
-  for (const auto& tail : tails) {
-    heap_at(tail).merge(heads);
-  }
+void Graph::connect(const Node& tail, const Node& head) {
+  heap_at(tail).merge(NodeSet{head});
 }
-void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
+void Graph::connect(const llvm::Value& tail, const Node& head) {
   assert(is_register(tail));
-  stack_at(tail).merge(heads);
+  stack_at(tail).merge(NodeSet{head});
 }
 void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
   for (const auto& tail : tails) {

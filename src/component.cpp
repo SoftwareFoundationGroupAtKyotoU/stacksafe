@@ -35,7 +35,7 @@ void Component::connect(const NodeSet& tails, const NodeSet& heads) {
         return g->contains(tail, head);
       };
       if (std::none_of(preds_.begin(), preds_.end(), p)) {
-        graph_.connect(NodeSet{tail}, NodeSet{head});
+        graph_.connect(tail, head);
       }
     }
   }
@@ -46,7 +46,7 @@ void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
       return g->contains(tail, head);
     };
     if (std::none_of(preds_.begin(), preds_.end(), p)) {
-      graph_.connect(tail, NodeSet{head});
+      graph_.connect(tail, head);
     }
   }
 }
