@@ -133,8 +133,8 @@ auto PointsTo::visitCallInst(llvm::CallInst &i) -> RetTy {
 void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
                      const llvm::Value &rhs) {
   NodeSet heads;
-  comp_.graph().followings(lhs, heads);
-  comp_.graph().followings(rhs, heads);
+  comp_.followings(lhs, heads);
+  comp_.followings(rhs, heads);
   comp_.connect(dst, heads);
 }
 void PointsTo::alloc(const llvm::AllocaInst &dst) {
@@ -142,14 +142,14 @@ void PointsTo::alloc(const llvm::AllocaInst &dst) {
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet tails, heads;
-  comp_.graph().followings(src, tails);
-  comp_.graph().followings(tails, heads);
+  comp_.followings(src, tails);
+  comp_.followings(tails, heads);
   comp_.connect(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
   NodeSet tails, heads;
-  comp_.graph().followings(dst, tails);
-  comp_.graph().followings(src, heads);
+  comp_.followings(dst, tails);
+  comp_.followings(src, heads);
   comp_.connect(tails, heads);
 }
 void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
@@ -159,13 +159,13 @@ void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
 }
 void PointsTo::cast(const llvm::Instruction &dst, const llvm::Value &src) {
   NodeSet heads;
-  comp_.graph().followings(src, heads);
+  comp_.followings(src, heads);
   comp_.connect(dst, heads);
 }
 void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
   NodeSet heads;
   for (const auto &arg : params) {
-    comp_.graph().followings(arg, heads);
+    comp_.followings(arg, heads);
   }
   comp_.connect(dst, heads);
 }
