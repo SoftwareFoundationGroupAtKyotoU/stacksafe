@@ -42,6 +42,8 @@ class Graph {
   void merge(const Graph& g);
   NodeSet reachables(const NodeSet& nodes) const;
   NodeSet reachables(const llvm::Value& v) const;
+  const NodeSet* find(const Node& tail) const;
+  const NodeSet* find(const llvm::Value& tail) const;
 
  private:
   NodeSet& heap_at(const Node& tail);
