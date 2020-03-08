@@ -27,7 +27,7 @@ class NodeSet : private std::unordered_set<Node, NodeHash> {
 
 class Graph {
   using Heap = std::unordered_multimap<Node, Node, NodeHash>;
-  using Stack = std::unordered_map<const llvm::Value*, NodeSet>;
+  using Stack = std::unordered_multimap<const llvm::Value*, Node>;
   Heap heap_;
   Stack stack_;
 
@@ -41,7 +41,7 @@ class Graph {
   void followings(const NodeSet& tails, NodeSet& heads) const;
   void followings(const llvm::Value& tail, NodeSet& heads) const;
   NodeSet reachables(const NodeSet& nodes) const;
-  NodeSet reachables(const llvm::Value& v) const;
+  NodeSet reachables(const llvm::Value& value) const;
 };
 
 }  // namespace stacksafe
