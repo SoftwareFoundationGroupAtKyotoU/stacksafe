@@ -35,23 +35,23 @@ State::State(const llvm::Function& f) {
   for (const auto& c : Tarjan::run(f)) {
     Super::emplace_back(c);
   }
-  find(&f.getEntryBlock()).init(f);
+  find(&f.getEntryBlock()).graph().init(f);
 }
 void State::transfer(Component& c) {
   for (const auto& succ : c.blocks().successors()) {
-    find(succ).merge(c.graph());
+    find(succ).graph().merge(c.graph());
   }
 }
 bool State::is_safe() const {
   const auto pred = [](const Component& c) { return c.is_safe(); };
   return std::all_of(begin(), end(), pred);
 }
-Graph& State::find(BB b) {
+Component& State::find(BB b) {
   const auto pred = [b](const Component& c) { return c.blocks().contains(b); };
   const auto it = std::find_if(begin(), end(), pred);
   assert(it != end() && std::find_if(std::next(it), end(), pred) == end() &&
          "components must be a partition");
-  return it->graph();
+  return *it;
 }
 
 }  // namespace stacksafe

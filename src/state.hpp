@@ -39,7 +39,7 @@ class State : private std::vector<Component> {
   bool is_safe() const;
 
  private:
-  Graph& find(BB b);
+  Component& find(BB b);
 };
 
 }  // namespace stacksafe
