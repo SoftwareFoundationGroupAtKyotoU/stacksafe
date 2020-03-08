@@ -1,33 +1,15 @@
 #ifndef INCLUDE_GUARD_F20B95D3_9559_4A85_99D6_241914BC4F14
 #define INCLUDE_GUARD_F20B95D3_9559_4A85_99D6_241914BC4F14
 
+#include <vector>
 #include "block.hpp"
-#include "graph.hpp"
+#include "component.hpp"
 
 namespace llvm {
 class Function;
 }
 
 namespace stacksafe {
-
-class Component {
-  using BB = Blocks::value_type;
-  const Blocks blocks_;
-  Graph graph_;
-  std::vector<const Graph*> preds_;
-
- public:
-  explicit Component(const Blocks& b);
-  const Blocks& blocks() const;
-  Graph& graph();
-  bool is_safe() const;
-  void add_pred(const Graph& g);
-  void transfer();
-
- private:
-  bool check_global() const;
-  bool check_return(BB b) const;
-};
 
 class State : private std::vector<Component> {
   using Super = std::vector<Component>;
