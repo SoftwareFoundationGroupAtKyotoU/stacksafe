@@ -45,7 +45,6 @@ class NodeMap : private std::map<Index, NodeSet> {
 
  public:
   using Super::begin, Super::end;
-  NodeMap(const Params &params, const Graph &graph);
   NodeMap(const Params &params, const Component &c);
 };
 
