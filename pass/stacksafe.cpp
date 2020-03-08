@@ -59,8 +59,7 @@ void StackSafe::print_safe(llvm::raw_ostream& os, bool safe) const {
 bool StackSafe::analyze(const llvm::Function& f) const {
   State state{f};
   for (auto&& c : state) {
-    PointsTo::analyze(c.graph(), c.blocks());
-    state.transfer(c);
+    PointsTo::analyze(c);
   }
   return state.is_safe();
 }

@@ -6,19 +6,19 @@
 
 namespace stacksafe {
 class Blocks;
-class Graph;
+class Component;
 class NodeSet;
 class Params;
 
 class PointsTo : public llvm::InstVisitor<PointsTo, void> {
   using RetTy = void;
   using Super = llvm::InstVisitor<PointsTo, RetTy>;
-  Graph &graph_;
+  Component &comp_;
   EffectMap effects_;
-  explicit PointsTo(Graph &g);
+  explicit PointsTo(Component &c);
 
  public:
-  static void analyze(Graph &g, const Blocks &c);
+  static void analyze(Component &c);
   RetTy visitInstruction(llvm::Instruction &i);
   RetTy visitBinaryOperator(llvm::BinaryOperator &i);
   RetTy visitExtractElementInst(llvm::ExtractElementInst &i);

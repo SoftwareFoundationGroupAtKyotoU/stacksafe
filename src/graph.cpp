@@ -14,6 +14,15 @@ void NodeSet::merge(const NodeSet& nodes) {
 bool NodeSet::element(const Node& n) const {
   return 0 != Super::count(n);
 }
+bool NodeSet::includes(const NodeSet& that) const {
+  for (const auto& n : that) {
+    if (element(n)) {
+      continue;
+    }
+    return false;
+  }
+  return true;
+}
 bool NodeSet::has_local() const {
   for (const auto& n : *this) {
     if (n.is_local()) {
@@ -26,21 +35,43 @@ bool NodeSet::has_local() const {
 std::size_t Graph::size() const {
   return heap_.size() + stack_.size();
 }
-void Graph::init(const llvm::Function& f) {
-  const NodeSet g{Node::get_global()};
-  connect(g, g);
-  for (const auto& a : f.args()) {
-    connect(a, g);
+bool Graph::includes(const Graph& that) const {
+  for (const auto& [tail, heads] : that.heap_) {
+    for (const auto& head : heads) {
+      if (contains(tail, head)) {
+        continue;
+      }
+      return false;
+    }
   }
-}
-void Graph::connect(const NodeSet& tails, const NodeSet& heads) {
-  for (const auto& tail : tails) {
-    heap_at(tail).merge(heads);
+  for (const auto& [tail, heads] : that.stack_) {
+    for (const auto& head : heads) {
+      if (contains(*tail, head)) {
+        continue;
+      }
+      return false;
+    }
   }
+  return true;
 }
-void Graph::connect(const llvm::Value& tail, const NodeSet& heads) {
+bool Graph::contains(const Node& tail, const Node& head) const {
+  if (const auto it = heap_.find(tail); it != heap_.end()) {
+    return std::get<1>(*it).element(head);
+  }
+  return false;
+}
+bool Graph::contains(const llvm::Value& tail, const Node& head) const {
+  if (const auto it = stack_.find(&tail); it != stack_.end()) {
+    return std::get<1>(*it).element(head);
+  }
+  return false;
+}
+void Graph::connect(const Node& tail, const Node& head) {
+  heap_at(tail).merge(NodeSet{head});
+}
+void Graph::connect(const llvm::Value& tail, const Node& head) {
   assert(is_register(tail));
-  stack_at(tail).merge(heads);
+  stack_at(tail).merge(NodeSet{head});
 }
 void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
   for (const auto& tail : tails) {
@@ -76,6 +107,18 @@ NodeSet Graph::reachables(const llvm::Value& v) const {
   NodeSet nodes;
   followings(v, nodes);
   return reachables(nodes);
+}
+const NodeSet* Graph::find(const Node& tail) const {
+  if (const auto it = heap_.find(tail); it != heap_.end()) {
+    return &std::get<1>(*it);
+  }
+  return nullptr;
+}
+const NodeSet* Graph::find(const llvm::Value& tail) const {
+  if (const auto it = stack_.find(&tail); it != stack_.end()) {
+    return &std::get<1>(*it);
+  }
+  return nullptr;
 }
 NodeSet& Graph::heap_at(const Node& tail) {
   const auto [it, _] = heap_.try_emplace(tail);

@@ -21,6 +21,7 @@ class NodeSet : private std::unordered_set<Node, NodeHash> {
   explicit NodeSet(const Node& n);
   void merge(const NodeSet& nodes);
   bool element(const Node& n) const;
+  bool includes(const NodeSet& that) const;
   bool has_local() const;
 };
 
@@ -32,14 +33,18 @@ class Graph {
 
  public:
   std::size_t size() const;
-  void init(const llvm::Function& f);
-  void connect(const NodeSet& tails, const NodeSet& heads);
-  void connect(const llvm::Value& tail, const NodeSet& heads);
+  bool includes(const Graph& that) const;
+  bool contains(const Node& tail, const Node& head) const;
+  bool contains(const llvm::Value& tail, const Node& head) const;
+  void connect(const Node& tail, const Node& head);
+  void connect(const llvm::Value& tail, const Node& head);
   void followings(const NodeSet& tails, NodeSet& heads) const;
   void followings(const llvm::Value& tail, NodeSet& heads) const;
   void merge(const Graph& g);
   NodeSet reachables(const NodeSet& nodes) const;
   NodeSet reachables(const llvm::Value& v) const;
+  const NodeSet* find(const Node& tail) const;
+  const NodeSet* find(const llvm::Value& tail) const;
 
  private:
   NodeSet& heap_at(const Node& tail);
