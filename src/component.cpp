@@ -38,6 +38,22 @@ bool Component::contains(const llvm::Value& tail, const Node& head) const {
   }
   return false;
 }
+void Component::connect(const NodeSet& tails, const NodeSet& heads) {
+  for (const auto& tail : tails) {
+    for (const auto& head : heads) {
+      if (!contains(tail, head)) {
+        graph_.connect(NodeSet{tail}, NodeSet{head});
+      }
+    }
+  }
+}
+void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
+  for (const auto& head : heads) {
+    if (!contains(tail, head)) {
+      graph_.connect(tail, NodeSet{head});
+    }
+  }
+}
 bool Component::check_global() const {
   return !graph_.reachables(NodeSet{Node::get_global()}).has_local();
 }
