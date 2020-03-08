@@ -90,13 +90,13 @@ NodeSet Component::reachables(const llvm::Value& value) const {
   return heads;
 }
 bool Component::check_global() const {
-  return !graph_.reachables(NodeSet{Node::get_global()}).has_local();
+  return !reachables(Node::get_global()).has_local();
 }
 bool Component::check_return(BB b) const {
   const auto t = b->getTerminator();
   if (const auto i = llvm::dyn_cast<llvm::ReturnInst>(t)) {
     if (const auto v = i->getReturnValue()) {
-      return !graph_.reachables(*v).has_local();
+      return !reachables(*v).has_local();
     }
   }
   return true;
