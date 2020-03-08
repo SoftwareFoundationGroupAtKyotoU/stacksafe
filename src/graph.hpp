@@ -40,7 +40,6 @@ class Graph {
   void connect(const llvm::Value& tail, const Node& head);
   void followings(const NodeSet& tails, NodeSet& heads) const;
   void followings(const llvm::Value& tail, NodeSet& heads) const;
-  void merge(const Graph& g);
   NodeSet reachables(const NodeSet& nodes) const;
   NodeSet reachables(const llvm::Value& v) const;
   const NodeSet* find(const Node& tail) const;

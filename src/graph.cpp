@@ -87,14 +87,6 @@ void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
     heads.merge(std::get<1>(*it));
   }
 }
-void Graph::merge(const Graph& g) {
-  for (const auto& [tail, heads] : g.heap_) {
-    heap_at(tail).merge(heads);
-  }
-  for (const auto& [tail, heads] : g.stack_) {
-    stack_at(*tail).merge(heads);
-  }
-}
 NodeSet Graph::reachables(const NodeSet& nodes) const {
   NodeSet tails, heads{nodes};
   while (tails.size() < heads.size()) {
