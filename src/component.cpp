@@ -28,26 +28,13 @@ void Component::init(const llvm::Function& f) {
     connect(a, g);
   }
 }
-bool Component::contains(const Node& tail, const Node& head) const {
-  for (const auto& pred : preds_) {
-    if (pred->contains(tail, head)) {
-      return true;
-    }
-  }
-  return false;
-}
-bool Component::contains(const llvm::Value& tail, const Node& head) const {
-  for (const auto& pred : preds_) {
-    if (pred->contains(tail, head)) {
-      return true;
-    }
-  }
-  return false;
-}
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
   for (const auto& tail : tails) {
     for (const auto& head : heads) {
-      if (!contains(tail, head)) {
+      const auto p = [&tail, &head](const Graph* g) {
+        return g->contains(tail, head);
+      };
+      if (std::none_of(preds_.begin(), preds_.end(), p)) {
         graph_.connect(NodeSet{tail}, NodeSet{head});
       }
     }
@@ -55,7 +42,10 @@ void Component::connect(const NodeSet& tails, const NodeSet& heads) {
 }
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
   for (const auto& head : heads) {
-    if (!contains(tail, head)) {
+    const auto p = [&tail, &head](const Graph* g) {
+      return g->contains(tail, head);
+    };
+    if (std::none_of(preds_.begin(), preds_.end(), p)) {
       graph_.connect(tail, NodeSet{head});
     }
   }

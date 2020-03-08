@@ -25,8 +25,6 @@ class Component {
   bool is_safe() const;
   void add_pred(const Component& c);
   void init(const llvm::Function& f);
-  bool contains(const Node& tail, const Node& head) const;
-  bool contains(const llvm::Value& tail, const Node& head) const;
   void connect(const NodeSet& tails, const NodeSet& heads);
   void connect(const llvm::Value& tail, const NodeSet& heads);
   void followings(const NodeSet& tails, NodeSet& heads) const;
