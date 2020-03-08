@@ -71,6 +71,21 @@ void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
     graph_.followings(tail, heads);
   }
 }
+void Component::reachables(const Node& tail, NodeSet& heads) const {
+  NodeSet tails;
+  heads.merge(NodeSet{tail});
+  while (tails.size() < heads.size()) {
+    tails.merge(heads);
+    followings(tails, heads);
+  }
+}
+void Component::reachables(const llvm::Value& tail, NodeSet& heads) const {
+  NodeSet tails;
+  followings(tail, tails);
+  for (const auto& t : tails) {
+    reachables(t, heads);
+  }
+}
 bool Component::check_global() const {
   return !graph_.reachables(NodeSet{Node::get_global()}).has_local();
 }
