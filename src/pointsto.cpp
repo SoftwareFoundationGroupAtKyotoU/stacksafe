@@ -9,7 +9,6 @@ namespace stacksafe {
 
 PointsTo::PointsTo(Component &c) : comp_{c} {}
 void PointsTo::analyze(Component &c) {
-  auto &g = c.graph();
   const auto &b = c.blocks();
   PointsTo p{c};
   auto prev = c.size();

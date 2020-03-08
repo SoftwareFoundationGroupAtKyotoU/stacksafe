@@ -8,9 +8,6 @@ Component::Component(const Blocks& b) : blocks_{b}, graph_{} {}
 const Blocks& Component::blocks() const {
   return blocks_;
 }
-Graph& Component::graph() {
-  return graph_;
-}
 std::size_t Component::size() const {
   return graph_.size();
 }

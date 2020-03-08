@@ -21,7 +21,6 @@ class Component {
  public:
   explicit Component(const Blocks& b);
   const Blocks& blocks() const;
-  Graph& graph();
   std::size_t size() const;
   bool is_safe() const;
   void add_pred(const Component& c);
