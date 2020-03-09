@@ -24,6 +24,7 @@ target_sources(${target} PRIVATE
   state.cpp
   stopwatch.cpp
   tarjan.cpp
+  tree.cpp
   utility.cpp
   )
 include(EnsureSources)
