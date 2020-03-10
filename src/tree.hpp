@@ -11,6 +11,7 @@ class Node {
   bool black_;
   int rank_, size_;
   int value_;
+  Node(Ptr l, Ptr r, bool b, int k, int s, int v);
 };
 
 }  // namespace tree
