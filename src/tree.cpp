@@ -25,5 +25,9 @@ int Node::calc_size(const Ptr &x, const Ptr &y) {
   assert(x && y);
   return x->size_ + y->size_;
 }
+bool Node::less_rank(const Ptr &x, const Ptr &y) {
+  assert(x && y);
+  return x->rank_ < y->rank_;
+}
 
 }  // namespace tree
