@@ -11,11 +11,14 @@ auto Node::leaf(int v) -> Ptr {
 auto Node::branch(Ptr l, Ptr r, bool b) -> Ptr {
   return std::make_shared<Helper>(l, r, b, calc_rank(l), calc_size(l, r), 0);
 }
+auto Node::red(Ptr l, Ptr r) -> Ptr {
+  return branch(l, r, false);
+}
 auto Node::black(Ptr l, Ptr r) -> Ptr {
   return branch(l, r, true);
 }
-auto Node::red(Ptr l, Ptr r) -> Ptr {
-  return branch(l, r, false);
+auto Node::black(Ptr x) -> Ptr {
+  return black(x->left_, x->right_);
 }
 int Node::calc_rank(const Ptr &x) {
   assert(x);
