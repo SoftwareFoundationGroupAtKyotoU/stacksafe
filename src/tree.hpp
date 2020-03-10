@@ -15,6 +15,7 @@ class Node {
 
  private:
   static int calc_rank(const Ptr &x);
+  static int calc_size(const Ptr &x, const Ptr &y);
   template <typename S>
   struct MakeSharedHelper : public S {
     template <typename... T>
