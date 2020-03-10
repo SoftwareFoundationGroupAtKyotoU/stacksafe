@@ -14,6 +14,7 @@ class Node {
   Node(Ptr l, Ptr r, bool b, int k, int s, int v);
 
  private:
+  static int calc_rank(const Ptr &x);
   template <typename S>
   struct MakeSharedHelper : public S {
     template <typename... T>
