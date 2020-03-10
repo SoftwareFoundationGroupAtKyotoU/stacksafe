@@ -15,6 +15,7 @@ class Node {
 
  public:
   static Ptr leaf(int v);
+  static Ptr branch(Ptr l, Ptr r, bool b);
 
  private:
   static int calc_rank(const Ptr &x);
