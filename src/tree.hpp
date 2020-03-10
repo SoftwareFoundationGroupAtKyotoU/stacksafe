@@ -12,6 +12,14 @@ class Node {
   int rank_, size_;
   int value_;
   Node(Ptr l, Ptr r, bool b, int k, int s, int v);
+
+ private:
+  template <typename S>
+  struct MakeSharedHelper : public S {
+    template <typename... T>
+    explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
+  };
+  using Helper = MakeSharedHelper<Node>;
 };
 
 }  // namespace tree
