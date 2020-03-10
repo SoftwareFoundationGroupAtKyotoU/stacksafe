@@ -13,6 +13,9 @@ class Node {
   int value_;
   Node(Ptr l, Ptr r, bool b, int k, int s, int v);
 
+ public:
+  static Ptr leaf(int v);
+
  private:
   static int calc_rank(const Ptr &x);
   static int calc_size(const Ptr &x, const Ptr &y);
