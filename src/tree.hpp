@@ -11,18 +11,18 @@ class Node {
   bool black_;
   int rank_, size_;
   int value_;
-  Node(Ptr l, Ptr r, bool b, int k, int s, int v);
+  Node(const Ptr &l, const Ptr &r, bool b, int k, int s, int v);
 
  public:
   static Ptr leaf(int v);
-  static Ptr branch(Ptr l, Ptr r, bool b);
+  static Ptr branch(const Ptr &l, const Ptr &r, bool b);
 
  private:
   static bool is_black(const Ptr &x);
   static bool is_triple(const Ptr &x);
-  static Ptr red(Ptr l, Ptr r);
-  static Ptr black(Ptr l, Ptr r);
-  static Ptr black(Ptr x);
+  static Ptr red(const Ptr &l, const Ptr &r);
+  static Ptr black(const Ptr &l, const Ptr &r);
+  static Ptr black(const Ptr &x);
   static int calc_rank(const Ptr &x, const Ptr &y);
   static int calc_size(const Ptr &x, const Ptr &y);
   static bool less_rank(const Ptr &x, const Ptr &y);

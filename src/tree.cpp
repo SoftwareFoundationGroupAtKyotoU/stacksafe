@@ -3,12 +3,12 @@
 
 namespace tree {
 
-Node::Node(Ptr l, Ptr r, bool b, int k, int s, int v)
+Node::Node(const Ptr &l, const Ptr &r, bool b, int k, int s, int v)
     : left_{l}, right_{r}, black_{b}, rank_{k}, size_{s}, value_{v} {}
 auto Node::leaf(int v) -> Ptr {
   return std::make_shared<Helper>(nullptr, nullptr, true, 0, 1, v);
 }
-auto Node::branch(Ptr l, Ptr r, bool b) -> Ptr {
+auto Node::branch(const Ptr &l, const Ptr &r, bool b) -> Ptr {
   return std::make_shared<Helper>(l, r, b, calc_rank(l, r), calc_size(l, r), 0);
 }
 bool Node::is_black(const Ptr &x) {
@@ -17,13 +17,13 @@ bool Node::is_black(const Ptr &x) {
 bool Node::is_triple(const Ptr &x) {
   return !is_black(x) && !is_black(x->left_);
 }
-auto Node::red(Ptr l, Ptr r) -> Ptr {
+auto Node::red(const Ptr &l, const Ptr &r) -> Ptr {
   return branch(l, r, false);
 }
-auto Node::black(Ptr l, Ptr r) -> Ptr {
+auto Node::black(const Ptr &l, const Ptr &r) -> Ptr {
   return branch(l, r, true);
 }
-auto Node::black(Ptr x) -> Ptr {
+auto Node::black(const Ptr &x) -> Ptr {
   return black(x->left_, x->right_);
 }
 int Node::calc_rank(const Ptr &x, const Ptr &y) {
