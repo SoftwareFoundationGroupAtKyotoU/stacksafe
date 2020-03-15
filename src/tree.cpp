@@ -26,6 +26,35 @@ auto Node::black(const Ptr &l, const Ptr &r) -> Ptr {
 auto Node::black(const Ptr &x) -> Ptr {
   return black(x->left_, x->right_);
 }
+auto Node::merge_left(const Ptr &x, const Ptr &y) -> Ptr {
+  assert(x->rank_ <= y->rank_);
+  assert(is_black(x));
+  Ptr t = nullptr;
+  if (less_rank(x, y)) {
+    const auto l = y->left_;
+    const auto r = y->right_;
+    const auto z = merge_left(x, l);
+    if (is_triple(z)) {
+      assert(is_black(y) && !is_black(l));
+      if (is_black(r)) {
+        t = black(z->left_, red(z->right_, r));
+      } else {
+        t = red(black(z), black(r));
+      }
+    } else {
+      if (is_black(y)) {
+        t = black(z, r);
+      } else {
+        t = red(z, r);
+        assert(is_black(z) || is_triple(t));
+      }
+    }
+  } else {
+    assert(is_black(y));
+    t = red(x, y);
+  }
+  return t;
+}
 int Node::calc_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
   const auto k = x->rank_ + (x->black_ ? 1 : 0);
