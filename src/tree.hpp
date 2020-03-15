@@ -18,6 +18,8 @@ class Node {
   static Ptr branch(Ptr l, Ptr r, bool b);
 
  private:
+  static bool is_black(const Ptr &x);
+  static bool is_triple(const Ptr &x);
   static Ptr red(Ptr l, Ptr r);
   static Ptr black(Ptr l, Ptr r);
   static Ptr black(Ptr x);

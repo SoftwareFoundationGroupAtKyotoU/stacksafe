@@ -11,6 +11,12 @@ auto Node::leaf(int v) -> Ptr {
 auto Node::branch(Ptr l, Ptr r, bool b) -> Ptr {
   return std::make_shared<Helper>(l, r, b, calc_rank(l), calc_size(l, r), 0);
 }
+bool Node::is_black(const Ptr &x) {
+  return x->black_;
+}
+bool Node::is_triple(const Ptr &x) {
+  return !is_black(x) && !is_black(x->left_);
+}
 auto Node::red(Ptr l, Ptr r) -> Ptr {
   return branch(l, r, false);
 }
