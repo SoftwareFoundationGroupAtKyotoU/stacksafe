@@ -14,9 +14,6 @@ auto Node::branch(const Ptr &l, const Ptr &r, bool b) -> Ptr {
 bool Node::is_black(const Ptr &x) {
   return x->black_;
 }
-bool Node::is_triple(const Ptr &x) {
-  return !is_black(x) && !is_black(x->left_);
-}
 auto Node::red(const Ptr &l, const Ptr &r) -> Ptr {
   return branch(l, r, false);
 }
@@ -27,6 +24,9 @@ auto Node::black(const Ptr &x) -> Ptr {
   return black(x->left_, x->right_);
 }
 auto Node::merge_left(const Ptr &x, const Ptr &y) -> Ptr {
+  const auto is_triple = [](const Ptr &z) {
+    return !is_black(z) && !is_black(z->left_);
+  };
   assert(x->rank_ <= y->rank_);
   assert(is_black(x));
   Ptr t = nullptr;

@@ -19,7 +19,6 @@ class Node {
 
  private:
   static bool is_black(const Ptr &x);
-  static bool is_triple(const Ptr &x);
   static Ptr red(const Ptr &l, const Ptr &r);
   static Ptr black(const Ptr &l, const Ptr &r);
   static Ptr black(const Ptr &x);
