@@ -55,6 +55,18 @@ auto Node::merge_left(const Ptr &x, const Ptr &y) -> Ptr {
   }
   return t;
 }
+auto Node::merge_right(const Ptr &x, const Ptr &y) -> Ptr {
+  if (less_rank(y, x)) {
+    const auto l = x->left_;
+    const auto z = merge_right(x->right_, y);
+    if (!is_black(z) && !is_black(z->right_)) {
+      return is_black(l) ? black(red(l, z->left_), z->right_) :
+                           red(black(l), black(z));
+    }
+    return is_black(x) ? black(l, z) : red(l, z);
+  }
+  return red(x, y);
+}
 int Node::calc_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
   const auto k = x->rank_ + (x->black_ ? 1 : 0);
