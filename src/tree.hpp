@@ -23,7 +23,7 @@ class Node {
   static Ptr red(Ptr l, Ptr r);
   static Ptr black(Ptr l, Ptr r);
   static Ptr black(Ptr x);
-  static int calc_rank(const Ptr &x);
+  static int calc_rank(const Ptr &x, const Ptr &y);
   static int calc_size(const Ptr &x, const Ptr &y);
   static bool less_rank(const Ptr &x, const Ptr &y);
   template <typename S>

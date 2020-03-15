@@ -9,7 +9,7 @@ auto Node::leaf(int v) -> Ptr {
   return std::make_shared<Helper>(nullptr, nullptr, true, 0, 1, v);
 }
 auto Node::branch(Ptr l, Ptr r, bool b) -> Ptr {
-  return std::make_shared<Helper>(l, r, b, calc_rank(l), calc_size(l, r), 0);
+  return std::make_shared<Helper>(l, r, b, calc_rank(l, r), calc_size(l, r), 0);
 }
 bool Node::is_black(const Ptr &x) {
   return x->black_;
@@ -26,9 +26,11 @@ auto Node::black(Ptr l, Ptr r) -> Ptr {
 auto Node::black(Ptr x) -> Ptr {
   return black(x->left_, x->right_);
 }
-int Node::calc_rank(const Ptr &x) {
-  assert(x);
-  return x->rank_ + (x->black_ ? 1 : 0);
+int Node::calc_rank(const Ptr &x, const Ptr &y) {
+  assert(x && y);
+  const auto k = x->rank_ + (x->black_ ? 1 : 0);
+  assert(k == (y->rank_ + (y->black_ ? 1 : 0)));
+  return k;
 }
 int Node::calc_size(const Ptr &x, const Ptr &y) {
   assert(x && y);
