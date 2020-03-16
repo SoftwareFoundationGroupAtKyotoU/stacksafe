@@ -34,12 +34,7 @@ void Component::init(const llvm::Function& f) {
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
   for (const auto& tail : tails) {
     for (const auto& head : heads) {
-      const auto p = [&tail, &head](const Graph* g) {
-        return g->contains(tail, head);
-      };
-      if (std::none_of(preds_.begin(), preds_.end(), p)) {
-        graph_.connect(tail, head);
-      }
+      graph_.connect(tail, head);
     }
   }
 }
