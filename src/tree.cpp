@@ -122,7 +122,6 @@ int RedBlackTree::get_rank(const Ptr &x) {
   return x ? x->rank_ : 0;
 }
 bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
-  assert(x && y);
   return get_rank(x) < get_rank(y);
 }
 
