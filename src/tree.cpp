@@ -8,17 +8,17 @@ Node::Node(const Ptr &l, const Ptr &r, bool b, int k, int s, int v)
 auto Node::leaf(int v) -> Ptr {
   return std::make_shared<Helper>(nullptr, nullptr, true, 0, 1, v);
 }
-auto Node::branch(const Ptr &l, const Ptr &r, bool b) -> Ptr {
-  return std::make_shared<Helper>(l, r, b, calc_rank(l, r), calc_size(l, r), 0);
+auto Node::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
+  return std::make_shared<Helper>(l, r, b, calc_rank(l, r), calc_size(l, r), v);
 }
 bool Node::is_black(const Ptr &x) {
   return x->black_;
 }
 auto Node::red(const Ptr &l, const Ptr &r) -> Ptr {
-  return branch(l, r, false);
+  return branch(l, r, false, 0);
 }
 auto Node::black(const Ptr &l, const Ptr &r) -> Ptr {
-  return branch(l, r, true);
+  return branch(l, r, true, 0);
 }
 auto Node::black(const Ptr &x) -> Ptr {
   return black(x->left_, x->right_);

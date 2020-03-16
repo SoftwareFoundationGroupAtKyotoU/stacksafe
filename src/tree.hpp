@@ -15,7 +15,7 @@ class Node {
 
  public:
   static Ptr leaf(int v);
-  static Ptr branch(const Ptr &l, const Ptr &r, bool b);
+  static Ptr branch(const Ptr &l, const Ptr &r, bool b, int v);
 
  private:
   static bool is_black(const Ptr &x);
