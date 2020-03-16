@@ -17,6 +17,7 @@ target_sources(${target} PRIVATE
   component.cpp
   effect.cpp
   graph.cpp
+  map.cpp
   matrix.cpp
   node.cpp
   params.cpp
