@@ -1,7 +1,7 @@
 #include "tree.hpp"
 #include <cassert>
 
-namespace tree {
+namespace stacksafe {
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
                            int v)
@@ -126,4 +126,4 @@ bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
   return get_rank(x) < get_rank(y);
 }
 
-}  // namespace tree
+}  // namespace stacksafe

@@ -3,7 +3,7 @@
 
 #include <memory>
 
-namespace tree {
+namespace stacksafe {
 
 class RedBlackTree {
   using Ptr = std::shared_ptr<const RedBlackTree>;
@@ -43,6 +43,6 @@ class RedBlackTree {
   using Helper = MakeSharedHelper<RedBlackTree>;
 };
 
-}  // namespace tree
+}  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_6F2C02D5_616D_48CD_8A43_B837E2ADE127
