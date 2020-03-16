@@ -17,14 +17,14 @@ bool Node::is_black(const Ptr &x) {
 auto Node::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
   return branch(l, r, b, c->value_);
 }
-auto Node::red(const Ptr &l, const Ptr &r) -> Ptr {
-  return branch(l, r, false, 0);
+auto Node::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
+  return branch(l, c, r, false);
 }
-auto Node::black(const Ptr &l, const Ptr &r) -> Ptr {
-  return branch(l, r, true, 0);
+auto Node::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
+  return branch(l, c, r, true);
 }
 auto Node::black(const Ptr &x) -> Ptr {
-  return black(x->left_, x->right_);
+  return black(x->left_, x, x->right_);
 }
 auto Node::merge_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
   const auto is_triple = [](const Ptr &z) {
@@ -40,21 +40,21 @@ auto Node::merge_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
     if (is_triple(z)) {
       assert(is_black(y) && !is_black(l));
       if (is_black(r)) {
-        t = black(z->left_, red(z->right_, r));
+        t = black(z->left_, z, red(z->right_, y, r));
       } else {
-        t = red(black(z), black(r));
+        t = red(black(z), y, black(r));
       }
     } else {
       if (is_black(y)) {
-        t = black(z, r);
+        t = black(z, y, r);
       } else {
-        t = red(z, r);
+        t = red(z, y, r);
         assert(is_black(z) || is_triple(t));
       }
     }
   } else {
     assert(is_black(y));
-    t = red(x, y);
+    t = branch(x, y, false, v);
   }
   return t;
 }
@@ -63,12 +63,12 @@ auto Node::merge_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
     const auto l = x->left_;
     const auto z = merge_right(x->right_, v, y);
     if (!is_black(z) && !is_black(z->right_)) {
-      return is_black(l) ? black(red(l, z->left_), z->right_) :
-                           red(black(l), black(z));
+      return is_black(l) ? black(red(l, x, z->left_), z, z->right_) :
+                           red(black(l), x, black(z));
     }
-    return is_black(x) ? black(l, z) : red(l, z);
+    return is_black(x) ? black(l, x, z) : red(l, x, z);
   }
-  return red(x, y);
+  return branch(x, y, false, v);
 }
 auto Node::merge(const Ptr &x, int v, const Ptr &y) -> Ptr {
   if (x && y) {

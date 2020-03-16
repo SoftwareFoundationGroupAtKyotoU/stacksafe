@@ -20,8 +20,8 @@ class Node {
  private:
   static bool is_black(const Ptr &x);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
-  static Ptr red(const Ptr &l, const Ptr &r);
-  static Ptr black(const Ptr &l, const Ptr &r);
+  static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
+  static Ptr black(const Ptr &l, const Ptr &c, const Ptr &r);
   static Ptr black(const Ptr &x);
   static Ptr merge_left(const Ptr &x, int v, const Ptr &y);
   static Ptr merge_right(const Ptr &x, int v, const Ptr &y);
