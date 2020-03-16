@@ -22,6 +22,7 @@ class Node {
   static bool is_red_twice(const Ptr &x);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
   static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
+  static Ptr red(const Ptr &l, int v, const Ptr &r);
   static Ptr black(const Ptr &l, const Ptr &c, const Ptr &r);
   static Ptr black(const Ptr &x);
   static Ptr merge_left(const Ptr &x, int v, const Ptr &y);

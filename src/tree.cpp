@@ -23,6 +23,9 @@ auto Node::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
 auto Node::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, false);
 }
+auto Node::red(const Ptr &l, int v, const Ptr &r) -> Ptr {
+  return branch(l, r, false, v);
+}
 auto Node::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, true);
 }
@@ -54,7 +57,7 @@ auto Node::merge_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
     }
   } else {
     assert(is_black(y));
-    t = branch(x, y, false, v);
+    t = red(x, v, y);
   }
   return t;
 }
@@ -68,7 +71,7 @@ auto Node::merge_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
     }
     return is_black(x) ? black(l, x, z) : red(l, x, z);
   }
-  return branch(x, y, false, v);
+  return red(x, v, y);
 }
 auto Node::merge(const Ptr &x, int v, const Ptr &y) -> Ptr {
   if (x && y) {
