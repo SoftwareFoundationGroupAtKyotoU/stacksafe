@@ -5,14 +5,14 @@
 
 namespace tree {
 
-class Node {
-  using Ptr = std::shared_ptr<const Node>;
+class RedBlackTree {
+  using Ptr = std::shared_ptr<const RedBlackTree>;
   using Result = std::tuple<Ptr, bool, Ptr>;
   Ptr left_, right_;
   bool black_;
   int rank_, size_;
   int value_;
-  Node(const Ptr &l, const Ptr &r, bool b, int k, int s, int v);
+  RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s, int v);
 
  public:
   static Ptr leaf(int v);
@@ -39,7 +39,7 @@ class Node {
     template <typename... T>
     explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
   };
-  using Helper = MakeSharedHelper<Node>;
+  using Helper = MakeSharedHelper<RedBlackTree>;
 };
 
 }  // namespace tree

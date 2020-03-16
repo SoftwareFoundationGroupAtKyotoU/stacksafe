@@ -3,15 +3,16 @@
 
 namespace tree {
 
-Node::Node(const Ptr &l, const Ptr &r, bool b, int k, int s, int v)
+RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
+                           int v)
     : left_{l}, right_{r}, black_{b}, rank_{k}, size_{s}, value_{v} {}
-auto Node::leaf(int v) -> Ptr {
+auto RedBlackTree::leaf(int v) -> Ptr {
   return std::make_shared<Helper>(nullptr, nullptr, true, 0, 1, v);
 }
-auto Node::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
+auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
   return std::make_shared<Helper>(l, r, b, calc_rank(l, r), calc_size(l, r), v);
 }
-auto Node::merge(const Ptr &x, const Ptr &y) -> Ptr {
+auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
   if (x && y) {
     if (x->size_ < y->size_) {
       return merge(y, x);
@@ -23,28 +24,29 @@ auto Node::merge(const Ptr &x, const Ptr &y) -> Ptr {
     return x ? x : y;
   }
 }
-bool Node::is_black(const Ptr &x) {
+bool RedBlackTree::is_black(const Ptr &x) {
   return x->black_;
 }
-bool Node::is_red_twice(const Ptr &x) {
+bool RedBlackTree::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left_) && is_black(x->right_));
 }
-auto Node::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
+auto RedBlackTree::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b)
+    -> Ptr {
   return branch(l, r, b, c->value_);
 }
-auto Node::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
+auto RedBlackTree::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, false);
 }
-auto Node::red(const Ptr &l, int v, const Ptr &r) -> Ptr {
+auto RedBlackTree::red(const Ptr &l, int v, const Ptr &r) -> Ptr {
   return branch(l, r, false, v);
 }
-auto Node::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
+auto RedBlackTree::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, true);
 }
-auto Node::black(const Ptr &x) -> Ptr {
+auto RedBlackTree::black(const Ptr &x) -> Ptr {
   return black(x->left_, x, x->right_);
 }
-auto Node::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto RedBlackTree::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
   assert(x->rank_ <= y->rank_);
   assert(is_black(x));
   Ptr t = nullptr;
@@ -73,7 +75,7 @@ auto Node::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
   return t;
 }
-auto Node::join_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto RedBlackTree::join_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
   if (less_rank(y, x)) {
     const auto l = x->left_;
     const auto z = join_right(x->right_, v, y);
@@ -85,7 +87,7 @@ auto Node::join_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
   return red(x, v, y);
 }
-auto Node::join(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto RedBlackTree::join(const Ptr &x, int v, const Ptr &y) -> Ptr {
   if (x && y) {
     const auto z = less_rank(x, y) ? join_left(x, v, y) : join_right(x, v, y);
     return is_black(z) ? z : black(z);
@@ -93,7 +95,7 @@ auto Node::join(const Ptr &x, int v, const Ptr &y) -> Ptr {
     return x ? x : y;
   }
 }
-auto Node::split(const Ptr &x, int v) -> Result {
+auto RedBlackTree::split(const Ptr &x, int v) -> Result {
   const auto as_root = [](const Ptr &p) { return is_black(p) ? p : black(p); };
   if (!x) {
     return {nullptr, false, nullptr};
@@ -107,17 +109,17 @@ auto Node::split(const Ptr &x, int v) -> Result {
     return {as_root(x->left_), true, as_root(x->right_)};
   }
 }
-int Node::calc_rank(const Ptr &x, const Ptr &y) {
+int RedBlackTree::calc_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
   const auto k = x->rank_ + (x->black_ ? 1 : 0);
   assert(k == (y->rank_ + (y->black_ ? 1 : 0)));
   return k;
 }
-int Node::calc_size(const Ptr &x, const Ptr &y) {
+int RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
   assert(x && y);
   return x->size_ + y->size_;
 }
-bool Node::less_rank(const Ptr &x, const Ptr &y) {
+bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
   return x->rank_ < y->rank_;
 }
