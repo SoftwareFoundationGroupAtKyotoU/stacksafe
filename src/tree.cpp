@@ -108,10 +108,10 @@ auto RedBlackTree::split(const Ptr &x, int v) -> Result {
     return {nullptr, false, nullptr};
   } else if (v < x->value_) {
     const auto [l, b, r] = split(x->left_, v);
-    return {l, b, join(r, v, as_root(x->right_))};
+    return {l, b, join(r, x->value_, as_root(x->right_))};
   } else if (x->value_ < v) {
     const auto [l, b, r] = split(x->right_, v);
-    return {join(as_root(x->left_), v, l), b, r};
+    return {join(as_root(x->left_), x->value_, l), b, r};
   } else {
     return {as_root(x->left_), true, as_root(x->right_)};
   }
