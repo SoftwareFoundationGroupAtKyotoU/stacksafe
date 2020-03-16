@@ -2,22 +2,24 @@
 #define INCLUDE_GUARD_6F2C02D5_616D_48CD_8A43_B837E2ADE127
 
 #include <memory>
+#include "node.hpp"
 
 namespace stacksafe {
 
+using PairType = std::tuple<Node, Node>;
 class RedBlackTree {
   using Ptr = std::shared_ptr<const RedBlackTree>;
   using Result = std::tuple<Ptr, bool, Ptr>;
   Ptr left_, right_;
   bool black_;
   int rank_, size_;
-  int value_;
-  RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s, int v);
+  PairType value_;
+  RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s, PairType v);
 
  public:
   static Ptr leaf();
-  static Ptr single(int v);
-  static Ptr branch(const Ptr &l, const Ptr &r, bool b, int v);
+  static Ptr single(PairType v);
+  static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr merge(const Ptr &x, const Ptr &y);
 
  private:
@@ -25,13 +27,13 @@ class RedBlackTree {
   static bool is_red_twice(const Ptr &x);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
   static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
-  static Ptr red(const Ptr &l, int v, const Ptr &r);
+  static Ptr red(const Ptr &l, PairType v, const Ptr &r);
   static Ptr black(const Ptr &l, const Ptr &c, const Ptr &r);
   static Ptr black(const Ptr &x);
-  static Ptr join_left(const Ptr &x, int v, const Ptr &y);
-  static Ptr join_right(const Ptr &x, int v, const Ptr &y);
-  static Ptr join(const Ptr &x, int v, const Ptr &y);
-  static Result split(const Ptr &x, int v);
+  static Ptr join_left(const Ptr &x, PairType v, const Ptr &y);
+  static Ptr join_right(const Ptr &x, PairType v, const Ptr &y);
+  static Ptr join(const Ptr &x, PairType v, const Ptr &y);
+  static Result split(const Ptr &x, PairType v);
   static int get_rank(const Ptr &x);
   static int get_size(const Ptr &x);
   static bool less_rank(const Ptr &x, const Ptr &y);

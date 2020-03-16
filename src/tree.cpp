@@ -4,15 +4,16 @@
 namespace stacksafe {
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
-                           int v)
+                           PairType v)
     : left_{l}, right_{r}, black_{b}, rank_{k}, size_{s}, value_{v} {}
 auto RedBlackTree::leaf() -> Ptr {
   return nullptr;
 }
-auto RedBlackTree::single(int v) -> Ptr {
+auto RedBlackTree::single(PairType v) -> Ptr {
   return branch(nullptr, nullptr, true, v);
 }
-auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
+auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, PairType v)
+    -> Ptr {
   const auto calc_rank = [](const Ptr &x) {
     return get_rank(x) + (is_black(x) ? 1 : 0);
   };
@@ -44,7 +45,7 @@ auto RedBlackTree::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b)
 auto RedBlackTree::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, false);
 }
-auto RedBlackTree::red(const Ptr &l, int v, const Ptr &r) -> Ptr {
+auto RedBlackTree::red(const Ptr &l, PairType v, const Ptr &r) -> Ptr {
   return branch(l, r, false, v);
 }
 auto RedBlackTree::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
@@ -54,7 +55,7 @@ auto RedBlackTree::black(const Ptr &x) -> Ptr {
   assert(!is_black(x));
   return black(x->left_, x, x->right_);
 }
-auto RedBlackTree::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto RedBlackTree::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   assert(get_rank(x) <= get_rank(y));
   assert(is_black(x));
   Ptr t = nullptr;
@@ -84,7 +85,7 @@ auto RedBlackTree::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
   return t;
 }
-auto RedBlackTree::join_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto RedBlackTree::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   if (less_rank(y, x)) {
     const auto l = x->left_;
     const auto z = join_right(x->right_, v, y);
@@ -96,11 +97,11 @@ auto RedBlackTree::join_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
   return red(x, v, y);
 }
-auto RedBlackTree::join(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto RedBlackTree::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   const auto z = less_rank(x, y) ? join_left(x, v, y) : join_right(x, v, y);
   return is_black(z) ? z : black(z);
 }
-auto RedBlackTree::split(const Ptr &x, int v) -> Result {
+auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
   const auto as_root = [](const Ptr &p) {
     return (p && !is_black(p)) ? black(p) : p;
   };
