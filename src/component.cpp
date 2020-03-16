@@ -11,6 +11,9 @@ const Blocks& Component::blocks() const {
 std::size_t Component::size() const {
   return graph_.size();
 }
+void Component::merge(const Component& c) {
+  graph_.merge(c.graph_);
+}
 bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
