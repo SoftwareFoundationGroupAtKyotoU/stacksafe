@@ -33,7 +33,7 @@ bool NodeSet::has_local() const {
 }
 
 std::size_t Graph::size() const {
-  return heap_.size() + stack_.size();
+  return map_.size() + stack_.size();
 }
 bool Graph::includes(const Graph& that) const {
   for (const auto& [tail, head] : that.heap_) {
