@@ -30,7 +30,6 @@ class Graph {
   using Heap = std::unordered_multimap<Node, Node, NodeHash>;
   using Stack = std::unordered_multimap<const llvm::Value*, Node>;
   Map map_;
-  Heap heap_;
   Stack stack_;
 
  public:

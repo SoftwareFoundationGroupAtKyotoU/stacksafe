@@ -36,12 +36,6 @@ std::size_t Graph::size() const {
   return map_.size() + stack_.size();
 }
 bool Graph::includes(const Graph& that) const {
-  for (const auto& [tail, head] : that.heap_) {
-    if (contains(tail, head)) {
-      continue;
-    }
-    return false;
-  }
   for (const auto& [tail, head] : that.stack_) {
     if (contains(*tail, head)) {
       continue;
@@ -51,11 +45,7 @@ bool Graph::includes(const Graph& that) const {
   return true;
 }
 bool Graph::contains(const Node& tail, const Node& head) const {
-  const auto [lb, ub] = heap_.equal_range(tail);
-  const auto p = [&head](const Heap::value_type& e) {
-    return std::get<1>(e) == head;
-  };
-  return map_.exists(tail, head) && std::any_of(lb, ub, p);
+  return map_.exists(tail, head);
 }
 bool Graph::contains(const llvm::Value& tail, const Node& head) const {
   const auto [lb, ub] = stack_.equal_range(&tail);
@@ -65,13 +55,6 @@ bool Graph::contains(const llvm::Value& tail, const Node& head) const {
   return std::any_of(lb, ub, p);
 }
 void Graph::connect(const Node& tail, const Node& head) {
-  const auto [lb, ub] = heap_.equal_range(tail);
-  const auto p = [&head](const Heap::value_type& e) {
-    return std::get<1>(e) == head;
-  };
-  if (std::find_if(lb, ub, p) == ub) {
-    heap_.emplace_hint(lb, tail, head);
-  }
   map_.add(tail, head);
 }
 void Graph::connect(const llvm::Value& tail, const Node& head) {
@@ -84,13 +67,6 @@ void Graph::connect(const llvm::Value& tail, const Node& head) {
   }
 }
 void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
-  const auto p = [&heads](const Heap::value_type& e) {
-    heads.insert(std::get<1>(e));
-  };
-  for (const auto& tail : tails) {
-    const auto [lb, ub] = heap_.equal_range(tail);
-    std::for_each(lb, ub, p);
-  }
   for (const auto& tail : tails) {
     heads.merge(map_.lookup(tail));
   }
