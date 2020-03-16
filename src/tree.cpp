@@ -47,7 +47,7 @@ auto RedBlackTree::black(const Ptr &x) -> Ptr {
   return black(x->left_, x, x->right_);
 }
 auto RedBlackTree::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
-  assert(x->rank_ <= y->rank_);
+  assert(get_rank(x) <= get_rank(y));
   assert(is_black(x));
   Ptr t = nullptr;
   if (less_rank(x, y)) {
@@ -111,9 +111,13 @@ auto RedBlackTree::split(const Ptr &x, int v) -> Result {
 }
 int RedBlackTree::calc_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
-  const auto k = x->rank_ + (x->black_ ? 1 : 0);
-  assert(k == (y->rank_ + (y->black_ ? 1 : 0)));
+  const auto k = get_rank(x) + (x->black_ ? 1 : 0);
+  assert(k == (get_rank(y) + (y->black_ ? 1 : 0)));
   return k;
+}
+int RedBlackTree::get_rank(const Ptr &x) {
+  assert(x);
+  return x->rank_;
 }
 int RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
   assert(x && y);
@@ -121,7 +125,7 @@ int RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
 }
 bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
-  return x->rank_ < y->rank_;
+  return get_rank(x) < get_rank(y);
 }
 
 }  // namespace tree

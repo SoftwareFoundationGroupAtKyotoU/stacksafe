@@ -32,6 +32,7 @@ class RedBlackTree {
   static Ptr join(const Ptr &x, int v, const Ptr &y);
   static Result split(const Ptr &x, int v);
   static int calc_rank(const Ptr &x, const Ptr &y);
+  static int get_rank(const Ptr &x);
   static int calc_size(const Ptr &x, const Ptr &y);
   static bool less_rank(const Ptr &x, const Ptr &y);
   template <typename S>
