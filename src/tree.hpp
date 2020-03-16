@@ -5,9 +5,11 @@
 #include "node.hpp"
 
 namespace stacksafe {
-
 class NodeSet;
+class RedBlackTree;
 using PairType = std::tuple<Node, Node>;
+using TreePtr = std::shared_ptr<const RedBlackTree>;
+
 class RedBlackTree {
   using Ptr = std::shared_ptr<const RedBlackTree>;
   using Result = std::tuple<Ptr, bool, Ptr>;
