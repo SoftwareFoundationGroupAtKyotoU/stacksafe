@@ -7,6 +7,9 @@ namespace stacksafe {
 
 class Map {
   TreePtr tree_;
+
+ public:
+  void add(const Node& k, const Node& v);
 };
 
 }  // namespace stacksafe
