@@ -51,6 +51,7 @@ auto RedBlackTree::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, true);
 }
 auto RedBlackTree::black(const Ptr &x) -> Ptr {
+  assert(!is_black(x));
   return black(x->left_, x, x->right_);
 }
 auto RedBlackTree::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
@@ -58,6 +59,7 @@ auto RedBlackTree::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
   assert(is_black(x));
   Ptr t = nullptr;
   if (less_rank(x, y)) {
+    assert(y);
     const auto l = y->left_;
     const auto r = y->right_;
     const auto z = join_left(x, v, l);
@@ -95,12 +97,8 @@ auto RedBlackTree::join_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
   return red(x, v, y);
 }
 auto RedBlackTree::join(const Ptr &x, int v, const Ptr &y) -> Ptr {
-  if (x && y) {
-    const auto z = less_rank(x, y) ? join_left(x, v, y) : join_right(x, v, y);
-    return is_black(z) ? z : black(z);
-  } else {
-    return x ? x : y;
-  }
+  const auto z = less_rank(x, y) ? join_left(x, v, y) : join_right(x, v, y);
+  return is_black(z) ? z : black(z);
 }
 auto RedBlackTree::split(const Ptr &x, int v) -> Result {
   const auto as_root = [](const Ptr &p) {
