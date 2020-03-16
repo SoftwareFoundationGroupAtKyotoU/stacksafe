@@ -1,5 +1,6 @@
 #include "tree.hpp"
 #include <cassert>
+#include "graph.hpp"
 
 namespace stacksafe {
 
@@ -30,6 +31,25 @@ auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
     return join(merge(l, y->left_), y->value_, merge(r, y->right_));
   } else {
     return x ? x : y;
+  }
+}
+NodeSet RedBlackTree::find(const Ptr &x, const Node &key) {
+  NodeSet values;
+  find(x, key, values);
+  return values;
+}
+void RedBlackTree::find(const Ptr &x, const Node &key, NodeSet &values) {
+  if (x) {
+    const auto [k, v] = x->value_;
+    if (k < key) {
+      find(x->right_, key, values);
+    } else if (key < k) {
+      find(x->left_, key, values);
+    } else {
+      find(x->left_, key, values);
+      values.merge(NodeSet{v});
+      find(x->right_, key, values);
+    }
   }
 }
 bool RedBlackTree::is_black(const Ptr &x) {

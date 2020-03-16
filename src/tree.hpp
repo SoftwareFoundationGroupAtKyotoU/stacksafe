@@ -6,6 +6,7 @@
 
 namespace stacksafe {
 
+class NodeSet;
 using PairType = std::tuple<Node, Node>;
 class RedBlackTree {
   using Ptr = std::shared_ptr<const RedBlackTree>;
@@ -21,8 +22,10 @@ class RedBlackTree {
   static Ptr single(PairType v);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr merge(const Ptr &x, const Ptr &y);
+  static NodeSet find(const Ptr &x, const Node &key);
 
  private:
+  static void find(const Ptr &x, const Node &key, NodeSet &values);
   static bool is_black(const Ptr &x);
   static bool is_red_twice(const Ptr &x);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
