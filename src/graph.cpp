@@ -72,6 +72,7 @@ void Graph::connect(const Node& tail, const Node& head) {
   if (std::find_if(lb, ub, p) == ub) {
     heap_.emplace_hint(lb, tail, head);
   }
+  map_.add(tail, head);
 }
 void Graph::connect(const llvm::Value& tail, const Node& head) {
   const auto [lb, ub] = stack_.equal_range(&tail);
