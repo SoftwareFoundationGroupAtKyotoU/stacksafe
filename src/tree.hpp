@@ -23,6 +23,7 @@ class RedBlackTree {
   static Ptr leaf();
   static Ptr single(PairType v);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
+  static bool exists(const Ptr &x, PairType v);
   static Ptr merge(const Ptr &x, const Ptr &y);
   static NodeSet find(const Ptr &x, const Node &key);
 

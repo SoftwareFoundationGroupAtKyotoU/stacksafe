@@ -23,6 +23,17 @@ auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, PairType v)
   assert(k == calc_rank(r));
   return std::make_shared<Helper>(l, r, b, k, s, v);
 }
+bool RedBlackTree::exists(const Ptr &x, PairType v) {
+  if (!x) {
+    return false;
+  } else if (x->value_ < v) {
+    return exists(x->right_, v);
+  } else if (v < x->value_) {
+    return exists(x->left_, v);
+  } else {
+    return true;
+  }
+}
 auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
   if (get_size(x) < get_size(y)) {
     return merge(y, x);
