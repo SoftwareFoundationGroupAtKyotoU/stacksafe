@@ -35,6 +35,9 @@ bool NodeSet::has_local() const {
 std::size_t Graph::size() const {
   return map_.size() + stack_.size();
 }
+void Graph::merge(const Graph& g) {
+  map_.merge(g.map_);
+}
 bool Graph::includes(const Graph& that) const {
   for (const auto& [tail, head] : that.stack_) {
     if (contains(*tail, head)) {
