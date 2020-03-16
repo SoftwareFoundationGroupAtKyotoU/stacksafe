@@ -96,7 +96,9 @@ auto RedBlackTree::join(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
 }
 auto RedBlackTree::split(const Ptr &x, int v) -> Result {
-  const auto as_root = [](const Ptr &p) { return is_black(p) ? p : black(p); };
+  const auto as_root = [](const Ptr &p) {
+    return (p && !is_black(p)) ? black(p) : p;
+  };
   if (!x) {
     return {nullptr, false, nullptr};
   } else if (v < x->value_) {
