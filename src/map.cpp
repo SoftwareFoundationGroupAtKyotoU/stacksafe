@@ -16,5 +16,8 @@ NodeSet Map::lookup(const Node& k) const {
 void Map::merge(const Map& m) {
   tree_ = RedBlackTree::merge(tree_, m.tree_);
 }
+std::size_t Map::size() const {
+  return RedBlackTree::get_size(tree_);
+}
 
 }  // namespace stacksafe

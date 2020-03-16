@@ -26,6 +26,7 @@ class RedBlackTree {
   static bool exists(const Ptr &x, PairType v);
   static Ptr merge(const Ptr &x, const Ptr &y);
   static NodeSet find(const Ptr &x, const Node &key);
+  static int get_size(const Ptr &x);
 
  private:
   static void find(const Ptr &x, const Node &key, NodeSet &values);
@@ -41,7 +42,6 @@ class RedBlackTree {
   static Ptr join(const Ptr &x, PairType v, const Ptr &y);
   static Result split(const Ptr &x, PairType v);
   static int get_rank(const Ptr &x);
-  static int get_size(const Ptr &x);
   static bool less_rank(const Ptr &x, const Ptr &y);
   template <typename S>
   struct MakeSharedHelper : public S {

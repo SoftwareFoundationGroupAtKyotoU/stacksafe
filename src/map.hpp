@@ -14,6 +14,7 @@ class Map {
   bool exists(const Node& k, const Node& v) const;
   NodeSet lookup(const Node& k) const;
   void merge(const Map& m);
+  std::size_t size() const;
 };
 
 }  // namespace stacksafe
