@@ -118,8 +118,7 @@ int RedBlackTree::calc_rank(const Ptr &x, const Ptr &y) {
   return k;
 }
 int RedBlackTree::get_rank(const Ptr &x) {
-  assert(x);
-  return x->rank_;
+  return x ? x->rank_ : 0;
 }
 int RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
   assert(x && y);
