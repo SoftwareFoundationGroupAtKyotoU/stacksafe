@@ -49,9 +49,6 @@ void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
   }
 }
 void Component::followings(const NodeSet& tails, NodeSet& heads) const {
-  for (const auto& pred : preds_) {
-    pred->followings(tails, heads);
-  }
   graph_.followings(tails, heads);
 }
 void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
