@@ -112,9 +112,11 @@ auto RedBlackTree::split(const Ptr &x, int v) -> Result {
   }
 }
 int RedBlackTree::calc_rank(const Ptr &x, const Ptr &y) {
-  assert(x && y);
-  const auto k = get_rank(x) + (x->black_ ? 1 : 0);
-  assert(k == (get_rank(y) + (y->black_ ? 1 : 0)));
+  const auto calc = [](const Ptr &z) {
+    return get_rank(z) + (is_black(z) ? 1 : 0);
+  };
+  const auto k = calc(x);
+  assert(k == calc(y));
   return k;
 }
 int RedBlackTree::get_rank(const Ptr &x) {
