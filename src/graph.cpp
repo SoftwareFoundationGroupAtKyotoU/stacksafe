@@ -91,6 +91,9 @@ void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
     const auto [lb, ub] = heap_.equal_range(tail);
     std::for_each(lb, ub, p);
   }
+  for (const auto& tail : tails) {
+    heads.merge(map_.lookup(tail));
+  }
 }
 void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
