@@ -67,9 +67,9 @@ auto Node::merge_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
   return red(x, y);
 }
-auto Node::merge(const Ptr &x, const Ptr &y) -> Ptr {
+auto Node::merge(const Ptr &x, int v, const Ptr &y) -> Ptr {
   if (x && y) {
-    const auto z = less_rank(x, y) ? merge_left(x, 0, y) : merge_right(x, 0, y);
+    const auto z = less_rank(x, y) ? merge_left(x, v, y) : merge_right(x, v, y);
     return is_black(z) ? z : black(z);
   } else {
     return x ? x : y;
