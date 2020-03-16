@@ -10,7 +10,11 @@ auto RedBlackTree::leaf(int v) -> Ptr {
   return std::make_shared<Helper>(nullptr, nullptr, true, 0, 1, v);
 }
 auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
-  return std::make_shared<Helper>(l, r, b, calc_rank(l, r), calc_size(l, r), v);
+  const auto calc_rank = [](const Ptr &x) {
+    return get_rank(x) + (is_black(x) ? 1 : 0);
+  };
+  assert(calc_rank(l) == calc_rank(r));
+  return std::make_shared<Helper>(l, r, b, calc_rank(l), calc_size(l, r), v);
 }
 auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
   if (x && y) {
@@ -110,14 +114,6 @@ auto RedBlackTree::split(const Ptr &x, int v) -> Result {
   } else {
     return {as_root(x->left_), true, as_root(x->right_)};
   }
-}
-int RedBlackTree::calc_rank(const Ptr &x, const Ptr &y) {
-  const auto calc = [](const Ptr &z) {
-    return get_rank(z) + (is_black(z) ? 1 : 0);
-  };
-  const auto k = calc(x);
-  assert(k == calc(y));
-  return k;
 }
 int RedBlackTree::get_rank(const Ptr &x) {
   return x ? x->rank_ : 0;
