@@ -32,6 +32,7 @@ class RedBlackTree {
   static Ptr join(const Ptr &x, int v, const Ptr &y);
   static Result split(const Ptr &x, int v);
   static int get_rank(const Ptr &x);
+  static int get_size(const Ptr &x);
   static bool less_rank(const Ptr &x, const Ptr &y);
   template <typename S>
   struct MakeSharedHelper : public S {
