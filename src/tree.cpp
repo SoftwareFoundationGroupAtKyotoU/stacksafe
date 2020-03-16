@@ -11,6 +11,18 @@ auto Node::leaf(int v) -> Ptr {
 auto Node::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
   return std::make_shared<Helper>(l, r, b, calc_rank(l, r), calc_size(l, r), v);
 }
+auto Node::merge(const Ptr &x, const Ptr &y) -> Ptr {
+  if (x && y) {
+    if (x->size_ < y->size_) {
+      return merge(y, x);
+    } else {
+      const auto [l, b, r] = split(x, y->value_);
+      return join(merge(l, y->left_), y->value_, merge(r, y->right_));
+    }
+  } else {
+    return x ? x : y;
+  }
+}
 bool Node::is_black(const Ptr &x) {
   return x->black_;
 }
