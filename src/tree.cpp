@@ -32,14 +32,14 @@ auto Node::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
 auto Node::black(const Ptr &x) -> Ptr {
   return black(x->left_, x, x->right_);
 }
-auto Node::merge_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto Node::join_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
   assert(x->rank_ <= y->rank_);
   assert(is_black(x));
   Ptr t = nullptr;
   if (less_rank(x, y)) {
     const auto l = y->left_;
     const auto r = y->right_;
-    const auto z = merge_left(x, v, l);
+    const auto z = join_left(x, v, l);
     if (is_red_twice(z)) {
       assert(is_black(y) && !is_black(l));
       if (is_black(r)) {
@@ -61,10 +61,10 @@ auto Node::merge_left(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
   return t;
 }
-auto Node::merge_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto Node::join_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
   if (less_rank(y, x)) {
     const auto l = x->left_;
-    const auto z = merge_right(x->right_, v, y);
+    const auto z = join_right(x->right_, v, y);
     if (is_red_twice(z)) {
       return is_black(l) ? black(red(l, x, z->left_), z, z->right_) :
                            red(black(l), x, black(z));
@@ -73,9 +73,9 @@ auto Node::merge_right(const Ptr &x, int v, const Ptr &y) -> Ptr {
   }
   return red(x, v, y);
 }
-auto Node::merge(const Ptr &x, int v, const Ptr &y) -> Ptr {
+auto Node::join(const Ptr &x, int v, const Ptr &y) -> Ptr {
   if (x && y) {
-    const auto z = less_rank(x, y) ? merge_left(x, v, y) : merge_right(x, v, y);
+    const auto z = less_rank(x, y) ? join_left(x, v, y) : join_right(x, v, y);
     return is_black(z) ? z : black(z);
   } else {
     return x ? x : y;
@@ -87,10 +87,10 @@ auto Node::split(const Ptr &x, int v) -> Result {
     return {nullptr, false, nullptr};
   } else if (v < x->value_) {
     const auto [l, b, r] = split(x->left_, v);
-    return {l, b, merge(r, v, as_root(x->right_))};
+    return {l, b, join(r, v, as_root(x->right_))};
   } else if (x->value_ < v) {
     const auto [l, b, r] = split(x->right_, v);
-    return {merge(as_root(x->left_), v, l), b, r};
+    return {join(as_root(x->left_), v, l), b, r};
   } else {
     return {as_root(x->left_), true, as_root(x->right_)};
   }
