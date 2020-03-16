@@ -4,6 +4,7 @@
 #include "tree.hpp"
 
 namespace stacksafe {
+class NodeSet;
 
 class Map {
   TreePtr tree_;
@@ -11,6 +12,7 @@ class Map {
  public:
   void add(const Node& k, const Node& v);
   bool exists(const Node& k, const Node& v) const;
+  NodeSet lookup(const Node& k) const;
 };
 
 }  // namespace stacksafe
