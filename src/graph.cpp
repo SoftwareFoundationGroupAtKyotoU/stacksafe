@@ -55,7 +55,7 @@ bool Graph::contains(const Node& tail, const Node& head) const {
   const auto p = [&head](const Heap::value_type& e) {
     return std::get<1>(e) == head;
   };
-  return std::any_of(lb, ub, p);
+  return map_.exists(tail, head) && std::any_of(lb, ub, p);
 }
 bool Graph::contains(const llvm::Value& tail, const Node& head) const {
   const auto [lb, ub] = stack_.equal_range(&tail);
