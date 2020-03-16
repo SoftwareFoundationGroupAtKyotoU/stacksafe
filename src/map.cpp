@@ -13,5 +13,8 @@ bool Map::exists(const Node& k, const Node& v) const {
 NodeSet Map::lookup(const Node& k) const {
   return RedBlackTree::find(tree_, k);
 }
+void Map::merge(const Map& m) {
+  tree_ = RedBlackTree::merge(tree_, m.tree_);
+}
 
 }  // namespace stacksafe
