@@ -19,13 +19,11 @@ auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
   return std::make_shared<Helper>(l, r, b, k, s, v);
 }
 auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
-  if (x && y) {
-    if (get_size(x) < get_size(y)) {
-      return merge(y, x);
-    } else {
-      const auto [l, b, r] = split(x, y->value_);
-      return join(merge(l, y->left_), y->value_, merge(r, y->right_));
-    }
+  if (get_size(x) < get_size(y)) {
+    return merge(y, x);
+  } else if (x && y) {
+    const auto [l, b, r] = split(x, y->value_);
+    return join(merge(l, y->left_), y->value_, merge(r, y->right_));
   } else {
     return x ? x : y;
   }
