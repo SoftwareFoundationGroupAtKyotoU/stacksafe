@@ -14,6 +14,9 @@ auto Node::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
 bool Node::is_black(const Ptr &x) {
   return x->black_;
 }
+auto Node::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
+  return branch(l, r, b, c->value_);
+}
 auto Node::red(const Ptr &l, const Ptr &r) -> Ptr {
   return branch(l, r, false, 0);
 }
