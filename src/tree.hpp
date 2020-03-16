@@ -7,6 +7,7 @@ namespace tree {
 
 class Node {
   using Ptr = std::shared_ptr<const Node>;
+  using Result = std::tuple<Ptr, bool, Ptr>;
   Ptr left_, right_;
   bool black_;
   int rank_, size_;
@@ -28,6 +29,7 @@ class Node {
   static Ptr merge_left(const Ptr &x, int v, const Ptr &y);
   static Ptr merge_right(const Ptr &x, int v, const Ptr &y);
   static Ptr merge(const Ptr &x, int v, const Ptr &y);
+  static Result split(const Ptr &x, int v);
   static int calc_rank(const Ptr &x, const Ptr &y);
   static int calc_size(const Ptr &x, const Ptr &y);
   static bool less_rank(const Ptr &x, const Ptr &y);

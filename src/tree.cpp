@@ -81,6 +81,20 @@ auto Node::merge(const Ptr &x, int v, const Ptr &y) -> Ptr {
     return x ? x : y;
   }
 }
+auto Node::split(const Ptr &x, int v) -> Result {
+  const auto as_root = [](const Ptr &p) { return is_black(p) ? p : black(p); };
+  if (!x) {
+    return {nullptr, false, nullptr};
+  } else if (v < x->value_) {
+    const auto [l, b, r] = split(x->left_, v);
+    return {l, b, merge(r, v, as_root(x->right_))};
+  } else if (x->value_ < v) {
+    const auto [l, b, r] = split(x->right_, v);
+    return {merge(as_root(x->left_), v, l), b, r};
+  } else {
+    return {as_root(x->left_), true, as_root(x->right_)};
+  }
+}
 int Node::calc_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
   const auto k = x->rank_ + (x->black_ ? 1 : 0);
