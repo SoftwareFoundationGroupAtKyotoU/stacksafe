@@ -13,8 +13,11 @@ auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
   const auto calc_rank = [](const Ptr &x) {
     return get_rank(x) + (is_black(x) ? 1 : 0);
   };
-  assert(calc_rank(l) == calc_rank(r));
-  return std::make_shared<Helper>(l, r, b, calc_rank(l), calc_size(l, r), v);
+  const auto calc_size = [](const Ptr &x) { return x ? x->size_ : 0; };
+  const auto k = calc_rank(l);
+  const auto s = calc_size(l) + calc_size(r) + 1;
+  assert(k == calc_rank(r));
+  return std::make_shared<Helper>(l, r, b, k, s, v);
 }
 auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
   if (x && y) {
@@ -117,10 +120,6 @@ auto RedBlackTree::split(const Ptr &x, int v) -> Result {
 }
 int RedBlackTree::get_rank(const Ptr &x) {
   return x ? x->rank_ : 0;
-}
-int RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
-  assert(x && y);
-  return x->size_ + y->size_;
 }
 bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
   assert(x && y);
