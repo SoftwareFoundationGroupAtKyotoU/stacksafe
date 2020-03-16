@@ -25,7 +25,7 @@ auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
   }
 }
 bool RedBlackTree::is_black(const Ptr &x) {
-  return x->black_;
+  return !x || x->black_;
 }
 bool RedBlackTree::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left_) && is_black(x->right_));
