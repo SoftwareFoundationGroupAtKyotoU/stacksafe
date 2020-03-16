@@ -22,8 +22,8 @@ class Node {
   static Ptr red(const Ptr &l, const Ptr &r);
   static Ptr black(const Ptr &l, const Ptr &r);
   static Ptr black(const Ptr &x);
-  static Ptr merge_left(const Ptr &x, const Ptr &y);
-  static Ptr merge_right(const Ptr &x, const Ptr &y);
+  static Ptr merge_left(const Ptr &x, int v, const Ptr &y);
+  static Ptr merge_right(const Ptr &x, int v, const Ptr &y);
   static Ptr merge(const Ptr &x, const Ptr &y);
   static int calc_rank(const Ptr &x, const Ptr &y);
   static int calc_size(const Ptr &x, const Ptr &y);
