@@ -16,6 +16,7 @@ class RedBlackTree {
 
  public:
   static Ptr leaf(int v);
+  static Ptr single(int v);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, int v);
   static Ptr merge(const Ptr &x, const Ptr &y);
 

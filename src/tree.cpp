@@ -9,6 +9,9 @@ RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
 auto RedBlackTree::leaf(int v) -> Ptr {
   return std::make_shared<Helper>(nullptr, nullptr, true, 0, 1, v);
 }
+auto RedBlackTree::single(int v) -> Ptr {
+  return branch(nullptr, nullptr, true, v);
+}
 auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, int v) -> Ptr {
   const auto calc_rank = [](const Ptr &x) {
     return get_rank(x) + (is_black(x) ? 1 : 0);
