@@ -10,6 +10,7 @@ class Map {
 
  public:
   void add(const Node& k, const Node& v);
+  bool exists(const Node& k, const Node& v) const;
 };
 
 }  // namespace stacksafe
