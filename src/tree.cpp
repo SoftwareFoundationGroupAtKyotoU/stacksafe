@@ -70,6 +70,26 @@ bool RedBlackTree::is_black(const Ptr &x) {
 bool RedBlackTree::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left_) && is_black(x->right_));
 }
+bool RedBlackTree::is_valid(const Ptr &x) {
+  const auto get_value = [](const Ptr &x) { return x ? &x->value_ : nullptr; };
+  const auto valid_rank = [](const Ptr &x, const Ptr &y) {
+    return get_rank(x) == get_rank(y) + (is_black(y) ? 1 : 0);
+  };
+  const auto valid_size = [](const Ptr &x) {
+    return get_size(x) == get_size(x->left_) + get_size(x->right_) + 1;
+  };
+  if (x && is_valid(x->left_) && is_valid(x->right_)) {
+    const auto lv = get_value(x->left_);
+    const auto rv = get_value(x->right_);
+    const auto lb = !lv || (*lv < x->value_);
+    const auto rb = !rv || (x->value_ < *rv);
+    const auto lk = valid_rank(x, x->left_);
+    const auto rk = valid_rank(x, x->right_);
+    const auto s = valid_size(x);
+    return lb && rb && lk && rk && s;
+  }
+  return !x;
+}
 auto RedBlackTree::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b)
     -> Ptr {
   return branch(l, r, b, c->value_);

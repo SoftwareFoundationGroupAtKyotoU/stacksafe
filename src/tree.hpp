@@ -33,6 +33,7 @@ class RedBlackTree {
   static void find(const Ptr &x, const Node &key, NodeSet &values);
   static bool is_black(const Ptr &x);
   static bool is_red_twice(const Ptr &x);
+  static bool is_valid(const Ptr &x);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
   static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
   static Ptr red(const Ptr &l, PairType v, const Ptr &r);
