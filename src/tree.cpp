@@ -169,19 +169,16 @@ auto RedBlackTree::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   }
 }
 auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
-  const auto as_root = [](const Ptr &p) {
-    return (p && !is_black(p)) ? black(p) : p;
-  };
   if (!x) {
     return {nullptr, false, nullptr};
   } else if (v < x->value_) {
     const auto [l, b, r] = split(x->left_, v);
-    return {l, b, join(r, x->value_, as_root(x->right_))};
+    return {l, b, join(r, x->value_, x->right_)};
   } else if (x->value_ < v) {
     const auto [l, b, r] = split(x->right_, v);
-    return {join(as_root(x->left_), x->value_, l), b, r};
+    return {join(x->left_, x->value_, l), b, r};
   } else {
-    return {as_root(x->left_), true, as_root(x->right_)};
+    return {x->left_, true, x->right_};
   }
 }
 int RedBlackTree::get_rank(const Ptr &x) {
