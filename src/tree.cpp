@@ -8,7 +8,7 @@ Header::Header() : rank_{0}, size_{0} {}
 Header::Header(const TreePtr &x, const TreePtr &y)
     : rank_{calc_rank(x, y)}, size_{calc_size(x, y)} {}
 std::size_t Header::rank() const {
-  return rank_;
+  return rank_ >> 1;
 }
 std::size_t Header::size() const {
   return size_;
@@ -17,7 +17,7 @@ std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
   const auto kx = Tree::get_rank(x) + (Tree::is_black(x) ? 1 : 0);
   const auto ky = Tree::get_rank(y) + (Tree::is_black(y) ? 1 : 0);
   assert(kx == ky);
-  return kx;
+  return kx << 1;
 }
 std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
   return Tree::get_size(x) + Tree::get_size(y) + 1;
