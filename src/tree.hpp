@@ -72,12 +72,6 @@ class TreeBase : private Header {
   static std::size_t calc_size(const Ptr &x, const Ptr &y);
 };
 
-class TreeNode : public TreeBase {
-  using Super = TreeBase;
-  using Ptr = std::shared_ptr<const TreeNode>;
-  TreeNode(const Ptr &l, const Ptr &r, bool b, const PairType &v);
-};
-
 }  // namespace rbtree
 
 using TreePtr = std::shared_ptr<const rbtree::TreeBase>;
