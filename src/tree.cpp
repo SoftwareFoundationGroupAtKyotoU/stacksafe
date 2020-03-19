@@ -153,8 +153,15 @@ auto RedBlackTree::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   return red(x, v, as_root(y));
 }
 auto RedBlackTree::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
-  const auto z = less_rank(x, y) ? join_left(x, v, y) : join_right(x, v, y);
-  return is_black(z) ? z : black(z);
+  assert(is_valid(x));
+  assert(is_valid(y));
+  if (less_rank(x, y)) {
+    return join_left(x, v, y);
+  } else if (less_rank(y, x)) {
+    return join_right(x, v, y);
+  } else {
+    return branch(x, y, true, v);
+  }
 }
 auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
   const auto as_root = [](const Ptr &p) {
