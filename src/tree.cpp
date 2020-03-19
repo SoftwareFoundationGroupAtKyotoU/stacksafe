@@ -81,6 +81,10 @@ void TreeBase::find(const Ptr &x, const Node &key, NodeSet &values) {
     }
   }
 }
+auto TreeBase::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
+    -> Ptr {
+  return std::make_shared<Helper>(l, r, c, v);
+}
 auto TreeBase::branch(const Ptr &l, const Ptr &r, bool b, PairType v) -> Ptr {
   return std::make_shared<Helper>(l, r, b ? Color::Black : Color::Red, v);
 }

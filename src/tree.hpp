@@ -49,6 +49,7 @@ class TreeBase : private Header {
     explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
   };
   using Helper = MakeSharedHelper<TreeBase>;
+  static Ptr branch(Color c, const Ptr &l, const PairType &v, const Ptr &r);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
   static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
