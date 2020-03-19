@@ -16,6 +16,9 @@ class Map {
   NodeSet lookup(const Node& k) const;
   void merge(const Map& m);
   std::size_t size() const;
+
+ private:
+  static TreePtr merge(const TreePtr& x, const TreePtr& y);
 };
 
 }  // namespace stacksafe
