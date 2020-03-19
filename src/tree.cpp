@@ -26,7 +26,7 @@ std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
 }
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
-    : header_{l, r, b}, left_{l}, right_{r}, black_{b}, value_{v} {}
+    : header_{l, r, b}, left_{l}, right_{r}, value_{v} {}
 auto RedBlackTree::leaf() -> Ptr {
   return nullptr;
 }
