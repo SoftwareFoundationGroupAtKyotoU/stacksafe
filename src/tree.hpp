@@ -10,6 +10,13 @@ class RedBlackTree;
 using PairType = std::tuple<Node, Node>;
 using TreePtr = std::shared_ptr<const RedBlackTree>;
 
+class Header {
+  std::size_t rank_, size_;
+
+ public:
+  Header();
+};
+
 class RedBlackTree {
   using Ptr = std::shared_ptr<const RedBlackTree>;
   using Result = std::tuple<Ptr, bool, Ptr>;

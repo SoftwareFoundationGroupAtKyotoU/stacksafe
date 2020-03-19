@@ -4,6 +4,8 @@
 
 namespace stacksafe {
 
+Header::Header() : rank_{0}, size_{0} {}
+
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
                            PairType v)
     : left_{l}, right_{r}, black_{b}, rank_{k}, size_{s}, value_{v} {}
