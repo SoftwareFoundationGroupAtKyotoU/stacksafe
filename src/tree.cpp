@@ -113,7 +113,6 @@ auto RedBlackTree::black(const Ptr &x) -> Ptr {
 }
 auto RedBlackTree::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   assert(get_rank(x) <= get_rank(y));
-  assert(is_black(x));
   Ptr t = nullptr;
   if (less_rank(x, y)) {
     assert(y);
@@ -128,6 +127,7 @@ auto RedBlackTree::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
         t = red(black(z), y, black(r));
       }
     } else {
+      assert(is_valid(z));
       if (is_black(y)) {
         t = black(z, y, r);
       } else {
