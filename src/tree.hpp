@@ -33,11 +33,11 @@ class TreeBase : private Header {
   using Ptr = std::shared_ptr<const TreeBase>;
   using Result = std::tuple<Ptr, bool, Ptr>;
   PairType value_;
+
+ public:
   TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v);
   using Header::rank, Header::size, Header::is_black, Header::left,
       Header::right;
-
- public:
   static Ptr single(PairType v);
   static bool exists(const Ptr &x, PairType v);
   static Ptr merge(const Ptr &x, const Ptr &y);
@@ -73,6 +73,12 @@ class TreeBase : private Header {
  private:
   static std::size_t calc_rank(const Ptr &x);
   static std::size_t calc_size(const Ptr &x, const Ptr &y);
+};
+
+class TreeNode : public TreeBase {
+  using Super = TreeBase;
+  using Ptr = std::shared_ptr<const TreeNode>;
+  TreeNode(const Ptr &l, const Ptr &r, bool b, const PairType &v);
 };
 
 }  // namespace rbtree

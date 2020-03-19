@@ -208,5 +208,8 @@ std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
   return get_size(x) + get_size(y) + 1;
 }
 
+TreeNode::TreeNode(const Ptr &l, const Ptr &r, bool b, const PairType &v)
+    : TreeBase{l, r, b, v} {}
+
 }  // namespace rbtree
 }  // namespace stacksafe
