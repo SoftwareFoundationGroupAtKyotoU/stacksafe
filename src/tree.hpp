@@ -39,6 +39,7 @@ class RedBlackTree {
  public:
   static Ptr left(const Ptr &x);
   static Ptr right(const Ptr &x);
+  static const PairType &value(const Ptr &x);
   static Ptr leaf();
   static Ptr single(PairType v);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);

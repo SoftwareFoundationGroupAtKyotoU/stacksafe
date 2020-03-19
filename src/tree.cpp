@@ -42,6 +42,9 @@ auto RedBlackTree::left(const Ptr &x) -> Ptr {
 auto RedBlackTree::right(const Ptr &x) -> Ptr {
   return x->right_;
 }
+auto RedBlackTree::value(const Ptr &x) -> const PairType & {
+  return x->value_;
+}
 auto RedBlackTree::leaf() -> Ptr {
   return nullptr;
 }
@@ -55,9 +58,9 @@ auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, PairType v)
 bool RedBlackTree::exists(const Ptr &x, PairType v) {
   if (!x) {
     return false;
-  } else if (x->value_ < v) {
+  } else if (value(x) < v) {
     return exists(right(x), v);
-  } else if (v < x->value_) {
+  } else if (v < value(x)) {
     return exists(left(x), v);
   } else {
     return true;
@@ -67,8 +70,8 @@ auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
   if (get_size(x) < get_size(y)) {
     return merge(y, x);
   } else if (x && y) {
-    const auto [l, b, r] = split(x, y->value_);
-    return join(merge(l, left(y)), y->value_, merge(r, right(y)));
+    const auto [l, b, r] = split(x, value(y));
+    return join(merge(l, left(y)), value(y), merge(r, right(y)));
   } else {
     return x ? x : y;
   }
@@ -80,7 +83,7 @@ NodeSet RedBlackTree::find(const Ptr &x, const Node &key) {
 }
 void RedBlackTree::find(const Ptr &x, const Node &key, NodeSet &values) {
   if (x) {
-    const auto [k, v] = x->value_;
+    const auto [k, v] = value(x);
     if (k < key) {
       find(right(x), key, values);
     } else if (key < k) {
@@ -99,7 +102,7 @@ bool RedBlackTree::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(left(x)) && is_black(right(x)));
 }
 bool RedBlackTree::is_valid(const Ptr &x) {
-  const auto get_value = [](const Ptr &x) { return x ? &x->value_ : nullptr; };
+  const auto get_value = [](const Ptr &x) { return x ? &value(x) : nullptr; };
   const auto valid_rank = [](const Ptr &x, const Ptr &y) {
     return get_rank(x) == get_rank(y) + (is_black(y) ? 1 : 0);
   };
@@ -109,8 +112,8 @@ bool RedBlackTree::is_valid(const Ptr &x) {
   if (x && is_valid(left(x)) && is_valid(right(x))) {
     const auto lv = get_value(left(x));
     const auto rv = get_value(right(x));
-    const auto lb = !lv || (*lv < x->value_);
-    const auto rb = !rv || (x->value_ < *rv);
+    const auto lb = !lv || (*lv < value(x));
+    const auto rb = !rv || (value(x) < *rv);
     const auto lk = valid_rank(x, left(x));
     const auto rk = valid_rank(x, right(x));
     const auto s = valid_size(x);
@@ -121,7 +124,7 @@ bool RedBlackTree::is_valid(const Ptr &x) {
 }
 auto RedBlackTree::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b)
     -> Ptr {
-  return branch(l, r, b, c->value_);
+  return branch(l, r, b, value(c));
 }
 auto RedBlackTree::as_root(const Ptr &x) -> Ptr {
   return is_black(x) ? x : black(x);
@@ -196,12 +199,12 @@ auto RedBlackTree::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
 auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
   if (!x) {
     return {nullptr, false, nullptr};
-  } else if (v < x->value_) {
+  } else if (v < value(x)) {
     const auto [l, b, r] = split(left(x), v);
-    return {l, b, join(r, x->value_, right(x))};
-  } else if (x->value_ < v) {
+    return {l, b, join(r, value(x), right(x))};
+  } else if (value(x) < v) {
     const auto [l, b, r] = split(right(x), v);
-    return {join(left(x), x->value_, l), b, r};
+    return {join(left(x), value(x), l), b, r};
   } else {
     return {left(x), true, right(x)};
   }
