@@ -126,7 +126,6 @@ auto RedBlackTree::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
         t = red(black(z), y, black(r));
       }
     } else {
-      assert(is_valid(z));
       if (is_black(y)) {
         t = black(z, y, r);
       } else {
@@ -153,8 +152,6 @@ auto RedBlackTree::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   return red(x, v, as_root(y));
 }
 auto RedBlackTree::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
-  assert(is_valid(x));
-  assert(is_valid(y));
   if (less_rank(x, y)) {
     const auto z = join_left(x, v, y);
     return is_red_twice(z) ? as_root(z) : z;
