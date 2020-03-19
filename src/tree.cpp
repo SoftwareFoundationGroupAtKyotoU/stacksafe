@@ -5,7 +5,7 @@
 namespace stacksafe {
 
 Header::Header(const TreePtr &x, const TreePtr &y, bool b)
-    : rank_{calc_rank(x, y)}, size_{calc_size(x, y)}, black_{b} {}
+    : rank_{calc_rank(x, y) + (b ? 1 : 0)}, size_{calc_size(x, y)}, black_{b} {}
 std::size_t Header::rank() const {
   return rank_ >> 1;
 }
@@ -13,7 +13,7 @@ std::size_t Header::size() const {
   return size_;
 }
 bool Header::is_black() const {
-  return black_;
+  return rank_ & 1;
 }
 std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
   const auto kx = Tree::get_rank(x) + (Tree::is_black(x) ? 1 : 0);
