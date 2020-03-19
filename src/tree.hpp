@@ -15,7 +15,8 @@ class Header {
   const std::size_t rank_, size_;
 
  public:
-  Header(bool b, std::size_t k, std::size_t s);
+  enum class Color { Red, Black };
+  Header(Color c, std::size_t k, std::size_t s);
   std::size_t rank() const;
   std::size_t size() const;
   bool is_black() const;
