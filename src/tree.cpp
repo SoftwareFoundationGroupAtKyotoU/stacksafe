@@ -17,12 +17,6 @@ std::size_t Header::size() const {
 bool Header::is_black() const {
   return rank_ & 1;
 }
-const TreePtr Header::left() const {
-  return left_;
-}
-const TreePtr Header::right() const {
-  return right_;
-}
 std::size_t Header::combine(bool b, std::size_t k) {
   return (k << 1) & (b ? 1 : 0);
 }
