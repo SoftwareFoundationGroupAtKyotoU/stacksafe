@@ -18,6 +18,12 @@ std::size_t Header::size() const {
 bool Header::is_black() const {
   return rank_ & 1;
 }
+const TreePtr Header::left() const {
+  return left_;
+}
+const TreePtr Header::right() const {
+  return right_;
+}
 std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
   const auto kx = Tree::get_rank(x) + (Tree::is_black(x) ? 1 : 0);
   const auto ky = Tree::get_rank(y) + (Tree::is_black(y) ? 1 : 0);
