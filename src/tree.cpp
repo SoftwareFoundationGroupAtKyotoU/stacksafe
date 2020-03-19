@@ -78,7 +78,7 @@ void RedBlackTree::find(const Ptr &x, const Node &key, NodeSet &values) {
   }
 }
 bool RedBlackTree::is_black(const Ptr &x) {
-  return !x || x->black_;
+  return x ? x->header_.is_black() : true;
 }
 bool RedBlackTree::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left_) && is_black(x->right_));
