@@ -8,7 +8,7 @@ namespace stacksafe {
 class NodeSet;
 namespace rbtree {
 class TreeBase;
-using PairType = std::tuple<Node, Node>;
+using PairType = std::tuple<const Node, const Node>;
 using TreePtr = std::shared_ptr<const TreeBase>;
 
 class Header {
