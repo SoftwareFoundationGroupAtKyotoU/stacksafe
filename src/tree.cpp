@@ -4,8 +4,8 @@
 
 namespace stacksafe {
 
-Header::Header(const TreePtr &x, const TreePtr &y)
-    : rank_{calc_rank(x, y)}, size_{calc_size(x, y)} {}
+Header::Header(const TreePtr &x, const TreePtr &y, bool b)
+    : rank_{calc_rank(x, y)}, size_{calc_size(x, y)}, black_{b} {}
 std::size_t Header::rank() const {
   return rank_ >> 1;
 }
@@ -23,7 +23,7 @@ std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
 }
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
-    : header_{l, r}, left_{l}, right_{r}, black_{b}, value_{v} {}
+    : header_{l, r, b}, left_{l}, right_{r}, black_{b}, value_{v} {}
 auto RedBlackTree::leaf() -> Ptr {
   return nullptr;
 }
