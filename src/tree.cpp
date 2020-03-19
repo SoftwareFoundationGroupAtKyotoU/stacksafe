@@ -203,10 +203,10 @@ auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
   }
 }
 int RedBlackTree::get_rank(const Ptr &x) {
-  return x ? x->rank_ : 0;
+  return x ? x->header_.rank() : 0;
 }
 int RedBlackTree::get_size(const Ptr &x) {
-  return x ? x->size_ : 0;
+  return x ? x->header_.size() : 0;
 }
 bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
   return get_rank(x) < get_rank(y);
