@@ -28,6 +28,7 @@ class Header {
 class RedBlackTree {
   using Ptr = std::shared_ptr<const RedBlackTree>;
   using Result = std::tuple<Ptr, bool, Ptr>;
+  Header header_;
   Ptr left_, right_;
   bool black_;
   int rank_, size_;
