@@ -13,7 +13,6 @@ using TreePtr = std::shared_ptr<const TreeBase>;
 
 class Header {
   const std::size_t rank_, size_;
-  const TreePtr left_, right_;
   using Tree = TreeBase;
 
  public:

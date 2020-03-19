@@ -7,7 +7,7 @@ namespace rbtree {
 
 Header::Header(const TreePtr &x, const TreePtr &y, bool b, std::size_t k,
                std::size_t s)
-    : rank_{combine(b, k)}, size_{s}, left_{x}, right_{y} {}
+    : rank_{combine(b, k)}, size_{s} {}
 std::size_t Header::rank() const {
   return rank_ >> 1;
 }
