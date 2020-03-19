@@ -95,7 +95,7 @@ auto RedBlackTree::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b)
   return branch(l, r, b, c->value_);
 }
 auto RedBlackTree::as_root(const Ptr &x) -> Ptr {
-  return (x && !is_black(x)) ? black(x) : x;
+  return is_black(x) ? x : black(x);
 }
 auto RedBlackTree::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, false);
