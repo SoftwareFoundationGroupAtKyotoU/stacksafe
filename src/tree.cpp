@@ -32,32 +32,6 @@ TreeBase::TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v)
 auto TreeBase::single(PairType v) -> Ptr {
   return branch(nullptr, nullptr, true, v);
 }
-bool TreeBase::exists(const Ptr &x, PairType v) {
-  if (!x) {
-    return false;
-  } else if (x->value() < v) {
-    return exists(x->right(), v);
-  } else if (v < x->value()) {
-    return exists(x->left(), v);
-  } else {
-    return true;
-  }
-}
-auto TreeBase::merge(const Ptr &x, const Ptr &y) -> Ptr {
-  if (get_size(x) < get_size(y)) {
-    return merge(y, x);
-  } else if (x && y) {
-    const auto [l, b, r] = split(x, y->value());
-    return join(merge(l, y->left()), y->value(), merge(r, y->right()));
-  } else {
-    return x ? x : y;
-  }
-}
-NodeSet TreeBase::find(const Ptr &x, const Node &key) {
-  NodeSet values;
-  find(x, key, values);
-  return values;
-}
 auto TreeBase::value() const -> const PairType & {
   return value_;
 }

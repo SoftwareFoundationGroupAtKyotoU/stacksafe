@@ -39,9 +39,6 @@ class TreeBase : private Header {
   using Header::rank, Header::size, Header::is_black, Header::left,
       Header::right;
   static Ptr single(PairType v);
-  static bool exists(const Ptr &x, PairType v);
-  static Ptr merge(const Ptr &x, const Ptr &y);
-  static NodeSet find(const Ptr &x, const Node &key);
   const PairType &value() const;
   static int get_size(const Ptr &x);
   static Ptr join(const Ptr &x, PairType v, const Ptr &y);
