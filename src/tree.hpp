@@ -19,6 +19,7 @@ class Header {
   Header(const TreePtr &x, const TreePtr &y, bool b);
   std::size_t rank() const;
   std::size_t size() const;
+  bool is_black() const;
 
  private:
   static std::size_t calc_rank(const TreePtr &x, const TreePtr &y);
