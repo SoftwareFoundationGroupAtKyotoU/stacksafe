@@ -15,14 +15,14 @@ class Header {
   const std::size_t rank_, size_;
 
  public:
-  enum class Color { Red, Black };
+  enum class Color : std::size_t { Red, Black };
   Header(Color c, std::size_t k, std::size_t s);
   std::size_t rank() const;
   std::size_t size() const;
   bool is_black() const;
 
  private:
-  static std::size_t combine(bool b, std::size_t k);
+  static std::size_t combine(Color c, std::size_t k);
 };
 
 class TreeBase : private Header {
