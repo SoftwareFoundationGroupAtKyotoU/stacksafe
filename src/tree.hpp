@@ -38,28 +38,10 @@ class RedBlackTree : private Header {
 
  public:
   static Ptr single(PairType v);
-  static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
-  static Ptr as_root(const Ptr &x);
   static bool exists(const Ptr &x, PairType v);
   static Ptr merge(const Ptr &x, const Ptr &y);
   static NodeSet find(const Ptr &x, const Node &key);
   static int get_size(const Ptr &x);
-
-  static void find(const Ptr &x, const Node &key, NodeSet &values);
-  static bool is_black(const Ptr &x);
-  static bool is_red_twice(const Ptr &x);
-  static bool is_valid(const Ptr &x);
-  static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
-  static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
-  static Ptr red(const Ptr &l, PairType v, const Ptr &r);
-  static Ptr black(const Ptr &l, const Ptr &c, const Ptr &r);
-  static Ptr black(const Ptr &x);
-  static Ptr join_left(const Ptr &x, PairType v, const Ptr &y);
-  static Ptr join_right(const Ptr &x, PairType v, const Ptr &y);
-  static Ptr join(const Ptr &x, PairType v, const Ptr &y);
-  static Result split(const Ptr &x, PairType v);
-  static int get_rank(const Ptr &x);
-  static bool less_rank(const Ptr &x, const Ptr &y);
 
  private:
   template <typename S>
@@ -69,6 +51,23 @@ class RedBlackTree : private Header {
   };
   using Helper = MakeSharedHelper<RedBlackTree>;
   const PairType &value() const;
+  static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
+  static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
+  static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
+  static Ptr red(const Ptr &l, PairType v, const Ptr &r);
+  static Ptr black(const Ptr &l, const Ptr &c, const Ptr &r);
+  static Ptr black(const Ptr &x);
+  static Ptr as_root(const Ptr &x);
+  static void find(const Ptr &x, const Node &key, NodeSet &values);
+  static bool is_black(const Ptr &x);
+  static bool is_red_twice(const Ptr &x);
+  static bool is_valid(const Ptr &x);
+  static Ptr join_left(const Ptr &x, PairType v, const Ptr &y);
+  static Ptr join_right(const Ptr &x, PairType v, const Ptr &y);
+  static Ptr join(const Ptr &x, PairType v, const Ptr &y);
+  static Result split(const Ptr &x, PairType v);
+  static int get_rank(const Ptr &x);
+  static bool less_rank(const Ptr &x, const Ptr &y);
 
  private:
   static std::size_t calc_rank(const Ptr &x);
