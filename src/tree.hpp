@@ -37,7 +37,6 @@ class RedBlackTree : private Header {
       Header::right;
 
  public:
-  static Ptr leaf();
   static Ptr single(PairType v);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr as_root(const Ptr &x);

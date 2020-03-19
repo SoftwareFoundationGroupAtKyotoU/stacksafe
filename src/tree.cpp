@@ -28,9 +28,6 @@ std::size_t Header::combine(bool b, std::size_t k) {
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
     : Header{l, r, b, calc_rank(l), calc_size(l, r)}, value_{v} {}
-auto RedBlackTree::leaf() -> Ptr {
-  return nullptr;
-}
 auto RedBlackTree::single(PairType v) -> Ptr {
   return branch(nullptr, nullptr, true, v);
 }
