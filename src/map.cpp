@@ -31,17 +31,17 @@ TreePtr Map::merge(const TreePtr& x, const TreePtr& y) {
     return x ? x : y;
   }
 }
-TreePtr Map::lookup(const TreePtr& x, const Node& key, NodeSet& nodes) {
+void Map::lookup(const TreePtr& x, const Node& key, NodeSet& nodes) {
   if (x) {
     const auto [k, v] = x->value();
     if (k < key) {
-      find(x->right(), key, values);
+      lookup(x->right(), key, nodes);
     } else if (key < k) {
-      find(x->left(), key, values);
+      lookup(x->left(), key, nodes);
     } else {
-      find(x->left(), key, values);
-      values.merge(NodeSet{v});
-      find(x->right(), key, values);
+      lookup(x->left(), key, nodes);
+      nodes.merge(NodeSet{v});
+      lookup(x->right(), key, nodes);
     }
   }
 }
