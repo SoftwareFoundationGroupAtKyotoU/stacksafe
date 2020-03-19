@@ -35,6 +35,12 @@ TreeBase::TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v)
 auto TreeBase::single(PairType v) -> Ptr {
   return branch(nullptr, nullptr, true, v);
 }
+auto TreeBase::left() const -> const Ptr {
+  return left_;
+}
+auto TreeBase::right() const -> const Ptr {
+  return right_;
+}
 auto TreeBase::value() const -> const PairType & {
   return value_;
 }
