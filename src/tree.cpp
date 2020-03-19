@@ -212,5 +212,11 @@ bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
 auto RedBlackTree::value() const -> const PairType & {
   return value_;
 }
+std::size_t RedBlackTree::calc_rank(const Ptr &x) {
+  return get_rank(x) + (is_black(x) ? 1 : 0);
+}
+std::size_t RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
+  return get_size(x) + get_size(y) + 1;
+}
 
 }  // namespace stacksafe

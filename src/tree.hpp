@@ -70,6 +70,10 @@ class RedBlackTree : private Header {
   };
   using Helper = MakeSharedHelper<RedBlackTree>;
   const PairType &value() const;
+
+ private:
+  static std::size_t calc_rank(const Ptr &x);
+  static std::size_t calc_size(const Ptr &x, const Ptr &y);
 };
 
 }  // namespace stacksafe
