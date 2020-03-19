@@ -27,12 +27,12 @@ std::size_t Header::combine(bool b, std::size_t k) {
   return (k << 1) & (b ? 1 : 0);
 }
 
-RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
+TreeBase::TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v)
     : Header{l, r, b, calc_rank(l), calc_size(l, r)}, value_{v} {}
-auto RedBlackTree::single(PairType v) -> Ptr {
+auto TreeBase::single(PairType v) -> Ptr {
   return branch(nullptr, nullptr, true, v);
 }
-bool RedBlackTree::exists(const Ptr &x, PairType v) {
+bool TreeBase::exists(const Ptr &x, PairType v) {
   if (!x) {
     return false;
   } else if (x->value() < v) {
@@ -43,7 +43,7 @@ bool RedBlackTree::exists(const Ptr &x, PairType v) {
     return true;
   }
 }
-auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
+auto TreeBase::merge(const Ptr &x, const Ptr &y) -> Ptr {
   if (get_size(x) < get_size(y)) {
     return merge(y, x);
   } else if (x && y) {
@@ -53,16 +53,16 @@ auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
     return x ? x : y;
   }
 }
-NodeSet RedBlackTree::find(const Ptr &x, const Node &key) {
+NodeSet TreeBase::find(const Ptr &x, const Node &key) {
   NodeSet values;
   find(x, key, values);
   return values;
 }
-int RedBlackTree::get_size(const Ptr &x) {
+int TreeBase::get_size(const Ptr &x) {
   return x ? x->size() : 0;
 }
 
-void RedBlackTree::find(const Ptr &x, const Node &key, NodeSet &values) {
+void TreeBase::find(const Ptr &x, const Node &key, NodeSet &values) {
   if (x) {
     const auto [k, v] = x->value();
     if (k < key) {
@@ -76,40 +76,38 @@ void RedBlackTree::find(const Ptr &x, const Node &key, NodeSet &values) {
     }
   }
 }
-auto RedBlackTree::value() const -> const PairType & {
+auto TreeBase::value() const -> const PairType & {
   return value_;
 }
-auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, PairType v)
-    -> Ptr {
+auto TreeBase::branch(const Ptr &l, const Ptr &r, bool b, PairType v) -> Ptr {
   return std::make_shared<Helper>(l, r, b, v);
 }
-auto RedBlackTree::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b)
-    -> Ptr {
+auto TreeBase::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
   return branch(l, r, b, c->value());
 }
-auto RedBlackTree::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
+auto TreeBase::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, false);
 }
-auto RedBlackTree::red(const Ptr &l, PairType v, const Ptr &r) -> Ptr {
+auto TreeBase::red(const Ptr &l, PairType v, const Ptr &r) -> Ptr {
   return branch(l, r, false, v);
 }
-auto RedBlackTree::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
+auto TreeBase::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, true);
 }
-auto RedBlackTree::black(const Ptr &x) -> Ptr {
+auto TreeBase::black(const Ptr &x) -> Ptr {
   assert(!is_black(x));
   return black(x->left(), x, x->right());
 }
-auto RedBlackTree::as_root(const Ptr &x) -> Ptr {
+auto TreeBase::as_root(const Ptr &x) -> Ptr {
   return is_black(x) ? x : black(x);
 }
-bool RedBlackTree::is_black(const Ptr &x) {
+bool TreeBase::is_black(const Ptr &x) {
   return x ? x->is_black() : true;
 }
-bool RedBlackTree::is_red_twice(const Ptr &x) {
+bool TreeBase::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left()) && is_black(x->right()));
 }
-bool RedBlackTree::is_valid(const Ptr &x) {
+bool TreeBase::is_valid(const Ptr &x) {
   const auto get_value = [](const Ptr &x) { return x ? &x->value() : nullptr; };
   const auto valid_rank = [](const Ptr &x, const Ptr &y) {
     return get_rank(x) == get_rank(y) + (is_black(y) ? 1 : 0);
@@ -130,7 +128,7 @@ bool RedBlackTree::is_valid(const Ptr &x) {
   }
   return !x;
 }
-auto RedBlackTree::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
+auto TreeBase::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   assert(get_rank(x) <= get_rank(y));
   Ptr t = nullptr;
   if (less_rank(x, y)) {
@@ -159,7 +157,7 @@ auto RedBlackTree::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   }
   return t;
 }
-auto RedBlackTree::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
+auto TreeBase::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   if (less_rank(y, x)) {
     const auto l = x->left();
     const auto z = join_right(x->right(), v, y);
@@ -171,7 +169,7 @@ auto RedBlackTree::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   }
   return red(x, v, as_root(y));
 }
-auto RedBlackTree::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
+auto TreeBase::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   if (less_rank(x, y)) {
     const auto z = join_left(x, v, y);
     return is_red_twice(z) ? as_root(z) : z;
@@ -184,7 +182,7 @@ auto RedBlackTree::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
     return branch(x, y, true, v);
   }
 }
-auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
+auto TreeBase::split(const Ptr &x, PairType v) -> Result {
   if (!x) {
     return {nullptr, false, nullptr};
   } else if (v < x->value()) {
@@ -197,16 +195,16 @@ auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
     return {x->left(), true, x->right()};
   }
 }
-int RedBlackTree::get_rank(const Ptr &x) {
+int TreeBase::get_rank(const Ptr &x) {
   return x ? x->rank() : 0;
 }
-bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
+bool TreeBase::less_rank(const Ptr &x, const Ptr &y) {
   return get_rank(x) < get_rank(y);
 }
-std::size_t RedBlackTree::calc_rank(const Ptr &x) {
+std::size_t TreeBase::calc_rank(const Ptr &x) {
   return get_rank(x) + (is_black(x) ? 1 : 0);
 }
-std::size_t RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
+std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
   return get_size(x) + get_size(y) + 1;
 }
 

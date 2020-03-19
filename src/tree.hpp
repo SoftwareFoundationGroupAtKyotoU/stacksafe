@@ -7,14 +7,14 @@
 namespace stacksafe {
 class NodeSet;
 namespace rbtree {
-class RedBlackTree;
+class TreeBase;
 using PairType = std::tuple<Node, Node>;
-using TreePtr = std::shared_ptr<const RedBlackTree>;
+using TreePtr = std::shared_ptr<const TreeBase>;
 
 class Header {
   const std::size_t rank_, size_;
   const TreePtr left_, right_;
-  using Tree = RedBlackTree;
+  using Tree = TreeBase;
 
  public:
   Header(const TreePtr &x, const TreePtr &y, bool b, std::size_t k,
@@ -29,11 +29,11 @@ class Header {
   static std::size_t combine(bool b, std::size_t k);
 };
 
-class RedBlackTree : private Header {
-  using Ptr = std::shared_ptr<const RedBlackTree>;
+class TreeBase : private Header {
+  using Ptr = std::shared_ptr<const TreeBase>;
   using Result = std::tuple<Ptr, bool, Ptr>;
   PairType value_;
-  RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v);
+  TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v);
   using Header::rank, Header::size, Header::is_black, Header::left,
       Header::right;
 
@@ -50,7 +50,7 @@ class RedBlackTree : private Header {
     template <typename... T>
     explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
   };
-  using Helper = MakeSharedHelper<RedBlackTree>;
+  using Helper = MakeSharedHelper<TreeBase>;
   const PairType &value() const;
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
@@ -77,7 +77,7 @@ class RedBlackTree : private Header {
 
 }  // namespace rbtree
 
-using TreePtr = std::shared_ptr<const rbtree::RedBlackTree>;
+using TreePtr = std::shared_ptr<const rbtree::TreeBase>;
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_6F2C02D5_616D_48CD_8A43_B837E2ADE127

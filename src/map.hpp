@@ -7,7 +7,7 @@ namespace stacksafe {
 class NodeSet;
 
 class Map {
-  using Tree = rbtree::RedBlackTree;
+  using Tree = rbtree::TreeBase;
   TreePtr tree_;
 
  public:
