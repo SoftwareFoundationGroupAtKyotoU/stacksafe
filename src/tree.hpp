@@ -12,9 +12,13 @@ using TreePtr = std::shared_ptr<const RedBlackTree>;
 
 class Header {
   std::size_t rank_, size_;
+  using Tree = RedBlackTree;
 
  public:
   Header();
+
+ private:
+  static std::size_t calc_rank(const TreePtr &x, const TreePtr &y);
 };
 
 class RedBlackTree {
@@ -36,7 +40,6 @@ class RedBlackTree {
   static NodeSet find(const Ptr &x, const Node &key);
   static int get_size(const Ptr &x);
 
- private:
   static void find(const Ptr &x, const Node &key, NodeSet &values);
   static bool is_black(const Ptr &x);
   static bool is_red_twice(const Ptr &x);

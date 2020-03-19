@@ -5,6 +5,12 @@
 namespace stacksafe {
 
 Header::Header() : rank_{0}, size_{0} {}
+std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
+  const auto kx = Tree::get_rank(x) + (Tree::is_black(x) ? 1 : 0);
+  const auto ky = Tree::get_rank(y) + (Tree::is_black(y) ? 1 : 0);
+  assert(kx == ky);
+  return kx;
+}
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
                            PairType v)
