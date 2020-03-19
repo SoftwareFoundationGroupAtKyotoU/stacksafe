@@ -43,6 +43,8 @@ class TreeBase : private Header {
   static Ptr merge(const Ptr &x, const Ptr &y);
   static NodeSet find(const Ptr &x, const Node &key);
   static int get_size(const Ptr &x);
+  static Ptr join(const Ptr &x, PairType v, const Ptr &y);
+  static Result split(const Ptr &x, PairType v);
 
  private:
   template <typename S>
@@ -65,8 +67,6 @@ class TreeBase : private Header {
   static bool is_valid(const Ptr &x);
   static Ptr join_left(const Ptr &x, PairType v, const Ptr &y);
   static Ptr join_right(const Ptr &x, PairType v, const Ptr &y);
-  static Ptr join(const Ptr &x, PairType v, const Ptr &y);
-  static Result split(const Ptr &x, PairType v);
   static int get_rank(const Ptr &x);
   static bool less_rank(const Ptr &x, const Ptr &y);
 

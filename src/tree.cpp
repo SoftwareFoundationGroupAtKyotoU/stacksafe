@@ -61,6 +61,32 @@ NodeSet TreeBase::find(const Ptr &x, const Node &key) {
 int TreeBase::get_size(const Ptr &x) {
   return x ? x->size() : 0;
 }
+auto TreeBase::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
+  if (less_rank(x, y)) {
+    const auto z = join_left(x, v, y);
+    return is_red_twice(z) ? as_root(z) : z;
+  } else if (less_rank(y, x)) {
+    const auto z = join_right(x, v, y);
+    return is_red_twice(z) ? as_root(z) : z;
+  } else if (is_black(x) || is_black(y)) {
+    return red(as_root(x), v, as_root(y));
+  } else {
+    return branch(x, y, true, v);
+  }
+}
+auto TreeBase::split(const Ptr &x, PairType v) -> Result {
+  if (!x) {
+    return {nullptr, false, nullptr};
+  } else if (v < x->value()) {
+    const auto [l, b, r] = split(x->left(), v);
+    return {l, b, join(r, x->value(), x->right())};
+  } else if (x->value() < v) {
+    const auto [l, b, r] = split(x->right(), v);
+    return {join(x->left(), x->value(), l), b, r};
+  } else {
+    return {x->left(), true, x->right()};
+  }
+}
 
 void TreeBase::find(const Ptr &x, const Node &key, NodeSet &values) {
   if (x) {
@@ -168,32 +194,6 @@ auto TreeBase::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
     return is_black(x) ? black(l, x, z) : red(l, x, z);
   }
   return red(x, v, as_root(y));
-}
-auto TreeBase::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
-  if (less_rank(x, y)) {
-    const auto z = join_left(x, v, y);
-    return is_red_twice(z) ? as_root(z) : z;
-  } else if (less_rank(y, x)) {
-    const auto z = join_right(x, v, y);
-    return is_red_twice(z) ? as_root(z) : z;
-  } else if (is_black(x) || is_black(y)) {
-    return red(as_root(x), v, as_root(y));
-  } else {
-    return branch(x, y, true, v);
-  }
-}
-auto TreeBase::split(const Ptr &x, PairType v) -> Result {
-  if (!x) {
-    return {nullptr, false, nullptr};
-  } else if (v < x->value()) {
-    const auto [l, b, r] = split(x->left(), v);
-    return {l, b, join(r, x->value(), x->right())};
-  } else if (x->value() < v) {
-    const auto [l, b, r] = split(x->right(), v);
-    return {join(x->left(), x->value(), l), b, r};
-  } else {
-    return {x->left(), true, x->right()};
-  }
 }
 int TreeBase::get_rank(const Ptr &x) {
   return x ? x->rank() : 0;
