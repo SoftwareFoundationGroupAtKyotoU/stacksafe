@@ -7,6 +7,9 @@ namespace stacksafe {
 Header::Header() : rank_{0}, size_{0} {}
 Header::Header(const TreePtr &x, const TreePtr &y)
     : rank_{calc_rank(x, y)}, size_{calc_size(x, y)} {}
+std::size_t Header::rank() const {
+  return rank_;
+}
 std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
   const auto kx = Tree::get_rank(x) + (Tree::is_black(x) ? 1 : 0);
   const auto ky = Tree::get_rank(y) + (Tree::is_black(y) ? 1 : 0);

@@ -17,6 +17,7 @@ class Header {
  public:
   Header();
   Header(const TreePtr &x, const TreePtr &y);
+  std::size_t rank() const;
 
  private:
   static std::size_t calc_rank(const TreePtr &x, const TreePtr &y);
