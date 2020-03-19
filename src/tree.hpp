@@ -26,8 +26,6 @@ class Header {
 
  private:
   static std::size_t combine(bool b, std::size_t k);
-  static std::size_t calc_rank(const TreePtr &x, const TreePtr &y);
-  static std::size_t calc_size(const TreePtr &x, const TreePtr &y);
 };
 
 class RedBlackTree : private Header {

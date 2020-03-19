@@ -25,15 +25,6 @@ const TreePtr Header::right() const {
 std::size_t Header::combine(bool b, std::size_t k) {
   return (k << 1) & (b ? 1 : 0);
 }
-std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
-  const auto kx = Tree::get_rank(x) + (Tree::is_black(x) ? 1 : 0);
-  const auto ky = Tree::get_rank(y) + (Tree::is_black(y) ? 1 : 0);
-  assert(kx == ky);
-  return kx << 1;
-}
-std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
-  return Tree::get_size(x) + Tree::get_size(y) + 1;
-}
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
     : Header{l, r, b, calc_rank(l), calc_size(l, r)}, value_{v} {}
