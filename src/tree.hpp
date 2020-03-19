@@ -37,7 +37,6 @@ class RedBlackTree : private Header {
       Header::right;
 
  public:
-  static const PairType &value(const Ptr &x);
   static Ptr leaf();
   static Ptr single(PairType v);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
@@ -62,12 +61,15 @@ class RedBlackTree : private Header {
   static Result split(const Ptr &x, PairType v);
   static int get_rank(const Ptr &x);
   static bool less_rank(const Ptr &x, const Ptr &y);
+
+ private:
   template <typename S>
   struct MakeSharedHelper : public S {
     template <typename... T>
     explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
   };
   using Helper = MakeSharedHelper<RedBlackTree>;
+  const PairType &value() const;
 };
 
 }  // namespace stacksafe
