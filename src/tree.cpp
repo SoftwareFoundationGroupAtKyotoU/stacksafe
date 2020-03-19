@@ -35,12 +35,12 @@ std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
 }
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
-    : header_{l, r, b}, value_{v} {}
+    : Header{l, r, b}, value_{v} {}
 auto RedBlackTree::left(const Ptr &x) -> Ptr {
-  return x->header_.left();
+  return x->Header::left();
 }
 auto RedBlackTree::right(const Ptr &x) -> Ptr {
-  return x->header_.right();
+  return x->Header::right();
 }
 auto RedBlackTree::value(const Ptr &x) -> const PairType & {
   return x->value_;
@@ -96,7 +96,7 @@ void RedBlackTree::find(const Ptr &x, const Node &key, NodeSet &values) {
   }
 }
 bool RedBlackTree::is_black(const Ptr &x) {
-  return x ? x->header_.is_black() : true;
+  return x ? x->is_black() : true;
 }
 bool RedBlackTree::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(left(x)) && is_black(right(x)));
@@ -210,10 +210,10 @@ auto RedBlackTree::split(const Ptr &x, PairType v) -> Result {
   }
 }
 int RedBlackTree::get_rank(const Ptr &x) {
-  return x ? x->header_.rank() : 0;
+  return x ? x->rank() : 0;
 }
 int RedBlackTree::get_size(const Ptr &x) {
-  return x ? x->header_.size() : 0;
+  return x ? x->size() : 0;
 }
 bool RedBlackTree::less_rank(const Ptr &x, const Ptr &y) {
   return get_rank(x) < get_rank(y);

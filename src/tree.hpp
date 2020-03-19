@@ -28,12 +28,13 @@ class Header {
   static std::size_t calc_size(const TreePtr &x, const TreePtr &y);
 };
 
-class RedBlackTree {
+class RedBlackTree : private Header {
   using Ptr = std::shared_ptr<const RedBlackTree>;
   using Result = std::tuple<Ptr, bool, Ptr>;
-  Header header_;
   PairType value_;
   RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v);
+  using Header::rank, Header::size, Header::is_black, Header::left,
+      Header::right;
 
  public:
   static Ptr left(const Ptr &x);
