@@ -31,9 +31,8 @@ class RedBlackTree {
   Header header_;
   Ptr left_, right_;
   bool black_;
-  int rank_, size_;
   PairType value_;
-  RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s, PairType v);
+  RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v);
 
  public:
   static Ptr leaf();

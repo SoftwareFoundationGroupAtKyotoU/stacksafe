@@ -23,15 +23,8 @@ std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
   return Tree::get_size(x) + Tree::get_size(y) + 1;
 }
 
-RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
-                           PairType v)
-    : header_{l, r},
-      left_{l},
-      right_{r},
-      black_{b},
-      rank_{k},
-      size_{s},
-      value_{v} {}
+RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
+    : header_{l, r}, left_{l}, right_{r}, black_{b}, value_{v} {}
 auto RedBlackTree::leaf() -> Ptr {
   return nullptr;
 }
@@ -40,13 +33,7 @@ auto RedBlackTree::single(PairType v) -> Ptr {
 }
 auto RedBlackTree::branch(const Ptr &l, const Ptr &r, bool b, PairType v)
     -> Ptr {
-  const auto calc_rank = [](const Ptr &x) {
-    return get_rank(x) + (is_black(x) ? 1 : 0);
-  };
-  const auto k = calc_rank(l);
-  const auto s = get_size(l) + get_size(r) + 1;
-  assert(k == calc_rank(r));
-  return std::make_shared<Helper>(l, r, b, k, s, v);
+  return std::make_shared<Helper>(l, r, b, v);
 }
 bool RedBlackTree::exists(const Ptr &x, PairType v) {
   if (!x) {
