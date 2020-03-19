@@ -11,6 +11,9 @@ std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
   assert(kx == ky);
   return kx;
 }
+std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
+  return Tree::get_size(x) + Tree::get_size(y) + 1;
+}
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, int k, int s,
                            PairType v)
