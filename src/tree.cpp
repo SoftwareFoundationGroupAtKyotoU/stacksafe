@@ -28,7 +28,10 @@ std::size_t Header::combine(bool b, std::size_t k) {
 }
 
 TreeBase::TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v)
-    : Header{l, r, b, calc_rank(l), calc_size(l, r)}, value_{v} {}
+    : Header{l, r, b, calc_rank(l), calc_size(l, r)},
+      left_{l},
+      right_{r},
+      value_{v} {}
 auto TreeBase::single(PairType v) -> Ptr {
   return branch(nullptr, nullptr, true, v);
 }

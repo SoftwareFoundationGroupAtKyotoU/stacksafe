@@ -32,6 +32,7 @@ class Header {
 class TreeBase : private Header {
   using Ptr = std::shared_ptr<const TreeBase>;
   using Result = std::tuple<Ptr, bool, Ptr>;
+  const Ptr left_, right_;
   PairType value_;
 
  public:
