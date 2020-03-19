@@ -4,7 +4,6 @@
 
 namespace stacksafe {
 
-Header::Header() : rank_{0}, size_{0} {}
 Header::Header(const TreePtr &x, const TreePtr &y)
     : rank_{calc_rank(x, y)}, size_{calc_size(x, y)} {}
 std::size_t Header::rank() const {

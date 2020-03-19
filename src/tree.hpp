@@ -15,7 +15,6 @@ class Header {
   using Tree = RedBlackTree;
 
  public:
-  Header();
   Header(const TreePtr &x, const TreePtr &y);
   std::size_t rank() const;
   std::size_t size() const;
