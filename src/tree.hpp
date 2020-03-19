@@ -32,7 +32,6 @@ class RedBlackTree {
   using Ptr = std::shared_ptr<const RedBlackTree>;
   using Result = std::tuple<Ptr, bool, Ptr>;
   Header header_;
-  Ptr left_, right_;
   PairType value_;
   RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v);
 

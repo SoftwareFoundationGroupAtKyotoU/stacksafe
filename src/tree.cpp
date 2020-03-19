@@ -35,12 +35,12 @@ std::size_t Header::calc_size(const TreePtr &x, const TreePtr &y) {
 }
 
 RedBlackTree::RedBlackTree(const Ptr &l, const Ptr &r, bool b, PairType v)
-    : header_{l, r, b}, left_{l}, right_{r}, value_{v} {}
+    : header_{l, r, b}, value_{v} {}
 auto RedBlackTree::left(const Ptr &x) -> Ptr {
-  return x->left_;
+  return x->header_.left();
 }
 auto RedBlackTree::right(const Ptr &x) -> Ptr {
-  return x->right_;
+  return x->header_.right();
 }
 auto RedBlackTree::value(const Ptr &x) -> const PairType & {
   return x->value_;
