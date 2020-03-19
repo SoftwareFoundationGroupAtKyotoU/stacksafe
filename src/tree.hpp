@@ -16,7 +16,8 @@ class Header {
   using Tree = RedBlackTree;
 
  public:
-  Header(const TreePtr &x, const TreePtr &y, bool b);
+  Header(const TreePtr &x, const TreePtr &y, bool b, std::size_t k,
+         std::size_t s);
   std::size_t rank() const;
   std::size_t size() const;
   bool is_black() const;
