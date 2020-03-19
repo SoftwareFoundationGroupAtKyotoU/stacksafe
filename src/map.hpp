@@ -19,6 +19,7 @@ class Map {
 
  private:
   static TreePtr merge(const TreePtr& x, const TreePtr& y);
+  static TreePtr lookup(const TreePtr& x, const Node& key, NodeSet& nodes);
   static bool exists(const TreePtr& x, const PairType& v);
 };
 

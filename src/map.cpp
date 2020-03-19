@@ -11,7 +11,9 @@ bool Map::exists(const Node& k, const Node& v) const {
   return exists(tree_, std::make_tuple(k, v));
 }
 NodeSet Map::lookup(const Node& k) const {
-  return Tree::find(tree_, k);
+  NodeSet nodes;
+  lookup(tree_, k, nodes);
+  return nodes;
 }
 void Map::merge(const Map& m) {
   tree_ = merge(tree_, m.tree_);
@@ -27,6 +29,20 @@ TreePtr Map::merge(const TreePtr& x, const TreePtr& y) {
     return Tree::join(merge(l, y->left()), y->value(), merge(r, y->right()));
   } else {
     return x ? x : y;
+  }
+}
+TreePtr Map::lookup(const TreePtr& x, const Node& key, NodeSet& nodes) {
+  if (x) {
+    const auto [k, v] = x->value();
+    if (k < key) {
+      find(x->right(), key, values);
+    } else if (key < k) {
+      find(x->left(), key, values);
+    } else {
+      find(x->left(), key, values);
+      values.merge(NodeSet{v});
+      find(x->right(), key, values);
+    }
   }
 }
 bool Map::exists(const TreePtr& x, const PairType& v) {
