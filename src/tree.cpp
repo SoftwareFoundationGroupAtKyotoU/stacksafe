@@ -39,7 +39,8 @@ auto RedBlackTree::merge(const Ptr &x, const Ptr &y) -> Ptr {
     return merge(y, x);
   } else if (x && y) {
     const auto [l, b, r] = split(x, y->value_);
-    return join(merge(l, y->left_), y->value_, merge(r, y->right_));
+    return join(merge(l, as_root(y->left_)), y->value_,
+                merge(r, as_root(y->right_)));
   } else {
     return x ? x : y;
   }
