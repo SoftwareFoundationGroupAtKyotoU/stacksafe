@@ -6,6 +6,7 @@
 
 namespace stacksafe {
 class NodeSet;
+namespace rbtree {
 class RedBlackTree;
 using PairType = std::tuple<Node, Node>;
 using TreePtr = std::shared_ptr<const RedBlackTree>;
@@ -74,6 +75,9 @@ class RedBlackTree : private Header {
   static std::size_t calc_size(const Ptr &x, const Ptr &y);
 };
 
+}  // namespace rbtree
+
+using TreePtr = std::shared_ptr<const rbtree::RedBlackTree>;
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_6F2C02D5_616D_48CD_8A43_B837E2ADE127

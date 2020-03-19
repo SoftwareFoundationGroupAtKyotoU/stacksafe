@@ -3,6 +3,7 @@
 #include "graph.hpp"
 
 namespace stacksafe {
+namespace rbtree {
 
 Header::Header(const TreePtr &x, const TreePtr &y, bool b, std::size_t k,
                std::size_t s)
@@ -209,4 +210,5 @@ std::size_t RedBlackTree::calc_size(const Ptr &x, const Ptr &y) {
   return get_size(x) + get_size(y) + 1;
 }
 
+}  // namespace rbtree
 }  // namespace stacksafe
