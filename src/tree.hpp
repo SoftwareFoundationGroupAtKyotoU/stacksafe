@@ -12,7 +12,6 @@ using TreePtr = std::shared_ptr<const RedBlackTree>;
 
 class Header {
   std::size_t rank_, size_;
-  bool black_;
   using Tree = RedBlackTree;
 
  public:
