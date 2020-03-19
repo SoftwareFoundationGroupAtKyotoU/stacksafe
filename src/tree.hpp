@@ -42,6 +42,7 @@ class TreeBase : private Header {
   static bool exists(const Ptr &x, PairType v);
   static Ptr merge(const Ptr &x, const Ptr &y);
   static NodeSet find(const Ptr &x, const Node &key);
+  const PairType &value() const;
   static int get_size(const Ptr &x);
   static Ptr join(const Ptr &x, PairType v, const Ptr &y);
   static Result split(const Ptr &x, PairType v);
@@ -53,7 +54,6 @@ class TreeBase : private Header {
     explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
   };
   using Helper = MakeSharedHelper<TreeBase>;
-  const PairType &value() const;
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
   static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);

@@ -58,6 +58,9 @@ NodeSet TreeBase::find(const Ptr &x, const Node &key) {
   find(x, key, values);
   return values;
 }
+auto TreeBase::value() const -> const PairType & {
+  return value_;
+}
 int TreeBase::get_size(const Ptr &x) {
   return x ? x->size() : 0;
 }
@@ -101,9 +104,6 @@ void TreeBase::find(const Ptr &x, const Node &key, NodeSet &values) {
       find(x->right(), key, values);
     }
   }
-}
-auto TreeBase::value() const -> const PairType & {
-  return value_;
 }
 auto TreeBase::branch(const Ptr &l, const Ptr &r, bool b, PairType v) -> Ptr {
   return std::make_shared<Helper>(l, r, b, v);
