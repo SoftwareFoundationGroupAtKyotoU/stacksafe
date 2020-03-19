@@ -86,7 +86,8 @@ bool RedBlackTree::is_valid(const Ptr &x) {
     const auto lk = valid_rank(x, x->left_);
     const auto rk = valid_rank(x, x->right_);
     const auto s = valid_size(x);
-    return lb && rb && lk && rk && s;
+    const auto c = is_black(x) || (is_black(x->left_) && is_black(x->right_));
+    return lb && rb && lk && rk && s && c;
   }
   return !x;
 }
