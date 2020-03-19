@@ -20,8 +20,8 @@ std::size_t Header::combine(Color c, std::size_t k) {
   return (k << 1) & static_cast<std::size_t>(c);
 }
 
-TreeBase::TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v)
-    : Header{b ? Color::Black : Color::Red, calc_rank(l), calc_size(l, r)},
+TreeBase::TreeBase(const Ptr &l, const Ptr &r, Color c, const PairType &v)
+    : Header{c, calc_rank(l), calc_size(l, r)},
       left_{l},
       right_{r},
       value_{v} {}
@@ -82,7 +82,7 @@ void TreeBase::find(const Ptr &x, const Node &key, NodeSet &values) {
   }
 }
 auto TreeBase::branch(const Ptr &l, const Ptr &r, bool b, PairType v) -> Ptr {
-  return std::make_shared<Helper>(l, r, b, v);
+  return std::make_shared<Helper>(l, r, b ? Color::Black : Color::Red, v);
 }
 auto TreeBase::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
   return branch(l, r, b, c->value());
