@@ -13,11 +13,9 @@ using TreePtr = std::shared_ptr<const TreeBase>;
 
 class Header {
   const std::size_t rank_, size_;
-  using Tree = TreeBase;
 
  public:
-  Header(const TreePtr &x, const TreePtr &y, bool b, std::size_t k,
-         std::size_t s);
+  Header(bool b, std::size_t k, std::size_t s);
   std::size_t rank() const;
   std::size_t size() const;
   bool is_black() const;

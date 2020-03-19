@@ -5,8 +5,7 @@
 namespace stacksafe {
 namespace rbtree {
 
-Header::Header(const TreePtr &x, const TreePtr &y, bool b, std::size_t k,
-               std::size_t s)
+Header::Header(bool b, std::size_t k, std::size_t s)
     : rank_{combine(b, k)}, size_{s} {}
 std::size_t Header::rank() const {
   return rank_ >> 1;
@@ -22,7 +21,7 @@ std::size_t Header::combine(bool b, std::size_t k) {
 }
 
 TreeBase::TreeBase(const Ptr &l, const Ptr &r, bool b, PairType v)
-    : Header{l, r, b, calc_rank(l), calc_size(l, r)},
+    : Header{b, calc_rank(l), calc_size(l, r)},
       left_{l},
       right_{r},
       value_{v} {}
