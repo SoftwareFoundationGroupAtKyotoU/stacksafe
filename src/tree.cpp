@@ -10,6 +10,9 @@ Header::Header(const TreePtr &x, const TreePtr &y)
 std::size_t Header::rank() const {
   return rank_;
 }
+std::size_t Header::size() const {
+  return size_;
+}
 std::size_t Header::calc_rank(const TreePtr &x, const TreePtr &y) {
   const auto kx = Tree::get_rank(x) + (Tree::is_black(x) ? 1 : 0);
   const auto ky = Tree::get_rank(y) + (Tree::is_black(y) ? 1 : 0);
