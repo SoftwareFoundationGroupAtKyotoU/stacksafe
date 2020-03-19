@@ -19,6 +19,7 @@ class Map {
 
  private:
   static TreePtr merge(const TreePtr& x, const TreePtr& y);
+  static bool exists(const TreePtr& x, const PairType& v);
 };
 
 }  // namespace stacksafe
