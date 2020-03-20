@@ -19,10 +19,10 @@ void Map::merge(const Map& m) {
   tree_ = merge(tree_, m.tree_);
 }
 std::size_t Map::size() const {
-  return Tree::get_size(tree_);
+  return Tree::size(tree_);
 }
 TreePtr Map::merge(const TreePtr& x, const TreePtr& y) {
-  if (Tree::get_size(x) < Tree::get_size(y)) {
+  if (Tree::size(x) < Tree::size(y)) {
     return merge(y, x);
   } else if (x && y) {
     const auto [l, b, r] = Tree::split(x, y->value());

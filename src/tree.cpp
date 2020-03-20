@@ -40,8 +40,8 @@ auto TreeBase::color() const -> Color {
 auto TreeBase::value() const -> const PairType & {
   return value_;
 }
-int TreeBase::get_size(const Ptr &x) {
-  return x ? x->size() : 0;
+int TreeBase::size(const Ptr &x) {
+  return x ? x->Header::size() : 0;
 }
 auto TreeBase::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   if (less_rank(x, y)) {
@@ -126,7 +126,7 @@ bool TreeBase::is_valid(const Ptr &x) {
     return get_rank(x) == get_rank(y) + (is_black(y) ? 1 : 0);
   };
   const auto valid_size = [](const Ptr &x) {
-    return get_size(x) == get_size(x->left()) + get_size(x->right()) + 1;
+    return size(x) == size(x->left()) + size(x->right()) + 1;
   };
   if (x && is_valid(x->left()) && is_valid(x->right())) {
     const auto lv = get_value(x->left());
@@ -189,7 +189,7 @@ std::size_t TreeBase::calc_rank(const Ptr &x) {
   return get_rank(x) + (is_black(x) ? 1 : 0);
 }
 std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
-  return get_size(x) + get_size(y) + 1;
+  return size(x) + size(y) + 1;
 }
 
 }  // namespace rbtree
