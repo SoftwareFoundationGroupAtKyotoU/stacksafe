@@ -56,7 +56,7 @@ auto Tree::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
     return is_red_twice(z) ? as_black(z) : z;
   }
 }
-auto Tree::split(const Ptr &x, const PairType &v) -> Result {
+auto Tree::split(const Ptr &x, const PairType &v) -> Triple {
   Ptr l = nullptr, r = nullptr;
   bool b = false;
   if (x) {
