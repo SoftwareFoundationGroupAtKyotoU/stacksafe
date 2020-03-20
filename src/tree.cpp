@@ -40,10 +40,10 @@ auto Tree::color() const -> Color {
 auto Tree::value() const -> const PairType & {
   return value_;
 }
-int Tree::size(const Ptr &x) {
+std::size_t Tree::size(const Ptr &x) {
   return x ? x->Header::size() : 0;
 }
-int Tree::rank(const Ptr &x) {
+std::size_t Tree::rank(const Ptr &x) {
   return x ? x->Header::rank() : 0;
 }
 auto Tree::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {

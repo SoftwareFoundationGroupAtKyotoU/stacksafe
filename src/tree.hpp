@@ -38,8 +38,8 @@ class Tree : private Header {
   const Ptr right() const;
   Color color() const;
   const PairType &value() const;
-  static int size(const Ptr &x);
-  static int rank(const Ptr &x);
+  static std::size_t size(const Ptr &x);
+  static std::size_t rank(const Ptr &x);
   static Ptr join(const Ptr &x, const PairType &v, const Ptr &y);
   static Triple split(const Ptr &x, const PairType &v);
 
