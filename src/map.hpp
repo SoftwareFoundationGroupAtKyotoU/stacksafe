@@ -7,6 +7,7 @@ namespace stacksafe {
 class NodeSet;
 
 class Map {
+  using PairType = Tree::PairType;
   TreePtr tree_;
 
  public:

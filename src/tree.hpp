@@ -7,7 +7,6 @@
 namespace stacksafe {
 class NodeSet;
 class Tree;
-using PairType = std::tuple<const Node, const Node>;
 using TreePtr = std::shared_ptr<const Tree>;
 
 class Header {
@@ -27,6 +26,7 @@ class Header {
 class Tree : private Header {
  public:
   using Ptr = std::shared_ptr<const Tree>;
+  using PairType = std::tuple<const Node, const Node>;
   using Triple = std::tuple<Ptr, bool, Ptr>;
   const PairType &value() const;
   const Ptr left() const;
