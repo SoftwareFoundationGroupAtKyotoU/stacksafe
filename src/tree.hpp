@@ -54,13 +54,13 @@ class TreeBase : private Header {
   static Ptr as_black(const Ptr &x);
   static bool is_black(const Ptr &x);
   static bool is_red_twice(const Ptr &x);
-  static bool is_valid(const Ptr &x);
   static Ptr join_left(const Ptr &x, const PairType &v, const Ptr &y);
   static Ptr join_right(const Ptr &x, const PairType &v, const Ptr &y);
 
  private:
   static std::size_t calc_rank(const Ptr &x);
   static std::size_t calc_size(const Ptr &x, const Ptr &y);
+  static bool is_valid(const Ptr &x);
 };
 
 }  // namespace rbtree

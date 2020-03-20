@@ -91,27 +91,6 @@ bool TreeBase::is_black(const Ptr &x) {
 bool TreeBase::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left()) && is_black(x->right()));
 }
-bool TreeBase::is_valid(const Ptr &x) {
-  const auto get_value = [](const Ptr &x) { return x ? &x->value() : nullptr; };
-  const auto valid_rank = [](const Ptr &x, const Ptr &y) {
-    return rank(x) == rank(y) + (is_black(y) ? 1 : 0);
-  };
-  const auto valid_size = [](const Ptr &x) {
-    return size(x) == size(x->left()) + size(x->right()) + 1;
-  };
-  if (x && is_valid(x->left()) && is_valid(x->right())) {
-    const auto lv = get_value(x->left());
-    const auto rv = get_value(x->right());
-    const auto lb = !lv || (*lv < x->value());
-    const auto rb = !rv || (x->value() < *rv);
-    const auto lk = valid_rank(x, x->left());
-    const auto rk = valid_rank(x, x->right());
-    const auto s = valid_size(x);
-    const auto c = is_black(x) || (is_black(x->left()) && is_black(x->right()));
-    return lb && rb && lk && rk && s && c;
-  }
-  return !x;
-}
 auto TreeBase::join_left(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   assert(rank(x) <= rank(y));
   Ptr t = nullptr;
@@ -162,6 +141,21 @@ std::size_t TreeBase::calc_rank(const Ptr &x) {
 }
 std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
   return size(x) + size(y) + 1;
+}
+bool TreeBase::is_valid(const Ptr &x) {
+  if (x) {
+    const auto v = x->value();
+    const auto l = x->left();
+    const auto r = x->right();
+    const auto vl = l ? l->value() < v : true;
+    const auto vr = r ? v < r->value() : true;
+    const auto kl = rank(x) == calc_rank(l);
+    const auto kr = rank(x) == calc_rank(r);
+    const auto s = size(x) == size(l) + size(r) + 1;
+    const auto c = is_black(x) || (is_black(l) && is_black(r));
+    return is_valid(l) && is_valid(r) && vl && vr && kl && kr && s && c;
+  }
+  return true;
 }
 
 }  // namespace rbtree
