@@ -73,20 +73,6 @@ auto TreeBase::split(const Ptr &x, const PairType &v) -> Result {
   }
 }
 
-void TreeBase::find(const Ptr &x, const Node &key, NodeSet &values) {
-  if (x) {
-    const auto [k, v] = x->value();
-    if (k < key) {
-      find(x->right(), key, values);
-    } else if (key < k) {
-      find(x->left(), key, values);
-    } else {
-      find(x->left(), key, values);
-      values.merge(NodeSet{v});
-      find(x->right(), key, values);
-    }
-  }
-}
 auto TreeBase::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
     -> Ptr {
   return std::make_shared<Helper>(l, r, c, v);
