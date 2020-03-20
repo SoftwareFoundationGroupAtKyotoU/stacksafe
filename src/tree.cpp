@@ -26,7 +26,7 @@ TreeBase::TreeBase(const Ptr &l, const Ptr &r, Color c, const PairType &v)
       right_{r},
       value_{v} {}
 auto TreeBase::make(const Node &k, const Node &v) -> Ptr {
-  return branch(Color::Red, nullptr, std::make_tuple(k, v), nullptr);
+  return red(nullptr, std::make_tuple(k, v), nullptr);
 }
 auto TreeBase::left() const -> const Ptr {
   return left_;
@@ -48,9 +48,8 @@ int TreeBase::rank(const Ptr &x) {
 }
 auto TreeBase::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   if (rank(x) == rank(y)) {
-    return (is_black(x) || is_black(y)) ?
-               branch(Color::Red, as_black(x), v, as_black(y)) :
-               branch(Color::Black, x, v, y);
+    return (is_black(x) || is_black(y)) ? red(as_black(x), v, as_black(y)) :
+                                          black(x, v, y);
   } else {
     const auto z =
         (rank(x) < rank(y)) ? join_left(x, v, y) : join_right(x, v, y);
@@ -81,9 +80,14 @@ auto TreeBase::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
     -> Ptr {
   return std::make_shared<Helper>(l, r, c, v);
 }
+auto TreeBase::black(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
+  return branch(Color::Black, l, v, r);
+}
+auto TreeBase::red(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
+  return branch(Color::Red, l, v, r);
+}
 auto TreeBase::as_black(const Ptr &x) -> Ptr {
-  return is_black(x) ? x :
-                       branch(Color::Black, x->left(), x->value(), x->right());
+  return is_black(x) ? x : black(x->left(), x->value(), x->right());
 }
 bool TreeBase::is_black(const Ptr &x) {
   return x ? x->Header::is_black() : true;
@@ -102,11 +106,12 @@ auto TreeBase::join_left(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
     const auto z = join_left(x, v, l);
     if (is_red_twice(z)) {
       assert(is_black(y) && !is_black(l));
+      assert(is_black(z->right()));
       if (is_black(r)) {
-        t = branch(Color::Red, z->right(), w, r);
-        t = branch(Color::Black, z->left(), z->value(), t);
+        t = red(z->right(), w, r);
+        t = black(z->left(), z->value(), t);
       } else {
-        t = branch(Color::Red, as_black(z), w, as_black(r));
+        t = red(as_black(z), w, as_black(r));
       }
     } else {
       t = branch(y->color(), z, w, r);
@@ -114,7 +119,7 @@ auto TreeBase::join_left(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
     }
   } else {
     assert(is_black(y));
-    t = branch(Color::Red, as_black(x), v, y);
+    t = red(as_black(x), v, y);
   }
   return t;
 }
@@ -126,15 +131,15 @@ auto TreeBase::join_right(const Ptr &x, const PairType &v, const Ptr &y)
     const auto z = join_right(x->right(), v, y);
     if (is_red_twice(z)) {
       if (is_black(l)) {
-        const auto t = branch(Color::Red, l, w, z->left());
-        return branch(Color::Black, t, z->value(), z->right());
+        const auto t = red(l, w, z->left());
+        return black(t, z->value(), z->right());
       } else {
-        return branch(Color::Red, as_black(l), w, as_black(z));
+        return red(as_black(l), w, as_black(z));
       }
     }
     return branch(x->color(), l, w, z);
   }
-  return branch(Color::Red, x, v, as_black(y));
+  return red(x, v, as_black(y));
 }
 std::size_t TreeBase::calc_rank(const Ptr &x) {
   return rank(x) + (is_black(x) ? 1 : 0);

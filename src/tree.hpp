@@ -51,6 +51,8 @@ class TreeBase : private Header {
   };
   using Helper = MakeSharedHelper<TreeBase>;
   static Ptr branch(Color c, const Ptr &l, const PairType &v, const Ptr &r);
+  static Ptr black(const Ptr &l, const PairType &v, const Ptr &r);
+  static Ptr red(const Ptr &l, const PairType &v, const Ptr &r);
   static Ptr as_black(const Ptr &x);
   static bool is_black(const Ptr &x);
   static bool is_red_twice(const Ptr &x);
