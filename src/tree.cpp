@@ -25,8 +25,8 @@ TreeBase::TreeBase(const Ptr &l, const Ptr &r, Color c, const PairType &v)
       left_{l},
       right_{r},
       value_{v} {}
-auto TreeBase::single(const PairType &v) -> Ptr {
-  return branch(nullptr, nullptr, true, v);
+auto TreeBase::make(const Node &k, const Node &v) -> Ptr {
+  return branch(Color::Red, nullptr, std::make_tuple(k, v), nullptr);
 }
 auto TreeBase::left() const -> const Ptr {
   return left_;

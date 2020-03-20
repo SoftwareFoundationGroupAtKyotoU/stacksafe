@@ -4,8 +4,7 @@
 namespace stacksafe {
 
 void Map::add(const Node& k, const Node& v) {
-  const auto t = Tree::single(std::make_tuple(k, v));
-  tree_ = merge(tree_, t);
+  tree_ = merge(tree_, Tree::make(k, v));
 }
 bool Map::exists(const Node& k, const Node& v) const {
   return exists(tree_, std::make_tuple(k, v));
