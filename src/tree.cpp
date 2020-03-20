@@ -3,7 +3,6 @@
 #include "graph.hpp"
 
 namespace stacksafe {
-namespace rbtree {
 
 Header::Header(Color c, std::size_t k, std::size_t s)
     : rank_{combine(c, k)}, size_{s} {}
@@ -176,5 +175,4 @@ bool Tree::is_valid(const Ptr &x, bool color_check) {
              true;
 }
 
-}  // namespace rbtree
 }  // namespace stacksafe

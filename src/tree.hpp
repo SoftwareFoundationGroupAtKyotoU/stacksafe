@@ -6,7 +6,6 @@
 
 namespace stacksafe {
 class NodeSet;
-namespace rbtree {
 class Tree;
 using PairType = std::tuple<const Node, const Node>;
 using TreePtr = std::shared_ptr<const Tree>;
@@ -69,9 +68,6 @@ class Tree : private Header {
   static bool is_valid(const Ptr &x, bool color_check);
 };
 
-}  // namespace rbtree
-
-using TreePtr = std::shared_ptr<const rbtree::Tree>;
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_6F2C02D5_616D_48CD_8A43_B837E2ADE127
