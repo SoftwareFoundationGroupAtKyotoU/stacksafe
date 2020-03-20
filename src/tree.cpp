@@ -153,8 +153,8 @@ std::size_t Tree::calc_size(const Ptr &x, const Ptr &y) {
   return size(x) + size(y) + 1;
 }
 bool Tree::is_value_valid(const Ptr &x) {
-  return x ? ((x->left() ? x->left()->value() < v : true) &&
-              (x->right() ? v < x->right()->value() : true)) :
+  return x ? ((x->left() ? x->left()->value() < x->value() : true) &&
+              (x->right() ? x->value() < x->right()->value() : true)) :
              true;
 }
 bool Tree::is_rank_valid(const Ptr &x) {
