@@ -19,13 +19,8 @@ std::size_t Header::combine(Color c, std::size_t k) {
   return (k << 1) | static_cast<std::size_t>(c);
 }
 
-Tree::Tree(const Ptr &l, const Ptr &r, Color c, const PairType &v)
-    : Header{c, calc_rank(l), calc_size(l, r)},
-      left_{l},
-      right_{r},
-      value_{v} {}
-auto Tree::make(const Node &k, const Node &v) -> Ptr {
-  return red(nullptr, std::make_tuple(k, v), nullptr);
+auto Tree::value() const -> const PairType & {
+  return value_;
 }
 auto Tree::left() const -> const Ptr {
   return left_;
@@ -36,8 +31,8 @@ auto Tree::right() const -> const Ptr {
 auto Tree::color() const -> Color {
   return Header::is_black() ? Color::Black : Color::Red;
 }
-auto Tree::value() const -> const PairType & {
-  return value_;
+auto Tree::make(const Node &k, const Node &v) -> Ptr {
+  return red(nullptr, std::make_tuple(k, v), nullptr);
 }
 std::size_t Tree::size(const Ptr &x) {
   return x ? x->Header::size() : 0;
@@ -75,6 +70,11 @@ auto Tree::split(const Ptr &x, const PairType &v) -> Triple {
   return {l, b, r};
 }
 
+Tree::Tree(const Ptr &l, const Ptr &r, Color c, const PairType &v)
+    : Header{c, calc_rank(l), calc_size(l, r)},
+      left_{l},
+      right_{r},
+      value_{v} {}
 auto Tree::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
     -> Ptr {
   const auto t = std::make_shared<Helper>(l, r, c, v);

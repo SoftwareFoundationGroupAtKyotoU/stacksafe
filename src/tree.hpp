@@ -25,30 +25,21 @@ class Header {
 };
 
 class Tree : private Header {
+ public:
   using Ptr = std::shared_ptr<const Tree>;
   using Triple = std::tuple<Ptr, bool, Ptr>;
-  const Ptr left_, right_;
-  PairType value_;
-
- public:
-  Tree(const Ptr &l, const Ptr &r, Color c, const PairType &v);
-  static Ptr make(const Node &k, const Node &v);
+  const PairType &value() const;
   const Ptr left() const;
   const Ptr right() const;
   Color color() const;
-  const PairType &value() const;
+  static Ptr make(const Node &k, const Node &v);
   static std::size_t size(const Ptr &x);
   static std::size_t rank(const Ptr &x);
   static Ptr join(const Ptr &x, const PairType &v, const Ptr &y);
   static Triple split(const Ptr &x, const PairType &v);
 
  private:
-  template <typename S>
-  struct MakeSharedHelper : public S {
-    template <typename... T>
-    explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
-  };
-  using Helper = MakeSharedHelper<Tree>;
+  Tree(const Ptr &l, const Ptr &r, Color c, const PairType &v);
   static Ptr branch(Color c, const Ptr &l, const PairType &v, const Ptr &r);
   static Ptr black(const Ptr &l, const PairType &v, const Ptr &r);
   static Ptr red(const Ptr &l, const PairType &v, const Ptr &r);
@@ -57,8 +48,6 @@ class Tree : private Header {
   static bool is_red_twice(const Ptr &x);
   static Ptr join_left(const Ptr &x, const PairType &v, const Ptr &y);
   static Ptr join_right(const Ptr &x, const PairType &v, const Ptr &y);
-
- private:
   static std::size_t calc_rank(const Ptr &x);
   static std::size_t calc_size(const Ptr &x, const Ptr &y);
   static bool is_value_valid(const Ptr &x);
@@ -66,6 +55,16 @@ class Tree : private Header {
   static bool is_size_valid(const Ptr &x);
   static bool is_color_valid(const Ptr &x);
   static bool is_valid(const Ptr &x, bool color_check);
+
+ private:
+  template <typename S>
+  struct MakeSharedHelper : public S {
+    template <typename... T>
+    explicit MakeSharedHelper(T &&... args) : S{std::forward<T>(args)...} {}
+  };
+  using Helper = MakeSharedHelper<Tree>;
+  const Ptr left_, right_;
+  PairType value_;
 };
 
 }  // namespace stacksafe
