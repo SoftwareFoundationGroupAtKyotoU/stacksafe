@@ -58,17 +58,23 @@ auto TreeBase::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   }
 }
 auto TreeBase::split(const Ptr &x, const PairType &v) -> Result {
-  if (!x) {
-    return {nullptr, false, nullptr};
-  } else if (v < x->value()) {
-    const auto [l, b, r] = split(x->left(), v);
-    return {l, b, join(r, x->value(), x->right())};
-  } else if (x->value() < v) {
-    const auto [l, b, r] = split(x->right(), v);
-    return {join(x->left(), x->value(), l), b, r};
-  } else {
-    return {x->left(), true, x->right()};
+  Ptr l = nullptr, r = nullptr;
+  bool b = false;
+  if (x) {
+    const auto xv = x->value();
+    const auto xl = x->left();
+    const auto xr = x->right();
+    if (v < xv) {
+      std::tie(l, b, r) = split(xl, v);
+      r = join(r, xv, xr);
+    } else if (xv < v) {
+      std::tie(l, b, r) = split(xr, v);
+      l = join(xl, xv, l);
+    } else {
+      return {xl, true, xr};
+    }
   }
+  return {l, b, r};
 }
 
 auto TreeBase::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
