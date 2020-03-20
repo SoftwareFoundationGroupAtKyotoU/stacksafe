@@ -17,7 +17,7 @@ bool Header::is_black() const {
   return rank_ & 1;
 }
 std::size_t Header::combine(Color c, std::size_t k) {
-  return (k << 1) & static_cast<std::size_t>(c);
+  return (k << 1) | static_cast<std::size_t>(c);
 }
 
 Tree::Tree(const Ptr &l, const Ptr &r, Color c, const PairType &v)
