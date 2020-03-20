@@ -150,15 +150,17 @@ bool TreeBase::is_rank_valid(const Ptr &x) {
   return !x ||
          (rank(x) == calc_rank(x->left()) && rank(x) == calc_rank(x->right()));
 }
+bool TreeBase::is_size_valid(const Ptr &x) {
+  return !x || size(x) == size(x->left()) + size(x->right()) + 1;
+}
 bool TreeBase::is_valid(const Ptr &x) {
   if (x) {
     const auto v = x->value();
     const auto l = x->left();
     const auto r = x->right();
-    const auto s = size(x) == size(l) + size(r) + 1;
     const auto c = is_black(x) || (is_black(l) && is_black(r));
     return is_valid(l) && is_valid(r) && is_value_valid(x) &&
-           is_rank_valid(x) && s && c;
+           is_rank_valid(x) && is_size_valid(x) && c;
   }
   return true;
 }

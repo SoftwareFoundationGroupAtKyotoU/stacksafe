@@ -62,6 +62,7 @@ class TreeBase : private Header {
   static std::size_t calc_size(const Ptr &x, const Ptr &y);
   static bool is_value_valid(const Ptr &x);
   static bool is_rank_valid(const Ptr &x);
+  static bool is_size_valid(const Ptr &x);
   static bool is_valid(const Ptr &x);
 };
 
