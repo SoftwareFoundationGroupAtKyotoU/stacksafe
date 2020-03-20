@@ -27,7 +27,7 @@ class Header {
 
 class TreeBase : private Header {
   using Ptr = std::shared_ptr<const TreeBase>;
-  using Result = std::tuple<Ptr, bool, Ptr>;
+  using Triple = std::tuple<Ptr, bool, Ptr>;
   const Ptr left_, right_;
   PairType value_;
 
@@ -41,7 +41,7 @@ class TreeBase : private Header {
   static int size(const Ptr &x);
   static int rank(const Ptr &x);
   static Ptr join(const Ptr &x, const PairType &v, const Ptr &y);
-  static Result split(const Ptr &x, const PairType &v);
+  static Triple split(const Ptr &x, const PairType &v);
 
  private:
   template <typename S>
