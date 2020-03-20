@@ -85,12 +85,6 @@ auto TreeBase::as_black(const Ptr &x) -> Ptr {
   return is_black(x) ? x :
                        branch(Color::Black, x->left(), x->value(), x->right());
 }
-auto TreeBase::branch(const Ptr &l, const Ptr &r, bool b, PairType v) -> Ptr {
-  return std::make_shared<Helper>(l, r, b ? Color::Black : Color::Red, v);
-}
-auto TreeBase::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
-  return branch(l, r, b, c->value());
-}
 bool TreeBase::is_black(const Ptr &x) {
   return x ? x->Header::is_black() : true;
 }
