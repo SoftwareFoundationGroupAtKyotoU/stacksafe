@@ -130,24 +130,25 @@ bool TreeBase::is_valid(const Ptr &x) {
   }
   return !x;
 }
-auto TreeBase::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
+auto TreeBase::join_left(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   assert(rank(x) <= rank(y));
   Ptr t = nullptr;
   if (rank(x) < rank(y)) {
     assert(y);
+    const auto w = y->value();
     const auto l = y->left();
     const auto r = y->right();
     const auto z = join_left(x, v, l);
     if (is_red_twice(z)) {
       assert(is_black(y) && !is_black(l));
       if (is_black(r)) {
-        t = branch(Color::Red, z->right(), y->value(), r);
+        t = branch(Color::Red, z->right(), w, r);
         t = branch(Color::Black, z->left(), z->value(), t);
       } else {
-        t = branch(Color::Red, as_black(z), y->value(), as_black(r));
+        t = branch(Color::Red, as_black(z), w, as_black(r));
       }
     } else {
-      t = branch(y->color(), z, y->value(), r);
+      t = branch(y->color(), z, w, r);
       assert(is_black(y) || is_black(z) || is_red_twice(t));
     }
   } else {
