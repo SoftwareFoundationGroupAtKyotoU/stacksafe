@@ -115,7 +115,7 @@ auto TreeBase::as_root(const Ptr &x) -> Ptr {
   return is_black(x) ? x : black(x);
 }
 bool TreeBase::is_black(const Ptr &x) {
-  return x ? x->is_black() : true;
+  return x ? x->Header::is_black() : true;
 }
 bool TreeBase::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left()) && is_black(x->right()));

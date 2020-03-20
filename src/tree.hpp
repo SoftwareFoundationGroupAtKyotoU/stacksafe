@@ -33,7 +33,6 @@ class TreeBase : private Header {
 
  public:
   TreeBase(const Ptr &l, const Ptr &r, Color c, const PairType &v);
-  using Header::rank, Header::size, Header::is_black;
   static Ptr single(PairType v);
   const Ptr left() const;
   const Ptr right() const;
