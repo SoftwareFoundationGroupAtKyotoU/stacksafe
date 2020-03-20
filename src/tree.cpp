@@ -20,33 +20,33 @@ std::size_t Header::combine(Color c, std::size_t k) {
   return (k << 1) & static_cast<std::size_t>(c);
 }
 
-TreeBase::TreeBase(const Ptr &l, const Ptr &r, Color c, const PairType &v)
+Tree::Tree(const Ptr &l, const Ptr &r, Color c, const PairType &v)
     : Header{c, calc_rank(l), calc_size(l, r)},
       left_{l},
       right_{r},
       value_{v} {}
-auto TreeBase::make(const Node &k, const Node &v) -> Ptr {
+auto Tree::make(const Node &k, const Node &v) -> Ptr {
   return red(nullptr, std::make_tuple(k, v), nullptr);
 }
-auto TreeBase::left() const -> const Ptr {
+auto Tree::left() const -> const Ptr {
   return left_;
 }
-auto TreeBase::right() const -> const Ptr {
+auto Tree::right() const -> const Ptr {
   return right_;
 }
-auto TreeBase::color() const -> Color {
+auto Tree::color() const -> Color {
   return Header::is_black() ? Color::Black : Color::Red;
 }
-auto TreeBase::value() const -> const PairType & {
+auto Tree::value() const -> const PairType & {
   return value_;
 }
-int TreeBase::size(const Ptr &x) {
+int Tree::size(const Ptr &x) {
   return x ? x->Header::size() : 0;
 }
-int TreeBase::rank(const Ptr &x) {
+int Tree::rank(const Ptr &x) {
   return x ? x->Header::rank() : 0;
 }
-auto TreeBase::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
+auto Tree::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   if (rank(x) == rank(y)) {
     return (is_black(x) || is_black(y)) ? red(as_black(x), v, as_black(y)) :
                                           black(x, v, y);
@@ -56,7 +56,7 @@ auto TreeBase::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
     return is_red_twice(z) ? as_black(z) : z;
   }
 }
-auto TreeBase::split(const Ptr &x, const PairType &v) -> Result {
+auto Tree::split(const Ptr &x, const PairType &v) -> Result {
   Ptr l = nullptr, r = nullptr;
   bool b = false;
   if (x) {
@@ -76,32 +76,32 @@ auto TreeBase::split(const Ptr &x, const PairType &v) -> Result {
   return {l, b, r};
 }
 
-auto TreeBase::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
+auto Tree::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
     -> Ptr {
   const auto t = std::make_shared<Helper>(l, r, c, v);
   assert(is_valid(t, false));
   return t;
 }
-auto TreeBase::black(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
+auto Tree::black(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
   const auto t = std::make_shared<Helper>(l, r, Color::Black, v);
   assert(is_valid(t, true));
   return t;
 }
-auto TreeBase::red(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
+auto Tree::red(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
   const auto t = std::make_shared<Helper>(l, r, Color::Red, v);
   assert(is_valid(t, true));
   return t;
 }
-auto TreeBase::as_black(const Ptr &x) -> Ptr {
+auto Tree::as_black(const Ptr &x) -> Ptr {
   return is_black(x) ? x : black(x->left(), x->value(), x->right());
 }
-bool TreeBase::is_black(const Ptr &x) {
+bool Tree::is_black(const Ptr &x) {
   return x ? x->Header::is_black() : true;
 }
-bool TreeBase::is_red_twice(const Ptr &x) {
+bool Tree::is_red_twice(const Ptr &x) {
   return !is_black(x) && !(is_black(x->left()) && is_black(x->right()));
 }
-auto TreeBase::join_left(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
+auto Tree::join_left(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   assert(rank(x) <= rank(y));
   Ptr t = nullptr;
   if (rank(x) < rank(y)) {
@@ -129,8 +129,7 @@ auto TreeBase::join_left(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   }
   return t;
 }
-auto TreeBase::join_right(const Ptr &x, const PairType &v, const Ptr &y)
-    -> Ptr {
+auto Tree::join_right(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   if (rank(y) < rank(x)) {
     const auto w = x->value();
     const auto l = x->left();
@@ -147,29 +146,29 @@ auto TreeBase::join_right(const Ptr &x, const PairType &v, const Ptr &y)
   }
   return red(x, v, as_black(y));
 }
-std::size_t TreeBase::calc_rank(const Ptr &x) {
+std::size_t Tree::calc_rank(const Ptr &x) {
   return rank(x) + (is_black(x) ? 1 : 0);
 }
-std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
+std::size_t Tree::calc_size(const Ptr &x, const Ptr &y) {
   return size(x) + size(y) + 1;
 }
-bool TreeBase::is_value_valid(const Ptr &x) {
+bool Tree::is_value_valid(const Ptr &x) {
   return x ? ((x->left() ? x->left()->value() < v : true) &&
               (x->right() ? v < x->right()->value() : true)) :
              true;
 }
-bool TreeBase::is_rank_valid(const Ptr &x) {
+bool Tree::is_rank_valid(const Ptr &x) {
   return x ? (rank(x) == calc_rank(x->left()) &&
               rank(x) == calc_rank(x->right())) :
              true;
 }
-bool TreeBase::is_size_valid(const Ptr &x) {
+bool Tree::is_size_valid(const Ptr &x) {
   return x ? size(x) == size(x->left()) + size(x->right()) + 1 : true;
 }
-bool TreeBase::is_color_valid(const Ptr &x) {
+bool Tree::is_color_valid(const Ptr &x) {
   return is_black(x) ? true : is_black(x->left()) && is_black(x->right());
 }
-bool TreeBase::is_valid(const Ptr &x, bool color_check) {
+bool Tree::is_valid(const Ptr &x, bool color_check) {
   return x ? is_valid(x->left()) && is_valid(x->right()) &&
                  is_valid(x->left()) && is_valid(x->right()) &&
                  is_value_valid(x) && is_rank_valid(x) && is_size_valid(x) &&
