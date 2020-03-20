@@ -149,21 +149,18 @@ auto TreeBase::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
     if (is_red_twice(z)) {
       assert(is_black(y) && !is_black(l));
       if (is_black(r)) {
-        t = black(z->left(), z, red(z->right(), y, r));
+        t = branch(Color::Red, z->right(), y->value(), r);
+        t = branch(Color::Black, z->left(), z->value(), t);
       } else {
-        t = red(as_black(z), y, as_black(r));
+        t = branch(Color::Red, as_black(z), y->value(), as_black(r));
       }
     } else {
-      if (is_black(y)) {
-        t = black(z, y, r);
-      } else {
-        t = red(z, y, r);
-        assert(is_black(z) || is_red_twice(t));
-      }
+      t = branch(is_black(y) ? Color::Black : Color::Red, z, y->value(), r);
+      assert(is_black(y) || is_black(z) || is_red_twice(t));
     }
   } else {
     assert(is_black(y));
-    t = red(as_root(x), v, y);
+    t = branch(Color::Red, as_black(x), v, y);
   }
   return t;
 }
