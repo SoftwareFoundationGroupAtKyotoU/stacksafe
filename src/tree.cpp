@@ -43,6 +43,9 @@ auto TreeBase::value() const -> const PairType & {
 int TreeBase::size(const Ptr &x) {
   return x ? x->Header::size() : 0;
 }
+int TreeBase::rank(const Ptr &x) {
+  return x ? x->Header::rank() : 0;
+}
 auto TreeBase::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   if (less_rank(x, y)) {
     const auto z = join_left(x, v, y);
@@ -123,7 +126,7 @@ bool TreeBase::is_red_twice(const Ptr &x) {
 bool TreeBase::is_valid(const Ptr &x) {
   const auto get_value = [](const Ptr &x) { return x ? &x->value() : nullptr; };
   const auto valid_rank = [](const Ptr &x, const Ptr &y) {
-    return get_rank(x) == get_rank(y) + (is_black(y) ? 1 : 0);
+    return rank(x) == rank(y) + (is_black(y) ? 1 : 0);
   };
   const auto valid_size = [](const Ptr &x) {
     return size(x) == size(x->left()) + size(x->right()) + 1;
@@ -142,7 +145,7 @@ bool TreeBase::is_valid(const Ptr &x) {
   return !x;
 }
 auto TreeBase::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
-  assert(get_rank(x) <= get_rank(y));
+  assert(rank(x) <= rank(y));
   Ptr t = nullptr;
   if (less_rank(x, y)) {
     assert(y);
@@ -179,14 +182,11 @@ auto TreeBase::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   }
   return red(x, v, as_root(y));
 }
-int TreeBase::get_rank(const Ptr &x) {
-  return x ? x->rank() : 0;
-}
 bool TreeBase::less_rank(const Ptr &x, const Ptr &y) {
-  return get_rank(x) < get_rank(y);
+  return rank(x) < rank(y);
 }
 std::size_t TreeBase::calc_rank(const Ptr &x) {
-  return get_rank(x) + (is_black(x) ? 1 : 0);
+  return rank(x) + (is_black(x) ? 1 : 0);
 }
 std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
   return size(x) + size(y) + 1;

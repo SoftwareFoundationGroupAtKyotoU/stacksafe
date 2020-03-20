@@ -39,6 +39,7 @@ class TreeBase : private Header {
   Color color() const;
   const PairType &value() const;
   static int size(const Ptr &x);
+  static int rank(const Ptr &x);
   static Ptr join(const Ptr &x, PairType v, const Ptr &y);
   static Result split(const Ptr &x, PairType v);
 
@@ -64,7 +65,6 @@ class TreeBase : private Header {
   static bool is_valid(const Ptr &x);
   static Ptr join_left(const Ptr &x, PairType v, const Ptr &y);
   static Ptr join_right(const Ptr &x, PairType v, const Ptr &y);
-  static int get_rank(const Ptr &x);
   static bool less_rank(const Ptr &x, const Ptr &y);
 
  private:
