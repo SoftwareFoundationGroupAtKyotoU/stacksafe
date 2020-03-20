@@ -54,8 +54,6 @@ class TreeBase : private Header {
   static Ptr as_black(const Ptr &x);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
-  static Ptr black(const Ptr &l, const Ptr &c, const Ptr &r);
-  static Ptr black(const Ptr &x);
   static bool is_black(const Ptr &x);
   static bool is_red_twice(const Ptr &x);
   static bool is_valid(const Ptr &x);

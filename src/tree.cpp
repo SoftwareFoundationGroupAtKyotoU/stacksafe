@@ -91,13 +91,6 @@ auto TreeBase::branch(const Ptr &l, const Ptr &r, bool b, PairType v) -> Ptr {
 auto TreeBase::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
   return branch(l, r, b, c->value());
 }
-auto TreeBase::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
-  return branch(l, c, r, true);
-}
-auto TreeBase::black(const Ptr &x) -> Ptr {
-  assert(!is_black(x));
-  return black(x->left(), x, x->right());
-}
 bool TreeBase::is_black(const Ptr &x) {
   return x ? x->Header::is_black() : true;
 }
