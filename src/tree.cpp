@@ -34,6 +34,9 @@ auto TreeBase::left() const -> const Ptr {
 auto TreeBase::right() const -> const Ptr {
   return right_;
 }
+auto TreeBase::color() const -> Color {
+  return Header::is_black() ? Color::Black : Color::Red;
+}
 auto TreeBase::value() const -> const PairType & {
   return value_;
 }
@@ -155,7 +158,7 @@ auto TreeBase::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
         t = branch(Color::Red, as_black(z), y->value(), as_black(r));
       }
     } else {
-      t = branch(is_black(y) ? Color::Black : Color::Red, z, y->value(), r);
+      t = branch(y->color(), z, y->value(), r);
       assert(is_black(y) || is_black(z) || is_red_twice(t));
     }
   } else {

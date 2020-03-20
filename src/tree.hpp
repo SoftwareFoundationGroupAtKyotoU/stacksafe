@@ -37,6 +37,7 @@ class TreeBase : private Header {
   static Ptr single(PairType v);
   const Ptr left() const;
   const Ptr right() const;
+  Color color() const;
   const PairType &value() const;
   static int get_size(const Ptr &x);
   static Ptr join(const Ptr &x, PairType v, const Ptr &y);
