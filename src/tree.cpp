@@ -25,7 +25,7 @@ TreeBase::TreeBase(const Ptr &l, const Ptr &r, Color c, const PairType &v)
       left_{l},
       right_{r},
       value_{v} {}
-auto TreeBase::single(PairType v) -> Ptr {
+auto TreeBase::single(const PairType &v) -> Ptr {
   return branch(nullptr, nullptr, true, v);
 }
 auto TreeBase::left() const -> const Ptr {
@@ -46,7 +46,7 @@ int TreeBase::size(const Ptr &x) {
 int TreeBase::rank(const Ptr &x) {
   return x ? x->Header::rank() : 0;
 }
-auto TreeBase::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
+auto TreeBase::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
   if (less_rank(x, y)) {
     const auto z = join_left(x, v, y);
     return is_red_twice(z) ? as_root(z) : z;
@@ -59,7 +59,7 @@ auto TreeBase::join(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
     return branch(x, y, true, v);
   }
 }
-auto TreeBase::split(const Ptr &x, PairType v) -> Result {
+auto TreeBase::split(const Ptr &x, const PairType &v) -> Result {
   if (!x) {
     return {nullptr, false, nullptr};
   } else if (v < x->value()) {

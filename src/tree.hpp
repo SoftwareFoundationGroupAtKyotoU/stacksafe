@@ -33,15 +33,15 @@ class TreeBase : private Header {
 
  public:
   TreeBase(const Ptr &l, const Ptr &r, Color c, const PairType &v);
-  static Ptr single(PairType v);
+  static Ptr single(const PairType &v);
   const Ptr left() const;
   const Ptr right() const;
   Color color() const;
   const PairType &value() const;
   static int size(const Ptr &x);
   static int rank(const Ptr &x);
-  static Ptr join(const Ptr &x, PairType v, const Ptr &y);
-  static Result split(const Ptr &x, PairType v);
+  static Ptr join(const Ptr &x, const PairType &v, const Ptr &y);
+  static Result split(const Ptr &x, const PairType &v);
 
  private:
   template <typename S>
