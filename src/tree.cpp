@@ -142,18 +142,21 @@ std::size_t TreeBase::calc_rank(const Ptr &x) {
 std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
   return size(x) + size(y) + 1;
 }
+bool TreeBase::is_value_valid(const Ptr &x) {
+  return !x || ((x->left() ? x->left()->value() < v : true) &&
+                (x->right() ? v < x->right()->value() : true));
+}
 bool TreeBase::is_valid(const Ptr &x) {
   if (x) {
     const auto v = x->value();
     const auto l = x->left();
     const auto r = x->right();
-    const auto vl = l ? l->value() < v : true;
-    const auto vr = r ? v < r->value() : true;
     const auto kl = rank(x) == calc_rank(l);
     const auto kr = rank(x) == calc_rank(r);
     const auto s = size(x) == size(l) + size(r) + 1;
     const auto c = is_black(x) || (is_black(l) && is_black(r));
-    return is_valid(l) && is_valid(r) && vl && vr && kl && kr && s && c;
+    return is_valid(l) && is_valid(r) && is_value_valid(x) && kl && kr && s &&
+           c;
   }
   return true;
 }
