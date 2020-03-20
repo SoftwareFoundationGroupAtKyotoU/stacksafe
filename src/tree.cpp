@@ -47,10 +47,10 @@ int TreeBase::rank(const Ptr &x) {
   return x ? x->Header::rank() : 0;
 }
 auto TreeBase::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
-  if (less_rank(x, y)) {
+  if (rank(x) < rank(y)) {
     const auto z = join_left(x, v, y);
     return is_red_twice(z) ? as_root(z) : z;
-  } else if (less_rank(y, x)) {
+  } else if (rank(y) < rank(x)) {
     const auto z = join_right(x, v, y);
     return is_red_twice(z) ? as_root(z) : z;
   } else if (is_black(x) || is_black(y)) {
@@ -133,7 +133,7 @@ bool TreeBase::is_valid(const Ptr &x) {
 auto TreeBase::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   assert(rank(x) <= rank(y));
   Ptr t = nullptr;
-  if (less_rank(x, y)) {
+  if (rank(x) < rank(y)) {
     assert(y);
     const auto l = y->left();
     const auto r = y->right();
@@ -157,7 +157,7 @@ auto TreeBase::join_left(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
   return t;
 }
 auto TreeBase::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
-  if (less_rank(y, x)) {
+  if (rank(y) < rank(x)) {
     const auto l = x->left();
     const auto z = join_right(x->right(), v, y);
     if (is_red_twice(z)) {
@@ -167,9 +167,6 @@ auto TreeBase::join_right(const Ptr &x, PairType v, const Ptr &y) -> Ptr {
     return is_black(x) ? black(l, x, z) : red(l, x, z);
   }
   return red(x, v, as_root(y));
-}
-bool TreeBase::less_rank(const Ptr &x, const Ptr &y) {
-  return rank(x) < rank(y);
 }
 std::size_t TreeBase::calc_rank(const Ptr &x) {
   return rank(x) + (is_black(x) ? 1 : 0);
