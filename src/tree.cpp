@@ -79,7 +79,7 @@ auto Tree::split(const Ptr &x, const PairType &v) -> Triple {
 auto Tree::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
     -> Ptr {
   const auto t = std::make_shared<Helper>(l, r, c, v);
-  assert(is_valid(t, false));
+  assert(is_red_twice(t) || is_valid(t, false));
   return t;
 }
 auto Tree::black(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
