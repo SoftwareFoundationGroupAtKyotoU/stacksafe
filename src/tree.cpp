@@ -143,28 +143,27 @@ std::size_t TreeBase::calc_size(const Ptr &x, const Ptr &y) {
   return size(x) + size(y) + 1;
 }
 bool TreeBase::is_value_valid(const Ptr &x) {
-  return !x || ((x->left() ? x->left()->value() < v : true) &&
-                (x->right() ? v < x->right()->value() : true));
+  return x ? ((x->left() ? x->left()->value() < v : true) &&
+              (x->right() ? v < x->right()->value() : true)) :
+             true;
 }
 bool TreeBase::is_rank_valid(const Ptr &x) {
-  return !x ||
-         (rank(x) == calc_rank(x->left()) && rank(x) == calc_rank(x->right()));
+  return x ? (rank(x) == calc_rank(x->left()) &&
+              rank(x) == calc_rank(x->right())) :
+             true;
 }
 bool TreeBase::is_size_valid(const Ptr &x) {
-  return !x || size(x) == size(x->left()) + size(x->right()) + 1;
+  return x ? size(x) == size(x->left()) + size(x->right()) + 1 : true;
 }
 bool TreeBase::is_color_valid(const Ptr &x) {
-  return is_black(x) || (is_black(x->left()) && is_black(x->right()));
+  return is_black(x) ? true : is_black(x->left()) && is_black(x->right());
 }
 bool TreeBase::is_valid(const Ptr &x) {
-  if (x) {
-    const auto v = x->value();
-    const auto l = x->left();
-    const auto r = x->right();
-    return is_valid(l) && is_valid(r) && is_value_valid(x) &&
-           is_rank_valid(x) && is_size_valid(x) && is_color_valid(x);
-  }
-  return true;
+  return x ? is_valid(x->left()) && is_valid(x->right()) &&
+                 is_valid(x->left()) && is_valid(x->right()) &&
+                 is_value_valid(x) && is_rank_valid(x) && is_size_valid(x) &&
+                 is_color_valid(x) :
+             true;
 }
 
 }  // namespace rbtree
