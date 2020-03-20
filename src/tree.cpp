@@ -47,16 +47,14 @@ int TreeBase::rank(const Ptr &x) {
   return x ? x->Header::rank() : 0;
 }
 auto TreeBase::join(const Ptr &x, const PairType &v, const Ptr &y) -> Ptr {
-  if (rank(x) < rank(y)) {
-    const auto z = join_left(x, v, y);
-    return is_red_twice(z) ? as_root(z) : z;
-  } else if (rank(y) < rank(x)) {
-    const auto z = join_right(x, v, y);
-    return is_red_twice(z) ? as_root(z) : z;
-  } else if (is_black(x) || is_black(y)) {
-    return red(as_root(x), v, as_root(y));
+  if (rank(x) == rank(y)) {
+    return (is_black(x) || is_black(y)) ?
+               branch(Color::Red, as_black(x), v, as_black(y)) :
+               branch(Color::Black, x, v, y);
   } else {
-    return branch(x, y, true, v);
+    const auto z =
+        (rank(x) < rank(y)) ? join_left(x, v, y) : join_right(x, v, y);
+    return is_red_twice(z) ? as_black(z) : z;
   }
 }
 auto TreeBase::split(const Ptr &x, const PairType &v) -> Result {
