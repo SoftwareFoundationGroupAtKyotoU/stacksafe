@@ -54,8 +54,6 @@ class TreeBase : private Header {
   static Ptr as_black(const Ptr &x);
   static Ptr branch(const Ptr &l, const Ptr &r, bool b, PairType v);
   static Ptr branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b);
-  static Ptr red(const Ptr &l, const Ptr &c, const Ptr &r);
-  static Ptr red(const Ptr &l, PairType v, const Ptr &r);
   static Ptr black(const Ptr &l, const Ptr &c, const Ptr &r);
   static Ptr black(const Ptr &x);
   static Ptr as_root(const Ptr &x);

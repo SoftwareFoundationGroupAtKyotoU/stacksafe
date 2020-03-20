@@ -91,12 +91,6 @@ auto TreeBase::branch(const Ptr &l, const Ptr &r, bool b, PairType v) -> Ptr {
 auto TreeBase::branch(const Ptr &l, const Ptr &c, const Ptr &r, bool b) -> Ptr {
   return branch(l, r, b, c->value());
 }
-auto TreeBase::red(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
-  return branch(l, c, r, false);
-}
-auto TreeBase::red(const Ptr &l, PairType v, const Ptr &r) -> Ptr {
-  return branch(l, r, false, v);
-}
 auto TreeBase::black(const Ptr &l, const Ptr &c, const Ptr &r) -> Ptr {
   return branch(l, c, r, true);
 }
