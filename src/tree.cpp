@@ -169,10 +169,10 @@ bool Tree::is_color_valid(const Ptr &x) {
   return is_black(x) ? true : is_black(x->left()) && is_black(x->right());
 }
 bool Tree::is_valid(const Ptr &x, bool color_check) {
-  return x ? is_valid(x->left()) && is_valid(x->right()) &&
-                 is_valid(x->left()) && is_valid(x->right()) &&
-                 is_value_valid(x) && is_rank_valid(x) && is_size_valid(x) &&
-                 (!color_check || is_color_valid(x)) :
+  return x ? (is_valid(x->left(), color_check) &&
+              is_valid(x->right(), color_check) && is_value_valid(x) &&
+              is_rank_valid(x) && is_size_valid(x) &&
+              (!color_check || is_color_valid(x))) :
              true;
 }
 
