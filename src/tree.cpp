@@ -98,9 +98,6 @@ auto TreeBase::black(const Ptr &x) -> Ptr {
   assert(!is_black(x));
   return black(x->left(), x, x->right());
 }
-auto TreeBase::as_root(const Ptr &x) -> Ptr {
-  return is_black(x) ? x : black(x);
-}
 bool TreeBase::is_black(const Ptr &x) {
   return x ? x->Header::is_black() : true;
 }
