@@ -78,13 +78,19 @@ auto TreeBase::split(const Ptr &x, const PairType &v) -> Result {
 
 auto TreeBase::branch(Color c, const Ptr &l, const PairType &v, const Ptr &r)
     -> Ptr {
-  return std::make_shared<Helper>(l, r, c, v);
+  const auto t = std::make_shared<Helper>(l, r, c, v);
+  assert(is_valid(t, false));
+  return t;
 }
 auto TreeBase::black(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
-  return branch(Color::Black, l, v, r);
+  const auto t = std::make_shared<Helper>(l, r, Color::Black, v);
+  assert(is_valid(t, true));
+  return t;
 }
 auto TreeBase::red(const Ptr &l, const PairType &v, const Ptr &r) -> Ptr {
-  return branch(Color::Red, l, v, r);
+  const auto t = std::make_shared<Helper>(l, r, Color::Red, v);
+  assert(is_valid(t, true));
+  return t;
 }
 auto TreeBase::as_black(const Ptr &x) -> Ptr {
   return is_black(x) ? x : black(x->left(), x->value(), x->right());
@@ -163,11 +169,11 @@ bool TreeBase::is_size_valid(const Ptr &x) {
 bool TreeBase::is_color_valid(const Ptr &x) {
   return is_black(x) ? true : is_black(x->left()) && is_black(x->right());
 }
-bool TreeBase::is_valid(const Ptr &x) {
+bool TreeBase::is_valid(const Ptr &x, bool color_check) {
   return x ? is_valid(x->left()) && is_valid(x->right()) &&
                  is_valid(x->left()) && is_valid(x->right()) &&
                  is_value_valid(x) && is_rank_valid(x) && is_size_valid(x) &&
-                 is_color_valid(x) :
+                 (!color_check || is_color_valid(x)) :
              true;
 }
 

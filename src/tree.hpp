@@ -66,7 +66,7 @@ class TreeBase : private Header {
   static bool is_rank_valid(const Ptr &x);
   static bool is_size_valid(const Ptr &x);
   static bool is_color_valid(const Ptr &x);
-  static bool is_valid(const Ptr &x);
+  static bool is_valid(const Ptr &x, bool color_check);
 };
 
 }  // namespace rbtree
