@@ -40,12 +40,7 @@ void Component::connect(const NodeSet& tails, const NodeSet& heads) {
 }
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
   for (const auto& head : heads) {
-    const auto p = [&tail, &head](const Graph* g) {
-      return g->contains(tail, head);
-    };
-    if (std::none_of(preds_.begin(), preds_.end(), p)) {
-      graph_.connect(tail, head);
-    }
+    graph_.connect(tail, head);
   }
 }
 void Component::followings(const NodeSet& tails, NodeSet& heads) const {
@@ -55,9 +50,6 @@ void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
     followings(NodeSet{Node::get_global()}, heads);
   } else {
-    for (const auto& pred : preds_) {
-      pred->followings(tail, heads);
-    }
     graph_.followings(tail, heads);
   }
 }
