@@ -5,10 +5,10 @@
 namespace stacksafe {
 
 std::size_t Graph::size() const {
-  return map_.size() + stack_.size();
+  return heap_.size() + stack_.size();
 }
 void Graph::merge(const Graph& g) {
-  map_.merge(g.map_);
+  heap_.merge(g.heap_);
 }
 bool Graph::includes(const Graph& that) const {
   for (const auto& [tail, head] : that.stack_) {
@@ -20,7 +20,7 @@ bool Graph::includes(const Graph& that) const {
   return true;
 }
 bool Graph::contains(const Node& tail, const Node& head) const {
-  return map_.exists(tail, head);
+  return heap_.exists(tail, head);
 }
 bool Graph::contains(const llvm::Value& tail, const Node& head) const {
   const auto [lb, ub] = stack_.equal_range(&tail);
@@ -30,7 +30,7 @@ bool Graph::contains(const llvm::Value& tail, const Node& head) const {
   return std::any_of(lb, ub, p);
 }
 void Graph::connect(const Node& tail, const Node& head) {
-  map_.add(tail, head);
+  heap_.add(tail, head);
 }
 void Graph::connect(const llvm::Value& tail, const Node& head) {
   const auto [lb, ub] = stack_.equal_range(&tail);
@@ -43,7 +43,7 @@ void Graph::connect(const llvm::Value& tail, const Node& head) {
 }
 void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
   for (const auto& tail : tails) {
-    heads.merge(map_.lookup(tail));
+    heads.merge(heap_.lookup(tail));
   }
 }
 void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {

@@ -13,9 +13,9 @@ class Value;
 namespace stacksafe {
 
 class Graph {
-  using Heap = std::unordered_multimap<Node, Node, NodeHash>;
+  using Heap = Map<Node>;
   using Stack = std::unordered_multimap<const llvm::Value*, Node>;
-  Map<Node> map_;
+  Heap heap_;
   Stack stack_;
 
  public:
