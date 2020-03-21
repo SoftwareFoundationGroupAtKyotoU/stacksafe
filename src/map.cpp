@@ -4,7 +4,7 @@
 namespace stacksafe {
 
 void Map::add(const Node& k, const Node& v) {
-  tree_ = merge(tree_, Tree::make(k, v));
+  tree_ = merge(tree_, TreeType::make(k, v));
 }
 bool Map::exists(const Node& k, const Node& v) const {
   return exists(tree_, std::make_tuple(k, v));
@@ -18,14 +18,15 @@ void Map::merge(const Map& m) {
   tree_ = merge(tree_, m.tree_);
 }
 std::size_t Map::size() const {
-  return Tree::size(tree_);
+  return TreeType::size(tree_);
 }
-TreePtr Map::merge(const TreePtr& x, const TreePtr& y) {
-  if (Tree::size(x) < Tree::size(y)) {
+auto Map::merge(const TreePtr& x, const TreePtr& y) -> TreePtr {
+  if (TreeType::size(x) < TreeType::size(y)) {
     return merge(y, x);
   } else if (x && y) {
-    const auto [l, b, r] = Tree::split(x, y->value());
-    return Tree::join(merge(l, y->left()), y->value(), merge(r, y->right()));
+    const auto [l, b, r] = TreeType::split(x, y->value());
+    return TreeType::join(merge(l, y->left()), y->value(),
+                          merge(r, y->right()));
   } else {
     return x ? x : y;
   }

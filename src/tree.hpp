@@ -5,9 +5,6 @@
 #include "node.hpp"
 
 namespace stacksafe {
-class NodeSet;
-class Tree;
-using TreePtr = std::shared_ptr<const Tree>;
 
 class Header {
   const std::size_t rank_, size_;
