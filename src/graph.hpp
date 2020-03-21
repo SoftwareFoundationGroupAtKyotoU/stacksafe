@@ -1,8 +1,8 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
+#include <set>
 #include <unordered_map>
-#include <unordered_set>
 #include "map.hpp"
 #include "node.hpp"
 
@@ -13,8 +13,8 @@ class Value;
 
 namespace stacksafe {
 
-class NodeSet : private std::unordered_set<Node, NodeHash> {
-  using Super = std::unordered_set<Node, NodeHash>;
+class NodeSet : private std::set<Node> {
+  using Super = std::set<Node>;
 
  public:
   using Super::begin, Super::end, Super::size, Super::insert;
