@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include "map.hpp"
 #include "node.hpp"
 
 namespace llvm {
@@ -28,11 +29,12 @@ class NodeSet : private std::unordered_set<Node, NodeHash> {
 class Graph {
   using Heap = std::unordered_multimap<Node, Node, NodeHash>;
   using Stack = std::unordered_multimap<const llvm::Value*, Node>;
-  Heap heap_;
+  Map map_;
   Stack stack_;
 
  public:
   std::size_t size() const;
+  void merge(const Graph& g);
   bool includes(const Graph& that) const;
   bool contains(const Node& tail, const Node& head) const;
   bool contains(const llvm::Value& tail, const Node& head) const;

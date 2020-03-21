@@ -60,6 +60,7 @@ bool StackSafe::analyze(const llvm::Function& f) const {
   State state{f};
   for (auto&& c : state) {
     PointsTo::analyze(c);
+    state.transfer(c);
   }
   return state.is_safe();
 }

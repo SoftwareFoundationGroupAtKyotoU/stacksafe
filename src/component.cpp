@@ -11,6 +11,9 @@ const Blocks& Component::blocks() const {
 std::size_t Component::size() const {
   return graph_.size();
 }
+void Component::merge(const Component& c) {
+  graph_.merge(c.graph_);
+}
 bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
@@ -31,12 +34,7 @@ void Component::init(const llvm::Function& f) {
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
   for (const auto& tail : tails) {
     for (const auto& head : heads) {
-      const auto p = [&tail, &head](const Graph* g) {
-        return g->contains(tail, head);
-      };
-      if (std::none_of(preds_.begin(), preds_.end(), p)) {
-        graph_.connect(tail, head);
-      }
+      graph_.connect(tail, head);
     }
   }
 }
@@ -51,9 +49,6 @@ void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
   }
 }
 void Component::followings(const NodeSet& tails, NodeSet& heads) const {
-  for (const auto& pred : preds_) {
-    pred->followings(tails, heads);
-  }
   graph_.followings(tails, heads);
 }
 void Component::followings(const llvm::Value& tail, NodeSet& heads) const {

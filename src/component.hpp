@@ -22,6 +22,7 @@ class Component {
   explicit Component(const Blocks& b);
   const Blocks& blocks() const;
   std::size_t size() const;
+  void merge(const Component& c);
   bool is_safe() const;
   void add_pred(const Component& c);
   void init(const llvm::Function& f);

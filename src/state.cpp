@@ -15,6 +15,11 @@ State::State(const llvm::Function& f) {
   }
   find(&f.getEntryBlock()).init(f);
 }
+void State::transfer(const Component& c) {
+  for (const auto& succ : c.blocks().successors()) {
+    find(succ).merge(c);
+  }
+}
 bool State::is_safe() const {
   const auto pred = [](const Component& c) { return c.is_safe(); };
   return std::all_of(begin(), end(), pred);
