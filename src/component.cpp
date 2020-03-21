@@ -18,12 +18,6 @@ bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
 }
-void Component::add_pred(const Component& c) {
-  preds_.insert(&c.graph_);
-  for (const auto& pred : c.preds_) {
-    preds_.insert(pred);
-  }
-}
 void Component::init(const llvm::Function& f) {
   const auto g = Node::get_global();
   graph_.connect(g, g);

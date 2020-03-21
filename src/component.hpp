@@ -16,7 +16,6 @@ class Component {
   using BB = Blocks::value_type;
   const Blocks blocks_;
   Graph graph_;
-  std::set<const Graph*> preds_;
 
  public:
   explicit Component(const Blocks& b);
@@ -24,7 +23,6 @@ class Component {
   std::size_t size() const;
   void merge(const Component& c);
   bool is_safe() const;
-  void add_pred(const Component& c);
   void init(const llvm::Function& f);
   void connect(const NodeSet& tails, const NodeSet& heads);
   void connect(const llvm::Value& tail, const NodeSet& heads);
