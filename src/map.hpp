@@ -1,13 +1,14 @@
 #ifndef INCLUDE_GUARD_B24913BE_A7FB_43A0_9D42_907C04FE896D
 #define INCLUDE_GUARD_B24913BE_A7FB_43A0_9D42_907C04FE896D
 
+#include "node.hpp"
 #include "tree.hpp"
 
 namespace stacksafe {
 class NodeSet;
 
 class Map {
-  using TreeType = Tree;
+  using TreeType = Tree<Node, Node>;
   using PairType = TreeType::PairType;
   using TreePtr = TreeType::Ptr;
   TreePtr tree_;
