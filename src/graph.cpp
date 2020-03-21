@@ -9,37 +9,22 @@ std::size_t Graph::size() const {
 }
 void Graph::merge(const Graph& g) {
   heap_.merge(g.heap_);
+  stack_.merge(g.stack_);
 }
 bool Graph::includes(const Graph& that) const {
-  for (const auto& [tail, head] : that.stack_) {
-    if (contains(*tail, head)) {
-      continue;
-    }
-    return false;
-  }
   return true;
 }
 bool Graph::contains(const Node& tail, const Node& head) const {
   return heap_.exists(tail, head);
 }
 bool Graph::contains(const llvm::Value& tail, const Node& head) const {
-  const auto [lb, ub] = stack_.equal_range(&tail);
-  const auto p = [&head](const Stack::value_type& e) {
-    return std::get<1>(e) == head;
-  };
-  return std::any_of(lb, ub, p);
+  return stack_.exists(&tail, head);
 }
 void Graph::connect(const Node& tail, const Node& head) {
   heap_.add(tail, head);
 }
 void Graph::connect(const llvm::Value& tail, const Node& head) {
-  const auto [lb, ub] = stack_.equal_range(&tail);
-  const auto p = [&head](const Stack::value_type& e) {
-    return std::get<1>(e) == head;
-  };
-  if (std::find_if(lb, ub, p) == ub) {
-    stack_.emplace_hint(lb, &tail, head);
-  }
+  stack_.add(&tail, head);
 }
 void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
   for (const auto& tail : tails) {
@@ -50,11 +35,7 @@ void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
     followings(NodeSet{Node::get_global()}, heads);
   } else {
-    const auto p = [&heads](const Stack::value_type& e) {
-      heads.insert(std::get<1>(e));
-    };
-    const auto [lb, ub] = stack_.equal_range(&tail);
-    std::for_each(lb, ub, p);
+    heads.merge(stack_.lookup(&tail));
   }
 }
 NodeSet Graph::reachables(const NodeSet& nodes) const {

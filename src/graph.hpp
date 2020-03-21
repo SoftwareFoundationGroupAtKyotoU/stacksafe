@@ -1,7 +1,6 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
-#include <unordered_map>
 #include "map.hpp"
 #include "node.hpp"
 
@@ -14,7 +13,7 @@ namespace stacksafe {
 
 class Graph {
   using Heap = Map<Node>;
-  using Stack = std::unordered_multimap<const llvm::Value*, Node>;
+  using Stack = Map<const llvm::Value*>;
   Heap heap_;
   Stack stack_;
 
