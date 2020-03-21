@@ -48,4 +48,32 @@ std::size_t NodeHash::operator()(const Node &n) const {
   return n.hash();
 }
 
+NodeSet::NodeSet() = default;
+NodeSet::NodeSet(const Node &n) {
+  Super::insert(n);
+}
+void NodeSet::merge(const NodeSet &nodes) {
+  Super::insert(nodes.begin(), nodes.end());
+}
+bool NodeSet::element(const Node &n) const {
+  return 0 != Super::count(n);
+}
+bool NodeSet::includes(const NodeSet &that) const {
+  for (const auto &n : that) {
+    if (element(n)) {
+      continue;
+    }
+    return false;
+  }
+  return true;
+}
+bool NodeSet::has_local() const {
+  for (const auto &n : *this) {
+    if (n.is_local()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 }  // namespace stacksafe

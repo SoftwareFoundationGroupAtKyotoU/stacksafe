@@ -1,7 +1,6 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
-#include <set>
 #include <unordered_map>
 #include "map.hpp"
 #include "node.hpp"
@@ -12,19 +11,6 @@ class Value;
 }  // namespace llvm
 
 namespace stacksafe {
-
-class NodeSet : private std::set<Node> {
-  using Super = std::set<Node>;
-
- public:
-  using Super::begin, Super::end, Super::size, Super::insert;
-  NodeSet();
-  explicit NodeSet(const Node& n);
-  void merge(const NodeSet& nodes);
-  bool element(const Node& n) const;
-  bool includes(const NodeSet& that) const;
-  bool has_local() const;
-};
 
 class Graph {
   using Heap = std::unordered_multimap<Node, Node, NodeHash>;
