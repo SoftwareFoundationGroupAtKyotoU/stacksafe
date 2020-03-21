@@ -20,7 +20,6 @@ class Graph {
  public:
   std::size_t size() const;
   void merge(const Graph& g);
-  bool includes(const Graph& that) const;
   bool contains(const Node& tail, const Node& head) const;
   bool contains(const llvm::Value& tail, const Node& head) const;
   void connect(const Node& tail, const Node& head);

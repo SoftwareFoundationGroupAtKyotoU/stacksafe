@@ -11,9 +11,6 @@ void Graph::merge(const Graph& g) {
   heap_.merge(g.heap_);
   stack_.merge(g.stack_);
 }
-bool Graph::includes(const Graph& that) const {
-  return true;
-}
 bool Graph::contains(const Node& tail, const Node& head) const {
   return heap_.exists(tail, head);
 }
