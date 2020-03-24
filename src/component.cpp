@@ -14,6 +14,7 @@ std::size_t Component::size() const {
 void Component::merge(const Component& c) {
   graph_.merge(c.graph_);
   heap_.merge(c.heap_);
+  stack_.merge(c.stack_);
 }
 bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
@@ -37,6 +38,7 @@ void Component::connect(const NodeSet& tails, const NodeSet& heads) {
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
   for (const auto& head : heads) {
     graph_.connect(tail, head);
+    stack_.add(&tail, head);
   }
 }
 void Component::followings(const NodeSet& tails, NodeSet& heads) const {
@@ -50,6 +52,7 @@ void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
     followings(NodeSet{Node::get_global()}, heads);
   } else {
     graph_.followings(tail, heads);
+    heads.merge(stack_.lookup(&tail));
   }
 }
 NodeSet Component::reachables(const Node& node) const {

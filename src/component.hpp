@@ -16,9 +16,11 @@ namespace stacksafe {
 class Component {
   using BB = Blocks::value_type;
   using Heap = Map<Node>;
+  using Stack = Map<const llvm::Value*>;
   const Blocks blocks_;
   Graph graph_;
   Heap heap_;
+  Stack stack_;
 
  public:
   explicit Component(const Blocks& b);
