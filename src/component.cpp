@@ -27,16 +27,20 @@ void Component::init(const llvm::Function& f) {
   }
 }
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
+  Heap heap;
   for (const auto& tail : tails) {
     for (const auto& head : heads) {
-      heap_.add(tail, head);
+      heap.add(tail, head);
     }
   }
+  heap_.merge(heap);
 }
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
+  Stack stack;
   for (const auto& head : heads) {
-    stack_.add(&tail, head);
+    stack.add(&tail, head);
   }
+  stack_.merge(stack);
 }
 void Component::followings(const NodeSet& tails, NodeSet& heads) const {
   for (const auto& tail : tails) {
