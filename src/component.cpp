@@ -4,15 +4,14 @@
 
 namespace stacksafe {
 
-Component::Component(const Blocks& b) : blocks_{b}, graph_{} {}
+Component::Component(const Blocks& b) : blocks_{b} {}
 const Blocks& Component::blocks() const {
   return blocks_;
 }
 std::size_t Component::size() const {
-  return graph_.size();
+  return heap_.size() + stack_.size();
 }
 void Component::merge(const Component& c) {
-  graph_.merge(c.graph_);
   heap_.merge(c.heap_);
   stack_.merge(c.stack_);
 }
@@ -22,27 +21,24 @@ bool Component::is_safe() const {
 }
 void Component::init(const llvm::Function& f) {
   const auto g = Node::get_global();
-  graph_.connect(g, g);
+  heap_.add(g, g);
   for (const auto& a : f.args()) {
-    graph_.connect(a, g);
+    stack_.add(&a, g);
   }
 }
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
   for (const auto& tail : tails) {
     for (const auto& head : heads) {
-      graph_.connect(tail, head);
       heap_.add(tail, head);
     }
   }
 }
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
   for (const auto& head : heads) {
-    graph_.connect(tail, head);
     stack_.add(&tail, head);
   }
 }
 void Component::followings(const NodeSet& tails, NodeSet& heads) const {
-  graph_.followings(tails, heads);
   for (const auto& tail : tails) {
     heads.merge(heap_.lookup(tail));
   }
@@ -51,7 +47,6 @@ void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
     followings(NodeSet{Node::get_global()}, heads);
   } else {
-    graph_.followings(tail, heads);
     heads.merge(stack_.lookup(&tail));
   }
 }
