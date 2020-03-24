@@ -8,8 +8,14 @@ std::size_t Graph::size() const {
   return heap_.size() + stack_.size();
 }
 void Graph::merge(const Graph& g) {
-  heap_.merge(g.heap_);
-  stack_.merge(g.stack_);
+  merge(g.heap_);
+  merge(g.stack_);
+}
+void Graph::merge(const Heap& heap) {
+  heap_.merge(heap);
+}
+void Graph::merge(const Stack& stack) {
+  stack_.merge(stack);
 }
 bool Graph::contains(const Node& tail, const Node& head) const {
   return heap_.exists(tail, head);

@@ -20,6 +20,8 @@ class Graph {
  public:
   std::size_t size() const;
   void merge(const Graph& g);
+  void merge(const Heap& heap);
+  void merge(const Stack& stack);
   bool contains(const Node& tail, const Node& head) const;
   bool contains(const llvm::Value& tail, const Node& head) const;
   void connect(const Node& tail, const Node& head);
