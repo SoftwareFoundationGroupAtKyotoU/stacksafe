@@ -73,19 +73,13 @@ class Tree : private Header {
         value_{v} {}
 
   static Ptr branch(Color c, const Ptr &l, const PairType &v, const Ptr &r) {
-    const auto t = std::make_shared<Helper>(l, r, c, v);
-    assert(is_red_twice(t) || is_valid(t, false));
-    return t;
+    return std::make_shared<Helper>(l, r, c, v);
   }
   static Ptr black(const Ptr &l, const PairType &v, const Ptr &r) {
-    const auto t = std::make_shared<Helper>(l, r, Color::Black, v);
-    assert(is_valid(t, true));
-    return t;
+    return std::make_shared<Helper>(l, r, Color::Black, v);
   }
   static Ptr red(const Ptr &l, const PairType &v, const Ptr &r) {
-    const auto t = std::make_shared<Helper>(l, r, Color::Red, v);
-    assert(is_valid(t, true));
-    return t;
+    return std::make_shared<Helper>(l, r, Color::Red, v);
   }
   static Ptr as_black(const Ptr &x) {
     return is_black(x) ? x : black(x->left(), x->value(), x->right());
