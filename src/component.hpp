@@ -3,6 +3,7 @@
 
 #include <set>
 #include "block.hpp"
+#include "graph.hpp"
 #include "map.hpp"
 
 namespace llvm {
@@ -17,6 +18,7 @@ class Component {
   using Heap = Map<Node>;
   using Stack = Map<const llvm::Value*>;
   const Blocks blocks_;
+  Graph graph_;
   Heap heap_;
   Stack stack_;
 
