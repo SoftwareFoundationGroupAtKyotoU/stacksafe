@@ -4,6 +4,7 @@
 #include <set>
 #include "block.hpp"
 #include "graph.hpp"
+#include "map.hpp"
 
 namespace llvm {
 class Function;
@@ -14,8 +15,10 @@ namespace stacksafe {
 
 class Component {
   using BB = Blocks::value_type;
+  using Heap = Map<Node>;
   const Blocks blocks_;
   Graph graph_;
+  Heap heap_;
 
  public:
   explicit Component(const Blocks& b);
