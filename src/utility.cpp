@@ -20,31 +20,36 @@ void fatal_error(const std::string& msg) {
 bool least_significant_bit(const void* ptr) {
   return reinterpret_cast<std::uintptr_t>(ptr) & 0x1;
 }
-bool is_global(const llvm::Constant& c) {
-  if (llvm::isa<llvm::GlobalValue>(&c)) {
-    return true;
-  }
-  for (unsigned i = 0; i < c.getNumOperands(); ++i) {
-    assert(llvm::isa<llvm::Constant>(c.getOperand(i)) &&
-           "constant has non-constant");
-    if (auto v = llvm::dyn_cast<llvm::Constant>(c.getOperand(i));
-        is_global(*v)) {
+bool is_global(const llvm::Value& v) {
+  if (const auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
+    if (llvm::isa<llvm::GlobalValue>(c)) {
       return true;
+    }
+    for (unsigned i = 0; i < c->getNumOperands(); ++i) {
+      if (is_global(*c->getOperand(i))) {
+        return true;
+      }
     }
   }
   return false;
 }
-bool is_register(const llvm::Instruction& i) {
-  if (auto c = llvm::dyn_cast<llvm::CallInst>(&i)) {
-    return !c->getFunctionType()->getReturnType()->isVoidTy();
-  } else if (i.isTerminator()) {
-    return false;
-  } else if (llvm::isa<llvm::StoreInst>(i)) {
-    return false;
-  } else if (llvm::isa<llvm::FenceInst>(i)) {
-    return false;
-  } else {
+bool is_register(const llvm::Value& v) {
+  if (const auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
+    if (const auto c = llvm::dyn_cast<llvm::CallInst>(i)) {
+      return !c->getFunctionType()->getReturnType()->isVoidTy();
+    } else if (i->isTerminator()) {
+      return false;
+    } else if (llvm::isa<llvm::StoreInst>(i)) {
+      return false;
+    } else if (llvm::isa<llvm::FenceInst>(i)) {
+      return false;
+    } else {
+      return true;
+    }
+  } else if (llvm::isa<llvm::Argument>(v)) {
     return true;
+  } else {
+    return false;
   }
 }
 bool is_return(const llvm::CallInst& i) {

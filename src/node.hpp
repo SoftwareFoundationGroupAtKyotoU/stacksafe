@@ -1,54 +1,50 @@
 #ifndef INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 #define INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 
+#include <cstdint>
 #include <set>
-#include <variant>
-#include "value.hpp"
 
 namespace llvm {
 class AllocaInst;
-class Argument;
-class Instruction;
-class Value;
 }  // namespace llvm
 
 namespace stacksafe {
-namespace {
-using Constant = Value<int>;
-using Global = Value<void>;
-using Local = Value<llvm::AllocaInst>;
-using Register = Value<llvm::Instruction>;
-using Argument = Value<llvm::Argument>;
-using Variant = std::variant<Constant, Global, Local, Register, Argument>;
-}  // namespace
 
-class Node : private Variant {
-  using Variant::Variant;
+class Node {
+  union {
+    const llvm::AllocaInst *ptr_;
+    std::uintptr_t val_;
+  };
+  explicit Node(const llvm::AllocaInst *p);
+  explicit Node(std::uintptr_t v);
+  static std::uintptr_t embed(std::uintptr_t v);
+  std::uintptr_t value() const;
 
  public:
-  static Node get_constant();
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
-  static Node get_register(const llvm::Argument &a);
-  static Node get_register(const llvm::Instruction &i);
-  static Node from_value(const llvm::Value &v);
-  std::pair<std::size_t, const void *> pair() const;
-  bool is_symbol() const;
   bool is_local() const;
-
- private:
-  const void *ptr() const;
+  bool equals(const Node &that) const;
+  bool less(const Node &that) const;
+  std::size_t hash() const;
 };
 bool operator==(const Node &lhs, const Node &rhs);
 bool operator<(const Node &lhs, const Node &rhs);
+
+struct NodeHash {
+  std::size_t operator()(const Node &n) const;
+};
 
 class NodeSet : private std::set<Node> {
   using Super = std::set<Node>;
 
  public:
-  using Super::begin, Super::end, Super::insert;
+  using Super::begin, Super::end, Super::size, Super::insert;
+  NodeSet();
+  explicit NodeSet(const Node &n);
   void merge(const NodeSet &nodes);
   bool element(const Node &n) const;
+  bool includes(const NodeSet &that) const;
   bool has_local() const;
 };
 

@@ -14,8 +14,10 @@ add_library(${target} STATIC)
 target_sources(${target} PRIVATE
   block.cpp
   cache.cpp
+  component.cpp
   effect.cpp
   graph.cpp
+  map.cpp
   matrix.cpp
   node.cpp
   params.cpp
@@ -23,8 +25,8 @@ target_sources(${target} PRIVATE
   state.cpp
   stopwatch.cpp
   tarjan.cpp
+  tree.cpp
   utility.cpp
-  value.cpp
   )
 include(EnsureSources)
 ensure_sources(${target})

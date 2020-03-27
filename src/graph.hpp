@@ -1,8 +1,7 @@
 #ifndef INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 #define INCLUDE_GUARD_E1E5ACD3_3435_4167_A6B2_0E8D6A2A38AC
 
-#include <tuple>
-#include <vector>
+#include "map.hpp"
 #include "node.hpp"
 
 namespace llvm {
@@ -12,36 +11,25 @@ class Value;
 
 namespace stacksafe {
 
-class Edge : private std::tuple<Node, Node> {
-  using Super = std::tuple<Node, Node>;
+class Graph {
+  using Heap = Map<Node>;
+  using Stack = Map<const llvm::Value*>;
+  Heap heap_;
+  Stack stack_;
 
  public:
-  using Super::Super;
-  explicit Edge(const Node& n);
-  const Node& tail() const;
-  const Node& head() const;
-  const Super& pair() const;
-};
-bool operator==(const Edge& lhs, const Edge& rhs);
-bool operator<(const Edge& lhs, const Edge& rhs);
-
-class Graph : private std::vector<Edge> {
-  using Super = std::vector<Edge>;
-  using iterator = Super::iterator;
-  using Result = std::tuple<iterator, bool>;
-
- public:
-  using Super::size;
-  void init(const llvm::Function& f);
-  bool append(const Node& tail, const Node& head);
-  NodeSet heads(const Node& tail) const;
-  NodeSet tails() const;
-  bool merge(const Graph& g);
-  void reachables(const Node& n, NodeSet& nodes) const;
-  void reachables(const llvm::Value& v, NodeSet& nodes) const;
-
- private:
-  Result insert(iterator hint, const Edge& e);
+  std::size_t size() const;
+  void merge(const Graph& g);
+  void merge(const Heap& heap);
+  void merge(const Stack& stack);
+  bool contains(const Node& tail, const Node& head) const;
+  bool contains(const llvm::Value& tail, const Node& head) const;
+  void connect(const Node& tail, const Node& head);
+  void connect(const llvm::Value& tail, const Node& head);
+  void followings(const NodeSet& tails, NodeSet& heads) const;
+  void followings(const llvm::Value& tail, NodeSet& heads) const;
+  NodeSet reachables(const NodeSet& nodes) const;
+  NodeSet reachables(const llvm::Value& value) const;
 };
 
 }  // namespace stacksafe

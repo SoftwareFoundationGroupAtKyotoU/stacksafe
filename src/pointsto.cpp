@@ -1,20 +1,22 @@
 #include "pointsto.hpp"
 #include "block.hpp"
+#include "component.hpp"
 #include "graph.hpp"
 #include "params.hpp"
 #include "utility.hpp"
 
 namespace stacksafe {
 
-PointsTo::PointsTo(Graph &g) : graph_{g} {}
-void PointsTo::analyze(Graph &g, const Blocks &c) {
-  PointsTo p{g};
-  auto prev = g.size();
+PointsTo::PointsTo(Component &c) : comp_{c} {}
+void PointsTo::analyze(Component &c) {
+  const auto &b = c.blocks();
+  PointsTo p{c};
+  auto prev = c.size();
   do {
-    for (auto &&b : c) {
-      p.visit(const_cast<llvm::BasicBlock *>(b));
+    for (auto &&bb : b) {
+      p.visit(const_cast<llvm::BasicBlock *>(bb));
     }
-  } while (c.is_loop() && std::exchange(prev, g.size()) != g.size());
+  } while (b.is_loop() && std::exchange(prev, c.size()) != c.size());
 }
 auto PointsTo::visitInstruction(llvm::Instruction &i) -> RetTy {
   if (!i.isTerminator()) {
@@ -130,24 +132,24 @@ auto PointsTo::visitCallInst(llvm::CallInst &i) -> RetTy {
 void PointsTo::binop(const llvm::Instruction &dst, const llvm::Value &lhs,
                      const llvm::Value &rhs) {
   NodeSet heads;
-  heads.merge(lookup(lhs));
-  heads.merge(lookup(rhs));
-  append(dst, heads);
+  comp_.followings(lhs, heads);
+  comp_.followings(rhs, heads);
+  comp_.connect(dst, heads);
 }
 void PointsTo::alloc(const llvm::AllocaInst &dst) {
-  NodeSet heads;
-  heads.insert(Node::get_local(dst));
-  append(dst, heads);
+  comp_.connect(dst, NodeSet{Node::get_local(dst)});
 }
 void PointsTo::load(const llvm::Instruction &dst, const llvm::Value &src) {
-  NodeSet heads;
-  for (const auto &sym : lookup(src)) {
-    heads.merge(graph_.heads(sym));
-  }
-  append(dst, heads);
+  NodeSet tails, heads;
+  comp_.followings(src, tails);
+  comp_.followings(tails, heads);
+  comp_.connect(dst, heads);
 }
 void PointsTo::store(const llvm::Value &src, const llvm::Value &dst) {
-  append(lookup(dst), lookup(src));
+  NodeSet tails, heads;
+  comp_.followings(dst, tails);
+  comp_.followings(src, heads);
+  comp_.connect(tails, heads);
 }
 void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
                        const llvm::Value &val) {
@@ -155,45 +157,32 @@ void PointsTo::cmpxchg(const llvm::Instruction &dst, const llvm::Value &ptr,
   store(val, ptr);
 }
 void PointsTo::cast(const llvm::Instruction &dst, const llvm::Value &src) {
-  append(dst, lookup(src));
+  NodeSet heads;
+  comp_.followings(src, heads);
+  comp_.connect(dst, heads);
 }
 void PointsTo::phi(const llvm::Instruction &dst, const Params &params) {
   NodeSet heads;
   for (const auto &arg : params) {
-    heads.merge(lookup(arg));
+    comp_.followings(arg, heads);
   }
-  append(dst, heads);
+  comp_.connect(dst, heads);
 }
 void PointsTo::call(const llvm::CallInst &dst, const Params &params) {
   assert(dst.arg_size() == params.size());
-  NodeMap nodemap{params, graph_};
   const auto effect = effects_.get(dst);
-  for (const auto &[from, head] : nodemap) {
-    for (const auto &[to, tail] : nodemap) {
+  NodeMap nodemap{params, comp_};
+  for (const auto &[from, heads] : nodemap) {
+    for (const auto &[to, tails] : nodemap) {
       if (effect.depends(from, to)) {
-        append(tail, head);
+        comp_.connect(tails, heads);
       }
     }
     if (is_return(dst) && effect.depends(from, Index::RETURN)) {
-      append(dst, head);
+      comp_.connect(dst, heads);
     }
   }
 }
 void PointsTo::constant(const llvm::Instruction &) {}
-NodeSet PointsTo::lookup(const llvm::Value &tail) const {
-  return graph_.heads(Node::from_value(tail));
-}
-void PointsTo::append(const llvm::Instruction &tail, const NodeSet &heads) {
-  for (const auto &h : heads) {
-    graph_.append(Node::get_register(tail), h);
-  }
-}
-void PointsTo::append(const NodeSet &tails, const NodeSet &heads) {
-  for (const auto &t : tails) {
-    for (const auto &h : heads) {
-      graph_.append(t, h);
-    }
-  }
-}
 
 }  // namespace stacksafe

@@ -3,15 +3,15 @@
 
 #include <map>
 #include <vector>
+#include "graph.hpp"
 #include "matrix.hpp"
-#include "node.hpp"
 
 namespace llvm {
 class Value;
 }
 
 namespace stacksafe {
-class Graph;
+class Component;
 
 class Params : private std::vector<const llvm::Value *> {
   using Super = std::vector<const llvm::Value *>;
@@ -40,12 +40,12 @@ class Params::ParamsIterator : private Params::Super::const_iterator {
   bool operator!=(ParamsIterator it) const;
 };
 
-class NodeMap : std::map<Index, NodeSet> {
+class NodeMap : private std::map<Index, NodeSet> {
   using Super = std::map<Index, NodeSet>;
 
  public:
   using Super::begin, Super::end;
-  NodeMap(const Params &params, Graph &graph);
+  NodeMap(const Params &params, const Component &c);
 };
 
 }  // namespace stacksafe
