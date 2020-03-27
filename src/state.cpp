@@ -8,11 +8,6 @@ State::State(const llvm::Function& f) {
   for (const auto& c : Tarjan::run(f)) {
     Super::emplace_back(c);
   }
-  for (auto&& c : *this) {
-    for (const auto& succ : c.blocks().successors()) {
-      find(succ).add_pred(c);
-    }
-  }
   find(&f.getEntryBlock()).init(f);
 }
 void State::transfer(const Component& c) {

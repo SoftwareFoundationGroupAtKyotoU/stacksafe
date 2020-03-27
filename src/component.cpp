@@ -4,61 +4,57 @@
 
 namespace stacksafe {
 
-Component::Component(const Blocks& b) : blocks_{b}, graph_{} {}
+Component::Component(const Blocks& b) : blocks_{b} {}
 const Blocks& Component::blocks() const {
   return blocks_;
 }
 std::size_t Component::size() const {
-  return graph_.size();
+  return heap_.size() + stack_.size();
 }
 void Component::merge(const Component& c) {
   graph_.merge(c.graph_);
+  graph_.merge(c.heap_);
+  graph_.merge(c.stack_);
 }
 bool Component::is_safe() const {
   const auto pred = [& self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
 }
-void Component::add_pred(const Component& c) {
-  preds_.insert(&c.graph_);
-  for (const auto& pred : c.preds_) {
-    preds_.insert(pred);
-  }
-}
 void Component::init(const llvm::Function& f) {
   const auto g = Node::get_global();
-  graph_.connect(g, g);
+  heap_.add(g, g);
   for (const auto& a : f.args()) {
-    graph_.connect(a, g);
+    stack_.add(&a, g);
   }
 }
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
+  Heap heap;
   for (const auto& tail : tails) {
     for (const auto& head : heads) {
-      graph_.connect(tail, head);
+      heap.add(tail, head);
     }
   }
+  heap_.merge(heap);
 }
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
+  Stack stack;
   for (const auto& head : heads) {
-    const auto p = [&tail, &head](const Graph* g) {
-      return g->contains(tail, head);
-    };
-    if (std::none_of(preds_.begin(), preds_.end(), p)) {
-      graph_.connect(tail, head);
-    }
+    stack.add(&tail, head);
   }
+  stack_.merge(stack);
 }
 void Component::followings(const NodeSet& tails, NodeSet& heads) const {
   graph_.followings(tails, heads);
+  for (const auto& tail : tails) {
+    heads.merge(heap_.lookup(tail));
+  }
 }
 void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
     followings(NodeSet{Node::get_global()}, heads);
   } else {
-    for (const auto& pred : preds_) {
-      pred->followings(tail, heads);
-    }
     graph_.followings(tail, heads);
+    heads.merge(stack_.lookup(&tail));
   }
 }
 NodeSet Component::reachables(const Node& node) const {

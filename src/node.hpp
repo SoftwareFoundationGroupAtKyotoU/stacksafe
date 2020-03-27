@@ -2,6 +2,7 @@
 #define INCLUDE_GUARD_A9F529C8_A504_4663_8ADD_A1FC022EA7B5
 
 #include <cstdint>
+#include <set>
 
 namespace llvm {
 class AllocaInst;
@@ -32,6 +33,19 @@ bool operator<(const Node &lhs, const Node &rhs);
 
 struct NodeHash {
   std::size_t operator()(const Node &n) const;
+};
+
+class NodeSet : private std::set<Node> {
+  using Super = std::set<Node>;
+
+ public:
+  using Super::begin, Super::end, Super::size, Super::insert;
+  NodeSet();
+  explicit NodeSet(const Node &n);
+  void merge(const NodeSet &nodes);
+  bool element(const Node &n) const;
+  bool includes(const NodeSet &that) const;
+  bool has_local() const;
 };
 
 }  // namespace stacksafe
