@@ -5,6 +5,9 @@
 namespace stacksafe {
 namespace {
 constexpr std::uintptr_t mask{1};
+bool flag(std::uintptr_t v) {
+  return static_cast<bool>(v & mask);
+}
 }  // namespace
 
 Node::Node(const llvm::AllocaInst &l) : local_{&l} {
@@ -33,6 +36,9 @@ Node Node::get_register(const llvm::Instruction &r) {
 }
 bool Node::is_local() const {
   return (val_ & mask) == 0;
+}
+bool Node::is_global() const {
+  return flag(val_);
 }
 bool Node::equals(const Node &that) const {
   return val_ == that.val_;

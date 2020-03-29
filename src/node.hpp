@@ -28,6 +28,7 @@ class Node {
   static Node get_local(const llvm::AllocaInst &l);
   static Node get_register(const llvm::Instruction &r);
   bool is_local() const;
+  bool is_global() const;
   bool equals(const Node &that) const;
   bool less(const Node &that) const;
   std::size_t hash() const;
