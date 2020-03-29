@@ -1,10 +1,8 @@
 #ifndef INCLUDE_GUARD_6831D829_3A6A_4EE8_ACCB_2E3598692958
 #define INCLUDE_GUARD_6831D829_3A6A_4EE8_ACCB_2E3598692958
 
-#include <set>
 #include "block.hpp"
 #include "graph.hpp"
-#include "map.hpp"
 
 namespace llvm {
 class Function;
@@ -15,12 +13,8 @@ namespace stacksafe {
 
 class Component {
   using BB = Blocks::value_type;
-  using Heap = Map<Node>;
-  using Stack = Map<const llvm::Value*>;
   const Blocks blocks_;
-  Graph graph_;
-  Heap heap_;
-  Stack stack_;
+  Graph heap_, stack_;
 
  public:
   explicit Component(const Blocks& b);

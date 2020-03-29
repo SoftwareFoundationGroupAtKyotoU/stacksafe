@@ -1,32 +1,50 @@
 #include "node.hpp"
+#include <algorithm>
 #include <cassert>
 #include <functional>
+#include <limits>
 
 namespace stacksafe {
 namespace {
 constexpr std::uintptr_t mask{1};
-}  // namespace
-
-Node::Node(const llvm::AllocaInst *p) : ptr_{p} {
-  assert(is_local());
-}
-Node::Node(std::uintptr_t v) : val_{v} {
-  assert(!is_local());
-}
-std::uintptr_t Node::embed(std::uintptr_t v) {
+constexpr std::uintptr_t global{std::numeric_limits<std::uintptr_t>::max()};
+std::uintptr_t embed(std::uintptr_t v) {
   return (v << 1) | mask;
 }
-std::uintptr_t Node::value() const {
-  return val_ >> 1;
+std::uintptr_t extract(std::uintptr_t v) {
+  return v >> 1;
+}
+bool flag(std::uintptr_t v) {
+  return static_cast<bool>(v & mask);
+}
+}  // namespace
+
+Node::Node(const void *p) : ptr_{p} {
+  assert(!is_global());
+}
+Node::Node(std::uintptr_t v) : val_{embed(v)} {
+  assert(is_global());
 }
 Node Node::get_global() {
-  return Node{embed(-1)};
+  return Node{global};
+}
+Node Node::get_argument(std::uintptr_t a) {
+  return Node{a};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{&l};
 }
-bool Node::is_local() const {
-  return (val_ & mask) == 0;
+Node Node::get_register(const llvm::Value &r) {
+  return Node{&r};
+}
+std::uintptr_t Node::value() const {
+  return extract(val_);
+}
+const void *Node::ptr() const {
+  return ptr_;
+}
+bool Node::is_global() const {
+  return flag(val_);
 }
 bool Node::equals(const Node &that) const {
   return val_ == that.val_;
@@ -59,21 +77,12 @@ bool NodeSet::element(const Node &n) const {
   return 0 != Super::count(n);
 }
 bool NodeSet::includes(const NodeSet &that) const {
-  for (const auto &n : that) {
-    if (element(n)) {
-      continue;
-    }
-    return false;
-  }
-  return true;
+  const auto has = [&self = *this](const Node &n) { return self.element(n); };
+  return std::all_of(that.begin(), that.end(), has);
 }
 bool NodeSet::has_local() const {
-  for (const auto &n : *this) {
-    if (n.is_local()) {
-      return true;
-    }
-  }
-  return false;
+  const auto is_local = [](const Node &n) { return !n.is_global(); };
+  return std::any_of(begin(), end(), is_local);
 }
 
 }  // namespace stacksafe

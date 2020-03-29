@@ -1,58 +1,59 @@
 #include "graph.hpp"
-#include <llvm/IR/Function.h>
-#include "utility.hpp"
 
 namespace stacksafe {
 
-std::size_t Graph::size() const {
-  return heap_.size() + stack_.size();
+void Graph::add(const Node& key, const Node& val) {
+  tree_ = merge(tree_, TreeType::make(key, val));
 }
 void Graph::merge(const Graph& g) {
-  merge(g.heap_);
-  merge(g.stack_);
+  tree_ = merge(tree_, g.tree_);
 }
-void Graph::merge(const Heap& heap) {
-  heap_.merge(heap);
-}
-void Graph::merge(const Stack& stack) {
-  stack_.merge(stack);
-}
-bool Graph::contains(const Node& tail, const Node& head) const {
-  return heap_.exists(tail, head);
-}
-bool Graph::contains(const llvm::Value& tail, const Node& head) const {
-  return stack_.exists(&tail, head);
-}
-void Graph::connect(const Node& tail, const Node& head) {
-  heap_.add(tail, head);
-}
-void Graph::connect(const llvm::Value& tail, const Node& head) {
-  stack_.add(&tail, head);
-}
-void Graph::followings(const NodeSet& tails, NodeSet& heads) const {
-  for (const auto& tail : tails) {
-    heads.merge(heap_.lookup(tail));
-  }
-}
-void Graph::followings(const llvm::Value& tail, NodeSet& heads) const {
-  if (is_global(tail)) {
-    followings(NodeSet{Node::get_global()}, heads);
-  } else {
-    heads.merge(stack_.lookup(&tail));
-  }
-}
-NodeSet Graph::reachables(const NodeSet& nodes) const {
-  NodeSet tails, heads{nodes};
-  while (tails.size() < heads.size()) {
-    tails = heads;
-    followings(tails, heads);
-  }
-  return heads;
-}
-NodeSet Graph::reachables(const llvm::Value& value) const {
+NodeSet Graph::lookup(const Node& n) const {
   NodeSet nodes;
-  followings(value, nodes);
-  return reachables(nodes);
+  lookup(tree_, n, nodes);
+  return nodes;
+}
+bool Graph::exists(const Node& key, const Node& val) const {
+  return exists(tree_, std::make_tuple(key, val));
+}
+std::size_t Graph::size() const {
+  return TreeType::size(tree_);
+}
+auto Graph::merge(const TreePtr& x, const TreePtr& y) -> TreePtr {
+  if (TreeType::size(x) < TreeType::size(y)) {
+    return merge(y, x);
+  } else if (x && y) {
+    const auto [l, b, r] = TreeType::split(x, y->value());
+    return TreeType::join(merge(l, y->left()), y->value(),
+                          merge(r, y->right()));
+  } else {
+    return x ? x : y;
+  }
+}
+void Graph::lookup(const TreePtr& x, const Node& key, NodeSet& nodes) {
+  if (x) {
+    const auto [k, v] = x->value();
+    if (k < key) {
+      lookup(x->right(), key, nodes);
+    } else if (key < k) {
+      lookup(x->left(), key, nodes);
+    } else {
+      lookup(x->left(), key, nodes);
+      nodes.merge(NodeSet{v});
+      lookup(x->right(), key, nodes);
+    }
+  }
+}
+bool Graph::exists(const TreePtr& x, const PairType& v) {
+  if (!x) {
+    return false;
+  } else if (x->value() < v) {
+    return exists(x->right(), v);
+  } else if (v < x->value()) {
+    return exists(x->left(), v);
+  } else {
+    return true;
+  }
 }
 
 }  // namespace stacksafe
