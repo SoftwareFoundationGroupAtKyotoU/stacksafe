@@ -19,10 +19,7 @@ bool flag(std::uintptr_t v) {
 }
 }  // namespace
 
-Node::Node(const llvm::AllocaInst &l) : local_{&l} {
-  assert(!is_global());
-}
-Node::Node(const llvm::Value &r) : reg_{&r} {
+Node::Node(const void *p) : ptr_{p} {
   assert(!is_global());
 }
 Node::Node(std::uintptr_t v) : val_{embed(v)} {
@@ -35,10 +32,10 @@ Node Node::get_argument(std::uintptr_t a) {
   return Node{a};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
-  return Node{l};
+  return Node{&l};
 }
 Node Node::get_register(const llvm::Value &r) {
-  return Node{r};
+  return Node{&r};
 }
 std::uintptr_t Node::value() const {
   return extract(val_);

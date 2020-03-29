@@ -13,13 +13,10 @@ namespace stacksafe {
 
 class Node {
   union {
-    const llvm::AllocaInst *local_;
-    const llvm::Value *reg_;
     const void *ptr_;
     std::uintptr_t val_;
   };
-  explicit Node(const llvm::AllocaInst &l);
-  explicit Node(const llvm::Value &r);
+  explicit Node(const void *p);
   explicit Node(std::uintptr_t v);
 
  public:
