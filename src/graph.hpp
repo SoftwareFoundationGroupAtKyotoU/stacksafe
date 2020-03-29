@@ -16,6 +16,7 @@ class Graph {
   void merge(const Graph& g);
   NodeSet lookup(const Node& n) const;
   bool exists(const Node& key, const Node& val) const;
+  std::size_t size() const;
 
  private:
   static TreePtr merge(const TreePtr& x, const TreePtr& y);

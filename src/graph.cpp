@@ -13,6 +13,9 @@ NodeSet Graph::lookup(const Node& n) const {
 bool Graph::exists(const Node& key, const Node& val) const {
   return exists(tree_, std::make_tuple(key, val));
 }
+std::size_t Graph::size() const {
+  return TreeType::size(tree_);
+}
 auto Graph::merge(const TreePtr& x, const TreePtr& y) -> TreePtr {
   if (TreeType::size(x) < TreeType::size(y)) {
     return merge(y, x);
