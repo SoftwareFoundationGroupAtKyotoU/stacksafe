@@ -1,10 +1,12 @@
 #include "node.hpp"
 #include <cassert>
 #include <functional>
+#include <limits>
 
 namespace stacksafe {
 namespace {
 constexpr std::uintptr_t mask{1};
+constexpr std::uintptr_t global{std::numeric_limits<std::uintptr_t>::max()};
 std::uintptr_t embed(std::uintptr_t v) {
   return (v << 1) | mask;
 }
@@ -22,14 +24,14 @@ Node::Node(const llvm::AllocaInst &l) : local_{&l} {
 Node::Node(const llvm::Instruction &r) : reg_{&r} {
   assert(is_local());
 }
-Node::Node(std::uintptr_t v) : val_{v} {
+Node::Node(std::uintptr_t v) : val_{embed(v)} {
   assert(!is_local());
 }
 std::uintptr_t Node::value() const {
   return extract(val_);
 }
 Node Node::get_global() {
-  return Node{embed(-1)};
+  return Node{global};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{l};
