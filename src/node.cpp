@@ -31,6 +31,9 @@ Node::Node(std::uintptr_t v) : val_{embed(v)} {
 Node Node::get_global() {
   return Node{global};
 }
+Node Node::get_argument(std::uintptr_t a) {
+  return Node{a};
+}
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{l};
 }

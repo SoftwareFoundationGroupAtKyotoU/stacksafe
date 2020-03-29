@@ -24,6 +24,7 @@ class Node {
 
  public:
   static Node get_global();
+  static Node get_argument(std::uintptr_t a);
   static Node get_local(const llvm::AllocaInst &l);
   static Node get_register(const llvm::Value &r);
   std::uintptr_t value() const;
