@@ -13,6 +13,7 @@ class Graph {
   TreePtr tree_;
 
  public:
+  void add(const Node& key, const Node& val);
   void merge(const Graph& g);
   NodeSet lookup(const Node& n) const;
   bool exists(const Node& key, const Node& val) const;

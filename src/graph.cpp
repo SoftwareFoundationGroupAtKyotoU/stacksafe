@@ -2,6 +2,9 @@
 
 namespace stacksafe {
 
+void Graph::add(const Node& key, const Node& val) {
+  tree_ = merge(tree_, TreeType::make(key, val));
+}
 void Graph::merge(const Graph& g) {
   tree_ = merge(tree_, g.tree_);
 }
