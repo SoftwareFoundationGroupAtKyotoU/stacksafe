@@ -20,12 +20,12 @@ class Node {
   explicit Node(const llvm::AllocaInst &l);
   explicit Node(const llvm::Instruction &r);
   explicit Node(std::uintptr_t v);
-  std::uintptr_t value() const;
 
  public:
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
   static Node get_register(const llvm::Instruction &r);
+  std::uintptr_t value() const;
   bool is_global() const;
   bool equals(const Node &that) const;
   bool less(const Node &that) const;
