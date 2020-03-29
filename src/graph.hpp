@@ -14,9 +14,11 @@ class Graph {
 
  public:
   void merge(const Graph& g);
+  NodeSet lookup(const Node& n) const;
 
  private:
   static TreePtr merge(const TreePtr& x, const TreePtr& y);
+  static void lookup(const TreePtr& x, const Node& key, NodeSet& nodes);
 };
 
 }  // namespace stacksafe
