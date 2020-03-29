@@ -10,6 +10,9 @@ NodeSet Graph::lookup(const Node& n) const {
   lookup(tree_, n, nodes);
   return nodes;
 }
+bool Graph::exists(const Node& key, const Node& val) const {
+  return exists(tree_, std::make_tuple(key, val));
+}
 auto Graph::merge(const TreePtr& x, const TreePtr& y) -> TreePtr {
   if (TreeType::size(x) < TreeType::size(y)) {
     return merge(y, x);
@@ -33,6 +36,17 @@ void Graph::lookup(const TreePtr& x, const Node& key, NodeSet& nodes) {
       nodes.merge(NodeSet{v});
       lookup(x->right(), key, nodes);
     }
+  }
+}
+bool Graph::exists(const TreePtr& x, const PairType& v) {
+  if (!x) {
+    return false;
+  } else if (x->value() < v) {
+    return exists(x->right(), v);
+  } else if (v < x->value()) {
+    return exists(x->left(), v);
+  } else {
+    return true;
   }
 }
 

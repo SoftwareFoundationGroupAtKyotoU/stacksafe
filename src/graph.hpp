@@ -15,10 +15,12 @@ class Graph {
  public:
   void merge(const Graph& g);
   NodeSet lookup(const Node& n) const;
+  bool exists(const Node& key, const Node& val) const;
 
  private:
   static TreePtr merge(const TreePtr& x, const TreePtr& y);
   static void lookup(const TreePtr& x, const Node& key, NodeSet& nodes);
+  static bool exists(const TreePtr& x, const PairType& v);
 };
 
 }  // namespace stacksafe
