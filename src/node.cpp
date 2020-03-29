@@ -1,4 +1,5 @@
 #include "node.hpp"
+#include <algorithm>
 #include <cassert>
 #include <functional>
 #include <limits>
@@ -82,12 +83,8 @@ bool NodeSet::includes(const NodeSet &that) const {
   return true;
 }
 bool NodeSet::has_local() const {
-  for (const auto &n : *this) {
-    if (!n.is_global()) {
-      return true;
-    }
-  }
-  return false;
+  const auto is_local = [](const Node &n) { return !n.is_global(); };
+  return std::any_of(begin(), end(), is_local);
 }
 
 }  // namespace stacksafe
