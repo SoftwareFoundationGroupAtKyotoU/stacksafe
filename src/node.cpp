@@ -7,7 +7,7 @@ namespace {
 constexpr std::uintptr_t mask{1};
 }  // namespace
 
-Node::Node(const llvm::AllocaInst *p) : ptr_{p} {
+Node::Node(const llvm::AllocaInst &l) : local_{&l} {
   assert(is_local());
 }
 Node::Node(std::uintptr_t v) : val_{v} {
@@ -23,7 +23,7 @@ Node Node::get_global() {
   return Node{embed(-1)};
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
-  return Node{&l};
+  return Node{l};
 }
 bool Node::is_local() const {
   return (val_ & mask) == 0;
