@@ -10,6 +10,9 @@ constexpr std::uintptr_t mask{1};
 Node::Node(const llvm::AllocaInst &l) : local_{&l} {
   assert(is_local());
 }
+Node::Node(const llvm::Instruction &r) : reg_{&r} {
+  assert(is_local());
+}
 Node::Node(std::uintptr_t v) : val_{v} {
   assert(!is_local());
 }
@@ -24,6 +27,9 @@ Node Node::get_global() {
 }
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{l};
+}
+Node Node::get_register(const llvm::Instruction &r) {
+  return Node{r};
 }
 bool Node::is_local() const {
   return (val_ & mask) == 0;
