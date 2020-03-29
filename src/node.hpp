@@ -6,7 +6,7 @@
 
 namespace llvm {
 class AllocaInst;
-class Instruction;
+class Value;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -14,18 +14,18 @@ namespace stacksafe {
 class Node {
   union {
     const llvm::AllocaInst *local_;
-    const llvm::Instruction *reg_;
+    const llvm::Value *reg_;
     const void *ptr_;
     std::uintptr_t val_;
   };
   explicit Node(const llvm::AllocaInst &l);
-  explicit Node(const llvm::Instruction &r);
+  explicit Node(const llvm::Value &r);
   explicit Node(std::uintptr_t v);
 
  public:
   static Node get_global();
   static Node get_local(const llvm::AllocaInst &l);
-  static Node get_register(const llvm::Instruction &r);
+  static Node get_register(const llvm::Value &r);
   std::uintptr_t value() const;
   const void *ptr() const;
   bool is_global() const;

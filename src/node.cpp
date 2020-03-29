@@ -22,7 +22,7 @@ bool flag(std::uintptr_t v) {
 Node::Node(const llvm::AllocaInst &l) : local_{&l} {
   assert(!is_global());
 }
-Node::Node(const llvm::Instruction &r) : reg_{&r} {
+Node::Node(const llvm::Value &r) : reg_{&r} {
   assert(!is_global());
 }
 Node::Node(std::uintptr_t v) : val_{embed(v)} {
@@ -34,7 +34,7 @@ Node Node::get_global() {
 Node Node::get_local(const llvm::AllocaInst &l) {
   return Node{l};
 }
-Node Node::get_register(const llvm::Instruction &r) {
+Node Node::get_register(const llvm::Value &r) {
   return Node{r};
 }
 std::uintptr_t Node::value() const {
