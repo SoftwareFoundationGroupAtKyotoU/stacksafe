@@ -23,7 +23,7 @@ void Component::init(const llvm::Function& f) {
   const auto g = Node::get_global();
   heap_.add(g, g);
   for (const auto& a : f.args()) {
-    stack_.add(&a, g);
+    stack_.add(Node::get_register(a), g);
   }
 }
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
@@ -38,7 +38,7 @@ void Component::connect(const NodeSet& tails, const NodeSet& heads) {
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
   Stack stack;
   for (const auto& head : heads) {
-    stack.add(&tail, head);
+    stack.add(Node::get_register(tail), head);
   }
   stack_.merge(stack);
 }
@@ -51,7 +51,7 @@ void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
   if (is_global(tail)) {
     followings(NodeSet{Node::get_global()}, heads);
   } else {
-    heads.merge(stack_.lookup(&tail));
+    heads.merge(stack_.lookup(Node::get_register(tail)));
   }
 }
 NodeSet Component::reachables(const Node& node) const {
