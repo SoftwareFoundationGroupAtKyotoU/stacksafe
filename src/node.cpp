@@ -74,13 +74,8 @@ bool NodeSet::element(const Node &n) const {
   return 0 != Super::count(n);
 }
 bool NodeSet::includes(const NodeSet &that) const {
-  for (const auto &n : that) {
-    if (element(n)) {
-      continue;
-    }
-    return false;
-  }
-  return true;
+  const auto has = [&self = *this](const Node &n) { return self.element(n); };
+  return std::all_of(that.begin(), that.end(), has);
 }
 bool NodeSet::has_local() const {
   const auto is_local = [](const Node &n) { return !n.is_global(); };
