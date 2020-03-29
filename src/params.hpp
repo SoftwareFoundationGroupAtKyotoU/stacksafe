@@ -3,8 +3,8 @@
 
 #include <map>
 #include <vector>
-#include "graph.hpp"
 #include "matrix.hpp"
+#include "node.hpp"
 
 namespace llvm {
 class Value;
