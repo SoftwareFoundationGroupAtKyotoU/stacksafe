@@ -11,6 +11,12 @@ class Graph {
   using PairType = typename TreeType::PairType;
   using TreePtr = typename TreeType::Ptr;
   TreePtr tree_;
+
+ public:
+  void merge(const Graph& g);
+
+ private:
+  static TreePtr merge(const TreePtr& x, const TreePtr& y);
 };
 
 }  // namespace stacksafe
