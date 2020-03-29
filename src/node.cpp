@@ -5,6 +5,9 @@
 namespace stacksafe {
 namespace {
 constexpr std::uintptr_t mask{1};
+std::uintptr_t embed(std::uintptr_t v) {
+  return (v << 1) | mask;
+}
 bool flag(std::uintptr_t v) {
   return static_cast<bool>(v & mask);
 }
@@ -18,9 +21,6 @@ Node::Node(const llvm::Instruction &r) : reg_{&r} {
 }
 Node::Node(std::uintptr_t v) : val_{v} {
   assert(!is_local());
-}
-std::uintptr_t Node::embed(std::uintptr_t v) {
-  return (v << 1) | mask;
 }
 std::uintptr_t Node::value() const {
   return val_ >> 1;
