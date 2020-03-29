@@ -15,6 +15,7 @@ class Node {
   union {
     const llvm::AllocaInst *local_;
     const llvm::Instruction *reg_;
+    const void *ptr_;
     std::uintptr_t val_;
   };
   explicit Node(const llvm::AllocaInst &l);
@@ -26,6 +27,7 @@ class Node {
   static Node get_local(const llvm::AllocaInst &l);
   static Node get_register(const llvm::Instruction &r);
   std::uintptr_t value() const;
+  const void *ptr() const;
   bool is_global() const;
   bool equals(const Node &that) const;
   bool less(const Node &that) const;

@@ -40,6 +40,9 @@ Node Node::get_register(const llvm::Instruction &r) {
 std::uintptr_t Node::value() const {
   return extract(val_);
 }
+const void *Node::ptr() const {
+  return ptr_;
+}
 bool Node::is_global() const {
   return flag(val_);
 }
