@@ -27,7 +27,7 @@ void Component::init(const llvm::Function& f) {
   }
 }
 void Component::connect(const NodeSet& tails, const NodeSet& heads) {
-  Heap heap;
+  Graph heap;
   for (const auto& tail : tails) {
     for (const auto& head : heads) {
       heap.add(tail, head);
@@ -36,7 +36,7 @@ void Component::connect(const NodeSet& tails, const NodeSet& heads) {
   heap_.merge(heap);
 }
 void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
-  Stack stack;
+  Graph stack;
   for (const auto& head : heads) {
     stack.add(Node::get_register(tail), head);
   }
