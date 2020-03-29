@@ -19,13 +19,13 @@ bool flag(std::uintptr_t v) {
 }  // namespace
 
 Node::Node(const llvm::AllocaInst &l) : local_{&l} {
-  assert(is_local());
+  assert(!is_global());
 }
 Node::Node(const llvm::Instruction &r) : reg_{&r} {
-  assert(is_local());
+  assert(!is_global());
 }
 Node::Node(std::uintptr_t v) : val_{embed(v)} {
-  assert(!is_local());
+  assert(is_global());
 }
 std::uintptr_t Node::value() const {
   return extract(val_);
@@ -38,9 +38,6 @@ Node Node::get_local(const llvm::AllocaInst &l) {
 }
 Node Node::get_register(const llvm::Instruction &r) {
   return Node{r};
-}
-bool Node::is_local() const {
-  return (val_ & mask) == 0;
 }
 bool Node::is_global() const {
   return flag(val_);
@@ -86,7 +83,7 @@ bool NodeSet::includes(const NodeSet &that) const {
 }
 bool NodeSet::has_local() const {
   for (const auto &n : *this) {
-    if (n.is_local()) {
+    if (!n.is_global()) {
       return true;
     }
   }
