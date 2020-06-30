@@ -30,6 +30,7 @@ class Frame {
 };
 
 class Tarjan {
+ protected:
   using BB = const llvm::BasicBlock*;
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
@@ -40,6 +41,7 @@ class Tarjan {
   Tarjan(const llvm::Function& f);
 
  protected:
+  virtual std::vector<BB> successors(BB b) const = 0;
   bool visit(BB b, std::vector<Blocks>& vec);
   Blocks collect(BB b);
   Frame& push(BB b);
@@ -50,6 +52,9 @@ class BlockSolver : public Tarjan {
  public:
   explicit BlockSolver(const llvm::Function& f);
   static std::vector<Blocks> scc(const llvm::Function& f);
+
+ protected:
+  std::vector<BB> successors(BB b) const override;
 };
 
 }  // namespace stacksafe

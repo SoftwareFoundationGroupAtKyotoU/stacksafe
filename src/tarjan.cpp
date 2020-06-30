@@ -44,7 +44,7 @@ bool Tarjan::visit(BB b, std::vector<Blocks>& vec) {
   const auto ok = frames_[b].is_undef();
   if (ok) {
     auto& frame = push(b);
-    for (const auto& succ : Blocks::successors(b)) {
+    for (const auto& succ : successors(b)) {
       const auto& next = frames_[succ];
       if (visit(succ, vec)) {
         frame.update(next.low());
@@ -91,6 +91,14 @@ std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   }
   std::reverse(vec.begin(), vec.end());
   return vec;
+}
+auto BlockSolver::successors(BB b) const -> std::vector<BB> {
+  std::vector<BB> v;
+  const auto t = b->getTerminator();
+  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+    v.push_back(t->getSuccessor(i));
+  }
+  return v;
 }
 
 }  // namespace stacksafe
