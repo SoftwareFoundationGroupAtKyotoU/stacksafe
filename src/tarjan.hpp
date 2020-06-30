@@ -58,6 +58,8 @@ class Tarjan {
     bool is_undef() const;
     bool is_root() const;
     void update(int n);
+    void push(int n);
+    void pop();
   };
 };
 

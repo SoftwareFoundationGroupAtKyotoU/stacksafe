@@ -96,6 +96,13 @@ void Tarjan::Frame::update(int n) {
     low = n;
   }
 }
+void Tarjan::Frame::push(int n) {
+  index = low = n;
+  on_stack = true;
+}
+void Tarjan::Frame::pop() {
+  on_stack = false;
+}
 
 std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   auto tarjan = std::make_unique<BlockSolver>();
