@@ -1,38 +1,8 @@
 #include "tarjan.hpp"
 #include <llvm/IR/Function.h>
-#include <memory>
 #include "block.hpp"
 
 namespace stacksafe {
-
-Frame_::Frame_() : index_{-1}, low_{-1}, on_stack_{false} {}
-bool Frame_::on_stack() const {
-  return on_stack_;
-}
-int Frame_::index() const {
-  return index_;
-}
-int Frame_::low() const {
-  return low_;
-}
-bool Frame_::is_undef() const {
-  return index_ < 0;
-}
-bool Frame_::is_root() const {
-  return index_ == low_;
-}
-void Frame_::push(int n) {
-  index_ = low_ = n;
-  on_stack_ = true;
-}
-void Frame_::update(int n) {
-  if (n < low_) {
-    low_ = n;
-  }
-}
-void Frame_::pop() {
-  on_stack_ = false;
-}
 
 Tarjan::~Tarjan() = default;
 auto Tarjan::result() const -> const std::vector<Vec>& {

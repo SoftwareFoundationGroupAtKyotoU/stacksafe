@@ -14,22 +14,6 @@ class Value;
 namespace stacksafe {
 class Blocks;
 
-class Frame_ {
-  int index_, low_;
-  bool on_stack_;
-
- public:
-  Frame_();
-  bool on_stack() const;
-  int index() const;
-  int low() const;
-  bool is_undef() const;
-  bool is_root() const;
-  void push(int n);
-  void update(int n);
-  void pop();
-};
-
 class Tarjan {
   struct Frame;
 
