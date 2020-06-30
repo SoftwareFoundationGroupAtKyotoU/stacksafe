@@ -34,12 +34,12 @@ void Frame::pop() {
   on_stack_ = false;
 }
 
-Tarjan::~Tarjan() = default;
 Tarjan::Tarjan(const Vec& v) : index_{0} {
   for (const auto& p : v) {
     frames_.try_emplace(p);
   }
 }
+Tarjan::~Tarjan() = default;
 auto Tarjan::result() const -> const std::vector<Vec>& {
   return result_;
 }

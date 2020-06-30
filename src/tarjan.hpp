@@ -34,14 +34,10 @@ class Tarjan {
  protected:
   using Ptr = const llvm::Value*;
   using Vec = std::vector<Ptr>;
-  std::map<Ptr, Frame> frames_;
-  std::stack<Ptr> stack_;
-  int index_;
-  std::vector<Vec> result_;
 
  public:
-  virtual ~Tarjan();
   explicit Tarjan(const Vec& v);
+  virtual ~Tarjan() = 0;
   const std::vector<Vec>& result() const;
 
  protected:
@@ -50,6 +46,12 @@ class Tarjan {
   Vec collect(Ptr b);
   Frame& push(Ptr b);
   Ptr pop();
+
+ private:
+  int index_;
+  std::map<Ptr, Frame> frames_;
+  std::stack<Ptr> stack_;
+  std::vector<Vec> result_;
 };
 
 class BlockSolver : public Tarjan {
