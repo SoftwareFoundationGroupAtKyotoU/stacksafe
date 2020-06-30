@@ -40,7 +40,7 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
     frames_.try_emplace(&b);
   }
 }
-const std::vector<Blocks>& Tarjan::result() const {
+auto Tarjan::result() const -> const std::vector<Vec>& {
   return result_;
 }
 bool Tarjan::visit(BB b) {
@@ -61,8 +61,8 @@ bool Tarjan::visit(BB b) {
   }
   return ok;
 }
-Blocks Tarjan::collect(BB b) {
-  Blocks blocks;
+auto Tarjan::collect(BB b) -> Vec {
+  Vec blocks;
   BB p = nullptr;
   while (b != p) {
     p = pop();
@@ -88,11 +88,11 @@ std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   for (const auto& b : f) {
     tarjan->visit(&b);
   }
-  std::vector<Blocks> vec{tarjan->result()};
-  for (auto& c : vec) {
-    std::reverse(c.begin(), c.end());
+  const auto& result = tarjan->result();
+  std::vector<Blocks> vec;
+  for (auto it = result.crbegin(); it != result.crend(); ++it) {
+    vec.emplace_back(it->crbegin(), it->crend());
   }
-  std::reverse(vec.begin(), vec.end());
   return vec;
 }
 auto BlockSolver::successors(BB b) const -> std::vector<BB> {

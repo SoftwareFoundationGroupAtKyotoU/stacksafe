@@ -32,20 +32,21 @@ class Frame {
 class Tarjan {
  protected:
   using BB = const llvm::BasicBlock*;
+  using Vec = std::vector<BB>;
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
   int index_;
-  std::vector<Blocks> result_;
+  std::vector<Vec> result_;
 
  public:
   virtual ~Tarjan();
   Tarjan(const llvm::Function& f);
-  const std::vector<Blocks>& result() const;
+  const std::vector<Vec>& result() const;
 
  protected:
   virtual std::vector<BB> successors(BB b) const = 0;
   bool visit(BB b);
-  Blocks collect(BB b);
+  Vec collect(BB b);
   Frame& push(BB b);
   BB pop();
 };

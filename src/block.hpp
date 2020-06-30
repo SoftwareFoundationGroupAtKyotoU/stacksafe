@@ -15,7 +15,7 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
   using BB = Super::value_type;
 
  public:
-  using Super::begin, Super::end, Super::push_back;
+  using Super::Super, Super::begin, Super::end, Super::push_back;
   using Super::value_type;
   static Blocks successors(BB b);
   Blocks successors() const;
