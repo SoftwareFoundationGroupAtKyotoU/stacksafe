@@ -36,19 +36,18 @@ class Tarjan {
   using Vec = std::vector<Ptr>;
 
  public:
-  explicit Tarjan(const Vec& v);
   virtual ~Tarjan() = 0;
+  void run(const Vec& v);
   const std::vector<Vec>& result() const;
 
- protected:
+ private:
   virtual std::vector<Ptr> successors(Ptr b) const = 0;
   bool visit(Ptr b);
   Vec collect(Ptr b);
   Frame& push(Ptr b);
   Ptr pop();
 
- private:
-  int index_;
+  int index_ = 0;
   std::map<Ptr, Frame> frames_;
   std::stack<Ptr> stack_;
   std::vector<Vec> result_;
@@ -56,7 +55,6 @@ class Tarjan {
 
 class BlockSolver : public Tarjan {
  public:
-  explicit BlockSolver(const Vec& v);
   static std::vector<Blocks> scc(const llvm::Function& f);
 
  protected:

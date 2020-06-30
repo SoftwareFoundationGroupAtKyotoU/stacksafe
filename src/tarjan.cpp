@@ -34,14 +34,17 @@ void Frame::pop() {
   on_stack_ = false;
 }
 
-Tarjan::Tarjan(const Vec& v) : index_{0} {
-  for (const auto& p : v) {
-    frames_.try_emplace(p);
-  }
-}
 Tarjan::~Tarjan() = default;
 auto Tarjan::result() const -> const std::vector<Vec>& {
   return result_;
+}
+void Tarjan::run(const Vec& v) {
+  for (const auto& p : v) {
+    frames_.try_emplace(p);
+  }
+  for (const auto& p : v) {
+    visit(p);
+  }
 }
 bool Tarjan::visit(Ptr b) {
   const auto ok = frames_[b].is_undef();
@@ -82,16 +85,13 @@ auto Tarjan::pop() -> Ptr {
   return b;
 }
 
-BlockSolver::BlockSolver(const Vec& v) : Tarjan{v} {}
 std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
+  auto tarjan = std::make_unique<BlockSolver>();
   Vec init;
   for (const auto& b : f) {
     init.push_back(&b);
   }
-  auto tarjan = std::make_unique<BlockSolver>(init);
-  for (const auto& b : f) {
-    tarjan->visit(&b);
-  }
+  tarjan->run(init);
   const auto& result = tarjan->result();
   std::vector<Blocks> vec;
   for (auto it = result.crbegin(); it != result.crend(); ++it) {
