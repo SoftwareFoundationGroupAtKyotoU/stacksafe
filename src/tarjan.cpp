@@ -46,43 +46,43 @@ void Tarjan::run(const Vec& v) {
     visit(p);
   }
 }
-bool Tarjan::visit(Ptr b) {
-  const auto ok = frames_[b].is_undef();
+bool Tarjan::visit(Ptr p) {
+  const auto ok = frames_[p].is_undef();
   if (ok) {
-    auto& frame = push(b);
-    for (const auto& succ : successors(b)) {
+    auto& frame = push(p);
+    for (const auto& succ : successors(p)) {
       const auto& next = frames_[succ];
       if (visit(succ)) {
-        frame.update(next.low());
-      } else if (next.on_stack()) {
-        frame.update(next.index());
+        frame.update(next.low);
+      } else if (next.on_stack) {
+        frame.update(next.index);
       }
     }
     if (frame.is_root()) {
-      result_.push_back(collect(b));
+      result_.push_back(collect(p));
     }
   }
   return ok;
 }
-auto Tarjan::collect(Ptr b) -> Vec {
+auto Tarjan::collect(Ptr p) -> Vec {
   Vec blocks;
-  Ptr p = nullptr;
-  while (b != p) {
-    p = pop();
-    blocks.push_back(p);
+  Ptr q = nullptr;
+  while (p != q) {
+    q = pop();
+    blocks.push_back(q);
   }
   return blocks;
 }
-Frame_& Tarjan::push(Ptr b) {
-  stack_.push(b);
-  frames_[b].push(index_++);
-  return frames_[b];
+auto Tarjan::push(Ptr p) -> Frame& {
+  stack_.push(p);
+  frames_[p].push(index_++);
+  return frames_[p];
 }
 auto Tarjan::pop() -> Ptr {
-  const auto b = stack_.top();
+  const auto p = stack_.top();
   stack_.pop();
-  frames_[b].pop();
-  return b;
+  frames_[p].pop();
+  return p;
 }
 
 bool Tarjan::Frame::is_undef() const {

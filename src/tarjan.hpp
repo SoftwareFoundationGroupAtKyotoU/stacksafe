@@ -31,6 +31,8 @@ class Frame_ {
 };
 
 class Tarjan {
+  struct Frame;
+
  protected:
   using Ptr = const llvm::Value*;
   using Vec = std::vector<Ptr>;
@@ -44,11 +46,11 @@ class Tarjan {
   virtual std::vector<Ptr> successors(Ptr b) const = 0;
   bool visit(Ptr b);
   Vec collect(Ptr b);
-  Frame_& push(Ptr b);
+  Frame& push(Ptr b);
   Ptr pop();
 
   int index_ = 0;
-  std::map<Ptr, Frame_> frames_;
+  std::map<Ptr, Frame> frames_;
   std::stack<Ptr> stack_;
   std::vector<Vec> result_;
 
