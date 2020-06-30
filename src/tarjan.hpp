@@ -41,7 +41,7 @@ class Tarjan {
 
  public:
   virtual ~Tarjan();
-  Tarjan(const llvm::Function& f);
+  explicit Tarjan(const Vec& v);
   const std::vector<Vec>& result() const;
 
  protected:
@@ -54,7 +54,7 @@ class Tarjan {
 
 class BlockSolver : public Tarjan {
  public:
-  explicit BlockSolver(const llvm::Function& f);
+  explicit BlockSolver(const Vec& v);
   static std::vector<Blocks> scc(const llvm::Function& f);
 
  protected:
