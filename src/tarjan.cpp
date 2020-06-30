@@ -43,7 +43,7 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
 auto Tarjan::result() const -> const std::vector<Vec>& {
   return result_;
 }
-bool Tarjan::visit(BB b) {
+bool Tarjan::visit(Ptr b) {
   const auto ok = frames_[b].is_undef();
   if (ok) {
     auto& frame = push(b);
@@ -61,21 +61,21 @@ bool Tarjan::visit(BB b) {
   }
   return ok;
 }
-auto Tarjan::collect(BB b) -> Vec {
+auto Tarjan::collect(Ptr b) -> Vec {
   Vec blocks;
-  BB p = nullptr;
+  Ptr p = nullptr;
   while (b != p) {
     p = pop();
     blocks.push_back(p);
   }
   return blocks;
 }
-Frame& Tarjan::push(BB b) {
+Frame& Tarjan::push(Ptr b) {
   stack_.push(b);
   frames_[b].push(index_++);
   return frames_[b];
 }
-auto Tarjan::pop() -> BB {
+auto Tarjan::pop() -> Ptr {
   const auto b = stack_.top();
   stack_.pop();
   frames_[b].pop();
@@ -101,8 +101,8 @@ std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   }
   return vec;
 }
-auto BlockSolver::successors(BB p) const -> std::vector<BB> {
-  std::vector<BB> v;
+auto BlockSolver::successors(Ptr p) const -> std::vector<Ptr> {
+  std::vector<Ptr> v;
   if (auto b = llvm::dyn_cast<llvm::BasicBlock>(p)) {
     const auto t = b->getTerminator();
     for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
