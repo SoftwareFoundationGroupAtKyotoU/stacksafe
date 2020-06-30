@@ -36,10 +36,11 @@ class Tarjan {
   int index_;
 
  public:
+  virtual ~Tarjan();
+  Tarjan(const llvm::Function& f);
   static std::vector<Blocks> run(const llvm::Function& f);
 
  private:
-  Tarjan(const llvm::Function& f);
   bool visit(BB b, std::vector<Blocks>& vec);
   Blocks collect(BB b);
   Frame& push(BB b);

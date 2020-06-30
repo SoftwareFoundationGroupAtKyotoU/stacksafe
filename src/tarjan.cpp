@@ -1,5 +1,6 @@
 #include "tarjan.hpp"
 #include <llvm/IR/Function.h>
+#include <memory>
 #include "block.hpp"
 
 namespace stacksafe {
@@ -33,11 +34,12 @@ void Frame::pop() {
   on_stack_ = false;
 }
 
+Tarjan::~Tarjan() = default;
 std::vector<Blocks> Tarjan::run(const llvm::Function& f) {
   std::vector<Blocks> vec;
-  Tarjan tarjan{f};
+  std::unique_ptr<Tarjan> tarjan = std::make_unique<Tarjan>(f);
   for (const auto& b : f) {
-    tarjan.visit(&b, vec);
+    tarjan->visit(&b, vec);
   }
   for (auto& c : vec) {
     std::reverse(c.begin(), c.end());
