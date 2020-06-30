@@ -37,7 +37,6 @@ class Tarjan {
 
  public:
   virtual ~Tarjan();
-  static std::vector<Blocks> run(const llvm::Function& f);
   Tarjan(const llvm::Function& f);
 
  protected:
