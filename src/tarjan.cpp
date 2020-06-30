@@ -5,32 +5,32 @@
 
 namespace stacksafe {
 
-Frame::Frame() : index_{-1}, low_{-1}, on_stack_{false} {}
-bool Frame::on_stack() const {
+Frame_::Frame_() : index_{-1}, low_{-1}, on_stack_{false} {}
+bool Frame_::on_stack() const {
   return on_stack_;
 }
-int Frame::index() const {
+int Frame_::index() const {
   return index_;
 }
-int Frame::low() const {
+int Frame_::low() const {
   return low_;
 }
-bool Frame::is_undef() const {
+bool Frame_::is_undef() const {
   return index_ < 0;
 }
-bool Frame::is_root() const {
+bool Frame_::is_root() const {
   return index_ == low_;
 }
-void Frame::push(int n) {
+void Frame_::push(int n) {
   index_ = low_ = n;
   on_stack_ = true;
 }
-void Frame::update(int n) {
+void Frame_::update(int n) {
   if (n < low_) {
     low_ = n;
   }
 }
-void Frame::pop() {
+void Frame_::pop() {
   on_stack_ = false;
 }
 
@@ -73,7 +73,7 @@ auto Tarjan::collect(Ptr b) -> Vec {
   }
   return blocks;
 }
-Frame& Tarjan::push(Ptr b) {
+Frame_& Tarjan::push(Ptr b) {
   stack_.push(b);
   frames_[b].push(index_++);
   return frames_[b];

@@ -14,12 +14,12 @@ class Value;
 namespace stacksafe {
 class Blocks;
 
-class Frame {
+class Frame_ {
   int index_, low_;
   bool on_stack_;
 
  public:
-  Frame();
+  Frame_();
   bool on_stack() const;
   int index() const;
   int low() const;
@@ -44,13 +44,18 @@ class Tarjan {
   virtual std::vector<Ptr> successors(Ptr b) const = 0;
   bool visit(Ptr b);
   Vec collect(Ptr b);
-  Frame& push(Ptr b);
+  Frame_& push(Ptr b);
   Ptr pop();
 
   int index_ = 0;
-  std::map<Ptr, Frame> frames_;
+  std::map<Ptr, Frame_> frames_;
   std::stack<Ptr> stack_;
   std::vector<Vec> result_;
+
+  struct Frame {
+    int index = -1, low = -1;
+    bool on_stack = false;
+  };
 };
 
 class BlockSolver : public Tarjan {
