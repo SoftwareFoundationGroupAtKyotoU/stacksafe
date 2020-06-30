@@ -91,4 +91,18 @@ auto Tarjan::pop() -> BB {
   return b;
 }
 
+BlockSolver::BlockSolver(const llvm::Function& f) : Tarjan{f} {}
+std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
+  auto tarjan = std::make_unique<BlockSolver>(f);
+  std::vector<Blocks> vec;
+  for (const auto& b : f) {
+    tarjan->visit(&b, vec);
+  }
+  for (auto& c : vec) {
+    std::reverse(c.begin(), c.end());
+  }
+  std::reverse(vec.begin(), vec.end());
+  return vec;
+}
+
 }  // namespace stacksafe

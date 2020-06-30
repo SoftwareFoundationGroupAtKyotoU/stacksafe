@@ -37,14 +37,20 @@ class Tarjan {
 
  public:
   virtual ~Tarjan();
-  Tarjan(const llvm::Function& f);
   static std::vector<Blocks> run(const llvm::Function& f);
+  Tarjan(const llvm::Function& f);
 
- private:
+ protected:
   bool visit(BB b, std::vector<Blocks>& vec);
   Blocks collect(BB b);
   Frame& push(BB b);
   BB pop();
+};
+
+class BlockSolver : public Tarjan {
+ public:
+  explicit BlockSolver(const llvm::Function& f);
+  static std::vector<Blocks> scc(const llvm::Function& f);
 };
 
 }  // namespace stacksafe
