@@ -55,6 +55,9 @@ class Tarjan {
   struct Frame {
     int index = -1, low = -1;
     bool on_stack = false;
+    bool is_undef() const;
+    bool is_root() const;
+    void update(int n);
   };
 };
 

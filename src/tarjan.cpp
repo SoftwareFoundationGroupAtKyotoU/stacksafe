@@ -85,6 +85,18 @@ auto Tarjan::pop() -> Ptr {
   return b;
 }
 
+bool Tarjan::Frame::is_undef() const {
+  return index < 0;
+}
+bool Tarjan::Frame::is_root() const {
+  return index == low;
+}
+void Tarjan::Frame::update(int n) {
+  if (n < low) {
+    low = n;
+  }
+}
+
 std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   auto tarjan = std::make_unique<BlockSolver>();
   Vec init;
