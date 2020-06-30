@@ -5,7 +5,7 @@
 namespace stacksafe {
 
 State::State(const llvm::Function& f) {
-  for (const auto& c : BlockSolver::scc(f)) {
+  for (const auto& c : tarjan::BlockSolver::scc(f)) {
     Super::emplace_back(c);
   }
   find(&f.getEntryBlock()).init(f);

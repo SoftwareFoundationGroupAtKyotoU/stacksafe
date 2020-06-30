@@ -13,8 +13,9 @@ class Value;
 
 namespace stacksafe {
 class Blocks;
+namespace tarjan {
 
-class Tarjan {
+class Solver {
   struct Frame;
 
  protected:
@@ -22,7 +23,7 @@ class Tarjan {
   using Vec = std::vector<Ptr>;
 
  public:
-  virtual ~Tarjan() = 0;
+  virtual ~Solver() = 0;
   void run(const Vec& v);
   const std::vector<Vec>& result() const;
 
@@ -49,7 +50,7 @@ class Tarjan {
   };
 };
 
-class BlockSolver : public Tarjan {
+class BlockSolver : public Solver {
  public:
   static std::vector<Blocks> scc(const llvm::Function& f);
 
@@ -57,6 +58,7 @@ class BlockSolver : public Tarjan {
   std::vector<Ptr> successors(Ptr b) const override;
 };
 
+}  // namespace tarjan
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_BA07B9AE_49AB_49BE_AE38_7CF6DF2C84C8

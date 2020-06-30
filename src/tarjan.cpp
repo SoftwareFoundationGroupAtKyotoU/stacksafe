@@ -3,12 +3,13 @@
 #include "block.hpp"
 
 namespace stacksafe {
+namespace tarjan {
 
-Tarjan::~Tarjan() = default;
-auto Tarjan::result() const -> const std::vector<Vec>& {
+Solver::~Solver() = default;
+auto Solver::result() const -> const std::vector<Vec>& {
   return result_;
 }
-void Tarjan::run(const Vec& v) {
+void Solver::run(const Vec& v) {
   for (const auto& p : v) {
     frames_.try_emplace(p);
   }
@@ -16,7 +17,7 @@ void Tarjan::run(const Vec& v) {
     visit(p);
   }
 }
-bool Tarjan::visit(Ptr p) {
+bool Solver::visit(Ptr p) {
   const auto ok = frames_[p].is_undef();
   if (ok) {
     auto& frame = push(p);
@@ -34,7 +35,7 @@ bool Tarjan::visit(Ptr p) {
   }
   return ok;
 }
-auto Tarjan::collect(Ptr p) -> Vec {
+auto Solver::collect(Ptr p) -> Vec {
   Vec blocks;
   Ptr q = nullptr;
   while (p != q) {
@@ -43,34 +44,34 @@ auto Tarjan::collect(Ptr p) -> Vec {
   }
   return blocks;
 }
-auto Tarjan::push(Ptr p) -> Frame& {
+auto Solver::push(Ptr p) -> Frame& {
   stack_.push(p);
   frames_[p].push(index_++);
   return frames_[p];
 }
-auto Tarjan::pop() -> Ptr {
+auto Solver::pop() -> Ptr {
   const auto p = stack_.top();
   stack_.pop();
   frames_[p].pop();
   return p;
 }
 
-bool Tarjan::Frame::is_undef() const {
+bool Solver::Frame::is_undef() const {
   return index < 0;
 }
-bool Tarjan::Frame::is_root() const {
+bool Solver::Frame::is_root() const {
   return index == low;
 }
-void Tarjan::Frame::update(int n) {
+void Solver::Frame::update(int n) {
   if (n < low) {
     low = n;
   }
 }
-void Tarjan::Frame::push(int n) {
+void Solver::Frame::push(int n) {
   index = low = n;
   on_stack = true;
 }
-void Tarjan::Frame::pop() {
+void Solver::Frame::pop() {
   on_stack = false;
 }
 
@@ -105,4 +106,5 @@ auto BlockSolver::successors(Ptr p) const -> std::vector<Ptr> {
   return v;
 }
 
+}  // namespace tarjan
 }  // namespace stacksafe
