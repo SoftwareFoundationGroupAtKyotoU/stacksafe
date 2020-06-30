@@ -8,6 +8,7 @@
 namespace llvm {
 class BasicBlock;
 class Function;
+class Value;
 }  // namespace llvm
 
 namespace stacksafe {
@@ -31,7 +32,7 @@ class Frame {
 
 class Tarjan {
  protected:
-  using BB = const llvm::BasicBlock*;
+  using BB = const llvm::Value*;
   using Vec = std::vector<BB>;
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;

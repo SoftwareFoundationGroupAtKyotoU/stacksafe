@@ -91,15 +91,23 @@ std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   const auto& result = tarjan->result();
   std::vector<Blocks> vec;
   for (auto it = result.crbegin(); it != result.crend(); ++it) {
-    vec.emplace_back(it->crbegin(), it->crend());
+    Blocks blocks;
+    for (auto ptr = it->crbegin(); ptr != it->crend(); ++ptr) {
+      if (auto b = llvm::dyn_cast<llvm::BasicBlock>(*ptr)) {
+        blocks.push_back(b);
+      }
+    }
+    vec.push_back(blocks);
   }
   return vec;
 }
-auto BlockSolver::successors(BB b) const -> std::vector<BB> {
+auto BlockSolver::successors(BB p) const -> std::vector<BB> {
   std::vector<BB> v;
-  const auto t = b->getTerminator();
-  for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
-    v.push_back(t->getSuccessor(i));
+  if (auto b = llvm::dyn_cast<llvm::BasicBlock>(p)) {
+    const auto t = b->getTerminator();
+    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+      v.push_back(t->getSuccessor(i));
+    }
   }
   return v;
 }
