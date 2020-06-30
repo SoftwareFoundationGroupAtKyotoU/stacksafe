@@ -35,14 +35,16 @@ class Tarjan {
   std::map<BB, Frame> frames_;
   std::stack<BB> stack_;
   int index_;
+  std::vector<Blocks> result_;
 
  public:
   virtual ~Tarjan();
   Tarjan(const llvm::Function& f);
+  const std::vector<Blocks>& result() const;
 
  protected:
   virtual std::vector<BB> successors(BB b) const = 0;
-  bool visit(BB b, std::vector<Blocks>& vec);
+  bool visit(BB b);
   Blocks collect(BB b);
   Frame& push(BB b);
   BB pop();

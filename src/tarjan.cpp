@@ -40,20 +40,23 @@ Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
     frames_.try_emplace(&b);
   }
 }
-bool Tarjan::visit(BB b, std::vector<Blocks>& vec) {
+const std::vector<Blocks>& Tarjan::result() const {
+  return result_;
+}
+bool Tarjan::visit(BB b) {
   const auto ok = frames_[b].is_undef();
   if (ok) {
     auto& frame = push(b);
     for (const auto& succ : successors(b)) {
       const auto& next = frames_[succ];
-      if (visit(succ, vec)) {
+      if (visit(succ)) {
         frame.update(next.low());
       } else if (next.on_stack()) {
         frame.update(next.index());
       }
     }
     if (frame.is_root()) {
-      vec.push_back(collect(b));
+      result_.push_back(collect(b));
     }
   }
   return ok;
@@ -82,10 +85,10 @@ auto Tarjan::pop() -> BB {
 BlockSolver::BlockSolver(const llvm::Function& f) : Tarjan{f} {}
 std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   auto tarjan = std::make_unique<BlockSolver>(f);
-  std::vector<Blocks> vec;
   for (const auto& b : f) {
-    tarjan->visit(&b, vec);
+    tarjan->visit(&b);
   }
+  std::vector<Blocks> vec{tarjan->result()};
   for (auto& c : vec) {
     std::reverse(c.begin(), c.end());
   }
