@@ -8,44 +8,57 @@
 namespace llvm {
 class BasicBlock;
 class Function;
+class Value;
 }  // namespace llvm
 
 namespace stacksafe {
 class Blocks;
+namespace tarjan {
 
-class Frame {
-  int index_, low_;
-  bool on_stack_;
+class Solver {
+  struct Frame;
 
- public:
-  Frame();
-  bool on_stack() const;
-  int index() const;
-  int low() const;
-  bool is_undef() const;
-  bool is_root() const;
-  void push(int n);
-  void update(int n);
-  void pop();
-};
-
-class Tarjan {
-  using BB = const llvm::BasicBlock*;
-  std::map<BB, Frame> frames_;
-  std::stack<BB> stack_;
-  int index_;
+ protected:
+  using Ptr = const llvm::Value*;
+  using Vec = std::vector<Ptr>;
 
  public:
-  static std::vector<Blocks> run(const llvm::Function& f);
+  virtual ~Solver() = 0;
+  void run(const Vec& v);
+  const std::vector<Vec>& result() const;
 
  private:
-  Tarjan(const llvm::Function& f);
-  bool visit(BB b, std::vector<Blocks>& vec);
-  Blocks collect(BB b);
-  Frame& push(BB b);
-  BB pop();
+  virtual std::vector<Ptr> successors(Ptr b) const = 0;
+  bool visit(Ptr b);
+  Vec collect(Ptr b);
+  Frame& push(Ptr b);
+  Ptr pop();
+
+  int index_ = 0;
+  std::map<Ptr, Frame> frames_;
+  std::stack<Ptr> stack_;
+  std::vector<Vec> result_;
+
+  struct Frame {
+    int index = -1, low = -1;
+    bool on_stack = false;
+    bool is_undef() const;
+    bool is_root() const;
+    void update(int n);
+    void push(int n);
+    void pop();
+  };
 };
 
+class BlockSolver : public Solver {
+ public:
+  static std::vector<Blocks> scc(const llvm::Function& f);
+
+ protected:
+  std::vector<Ptr> successors(Ptr b) const override;
+};
+
+}  // namespace tarjan
 }  // namespace stacksafe
 
 #endif  // INCLUDE_GUARD_BA07B9AE_49AB_49BE_AE38_7CF6DF2C84C8

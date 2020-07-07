@@ -3,90 +3,108 @@
 #include "block.hpp"
 
 namespace stacksafe {
+namespace tarjan {
 
-Frame::Frame() : index_{-1}, low_{-1}, on_stack_{false} {}
-bool Frame::on_stack() const {
-  return on_stack_;
+Solver::~Solver() = default;
+auto Solver::result() const -> const std::vector<Vec>& {
+  return result_;
 }
-int Frame::index() const {
-  return index_;
-}
-int Frame::low() const {
-  return low_;
-}
-bool Frame::is_undef() const {
-  return index_ < 0;
-}
-bool Frame::is_root() const {
-  return index_ == low_;
-}
-void Frame::push(int n) {
-  index_ = low_ = n;
-  on_stack_ = true;
-}
-void Frame::update(int n) {
-  if (n < low_) {
-    low_ = n;
+void Solver::run(const Vec& v) {
+  for (const auto& p : v) {
+    frames_.try_emplace(p);
+  }
+  for (const auto& p : v) {
+    visit(p);
   }
 }
-void Frame::pop() {
-  on_stack_ = false;
-}
-
-std::vector<Blocks> Tarjan::run(const llvm::Function& f) {
-  std::vector<Blocks> vec;
-  Tarjan tarjan{f};
-  for (const auto& b : f) {
-    tarjan.visit(&b, vec);
-  }
-  for (auto& c : vec) {
-    std::reverse(c.begin(), c.end());
-  }
-  std::reverse(vec.begin(), vec.end());
-  return vec;
-}
-Tarjan::Tarjan(const llvm::Function& f) : index_{0} {
-  for (const auto& b : f) {
-    frames_.try_emplace(&b);
-  }
-}
-bool Tarjan::visit(BB b, std::vector<Blocks>& vec) {
-  const auto ok = frames_[b].is_undef();
+bool Solver::visit(Ptr p) {
+  const auto ok = frames_[p].is_undef();
   if (ok) {
-    auto& frame = push(b);
-    for (const auto& succ : Blocks::successors(b)) {
+    auto& frame = push(p);
+    for (const auto& succ : successors(p)) {
       const auto& next = frames_[succ];
-      if (visit(succ, vec)) {
-        frame.update(next.low());
-      } else if (next.on_stack()) {
-        frame.update(next.index());
+      if (visit(succ)) {
+        frame.update(next.low);
+      } else if (next.on_stack) {
+        frame.update(next.index);
       }
     }
     if (frame.is_root()) {
-      vec.push_back(collect(b));
+      result_.push_back(collect(p));
     }
   }
   return ok;
 }
-Blocks Tarjan::collect(BB b) {
-  Blocks blocks;
-  BB p = nullptr;
-  while (b != p) {
-    p = pop();
-    blocks.push_back(p);
+auto Solver::collect(Ptr p) -> Vec {
+  Vec blocks;
+  Ptr q = nullptr;
+  while (p != q) {
+    q = pop();
+    blocks.push_back(q);
   }
   return blocks;
 }
-Frame& Tarjan::push(BB b) {
-  stack_.push(b);
-  frames_[b].push(index_++);
-  return frames_[b];
+auto Solver::push(Ptr p) -> Frame& {
+  stack_.push(p);
+  frames_[p].push(index_++);
+  return frames_[p];
 }
-auto Tarjan::pop() -> BB {
-  const auto b = stack_.top();
+auto Solver::pop() -> Ptr {
+  const auto p = stack_.top();
   stack_.pop();
-  frames_[b].pop();
-  return b;
+  frames_[p].pop();
+  return p;
 }
 
+bool Solver::Frame::is_undef() const {
+  return index < 0;
+}
+bool Solver::Frame::is_root() const {
+  return index == low;
+}
+void Solver::Frame::update(int n) {
+  if (n < low) {
+    low = n;
+  }
+}
+void Solver::Frame::push(int n) {
+  index = low = n;
+  on_stack = true;
+}
+void Solver::Frame::pop() {
+  on_stack = false;
+}
+
+std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
+  auto tarjan = std::make_unique<BlockSolver>();
+  Vec init;
+  for (const auto& b : f) {
+    init.push_back(&b);
+  }
+  tarjan->run(init);
+  const auto& result = tarjan->result();
+  std::vector<Blocks> vec;
+  for (auto it = result.crbegin(); it != result.crend(); ++it) {
+    Blocks blocks;
+    for (auto ptr = it->crbegin(); ptr != it->crend(); ++ptr) {
+      if (auto b = llvm::dyn_cast<llvm::BasicBlock>(*ptr)) {
+        blocks.push_back(b);
+      }
+    }
+    vec.push_back(blocks);
+  }
+  return vec;
+}
+auto BlockSolver::successors(Ptr p) const -> std::vector<Ptr> {
+  std::vector<Ptr> v;
+  if (auto b = llvm::dyn_cast<llvm::BasicBlock>(p)) {
+    const auto t = b->getTerminator();
+    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+      v.push_back(t->getSuccessor(i));
+    }
+  }
+  return v;
+}
+
+}  // namespace tarjan
 }  // namespace stacksafe
