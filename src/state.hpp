@@ -43,6 +43,7 @@ class State : private std::map<const llvm::Value *, ValueSet> {
 
  public:
   ValueSet eval(const llvm::Value *v) const;
+  void update(const llvm::Value *key, const ValueSet &val);
 };
 }  // namespace dataflow
 

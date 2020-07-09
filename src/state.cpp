@@ -71,4 +71,8 @@ ValueSet State::eval(const llvm::Value *v) const {
   }
   return ret;
 }
+void State::update(const llvm::Value *key, const ValueSet &val) {
+  auto [it, _] = Super::try_emplace(key);
+  it->second = val;
+}
 }  // namespace dataflow
