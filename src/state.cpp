@@ -43,26 +43,26 @@ void to_json(nlohmann::json &j, const llvm::Value *v) {
 void to_json(nlohmann::json &j, const ValueSet &set) {
   j.clear();
   for (const auto &v : set) {
-    j.push_back(debug::to_label(v));
+    j.push_back(v);
   }
 }
 
 ValueSet State::eval(const llvm::Value *v) const {
   ValueSet ret;
   if (llvm::isa<llvm::Argument>(v)) {
-    ret.insert(v);
+    ret.insert(Cell::make(v));
   } else if (auto i = llvm::dyn_cast<llvm::BinaryOperator>(v)) {
     ret.insert(eval(i->getOperand(0)));
     ret.insert(eval(i->getOperand(1)));
   } else if (llvm::isa<llvm::AllocaInst>(v)) {
-    ret.insert(v);
+    ret.insert(Cell::make(v));
   } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
     auto p = i->getPointerOperand();
-    for (const auto &v : eval(p)) {
-      if (auto pair = Super::find(v); pair != Super::end()) {
+    for (const auto &x : eval(p)) {
+      if (auto pair = Super::find(x.value()); pair != Super::end()) {
         ret.insert(pair->second);
       } else {
-        debug::print("invalid load: " + debug::to_str(*v));
+        debug::print("invalid load: " + x.to_string());
       }
     }
   } else if (auto i = llvm::dyn_cast<llvm::GetElementPtrInst>(v)) {
@@ -91,7 +91,7 @@ void State::transfer(const llvm::BasicBlock &b) {
       auto src = eval(store->getValueOperand());
       auto dst = eval(store->getPointerOperand());
       for (const auto &key : dst) {
-        update(key, src);
+        update(key.value(), src);
       }
     }
   }

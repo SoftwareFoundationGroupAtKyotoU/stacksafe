@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 #include "block.hpp"
+#include "cell.hpp"
 #include "component.hpp"
 #include "nlohmann/json.hpp"
 
@@ -33,8 +34,8 @@ class State : private std::vector<Component> {
 }  // namespace stacksafe
 
 namespace dataflow {
-class ValueSet : private std::set<const llvm::Value *> {
-  using Super = std::set<const llvm::Value *>;
+class ValueSet : private std::set<Cell> {
+  using Super = std::set<Cell>;
 
  public:
   using Super::begin, Super::end, Super::insert;
