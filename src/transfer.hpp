@@ -12,6 +12,7 @@ class Transfer : public llvm::InstVisitor<Transfer, void> {
 
  public:
   explicit Transfer(State &state);
+  void apply(const llvm::BasicBlock &b) const;
   RetTy visitInstruction(llvm::Instruction &i);
 
  private:

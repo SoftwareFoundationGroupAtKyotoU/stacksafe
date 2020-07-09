@@ -22,7 +22,7 @@ bool DataFlow::runOnModule(llvm::Module &m) {
       State state;
       Transfer transfer{state};
       for (const auto &b : *f) {
-        transfer.visit(const_cast<llvm::BasicBlock &>(b));
+        transfer.apply(b);
       }
     }
     llvm::outs() << hr << "\n";
