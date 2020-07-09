@@ -39,6 +39,11 @@ target_link_libraries(${target} INTERFACE
   ${llvm_libs})
 
 # json
+add_library(json INTERFACE)
+target_compile_options(json INTERFACE
+  -fno-exceptions)
+target_link_libraries(json INTERFACE
+  nlohmann_json::nlohmann_json)
 set(BUILD_TESTING OFF)
 set(JSON_BuildTests OFF)
 add_subdirectory(json)
