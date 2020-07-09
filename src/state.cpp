@@ -37,6 +37,16 @@ void ValueSet::insert(const ValueSet &set) {
     Super::insert(v);
   }
 }
+void to_json(nlohmann::json &j, const llvm::Value *v) {
+  j = debug::to_label(v);
+}
+void to_json(nlohmann::json &j, const ValueSet &set) {
+  j.clear();
+  for (const auto &v : set) {
+    j.push_back(debug::to_label(v));
+  }
+}
+
 ValueSet State::eval(const llvm::Value *v) const {
   ValueSet ret;
   if (llvm::isa<llvm::Argument>(v)) {
@@ -84,6 +94,12 @@ void State::transfer(const llvm::BasicBlock &b) {
         update(key, src);
       }
     }
+  }
+}
+void to_json(nlohmann::json &j, const State &state) {
+  j.clear();
+  for (const auto &[key, val] : state) {
+    j[debug::to_label(key)] = val;
   }
 }
 }  // namespace dataflow

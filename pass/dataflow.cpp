@@ -2,6 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
 #include "function.hpp"
+#include "nlohmann/json.hpp"
 #include "state.hpp"
 
 namespace dataflow {
@@ -22,6 +23,8 @@ bool DataFlow::runOnModule(llvm::Module &m) {
       for (const auto &b : *f) {
         state.transfer(b);
       }
+      nlohmann::json j = state;
+      llvm::outs() << j.dump() << "\n";
     }
     llvm::outs() << hr << "\n";
   }
