@@ -37,9 +37,6 @@ void ValueSet::insert(const ValueSet &set) {
     Super::insert(v);
   }
 }
-void to_json(nlohmann::json &j, const llvm::Value *v) {
-  j = debug::to_label(v);
-}
 void to_json(nlohmann::json &j, const ValueSet &set) {
   j.clear();
   for (const auto &v : set) {

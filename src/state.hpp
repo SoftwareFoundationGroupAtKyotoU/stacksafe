@@ -41,7 +41,6 @@ class ValueSet : private std::set<Cell> {
   using Super::begin, Super::end, Super::insert;
   void insert(const ValueSet &set);
 };
-void to_json(nlohmann::json &j, const llvm::Value *v);
 void to_json(nlohmann::json &j, const ValueSet &set);
 
 class State : private std::map<Cell, ValueSet> {
