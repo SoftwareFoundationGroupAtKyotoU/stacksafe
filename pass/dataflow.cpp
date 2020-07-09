@@ -1,4 +1,7 @@
 #include "dataflow.hpp"
+#include <llvm/IR/Function.h>
+#include <llvm/Support/raw_ostream.h>
+#include "function.hpp"
 
 namespace dataflow {
 namespace {
@@ -8,7 +11,15 @@ static RegisterPass dataflow{"dataflow", "dataflow", true, true};
 
 char DataFlow::ID = 0;
 DataFlow::DataFlow() : llvm::ModulePass{ID} {}
-bool DataFlow::runOnModule(llvm::Module&) {
+bool DataFlow::runOnModule(llvm::Module& m) {
+  const auto hr = "----------------";
+  auto scc = function::Scc::solve(m);
+  for (const auto& c : scc) {
+    for (const auto& f : c) {
+      llvm::outs() << f->getName() << "\n";
+    }
+    llvm::outs() << hr << "\n";
+  }
   return false;
 }
 void DataFlow::print(llvm::raw_ostream&, const llvm::Module*) const {}
