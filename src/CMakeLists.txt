@@ -1,17 +1,15 @@
 project(src CXX)
 
-set(target options)
-add_library(${target} INTERFACE)
-target_include_directories(${target} INTERFACE
+add_library(options INTERFACE)
+target_include_directories(options INTERFACE
   "${CMAKE_CURRENT_SOURCE_DIR}")
-target_compile_features(${target} INTERFACE
+target_compile_features(options INTERFACE
   cxx_std_17)
-target_compile_options(${target} INTERFACE
+target_compile_options(options INTERFACE
   $<$<CONFIG:Debug>:-pedantic -Wall -Wextra -Wno-unused-parameter>)
 
-set(target ${PROJECT_NAME})
-add_library(${target} STATIC)
-target_sources(${target} PRIVATE
+add_library(static STATIC)
+target_sources(static PRIVATE
   block.cpp
   cache.cpp
   component.cpp
@@ -29,8 +27,8 @@ target_sources(${target} PRIVATE
   utility.cpp
   )
 include(EnsureSources)
-ensure_sources(${target})
-target_link_libraries(${target}
+ensure_sources(static)
+target_link_libraries(static
   json
   llvm
   options)

@@ -21,22 +21,14 @@ endif()
 update_submodule()
 
 # llvm
+add_library(llvm INTERFACE)
 find_package(LLVM REQUIRED CONFIG)
-## llvm interface
-set(target llvm)
-add_library(${target} INTERFACE)
-target_compile_definitions(${target} INTERFACE
+target_compile_definitions(llvm INTERFACE
   ${LLVM_DEFINITIONS})
-target_include_directories(${target} INTERFACE
+target_include_directories(llvm INTERFACE
   ${LLVM_INCLUDE_DIRS})
-target_compile_options(${target} INTERFACE
+target_compile_options(llvm INTERFACE
   -fno-rtti -fPIC)
-## llvm libs
-set(target llvm-libs)
-add_library(${target} INTERFACE IMPORTED)
-llvm_map_components_to_libnames(llvm_libs core)
-target_link_libraries(${target} INTERFACE
-  ${llvm_libs})
 
 # json
 add_library(json INTERFACE)
@@ -49,6 +41,5 @@ set(JSON_BuildTests OFF)
 add_subdirectory(json)
 
 # sub directories
-## pass
 add_subdirectory(src)
 add_subdirectory(pass)
