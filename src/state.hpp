@@ -44,13 +44,14 @@ class ValueSet : private std::set<Cell> {
 void to_json(nlohmann::json &j, const llvm::Value *v);
 void to_json(nlohmann::json &j, const ValueSet &set);
 
-class State : private std::map<const llvm::Value *, ValueSet> {
-  using Super = std::map<const llvm::Value *, ValueSet>;
+class State : private std::map<Cell, ValueSet> {
+  using Super = std::map<Cell, ValueSet>;
 
  public:
   using Super::begin, Super::end;
   ValueSet eval(const llvm::Value *v) const;
-  void update(const llvm::Value *key, const ValueSet &val);
+  ValueSet eval(const Cell &cell) const;
+  void update(const Cell &key, const ValueSet &val);
   void transfer(const llvm::BasicBlock &b);
 };
 void to_json(nlohmann::json &j, const State &state);

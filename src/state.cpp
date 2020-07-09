@@ -59,7 +59,7 @@ ValueSet State::eval(const llvm::Value *v) const {
   } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
     auto p = i->getPointerOperand();
     for (const auto &x : eval(p)) {
-      if (auto pair = Super::find(x.value()); pair != Super::end()) {
+      if (auto pair = Super::find(x); pair != Super::end()) {
         ret.insert(pair->second);
       } else {
         debug::print("invalid load: " + x.to_string());
@@ -81,7 +81,10 @@ ValueSet State::eval(const llvm::Value *v) const {
   }
   return ret;
 }
-void State::update(const llvm::Value *key, const ValueSet &val) {
+ValueSet State::eval(const Cell &cell) const {
+  return eval(cell.value());
+}
+void State::update(const Cell &key, const ValueSet &val) {
   auto [it, _] = Super::try_emplace(key);
   it->second = val;
 }
@@ -91,7 +94,7 @@ void State::transfer(const llvm::BasicBlock &b) {
       auto src = eval(store->getValueOperand());
       auto dst = eval(store->getPointerOperand());
       for (const auto &key : dst) {
-        update(key.value(), src);
+        update(key, src);
       }
     }
   }
@@ -99,7 +102,7 @@ void State::transfer(const llvm::BasicBlock &b) {
 void to_json(nlohmann::json &j, const State &state) {
   j.clear();
   for (const auto &[key, val] : state) {
-    j[debug::to_label(key)] = val;
+    j[key.to_string()] = val;
   }
 }
 }  // namespace dataflow
