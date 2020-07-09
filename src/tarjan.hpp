@@ -24,7 +24,8 @@ class Solver {
 
  public:
   virtual ~Solver() = 0;
-  void run(const Vec& v);
+  void push_back(Ptr p);
+  void run();
   const std::vector<Vec>& result() const;
 
  private:
@@ -35,6 +36,7 @@ class Solver {
   Ptr pop();
 
   int index_ = 0;
+  Vec init_;
   std::map<Ptr, Frame> frames_;
   std::stack<Ptr> stack_;
   std::vector<Vec> result_;

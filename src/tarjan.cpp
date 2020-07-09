@@ -9,11 +9,14 @@ Solver::~Solver() = default;
 auto Solver::result() const -> const std::vector<Vec>& {
   return result_;
 }
-void Solver::run(const Vec& v) {
-  for (const auto& p : v) {
+void Solver::push_back(Ptr p) {
+  init_.push_back(p);
+}
+void Solver::run() {
+  for (const auto& p : init_) {
     frames_.try_emplace(p);
   }
-  for (const auto& p : v) {
+  for (const auto& p : init_) {
     visit(p);
   }
 }
@@ -77,11 +80,10 @@ void Solver::Frame::pop() {
 
 std::vector<Blocks> BlockSolver::scc(const llvm::Function& f) {
   auto tarjan = std::make_unique<BlockSolver>();
-  Vec init;
   for (const auto& b : f) {
-    init.push_back(&b);
+    tarjan->push_back(&b);
   }
-  tarjan->run(init);
+  tarjan->run();
   const auto& result = tarjan->result();
   std::vector<Blocks> vec;
   for (auto it = result.crbegin(); it != result.crend(); ++it) {
