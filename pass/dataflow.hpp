@@ -8,8 +8,8 @@ class DataFlow : public ::llvm::ModulePass {
  public:
   static char ID;
   DataFlow();
-  bool runOnModule(llvm::Module& m) override;
-  void print(llvm::raw_ostream& os, const llvm::Module*) const override;
+  bool runOnModule(llvm::Module &m) override;
+  void print(llvm::raw_ostream &os, const llvm::Module *) const override;
 };
 }  // namespace dataflow
 
