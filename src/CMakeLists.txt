@@ -16,6 +16,7 @@ target_sources(${target} PRIVATE
   cache.cpp
   component.cpp
   effect.cpp
+  function.cpp
   graph.cpp
   matrix.cpp
   node.cpp
