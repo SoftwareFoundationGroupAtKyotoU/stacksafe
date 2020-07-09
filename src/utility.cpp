@@ -108,5 +108,14 @@ std::string to_str(const llvm::Value &v) {
   stream << v;
   return stream.str();
 }
+std::string to_label(const llvm::Value *v) {
+  if (v) {
+    std::string buf;
+    llvm::raw_string_ostream stream{buf};
+    v->printAsOperand(stream, false);
+    return stream.str();
+  }
+  return "";
+}
 }  // namespace debug
 }  // namespace dataflow
