@@ -12,10 +12,10 @@ class Module;
 namespace dataflow {
 namespace function {
 class Scc : public stacksafe::tarjan::Solver {
-  using Component = std::vector<const llvm::Function*>;
+  using Component = std::vector<const llvm::Function *>;
 
  public:
-  static std::vector<Component> solve(const llvm::Module& m);
+  static std::vector<Component> solve(const llvm::Module &m);
 
  private:
   std::vector<Ptr> successors(Ptr f) const override;

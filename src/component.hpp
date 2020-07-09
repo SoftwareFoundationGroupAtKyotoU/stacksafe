@@ -17,18 +17,18 @@ class Component {
   Graph heap_, stack_;
 
  public:
-  explicit Component(const Blocks& b);
-  const Blocks& blocks() const;
+  explicit Component(const Blocks &b);
+  const Blocks &blocks() const;
   std::size_t size() const;
-  void merge(const Component& c);
+  void merge(const Component &c);
   bool is_safe() const;
-  void init(const llvm::Function& f);
-  void connect(const NodeSet& tails, const NodeSet& heads);
-  void connect(const llvm::Value& tail, const NodeSet& heads);
-  void followings(const NodeSet& tails, NodeSet& heads) const;
-  void followings(const llvm::Value& tail, NodeSet& heads) const;
-  NodeSet reachables(const Node& tail) const;
-  NodeSet reachables(const llvm::Value& tail) const;
+  void init(const llvm::Function &f);
+  void connect(const NodeSet &tails, const NodeSet &heads);
+  void connect(const llvm::Value &tail, const NodeSet &heads);
+  void followings(const NodeSet &tails, NodeSet &heads) const;
+  void followings(const llvm::Value &tail, NodeSet &heads) const;
+  NodeSet reachables(const Node &tail) const;
+  NodeSet reachables(const llvm::Value &tail) const;
 
  private:
   bool check_global() const;

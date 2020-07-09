@@ -5,17 +5,17 @@
 
 namespace dataflow {
 namespace function {
-auto Scc::solve(const llvm::Module& m) -> std::vector<Component> {
+auto Scc::solve(const llvm::Module &m) -> std::vector<Component> {
   auto tarjan = std::make_unique<Scc>();
-  for (const auto& f : m) {
+  for (const auto &f : m) {
     if (!f.isDeclaration()) {
       tarjan->push_back(&f);
     }
   }
   tarjan->run();
-  const auto& result = tarjan->result();
+  const auto &result = tarjan->result();
   std::vector<Component> vec;
-  for (const auto& v : result) {
+  for (const auto &v : result) {
     Component c;
     for (auto p = v.crbegin(); p != v.crend(); ++p) {
       if (auto f = llvm::dyn_cast<llvm::Function>(*p)) {
@@ -29,8 +29,8 @@ auto Scc::solve(const llvm::Module& m) -> std::vector<Component> {
 auto Scc::successors(Ptr p) const -> std::vector<Ptr> {
   std::vector<Ptr> vec;
   if (auto f = llvm::dyn_cast<llvm::Function>(p)) {
-    for (const auto& b : *f) {
-      for (const auto& i : b) {
+    for (const auto &b : *f) {
+      for (const auto &i : b) {
         if (auto c = llvm::dyn_cast<llvm::CallBase>(&i)) {
           if (auto d = c->getCalledFunction()) {
             if (!d->isDeclaration()) {

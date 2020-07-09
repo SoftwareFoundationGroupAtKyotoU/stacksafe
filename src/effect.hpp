@@ -20,20 +20,20 @@ class Effect {
 
  public:
   Effect();
-  const std::string& name() const;
-  const Arity& arity() const;
+  const std::string &name() const;
+  const Arity &arity() const;
   bool init(std::string_view v);
   bool depends(Index from, Index to) const;
-  llvm::raw_ostream& print(llvm::raw_ostream& os) const;
+  llvm::raw_ostream &print(llvm::raw_ostream &os) const;
 };
 
 class EffectMap : private std::map<std::string, Effect> {
   using Super = std::map<std::string, Effect>;
 
  public:
-  Effect get(const llvm::CallBase& call) const;
-  void load(const std::string& file);
-  void save(const std::string& file) const;
+  Effect get(const llvm::CallBase &call) const;
+  void load(const std::string &file);
+  void save(const std::string &file) const;
 };
 
 }  // namespace stacksafe

@@ -11,7 +11,7 @@
 
 namespace stacksafe {
 namespace {
-void endline(llvm::raw_ostream& os) {
+void endline(llvm::raw_ostream &os) {
   (os << "\n").flush();
 }
 constexpr auto stacksafe{"stacksafe"};
@@ -25,8 +25,8 @@ const llvm::cl::opt<bool> stopwatch{"stopwatch", stopwatch_desc};
 
 char StackSafe::ID = 0;
 StackSafe::StackSafe() : llvm::ModulePass{ID} {}
-bool StackSafe::runOnModule(llvm::Module& m) {
-  for (const auto& f : m) {
+bool StackSafe::runOnModule(llvm::Module &m) {
+  for (const auto &f : m) {
     if (!f.isDeclaration()) {
       double elapsed = 0.0;
       bool safe = false;
@@ -44,8 +44,8 @@ bool StackSafe::runOnModule(llvm::Module& m) {
   }
   return false;
 }
-void StackSafe::print(llvm::raw_ostream&, const llvm::Module*) const {}
-void StackSafe::print_safe(llvm::raw_ostream& os, bool safe) const {
+void StackSafe::print(llvm::raw_ostream &, const llvm::Module *) const {}
+void StackSafe::print_safe(llvm::raw_ostream &os, bool safe) const {
   const auto color = safe ? llvm::raw_ostream::GREEN : llvm::raw_ostream::RED;
   const auto str = safe ? "SAFE" : "UNSAFE";
   if (os.is_displayed()) {
@@ -56,9 +56,9 @@ void StackSafe::print_safe(llvm::raw_ostream& os, bool safe) const {
     os << str;
   }
 }
-bool StackSafe::analyze(const llvm::Function& f) const {
+bool StackSafe::analyze(const llvm::Function &f) const {
   State state{f};
-  for (auto&& c : state) {
+  for (auto &&c : state) {
     PointsTo::analyze(c);
     state.transfer(c);
   }

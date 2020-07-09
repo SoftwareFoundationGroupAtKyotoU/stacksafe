@@ -16,7 +16,7 @@ std::optional<std::size_t> to_size_t(std::string_view v) {
   const auto b = buf.c_str();
   const auto e = b + buf.size();
   if (b != e) {
-    char* p = nullptr;
+    char *p = nullptr;
     const auto val = std::strtol(b, &p, 10);
     if (p == e && 0 <= val && val != LONG_MAX && val <= INT_MAX) {
       return static_cast<std::size_t>(val);
@@ -38,32 +38,32 @@ class EffectLine {
  public:
   explicit EffectLine(std::string_view line);
   std::string_view name() const;
-  const Arity& arity() const;
-  const std::vector<Mapsto>& map() const;
+  const Arity &arity() const;
+  const std::vector<Mapsto> &map() const;
   bool parse();
 
  private:
   static Head parse_head(std::string_view head);
-  static Tail parse_tail(const Arity& arity, std::string_view v);
-  static Views split(std::string_view v, const char* delim);
+  static Tail parse_tail(const Arity &arity, std::string_view v);
+  static Views split(std::string_view v, const char *delim);
 };
 
 EffectLine::EffectLine(std::string_view line) : line_{line}, arity_{0} {}
 std::string_view EffectLine::name() const {
   return name_;
 }
-const Arity& EffectLine::arity() const {
+const Arity &EffectLine::arity() const {
   return arity_;
 }
-auto EffectLine::map() const -> const std::vector<Mapsto>& {
+auto EffectLine::map() const -> const std::vector<Mapsto> & {
   return map_;
 }
 bool EffectLine::parse() {
   const auto vec = split(line_, ",");
   if (const auto head = parse_head(vec.front())) {
-    const auto& arity = std::get<1>(*head);
+    const auto &arity = std::get<1>(*head);
     std::vector<Mapsto> map;
-    for (const auto& tail : Views{std::next(vec.begin()), vec.end()}) {
+    for (const auto &tail : Views{std::next(vec.begin()), vec.end()}) {
       if (const auto pair = parse_tail(arity, tail)) {
         map.push_back(*std::move(pair));
       } else {
@@ -86,7 +86,7 @@ auto EffectLine::parse_head(std::string_view head) -> Head {
   }
   return std::nullopt;
 }
-auto EffectLine::parse_tail(const Arity& arity, std::string_view v) -> Tail {
+auto EffectLine::parse_tail(const Arity &arity, std::string_view v) -> Tail {
   const auto pair = split(v, ":");
   if (pair.size() == 2) {
     if (const auto lhs = arity.to_index(pair[0])) {
@@ -97,7 +97,7 @@ auto EffectLine::parse_tail(const Arity& arity, std::string_view v) -> Tail {
   }
   return std::nullopt;
 }
-auto EffectLine::split(std::string_view v, const char* delim) -> Views {
+auto EffectLine::split(std::string_view v, const char *delim) -> Views {
   Views views;
   const auto next = [&v, delim]() { return v.find_first_of(delim); };
   for (auto pos = next(); pos != v.npos; pos = next()) {
@@ -110,10 +110,10 @@ auto EffectLine::split(std::string_view v, const char* delim) -> Views {
 }  // namespace
 
 Effect::Effect() : matrix_{Arity{0}}, name_{} {}
-const std::string& Effect::name() const {
+const std::string &Effect::name() const {
   return name_;
 }
-const Arity& Effect::arity() const {
+const Arity &Effect::arity() const {
   return matrix_.arity();
 }
 bool Effect::init(std::string_view v) {
@@ -121,7 +121,7 @@ bool Effect::init(std::string_view v) {
   if (line.parse()) {
     matrix_.init(line.arity());
     name_ = line.name();
-    for (const auto& [lhs, rhs] : line.map()) {
+    for (const auto &[lhs, rhs] : line.map()) {
       matrix_.set(lhs, rhs);
     }
     return true;
@@ -136,7 +136,7 @@ bool Effect::depends(Index from, Index to) const {
   }
   return true;
 }
-llvm::raw_ostream& Effect::print(llvm::raw_ostream& os) const {
+llvm::raw_ostream &Effect::print(llvm::raw_ostream &os) const {
   const auto a = arity();
   os << name_ << "/" << a.value();
   for (auto from = Index::GLOBAL; a.is_valid(from); ++from) {
@@ -150,10 +150,10 @@ llvm::raw_ostream& Effect::print(llvm::raw_ostream& os) const {
   return os;
 }
 
-Effect EffectMap::get(const llvm::CallBase& call) const {
+Effect EffectMap::get(const llvm::CallBase &call) const {
   if (const auto f = call.getCalledFunction()) {
     if (const auto it = Super::find(f->getName().str()); it != Super::end()) {
-      const auto& effect = it->second;
+      const auto &effect = it->second;
       assert(effect.arity().value() == call.arg_size() &&
              "arity of called function must be the same");
       return effect;
@@ -161,7 +161,7 @@ Effect EffectMap::get(const llvm::CallBase& call) const {
   }
   return Effect{};
 }
-void EffectMap::load(const std::string& file) {
+void EffectMap::load(const std::string &file) {
   std::ifstream input{file};
   std::string buf;
   Effect effect;
@@ -177,14 +177,14 @@ void EffectMap::load(const std::string& file) {
     ++line;
   }
 }
-void EffectMap::save(const std::string& file) const {
+void EffectMap::save(const std::string &file) const {
   std::ofstream output{file};
   if (!output) {
     const auto msg = "Failed to open file: %s\n";
     (llvm::errs() << llvm::format(msg, file.c_str())).flush();
     return;
   }
-  for (const auto& [name, effect] : *this) {
+  for (const auto &[name, effect] : *this) {
     std::string buf;
     llvm::raw_string_ostream os{buf};
     effect.print(os);

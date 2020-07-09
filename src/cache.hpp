@@ -12,15 +12,15 @@ class Value;
 
 namespace stacksafe {
 
-class Cache : private std::unordered_map<const llvm::Value*, int> {
-  using Super = std::unordered_map<const llvm::Value*, int>;
+class Cache : private std::unordered_map<const llvm::Value *, int> {
+  using Super = std::unordered_map<const llvm::Value *, int>;
 
  public:
-  explicit Cache(const llvm::Function& f);
-  std::string to_str(const llvm::Instruction& reg) const;
+  explicit Cache(const llvm::Function &f);
+  std::string to_str(const llvm::Instruction &reg) const;
 
  private:
-  int lookup(const llvm::Value* val) const;
+  int lookup(const llvm::Value *val) const;
 };
 
 }  // namespace stacksafe

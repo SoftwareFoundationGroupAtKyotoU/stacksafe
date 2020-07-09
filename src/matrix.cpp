@@ -13,7 +13,7 @@ std::optional<int> to_int(std::string_view v) {
   const auto b = buf.c_str();
   const auto e = b + buf.size();
   if (b != e) {
-    char* p = nullptr;
+    char *p = nullptr;
     const auto val = std::strtol(b, &p, 10);
     if (p == e && 0 <= val && val != LONG_MAX && val <= INT_MAX) {
       return static_cast<int>(val);
@@ -32,7 +32,7 @@ Index::Index(int index) : index_{index} {
   assert(GLOBAL < *this);
 }
 Index::Index(IndexInit init) : index_{static_cast<int>(init)} {}
-llvm::raw_ostream& Index::print(llvm::raw_ostream& os) const {
+llvm::raw_ostream &Index::print(llvm::raw_ostream &os) const {
   switch (static_cast<IndexInit>(index_)) {
     default:
       return (os << index_);
@@ -44,17 +44,17 @@ llvm::raw_ostream& Index::print(llvm::raw_ostream& os) const {
       llvm_unreachable("OTHERS index must not be printed");
   }
 }
-Index& Index::operator++() {
+Index &Index::operator++() {
   ++index_;
   return *this;
 }
 Index::operator bool() const {
   return !(*this == OTHERS);
 }
-bool Index::operator==(const Index& that) const {
+bool Index::operator==(const Index &that) const {
   return this->index_ == that.index_;
 }
-bool Index::operator<(const Index& that) const {
+bool Index::operator<(const Index &that) const {
   return this->index_ < that.index_;
 }
 
@@ -82,7 +82,7 @@ Index Arity::to_index(std::string_view v) const {
 }
 
 Matrix::Matrix(std::size_t n) : Matrix{n, false} {}
-Matrix::Matrix(const Arity& arity)
+Matrix::Matrix(const Arity &arity)
     : Matrix{arity.value() + extra_space, false} {}
 Matrix::Matrix(std::size_t n, bool init)
     : Super(n * n, init ? 1 : 0), size_{n}, arity_{n - extra_space} {}
@@ -90,12 +90,12 @@ void Matrix::init(std::size_t n, bool init) {
   size_ = n;
   Super::assign(n * n, init ? 1 : 0);
 }
-void Matrix::init(const Arity& arity) {
+void Matrix::init(const Arity &arity) {
   arity_ = arity;
   size_ = arity.value() + extra_space;
   Super::assign(size_ * size_, 0);
 }
-const Arity& Matrix::arity() const {
+const Arity &Matrix::arity() const {
   return arity_;
 }
 std::size_t Matrix::size() const {

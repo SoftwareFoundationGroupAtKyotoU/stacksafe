@@ -13,8 +13,8 @@ Blocks Blocks::successors(BB b) {
 }
 Blocks Blocks::successors() const {
   Blocks succs;
-  for (const auto& b : *this) {
-    for (const auto& succ : successors(b)) {
+  for (const auto &b : *this) {
+    for (const auto &succ : successors(b)) {
       if (!contains(succ) && !succs.contains(succ)) {
         succs.push_back(succ);
       }
@@ -26,8 +26,8 @@ bool Blocks::contains(BB b) const {
   return std::find(begin(), end(), b) != end();
 }
 bool Blocks::is_loop() const {
-  for (const auto& b : *this) {
-    for (const auto& succ : successors(b)) {
+  for (const auto &b : *this) {
+    for (const auto &succ : successors(b)) {
       if (contains(succ)) {
         return true;
       }

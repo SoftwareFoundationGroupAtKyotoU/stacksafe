@@ -19,20 +19,20 @@ class Solver {
   struct Frame;
 
  protected:
-  using Ptr = const llvm::Value*;
+  using Ptr = const llvm::Value *;
   using Vec = std::vector<Ptr>;
 
  public:
   virtual ~Solver() = 0;
   void push_back(Ptr p);
   void run();
-  const std::vector<Vec>& result() const;
+  const std::vector<Vec> &result() const;
 
  private:
   virtual std::vector<Ptr> successors(Ptr b) const = 0;
   bool visit(Ptr b);
   Vec collect(Ptr b);
-  Frame& push(Ptr b);
+  Frame &push(Ptr b);
   Ptr pop();
 
   int index_ = 0;
@@ -54,7 +54,7 @@ class Solver {
 
 class BlockSolver : public Solver {
  public:
-  static std::vector<Blocks> scc(const llvm::Function& f);
+  static std::vector<Blocks> scc(const llvm::Function &f);
 
  protected:
   std::vector<Ptr> successors(Ptr b) const override;

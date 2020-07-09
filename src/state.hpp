@@ -17,12 +17,12 @@ class State : private std::vector<Component> {
 
  public:
   using Super::begin, Super::end;
-  explicit State(const llvm::Function& f);
-  void transfer(const Component& c);
+  explicit State(const llvm::Function &f);
+  void transfer(const Component &c);
   bool is_safe() const;
 
  private:
-  Component& find(BB b);
+  Component &find(BB b);
 };
 
 }  // namespace stacksafe

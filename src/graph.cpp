@@ -2,24 +2,24 @@
 
 namespace stacksafe {
 
-void Graph::add(const Node& key, const Node& val) {
+void Graph::add(const Node &key, const Node &val) {
   tree_ = merge(tree_, TreeType::make(key, val));
 }
-void Graph::merge(const Graph& g) {
+void Graph::merge(const Graph &g) {
   tree_ = merge(tree_, g.tree_);
 }
-NodeSet Graph::lookup(const Node& n) const {
+NodeSet Graph::lookup(const Node &n) const {
   NodeSet nodes;
   lookup(tree_, n, nodes);
   return nodes;
 }
-bool Graph::exists(const Node& key, const Node& val) const {
+bool Graph::exists(const Node &key, const Node &val) const {
   return exists(tree_, std::make_tuple(key, val));
 }
 std::size_t Graph::size() const {
   return TreeType::size(tree_);
 }
-auto Graph::merge(const TreePtr& x, const TreePtr& y) -> TreePtr {
+auto Graph::merge(const TreePtr &x, const TreePtr &y) -> TreePtr {
   if (TreeType::size(x) < TreeType::size(y)) {
     return merge(y, x);
   } else if (x && y) {
@@ -30,7 +30,7 @@ auto Graph::merge(const TreePtr& x, const TreePtr& y) -> TreePtr {
     return x ? x : y;
   }
 }
-void Graph::lookup(const TreePtr& x, const Node& key, NodeSet& nodes) {
+void Graph::lookup(const TreePtr &x, const Node &key, NodeSet &nodes) {
   if (x) {
     const auto [k, v] = x->value();
     if (k < key) {
@@ -44,7 +44,7 @@ void Graph::lookup(const TreePtr& x, const Node& key, NodeSet& nodes) {
     }
   }
 }
-bool Graph::exists(const TreePtr& x, const PairType& v) {
+bool Graph::exists(const TreePtr &x, const PairType &v) {
   if (!x) {
     return false;
   } else if (x->value() < v) {

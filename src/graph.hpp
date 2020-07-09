@@ -13,16 +13,16 @@ class Graph {
   TreePtr tree_;
 
  public:
-  void add(const Node& key, const Node& val);
-  void merge(const Graph& g);
-  NodeSet lookup(const Node& n) const;
-  bool exists(const Node& key, const Node& val) const;
+  void add(const Node &key, const Node &val);
+  void merge(const Graph &g);
+  NodeSet lookup(const Node &n) const;
+  bool exists(const Node &key, const Node &val) const;
   std::size_t size() const;
 
  private:
-  static TreePtr merge(const TreePtr& x, const TreePtr& y);
-  static void lookup(const TreePtr& x, const Node& key, NodeSet& nodes);
-  static bool exists(const TreePtr& x, const PairType& v);
+  static TreePtr merge(const TreePtr &x, const TreePtr &y);
+  static void lookup(const TreePtr &x, const Node &key, NodeSet &nodes);
+  static bool exists(const TreePtr &x, const PairType &v);
 };
 
 }  // namespace stacksafe

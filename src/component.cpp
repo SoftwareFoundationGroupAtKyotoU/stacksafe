@@ -4,57 +4,57 @@
 
 namespace stacksafe {
 
-Component::Component(const Blocks& b) : blocks_{b} {}
-const Blocks& Component::blocks() const {
+Component::Component(const Blocks &b) : blocks_{b} {}
+const Blocks &Component::blocks() const {
   return blocks_;
 }
 std::size_t Component::size() const {
   return heap_.size() + stack_.size();
 }
-void Component::merge(const Component& c) {
+void Component::merge(const Component &c) {
   heap_.merge(c.heap_);
   stack_.merge(c.stack_);
 }
 bool Component::is_safe() const {
-  const auto pred = [& self = *this](BB b) { return self.check_return(b); };
+  const auto pred = [&self = *this](BB b) { return self.check_return(b); };
   return check_global() && std::all_of(blocks_.begin(), blocks_.end(), pred);
 }
-void Component::init(const llvm::Function& f) {
+void Component::init(const llvm::Function &f) {
   const auto g = Node::get_global();
   heap_.add(g, g);
-  for (const auto& a : f.args()) {
+  for (const auto &a : f.args()) {
     stack_.add(Node::get_register(a), g);
   }
 }
-void Component::connect(const NodeSet& tails, const NodeSet& heads) {
+void Component::connect(const NodeSet &tails, const NodeSet &heads) {
   Graph heap;
-  for (const auto& tail : tails) {
-    for (const auto& head : heads) {
+  for (const auto &tail : tails) {
+    for (const auto &head : heads) {
       heap.add(tail, head);
     }
   }
   heap_.merge(heap);
 }
-void Component::connect(const llvm::Value& tail, const NodeSet& heads) {
+void Component::connect(const llvm::Value &tail, const NodeSet &heads) {
   Graph stack;
-  for (const auto& head : heads) {
+  for (const auto &head : heads) {
     stack.add(Node::get_register(tail), head);
   }
   stack_.merge(stack);
 }
-void Component::followings(const NodeSet& tails, NodeSet& heads) const {
-  for (const auto& tail : tails) {
+void Component::followings(const NodeSet &tails, NodeSet &heads) const {
+  for (const auto &tail : tails) {
     heads.merge(heap_.lookup(tail));
   }
 }
-void Component::followings(const llvm::Value& tail, NodeSet& heads) const {
+void Component::followings(const llvm::Value &tail, NodeSet &heads) const {
   if (is_global(tail)) {
     followings(NodeSet{Node::get_global()}, heads);
   } else {
     heads.merge(stack_.lookup(Node::get_register(tail)));
   }
 }
-NodeSet Component::reachables(const Node& node) const {
+NodeSet Component::reachables(const Node &node) const {
   NodeSet tails, heads;
   heads.merge(NodeSet{node});
   while (tails.size() < heads.size()) {
@@ -63,7 +63,7 @@ NodeSet Component::reachables(const Node& node) const {
   }
   return heads;
 }
-NodeSet Component::reachables(const llvm::Value& value) const {
+NodeSet Component::reachables(const llvm::Value &value) const {
   NodeSet tails, heads;
   followings(value, heads);
   while (tails.size() < heads.size()) {
