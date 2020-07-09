@@ -11,11 +11,11 @@ class Transfer : public llvm::InstVisitor<Transfer, void> {
   using Super = llvm::InstVisitor<Transfer, RetTy>;
 
  public:
-  explicit Transfer(const State &state);
+  explicit Transfer(State &state);
   RetTy visitInstruction(llvm::Instruction &i);
 
  private:
-  State state_;
+  State &state_;
 };
 }  // namespace dataflow
 

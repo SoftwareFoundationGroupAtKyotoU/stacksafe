@@ -2,6 +2,7 @@
 #include <llvm/IR/Function.h>
 #include <llvm/Support/raw_ostream.h>
 #include "function.hpp"
+#include "state.hpp"
 #include "transfer.hpp"
 
 namespace dataflow {
@@ -18,8 +19,11 @@ bool DataFlow::runOnModule(llvm::Module &m) {
   for (const auto &c : scc) {
     for (const auto &f : c) {
       llvm::outs() << f->getName() << "\n";
-      Transfer t;
-      t.visit(const_cast<llvm::Function *>(f));
+      State state;
+      Transfer transfer{state};
+      for (const auto &b : *f) {
+        transfer.visit(const_cast<llvm::BasicBlock &>(b));
+      }
     }
     llvm::outs() << hr << "\n";
   }
