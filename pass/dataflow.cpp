@@ -3,7 +3,6 @@
 #include <llvm/Support/raw_ostream.h>
 #include "function.hpp"
 #include "state.hpp"
-#include "transfer.hpp"
 
 namespace dataflow {
 namespace {
@@ -20,9 +19,8 @@ bool DataFlow::runOnModule(llvm::Module &m) {
     for (const auto &f : c) {
       llvm::outs() << f->getName() << "\n";
       State state;
-      Transfer transfer{state};
       for (const auto &b : *f) {
-        transfer.apply(b);
+        state.transfer(b);
       }
     }
     llvm::outs() << hr << "\n";
