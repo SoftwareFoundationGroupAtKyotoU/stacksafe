@@ -10,6 +10,10 @@ class Cell {
   const llvm::Value* value_;
   int level_;
   Cell(const llvm::Value* value, int level);
+
+ public:
+  const llvm::Value* value() const;
+  int level() const;
 };
 }  // namespace dataflow
 
