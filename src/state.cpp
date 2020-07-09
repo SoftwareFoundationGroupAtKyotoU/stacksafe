@@ -39,7 +39,12 @@ void ValueSet::insert(const ValueSet &set) {
 }
 ValueSet State::eval(const llvm::Value *v) const {
   ValueSet ret;
-  if (llvm::isa<llvm::Argument>(v) || llvm::isa<llvm::AllocaInst>(v)) {
+  if (llvm::isa<llvm::Argument>(v)) {
+    ret.insert(v);
+  } else if (auto i = llvm::dyn_cast<llvm::BinaryOperator>(v)) {
+    ret.insert(eval(i->getOperand(0)));
+    ret.insert(eval(i->getOperand(1)));
+  } else if (llvm::isa<llvm::AllocaInst>(v)) {
     ret.insert(v);
   } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
     auto p = i->getPointerOperand();
@@ -47,12 +52,22 @@ ValueSet State::eval(const llvm::Value *v) const {
       if (auto pair = Super::find(v); pair != Super::end()) {
         ret.insert(pair->second);
       } else {
-        debug::print("invalid eval");
+        debug::print("invalid load: " + debug::to_str(*v));
       }
     }
-  } else if (auto i = llvm::dyn_cast<llvm::BinaryOperator>(v)) {
+  } else if (auto i = llvm::dyn_cast<llvm::GetElementPtrInst>(v)) {
+    ret.insert(eval(i->getPointerOperand()));
+  } else if (auto i = llvm::dyn_cast<llvm::CastInst>(v)) {
     ret.insert(eval(i->getOperand(0)));
-    ret.insert(eval(i->getOperand(1)));
+  } else if (auto i = llvm::dyn_cast<llvm::PHINode>(v)) {
+    for (const auto &use : i->incoming_values()) {
+      ret.insert(eval(use.get()));
+    }
+  } else if (auto i = llvm::dyn_cast<llvm::SelectInst>(v)) {
+    ret.insert(eval(i->getTrueValue()));
+    ret.insert(eval(i->getFalseValue()));
+  } else if (v) {
+    debug::print("unsupported eval: " + debug::to_str(*v));
   }
   return ret;
 }
