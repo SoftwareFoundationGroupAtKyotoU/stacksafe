@@ -12,6 +12,7 @@ class Cell {
   Cell(const llvm::Value* value, int level);
 
  public:
+  static Cell make(const llvm::Value* value);
   const llvm::Value* value() const;
   int level() const;
 };
