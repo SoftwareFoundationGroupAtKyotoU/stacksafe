@@ -8,6 +8,7 @@
 #include "component.hpp"
 
 namespace llvm {
+class BasicBlock;
 class Function;
 class Value;
 }  // namespace llvm
@@ -44,6 +45,7 @@ class State : private std::map<const llvm::Value *, ValueSet> {
  public:
   ValueSet eval(const llvm::Value *v) const;
   void update(const llvm::Value *key, const ValueSet &val);
+  void transfer(const llvm::BasicBlock &b);
 };
 }  // namespace dataflow
 

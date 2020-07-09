@@ -75,4 +75,15 @@ void State::update(const llvm::Value *key, const ValueSet &val) {
   auto [it, _] = Super::try_emplace(key);
   it->second = val;
 }
+void State::transfer(const llvm::BasicBlock &b) {
+  for (const auto &i : b) {
+    if (auto store = llvm::dyn_cast<llvm::StoreInst>(&i)) {
+      auto src = eval(store->getValueOperand());
+      auto dst = eval(store->getPointerOperand());
+      for (const auto &key : dst) {
+        update(key, src);
+      }
+    }
+  }
+}
 }  // namespace dataflow
