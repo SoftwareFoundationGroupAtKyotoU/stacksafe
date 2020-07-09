@@ -32,4 +32,5 @@ include(EnsureSources)
 ensure_sources(${target})
 target_link_libraries(${target}
   llvm
+  nlohmann_json::nlohmann_json
   options)

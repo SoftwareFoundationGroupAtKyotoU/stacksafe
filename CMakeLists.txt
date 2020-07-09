@@ -6,6 +6,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(BuildType)
 include(CompileCommands)
 include(DevelopFlag)
+include(GitSubmodule)
 
 # develop mode
 add_custom_target(develop)
@@ -17,6 +18,7 @@ if(DEVELOP_FLAG)
 else()
   set_build_type(Release Debug)
 endif()
+update_submodule()
 
 # llvm
 find_package(LLVM REQUIRED CONFIG)
@@ -35,6 +37,11 @@ add_library(${target} INTERFACE IMPORTED)
 llvm_map_components_to_libnames(llvm_libs core)
 target_link_libraries(${target} INTERFACE
   ${llvm_libs})
+
+# json
+set(BUILD_TESTING OFF)
+set(JSON_BuildTests OFF)
+add_subdirectory(json)
 
 # sub directories
 ## pass
