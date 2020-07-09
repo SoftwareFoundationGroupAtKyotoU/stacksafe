@@ -20,6 +20,7 @@ class Cell {
   int level() const;
   std::string to_string() const;
 };
+bool operator<(const Cell& lhs, const Cell& rhs);
 void to_json(nlohmann::json& j, const Cell& cell);
 }  // namespace dataflow
 

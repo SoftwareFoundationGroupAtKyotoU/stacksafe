@@ -16,6 +16,9 @@ int Cell::level() const {
 std::string Cell::to_string() const {
   return debug::to_label(value_);
 }
+bool operator<(const Cell& lhs, const Cell& rhs) {
+  return lhs.value() < rhs.value();
+}
 void to_json(nlohmann::json& j, const Cell& cell) {
   std::string buf;
   auto level = cell.level();
