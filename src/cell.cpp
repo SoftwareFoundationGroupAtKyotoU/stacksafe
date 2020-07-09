@@ -13,6 +13,9 @@ const llvm::Value* Cell::value() const {
 int Cell::level() const {
   return level_;
 }
+std::string Cell::to_string() const {
+  return debug::to_label(value_);
+}
 void to_json(nlohmann::json& j, const Cell& cell) {
   std::string buf;
   auto level = cell.level();
@@ -22,7 +25,7 @@ void to_json(nlohmann::json& j, const Cell& cell) {
   for (; level < 0; ++level) {
     buf += "&";
   }
-  buf += debug::to_label(cell.value());
+  buf += cell.to_string();
   j = buf;
 }
 }  // namespace dataflow
