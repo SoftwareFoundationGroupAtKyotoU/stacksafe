@@ -35,10 +35,14 @@ class ValueSet : private std::set<const llvm::Value *> {
   using Super = std::set<const llvm::Value *>;
 
  public:
+  using Super::begin, Super::end, Super::insert;
   void insert(const ValueSet &set);
 };
 class State : private std::map<const llvm::Value *, ValueSet> {
   using Super = std::map<const llvm::Value *, ValueSet>;
+
+ public:
+  ValueSet eval(const llvm::Value *v) const;
 };
 }  // namespace dataflow
 

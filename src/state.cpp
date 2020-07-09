@@ -1,6 +1,8 @@
 #include "state.hpp"
 #include <llvm/IR/Function.h>
+#include <llvm/IR/Instructions.h>
 #include "tarjan.hpp"
+#include "utility.hpp"
 
 namespace stacksafe {
 
@@ -34,5 +36,24 @@ void ValueSet::insert(const ValueSet &set) {
   for (const auto &v : set) {
     Super::insert(v);
   }
+}
+ValueSet State::eval(const llvm::Value *v) const {
+  ValueSet ret;
+  if (llvm::isa<llvm::Argument>(v) || llvm::isa<llvm::AllocaInst>(v)) {
+    ret.insert(v);
+  } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
+    auto p = i->getPointerOperand();
+    for (const auto &v : eval(p)) {
+      if (auto pair = Super::find(v); pair != Super::end()) {
+        ret.insert(pair->second);
+      } else {
+        debug::print("invalid eval");
+      }
+    }
+  } else if (auto i = llvm::dyn_cast<llvm::BinaryOperator>(v)) {
+    ret.insert(eval(i->getOperand(0)));
+    ret.insert(eval(i->getOperand(1)));
+  }
+  return ret;
 }
 }  // namespace dataflow
