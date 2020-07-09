@@ -12,6 +12,7 @@ add_library(static STATIC)
 target_sources(static PRIVATE
   block.cpp
   cache.cpp
+  cell.cpp
   component.cpp
   effect.cpp
   function.cpp
