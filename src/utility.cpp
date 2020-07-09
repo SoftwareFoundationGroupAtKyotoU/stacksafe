@@ -7,20 +7,20 @@ namespace stacksafe {
 std::size_t operator"" _z(unsigned long long n) {
   return n;
 }
-std::string to_str(const llvm::Value& v) {
+std::string to_str(const llvm::Value &v) {
   std::string buf;
   llvm::raw_string_ostream stream{buf};
   stream << v;
   return stream.str();
 }
-void fatal_error(const std::string& msg) {
+void fatal_error(const std::string &msg) {
   debug::print("FATAL: " + msg);
   std::exit(EXIT_FAILURE);
 }
-bool least_significant_bit(const void* ptr) {
+bool least_significant_bit(const void *ptr) {
   return reinterpret_cast<std::uintptr_t>(ptr) & 0x1;
 }
-bool is_global(const llvm::Value& v) {
+bool is_global(const llvm::Value &v) {
   if (const auto c = llvm::dyn_cast<llvm::Constant>(&v)) {
     if (llvm::isa<llvm::GlobalValue>(c)) {
       return true;
@@ -33,7 +33,7 @@ bool is_global(const llvm::Value& v) {
   }
   return false;
 }
-bool is_register(const llvm::Value& v) {
+bool is_register(const llvm::Value &v) {
   if (const auto i = llvm::dyn_cast<llvm::Instruction>(&v)) {
     if (const auto c = llvm::dyn_cast<llvm::CallInst>(i)) {
       return !c->getFunctionType()->getReturnType()->isVoidTy();
@@ -52,12 +52,12 @@ bool is_register(const llvm::Value& v) {
     return false;
   }
 }
-bool is_return(const llvm::CallInst& i) {
+bool is_return(const llvm::CallInst &i) {
   return !i.getFunctionType()->getReturnType()->isVoidTy();
 }
 
 namespace debug {
-int get_operand(const llvm::Value* v) {
+int get_operand(const llvm::Value *v) {
   static const auto prefix = '%';
   if (!v) {
     return -1;
@@ -77,7 +77,7 @@ int get_operand(const llvm::Value* v) {
   }
   return -4;
 }
-void print(const std::string& str) {
+void print(const std::string &str) {
   (llvm::errs() << str << "\n").flush();
 }
 std::string to_str(int num) {
@@ -96,3 +96,17 @@ std::string to_str(int num) {
 }
 }  // namespace debug
 }  // namespace stacksafe
+
+namespace dataflow {
+namespace debug {
+void print(const std::string &str) {
+  (llvm::errs() << str << "\n").flush();
+}
+std::string to_str(const llvm::Value &v) {
+  std::string buf;
+  llvm::raw_string_ostream stream{buf};
+  stream << v;
+  return stream.str();
+}
+}  // namespace debug
+}  // namespace dataflow
