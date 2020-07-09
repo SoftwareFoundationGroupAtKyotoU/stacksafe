@@ -28,3 +28,11 @@ Component &State::find(BB b) {
 }
 
 }  // namespace stacksafe
+
+namespace dataflow {
+void ValueSet::insert(const ValueSet &set) {
+  for (const auto &v : set) {
+    Super::insert(v);
+  }
+}
+}  // namespace dataflow

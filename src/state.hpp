@@ -33,6 +33,9 @@ class State : private std::vector<Component> {
 namespace dataflow {
 class ValueSet : private std::set<const llvm::Value *> {
   using Super = std::set<const llvm::Value *>;
+
+ public:
+  void insert(const ValueSet &set);
 };
 class State : private std::map<const llvm::Value *, ValueSet> {
   using Super = std::map<const llvm::Value *, ValueSet>;
