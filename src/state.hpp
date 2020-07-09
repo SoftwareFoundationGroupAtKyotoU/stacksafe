@@ -31,9 +31,11 @@ class State : private std::vector<Component> {
 }  // namespace stacksafe
 
 namespace dataflow {
-class State {
-  using Set = std::set<const llvm::Value *>;
-  std::map<const llvm::Value *, Set> state_;
+class ValueSet : private std::set<const llvm::Value *> {
+  using Super = std::set<const llvm::Value *>;
+};
+class State : private std::map<const llvm::Value *, ValueSet> {
+  using Super = std::map<const llvm::Value *, ValueSet>;
 };
 }  // namespace dataflow
 
