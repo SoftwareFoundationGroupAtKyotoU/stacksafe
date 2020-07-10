@@ -21,7 +21,11 @@ std::string Cell::to_string() const {
   return debug::to_label(value_);
 }
 bool operator<(const Cell& lhs, const Cell& rhs) {
-  return lhs.value() < rhs.value();
+  if (lhs.value() == rhs.value()) {
+    return lhs.level() < rhs.level();
+  } else {
+    return lhs.value() < rhs.value();
+  }
 }
 void to_json(nlohmann::json& j, const Cell& cell) {
   std::string buf;
