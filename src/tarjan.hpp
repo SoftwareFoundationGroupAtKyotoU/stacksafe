@@ -63,4 +63,16 @@ class BlockSolver : public Solver {
 }  // namespace tarjan
 }  // namespace stacksafe
 
+namespace dataflow {
+struct Frame {
+  int index = -1, low = -1;
+  bool on_stack = false;
+  bool is_undef() const;
+  bool is_root() const;
+  void update(int n);
+  void push(int n);
+  void pop();
+};
+}  // namespace dataflow
+
 #endif  // INCLUDE_GUARD_BA07B9AE_49AB_49BE_AE38_7CF6DF2C84C8

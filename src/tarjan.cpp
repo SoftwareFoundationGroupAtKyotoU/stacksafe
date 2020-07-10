@@ -110,3 +110,24 @@ auto BlockSolver::successors(Ptr p) const -> std::vector<Ptr> {
 
 }  // namespace tarjan
 }  // namespace stacksafe
+
+namespace dataflow {
+bool Frame::is_undef() const {
+  return index < 0;
+}
+bool Frame::is_root() const {
+  return index == low;
+}
+void Frame::update(int n) {
+  if (n < low) {
+    low = n;
+  }
+}
+void Frame::push(int n) {
+  index = low = n;
+  on_stack = true;
+}
+void Frame::pop() {
+  on_stack = false;
+}
+}  // namespace dataflow
