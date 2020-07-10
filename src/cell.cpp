@@ -29,9 +29,6 @@ void to_json(nlohmann::json& j, const Cell& cell) {
   for (; 0 < level; --level) {
     buf += "*";
   }
-  for (; level < 0; ++level) {
-    buf += "&";
-  }
   buf += cell.to_string();
   j = buf;
 }
@@ -73,9 +70,9 @@ void Value::insert(const Value& value) {
 void Value::insert(const llvm::Value* value) {
   insert(Value{value});
 }
-void to_join(nlohmann::json& j, const Value& set) {
+void to_json(nlohmann::json& j, const Value& value) {
   std::vector<Cell> vec;
-  for (const auto& cell : set) {
+  for (const auto& cell : value) {
     vec.push_back(cell);
   }
   const auto cmp = [](const Cell& lhs, const Cell& rhs) {

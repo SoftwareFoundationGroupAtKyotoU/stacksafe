@@ -97,9 +97,10 @@ void State::transfer(const llvm::BasicBlock &b) {
   }
 }
 void to_json(nlohmann::json &j, const State &state) {
-  j.clear();
+  std::map<std::string, Value> base;
   for (const auto &[key, val] : state) {
-    j[key.to_string()] = val;
+    base.try_emplace(key.to_string(), val);
   }
+  j = base;
 }
 }  // namespace dataflow

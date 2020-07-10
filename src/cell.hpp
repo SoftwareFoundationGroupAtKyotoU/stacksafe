@@ -37,7 +37,7 @@ class Value : private std::set<Cell> {
  private:
   void insert(const llvm::Value* value);
 };
-void to_join(nlohmann::json& j, const Value& set);
+void to_json(nlohmann::json& j, const Value& value);
 }  // namespace dataflow
 
 #endif  // INCLUDE_GUARD_0B4B9978_D346_4DE5_B632_5DCD571D3B77
