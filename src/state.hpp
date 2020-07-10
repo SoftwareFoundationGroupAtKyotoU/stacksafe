@@ -40,6 +40,7 @@ class State : private std::map<Cell, Value> {
  public:
   using Super::begin, Super::end;
   void transfer(const llvm::BasicBlock &b);
+  void join(const State &state);
 
  private:
   void update(const Cell &key, const Value &val);

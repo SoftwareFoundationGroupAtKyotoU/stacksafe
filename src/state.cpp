@@ -50,6 +50,11 @@ void State::transfer(const llvm::BasicBlock &b) {
     }
   }
 }
+void State::join(const State &state) {
+  for (const auto &[key, val] : state) {
+    update(key, val);
+  }
+}
 void State::update(const Cell &key, const Value &val) {
   auto [it, _] = Super::try_emplace(key);
   it->second.insert(val);
