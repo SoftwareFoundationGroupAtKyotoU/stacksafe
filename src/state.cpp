@@ -39,10 +39,17 @@ void State::update(const Cell &key, const Value &val) {
 void State::transfer(const llvm::BasicBlock &b) {
   for (const auto &i : b) {
     if (auto store = llvm::dyn_cast<llvm::StoreInst>(&i)) {
-      auto src = Value::make(store->getValueOperand());
-      auto dst = Value::make(store->getPointerOperand());
-      for (const auto &key : eval(dst)) {
-        update(key, eval(src));
+      auto src = eval(Value::make(store->getValueOperand()));
+      auto dst = eval(Value::make(store->getPointerOperand()));
+      if (src.is_local() && dst.is_global()) {
+        nlohmann::json j;
+        debug::print("unsafe store: " + debug::to_str(store));
+        debug::print("src: " + (j = src).dump());
+        debug::print("dst: " + (j = dst).dump());
+        debug::print("state: " + (j = *this).dump());
+      }
+      for (const auto &key : dst) {
+        update(key, src);
       }
     }
   }
