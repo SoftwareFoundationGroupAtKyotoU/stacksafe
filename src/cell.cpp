@@ -8,8 +8,8 @@ Cell::Cell(const llvm::Value* value, int level)
 Cell Cell::make(const llvm::Value* value) {
   return Cell{value, 0};
 }
-Cell Cell::deref(const Cell& cell) {
-  return Cell{cell.value(), 1 + cell.level()};
+Cell Cell::deref(const Cell& cell, int level) {
+  return Cell{cell.value(), level + cell.level()};
 }
 const llvm::Value* Cell::value() const {
   return value_;
@@ -43,9 +43,8 @@ Value::Value(const llvm::Value* v) {
   } else if (llvm::isa<llvm::AllocaInst>(v)) {
     Super::insert(Cell::make(v));
   } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
-    Value src{i->getPointerOperand()};
-    for (const auto& cell : src) {
-      Super::insert(Cell::deref(cell));
+    for (const auto& cell : Value{i->getPointerOperand()}) {
+      Super::insert(Cell::deref(cell, 1));
     }
   } else if (auto i = llvm::dyn_cast<llvm::GetElementPtrInst>(v)) {
     insert(i->getPointerOperand());
