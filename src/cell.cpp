@@ -39,7 +39,9 @@ void to_json(nlohmann::json& j, const Cell& cell) {
 
 Value::Value() = default;
 Value::Value(const llvm::Value* v) {
-  if (llvm::isa<llvm::Argument>(v)) {
+  if (llvm::isa<llvm::Constant>(v)) {
+    Super::insert(Cell::make(v));
+  } else if (llvm::isa<llvm::Argument>(v)) {
     Super::insert(Cell::make(v));
   } else if (auto i = llvm::dyn_cast<llvm::BinaryOperator>(v)) {
     insert(i->getOperand(0));
