@@ -7,6 +7,9 @@ Cell::Cell(const llvm::Value* value, int level)
 Cell Cell::make(const llvm::Value* value) {
   return Cell{value, 0};
 }
+Cell Cell::deref(const Cell& cell) {
+  return Cell{cell.value(), 1 + cell.level()};
+}
 const llvm::Value* Cell::value() const {
   return value_;
 }

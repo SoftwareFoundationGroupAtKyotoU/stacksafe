@@ -17,6 +17,7 @@ class Cell {
 
  public:
   static Cell make(const llvm::Value* value);
+  static Cell deref(const Cell& cell);
   const llvm::Value* value() const;
   int level() const;
   std::string to_string() const;
