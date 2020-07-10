@@ -24,13 +24,13 @@ class Cell {
 bool operator<(const Cell& lhs, const Cell& rhs);
 void to_json(nlohmann::json& j, const Cell& cell);
 
-class CellSet : private std::set<Cell> {
+class Value : private std::set<Cell> {
   using Super = std::set<Cell>;
 
  public:
   using Super::begin, Super::end;
 };
-void to_join(nlohmann::json& j, const CellSet& set);
+void to_join(nlohmann::json& j, const Value& set);
 }  // namespace dataflow
 
 #endif  // INCLUDE_GUARD_0B4B9978_D346_4DE5_B632_5DCD571D3B77

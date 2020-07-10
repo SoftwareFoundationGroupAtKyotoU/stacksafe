@@ -32,7 +32,7 @@ void to_json(nlohmann::json& j, const Cell& cell) {
   j = buf;
 }
 
-void to_join(nlohmann::json& j, const CellSet& set) {
+void to_join(nlohmann::json& j, const Value& set) {
   std::vector<Cell> vec;
   for (const auto& cell : set) {
     vec.push_back(cell);
