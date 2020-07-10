@@ -130,4 +130,54 @@ void Frame::push(int n) {
 void Frame::pop() {
   on_stack = false;
 }
+
+Tarjan::~Tarjan() = default;
+auto Tarjan::apply() -> std::vector<Vec> {
+  for (const auto &p : *this) {
+    frames_.try_emplace(p);
+  }
+  for (const auto &p : *this) {
+    visit(p);
+  }
+  return result_;
+}
+bool Tarjan::visit(Ptr p) {
+  const auto ok = frames_[p].is_undef();
+  if (ok) {
+    auto &frame = push(p);
+    for (const auto &succ : successors(p)) {
+      const auto &next = frames_[succ];
+      if (visit(succ)) {
+        frame.update(next.low);
+      } else if (next.on_stack) {
+        frame.update(next.index);
+      }
+    }
+    if (frame.is_root()) {
+      result_.push_back(collect(p));
+    }
+  }
+  return ok;
+}
+auto Tarjan::collect(Ptr p) -> Vec {
+  Vec blocks;
+  Ptr q = nullptr;
+  while (p != q) {
+    q = pop();
+    blocks.push_back(q);
+  }
+  std::reverse(blocks.begin(), blocks.end());
+  return blocks;
+}
+auto Tarjan::push(Ptr p) -> Frame & {
+  stack_.push(p);
+  frames_[p].push(index_++);
+  return frames_[p];
+}
+auto Tarjan::pop() -> Ptr {
+  const auto p = stack_.top();
+  stack_.pop();
+  frames_[p].pop();
+  return p;
+}
 }  // namespace dataflow

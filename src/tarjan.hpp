@@ -73,6 +73,30 @@ struct Frame {
   void push(int n);
   void pop();
 };
+
+class Tarjan : std::vector<const llvm::Value *> {
+ protected:
+  using Ptr = const llvm::Value *;
+  using Vec = std::vector<Ptr>;
+  virtual ~Tarjan() = 0;
+  virtual Vec successors(Ptr p) const = 0;
+
+ public:
+  using Vec::push_back;
+  std::vector<Vec> apply();
+
+ private:
+  bool visit(Ptr p);
+  Vec collect(Ptr p);
+  Frame &push(Ptr p);
+  Ptr pop();
+
+ private:
+  int index_ = 0;
+  std::map<Ptr, Frame> frames_;
+  std::stack<Ptr> stack_;
+  std::vector<Vec> result_;
+};
 }  // namespace dataflow
 
 #endif  // INCLUDE_GUARD_BA07B9AE_49AB_49BE_AE38_7CF6DF2C84C8
