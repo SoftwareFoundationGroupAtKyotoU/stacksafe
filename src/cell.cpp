@@ -35,6 +35,12 @@ void to_json(nlohmann::json& j, const Cell& cell) {
   j = buf;
 }
 
+void Value::insert(const Value& value) {
+  Super::insert(value.begin(), value.end());
+}
+void Value::insert(const llvm::Value* value) {
+  Super::insert(Cell::make(value));
+}
 void to_join(nlohmann::json& j, const Value& set) {
   std::vector<Cell> vec;
   for (const auto& cell : set) {

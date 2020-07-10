@@ -30,6 +30,10 @@ class Value : private std::set<Cell> {
 
  public:
   using Super::begin, Super::end;
+  void insert(const Value& value);
+
+ private:
+  void insert(const llvm::Value* value);
 };
 void to_join(nlohmann::json& j, const Value& set);
 }  // namespace dataflow
