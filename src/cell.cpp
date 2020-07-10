@@ -31,4 +31,16 @@ void to_json(nlohmann::json& j, const Cell& cell) {
   buf += cell.to_string();
   j = buf;
 }
+
+void to_join(nlohmann::json& j, const CellSet& set) {
+  std::vector<Cell> vec;
+  for (const auto& cell : set) {
+    vec.push_back(cell);
+  }
+  const auto cmp = [](const Cell& lhs, const Cell& rhs) {
+    return lhs.to_string() < rhs.to_string();
+  };
+  std::sort(vec.begin(), vec.end(), cmp);
+  j = vec;
+}
 }  // namespace dataflow

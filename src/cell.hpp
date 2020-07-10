@@ -30,6 +30,7 @@ class CellSet : private std::set<Cell> {
  public:
   using Super::begin, Super::end;
 };
+void to_join(nlohmann::json& j, const CellSet& set);
 }  // namespace dataflow
 
 #endif  // INCLUDE_GUARD_0B4B9978_D346_4DE5_B632_5DCD571D3B77
