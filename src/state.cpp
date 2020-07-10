@@ -56,15 +56,18 @@ Value State::eval(const Value &value) const {
 }
 Value State::eval(const Cell &cell) const {
   Value ret;
-  if (0 < cell.level()) {
-    if (auto it = Super::find(cell); it != Super::end()) {
-      for (const auto &c : std::get<1>(*it)) {
-        ret.insert(eval(Cell::deref(c, cell.level() - 1)));
+  if (cell.level() <= 0) {
+    ret.insert(cell);
+  } else {
+    auto value = eval(Cell::deref(cell, -1));
+    for (const auto &c : value) {
+      if (auto it = Super::find(c); it != Super::end()) {
+        ret.insert(it->second);
+      } else {
+        ret.insert(Cell::deref(c, 1));
       }
-      return ret;
     }
   }
-  ret.insert(cell);
   return ret;
 }
 void to_json(nlohmann::json &j, const State &state) {
