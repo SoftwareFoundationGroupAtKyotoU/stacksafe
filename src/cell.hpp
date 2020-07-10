@@ -11,12 +11,13 @@ class Value;
 
 namespace dataflow {
 class Cell {
+  friend class Value;
   const llvm::Value* value_;
   int level_;
   Cell(const llvm::Value* value, int level);
+  static Cell make(const llvm::Value* value);
 
  public:
-  static Cell make(const llvm::Value* value);
   static Cell deref(const Cell& cell, int level);
   const llvm::Value* value() const;
   int level() const;
