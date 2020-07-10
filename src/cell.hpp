@@ -1,6 +1,7 @@
 #ifndef INCLUDE_GUARD_0B4B9978_D346_4DE5_B632_5DCD571D3B77
 #define INCLUDE_GUARD_0B4B9978_D346_4DE5_B632_5DCD571D3B77
 
+#include <set>
 #include <string>
 #include "nlohmann/json.hpp"
 
@@ -22,6 +23,13 @@ class Cell {
 };
 bool operator<(const Cell& lhs, const Cell& rhs);
 void to_json(nlohmann::json& j, const Cell& cell);
+
+class CellSet : private std::set<Cell> {
+  using Super = std::set<Cell>;
+
+ public:
+  using Super::begin, Super::end;
+};
 }  // namespace dataflow
 
 #endif  // INCLUDE_GUARD_0B4B9978_D346_4DE5_B632_5DCD571D3B77
