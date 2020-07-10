@@ -42,34 +42,36 @@ void to_json(nlohmann::json& j, const Cell& cell) {
 }
 
 Value::Value() = default;
-Value::Value(const llvm::Value* v) {
+Value Value::make(const llvm::Value* v) {
+  Value value;
   if (llvm::isa<llvm::Constant>(v)) {
-    Super::insert(Cell::make(v));
+    value.insert(Cell::make(v));
   } else if (llvm::isa<llvm::Argument>(v)) {
-    Super::insert(Cell::make(v));
+    value.insert(Cell::make(v));
   } else if (auto i = llvm::dyn_cast<llvm::BinaryOperator>(v)) {
-    insert(i->getOperand(0));
-    insert(i->getOperand(1));
+    value.insert(Value::make(i->getOperand(0)));
+    value.insert(Value::make(i->getOperand(1)));
   } else if (llvm::isa<llvm::AllocaInst>(v)) {
-    Super::insert(Cell::make(v));
+    value.insert(Cell::make(v));
   } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
-    for (const auto& cell : Value{i->getPointerOperand()}) {
-      Super::insert(Cell::shift(cell, 1));
+    for (const auto& cell : Value::make(i->getPointerOperand())) {
+      value.insert(Cell::shift(cell, 1));
     }
   } else if (auto i = llvm::dyn_cast<llvm::GetElementPtrInst>(v)) {
-    insert(i->getPointerOperand());
+    value.insert(Value::make(i->getPointerOperand()));
   } else if (auto i = llvm::dyn_cast<llvm::CastInst>(v)) {
-    insert(i->getOperand(0));
+    value.insert(Value::make(i->getOperand(0)));
   } else if (auto i = llvm::dyn_cast<llvm::PHINode>(v)) {
     for (const auto& use : i->incoming_values()) {
-      insert(use.get());
+      value.insert(Value::make(use.get()));
     }
   } else if (auto i = llvm::dyn_cast<llvm::SelectInst>(v)) {
-    insert(i->getTrueValue());
-    insert(i->getFalseValue());
+    value.insert(Value::make(i->getTrueValue()));
+    value.insert(Value::make(i->getFalseValue()));
   } else {
     debug::print("unsupported value: " + debug::to_str(v));
   }
+  return value;
 }
 void Value::insert(const Value& value) {
   Super::insert(value.begin(), value.end());
@@ -81,9 +83,6 @@ bool Value::is_local() const {
 bool Value::is_global() const {
   auto pred = [](const Cell& cell) { return !cell.is_local(); };
   return std::any_of(begin(), end(), pred);
-}
-void Value::insert(const llvm::Value* value) {
-  insert(Value{value});
 }
 void to_json(nlohmann::json& j, const Value& value) {
   std::vector<Cell> vec;

@@ -33,13 +33,10 @@ class Value : private std::set<Cell> {
  public:
   using Super::begin, Super::end, Super::insert;
   Value();
-  explicit Value(const llvm::Value* v);
+  static Value make(const llvm::Value* v);
   void insert(const Value& value);
   bool is_local() const;
   bool is_global() const;
-
- private:
-  void insert(const llvm::Value* value);
 };
 void to_json(nlohmann::json& j, const Value& value);
 }  // namespace dataflow

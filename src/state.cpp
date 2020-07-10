@@ -39,8 +39,8 @@ void State::update(const Cell &key, const Value &val) {
 void State::transfer(const llvm::BasicBlock &b) {
   for (const auto &i : b) {
     if (auto store = llvm::dyn_cast<llvm::StoreInst>(&i)) {
-      Value src{store->getValueOperand()};
-      Value dst{store->getPointerOperand()};
+      auto src = Value::make(store->getValueOperand());
+      auto dst = Value::make(store->getPointerOperand());
       for (const auto &key : eval(dst)) {
         update(key, eval(src));
       }
