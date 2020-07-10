@@ -6,6 +6,13 @@ namespace dataflow {
 Cell::Cell(const llvm::Value* value, int level)
     : value_{value}, level_{level} {}
 Cell Cell::make(const llvm::Value* value) {
+  if (!value) {
+    debug::print("invalid cell: null");
+  } else if (!llvm::isa<llvm::Constant>(value) &&
+             !llvm::isa<llvm::Argument>(value) &&
+             !llvm::isa<llvm::AllocaInst>(value)) {
+    debug::print("invalid cell: " + debug::to_str(*value));
+  }
   return Cell{value, 0};
 }
 Cell Cell::deref(const Cell& cell, int level) {
