@@ -39,10 +39,10 @@ class State : private std::map<Cell, Value> {
 
  public:
   using Super::begin, Super::end;
-  void update(const Cell &key, const Value &val);
   void transfer(const llvm::BasicBlock &b);
 
  private:
+  void update(const Cell &key, const Value &val);
   Value eval(const Value &value) const;
   Value eval(const Cell &cell) const;
 };

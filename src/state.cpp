@@ -32,10 +32,6 @@ Component &State::find(BB b) {
 }  // namespace stacksafe
 
 namespace dataflow {
-void State::update(const Cell &key, const Value &val) {
-  auto [it, _] = Super::try_emplace(key);
-  it->second = val;
-}
 void State::transfer(const llvm::BasicBlock &b) {
   for (const auto &i : b) {
     if (auto store = llvm::dyn_cast<llvm::StoreInst>(&i)) {
@@ -53,6 +49,10 @@ void State::transfer(const llvm::BasicBlock &b) {
       }
     }
   }
+}
+void State::update(const Cell &key, const Value &val) {
+  auto [it, _] = Super::try_emplace(key);
+  it->second.insert(val);
 }
 Value State::eval(const Value &value) const {
   Value ret;
