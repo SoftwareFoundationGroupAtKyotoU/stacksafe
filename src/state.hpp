@@ -39,10 +39,12 @@ class State : private std::map<Cell, Value> {
 
  public:
   using Super::begin, Super::end;
-  Value eval(const llvm::Value *v) const;
-  Value eval(const Cell &cell) const;
   void update(const Cell &key, const Value &val);
   void transfer(const llvm::BasicBlock &b);
+
+ private:
+  Value eval(const Value &value) const;
+  Value eval(const Cell &cell) const;
 };
 void to_json(nlohmann::json &j, const State &state);
 }  // namespace dataflow

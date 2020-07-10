@@ -29,7 +29,7 @@ class Value : private std::set<Cell> {
   using Super = std::set<Cell>;
 
  public:
-  using Super::begin, Super::end;
+  using Super::begin, Super::end, Super::insert;
   Value();
   explicit Value(const llvm::Value* v);
   void insert(const Value& value);

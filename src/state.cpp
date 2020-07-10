@@ -32,12 +32,6 @@ Component &State::find(BB b) {
 }  // namespace stacksafe
 
 namespace dataflow {
-Value State::eval(const llvm::Value *v) const {
-  return Value{v};
-}
-Value State::eval(const Cell &cell) const {
-  return eval(cell.value());
-}
 void State::update(const Cell &key, const Value &val) {
   auto [it, _] = Super::try_emplace(key);
   it->second = val;
@@ -45,13 +39,33 @@ void State::update(const Cell &key, const Value &val) {
 void State::transfer(const llvm::BasicBlock &b) {
   for (const auto &i : b) {
     if (auto store = llvm::dyn_cast<llvm::StoreInst>(&i)) {
-      auto src = eval(store->getValueOperand());
-      auto dst = eval(store->getPointerOperand());
-      for (const auto &key : dst) {
-        update(key, src);
+      Value src{store->getValueOperand()};
+      Value dst{store->getPointerOperand()};
+      for (const auto &key : eval(dst)) {
+        update(key, eval(src));
       }
     }
   }
+}
+Value State::eval(const Value &value) const {
+  Value ret;
+  for (const auto &cell : value) {
+    ret.insert(eval(cell));
+  }
+  return ret;
+}
+Value State::eval(const Cell &cell) const {
+  Value ret;
+  if (0 < cell.level()) {
+    if (auto it = Super::find(cell); it != Super::end()) {
+      for (const auto &c : std::get<1>(*it)) {
+        ret.insert(eval(Cell::deref(c, cell.level() - 1)));
+      }
+      return ret;
+    }
+  }
+  ret.insert(cell);
+  return ret;
 }
 void to_json(nlohmann::json &j, const State &state) {
   std::map<std::string, Value> base;
