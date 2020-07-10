@@ -36,6 +36,7 @@ class Value : private std::set<Cell> {
   explicit Value(const llvm::Value* v);
   void insert(const Value& value);
   bool is_local() const;
+  bool is_global() const;
 
  private:
   void insert(const llvm::Value* value);

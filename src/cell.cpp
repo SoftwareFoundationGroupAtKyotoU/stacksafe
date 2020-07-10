@@ -78,6 +78,10 @@ bool Value::is_local() const {
   auto pred = [](const Cell& cell) { return cell.is_local(); };
   return std::any_of(begin(), end(), pred);
 }
+bool Value::is_global() const {
+  auto pred = [](const Cell& cell) { return !cell.is_local(); };
+  return std::any_of(begin(), end(), pred);
+}
 void Value::insert(const llvm::Value* value) {
   insert(Value{value});
 }
