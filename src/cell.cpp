@@ -23,7 +23,7 @@ int Cell::level() const {
   return level_;
 }
 std::string Cell::to_string() const {
-  return debug::to_label(value_);
+  return std::string(level_, '*') + debug::to_label(value_);
 }
 bool Cell::is_local() const {
   return llvm::isa<llvm::AllocaInst>(value_);
@@ -36,13 +36,7 @@ bool operator<(const Cell& lhs, const Cell& rhs) {
   }
 }
 void to_json(nlohmann::json& j, const Cell& cell) {
-  std::string buf;
-  auto level = cell.level();
-  for (; 0 < level; --level) {
-    buf += "*";
-  }
-  buf += cell.to_string();
-  j = buf;
+  j = cell.to_string();
 }
 
 Value::Value() = default;
