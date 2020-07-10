@@ -28,7 +28,7 @@ std::string to_str(int num);
 namespace dataflow {
 namespace debug {
 void print(const std::string &str);
-std::string to_str(const llvm::Value &v);
+std::string to_str(const llvm::Value *v);
 std::string to_label(const llvm::Value *v);
 }  // namespace debug
 }  // namespace dataflow

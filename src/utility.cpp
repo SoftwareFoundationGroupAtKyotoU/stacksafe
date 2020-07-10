@@ -102,11 +102,14 @@ namespace debug {
 void print(const std::string &str) {
   (llvm::errs() << str << "\n").flush();
 }
-std::string to_str(const llvm::Value &v) {
-  std::string buf;
-  llvm::raw_string_ostream stream{buf};
-  stream << v;
-  return stream.str();
+std::string to_str(const llvm::Value *v) {
+  if (v) {
+    std::string buf;
+    llvm::raw_string_ostream stream{buf};
+    stream << v;
+    return stream.str();
+  }
+  return "null";
 }
 std::string to_label(const llvm::Value *v) {
   if (v) {
@@ -115,7 +118,7 @@ std::string to_label(const llvm::Value *v) {
     v->printAsOperand(stream, false);
     return stream.str();
   }
-  return "";
+  return "null";
 }
 }  // namespace debug
 }  // namespace dataflow

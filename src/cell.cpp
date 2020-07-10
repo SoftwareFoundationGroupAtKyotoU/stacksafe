@@ -6,12 +6,9 @@ namespace dataflow {
 Cell::Cell(const llvm::Value* value, int level)
     : value_{value}, level_{level} {}
 Cell Cell::make(const llvm::Value* value) {
-  if (!value) {
-    debug::print("invalid cell: null");
-  } else if (!llvm::isa<llvm::Constant>(value) &&
-             !llvm::isa<llvm::Argument>(value) &&
-             !llvm::isa<llvm::AllocaInst>(value)) {
-    debug::print("invalid cell: " + debug::to_str(*value));
+  if (!llvm::isa<llvm::Constant>(value) && !llvm::isa<llvm::Argument>(value) &&
+      !llvm::isa<llvm::AllocaInst>(value)) {
+    debug::print("invalid cell: " + debug::to_str(value));
   }
   return Cell{value, 0};
 }
@@ -70,10 +67,8 @@ Value::Value(const llvm::Value* v) {
   } else if (auto i = llvm::dyn_cast<llvm::SelectInst>(v)) {
     insert(i->getTrueValue());
     insert(i->getFalseValue());
-  } else if (v) {
-    debug::print("unsupported value: " + debug::to_str(*v));
   } else {
-    debug::print("null value");
+    debug::print("unsupported value: " + debug::to_str(v));
   }
 }
 void Value::insert(const Value& value) {
