@@ -106,7 +106,7 @@ std::string to_str(const llvm::Value *v) {
   if (v) {
     std::string buf;
     llvm::raw_string_ostream stream{buf};
-    stream << v;
+    stream << *v;
     return stream.str();
   }
   return "null";
