@@ -1,9 +1,8 @@
 #include "dataflow.hpp"
 #include <llvm/IR/Function.h>
-#include <llvm/Support/raw_ostream.h>
+#include "block.hpp"
 #include "function.hpp"
-#include "nlohmann/json.hpp"
-#include "state.hpp"
+#include "utility.hpp"
 
 namespace dataflow {
 namespace {
@@ -15,18 +14,18 @@ char DataFlow::ID = 0;
 DataFlow::DataFlow() : llvm::ModulePass{ID} {}
 bool DataFlow::runOnModule(llvm::Module &m) {
   const auto hr = "----------------";
-  auto scc = function::Scc::solve(m);
-  for (const auto &c : scc) {
+  const auto hr2 = "================";
+  for (const auto &c : function::Scc::solve(m)) {
     for (const auto &f : c) {
-      llvm::outs() << f->getName() << "\n";
-      State state;
-      for (const auto &b : *f) {
-        state.transfer(b);
+      debug::print(f->getName());
+      for (const auto &c : block::Scc::solve(*f)) {
+        for (const auto &b : c) {
+          debug::print(debug::to_label(b));
+        }
+        debug::print(hr);
       }
-      nlohmann::json j = state;
-      llvm::outs() << j.dump() << "\n";
     }
-    llvm::outs() << hr << "\n";
+    debug::print(hr2);
   }
   return false;
 }
