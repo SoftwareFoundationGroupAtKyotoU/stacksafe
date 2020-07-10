@@ -22,6 +22,7 @@ class Cell {
   const llvm::Value* value() const;
   int level() const;
   std::string to_string() const;
+  bool is_local() const;
 };
 bool operator<(const Cell& lhs, const Cell& rhs);
 void to_json(nlohmann::json& j, const Cell& cell);
@@ -34,6 +35,7 @@ class Value : private std::set<Cell> {
   Value();
   explicit Value(const llvm::Value* v);
   void insert(const Value& value);
+  bool is_local() const;
 
  private:
   void insert(const llvm::Value* value);

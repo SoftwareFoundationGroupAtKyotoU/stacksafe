@@ -1,5 +1,6 @@
 #include "cell.hpp"
 #include <llvm/IR/Instructions.h>
+#include <algorithm>
 #include "utility.hpp"
 
 namespace dataflow {
@@ -23,6 +24,9 @@ int Cell::level() const {
 }
 std::string Cell::to_string() const {
   return debug::to_label(value_);
+}
+bool Cell::is_local() const {
+  return llvm::isa<llvm::AllocaInst>(value_);
 }
 bool operator<(const Cell& lhs, const Cell& rhs) {
   if (lhs.value() == rhs.value()) {
@@ -73,6 +77,10 @@ Value::Value(const llvm::Value* v) {
 }
 void Value::insert(const Value& value) {
   Super::insert(value.begin(), value.end());
+}
+bool Value::is_local() const {
+  auto pred = [](const Cell& cell) { return cell.is_local(); };
+  return std::any_of(begin(), end(), pred);
 }
 void Value::insert(const llvm::Value* value) {
   insert(Value{value});
