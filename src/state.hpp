@@ -34,23 +34,14 @@ class State : private std::vector<Component> {
 }  // namespace stacksafe
 
 namespace dataflow {
-class ValueSet : private std::set<Cell> {
-  using Super = std::set<Cell>;
-
- public:
-  using Super::begin, Super::end, Super::insert;
-  void insert(const ValueSet &set);
-};
-void to_json(nlohmann::json &j, const ValueSet &set);
-
-class State : private std::map<Cell, ValueSet> {
-  using Super = std::map<Cell, ValueSet>;
+class State : private std::map<Cell, Value> {
+  using Super = std::map<Cell, Value>;
 
  public:
   using Super::begin, Super::end;
-  ValueSet eval(const llvm::Value *v) const;
-  ValueSet eval(const Cell &cell) const;
-  void update(const Cell &key, const ValueSet &val);
+  Value eval(const llvm::Value *v) const;
+  Value eval(const Cell &cell) const;
+  void update(const Cell &key, const Value &val);
   void transfer(const llvm::BasicBlock &b);
 };
 void to_json(nlohmann::json &j, const State &state);
