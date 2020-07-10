@@ -1,5 +1,6 @@
 #include "block.hpp"
 #include <llvm/IR/BasicBlock.h>
+#include <llvm/IR/Function.h>
 
 namespace stacksafe {
 
@@ -37,3 +38,35 @@ bool Blocks::is_loop() const {
 }
 
 }  // namespace stacksafe
+
+namespace dataflow {
+namespace block {
+std::vector<Component> Scc::solve(const llvm::Function &f) {
+  auto tarjan = std::make_unique<Scc>();
+  for (const auto &b : f) {
+    tarjan->push_back(&b);
+  }
+  const auto result = tarjan->apply();
+  std::vector<Component> vec;
+  for (const auto &v : result) {
+    Component c;
+    for (const auto &p : v) {
+      c.push_back(static_cast<const llvm::BasicBlock *>(p));
+    }
+    vec.push_back(std::move(c));
+  }
+  std::reverse(vec.begin(), vec.end());
+  return vec;
+}
+auto Scc::successors(Ptr p) const -> Vec {
+  Vec vec;
+  if (auto b = static_cast<const llvm::BasicBlock *>(p)) {
+    const auto t = b->getTerminator();
+    for (unsigned i = 0; i < t->getNumSuccessors(); ++i) {
+      vec.push_back(t->getSuccessor(i));
+    }
+  }
+  return vec;
+}
+}  // namespace block
+}  // namespace dataflow

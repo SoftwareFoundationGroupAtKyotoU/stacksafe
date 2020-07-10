@@ -3,6 +3,7 @@
 
 #include <tuple>
 #include <vector>
+#include "tarjan.hpp"
 
 namespace llvm {
 class BasicBlock;
@@ -24,5 +25,18 @@ class Blocks : private std::vector<const llvm::BasicBlock*> {
 };
 
 }  // namespace stacksafe
+
+namespace dataflow {
+namespace block {
+using Component = std::vector<const llvm::BasicBlock*>;
+class Scc : public Tarjan {
+ public:
+  static std::vector<Component> solve(const llvm::Function& f);
+
+ private:
+  Vec successors(Ptr p) const override;
+};
+}  // namespace block
+}  // namespace dataflow
 
 #endif  // INCLUDE_GUARD_AFF58DC7_979A_4BED_A89B_F759B72BD2AE
