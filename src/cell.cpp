@@ -13,8 +13,10 @@ Cell Cell::make(const llvm::Value* value) {
   }
   return Cell{value, 0};
 }
-Cell Cell::deref(const Cell& cell, int level) {
-  return Cell{cell.value(), level + cell.level()};
+Cell Cell::shift(const Cell& cell, int level) {
+  level += cell.level();
+  assert(0 <= level);
+  return Cell{cell.value(), level};
 }
 const llvm::Value* Cell::value() const {
   return value_;
@@ -52,7 +54,7 @@ Value::Value(const llvm::Value* v) {
     Super::insert(Cell::make(v));
   } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
     for (const auto& cell : Value{i->getPointerOperand()}) {
-      Super::insert(Cell::deref(cell, 1));
+      Super::insert(Cell::shift(cell, 1));
     }
   } else if (auto i = llvm::dyn_cast<llvm::GetElementPtrInst>(v)) {
     insert(i->getPointerOperand());

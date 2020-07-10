@@ -59,12 +59,12 @@ Value State::eval(const Cell &cell) const {
   if (cell.level() <= 0) {
     ret.insert(cell);
   } else {
-    auto value = eval(Cell::deref(cell, -1));
+    auto value = eval(Cell::shift(cell, -1));
     for (const auto &c : value) {
       if (auto it = Super::find(c); it != Super::end()) {
         ret.insert(it->second);
       } else {
-        ret.insert(Cell::deref(c, 1));
+        ret.insert(Cell::shift(c, 1));
       }
     }
   }
