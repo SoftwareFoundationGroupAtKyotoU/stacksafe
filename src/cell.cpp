@@ -1,4 +1,5 @@
 #include "cell.hpp"
+#include <llvm/IR/Instructions.h>
 #include "utility.hpp"
 
 namespace dataflow {
@@ -35,11 +36,42 @@ void to_json(nlohmann::json& j, const Cell& cell) {
   j = buf;
 }
 
+Value::Value() = default;
+Value::Value(const llvm::Value* v) {
+  if (llvm::isa<llvm::Argument>(v)) {
+    Super::insert(Cell::make(v));
+  } else if (auto i = llvm::dyn_cast<llvm::BinaryOperator>(v)) {
+    insert(i->getOperand(0));
+    insert(i->getOperand(1));
+  } else if (llvm::isa<llvm::AllocaInst>(v)) {
+    Super::insert(Cell::make(v));
+  } else if (auto i = llvm::dyn_cast<llvm::LoadInst>(v)) {
+    Value src{i->getPointerOperand()};
+    for (const auto& cell : src) {
+      Super::insert(Cell::deref(cell));
+    }
+  } else if (auto i = llvm::dyn_cast<llvm::GetElementPtrInst>(v)) {
+    insert(i->getPointerOperand());
+  } else if (auto i = llvm::dyn_cast<llvm::CastInst>(v)) {
+    insert(i->getOperand(0));
+  } else if (auto i = llvm::dyn_cast<llvm::PHINode>(v)) {
+    for (const auto& use : i->incoming_values()) {
+      insert(use.get());
+    }
+  } else if (auto i = llvm::dyn_cast<llvm::SelectInst>(v)) {
+    insert(i->getTrueValue());
+    insert(i->getFalseValue());
+  } else if (v) {
+    debug::print("unsupported value: " + debug::to_str(*v));
+  } else {
+    debug::print("null value");
+  }
+}
 void Value::insert(const Value& value) {
   Super::insert(value.begin(), value.end());
 }
 void Value::insert(const llvm::Value* value) {
-  Super::insert(Cell::make(value));
+  insert(Value{value});
 }
 void to_join(nlohmann::json& j, const Value& set) {
   std::vector<Cell> vec;
